@@ -137,19 +137,18 @@ void sendData(String thisData)
   {
     Serial.println("connecting...");
 
-    // send the HTTP PUT request:
-    client.print("PUT /v2/feeds/");
-    client.println(".csv HTTP/1.1");
-    client.println("Host: api.pachube.com");
-    client.print("X-ApiKey: ");
-    client.println(APIKEY);
+    client.print("POST /devices/records");
+    client.println("HTTP/1.1");
+    client.print("Host: ");
+    client.println(server);
+    // client.print("X-ApiKey: ");
+    // client.println(APIKEY);
     client.print("User-Agent: ");
     client.println(USERAGENT);
     client.print("Content-Length: ");
     client.println(thisData.length());
 
-    // last pieces of the HTTP PUT request
-    client.println("Content-Type: text/csv");
+    client.println("Content-Type: text");
     client.println("Connection: close");
     client.println();
 
