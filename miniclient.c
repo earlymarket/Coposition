@@ -33,7 +33,7 @@
 #define USERAGENT      "Redbox"              // user agent is the project name
 
 // PIN Number
-#define PINNUMBER ""
+// #define PINNUMBER "" 
 
 // APN data
 #define GPRS_APN       "everywhere" // replace your GPRS APN
@@ -48,7 +48,7 @@ GSM gsmAccess;
 // if you don't want to use DNS (and reduce your sketch size)
 // use the numeric IP instead of the name for the server:
 // IPAddress server(216,52,233,121);     // numeric IP for api.pachube.com
-char server[] = "edbox-api.herokuapp.com";       // name address for Pachube API
+char server[] = "redbox-api.herokuapp.com";       // name address for Pachube API
 
 unsigned long lastConnectionTime = 0;           // last time you connected to the server, in milliseconds
 boolean lastConnected = false;                  // state of the connection last time through the main loop
@@ -69,7 +69,7 @@ void setup()
   // attach the shield to the GPRS network with the APN, login and password
   while(notConnected)
   {
-    if((gsmAccess.begin(PINNUMBER)==GSM_READY) &
+    if((gsmAccess.begin(PINNUMBER)==GSM_READY) & // @lexsandeford Not entirely sure what's going on here
         (gprs.attachGPRS(GPRS_APN, GPRS_LOGIN, GPRS_PASSWORD)==GPRS_READY))
       notConnected = false;
     else
@@ -85,17 +85,20 @@ void setup()
 void loop()
 {
   // read the sensor on A0
-  int sensorReading = analogRead(A0);
+  // int sensorReading = analogRead(A0);
 
   // convert the data to a String
   String dataString = "sensor1,";
-  dataString += sensorReading;
+  // dataString += sensorReading;
+  dataString += "Hello"
 
   // you can append multiple readings to this String to
   // send the pachube feed multiple values
-  int otherSensorReading = analogRead(A1);
+  // int otherSensorReading = analogRead(A1);
   dataString += "\nsensor2,";
-  dataString += otherSensorReading;
+  // dataString += otherSensorReading;
+
+  dataString += "World"
 
   // if there's incoming data from the net connection.
   // send it out the serial port.  This is for debugging
@@ -136,7 +139,6 @@ void sendData(String thisData)
 
     // send the HTTP PUT request:
     client.print("PUT /v2/feeds/");
-    client.print(FEEDID);
     client.println(".csv HTTP/1.1");
     client.println("Host: api.pachube.com");
     client.print("X-ApiKey: ");
