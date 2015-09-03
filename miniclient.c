@@ -27,6 +27,16 @@
 // Include the GSM library
 #include <GSM.h>
 
+// Jansson is required for JSON
+#include <jansson.h>
+#include <jansson_config.h>
+#include <utf.h>
+#include <strbuffer.h>
+#include <hashtable.h>
+#include <jansson_private.h>
+#include <lookup3.h>
+// end Jansson
+
 // Pachube login information
 //#define APIKEY         "YOUR API KEY GOES HERE"  // replace your pachube api key here
 //#define FEEDID         00000                     // replace your feed ID
