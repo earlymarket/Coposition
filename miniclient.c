@@ -22,6 +22,8 @@
 
  This code is in the public domain.
 
+ Lex is the best
+
  */
 
 // Include the GSM library
