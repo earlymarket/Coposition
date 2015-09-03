@@ -33,7 +33,7 @@
 #define USERAGENT      "Redbox"              // user agent is the project name
 
 // PIN Number
-// #define PINNUMBER "" 
+#define PINNUMBER ""  
 
 // APN data
 #define GPRS_APN       "everywhere" // replace your GPRS APN
@@ -90,7 +90,7 @@ void loop()
   // convert the data to a String
   String dataString = "sensor1,";
   // dataString += sensorReading;
-  dataString += "Hello"
+  dataString += "Hello";
 
   // you can append multiple readings to this String to
   // send the pachube feed multiple values
@@ -98,7 +98,7 @@ void loop()
   dataString += "\nsensor2,";
   // dataString += otherSensorReading;
 
-  dataString += "World"
+  dataString += "World";
 
   // if there's incoming data from the net connection.
   // send it out the serial port.  This is for debugging
@@ -122,7 +122,8 @@ void loop()
   // your last connection, then connect again and send data
   if(!client.connected() && (millis() - lastConnectionTime > postingInterval))
   {
-    sendData(dataString);
+    // sendData(dataString);
+    sendData("{'reticulated': 'value'}");
   }
   // store the state of the connection for next time through
   // the loop
@@ -137,8 +138,8 @@ void sendData(String thisData)
   {
     Serial.println("connecting...");
 
-    client.print("POST /devices/records");
-    client.println("HTTP/1.1");
+    client.print("POST /api/spline");
+    client.println(" HTTP/1.1");
     client.print("Host: ");
     client.println(server);
     // client.print("X-ApiKey: ");
@@ -148,7 +149,8 @@ void sendData(String thisData)
     client.print("Content-Length: ");
     client.println(thisData.length());
 
-    client.println("Content-Type: text");
+    client.println("Content-Type: application/json");
+    client.println("Accept: application/json");
     client.println("Connection: close");
     client.println();
 
