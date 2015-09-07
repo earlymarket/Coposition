@@ -3,12 +3,7 @@
 
 #include <stdlib.h>
 
-// Pachube login information
-//#define APIKEY         "YOUR API KEY GOES HERE"  // replace your pachube api key here
-//#define FEEDID         00000                     // replace your feed ID
 #define USERAGENT      "Redbox"              // user agent is the project name
-
-// PIN Number
 #define PINNUMBER ""  
 
 // APN data
@@ -67,13 +62,8 @@ void prepareForInterrupts ()
  triggered = false;  // re-arm for next time
  attachInterrupt(4, isr, RISING);     
  }  // end of prepareForInterrupts
- 
 
-
-// if you don't want to use DNS (and reduce your sketch size)
-// use the numeric IP instead of the name for the server:
-// IPAddress server(216,52,233,121);     // numeric IP for api.pachube.com
-char server[] = "techlog-api.herokuapp.com";       // name address for Pachube API
+char server[] = "techlog-api.herokuapp.com";
 
 unsigned long lastConnectionTime = 0;           // last time you connected to the server, in milliseconds
 boolean lastConnected = false;                  // state of the connection last time through the main loop
@@ -88,22 +78,8 @@ void setup()
   while (!Serial) {
     ; // wait for serial port to connect. Needed for Leonardo only
   }
-  delay(500);
   pinMode(led, OUTPUT);
 
-  // reset Timer 1
-  TCCR1A = 0;
-  TCCR1B = 0;
-  // Timer 1 - interrupt on overflow
-  TIMSK1 = bit (TOIE1);   // enable Timer1 Interrupt
-  // zero it
-  TCNT1 = 0;  
-  overflowCount = 0;  
-  // start Timer 1
-  TCCR1B =  bit (CS10);  //  no prescaling
-
-  // set up for interrupts
-  prepareForInterrupts ();
 
   // connection state
   boolean notConnected = true;
@@ -125,12 +101,30 @@ void setup()
   }
 
   Serial.println("Connected to GPRS network");
+  Serial.println("Preparing for interrupts.");
+
+  // reset Timer 1
+  TCCR1A = 0;
+  TCCR1B = 0;
+  // Timer 1 - interrupt on overflow
+  TIMSK1 = bit (TOIE1);   // enable Timer1 Interrupt
+  // zero it
+  TCNT1 = 0;  
+  overflowCount = 0;  
+  // start Timer 1
+  TCCR1B =  bit (CS10);  //  no prescaling
+
+  // set up for interrupts
+  prepareForInterrupts ();
 }
 
 void loop()
 {
   if (!triggered)
     return;
+
+  unsigned long elapsedTime = finishTime - startTime;
+  float freq = F_CPU / float (elapsedTime);  // each tick is 62.5 ns at 16 MHz
 
   if (client.available())
   {
@@ -151,25 +145,21 @@ void loop()
   // your last connection, then connect again and send data
   if(!client.connected() && (millis() - lastConnectionTime > postingInterval))
   {
-    delay(5000);
-    unsigned long elapsedTime = finishTime - startTime;
-    float freq = F_CPU / float (elapsedTime);  // each tick is 62.5 ns at 16 MHz
 
     Serial.print ("Took: ");
     Serial.print (elapsedTime);
     Serial.print (" counts. ");
-
     Serial.print ("Frequency: ");
     Serial.print (freq);
     Serial.println (" Hz. ");
 
-    // char temp[200];
-    // sprintf(temp, "%f", freq);
-    // Serial.println ("");
-    // std::string temp = std::to_string(freq);
     Serial.print ("ATTEMPTING TO SEND: ");
     Serial.println (freq);
-    sendData(freq);
+
+    char buff[7];
+    dtostrf(freq, 4, 3, buff);
+
+    sendData(buff);
   }
   // store the state of the connection for next time through
   // the loop
@@ -177,11 +167,12 @@ void loop()
 }
 
 // this method makes a HTTP connection to the server
-void sendData(int thisData)
+void sendData(String thisData)
 {
   // if there's a successful connection:
   if (client.connect(server, 80))
   {
+    // Output for debugging (can be removed in release)
     Serial.println("connecting...");
 
     Serial.println();
@@ -193,19 +184,22 @@ void sendData(int thisData)
     Serial.println(server);
     Serial.print("User-Agent: ");
     Serial.println(USERAGENT);
-    Serial.print("Content-Length: 1");
-    // Serial.println(thisData.length());
+    Serial.print("Content-Length: ");
+    Serial.println(thisData.length());
 
     Serial.println("Content-Type: text/plain");
     Serial.println("Accept: \*/\*");
     Serial.println("Connection: close");
     Serial.println();
 
-    // Serial.print("{'data':'");
-    Serial.println(thisData);
+    
 
+
+    Serial.println(thisData);
     Serial.println();
-    Serial.println();
+
+
+    // Actual data being sent
 
     client.print("POST /redbox/checkins");
     client.println(" HTTP/1.1");
@@ -213,17 +207,15 @@ void sendData(int thisData)
     client.println(server);
     client.print("User-Agent: ");
     client.println(USERAGENT);
-    client.println("Content-Length: 1");
-    // client.println(thisData.length());
+    client.print("Content-Length: ");
+    client.println(thisData.length());
 
     client.println("Content-Type: text/plain");
     client.println("Accept: \*/\*");
     client.println("Connection: close");
     client.println();
 
-    // client.print("{'data':'");
-    client.println(thisData);
-    // client.println("'}");
+    client.print(thisData);
   }
   else
   {
@@ -235,4 +227,5 @@ void sendData(int thisData)
   }
   // note the time that the connection was made or attempted:
   lastConnectionTime = millis();
+  prepareForInterrupts ();   
 }
