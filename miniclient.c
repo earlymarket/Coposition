@@ -44,7 +44,7 @@ void isr ()
    
  finishTime = (overflowCount << 16) + counter;
  triggered = true;
- detachInterrupt(0);   
+ detachInterrupt(4);   
 }  // end of isr
 
 // timer overflows (every 65536 counts)
