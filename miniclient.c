@@ -1,31 +1,7 @@
-/*
- Pachube client with Strings
-
- This sketch connects two analog sensors to Pachube (http://www.pachube.com)
- through a Telefonica GSM/GPRS shield.
-
- This example has been updated to use version 2.0 of the Pachube.com API.
- To make it work, create a feed with two datastreams, and give them the IDs
- sensor1 and sensor2. Or change the code below to match your feed.
-
- This example uses the String library, which is part of the Arduino core from
- version 0019.
-
- Circuit:
- * Analog sensors attached to A0 and A1
- * GSM shield attached to an Arduino
- * SIM card with a data plan
-
- created 8 March 2012
- by Tom Igoe
- and adapted for GSM shield by David Del Peral
-
- This code is in the public domain.
-
- */
-
 // Include the GSM library
 #include <GSM.h>
+
+#include <stdlib.h>
 
 // Pachube login information
 //#define APIKEY         "YOUR API KEY GOES HERE"  // replace your pachube api key here
@@ -45,22 +21,89 @@ GSMClient client;
 GPRS gprs;
 GSM gsmAccess;
 
+// Input: Pin D2
+
+volatile boolean first;
+volatile boolean triggered;
+volatile unsigned long overflowCount;
+volatile unsigned long startTime;
+volatile unsigned long finishTime;
+
+int led = 12;
+
+// here on rising edge
+void isr () 
+{
+ unsigned int counter = TCNT1;  // quickly save it
+ 
+ // wait until we noticed last one
+ if (triggered)
+   return;
+
+ if (first)
+   {
+   startTime = (overflowCount << 16) + counter;
+   first = false;
+   return;  
+   }
+   
+ finishTime = (overflowCount << 16) + counter;
+ triggered = true;
+ detachInterrupt(0);   
+}  // end of isr
+
+// timer overflows (every 65536 counts)
+ISR (TIMER1_OVF_vect) 
+{
+ overflowCount++;
+}  // end of TIMER1_OVF_vect
+
+
+void prepareForInterrupts ()
+ {
+ // get ready for next time
+ EIFR = bit (INTF0);  // clear flag for interrupt 0
+ first = true;
+ triggered = false;  // re-arm for next time
+ attachInterrupt(4, isr, RISING);     
+ }  // end of prepareForInterrupts
+ 
+
+
 // if you don't want to use DNS (and reduce your sketch size)
 // use the numeric IP instead of the name for the server:
 // IPAddress server(216,52,233,121);     // numeric IP for api.pachube.com
-char server[] = "redbox-api.herokuapp.com";       // name address for Pachube API
+char server[] = "techlog-api.herokuapp.com";       // name address for Pachube API
 
 unsigned long lastConnectionTime = 0;           // last time you connected to the server, in milliseconds
 boolean lastConnected = false;                  // state of the connection last time through the main loop
 const unsigned long postingInterval = 10*1000;  // delay between updates to Pachube.com
 
+
 void setup()
 {
+  digitalWrite(led, HIGH);
   // initialize serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
     ; // wait for serial port to connect. Needed for Leonardo only
   }
+  delay(500);
+  pinMode(led, OUTPUT);
+
+  // reset Timer 1
+  TCCR1A = 0;
+  TCCR1B = 0;
+  // Timer 1 - interrupt on overflow
+  TIMSK1 = bit (TOIE1);   // enable Timer1 Interrupt
+  // zero it
+  TCNT1 = 0;  
+  overflowCount = 0;  
+  // start Timer 1
+  TCCR1B =  bit (CS10);  //  no prescaling
+
+  // set up for interrupts
+  prepareForInterrupts ();
 
   // connection state
   boolean notConnected = true;
@@ -75,7 +118,9 @@ void setup()
     else
     {
       Serial.println("Not connected");
-      delay(1000);
+      digitalWrite(led, LOW);
+      delay(500);
+
     }
   }
 
@@ -84,25 +129,9 @@ void setup()
 
 void loop()
 {
-  // read the sensor on A0
-  // int sensorReading = analogRead(A0);
+  if (!triggered)
+    return;
 
-  // convert the data to a String
-  String dataString = "sensor1,";
-  // dataString += sensorReading;
-  dataString += "Hello";
-
-  // you can append multiple readings to this String to
-  // send the pachube feed multiple values
-  // int otherSensorReading = analogRead(A1);
-  dataString += "\nsensor2,";
-  // dataString += otherSensorReading;
-
-  dataString += "World";
-
-  // if there's incoming data from the net connection.
-  // send it out the serial port.  This is for debugging
-  // purposes only
   if (client.available())
   {
     char c = client.read();
@@ -122,8 +151,25 @@ void loop()
   // your last connection, then connect again and send data
   if(!client.connected() && (millis() - lastConnectionTime > postingInterval))
   {
-    // sendData(dataString);
-    sendData("{'reticulated': 'value'}");
+    delay(5000);
+    unsigned long elapsedTime = finishTime - startTime;
+    float freq = F_CPU / float (elapsedTime);  // each tick is 62.5 ns at 16 MHz
+
+    Serial.print ("Took: ");
+    Serial.print (elapsedTime);
+    Serial.print (" counts. ");
+
+    Serial.print ("Frequency: ");
+    Serial.print (freq);
+    Serial.println (" Hz. ");
+
+    // char temp[200];
+    // sprintf(temp, "%f", freq);
+    // Serial.println ("");
+    // std::string temp = std::to_string(freq);
+    Serial.print ("ATTEMPTING TO SEND: ");
+    Serial.println (freq);
+    sendData(freq);
   }
   // store the state of the connection for next time through
   // the loop
@@ -131,31 +177,53 @@ void loop()
 }
 
 // this method makes a HTTP connection to the server
-void sendData(String thisData)
+void sendData(int thisData)
 {
   // if there's a successful connection:
   if (client.connect(server, 80))
   {
     Serial.println("connecting...");
 
-    client.print("POST /api/spline");
+    Serial.println();
+    Serial.println();
+
+    Serial.print("POST /redbox/checkins");
+    Serial.println(" HTTP/1.1");
+    Serial.print("Host: ");
+    Serial.println(server);
+    Serial.print("User-Agent: ");
+    Serial.println(USERAGENT);
+    Serial.print("Content-Length: 1");
+    // Serial.println(thisData.length());
+
+    Serial.println("Content-Type: text/plain");
+    Serial.println("Accept: \*/\*");
+    Serial.println("Connection: close");
+    Serial.println();
+
+    // Serial.print("{'data':'");
+    Serial.println(thisData);
+
+    Serial.println();
+    Serial.println();
+
+    client.print("POST /redbox/checkins");
     client.println(" HTTP/1.1");
     client.print("Host: ");
     client.println(server);
-    // client.print("X-ApiKey: ");
-    // client.println(APIKEY);
     client.print("User-Agent: ");
     client.println(USERAGENT);
-    client.print("Content-Length: ");
-    client.println(thisData.length());
+    client.println("Content-Length: 1");
+    // client.println(thisData.length());
 
-    client.println("Content-Type: application/json");
-    client.println("Accept: application/json");
+    client.println("Content-Type: text/plain");
+    client.println("Accept: \*/\*");
     client.println("Connection: close");
     client.println();
 
-    // here's the actual content of the PUT request
+    // client.print("{'data':'");
     client.println(thisData);
+    // client.println("'}");
   }
   else
   {
