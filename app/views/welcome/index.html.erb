@@ -1,3 +1,11 @@
-<h3 style="text-align: center;">REDbox</h3>
-<h1 style="text-align: center;">Sentinel</h1>
-<img  style="width: 100%;margins: auto;" src="http://static.comicvine.com/uploads/original/13/133037/3835137-4217982818-M_Ser.png">
+<center>
+  <h3>REDbox</h3>
+  <h1>Sentinel</h1>
+  <%= signed_in? ? link_to("Sign out", destroy_user_session_path) : link_to("Sign in", new_user_session_path) %><br>
+  <%= link_to("Connect to my device", new_user_registration_path) unless signed_in? %>
+
+  <% if signed_in? %>
+
+    <h2>Connect</h2>
+  <% end %>
+</center>
