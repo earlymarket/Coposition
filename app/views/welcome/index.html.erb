@@ -5,7 +5,6 @@
   <%= link_to("Connect to my device", new_user_registration_path) unless signed_in? %>
 
   <% if signed_in? %>
-
-    <h2>Connect</h2>
+    <h2><%= link_to("Connect", connections_path)%></h2>
   <% end %>
 </center>

@@ -34,6 +34,7 @@ gem 'devise'
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
+  gem 'pry'
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'rspec-rails'
