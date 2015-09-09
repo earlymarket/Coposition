@@ -4,7 +4,7 @@
 
 #include <stdlib.h>
 
-#define USERAGENT      "Redbox"              // user agent is the project name
+#define USERAGENT      "Coposition"              // user agent is the project name
 #define PINNUMBER ""  
 
 // APN data

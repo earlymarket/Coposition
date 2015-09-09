@@ -11,24 +11,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150909084035) do
+ActiveRecord::Schema.define(version: 20150909094928) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "checkins", force: :cascade do |t|
-    t.string "status"
-    t.float  "lat"
-    t.float  "lng"
-    t.string "n_s"
-    t.string "e_w"
-    t.float  "gspeed"
-    t.float  "altitude"
-    t.float  "course"
-    t.string "time"
-    t.string "date"
-    t.float  "rotorspeed"
-    t.string "enginespeed"
+    t.string  "status"
+    t.float   "lat"
+    t.float   "lng"
+    t.string  "n_s"
+    t.string  "e_w"
+    t.float   "gspeed"
+    t.float   "altitude"
+    t.float   "course"
+    t.string  "time"
+    t.string  "date"
+    t.float   "rotorspeed"
+    t.string  "enginespeed"
+    t.string  "imei"
+    t.integer "device_id"
+  end
+
+  create_table "devices", force: :cascade do |t|
     t.string "imei"
   end
 
