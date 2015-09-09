@@ -9,7 +9,7 @@ class RequestFixture
 
     def no_gps
       # Excluding GPS data
-      "064951.000|260406|490.01|1314.21"
+      "064951.000|260406|490.01|1314.21|356938035643809"
     end
 
   end

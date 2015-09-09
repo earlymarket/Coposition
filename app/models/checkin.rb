@@ -2,7 +2,7 @@ class Checkin < ActiveRecord::Base
 
   def self.string_order 
     [:status, :lat, :n_s, :lng, :e_w, :gspeed, :altitude, 
-      :course, :time, :date, :rotorspeed, :enginespeed]
+      :course, :time, :date, :rotorspeed, :enginespeed, :imei]
   end
 
   def self.create_from_string (string)

@@ -1,10 +1,8 @@
-<center>
-  <h3>REDbox</h3>
-  <h1>Sentinel</h1>
-  <%= signed_in? ? link_to("Sign out", destroy_user_session_path) : link_to("Sign in", new_user_session_path) %><br>
-  <%= link_to("Connect to my device", new_user_registration_path) unless signed_in? %>
+<h3>REDbox</h3>
+<h1>Sentinel</h1>
+<%= signed_in? ? link_to("Sign out", destroy_user_session_path) : link_to("Sign in", new_user_session_path) %><br>
+<%= link_to("Connect to my device", new_user_registration_path) unless signed_in? %>
 
-  <% if signed_in? %>
-    <h2><%= link_to("Connect", connections_path)%></h2>
-  <% end %>
-</center>
+<% if signed_in? %>
+  <h2><%= link_to("Connect", connections_path)%></h2>
+<% end %>
