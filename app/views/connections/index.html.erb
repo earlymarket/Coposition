@@ -1,4 +1,9 @@
 <center>
-Your connection code is <h3><%= @connection_code %></h3><br>
-Type this into your device, and wait 30 seconds for authentication.
+  Your current connections are:
+  <ul>
+    <li>G-RALA</li>
+    <li>G-BUFY</li>
+  </ul>
+
+  <h3><%= link_to("Create new connection", new_connection_path) %></h3>
 </center>
