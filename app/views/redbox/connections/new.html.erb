@@ -1,0 +1,5 @@
+<%= form_tag(redbox_connections_path, method: :post, class: "form-group") do %>
+  <%= label_tag(:imei, "Enter IMEI", class: "control-label") %>
+  <%= text_field_tag(:imei, nil, class: "form-control input-lg") %>
+  <%= submit_tag("Search", class: "form-control") %>
+<% end %>

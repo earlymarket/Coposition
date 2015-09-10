@@ -1,4 +1,4 @@
-class ConnectionsController < ApplicationController
+class Redbox::ConnectionsController < ApplicationController
 
   def index
   end
@@ -15,10 +15,10 @@ class ConnectionsController < ApplicationController
     if checkin
       # bind account
       flash[:notice] = "This device has been bound to your account!"
-      redirect_to connection_path(checkin)
+      redirect_to redbox_connection_path(checkin)
     else
       flash[:alert] = "Not found"
-      redirect_to new_connection_path
+      redirect_to new_redbox_connection_path
     end
   end
 

@@ -1,4 +1,4 @@
-class CheckinsController < ApplicationController
+class Redbox::CheckinsController < ApplicationController
 
   def index
     @checkin_count = Checkin.count
