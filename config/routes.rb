@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   namespace :redbox do
     resources :checkins, only: [:index, :show]
     resources :connections, only: [:index, :show, :new, :create]
+    resources :api, only: [:index]
   end
 
 end
