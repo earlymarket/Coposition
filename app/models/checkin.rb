@@ -2,6 +2,8 @@ class Checkin < ActiveRecord::Base
 
   belongs_to :device
 
+
+  # Dynamic methods for doing something with a checkin string
   [:new, :create].each do |prefix|
     define_singleton_method("#{prefix}_from_string") do |string|
       hash = to_hash(string)
