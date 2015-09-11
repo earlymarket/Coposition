@@ -12,7 +12,9 @@ class Checkin < ActiveRecord::Base
 
     device = Device.where(imei: hash[:imei]).first
     device = Device.create(imei: hash[:imei]) unless device
-    device.checkins << create(hash)
+    new_checkin = create(hash)
+    device.checkins << new_checkin
+    new_checkin
   end
 
   protected
