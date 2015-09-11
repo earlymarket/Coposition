@@ -30,6 +30,12 @@ RSpec.describe Checkin, type: :model do
       expect(@checkin.imei).to eq "356938035643809"
     end
 
+
+    it "should return a new object without creating it, when asked" do
+      @checkin = Checkin.new_from_string(RequestFixture.w_gps)
+      expect(@checkin.status).to eq "A"
+      expect(@checkin.imei).to eq "356938035643809"
+    end
   end
 
 end
