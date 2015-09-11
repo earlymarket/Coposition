@@ -11,10 +11,14 @@ class Redbox::ConnectionsController < ApplicationController
   end
 
   def create
-    checkin = Checkin.find_by imei: allowed_params
-    if checkin
-      # bind account
-      flash[:notice] = "This device has been bound to your account!"
+    device = Device.find_by imei: allowed_params
+    if device
+      unless !device.user.nil?
+        device.user = current_user
+      else
+        flash[:alert] = "This device has already been assigned an account!"
+      end
+      flash[:notice] = "This device has been bound to your account!" unless flash[:alert]
       redirect_to redbox_connection_path(checkin)
     else
       flash[:alert] = "Not found"
