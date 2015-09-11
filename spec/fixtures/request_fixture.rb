@@ -4,12 +4,12 @@ class RequestFixture
 
     def w_gps
       # Including GPS data
-      "A|2307.1256|N|12016.4438|E|0.03|13|165.48|" + no_gps
+      no_gps + "165.48|13|0.03|E|12016.4438|N|2307.1256|A"
     end
 
     def no_gps
       # Excluding GPS data
-      "064951.000|260406|490.01|1314.21|356938035643809"
+      "356938035643809|1314.21|490.01|260406|064951.000|"
     end
 
   end
