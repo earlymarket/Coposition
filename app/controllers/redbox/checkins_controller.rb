@@ -9,7 +9,8 @@ class Redbox::CheckinsController < ApplicationController
   end
 
   def create
-     Checkin.create_from_string(params["data"])
+    Checkin.create_from_string(params["data"])
+    render text: "ok"
   end
 
   def allowed_params
