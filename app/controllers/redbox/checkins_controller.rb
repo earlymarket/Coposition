@@ -11,6 +11,7 @@ class Redbox::CheckinsController < ApplicationController
     unless params[:range] 
       render json: checkin.to_json
     else
+      # /2?range=3 returns IDs 2,3,4
       render json: Checkin.find_range(checkin.id, params[:range].to_i)
     end
   end
