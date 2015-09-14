@@ -27,7 +27,6 @@ RSpec.describe Redbox::CheckinsController, type: :controller do
       post :show, {id: @chk1.id, range: 3}
       expect(response.ok?).to be true
 
-      # Don't send entire obj back due to GPRS limits
       expect(response.body).to eq [@chk1, @chk2, @chk3].to_json
     end
   end
