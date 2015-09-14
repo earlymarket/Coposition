@@ -3,5 +3,5 @@
 <%= link_to("Create an account", new_user_registration_path, class: "btn btn-default") unless signed_in? %>
 
 <% if signed_in? %>
-  <h2><%= link_to("Connect", redbox_connections_path, class: "btn btn-primary btn-lg")%></h2>
+  <h2><%= link_to("Connect", redbox_devices_path, class: "btn btn-primary btn-lg")%></h2>
 <% end %>
