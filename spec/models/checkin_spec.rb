@@ -52,4 +52,10 @@ RSpec.describe Checkin, type: :model do
     end
   end
 
+  describe "methods" do
+    it "should give you a range array" do
+      expect(Checkin.range_array(1,3)).to eq [1,2,3]
+    end
+  end
+
 end
