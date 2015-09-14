@@ -8,10 +8,12 @@ class Checkin < ActiveRecord::Base
     define_singleton_method("#{prefix}_from_string") do |string, options=nil|
       hash = to_hash(string)
 
-      device = Device.where(imei: hash[:imei]).first
-      device = Device.create(imei: hash[:imei]) unless device
       new_checkin = send(prefix, hash)
-      device.checkins << new_checkin if options && options[:add_device]
+      if options && options[:add_device]
+        device = Device.where(imei: hash[:imei]).first
+        device = Device.create(imei: hash[:imei]) unless device
+        device.checkins << new_checkin
+      end
       new_checkin
     end
   end
