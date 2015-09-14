@@ -10,6 +10,26 @@ RSpec.describe Redbox::CheckinsController, type: :controller do
       # Don't send entire obj back due to GPRS limits
       expect(response.body).to eq "ok"
     end
+
+    it "should POST to the server without string" do
+      post :create, data: RequestFixture.no_gps
+      expect(response.ok?).to be true
+
+      # Don't send entire obj back due to GPRS limits
+      expect(response.body).to eq "ok"
+    end
+
+    it "should GET a range" do
+      @chk1 = Checkin.create_from_string(RequestFixture.w_gps)
+      @chk2 = Checkin.create_from_string(RequestFixture.w_gps)
+      @chk3 = Checkin.create_from_string(RequestFixture.w_gps)
+      @chk4 = Checkin.create_from_string(RequestFixture.w_gps)
+      post :show, {id: @chk1.id, range: 3}
+      expect(response.ok?).to be true
+
+      # Don't send entire obj back due to GPRS limits
+      expect(response.body).to eq [@chk1, @chk2, @chk3].to_json
+    end
   end
 
 end
