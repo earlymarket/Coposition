@@ -5,11 +5,11 @@ class Checkin < ActiveRecord::Base
 
   # Dynamic methods for doing something with a checkin string
   [:new, :create].each do |prefix|
-    define_singleton_method("#{prefix}_from_string") do |string, options=nil|
+    define_singleton_method("#{prefix}_from_string") do |string, options={}|
       hash = to_hash(string)
 
       new_checkin = send(prefix, hash)
-      if options && options[:add_device]
+      if options[:add_device]
         device = Device.where(imei: hash[:imei]).first
         device = Device.create(imei: hash[:imei]) unless device
         device.checkins << new_checkin
