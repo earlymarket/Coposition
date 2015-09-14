@@ -1,3 +1,10 @@
-<h1>API</h1>
+<h1>APIs</h1>
 
-Here will be the information on accessing the CoPosition API
+<h3>CoPosition</h3>
+
+Have your device checkin:
+<code>POST <%= "#{root_url}redbox/checkins" %></code> <br>
+This takes one string:<br>
+<code><%= @w_gps %></code><br>
+Which maps to:<br>
+<code><%= @mapping %></code>
