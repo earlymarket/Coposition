@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Redbox::ConnectionsController, type: :controller do
+RSpec.describe Redbox::DevicesController, type: :controller do
 
   login_user
 

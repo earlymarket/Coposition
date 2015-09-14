@@ -1,6 +1,9 @@
-class Redbox::ConnectionsController < ApplicationController
+class Redbox::DevicesController < ApplicationController
+
+  before_action :authenticate_user!
 
   def index
+    @devices = current_user.devices
   end
 
   def show
