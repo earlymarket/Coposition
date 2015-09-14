@@ -1,5 +1,7 @@
 class Redbox::CheckinsController < ApplicationController
 
+  protect_from_forgery except: :create
+
   def index
     @checkin_count = Checkin.count
   end
@@ -9,12 +11,8 @@ class Redbox::CheckinsController < ApplicationController
   end
 
   def create
-    Checkin.create_from_string(params["data"])
+    Checkin.create_from_string(request.body.read, add_device: true)
     render text: "ok"
-  end
-
-  def allowed_params
-    params.require(:data)
   end
 
 end
