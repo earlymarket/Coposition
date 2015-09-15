@@ -18,7 +18,7 @@ RSpec.describe Redbox::DevicesController, type: :controller do
     it "should POST to with an IMEI" do
       # For some reason, subject.current user was returning some weird results. Using last User instead
       @user = User.last
-      post :create, imei: @checkin.imei
+      post :create, device: { imei: @checkin.imei }
       
       expect(response.code).to eq "302"
       expect(@user.devices.count).to be 1
