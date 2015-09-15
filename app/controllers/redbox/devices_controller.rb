@@ -7,7 +7,7 @@ class Redbox::DevicesController < ApplicationController
   end
 
   def show
-    @checkin = Checkin.find(params[:id]).to_json
+    @device = Device.find(params[:id])
   end
 
   def new

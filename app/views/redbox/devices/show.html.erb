@@ -1,1 +1,4 @@
-<%= @checkin %>
+<h1><%= @device.name %></h1>
+<% @device.checkins.each do |checkin| %>
+  <%= simple_format(JSON.pretty_generate(checkin.as_json)) %>
+<% end %>
