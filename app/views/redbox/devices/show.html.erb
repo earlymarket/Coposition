@@ -1,4 +1,19 @@
 <h1><%= @device.name %></h1>
-<% @device.checkins.each do |checkin| %>
-  <%= simple_format(JSON.pretty_generate(checkin.as_json)) %>
-<% end %>
+<table class="table table-striped table-hover">
+  <tr>
+    <% @device.checkins.column_names.each do |key| %>
+      <th>
+        <%= key.titleize %>
+      </th>
+    <% end %>
+  </tr>
+  <% @device.checkins.each do |checkin| %>
+    <tr>
+      <% checkin.as_json.values.each do |val| %>
+        <td>
+          <%= val %>
+        </td>
+      <% end %>
+    </tr>  
+  <% end %>
+</table>
