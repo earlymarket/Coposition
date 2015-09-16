@@ -1,5 +1,5 @@
 <h1>CoPosition</h1>
-<%= signed_in? ? link_to("Sign out", destroy_user_session_path, { method: :delete, class: "btn btn-default" }) : link_to("Sign in", new_user_session_path, class: "btn btn-default") %>
+<%= signed_in? ? link_to("View API docs", api_index_path, class: "btn btn-default") : link_to("Sign in", new_user_session_path, class: "btn btn-default") %>
 <%= link_to("Create an account", new_user_registration_path, class: "btn btn-default") unless signed_in? %>
 
 <% if signed_in? %>

@@ -1,10 +1,16 @@
 <h1>APIs</h1>
 
-<h3>CoPosition</h3>
+<h3>Redbox</h3>
 
-Have your device checkin:
-<code>POST <%= "#{root_url}redbox/checkins" %></code> <br>
+<p>Have your device checkin:
+<code>POST <%= "#{redbox_checkins_url}" %></code> <br>
 This takes one string:<br>
 <code><%= @w_gps %></code><br>
 Which maps to:<br>
-<code><%= @mapping %></code>
+<code><%= @mapping %></code><br></p>
+
+Get a checkin 1234:<br>
+
+<code>GET <%= "#{redbox_checkins_url}/1234" %></code><br>
+Example response JSON:<br>
+<%= simple_format(@w_gps_response) %>
