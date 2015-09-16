@@ -3,7 +3,7 @@
   <%= f.text_field(:imei, class: "form-control input-lg fifth-width", placeholder: "15 digits, no spaces") %><br>
   <%= label(:name, "Enter a friendly name", class: "control-label") %>
   <%= f.text_field(:name, class: "form-control input-lg fifth-width", placeholder: "G-RALA") %>
-  <%= f.submit("Search", class: "form-control") %>
+  <%= f.submit("Search", class: "form-control btn btn-default") %>
 <% end %>
 
 Since this is still in development, an IMEI and a name MUST be supplied, or an error will be raised.
