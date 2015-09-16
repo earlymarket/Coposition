@@ -14,6 +14,6 @@ function addEventListeners() {
 
 function addClickListeners() {
   $(".close").click(function(e){
-    $(e.currentTarget).parent().hide(300);
+    $(e.currentTarget).parent().addClass("flipOutX");
   });
 };

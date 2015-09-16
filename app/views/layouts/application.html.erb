@@ -8,7 +8,7 @@
   <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
 </head>
 <body>
-  <nav class="navbar navbar-inverse">
+  <nav class="navbar navbar-inverse" data-turbolinks-permanent>
     <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
@@ -53,13 +53,13 @@
   </nav>
   <center>
     <% if alert %>
-      <div class="alert alert-dismissible alert-danger">
+      <div class="alert alert-dismissible alert-danger animated flipInX">
         <button type="button" class="close" data-dismiss="alert">×</button>
         <strong>Oh snap!</strong> <%= alert %>
       </div>
     <% end %>
     <% if notice %>
-      <div class="alert alert-dismissible alert-info">
+      <div class="alert alert-dismissible alert-info animated flipInX">
         <button type="button" class="close" data-dismiss="alert">×</button>
           <%= notice %>
       </div>
