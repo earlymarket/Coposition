@@ -5,6 +5,7 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+  <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
 </head>
 <body>
   <nav class="navbar navbar-inverse">
@@ -36,9 +37,11 @@
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><%= signed_in? ? link_to("Sign out", destroy_user_session_path) : link_to("Sign in", new_user_session_path) %>
-            <%= link_to("Create an account", new_user_registration_path) unless signed_in? %>
+          <li><%= signed_in? ? link_to("Sign out", destroy_user_session_path, method: :delete) : link_to("Sign in", new_user_session_path) %>
           </li>
+            <li>
+            <%= link_to("Create an account", new_user_registration_path) unless signed_in? %>
+            </li>
           <li>
             <% if signed_in? %>
               <%= link_to("Connections", redbox_devices_path)%>
@@ -49,8 +52,18 @@
     </div>
   </nav>
   <center>
-    <p class="bg-info"><%= notice %></p>
-    <p class="text-danger bg-danger"><%= alert %></p>
+    <% if alert %>
+      <div class="alert alert-dismissible alert-danger">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>Oh snap!</strong> <%= alert %>
+      </div>
+    <% end %>
+    <% if notice %>
+      <div class="alert alert-dismissible alert-info">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+          <%= notice %>
+      </div>
+    <% end %>
     <%= yield %>
   </center>
 </body>
