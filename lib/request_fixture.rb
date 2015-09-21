@@ -1,6 +1,9 @@
 class RequestFixture
 
-  class << self
+  def initialize(imei="356938035643809")
+    @imei = imei
+  end
+
 
     def w_gps
       # Including GPS data
@@ -9,8 +12,7 @@ class RequestFixture
 
     def no_gps
       # Excluding GPS data
-      "356938035643809|1314.21|490.01|260406|064951.000|"
+      @imei + "|1314.21|490.01|260406|064951.000|"
     end
 
-  end
 end

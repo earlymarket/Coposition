@@ -26,4 +26,11 @@ class Redbox::CheckinsController < ApplicationController
     redirect_to redbox_device_path
   end
 
+  def spoof
+  end
+
+  def create_spoofs
+    params[:number_of_times].to_i.times { Checkin.create_from_string(RequestFixture.w_gps) }
+  end
+
 end

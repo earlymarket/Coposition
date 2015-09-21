@@ -15,7 +15,7 @@ RSpec.describe Checkin, type: :model do
   
   describe "parsing" do
     it "should take a string without a GPS and return an object" do
-      @checkin = Checkin.create_from_string(RequestFixture.no_gps)
+      @checkin = Checkin.create_from_string(RequestFixture.new.no_gps)
       expect(@checkin.to_json).to eq Checkin.last.to_json
       expect(@checkin.imei).to eq "356938035643809"
       expect(@checkin.time).to eq "064951.000"
@@ -25,7 +25,7 @@ RSpec.describe Checkin, type: :model do
     end
 
     it "should add_device if asked to do so" do
-      @checkin = Checkin.create_from_string(RequestFixture.no_gps, add_device: true)
+      @checkin = Checkin.create_from_string(RequestFixture.new.no_gps, add_device: true)
       expect(@checkin.to_json).to eq Checkin.last.to_json
       expect(@checkin.imei).to eq "356938035643809"
       expect(@checkin.time).to eq "064951.000"
@@ -37,7 +37,7 @@ RSpec.describe Checkin, type: :model do
 
 
     it "should take a string with a GPS and return an object" do
-      @checkin = Checkin.create_from_string(RequestFixture.w_gps)
+      @checkin = Checkin.create_from_string(RequestFixture.new.w_gps)
       expect(@checkin.to_json).to eq Checkin.last.to_json
       expect(@checkin.status).to eq "A"
       expect(@checkin.imei).to eq "356938035643809"
@@ -45,7 +45,7 @@ RSpec.describe Checkin, type: :model do
 
 
     it "should return a new object without creating it, when asked" do
-      @checkin = Checkin.new_from_string(RequestFixture.w_gps)
+      @checkin = Checkin.new_from_string(RequestFixture.new.w_gps)
       expect(@checkin.id).to be nil
       expect(@checkin.status).to eq "A"
       expect(@checkin.imei).to eq "356938035643809"
