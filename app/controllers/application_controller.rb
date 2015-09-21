@@ -24,5 +24,3 @@ class ApplicationController < ActionController::Base
       item.send(actor) == send("current_#{actor}")
     end
 end
-
-  

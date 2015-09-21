@@ -1,4 +1,7 @@
 <h1><%= @device.name %></h1>
+<br>
+<%= link_to("Delete history", redbox_checkin_path, { method: :delete, class: "btn btn-danger btn-lg"  })%>
+<br>
 <table class="table table-striped table-hover">
   <tr>
     <% @device.checkins.column_names.each do |key| %>

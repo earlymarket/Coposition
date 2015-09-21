@@ -21,4 +21,9 @@ class Redbox::CheckinsController < ApplicationController
     render text: "ok"
   end
 
+  def destroy
+    Checkin.where(device: params[:id]).destroy_all
+    redirect_to redbox_device_path
+  end
+
 end
