@@ -7,7 +7,7 @@ class Redbox::DevicesController < ApplicationController
   end
 
   def show
-    @device = Device.find(params[:id])
+    @device = Device.find(params[:id]) if user_owns_resource?
   end
 
   def new
@@ -34,8 +34,20 @@ class Redbox::DevicesController < ApplicationController
     end
   end
 
+  def edit
+    @device = Device.find(params[:id]) if user_owns_resource?
+  end
+
   private
   def allowed_params
     params.require(:device).permit(:imei,:name)
   end
+
+  def user_owns_resource?
+    if params[:id]
+      device = Device.find(params[:id])
+      device.user == current_user if device
+    end
+  end
+
 end
