@@ -35,6 +35,7 @@ class Redbox::DevicesController < ApplicationController
   end
 
   def edit
+    binding.pry
     @device = Device.find(params[:id]) if user_owns_device?
   end
 
