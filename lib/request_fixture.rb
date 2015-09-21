@@ -1,6 +1,6 @@
 class RequestFixture
 
-  def initialize(imei)
+  def initialize(imei="356938035653809")
     @imei = imei
   end
 
