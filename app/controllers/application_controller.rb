@@ -5,8 +5,8 @@ class ApplicationController < ActionController::Base
 
   def method_missing(method_sym, *arguments, &block)
     method_string = method_sym.to_s
-    if params[:id] && method_string =~ /_owns_[\w]+\?$/
-      owns_resource? method_string.split("_owns_"), params[:id]
+    if params[:id] && /(?<actor>[\w]+)_owns_(?<resource>[\w]+)\?$/ =~ method_string
+      owns_resource? actor, resource, params[:id]
     else
       super
     end
@@ -14,16 +14,15 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def owns_resource?(array, id)
-    # Called from method_missing
-    # Usage: user_owns_device?
-    # Checks whether resource belongs to actor
+    def owns_resource?(actor, resource, id)
+      # Called from method_missing
+      # Usage: user_owns_device?
+      # Checks whether resource belongs to actor
 
-    @actor = array.first
-    @resource = array.second.chomp("?").titleize.constantize
-    item = @resource.find(id)
-    item.send(@actor) == send("current_#{@actor}")
-  end
+      resource = resource.titleize.constantize
+      item = resource.find(id)
+      item.send(actor) == send("current_#{actor}")
+    end
 end
 
   
