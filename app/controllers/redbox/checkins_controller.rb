@@ -30,7 +30,12 @@ class Redbox::CheckinsController < ApplicationController
   end
 
   def create_spoofs
-    params[:number_of_times].to_i.times { Checkin.create_from_string(RequestFixture.w_gps) }
+    Checkin.transaction do
+      params[:number_of_times].to_i.times do
+        Checkin.create_from_string(RequestFixture.new(params[:imei]).w_gps, add_device: true)
+      end
+    end
+    redirect_to redbox_devices_path
   end
 
 end
