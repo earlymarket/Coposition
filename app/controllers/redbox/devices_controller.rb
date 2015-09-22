@@ -36,6 +36,11 @@ class Redbox::DevicesController < ApplicationController
 
   def edit
     @device = Device.find(params[:id]) if user_owns_device?
+    redirect_to redbox_devices_path
+  end
+
+  def destroy
+    Device.find(params[:id]).destroy if user_owns_device?
   end
 
 

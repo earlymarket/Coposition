@@ -12,7 +12,7 @@ Rails.application.routes.draw do
         post :create_spoofs
       end
     end
-    resources :devices, only: [:index, :show, :new, :edit, :create]
+    resources :devices, only: [:index, :show, :new, :edit, :create, :destroy]
   end
 
 end
