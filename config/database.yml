@@ -80,7 +80,7 @@ test: &test
 #
 production:
   <<: *default
-  database:copositiondevelopment
+  database: copositiondevelopment
   host: copositiondevelopment.cjixg0kvqibb.eu-west-1.rds.amazonaws.com
   port: 5432
   username: earlymarket
