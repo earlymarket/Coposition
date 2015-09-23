@@ -1,10 +1,14 @@
 Rails.application.routes.draw do
 
-  devise_for :developers
-  devise_for :users
   root to: "welcome#index"
 
+  
+  devise_for :users
+  devise_for :developers
+
   resources :api, only: [:index]
+
+  resource :console, only: [:show]
 
   namespace :redbox do
     resources :checkins, only: [:index, :show, :create, :destroy] do
