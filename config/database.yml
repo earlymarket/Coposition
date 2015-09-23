@@ -80,7 +80,9 @@ test: &test
 #
 production:
   <<: *default
-  database: copositiondevelopment.cjixg0kvqibb.eu-west-1.rds.amazonaws.com:5432
+  database:copositiondevelopment
+  host: copositiondevelopment.cjixg0kvqibb.eu-west-1.rds.amazonaws.com
+  port: 5432
   username: earlymarket
   password: <%= ENV['REDBOX_DATABASE_PASSWORD'] %>
 
