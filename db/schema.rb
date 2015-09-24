@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150923105510) do
+ActiveRecord::Schema.define(version: 20150924140637) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,6 +51,14 @@ ActiveRecord::Schema.define(version: 20150923105510) do
 
   add_index "developers", ["email"], name: "index_developers_on_email", unique: true, using: :btree
   add_index "developers", ["reset_password_token"], name: "index_developers_on_reset_password_token", unique: true, using: :btree
+
+  create_table "developers_users", id: false, force: :cascade do |t|
+    t.integer "developer_id", null: false
+    t.integer "user_id",      null: false
+  end
+
+  add_index "developers_users", ["developer_id", "user_id"], name: "index_developers_users_on_developer_id_and_user_id", unique: true, using: :btree
+  add_index "developers_users", ["user_id", "developer_id"], name: "index_developers_users_on_user_id_and_developer_id", using: :btree
 
   create_table "devices", force: :cascade do |t|
     t.string  "imei"
