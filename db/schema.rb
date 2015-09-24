@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20150924144347) do
     t.datetime "approval_date"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
-    t.boolean  "approved",      null: false
+    t.boolean  "approved"
   end
 
   add_index "approvals", ["developer_id"], name: "index_approvals_on_developer_id", using: :btree
