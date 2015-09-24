@@ -80,12 +80,9 @@ test: &test
 #
 production:
   <<: *default
-  encoding: utf8
-  database: aa1bqi2yag7qq18
-  username: earlymarket
-  host: aa1bqi2yag7qq18.cjixg0kvqibb.eu-west-1.rds.amazonaws.com
-  port: 5432
-  password: <%= ENV['REDBOX_DATABASE_PASSWORD'] %>
+  database: redbox_production
+  username: rails
+  password: <%= ENV['APP_DATABASE_PASSWORD'] %>
 
 cucumber:
   <<: *test
