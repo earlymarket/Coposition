@@ -10,6 +10,10 @@ Rails.application.routes.draw do
 
   resource :console, only: [:show]
 
+  namespace :users do
+    resources :approvals, only: [:index]
+  end
+
   namespace :redbox do
     resources :checkins, only: [:index, :show, :create, :destroy] do
       collection do

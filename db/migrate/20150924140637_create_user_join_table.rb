@@ -1,8 +1,10 @@
 class CreateUserJoinTable < ActiveRecord::Migration
   def change
-    create_join_table :developers, :users do |t|
-      t.index [:user_id, :developer_id]
-      t.index [:developer_id, :user_id], unique: true
+    create_table :approvals do |t|
+      t.belongs_to :developer, index: true
+      t.belongs_to :user, index: true
+      t.datetime :approval_date
+      t.timestamps null: false
     end
   end
 end

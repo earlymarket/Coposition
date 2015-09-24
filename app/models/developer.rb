@@ -5,6 +5,9 @@ class Developer < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
 
+  has_many :developers_users
+
+
   before_create do |dev|
     dev.api_key = generate_api_key
   end
