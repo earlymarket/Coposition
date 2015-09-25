@@ -5,8 +5,8 @@ class Developer < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
 
-  has_many :developers_users
-
+  has_many :approvals
+  has_many :users, through: :approvals
 
   before_create do |dev|
     dev.api_key = generate_api_key
@@ -18,4 +18,19 @@ class Developer < ActiveRecord::Base
       break token unless Developer.exists?(api_key: token)
     end
   end
+
+
+  def pending_approvals
+    approvals.where(approved: false)
+  end
+
+  def approved_users
+    approvals.where(approved: true)
+  end
+
+  def request_approval_from(user)
+    approvals << Approval.create(user: user)
+  end
+
+
 end
