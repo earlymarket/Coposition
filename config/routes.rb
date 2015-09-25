@@ -8,13 +8,14 @@ Rails.application.routes.draw do
 
   resources :api, only: [:index]
 
-  resource :console, only: [:show]
 
   namespace :users do
+    resource :dashboard, only: [:show]
     resources :approvals, only: [:index]
   end
 
   namespace :developers do
+    resource :console, only: [:show]
     resources :approvals, only: [:index, :new, :create]
   end
 
