@@ -14,4 +14,10 @@ class User < ActiveRecord::Base
     approvals.where(approved: true)
   end
 
+  def approve_developer(dev)
+    app = approvals.where(approved: false, developer: dev).first
+    app.approved = true
+    app.save
+  end
+
 end
