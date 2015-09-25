@@ -22,7 +22,7 @@
 
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
         <ul class="nav navbar-nav">
-          <li><a href="<%= signed_in? ? console_path : new_developer_session_path %>">Developers</a></li>
+          <li><a href="<%= signed_in? ? developers_console_path : new_developer_session_path %>">Developers</a></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
@@ -44,7 +44,7 @@
             </li>
           <li>
             <% if user_signed_in? %>
-              <%= link_to("Connections", redbox_devices_path)%>
+              <%= link_to("Dashboard", users_dashboard_path)%>
             <% end %>
           </li>
         </ul>
@@ -64,7 +64,18 @@
           <%= notice %>
       </div>
     <% end %>
-    <%= yield %>
+    <% if flash[:notification] %>
+      <% flash[:notification].each do |n|%>
+        <div class="alert alert-dismissible alert-info animated tada">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <%= link_to(n[:notification][:msg].html_safe, eval(n[:notification][:link_path])) %>
+        </div>
+      <% end %>
+      <% flash.discard(:notification) %>
+    <% end %>
+    <div id="container" class="animated-fast slideInRight">
+      <%= yield %>
+    </div>
   </center>
 </body>
 </html>
