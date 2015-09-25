@@ -1,0 +1,11 @@
+<% if @approvals %>
+
+  You have <%= @approvals.length %> pending.
+
+<% else %>
+
+  You've got no approvals pending.
+
+<% end %>
+<br>
+<%= link_to("New approval", new_developers_approval_path, class: "btn btn-default") %>

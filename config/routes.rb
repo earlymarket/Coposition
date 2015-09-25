@@ -14,6 +14,10 @@ Rails.application.routes.draw do
     resources :approvals, only: [:index]
   end
 
+  namespace :developers do
+    resources :approvals, only: [:index, :new, :create]
+  end
+
   namespace :redbox do
     resources :checkins, only: [:index, :show, :create, :destroy] do
       collection do
