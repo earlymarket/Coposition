@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable #:omniauthable
 
+  validates :username, uniqueness: true
+
   has_many :devices
   has_many :approvals
   has_many :developers, through: :approvals

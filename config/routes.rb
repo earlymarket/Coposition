@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   root to: "welcome#index"
 
   
-  devise_for :users
+  devise_for :users, controllers:
+   { registrations: 'users/devise/registrations' }
   devise_for :developers, controllers:
    { registrations: 'developers/devise/registrations' }
 
