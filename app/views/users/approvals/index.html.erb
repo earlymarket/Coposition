@@ -1,6 +1,6 @@
 <h1>Approvals</h1>
 <%= render partial: "pending_approvals" %>
-<h2 class="m-m">Approved services</h2>
+<h3 class="m-m">Approved services</h3>
 <% @approved_devs.each do |app| %>
   <a href="#" class="list-group-item">
     <h4 class="list-group-item-heading"><%= app.developer.company_name %></h4>
