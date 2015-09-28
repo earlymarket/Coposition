@@ -2,5 +2,5 @@
 <%= render partial: "pending_approvals" %>
 <h2>Approved services</h2>
 <% @approved_devs.each do |app| %>
-  <%= app.developer.email %>
+  <%= app.developer.company_name %>
 <% end %>
