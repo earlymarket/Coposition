@@ -1,10 +1,13 @@
 var utility = {
-  enterPage: function(){
-    console.log("enter");
-    $("#container").removeClass("slideOutLeft").addClass("slideInRight")
-  },
-  exitPage: function(){
-    console.log("exit");
-    $("#container").removeClass("slideInRight").addClass("slideOutLeft")
+  animations: {
+    enterPage: function(){
+      $("#container").removeClass("slideOutLeft").addClass("slideInRight")
+    },
+    exitPage: function(){
+      $("#container").removeClass("slideInRight").addClass("slideOutLeft")
+    },
+    removeEl: function($el) {
+      $el.addClass("flipOutX").slideUp(1000)
+    }
   }
 }

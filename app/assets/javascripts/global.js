@@ -3,12 +3,12 @@ $(document).on('page:change', function(){
 });
 
 $(document).on('page:fetch', function() {
-  utility.exitPage();
+  utility.animations.exitPage();
 });
 
 
 function setup() {
-  utility.enterPage();
+  utility.animations.enterPage();
   addEventListeners();
 };
 
@@ -20,6 +20,6 @@ function addEventListeners() {
 
 function addClickListeners() {
   $(".close").click(function(e){
-    $(e.currentTarget).parent().addClass("flipOutX").slideUp(1000);
+    utility.animations.removeEl($(e.currentTarget).parent());
   });
 };
