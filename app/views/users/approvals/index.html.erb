@@ -1,6 +1,6 @@
 <h1>Approvals</h1>
 <%= render partial: "pending_approvals" %>
 <h2>Approved services</h2>
-<% @approvals.each do |app| %>
+<% @approved_devs.each do |app| %>
   <%= app.developer.email %>
 <% end %>

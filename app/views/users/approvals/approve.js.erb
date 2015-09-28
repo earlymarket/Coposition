@@ -1,3 +1,4 @@
 var pen = $("#pending_count");
 pen.html(parseInt(pen.html()) - 1);
+$("#<%= "app_#{@approval.id}" %>").addClass("bg-approved-<%= @approval.approved? %>");
 utility.animations.removeEl($("#<%= "app_#{@approval.id}" %>"));

@@ -3,7 +3,7 @@ class Users::ApprovalsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @approvals = current_user.approvals
+    @approved_devs = current_user.approved_developers
     @pending_approvals = current_user.pending_approvals
   end
 
@@ -13,8 +13,11 @@ class Users::ApprovalsController < ApplicationController
     @approval.approve!
   end
 
-  def deny
-    binding.pry
+  def reject
+    @approval = Approval.where(id: params[:id], 
+      user: current_user).first
+    @approval.reject!
+    render "users/approvals/approve"
   end
 
 end
