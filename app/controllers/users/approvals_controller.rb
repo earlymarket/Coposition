@@ -3,6 +3,7 @@ class Users::ApprovalsController < ApplicationController
   before_action :authenticate_user!
 
   def index
+    @approvals = current_user.approvals
     @pending_approvals = current_user.pending_approvals
   end
 

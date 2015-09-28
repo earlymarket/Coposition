@@ -1,19 +1,6 @@
-<% if @pending_approvals %>
-
-  You have
-  <span id="pending_count"><%= @pending_approvals.length %></span>
-  pending.
-  <br>
-  <% @pending_approvals.each do |app| %>
-    <div id="<%= "app_#{app.id}" %>"class="m-m">
-      <%= app.developer.email %>
-      <%= button_to "Accept", approve_users_approval_path(app.id), remote: true %>
-      <br>
-    </div>
-  <% end %>
-
-<% else %>
-
-  You've got no approvals pending.
-
+<%= render partial: "pending_approvals" %>
+<hr>
+<h2>Approved services</h2>
+<% @approvals.each do |app| %>
+  <%= app.developer.email %>
 <% end %>
