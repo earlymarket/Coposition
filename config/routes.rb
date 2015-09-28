@@ -11,7 +11,12 @@ Rails.application.routes.draw do
 
   namespace :users do
     resource :dashboard, only: [:show]
-    resources :approvals, only: [:index]
+    resources :approvals, only: [:index] do
+      member do
+        get "approve"
+        get "reject"
+      end
+    end
   end
 
   namespace :developers do
