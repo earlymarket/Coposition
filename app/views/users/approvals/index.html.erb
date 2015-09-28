@@ -1,12 +1,13 @@
-<% if @approvals %>
+<% if @pending_approvals %>
 
-  You have <%= @approvals.length %> pending.
+  You have
+  <span id="pending_count"><%= @pending_approvals.length %></span>
+  pending.
   <br>
-  <% @approvals.each do |app| %>
-    <div class="m-m">
+  <% @pending_approvals.each do |app| %>
+    <div id="<%= "app_#{app.id}" %>"class="m-m">
       <%= app.developer.email %>
-      <a href="<%= approve_users_approval_path(app.id) %>" class="btn btn-success">Approve</a>
-      <a href="<%= reject_users_approval_path(app.id) %>" class="btn btn-danger">Reject</a>
+      <%= button_to "Accept", approve_users_approval_path(app.id), remote: true %>
       <br>
     </div>
   <% end %>
