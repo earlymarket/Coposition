@@ -13,8 +13,8 @@ Rails.application.routes.draw do
     resource :dashboard, only: [:show]
     resources :approvals, only: [:index] do
       member do
-        get "approve"
-        get "reject"
+        post "approve"
+        post "reject"
       end
     end
   end
