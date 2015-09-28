@@ -4,7 +4,8 @@ Rails.application.routes.draw do
 
   
   devise_for :users
-  devise_for :developers, :controllers => { registrations: 'developer/registrations' }
+  devise_for :developers, controllers:
+   { registrations: 'developers/devise/registrations' }
 
   resources :api, only: [:index]
 

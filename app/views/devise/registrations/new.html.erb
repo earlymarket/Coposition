@@ -10,9 +10,16 @@
     </div>
   <% end %>
 
+  <% if resource.respond_to? :username %>
+    <div class="field">
+      <%= f.label :username %><br />
+      <%= f.text_field :username, autofocus: true %>
+    </div>
+  <% end %>
+
   <div class="field">
     <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
+    <%= f.email_field :email %>
   </div>
 
   <div class="field">
