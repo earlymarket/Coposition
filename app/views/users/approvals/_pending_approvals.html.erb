@@ -5,8 +5,8 @@
   pending.
   <br>
   <% @pending_approvals.each do |app| %>
-    <div id="<%= "app_#{app.id}" %>"class="panel panel-default m-m">
-      <div class="panel-heading"><%= app.developer.company_name %></div>
+    <div id="<%= "app_#{app.id}" %>"class="panel panel-default m-m third-width animated flipInY">
+      <div class="panel-heading"><h4><%= app.developer.company_name %></h4></div>
       <div class="panel-body input-group">
         <%= button_to "Approve", approve_users_approval_path(app.id), remote: true, class: "btn btn-success m-m" %>
         <%= button_to "Reject", reject_users_approval_path(app.id), remote: true, class: "btn btn-danger" %>

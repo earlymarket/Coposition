@@ -37,7 +37,7 @@
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><%= signed_in? ? link_to("Sign out", destroy_user_session_path, method: :delete) : link_to("Sign in", new_user_session_path) %>
+          <li><%= user_signed_in? ? link_to("Sign out", destroy_user_session_path, method: :delete) : link_to("Sign in", new_user_session_path) %>
           </li>
             <li>
             <%= link_to("Create an account", new_user_registration_path) unless signed_in? %>
