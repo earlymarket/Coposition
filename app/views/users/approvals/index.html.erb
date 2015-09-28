@@ -1,6 +1,15 @@
 <% if @approvals %>
 
   You have <%= @approvals.length %> pending.
+  <br>
+  <% @approvals.each do |app| %>
+    <div class="m-m">
+      <%= app.developer.email %>
+      <a href="<%= approve_users_approval_path(app.id) %>" class="btn btn-success">Approve</a>
+      <a href="<%= reject_users_approval_path(app.id) %>" class="btn btn-danger">Reject</a>
+      <br>
+    </div>
+  <% end %>
 
 <% else %>
 
