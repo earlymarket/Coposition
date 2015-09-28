@@ -8,4 +8,8 @@ class Approval < ActiveRecord::Base
   belongs_to :user
   belongs_to :developer
 
+  def approve!
+    update(approved: true)
+  end
+
 end
