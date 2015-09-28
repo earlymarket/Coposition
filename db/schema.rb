@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(version: 20150928153136) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "api_key"
-    t.string   "company_name"
+    t.string   "company_name",                        null: false
   end
 
   add_index "developers", ["email"], name: "index_developers_on_email", unique: true, using: :btree
