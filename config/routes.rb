@@ -3,13 +3,28 @@ Rails.application.routes.draw do
   root to: "welcome#index"
 
   
+  # Devise
+
   devise_for :users, controllers:
    { registrations: 'users/devise/registrations' }
   devise_for :developers, controllers:
    { registrations: 'developers/devise/registrations' }
 
+
+
+  # API
+
   resources :api, only: [:index]
 
+  namespace :api, path: '', constraints: {subdomain: 'api'}, defaults: {format: 'json'} do
+    namespace :v1 do
+      resources :users
+    end
+  end
+
+
+
+  # Users
 
   resources :users, only: [:show], module: :users do
     resource :dashboard, only: [:show]
@@ -21,10 +36,20 @@ Rails.application.routes.draw do
     end
   end
 
+
+
+  # Devs
+
   namespace :developers do
     resource :console, only: [:show]
     resources :approvals, only: [:index, :new, :create]
   end
+
+
+
+
+
+  # Redbox
 
   namespace :redbox do
     resources :checkins, only: [:index, :show, :create, :destroy] do
