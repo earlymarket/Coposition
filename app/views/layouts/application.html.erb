@@ -42,7 +42,7 @@
             </li>
           <li>
             <% if user_signed_in? %>
-              <%= link_to("Dashboard", users_dashboard_path)%>
+              <%= link_to("Dashboard", user_dashboard_path(current_user))%>
             <% end %>
           </li>
         </ul>

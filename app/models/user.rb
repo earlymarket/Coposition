@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   extend FriendlyId
-  friendly_id :username, use: :slugged
+  friendly_id :username, use: [:slugged, :finders]
 
   include ApprovalMethods
 
@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
       x << {
         notification: {
             msg: "You have #{pending_approvals.count} pending approvals",
-            link_path: "users_approvals_path"
+            link_path: "user_approvals_path"
           }
         }
     end

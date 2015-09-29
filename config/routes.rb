@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   resources :api, only: [:index]
 
 
-  namespace :users do
+  resources :users, only: [:show], module: :users do
     resource :dashboard, only: [:show]
     resources :approvals, only: [:index] do
       member do
