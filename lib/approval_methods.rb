@@ -22,4 +22,13 @@ module ApprovalMethods
     app.save
   end
 
+  def approved_developer?(dev)
+    app = approvals.where(developer: dev).first
+    if app
+      app.approved?
+    else
+      false
+    end
+  end
+
 end
