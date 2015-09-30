@@ -11,4 +11,9 @@ class Api::ApiController < ActionController::Base
       return false
     end
   end
+
+  def check_user_approved_developer
+    @user = User.find(params[:user_id])
+    @user.approved_developer?(@dev)
+  end
 end

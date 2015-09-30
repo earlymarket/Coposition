@@ -18,7 +18,14 @@ Rails.application.routes.draw do
 
   namespace :api, path: '', constraints: {subdomain: 'api'}, defaults: {format: 'json'} do
     namespace :v1 do
-      resources :users
+      resources :users do
+        resources :devices, module: :users do
+          collection do
+            get :run
+            get :stop
+          end
+        end
+      end
     end
   end
 
