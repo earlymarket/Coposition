@@ -1,7 +1,9 @@
-<h1 class="tlt" data-in-effect="bounceIn">CoPosition</h1>
-<%= signed_in? ? link_to("View API docs", api_index_path, class: "btn btn-default") : link_to("Sign in", new_user_session_path, class: "btn btn-default") %>
-<%= link_to("Create an account", new_user_registration_path, class: "btn btn-default") unless signed_in? %>
-
-<% if user_signed_in? %>
-  <h2><%= link_to("Connect", redbox_devices_path, class: "btn btn-primary btn-lg")%></h2>
-<% end %>
+<h1 class="tlt m-m" data-in-effect="bounceIn">CoPosition</h1>
+<div class="tlt third-width m-m" data-in-effect="rollIn">
+  <% Faker::Lorem.paragraphs(3, true).each do |par| %>
+    <p>
+      <%= par %>
+    </p>
+    <br>
+  <% end %>
+</div>
