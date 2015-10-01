@@ -39,13 +39,25 @@
           <li>
             <%= link_to("Sign out", destroy_user_session_path, method: :delete)  %>
           </li>
+          <li>
+            <%= link_to("Dashboard", user_dashboard_path(current_user)) %>
+          </li>
         <% else %>
-          <li>
-            <%= user_signed_in? ? link_to("Sign out", destroy_user_session_path, method: :delete) : link_to("User sign in", new_user_session_path) %>
-          </li>
-          <li>
+          <% if user_signed_in? %>
+            <li>
+              <%= link_to("Sign out", destroy_user_session_path, method: :delete) %>
+            </li>
+            <li>
+              <%= link_to("Dashboard", user_dashboard_path(current_user)) %>
+            </li>
+            <% else %>
+            <li>
+              <%= link_to("Sign in", new_user_session_path) %>
+            </li>
+          <% end %>
+          <!-- <li>
             <%= developer_signed_in? ? link_to("Sign out", destroy_developer_session_path, method: :delete) : link_to("Developer sign in", new_developer_session_path) %>
-          </li>
+          </li> -->
         <% end %>
         </ul>
       </div>
