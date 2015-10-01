@@ -1,19 +1,12 @@
-Feature: User
+Feature: User  
 
-  Scenario: User login
-    Given I am on the homepage
-      And I click "Sign in"
-      And I click "Sign up"
-    When I fill in the form with my "user" details
-      And I click "Sign up"
-    Then I should see "You have signed up successfully."
+  Background: A user gets sent an approval request
+    Given I am signed in as a user
+      And A developer sends me an approval request
 
-  # Scenario: Developer asks user for approval
-  #   Given I am signed in as developer
-  #     And I click "Developers"
-  #     And I click "approvals"
-  #   Then I should see "0 pending"
-  #   When I click "New approval"
-  #     And I fill in an existing "user"'s email in the "approval_user" field
-  #     And I click "Request"
-  #   Then I should see "Successfully sent"
+    @javascript
+    Scenario: User accepts an approval
+      Given I click "Dashboard"
+        And I click "You have 1 pending approvals"
+      When I click "Approve"
+        Then I should have an approval
