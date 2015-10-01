@@ -35,16 +35,18 @@
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><%= user_signed_in? ? link_to("Sign out", destroy_user_session_path, method: :delete) : link_to("Sign in", new_user_session_path) %>
-          </li>
-            <li>
-            <%= link_to("Create an account", new_user_registration_path) unless signed_in? %>
-            </li>
+        <% if  user_signed_in? && developer_signed_in? %>
           <li>
-            <% if user_signed_in? %>
-              <%= link_to("Dashboard", user_dashboard_path(current_user))%>
-            <% end %>
+            <%= link_to("Sign out", destroy_user_session_path, method: :delete)  %>
           </li>
+        <% else %>
+          <li>
+            <%= user_signed_in? ? link_to("Sign out", destroy_user_session_path, method: :delete) : link_to("User sign in", new_user_session_path) %>
+          </li>
+          <li>
+            <%= developer_signed_in? ? link_to("Sign out", destroy_developer_session_path, method: :delete) : link_to("Developer sign in", new_developer_session_path) %>
+          </li>
+        <% end %>
         </ul>
       </div>
     </div>
