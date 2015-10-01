@@ -1,0 +1,11 @@
+Given(/^I am on the homepage$/) do
+  visit "/"
+end
+
+Given(/^I click "(.*?)"$/) do |target|
+  click_on target
+end
+
+Then(/^I should see "(.*?)"$/) do |text|
+  expect(page.has_content? text).to be true
+end
