@@ -17,3 +17,4 @@ Feature: Developer
       And I fill in an existing "user"'s email in the "approval_user" field
       And I click "Request"
     Then I should see "Successfully sent"
+      And I click "Sign out"
