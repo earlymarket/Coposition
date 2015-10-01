@@ -1,3 +1,14 @@
+Given(/^I am signed in as developer$/) do
+  steps %Q{
+    Given I am on the homepage
+      And I click "Developers"
+      And I click "Sign up"
+    When I fill in the form with my "developer" details
+      And I click "Sign up"
+    Then I should see "You have signed up successfully."
+  }
+end
+
 When(/^I fill in the form with my "(.*?)" details$/) do |actor|
   me = FactoryGirl::build actor.to_sym
   if actor == "developer"
@@ -9,3 +20,9 @@ When(/^I fill in the form with my "(.*?)" details$/) do |actor|
   fill_in "Password", with: me.password
   fill_in "Password confirmation", with: me.password_confirmation
 end
+
+When(/^I fill in an existing "(.*?)"'s email in the "(.*?)" field$/) do |actor, field|
+  actor = FactoryGirl::create actor.to_sym
+  fill_in field, with: actor.email
+end
+

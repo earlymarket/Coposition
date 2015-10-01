@@ -8,3 +8,12 @@ Feature: Developer
       And I click "Sign up"
     Then I should see "You have signed up successfully."
 
+  Scenario: Developer asks user for approval
+    Given I am signed in as developer
+      And I click "Developers"
+      And I click "approvals"
+    Then I should see "0 pending"
+    When I click "New approval"
+      And I fill in an existing "user"'s email in the "approval_user" field
+      And I click "Request"
+    Then I should see "Successfully sent"
