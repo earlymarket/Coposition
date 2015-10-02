@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::PosReportController, type: :controller do
+RSpec.describe Api::V1::CheckinsController, type: :controller do
 
 	describe "POST" do
 
