@@ -20,10 +20,10 @@ RSpec.describe Redbox::CheckinsController, type: :controller do
     end
 
     it "should GET a range" do
-      @chk1 = Checkin.create_from_string(RequestFixture.new.w_gps)
-      @chk2 = Checkin.create_from_string(RequestFixture.new.w_gps)
-      @chk3 = Checkin.create_from_string(RequestFixture.new.w_gps)
-      @chk4 = Checkin.create_from_string(RequestFixture.new.w_gps)
+      @chk1 = RedboxCheckin.create_from_string(RequestFixture.new.w_gps)
+      @chk2 = RedboxCheckin.create_from_string(RequestFixture.new.w_gps)
+      @chk3 = RedboxCheckin.create_from_string(RequestFixture.new.w_gps)
+      @chk4 = RedboxCheckin.create_from_string(RequestFixture.new.w_gps)
       post :show, {id: @chk1.id, range: 3}
       expect(response.ok?).to be true
 

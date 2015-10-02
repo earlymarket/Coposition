@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :checkin do
+  factory :redbox_checkin do
     status "A"
     lat { Faker::Address.latitude }
     n_s { ["N", "S"].shuffle.first }
