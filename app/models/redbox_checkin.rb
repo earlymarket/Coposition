@@ -8,8 +8,8 @@ class RedboxCheckin < Checkin
 
       new_checkin = send(prefix, hash)
       if options[:add_device]
-        device = Device.where(imei: hash[:imei]).first
-        device = Device.create(imei: hash[:imei]) unless device
+        device = Device.where(uuid: hash[:uuid]).first
+        device = Device.create(uuid: hash[:uuid]) unless device
         device.checkins << new_checkin
       end
       new_checkin
@@ -17,7 +17,7 @@ class RedboxCheckin < Checkin
   end
 
   def self.string_order
-    [:imei,:enginespeed,:rotorspeed,:date,:time,:course,:altitude,
+    [:uuid,:enginespeed,:rotorspeed,:date,:time,:course,:altitude,
       :gspeed,:e_w,:lng,:n_s,:lat,:status]
   end
 

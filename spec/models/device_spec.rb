@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Device, type: :model do
 
   before do
-    @device = Device.create(imei: 1234)
+    @device = Device.create(uuid: 1234)
   end
 
   describe "realtionships" do

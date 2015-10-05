@@ -7,8 +7,8 @@ RSpec.describe RedboxCheckin, type: :model do
 
     it "should have a device" do
       checkin = FactoryGirl::create(:redbox_checkin)
-      checkin.device = Device.create(imei: 1234)
-      expect(checkin.device.imei).to eq "1234"
+      checkin.device = Device.create(uuid: 1234)
+      expect(checkin.device.uuid).to eq "1234"
     end
 
   end
@@ -17,7 +17,7 @@ RSpec.describe RedboxCheckin, type: :model do
     it "should take a string without a GPS and return an object" do
       @checkin = RedboxCheckin.create_from_string(RequestFixture.new.no_gps)
       expect(@checkin.to_json).to eq RedboxCheckin.last.to_json
-      expect(@checkin.imei).to eq "356938035643809"
+      expect(@checkin.uuid).to eq "356938035643809"
       expect(@checkin.time).to eq "064951.000"
       expect(@checkin.date).to eq "260406"
       expect(@checkin.rotorspeed).to be 490.01
@@ -27,7 +27,7 @@ RSpec.describe RedboxCheckin, type: :model do
     it "should add_device if asked to do so" do
       @checkin = RedboxCheckin.create_from_string(RequestFixture.new.no_gps, add_device: true)
       expect(@checkin.to_json).to eq RedboxCheckin.last.to_json
-      expect(@checkin.imei).to eq "356938035643809"
+      expect(@checkin.uuid).to eq "356938035643809"
       expect(@checkin.time).to eq "064951.000"
       expect(@checkin.date).to eq "260406"
       expect(@checkin.rotorspeed).to be 490.01
@@ -40,7 +40,7 @@ RSpec.describe RedboxCheckin, type: :model do
       @checkin = RedboxCheckin.create_from_string(RequestFixture.new.w_gps)
       expect(@checkin.to_json).to eq RedboxCheckin.last.to_json
       expect(@checkin.status).to eq "A"
-      expect(@checkin.imei).to eq "356938035643809"
+      expect(@checkin.uuid).to eq "356938035643809"
     end
 
 
@@ -48,7 +48,7 @@ RSpec.describe RedboxCheckin, type: :model do
       @checkin = RedboxCheckin.new_from_string(RequestFixture.new.w_gps)
       expect(@checkin.id).to be nil
       expect(@checkin.status).to eq "A"
-      expect(@checkin.imei).to eq "356938035643809"
+      expect(@checkin.uuid).to eq "356938035643809"
     end
   end
 

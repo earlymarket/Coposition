@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150928155707) do
+ActiveRecord::Schema.define(version: 20151002153102) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 20150928155707) do
     t.string  "date"
     t.float   "rotorspeed"
     t.string  "enginespeed"
-    t.string  "imei"
+    t.string  "uuid"
     t.integer "device_id"
   end
 
@@ -66,12 +66,12 @@ ActiveRecord::Schema.define(version: 20150928155707) do
   add_index "developers", ["reset_password_token"], name: "index_developers_on_reset_password_token", unique: true, using: :btree
 
   create_table "devices", force: :cascade do |t|
-    t.string  "imei"
+    t.string  "uuid"
     t.integer "user_id"
     t.string  "name"
   end
 
-  add_index "devices", ["imei"], name: "index_devices_on_imei", using: :btree
+  add_index "devices", ["uuid"], name: "index_devices_on_uuid", using: :btree
 
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string   "slug",                      null: false

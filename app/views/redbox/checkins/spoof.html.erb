@@ -1,7 +1,7 @@
 <%= form_tag(create_spoofs_redbox_checkins_path , method: "post") do %>
   <%= label_tag(:number_of_times, "Number of times to spoof (please < 1000)") %>
   <%= text_field_tag(:number_of_times) %><br>
-  <%= label_tag(:imei, "Enter IMEI to spoof") %>
-  <%= text_field_tag(:imei) %>
+  <%= label_tag(:uuid, "Enter IMEI to spoof") %>
+  <%= text_field_tag(:uuid) %>
   <%= submit_tag("Spoof") %>
 <% end %>
