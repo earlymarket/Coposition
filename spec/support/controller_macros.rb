@@ -13,4 +13,10 @@ module ControllerMacros
       sign_in user
     end
   end
+
+  def response_to_hash
+    json = JSON(response.body)
+    json = json.symbolize_keys unless json.is_a? Array
+    json
+  end
 end
