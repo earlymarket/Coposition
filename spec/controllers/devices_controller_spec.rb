@@ -12,7 +12,7 @@ RSpec.describe Redbox::DevicesController, type: :controller do
   describe "posting" do
 
     before do
-      @checkin = RedboxCheckin.create_from_string(RequestFixture.new.w_gps, add_device: true)
+      @checkin = RedboxCheckin.create_from_string(RequestFixture.new.w_gps)
     end
 
     it "should POST to with an IMEI" do

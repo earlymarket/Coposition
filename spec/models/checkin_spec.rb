@@ -21,17 +21,17 @@ RSpec.describe RedboxCheckin, type: :model do
       expect(@checkin.time).to eq "064951.000"
       expect(@checkin.date).to eq "260406"
       expect(@checkin.rotorspeed).to be 490.01
-      expect(@checkin.device).to be nil
+      expect(@checkin.uuid).to eq "356938035643809"
     end
 
-    it "should add_device if asked to do so" do
-      @checkin = RedboxCheckin.create_from_string(RequestFixture.new.no_gps, add_device: true)
+    it "should add_device" do
+      @checkin = RedboxCheckin.create_from_string(RequestFixture.new.no_gps)
       expect(@checkin.to_json).to eq RedboxCheckin.last.to_json
       expect(@checkin.uuid).to eq "356938035643809"
       expect(@checkin.time).to eq "064951.000"
       expect(@checkin.date).to eq "260406"
       expect(@checkin.rotorspeed).to be 490.01
-      expect(@checkin.device).to_not be nil
+      expect(@checkin.uuid).to eq "356938035643809"
     end
 
 
