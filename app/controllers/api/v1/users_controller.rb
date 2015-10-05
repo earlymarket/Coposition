@@ -4,8 +4,7 @@ class Api::V1::UsersController < Api::ApiController
   before_action :authenticate
 
   def index
-    @users = User.all.select(:id, :username)
-    respond_with @users
+    respond_with User.all.select(:id, :username)
   end
 
   def show
