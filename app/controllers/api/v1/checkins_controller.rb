@@ -2,7 +2,7 @@ class Api::V1::CheckinsController < Api::ApiController
   respond_to :json
 
   def create
-    Checkin.create allowed_params
+    render json: Checkin.create(allowed_params)
   end
 
   private
