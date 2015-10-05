@@ -4,8 +4,9 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 	include ControllerMacros
 
 	describe "POST" do
-		it "should POST a checkin without a pre-existing device" do
+		it "should POST a checkin without a pre-existing device, and create one" do
 			checkin_count = Checkin.count
+			device_count = Device.count
 			@demo = {
 				checkin: {
 						uuid: Faker::Number.number(12),
@@ -18,6 +19,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 			
 			expect(res[:uuid]).to eq @demo[:checkin][:uuid]
 			expect(Checkin.count).to be (checkin_count + 1)
+			expect(Device.count).to be (device_count + 1)
 		end
 
 	end
