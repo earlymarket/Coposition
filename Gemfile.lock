@@ -252,6 +252,7 @@ DEPENDENCIES
   pry
   rails (= 4.2.3)
   rename
+  responders (~> 2.0)
   rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)

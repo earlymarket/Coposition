@@ -19,6 +19,8 @@ gem 'devise'
 
 gem 'friendly_id', '~> 5.1.0'
 
+gem 'responders', '~> 2.0'
+
 # Use Unicorn as the app server
 
 group :production do
