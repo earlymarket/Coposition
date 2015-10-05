@@ -15,7 +15,7 @@ class Redbox::DevicesController < ApplicationController
   end
 
   def create
-    device = Device.find_by imei: allowed_params[:imei]
+    device = Device.find_by uuid: allowed_params[:uuid]
     if device
       # Providing that there isn't anyone currently assigned
       if device.user.nil?
@@ -46,7 +46,7 @@ class Redbox::DevicesController < ApplicationController
 
   private
   def allowed_params
-    params.require(:device).permit(:imei,:name)
+    params.require(:device).permit(:uuid,:name)
   end
 
 end
