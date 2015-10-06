@@ -1,7 +1,7 @@
 module ApprovalMethods
 
   def pending_approvals
-    approvals.where(approved: false)
+    approvals.where(pending: true)
   end
 
   def approved_users
@@ -19,16 +19,13 @@ module ApprovalMethods
   def approve_developer(dev)
     app = approvals.where(approved: false, developer: dev).first
     app.approved = true
+    app.pending = false
     app.save
   end
 
   def approved_developer?(dev)
     app = approvals.where(developer: dev).first
-    if app
-      app.approved?
-    else
-      false
-    end
+    app && app.approved?
   end
 
 end
