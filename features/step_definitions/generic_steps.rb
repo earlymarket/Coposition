@@ -9,3 +9,7 @@ end
 Then(/^I should see "(.*?)"$/) do |text|
   expect(page.has_content? text).to be true
 end
+
+Then(/^I should not see "(.*?)"$/) do |text|
+	expect(page.has_content? text).to be false
+end
