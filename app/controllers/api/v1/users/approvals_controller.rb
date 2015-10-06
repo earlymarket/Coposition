@@ -4,7 +4,9 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   before_action :authenticate, :check_user_approved_developer
 
   def create
-    respond_with @dev.request_approval_from(@user)
+  	# For some reason respond_with doesn't work here
+  	# TODO: research why
+    render json: @dev.request_approval_from(@user)
   end
 
 end
