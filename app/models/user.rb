@@ -7,7 +7,9 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable #:omniauthable
 
-  validates :username, uniqueness: true
+  validates :username, uniqueness: true 
+  validates :username, format: { with: /\A[-a-zA-Z_]+\z/,
+    message: "only allows letters, underscores and dashes" }
 
   has_many :devices
   has_many :approvals
