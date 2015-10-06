@@ -41,6 +41,8 @@ class Redbox::DevicesController < ApplicationController
 
   def destroy
     Device.find(params[:id]).destroy if user_owns_device?
+    flash[:notice] = "Device deleted"
+    redirect_to redbox_devices_path
   end
 
 
