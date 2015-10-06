@@ -1,4 +1,4 @@
-<h3>Your current connections are:</h3><br>
+<h3>Your current devices are:</h3><br>
 <div class="list-group">
   <% @devices.each do |device| %>
     <a href="<%= redbox_device_path(device) %>" class="list-group-item">
@@ -8,6 +8,6 @@
   <% end %>
 </div>
 
-<%= link_to("Create new connection", new_redbox_device_path, class: "btn btn-primary btn-lg") %>
+<%= link_to("Add new device", new_redbox_device_path, class: "btn btn-primary btn-lg") %>
 
 <%= link_to("Spoof requests", spoof_redbox_checkins_path, { class: "btn btn-warning btn-lg", style: "position:absolute;right:0px; bottom:0px;" }) %>
