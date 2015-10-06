@@ -1,4 +1,4 @@
-class Api::V1::Users::DevicesController < Api::ApiController
+class Api::V1::Users::ApprovalsController < Api::ApiController
   respond_to :json
 
   before_action :authenticate, :check_user_approved_developer
