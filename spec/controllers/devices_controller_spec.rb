@@ -15,7 +15,7 @@ RSpec.describe Redbox::DevicesController, type: :controller do
       @checkin = RedboxCheckin.create_from_string(RequestFixture.new.w_gps)
     end
 
-    it "should POST to with an IMEI" do
+    it "should POST to with a UUID" do
       # For some reason, subject.current user was returning some weird results. Using last User instead
       @user = User.last
       post :create, device: { uuid: @checkin.uuid }
