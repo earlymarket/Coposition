@@ -3,12 +3,8 @@ class Api::V1::Users::DevicesController < Api::ApiController
 
   before_action :authenticate, :check_user_approved_developer
 
-  def index
-    respond_with @user.devices.select(:id, :name)
-  end
-
-  def show
-    respond_with @user.devices.where(id: params[:id]).select(:id, :name)
+  def create
+    respond_with @dev.request_approval_from(@user)
   end
 
 end
