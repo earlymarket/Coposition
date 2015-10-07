@@ -18,6 +18,9 @@ module ApprovalMethods
 
   def approve_developer(dev)
     app = approvals.where(approved: false, developer: dev).first
+    unless app
+      return false
+    end
     app.approved = true
     app.pending = false
     app.save

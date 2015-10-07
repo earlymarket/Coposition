@@ -20,7 +20,11 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :checkins, only: [:create]
       resources :users do
-        resources :approvals, only: [:create], module: :users
+        resources :approvals, only: [:create], module: :users do
+          collection do
+            get :status
+          end
+        end
         resources :devices, only: [:index, :show], module: :users
       end
     end
