@@ -13,6 +13,13 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
 
     it "should be able to submit an approval request" do
       post :create, user_id: @user.username, format: :json
+
+      expect(response.status).to be 200
+      expect(@user.pending_approvals.count).to be 1
+    end
+
+    it "should let the developer know if the approval is still pending" do
+      
     end
 
   end
