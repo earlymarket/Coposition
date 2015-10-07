@@ -22,4 +22,8 @@ class Api::ApiController < ActionController::Base
   def find_user
     @user = User.find(params[:user_id])
   end
+
+  def find_device
+    @device = Device.find(params[:device_id])
+  end
 end
