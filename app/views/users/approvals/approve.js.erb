@@ -2,4 +2,4 @@ var pen = $("#pending_count");
 pen.html(parseInt(pen.html()) - 1);
 $("#<%= "app_#{@approval.id}" %>").addClass("bg-approved-<%= @approval.approved? %>");
 utility.animations.removeEl($("#<%= "app_#{@approval.id}" %>"));
-$('#approvedDevelopers').html("<%= (render partial: 'approved_developers').delete("\n").html_safe %>")
+$('#approvedDevelopers').html("<%= (render partial: 'approved_developers').delete("\n").html_safe %>").addClass("rubberBand")
