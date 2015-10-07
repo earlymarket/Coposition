@@ -18,6 +18,12 @@ Rails.application.routes.draw do
 
   namespace :api, path: '', constraints: {subdomain: 'api'}, defaults: {format: 'json'} do
     namespace :v1 do
+      resources :demo do
+        collection do
+          get :reset_approvals
+          get :demo_user_approves_demo_dev
+        end
+      end
       resources :checkins, only: [:create]
       resources :users do
         resources :approvals, only: [:create], module: :users do
@@ -25,7 +31,13 @@ Rails.application.routes.draw do
             get :status
           end
         end
-        resources :devices, only: [:index, :show], module: :users
+        resources :devices, only: [:index, :show], module: :users do
+          resources :checkins, module: :devices do
+            collection do
+              get :last
+            end
+          end
+        end
       end
     end
   end
