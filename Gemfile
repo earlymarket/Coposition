@@ -21,6 +21,8 @@ gem 'friendly_id', '~> 5.1.0'
 
 gem 'responders', '~> 2.0'
 
+gem 'rack-cors', :require => 'rack/cors'
+
 # Use Unicorn as the app server
 
 group :production do
