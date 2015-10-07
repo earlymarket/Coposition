@@ -9,11 +9,11 @@ class Approval < ActiveRecord::Base
   belongs_to :developer
 
   def approve!
-    update(approved: true)
+    update(approved: true, pending: false)
   end
 
   def reject!
-    update(approved: false)
+    update(approved: false, pending: false)
   end
 
 end
