@@ -11,12 +11,14 @@ class Users::ApprovalsController < ApplicationController
     @approval = Approval.where(id: params[:id], 
       user: current_user).first
     @approval.approve!
+    @approved_devs = current_user.approved_developers
   end
 
   def reject
     @approval = Approval.where(id: params[:id], 
       user: current_user).first
     @approval.reject!
+    @approved_devs = current_user.approved_developers
     render "users/approvals/approve"
   end
 
