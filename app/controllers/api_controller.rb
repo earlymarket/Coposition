@@ -1,4 +1,5 @@
 class ApiController < ApplicationController
+	protect_from_forgery with: :null_session
 
   def index
     @w_gps = RequestFixture.new.w_gps
