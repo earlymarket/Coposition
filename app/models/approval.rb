@@ -1,5 +1,7 @@
 class Approval < ActiveRecord::Base
 
+  validates :developer, uniqueness: { scope: :user }
+
   before_create do |app|
     app.approved = false
     !Approval.exists?(user: user, developer: developer)

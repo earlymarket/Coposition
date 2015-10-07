@@ -11,7 +11,7 @@ class Developers::ApprovalsController < ApplicationController
   end
 
   def create
-    if User.find_by(email: allowed_params["user"]).approvals << Approval.new(developer: current_developer)
+    if current_developer.request_approval_from User.find_by(email: allowed_params["user"])
       flash[:notice] = "Successfully sent" 
     else
       flash[:alert] = "Approval request already sent"
