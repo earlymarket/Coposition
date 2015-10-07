@@ -14,6 +14,8 @@ class Api::ApiController < ActionController::Base
 
   def check_user_approved_developer
     @user = User.find(params[:user_id])
-    @user.approved_developer?(@dev)
+    unless @user.approved_developer?(@dev)
+      render json: { "approval status": @user.approval_status_for(@dev) }
+    end
   end
 end
