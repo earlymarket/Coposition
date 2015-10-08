@@ -24,6 +24,7 @@ gem 'responders', '~> 2.0'
 gem 'rack-cors', :require => 'rack/cors'
 
 gem 'factory_girl_rails'
+gem 'faker'
 # Use Unicorn as the app server
 
 group :production do
@@ -35,7 +36,6 @@ end
 
 group :development, :test do
   gem 'pry'
-  gem 'faker'
   gem 'rspec-rails'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
