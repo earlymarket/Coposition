@@ -29,7 +29,7 @@ gem 'faker'
 
 group :production do
   gem 'unicorn'
-  gem 'rails_12factor', group: :production
+  gem 'rails_12factor'
 end
 
 # Use Capistrano for deployment
