@@ -1,6 +1,6 @@
 == README
 
-= Add the following routes to your /etc/hosts
+Add the following routes to your /etc/hosts
 
 127.0.0.1       api.coposition-dev.com
 127.0.0.1       coposition-dev.com
