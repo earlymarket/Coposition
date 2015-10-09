@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :checkin do
-    lat { Faker::Address.latitude }
-    lng { Faker::Address.longitude }
+    lat 51.588330
+    lng (-0.513069)
     uuid { Faker::Number::number(12) }
   end
 
