@@ -25,6 +25,8 @@ gem 'rack-cors', :require => 'rack/cors'
 
 gem 'factory_girl_rails'
 gem 'faker'
+
+gem 'geocoder'
 # Use Unicorn as the app server
 
 group :production do

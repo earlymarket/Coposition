@@ -4,7 +4,14 @@ class Api::V1::Users::Devices::CheckinsController < Api::ApiController
   before_action :authenticate, :check_user_approved_developer, :find_device
 
   def last
-  	respond_with @device.checkins.select(:uuid, :lat, :lng).last
-  end	
+		checkin = @device.checkins.last
+    if params[:type] == "address"
+      render json: { uuid: checkin.uuid,
+        address: "#{checkin.city}, #{checkin.country}"
+      }
+    else
+    	render json: checkin
+    end
+  end
 
 end

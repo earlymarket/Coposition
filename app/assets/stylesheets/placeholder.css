@@ -1,12 +1,10 @@
 h5:hover {
-  border-radius: 15px;
   text-shadow:1px 1px 20px black;
 	background-color: rgba(88, 69, 69, 0.5);
 }
 
 h5 {
   padding: 10px;
-  border-radius: 15px;
   border: 1px solid white;
   width: 35%;
 }
