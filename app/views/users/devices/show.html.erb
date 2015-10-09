@@ -1,11 +1,11 @@
 <h1><%= @device.name %></h1>
 <br>
 <%= link_to("Delete history", redbox_checkin_path, { method: :delete, class: "btn btn-danger btn-lg m-m"  })%>
-<%= link_to("Delete device", "#{redbox_devices_path}/#{@device.id}", { method: :delete, class: "btn btn-danger btn-lg m-m" })%>
+<%= link_to("Delete device", "#{user_devices_path}/#{@device.id}", { method: :delete, class: "btn btn-danger btn-lg m-m" })%>
 
 <table class="table table-striped table-hover">
   <tr>
-    <% @device.checkins.column_names.each do |key| %>
+    <% Checkin.non_geocoded_keys.each do |key| %>
       <th>
         <%= key.titleize %>
       </th>
@@ -13,7 +13,7 @@
   </tr>
   <% @device.checkins.each do |checkin| %>
     <tr>
-      <% checkin.as_json.values.each do |val| %>
+      <% checkin.non_geocoded_data.values.compact.each do |val| %>
         <td>
           <%= val %>
         </td>

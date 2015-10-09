@@ -1,9 +1,9 @@
 <h3>Your current devices are:</h3><br>
 <div class="list-group">
   <% @devices.each do |device| %>
-    <a href="<%= user_device_path(device) %>" class="list-group-item">
+    <a id="<%= device.name %>" href="<%= user_device_path(current_user.id, device) %>" class="list-group-item">
       <h4 class="list-group-item-heading"><%= device.name %></h4>
-      <p class="list-group-item-text">Last reported in <%= "#{device.checkins.last.city}, #{device.checkins.last.country}" %></p>
+      <p class="list-group-item-text">Last reported in <%= device.checkins.last.address %></p>
     </a>
   <% end %>
 </div>
