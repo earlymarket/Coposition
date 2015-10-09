@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Redbox::DevicesController, type: :controller do
+RSpec.describe Users::DevicesController, type: :controller do
 
   login_user
 
@@ -18,7 +18,10 @@ RSpec.describe Redbox::DevicesController, type: :controller do
     it "should POST to with a UUID" do
       # For some reason, subject.current user was returning some weird results. Using last User instead
       @user = User.last
-      post :create, device: { uuid: @checkin.uuid }
+      post :create, {
+      	user_id: @user.username,
+      	device: { uuid: @checkin.uuid }
+      }
       
       expect(response.code).to eq "302"
       expect(@user.devices.count).to be 1

@@ -48,6 +48,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show], module: :users do
     resource :dashboard, only: [:show]
+    resources :devices, only: [:index, :show, :new, :edit, :create, :destroy]
     resources :approvals, only: [:index] do
       member do
         post "approve"
@@ -78,7 +79,6 @@ Rails.application.routes.draw do
         post :create_spoofs
       end
     end
-    resources :devices, only: [:index, :show, :new, :edit, :create, :destroy]
   end
 
 end

@@ -1,4 +1,4 @@
-class Redbox::DevicesController < ApplicationController
+class Users::DevicesController < ApplicationController
 
   before_action :authenticate_user!
 
@@ -23,14 +23,14 @@ class Redbox::DevicesController < ApplicationController
         device.name = allowed_params[:name]
         device.save
         flash[:notice] = "This device has been bound to your account!"
-        redirect_to redbox_devices_path
+        redirect_to user_device_path(id: device.id)
       else
         flash[:alert] = "This device has already been assigned an account!"
-        redirect_to new_redbox_device_path
+        redirect_to new_user_device_path
       end
     else
       flash[:alert] = "Not found"
-      redirect_to new_redbox_device_path
+      redirect_to new_user_device_path
     end
   end
 
