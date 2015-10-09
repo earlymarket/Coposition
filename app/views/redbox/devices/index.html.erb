@@ -3,7 +3,7 @@
   <% @devices.each do |device| %>
     <a href="<%= redbox_device_path(device) %>" class="list-group-item">
       <h4 class="list-group-item-heading"><%= device.name %></h4>
-      <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+      <p class="list-group-item-text">Last reported in <%= "#{device.checkins.last.city}, #{device.checkins.last.country}" %></p>
     </a>
   <% end %>
 </div>
