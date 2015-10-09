@@ -6,6 +6,7 @@ class Api::V1::Users::Devices::CheckinsController < Api::ApiController
   def last
 		checkin = @device.checkins.last
     if params[:type] == "address"
+    	checkin.reverse_geocode!
       render json: { uuid: checkin.uuid,
         address: "#{checkin.city}, #{checkin.country}"
       }
