@@ -4,6 +4,7 @@ class Checkin < ActiveRecord::Base
 
   reverse_geocoded_by :lat, :lng do |obj,results|
     if geo = results.first
+      obj.address = results.first.formatted_address
       obj.city    = geo.city
       obj.postal_code = geo.postal_code
       obj.country = geo.country_code
@@ -38,7 +39,11 @@ class Checkin < ActiveRecord::Base
   end
 
   def reverse_geocode!
-    reverse_geocode unless reverse_geocoded?
+    unless reverse_geocoded?
+      reverse_geocode
+      save
+    end
+    self
   end
 
   def reverse_geocoded?
