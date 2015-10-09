@@ -8,3 +8,10 @@ h5 {
   border: 1px solid white;
   width: 35%;
 }
+
+#placeholderTitle {
+    color: white;
+    width: 30%;
+    border: 1px solid white;
+    background-color: rgba(88,69,69,0.5);
+}
