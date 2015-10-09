@@ -23,7 +23,7 @@ class Redbox::CheckinsController < ApplicationController
 
   def destroy
     RedboxCheckin.where(device: params[:id]).destroy_all
-    redirect_to redbox_device_path
+    redirect_to user_device_path(current_user.id)
   end
 
   def spoof
@@ -35,7 +35,7 @@ class Redbox::CheckinsController < ApplicationController
         RedboxCheckin.create_from_string(RequestFixture.new(params[:uuid]).w_gps)
       end
     end
-    redirect_to redbox_devices_path
+    redirect_to user_devices_path(current_user)
   end
 
 end
