@@ -10,7 +10,7 @@ class Api::V1::Users::Devices::CheckinsController < Api::ApiController
         address: "#{checkin.city}, #{checkin.country}"
       }
     else
-    	render json: checkin
+    	render json: checkin.slice(:id, :uuid, :lat, :lng)
     end
   end
 
