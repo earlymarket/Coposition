@@ -3,7 +3,10 @@ class Users::DevicesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @devices = current_user.devices
+    @devices = current_user.devices.map do |dev|
+    	dev.checkins.last.reverse_geocode!
+    	dev
+    end
   end
 
   def show
@@ -23,7 +26,7 @@ class Users::DevicesController < ApplicationController
         device.name = allowed_params[:name]
         device.save
         flash[:notice] = "This device has been bound to your account!"
-        redirect_to user_device_path(id: device.id)
+        redirect_to user_device_path(current_user.id, device.id)
       else
         flash[:alert] = "This device has already been assigned an account!"
         redirect_to new_user_device_path
@@ -36,13 +39,13 @@ class Users::DevicesController < ApplicationController
 
   def edit
     @device = Device.find(params[:id]) if user_owns_device?
-    redirect_to redbox_devices_path
+    redirect_to user_devices_path
   end
 
   def destroy
     Device.find(params[:id]).destroy if user_owns_device?
     flash[:notice] = "Device deleted"
-    redirect_to redbox_devices_path
+    redirect_to user_devices_path
   end
 
 
