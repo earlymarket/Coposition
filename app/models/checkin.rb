@@ -35,7 +35,7 @@ class Checkin < ActiveRecord::Base
   end
 
   def non_geocoded_data
-    self.as_json.except(Checkin.geocoded_keys)
+    self.as_json.except(*Checkin.geocoded_keys)
   end
 
   def reverse_geocode!
