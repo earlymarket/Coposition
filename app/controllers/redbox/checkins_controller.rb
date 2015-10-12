@@ -23,7 +23,8 @@ class Redbox::CheckinsController < ApplicationController
 
   def destroy
     RedboxCheckin.where(device: params[:id]).destroy_all
-    redirect_to user_device_path(current_user.id)
+    flash[:notice] = "History deleted."
+    redirect_to user_device_path(current_user.id, params[:id])
   end
 
   def spoof
