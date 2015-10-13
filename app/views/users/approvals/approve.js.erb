@@ -1,5 +1,5 @@
 if (utility.urlParam("redirect")) {
-  window.location(utility.urlParam("redirect"));
+  window.location.replace(utility.urlParam("redirect"));
 }
 var pen = $("#pending_count");
 pen.html(parseInt(pen.html()) - 1);
