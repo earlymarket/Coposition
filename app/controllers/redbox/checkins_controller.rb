@@ -30,9 +30,9 @@ class Redbox::CheckinsController < ApplicationController
   def spoof
   end
 
-  def create_spoofs
+  def create_spoofs 
     RedboxCheckin.transaction do
-      params[:number_of_times].to_i.times do
+      50.times do
         RedboxCheckin.create_from_string(RequestFixture.new(params[:uuid]).w_gps)
       end
     end
