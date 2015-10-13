@@ -263,7 +263,4 @@ Devise.setup do |config|
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
   
-  # Amazon told me to
-  config.secret_key = '321a1dde2fe65660de4480a414f43e56cfcddab726be42743c856a52fb33508e68d7acb3b06063642df1cd135d569533bd55973fe00fe0493aaf3aebf4dd0709'
-
 end
