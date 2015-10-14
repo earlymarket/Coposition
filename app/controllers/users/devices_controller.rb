@@ -15,6 +15,7 @@ class Users::DevicesController < ApplicationController
 
   def new
     @device = Device.new
+    @redirect_target = params[:redirect] if params[:redirect]
   end
 
   def create
@@ -26,7 +27,11 @@ class Users::DevicesController < ApplicationController
         device.name = allowed_params[:name]
         device.save
         flash[:notice] = "This device has been bound to your account!"
-        redirect_to user_device_path(current_user.id, device.id)
+        if params[:redirect].blank?
+          redirect_to user_device_path(current_user.id, device.id)
+        else
+          redirect_to params[:redirect]
+        end
       else
         flash[:alert] = "This device has already been assigned an account!"
         redirect_to new_user_device_path
