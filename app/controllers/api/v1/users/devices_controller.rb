@@ -4,7 +4,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
   before_action :authenticate, :check_user_approved_developer
 
   def index
-    respond_with @user.devices.select(:id, :name)
+    respond_with @user.devices.select(:id, :name).preload(:last_checkin)
   end
 
   def show
