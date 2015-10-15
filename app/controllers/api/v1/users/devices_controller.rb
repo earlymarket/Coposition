@@ -3,12 +3,26 @@ class Api::V1::Users::DevicesController < Api::ApiController
 
   before_action :authenticate, :check_user_approved_developer
 
+  # TODO: Think about refactoring this
+
   def index
-    respond_with @user.devices.select(:id, :name).preload(:last_checkin)
+    list = []
+    @user.devices.select(:id, :name).map do |dev|
+    	hash = dev.as_json
+    	hash[:last_checkin] = dev.checkins.last
+    	list << hash
+  	end
+  	respond_with list
   end
 
   def show
-    respond_with @user.devices.where(id: params[:id]).select(:id, :name)
+    list = []
+    @user.devices.where(id: params[:id]).select(:id, :name).map do |dev|
+    	hash = dev.as_json
+    	hash[:last_checkin] = dev.checkins.last
+    	list << hash
+  	end
+  	respond_with list
   end
 
 end
