@@ -13,7 +13,7 @@ module ApprovalMethods
   end
 
   def request_approval_from(user)
-    approvals << Approval.create(user: user)
+    Approval.create(developer: self, user: user)
   end
 
   def approve_developer(dev)
