@@ -1,8 +1,12 @@
+### Status
+[![Build Status](https://api.travis-ci.org/earlymarket/CoPosition.svg)](https://api.travis-ci.org/earlymarket/CoPosition.svg)
+
 == README
 
 Add the following routes to your /etc/hosts
 
 127.0.0.1       api.coposition-dev.com
+
 127.0.0.1       coposition-dev.com
 
 = License
