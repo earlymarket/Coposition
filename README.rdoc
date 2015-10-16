@@ -1,7 +1,7 @@
-### Status
-[![Build Status](https://api.travis-ci.org/earlymarket/CoPosition.svg)](https://api.travis-ci.org/earlymarket/CoPosition.svg)
+= Coposition
+{<img src="https://travis-ci.org/earlymarket/CoPosition.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/earlymarket/CoPosition]
 
-== README
+== Setup
 
 Add the following routes to your /etc/hosts
 
