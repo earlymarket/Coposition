@@ -1,5 +1,5 @@
 class Developer < ActiveRecord::Base
-  # include ApprovalMethods
+  include ApprovalMethods
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -23,17 +23,8 @@ class Developer < ActiveRecord::Base
     end
   end
 
-  def pending_approvals
-    approvals.where(pending: true)
-  end
-
   def approved_users
     approvals.where(approved: true)
-  end
-  
-  def approval_status_for(model)
-    app = approvals.where({ model.class.to_s.downcase.to_sym => model }).first
-    app.approved? if app
   end
 
   def request_approval_from(user)
