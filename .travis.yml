@@ -1,10 +1,13 @@
 language: ruby
 cache: bundler
+notifications:
+  slack:
+    secure: ourZwgU/xCveQblov2cg19VBadkW+uZ/kmDW9KJyK2GuCJvRQwfH++iOi0RcUU+n+OjdYnkq3pKf50nn8vfk1Iet9uqd4I+cUwlLNm9JQ9HIw4eAxBTM4M+ulEnLNfH2xPybqCWooB7mpK2kDNfcWObBr9nGNWk45IjoxRNomF571S6xYzF82fBtd4/StTTTmrGa4I4Vk15Zs4VrA+TVeAgHqbpY2g6k6lSm6xSddEX6+DcHAKgqQcqim3uRnF9vChlFIcgcLGxEY9zwwUtONO4zNciLE7hLnsg7SoxSnuOhL6vlH5V90O8ZVe0NmYk4SkdQt+hL6EpA3wXCrO1s7qAOjHZqhemy3RUZbbuxGoM7qdwKoX7IvksShPBDZkJE3ezz9OzisPTSmucH85p5ebnvkfl861ERtZFg8ZJmmdl+M3eLG85j5lauzb0cN1LjuJLMEa8UbgoEGSs4vNJfmqFd5o+ZWCXlzc01sIjG3Q1bWMLJ65QjFhR0vGVDo0o/3SxSgpWwzk+kLrBZVxwGRvfMWqSJCc29BkdDWUyxA8IwQlM51FLGfLXHQ6HNydybwyF0v9XJNCLlW3q87SoQffVkEkkeCjWzcu1oYmZJDETiIVwNeGahqieovox8go7v54nBou7HgEzA6xJI6DerzvqRWKoo1KjrGvozwzx1s0U=
 rvm:
-  - 2.2.2
+- 2.2.2
 before_script:
-  - cp config/database.yml.travis config/database.yml
-  - RAILS_ENV=test bundle exec rake db:create
-  - RAILS_ENV=test bundle exec rake db:migrate
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+- cp config/database.yml.travis config/database.yml
+- RAILS_ENV=test bundle exec rake db:create
+- RAILS_ENV=test bundle exec rake db:migrate
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
