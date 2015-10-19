@@ -65,24 +65,27 @@
   </nav>
   <center>
     <% if alert %>
-      <div class="alert alert-dismissible alert-danger animated flipInX">
+      <div class="col-xs-4 col-xs-offset-4 alert alert-dismissible alert-danger animated flipInX">
         <button type="button" class="close">×</button>
         <strong>Oh snap!</strong> <%= alert %>
       </div>
+      <div class="clearfix"></div>
     <% end %>
     <% if notice %>
-      <div class="alert alert-dismissible alert-info animated flipInX">
+      <div class="col-xs-4 col-xs-offset-4 alert alert-dismissible alert-info animated flipInX">
         <button type="button" class="close">×</button>
           <%= notice %>
       </div>
+      <div class="clearfix"></div>
     <% end %>
     <% if flash[:notification] %>
       <% flash[:notification].each do |n|%>
-        <div class="alert alert-dismissible alert-info animated tada">
+        <div class="col-xs-4 col-xs-offset-4 alert alert-dismissible alert-info animated tada">
           <button type="button" class="close">×</button>
           <%= link_to(n[:notification][:msg].html_safe, eval(n[:notification][:link_path])) %>
         </div>
       <% end %>
+      <div class="clearfix"></div>
       <% flash.discard(:notification) %>
     <% end %>
     <div id="container" class="animated-fast slideInRight container">
