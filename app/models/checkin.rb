@@ -24,8 +24,8 @@ class Checkin < ActiveRecord::Base
       order(:id).find(range_array(from, size))
     end
 
-    def non_geocoded_keys
-      column_names - geocoded_keys
+    def non_geocoded_keys(exception: nil)
+      (column_names - [exception]) - geocoded_keys
     end
 
     def geocoded_keys
@@ -34,8 +34,8 @@ class Checkin < ActiveRecord::Base
 
   end
 
-  def non_geocoded_data
-    self.as_json.except(*Checkin.geocoded_keys)
+  def non_geocoded_data(exception: nil)
+    self.as_json.except(*Checkin.geocoded_keys, exception)
   end
 
   def reverse_geocode!
