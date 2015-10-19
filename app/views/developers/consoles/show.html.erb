@@ -3,6 +3,8 @@
 <br>
 <p>
   Your <%= current_developer.company_name %> API key is <code><%= current_developer.api_key %></code>
+  <br>
+  You've made <%= current_developer.requests.recent(1.day.ago).count %> requests in the last day.
 </p>
 <p>
   Take a look at your <br>
