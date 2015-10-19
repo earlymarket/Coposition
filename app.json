@@ -1,7 +1,9 @@
 {
   "name":"CoPosition",
   "description":"Secure trusted geolocation",
-  "scripts":{},
+  "scripts":{
+    "postdeploy": "bundle exec rake db:setup"
+  },
   "env":{
     "LANG":{
       "required":true
