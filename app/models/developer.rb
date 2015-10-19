@@ -9,6 +9,7 @@ class Developer < ActiveRecord::Base
 
   has_many :approvals
   has_many :users, through: :approvals
+  has_many :requests
 
 
 

@@ -18,10 +18,19 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       @user.approve_developer(@developer)
       request.headers["X-Api-Key"] = @developer.api_key
   	end
-		it "should GET a list of devices of a specific user" do
-			get :index, user_id: @user.username, format: :json
+
+
+
+    it "should GET a list of devices of a specific user" do
+      get :index, user_id: @user.username, format: :json
       res = response_to_hash
       expect(res.first["id"]).to be @device.id
+    end
+
+    it "should record the request" do
+      expect(@developer.requests.count).to be 0
+      get :index, user_id: @user.username, format: :json
+      expect(@developer.requests.count).to be 1
     end
 
     it "should GET information on a specific device for a specific user" do
