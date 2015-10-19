@@ -2,7 +2,7 @@
   "name":"CoPosition",
   "description":"Secure trusted geolocation",
   "scripts":{
-    "postdeploy": "bundle exec rake db:migrate && bundle exec rake db:seed"
+    "postdeploy": "bundle exec rake db:setup"
   },
   "env":{
     "LANG":{
