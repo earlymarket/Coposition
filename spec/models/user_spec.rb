@@ -36,8 +36,9 @@ RSpec.describe User, type: :model do
       @user.devices << [FactoryGirl::create(:device)]
       @user.approvals << Approval.create(developer: @developer)
       @user.approve_developer(@developer)
-      expect(@user.devices.first.approved_developers.count).to be 1
-      expect(@user.devices.first.approved_developers.first).to eq @developer
+      expect(@user.devices.first.developers.count).to be 1
+      expect(@user.devices.first.developers.first).to eq @developer
+      expect(@user.devices.first.privilege_for(@developer)).to eq "complete"
     end
 
   end

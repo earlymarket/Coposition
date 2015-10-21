@@ -24,8 +24,8 @@ RSpec.describe Device, type: :model do
 
     it "should have some approved devleopers" do
       @developer = FactoryGirl::create :developer
-      @device.approved_developers << @developer
-      expect( @device.approved_developers.first ).to eq @developer
+      @device.developers << @developer
+      expect( @device.developers.first ).to eq @developer
     end
 
   end

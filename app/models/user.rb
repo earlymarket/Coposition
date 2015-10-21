@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
 
   def approve_devices_for_developer(developer)
     devices.each do |device|
-      device.approved_developers << developer
+      device.developers << developer
     end
   end
 
