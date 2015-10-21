@@ -22,6 +22,12 @@ RSpec.describe Device, type: :model do
       expect(@device.checkins).to match_array(checkins)
     end
 
+    it "should have some approved devleopers" do
+      @developer = FactoryGirl::create :developer
+      @device.approved_developers << @developer
+      expect( @device.approved_developers.first ).to eq @developer
+    end
+
   end
 
 end
