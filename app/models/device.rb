@@ -18,6 +18,7 @@ class Device < ActiveRecord::Base
   end
 
   def change_privilege_for(dev, new_privilege)
+      binding.pry
     if dev.respond_to? :id
       dev = dev.id
     end

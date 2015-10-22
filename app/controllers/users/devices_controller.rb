@@ -59,7 +59,7 @@ class Users::DevicesController < ApplicationController
   def switch_privilige_for_developer
     binding.pry
     @device = Device.find(params[:id]) if user_owns_device?
-    @device.change_privilege_for(params[:developer_id], @device.reverse_privilege_for(@developer))
+    @device.change_privilege_for(params[:developer], @device.reverse_privilege_for(@developer))
   end
 
   private
