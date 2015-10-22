@@ -48,12 +48,16 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show], module: :users do
     resource :dashboard, only: [:show]
-    resources :devices, only: [:index, :show, :new, :edit, :create, :destroy]
+    resources :devices, only: [:index, :show, :new, :edit, :create, :destroy] do
+      member do
+        post "switch_privilige_for_developer"
+      end
+    end
     resources :approvals, only: [:index] do
       member do
         post "approve"
         post "reject"
-      end
+      end 
     end
   end
 
