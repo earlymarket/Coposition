@@ -1,10 +1,21 @@
 <h3>Your current devices are:</h3><br>
 <div class="list-group">
   <% @devices.each do |device| %>
-    <a id="<%= device.name %>" href="<%= user_device_path(current_user.id, device) %>" class="list-group-item">
-      <h4 class="list-group-item-heading"><%= device.name %></h4>
-      <p class="list-group-item-text">Last reported in <%= device.checkins.last.address %></p>
-    </a>
+    <div class="list-group-item">
+      <a id="<%= device.name %>" href="<%= user_device_path(current_user.id, device) %>">
+        <h4 class="list-group-item-heading"><%= device.name %></h4>
+        <p class="list-group-item-text">Last reported in <%= device.checkins.last.address %></p>
+      </a>
+      <div class="row ">
+        <div class="col-xs-12 list-group-item-text">
+          <% device.developers.each do |developer| %>
+            <div class="col-xs-3 dev-box bg-success white-text small-curved-border small-height clearfix">
+              <%= link_to(developer.company_name, switch_privilige_for_developer_user_device_path(current_user.id, device.id, developer: developer.id), html_options={ method: :post })  %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
   <% end %>
 </div>
 
