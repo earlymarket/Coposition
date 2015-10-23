@@ -1,3 +1,11 @@
+success-color {
+  background-color: #4caf50;
+}
+
+danger-color {
+  background-color: #e51c23;
+}
+
 .bg-approved-true {
   background-color: #DCFF9A
 }
@@ -6,10 +14,37 @@
   background-color: #FFCCCC
 }
 
-.white-text {
+.white-link {
   color: white;
 }
 
+.white-link:visited {
+  color: white;
+  text-decoration: none;
+}
+
+.white-link:hover {
+  color: white;
+  text-decoration: none;
+}
+
+.white-link:focus {
+  color: white;
+  text-decoration: none;
+}
+
 .bg-success {
-  background-color: #4caf50;
+  @extend success-color;
+}
+
+.bg-danger {
+  @extend danger-color;
+}
+
+.privilege-complete {
+  @extend success-color;
+}
+
+.privilege-disallowed {
+  @extend danger-color;
 }
