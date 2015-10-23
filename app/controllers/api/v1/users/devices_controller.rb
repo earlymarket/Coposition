@@ -8,9 +8,11 @@ class Api::V1::Users::DevicesController < Api::ApiController
   def index
     list = []
     @user.devices.select(:id, :name).map do |dev|
-    	hash = dev.as_json
-    	hash[:last_checkin] = dev.checkins.last
-    	list << hash
+      if dev.privilege_for(@dev) == "complete"
+      	hash = dev.as_json
+        hash[:last_checkin] = dev.checkins.last
+      	list << hash
+      end
   	end
   	respond_with list
   end
@@ -18,10 +20,12 @@ class Api::V1::Users::DevicesController < Api::ApiController
   def show
     list = []
     @user.devices.where(id: params[:id]).select(:id, :name).map do |dev|
-    	hash = dev.as_json
-    	hash[:last_checkin] = dev.checkins.last
-    	list << hash
-  	end
+      if dev.privilege_for(@dev) == "complete"
+        hash = dev.as_json
+        hash[:last_checkin] = dev.checkins.last
+        list << hash
+      end
+    end
   	respond_with list
   end
 
