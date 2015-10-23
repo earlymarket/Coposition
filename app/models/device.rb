@@ -6,7 +6,7 @@ class Device < ActiveRecord::Base
   has_many :developers, through: :device_developer_privileges
 
   def privilege_for(dev)
-    device_developer_privileges.find_by(developer: dev.id).privilege
+    device_developer_privileges.find_by(developer: dev).privilege
   end
 
   def reverse_privilege_for(dev)
@@ -18,7 +18,6 @@ class Device < ActiveRecord::Base
   end
 
   def change_privilege_for(dev, new_privilege)
-      binding.pry
     if dev.respond_to? :id
       dev = dev.id
     end
