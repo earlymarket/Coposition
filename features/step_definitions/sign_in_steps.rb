@@ -18,6 +18,7 @@ Given(/^I am signed in as a user$/) do
       And I click "Sign up"
     Then I should see "You have signed up successfully."
   }
+  @me = User.find_by(email: @me.email)
 end
 
 When(/^I fill in the form with my "(.*?)" details$/) do |actor|

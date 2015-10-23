@@ -16,6 +16,8 @@ class User < ActiveRecord::Base
   has_many :developers, through: :approvals
 
 
+  ## Approvals
+
   def approved_developers
     approvals.where(approved: true)
   end
@@ -26,15 +28,28 @@ class User < ActiveRecord::Base
     unless app
       return false
     end
-    app.approved = true
-    app.pending = false
-    app.save
+    app.approve!
   end
 
   def approved_developer?(dev)
     app = approvals.where(developer: dev).first
     app && app.approved?
   end
+
+  ##############
+
+
+  ## Devices
+
+  def approve_devices_for_developer(developer)
+    devices.each do |device|
+      device.developers << developer
+    end
+  end
+
+  ##############
+
+
 
   def notifications
     x = []

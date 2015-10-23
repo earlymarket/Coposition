@@ -25,6 +25,9 @@ class Users::DevicesController < ApplicationController
       if device.user.nil?
         device.user = current_user
         device.name = allowed_params[:name]
+        device.developers << current_user.approved_developers.map do |app|
+          app.developer
+        end
         device.save
         flash[:notice] = "This device has been bound to your account!"
         if params[:redirect].blank?
@@ -53,6 +56,13 @@ class Users::DevicesController < ApplicationController
     redirect_to user_devices_path
   end
 
+  def switch_privilige_for_developer
+    @device = Device.find(params[:id]) if user_owns_device?
+    @developer = Developer.find(params[:developer])
+    @device.change_privilege_for(@developer, @device.reverse_privilege_for(@developer))
+    @privilege = @device.privilege_for(@developer)
+    @r_privilege = @device.reverse_privilege_for(@developer)
+  end
 
   private
   def allowed_params

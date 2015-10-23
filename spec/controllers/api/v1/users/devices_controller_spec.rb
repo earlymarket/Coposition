@@ -50,6 +50,20 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       res = response_to_hash
       expect(res.first["last_checkin"]["id"]).to eq @checkin.id
     end
+
+    it "should not only return devices for which the developer has permission" do
+      @device.change_privilege_for @developer, "disallowed"
+      get :index, user_id: @user.username, format: :json
+      expect(response.body).to eq "[]"
+      expect(response.status).to be 200
+    end
+
+    it "should not allow a developer to see a device for which it disallowed" do
+      @device.change_privilege_for @developer, "disallowed"
+      get :show, user_id: @user.username, id: @device.id, format: :json
+      expect(response.body).to eq ""
+      expect(response.status).to be 401
+    end
 	end
 
 end

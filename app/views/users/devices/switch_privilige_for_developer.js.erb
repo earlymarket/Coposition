@@ -1,0 +1,20 @@
+$('#<%= "device#{@device.id}developer#{@developer.id}" %>').removeClass("<%= "privilege-#{@r_privilege}" %>").addClass("<%= "privilege-#{@privilege}" %>");
+toastr["success"]("<%= @developer.company_name %> has been given the privilege level of <%= @privilege %> for <%= @device.name %>", "Privilege change")
+
+toastr.options = {
+  "closeButton": false,
+  "debug": false,
+  "newestOnTop": false,
+  "progressBar": true,
+  "positionClass": "toast-top-right",
+  "preventDuplicates": false,
+  "onclick": null,
+  "showDuration": "300",
+  "hideDuration": "1000",
+  "timeOut": "6000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+}
