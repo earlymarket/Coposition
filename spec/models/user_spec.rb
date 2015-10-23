@@ -1,21 +1,21 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+
+  before do
+    @user = FactoryGirl::create(:user)
+    @developer = FactoryGirl::create(:developer)
+    @device = FactoryGirl::create(:device)
+    @user.devices << @device
+  end 
+
   describe "relationships" do
     it "should have some devices" do
-      @user = User.create
-      @device = Device.create
-      @user.devices << @device
       expect(@user.devices.last).to eq @device 
     end
   end
 
   describe "approvals" do
-
-    before do
-      @user = FactoryGirl::create(:user)
-      @developer = FactoryGirl::create(:developer)
-    end 
 
     it "should approve a developer" do
       expect(@user.pending_approvals.count).to be 0
@@ -42,4 +42,20 @@ RSpec.describe User, type: :model do
     end
 
   end
+
+  describe "privileges" do
+    before do
+      @developer.request_approval_from @user
+      @user.approve_developer @developer
+    end
+
+    it "should have device privileges by default" do
+      expect( @user.devices.first.privilege_for @developer ).to eq "complete"
+    end
+
+    it "should be able to set priviles" do
+      @user.devices.first.change_privilege_for @developer, "disallowed"
+      expect( @user.devices.first.privilege_for @developer ).to eq "disallowed"
+    end
+  end 
 end
