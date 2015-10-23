@@ -12,6 +12,7 @@ class Approval < ActiveRecord::Base
 
   def approve!
     update(approved: true, pending: false)
+    user.approve_devices_for_developer(developer)
   end
 
   def reject!

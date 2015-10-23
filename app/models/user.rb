@@ -28,10 +28,7 @@ class User < ActiveRecord::Base
     unless app
       return false
     end
-    app.approved = true
-    app.pending = false
-    approve_devices_for_developer(dev)
-    app.save
+    app.approve!
   end
 
   def approved_developer?(dev)
