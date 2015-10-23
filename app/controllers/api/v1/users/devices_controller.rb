@@ -24,6 +24,8 @@ class Api::V1::Users::DevicesController < Api::ApiController
         hash = dev.as_json
         hash[:last_checkin] = dev.checkins.last
         list << hash
+      else
+        return head status: :unauthorized
       end
     end
   	respond_with list
