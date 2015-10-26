@@ -10,6 +10,9 @@
         <%= key.titleize %>
       </th>
     <% end %>
+    <th>
+      Delete
+    </th>
   </tr>
   <% @device.checkins.each do |checkin| %>
     <tr>
@@ -18,6 +21,9 @@
           <%= val %>
         </td>
       <% end %>
+      <td>
+        <button class="btn btn-danger">x</button>
+      </td>
     </tr>  
   <% end %>
 </table>

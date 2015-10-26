@@ -14,5 +14,6 @@ Given(/^I accept the approval request$/) do
 end
 
 Then(/^I should see the first "(.*?)" have a "(.*?)" coloured background$/) do |css, colour|
+  sleep 0.3
   expect(first( :css, css)['class'].include? "disallowed").to be true
 end
