@@ -27,6 +27,8 @@ gem 'factory_girl_rails'
 gem 'faker'
 
 gem 'geocoder'
+
+gem "paperclip", "~> 4.3"
 # Use Unicorn as the app server
 
 group :production do
