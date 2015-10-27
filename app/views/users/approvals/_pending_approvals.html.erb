@@ -6,7 +6,10 @@
   <br>
   <% @pending_approvals.each do |app| %>
     <div id="<%= "app_#{app.id}" %>"class="panel panel-default m-m third-width animated flipInY">
-      <div class="panel-heading"><h4><%= app.developer.company_name %></h4></div>
+      <div class="panel-heading">
+        <h4><%= app.developer.company_name %></h4>
+        <%= image_tag app.developer.logo.url(:thumb) %>
+      </div>
       <div class="panel-body input-group">
         <%= button_to "Approve", approve_user_approval_path(current_user, app.id), remote: true, class: "btn btn-success m-m" %>
         <%= button_to "Reject", reject_user_approval_path(current_user, app.id), remote: true, class: "btn btn-danger" %>

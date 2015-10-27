@@ -65,6 +65,7 @@ Rails.application.routes.draw do
 
 
   # Devs
+  resources :developers, only: [:edit, :update]
 
   namespace :developers do
     resource :console, only: [:show]

@@ -3,7 +3,7 @@
   <%= f.text_field(:uuid, class: "form-control input-lg fifth-width", placeholder: "15 digits, no spaces") %><br>
   <%= label(:name, "Enter a friendly name", class: "control-label") %>
   <%= f.text_field(:name, class: "form-control input-lg fifth-width", placeholder: "G-RALA") %>
-  <%= f.submit("Search", class: "form-control btn btn-default") %>
+  <%= f.submit("Add", class: "form-control btn btn-default") %>
   <%= hidden_field_tag('redirect', @redirect_target) %>
 <% end %>
 

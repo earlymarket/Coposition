@@ -1,0 +1,14 @@
+<%= form_for @developer, url: {action: "update"}, html: {class: "nifty_form", multipart: true} do |f| %>
+  <div class="field">
+    <%= f.label :company_name  %><br />
+    <%= f.text_field :company_name %>
+  </div>
+  <br>
+  <div class="field">
+    <%= image_tag @developer.logo.url(:thumb), class: "small-curved-border" %><br>
+    <%= f.label :logo %>
+    <%= f.file_field :logo %>
+  </div>
+  <br>
+  <%= f.submit "Update", class: "btn btn-success m-m"  %>
+<% end %>

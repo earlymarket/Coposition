@@ -5,9 +5,12 @@
   <br>
   You've made <%= current_developer.requests.recent(1.day.ago).count %> requests in the last day.
 </p>
+<hr>
 <p>
   Take a look at your <br>
-  <%= link_to("approvals", developers_approvals_path, class: "btn btn-default") %> 
+  <%= link_to("approvals", developers_approvals_path, class: "btn btn-default") %>
+  <br>
+  <%= link_to("Edit your profile", edit_developer_path(current_developer.id)) %>
 </p>
 <hr>
 <br>
