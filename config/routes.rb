@@ -48,9 +48,9 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show], module: :users do
     resource :dashboard, only: [:show]
-    resources :devices, only: [:index, :show, :new, :edit, :create, :destroy] do
-      resources :checkins, only: [:delete]
+    resources :devices, except: [:update] do
       member do
+        delete "checkin"
         post "switch_privilige_for_developer"
       end
     end

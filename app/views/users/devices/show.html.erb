@@ -15,14 +15,14 @@
     </th>
   </tr>
   <% @device.checkins.each do |checkin| %>
-    <tr>
+    <tr id="checkin<%= checkin.id %>" class="animated">
       <% checkin.non_geocoded_data(exception: "device_id").values.compact.each do |val| %>
         <td>
           <%= val %>
         </td>
       <% end %>
       <td>
-        <button class="btn btn-danger">x</button>
+        <%= button_to "x", checkin_user_device_path(current_user.id, @device.id, checkin_id: checkin.id), method: :delete, remote: true, class: "btn btn-danger" %>
       </td>
     </tr>  
   <% end %>
