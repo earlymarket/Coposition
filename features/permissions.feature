@@ -13,7 +13,7 @@ Feature: Devices
       Given I accept the approval request
       Given I click "Add new device"
         And I enter UUID "123456789123" and a friendly name "G-RALA"
-      When I click "Search"
+      When I click "Add"
       Then I should see "This device has been bound to your account!"
         And I should see "G-RALA"
       When I click "Dashboard"
