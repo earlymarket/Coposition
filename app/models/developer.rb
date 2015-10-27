@@ -5,7 +5,7 @@ class Developer < ActiveRecord::Base
     styles: { medium: "300x300>", thumb: "60x60>" }, default_url: "missing.png"
   validates_attachment :logo, 
     content_type: { content_type: ["image/jpeg", "image/png"] },
-    size: { in: 0..2.megabytes }
+    size: { in: 0..1.megabytes }
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
