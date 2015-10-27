@@ -1,8 +1,12 @@
 class Developer < ActiveRecord::Base
   include ApprovalMethods
 
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
+  has_attached_file :logo, 
+    styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
+  validates_attachment :logo, 
+    content_type: ["image/jpeg", "image/png"],
+    size: { in: 0..2.megabytes }
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
