@@ -2,9 +2,9 @@ class Developer < ActiveRecord::Base
   include ApprovalMethods
 
   has_attached_file :logo, 
-    styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
+    styles: { medium: "300x300>", thumb: "60x60>" }, default_url: "/images/:style/missing.png"
   validates_attachment :logo, 
-    content_type: ["image/jpeg", "image/png"],
+    content_type: { content_type: ["image/jpeg", "image/png"] },
     size: { in: 0..2.megabytes }
 
   devise :database_authenticatable, :registerable,

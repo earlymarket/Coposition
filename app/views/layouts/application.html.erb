@@ -63,6 +63,9 @@
       </div>
     </div>
   </nav>
+  <% if developer_signed_in? %>
+    <%= link_to image_tag(current_developer.logo.url(:thumb), class: "small-curved-border half-opacity negative-m-m"), developers_console_path, class: "fixed bottom left" %>
+  <% end %>
   <center>
     <% if alert %>
       <div class="col-xs-4 col-xs-offset-4 alert alert-dismissible alert-danger animated flipInX">
