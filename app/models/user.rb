@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   friendly_id :username, use: [:slugged, :finders]
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable #:omniauthable
+         :recoverable, :rememberable, :trackable, :validatable, :authentication_keys => { username: true, email: false }
 
   validates :username, uniqueness: true 
   validates :username, format: { with: /\A[-a-zA-Z_]+\z/,

@@ -16,7 +16,6 @@ class Developer < ActiveRecord::Base
   has_many :requests
 
 
-
   before_create do |dev|
     dev.api_key = generate_api_key
   end
