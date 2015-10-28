@@ -8,11 +8,11 @@ class DevelopersController < ApplicationController
 
   def update
     current_developer.update(allowed_params)
+    redirect_to developers_console_path
   end
 
   def allowed_params
     params.require(:developer).permit([:company_name, :logo])
-    redirect_to developer_console_path
   end
 
 end
