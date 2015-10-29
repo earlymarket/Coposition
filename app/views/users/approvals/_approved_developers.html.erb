@@ -1,6 +1,21 @@
-<% @approved_devs.each do |app| %>
-  <a href='#' class='list-group-item'>
-    <h4 class='list-group-item-heading'><%= app.developer.company_name %></h4>
-    <p class='list-group-item-text'>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-  </a>
-<% end %>
+<div class='list-group'>
+  <% @approved_devs.each do |app| %>
+    <div class='list-group-item'>
+      <a href='#' class='list-group-item'>
+        <h4 class='list-group-item-heading'><%= app.developer.company_name %></h4>
+        <% if app.developer.tagline %>
+          <p class='list-group-item-text'><%= app.developer.tagline %></p>
+        <% end %>
+      </a>
+      <div class='row pt-m'>
+        <div class='col-xs-12 list-group-item-text'>
+          <% app.user.devices.each do |device|  %>
+            <div id='<%= "device#{device.id}developer#{app.developer.id}" %>' class='col-xs-3 dev-box small-curved-border small-height clearfix tiny-shadow <%= "privilege-#{device.privilege_for(app.developer)}" %>'>
+              <%= link_to(device.name, switch_privilige_for_developer_user_device_path(current_user.id, device.id, developer: app.developer.id), html_options={ method: :post, remote: true, class: 'white-link' })  %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
