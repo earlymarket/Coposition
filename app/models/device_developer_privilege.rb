@@ -1,4 +1,6 @@
 class DeviceDeveloperPrivilege < ActiveRecord::Base
+  validates :developer, uniqueness: { scope: :device }
+
   belongs_to :device
   belongs_to :developer
 
