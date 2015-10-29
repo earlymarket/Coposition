@@ -14,7 +14,10 @@ class Checkin < ActiveRecord::Base
 
   after_create do
     device = Device.find_by(uuid: uuid)
-    device = Device.create(uuid: uuid) unless device
+    unless device
+      device = Device.create(uuid: uuid)
+      device.geocode!
+    end 
     device.checkins << self
   end
 
