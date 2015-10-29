@@ -1,34 +1,106 @@
-<h2>Log in</h2>
+<div class="row">
+  <div class="col-md-6">
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "form-horizontal well" }) do |f| %>
+      <legend>Log in</legend>
+      <fieldset>
+        <% if resource.respond_to? :username %>
+          <div class="form-group">
+            <%= f.label :username, class: "col-md-2 control-label" %>
+            <div class="col-md-10">
+              <%= f.text_field :username, autofocus: true, placeholder: "Username", id: "login_#{resource.class.to_s.downcase}_username" %>
+            </div>
+          </div>
+        <% else %>
+          <div class="form-group">
+            <%= f.label :email, class: "col-md-2 control-label" %>
+            <div class="col-md-10">
+              <%= f.email_field :email, autofocus: true, placeholder: "Password", id: "login_#{resource.class.to_s.downcase}_email" %>
+            </div>
+          </div>
+        <% end %>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="form-group">
+          <%= f.label :password, class: "col-md-2 control-label" %>
+          <%= f.password_field :password, autocomplete: "off", id: "login_#{resource.class.to_s.downcase}_password" %>
+        </div>
 
-  <% if resource.respond_to? :username %>
-    <div class="field">
-      <%= f.label :username %><br />
-      <%= f.text_field :username, autofocus: true %>
-    </div>
-  <% else %>
-    <div class="field">
-      <%= f.label :email %><br />
-      <%= f.email_field :email, autofocus: true %>
-    </div>
-  <% end %>
+        <% if devise_mapping.rememberable? -%>
+          <div class="form-group">
+            <%= f.check_box :remember_me %>
+            <%= f.label :remember_me %>
+          </div>
+        <% end -%>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
+        <div class="actions">
+          <%= f.submit "Log in", class: "btn btn-primary m-m" %>
+        </div>
+      </fieldset>
+    <% end %>
+    <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+      <div class="col-md-6 col-md-offset-3">
+        <%= link_to "Forgot your password?", new_password_path(resource_name), class:"btn btn-warning btn-sm m-m" %>
+      </div>
+    <% end -%>
   </div>
+  <div class="col-md-6">
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { multipart: true, class: "form-horizontal well" }) do |f| %>
+      <%= devise_error_messages! %>
+      <legend>Sign up</legend>
+      <fieldset>
+        <% if resource.respond_to? :company_name %>
+          <div class="form-group">
+            <%= f.label :company_name, class: "col-md-2 control-label" %>
+            <div class="col-md-10">
+              <%= f.text_field :company_name, autofocus: true, placeholder: "Company name", id: "register_#{resource.class.to_s.downcase}_company_name" %>
+            </div>
+          </div>
+          <div class="form-group">
+            <%= f.label :logo, class: "col-md-2 control-label" %><em>(&lt; 1mb, square format, jpeg/png)</em>
+            <div class="col-md-10">
+              <%= f.file_field :logo, class: "btn btn-default", id: "register_#{resource.class.to_s.downcase}_logo" %>
+            </div>
+          </div>
+        <% end %>
 
-  <% if devise_mapping.rememberable? -%>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
-    </div>
-  <% end -%>
+        <% if resource.respond_to? :username %>
+          <div class="form-group">
+            <%= f.label :username, class: "col-md-2 control-label" %>
+            <div class="col-md-10">
+              <%= f.text_field :username, autofocus: true, placeholder: "Username", id: "register_#{resource.class.to_s.downcase}_username" %>
+            </div>
+          </div>
+        <% end %>
 
-  <div class="actions">
-    <%= f.submit "Log in", class: "btn btn-primary m-m" %>
+        <div class="form-group">
+          <%= f.label :email, class: "col-md-2 control-label" %>
+          <div class="col-md-10">
+            <%= f.email_field :email, placeholder: "Email", id: "register_#{resource.class.to_s.downcase}_email" %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :password, class: "col-md-2 control-label" %>
+          <div class="col-md-10">
+            <% if @minimum_password_length %>
+              <em>(<%=@minimum_password_length %> characters minimum)</em>
+            <% end %>
+          </div>
+          <%= f.password_field :password, autocomplete: "off", placeholder: "Password", id: "register_#{resource.class.to_s.downcase}_password" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :password_confirmation, class: "col-md-2 control-label" %>
+          <div class="col-md-10">
+            <%= f.password_field :password_confirmation, autocomplete: "off", id: "register_#{resource.class.to_s.downcase}_password_confirmation" %>
+          </div>
+        </div>
+
+        <div class="actions">
+          <%= f.submit "Sign up", class: "btn btn-primary" %>
+        </div>
+      </fieldset>
+    <% end %>
   </div>
-<% end %>
+</div>
 
 <%= render "devise/shared/links" %>
