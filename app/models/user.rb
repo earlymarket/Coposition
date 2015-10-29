@@ -47,6 +47,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def approved_devices_for_developer(developer)
+    devices.where(developer: developer)
+  end
+
   ##############
 
 
