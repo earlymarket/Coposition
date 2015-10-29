@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151027114001) do
+ActiveRecord::Schema.define(version: 20151029090842) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 20151027114001) do
     t.string   "logo_content_type"
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
+    t.string   "tagline"
   end
 
   add_index "developers", ["email"], name: "index_developers_on_email", unique: true, using: :btree
@@ -79,6 +80,8 @@ ActiveRecord::Schema.define(version: 20151027114001) do
     t.integer "device_id"
     t.integer "privilege"
   end
+
+  add_index "device_developer_privileges", ["developer_id", "device_id"], name: "index_device_developer_privileges_on_developer_id_and_device_id", unique: true, using: :btree
 
   create_table "devices", force: :cascade do |t|
     t.string  "uuid"
