@@ -52,7 +52,7 @@
           <div class="form-group">
             <%= f.label :company_name, class: "col-md-2 control-label" %>
             <div class="col-md-10">
-              <%= f.text_field :company_name, autofocus: true, placeholder: "Company name", id: "register_#{resource.class.to_s.downcase}_company_name" %>
+              <%= f.text_field :company_name, placeholder: "Company name", id: "register_#{resource.class.to_s.downcase}_company_name" %>
             </div>
           </div>
           <div class="form-group">
@@ -67,7 +67,7 @@
           <div class="form-group">
             <%= f.label :username, class: "col-md-2 control-label" %>
             <div class="col-md-10">
-              <%= f.text_field :username, autofocus: true, placeholder: "Username", id: "register_#{resource.class.to_s.downcase}_username" %>
+              <%= f.text_field :username, placeholder: "Username", id: "register_#{resource.class.to_s.downcase}_username" %>
             </div>
           </div>
         <% end %>
