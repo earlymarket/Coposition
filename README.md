@@ -50,7 +50,7 @@ Approving this allows the company to have access to that user's location data of
 
 ### Getting the device information
 
-`GET http://api.coposition-dev.com/v1/users/testuser/devices/`
+`GET http://api.coposition-dev.com/v1/users/testuser/devices`
 With `X-API-KEY: YourApiKey` passed as a header
 Returns an index of devices.
 
