@@ -5,6 +5,19 @@ class Device < ActiveRecord::Base
   has_many :device_developer_privileges
   has_many :developers, through: :device_developer_privileges
 
+  before_create do |dev|
+    dev.uuid = generate_uuid
+  end
+
+  # TODO: refactor duplicated code (duped with developer)
+
+  def generate_uuid
+    loop do
+      token = SecureRandom.base64.tr('+/=', 'Qrt')
+      break token unless Developer.exists?(api_key: token)
+    end
+  end
+
   def privilege_for(dev)
     device_developer_privileges.find_by(developer: dev).privilege
   end
