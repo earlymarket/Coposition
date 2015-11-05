@@ -7,8 +7,9 @@ RSpec.describe RedboxCheckin, type: :model do
 
     it "should have a device" do
       checkin = FactoryGirl::create(:redbox_checkin)
-      checkin.device = Device.create(uuid: 1234)
-      expect(checkin.device.uuid).to eq "1234"
+      dev = Device.create
+      checkin.device = dev
+      expect(checkin.device.uuid).to eq dev.uuid
     end
 
   end
