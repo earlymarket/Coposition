@@ -14,11 +14,21 @@ class Checkin < ActiveRecord::Base
 
   after_create do
     device = Device.find_by(uuid: uuid)
-    unless device
-      device = Device.create(uuid: uuid)
-      reverse_geocode!
-    end 
-    device.checkins << self
+    if device
+      device.checkins << self
+      reverse_geocode! if device.checkins.count == 1
+    else
+      if Rails.env.test?
+        # TODO: Decide whether or not this is the best idea
+        # The alternative is to explicitly state this step in every test
+        # Perhaps with a test helper?
+        dev = Device.create(uuid: uuid)
+        dev.checkins << self
+        reverse_geocode!
+      else
+        raise "UUID #{uuid} does not match a device."
+      end
+    end
   end
 
   class << self
