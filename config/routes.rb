@@ -49,10 +49,11 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show], module: :users do
     resource :dashboard, only: [:show]
-    resources :devices, except: [:update] do
+    resources :devices, except: [:update, :edit] do
       member do
         delete "checkin"
         post "switch_privilige_for_developer"
+        get "add_current_device"
       end
     end
     resources :approvals, only: [:index] do
