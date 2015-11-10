@@ -30,6 +30,10 @@ class Device < ActiveRecord::Base
     end
   end
 
+  def create_checkin(lat:, lng:)
+    checkins << Checkin.create(uuid: uuid, lat: lat, lng: lng)
+  end
+
   def change_privilege_for(dev, new_privilege)
     if dev.respond_to? :id
       dev = dev.id
