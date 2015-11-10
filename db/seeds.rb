@@ -8,7 +8,9 @@ device = FactoryGirl::create :device
 user.devices << device
 user.save!
 
-checkin = FactoryGirl::create :checkin 
+checkin = FactoryGirl::build :checkin 
+checkin.uuid = device.uuid
+checkin.save
 checkin.lat = 51.588330
 checkin.lng = -0.513069
 
