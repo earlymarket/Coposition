@@ -53,7 +53,9 @@ Rails.application.routes.draw do
       member do
         delete "checkin"
         post "switch_privilige_for_developer"
-        get "add_current_device"
+      end
+      collection do
+        get "add_current"
       end
     end
     resources :approvals, only: [:index] do
