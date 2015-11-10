@@ -5,6 +5,9 @@
   <%= f.text_field(:name, class: "form-control input-lg fifth-width", placeholder: "G-RALA") %>
   <%= f.submit("Add", class: "form-control btn btn-default") %>
   <%= hidden_field_tag('redirect', @redirect_target) %>
+  <%= hidden_field_tag('location', nil) if @adding_current_device %>
 <% end %>
+
+<%= render "preview_map" if @adding_current_device %>
 
 Since this is still in development, an IMEI and a name MUST be supplied, or an error will be raised.
