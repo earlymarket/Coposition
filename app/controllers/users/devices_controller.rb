@@ -16,6 +16,7 @@ class Users::DevicesController < ApplicationController
   def new
     @device = Device.new
     @device.uuid = params[:uuid] if params[:uuid]
+    @adding_current_device = true if params[:curr_dev]
     @redirect_target = params[:redirect] if params[:redirect]
   end
 
@@ -31,6 +32,10 @@ class Users::DevicesController < ApplicationController
         end
         device.save
         flash[:notice] = "This device has been bound to your account!"
+
+        device.create_checkin(lat: params[:location].split(",").first,
+            lng: params[:location].split(",").last) unless params[:location].blank?
+
         if params[:redirect].blank?
           redirect_to user_device_path(current_user.id, device.id)
         else
@@ -68,6 +73,11 @@ class Users::DevicesController < ApplicationController
     @device.change_privilege_for(@developer, @device.reverse_privilege_for(@developer))
     @privilege = @device.privilege_for(@developer)
     @r_privilege = @device.reverse_privilege_for(@developer)
+  end
+
+  def add_current
+    flash[:notice] = "Just enter a friendly name, and this device is good to go."
+    redirect_to new_user_device_path(uuid: Device.create.uuid, curr_dev: true)
   end
 
   private
