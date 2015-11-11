@@ -12,7 +12,7 @@
         <div class='col-lg-12 list-group-item-text'>
           <% app.user.devices.each do |device|  %>
             <div id='<%= "device#{device.id}developer#{app.developer.id}" %>' class='col-lg-3 dev-box small-curved-border small-height clearfix tiny-shadow <%= "privilege-#{device.privilege_for(app.developer)}" %>'>
-              <a href='<%= switch_privilige_for_developer_user_device_path(current_user.id, device.id, developer: app.developer.id) %>' data-method="post" data-remote="true" class='white-link' >
+              <a href='<%= switch_privilige_for_developer_user_device_path(current_user.id, device.id, developer: app.developer.id) %>' data-method='post' data-remote='true' class='white-link' >
             </div>
           <% end %>
         </div>
