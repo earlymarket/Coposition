@@ -8,7 +8,7 @@
 - Go to Dashboard > Devices > Add current device
 - Enter a friendly name for your current device
 
-### User Whereforartthou
+### Use Whereforartthou
 - Sign up on [whereforartthou.com](http://whereforartthou.com/)
 - Enter some sign up information (Does not need to relate to Coposition in any way)
 - Enter your Coposition username when prompted
