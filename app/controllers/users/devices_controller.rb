@@ -16,7 +16,7 @@ class Users::DevicesController < ApplicationController
   def new
     @device = Device.new
     @device.uuid = params[:uuid] if params[:uuid]
-    @adding_current_device = true if params[:curr_dev]
+    @adding_current_device = true if params[:curr_device]
     @redirect_target = params[:redirect] if params[:redirect]
   end
 
@@ -77,7 +77,7 @@ class Users::DevicesController < ApplicationController
 
   def add_current
     flash[:notice] = "Just enter a friendly name, and this device is good to go."
-    redirect_to new_user_device_path(uuid: Device.create.uuid, curr_dev: true)
+    redirect_to new_user_device_path(uuid: Device.create.uuid, curr_device: true)
   end
 
   private
