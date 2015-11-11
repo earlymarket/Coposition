@@ -1,6 +1,20 @@
 # Coposition
 [![Build Status](https://travis-ci.org/earlymarket/CoPosition.svg?branch=master)](https://travis-ci.org/earlymarket/CoPosition)
 
+## Example usage with demo app
+
+### Setup Coposition
+- Sign up on [coposition.com](http://coposition.com)
+- Go to Dashboard > Devices > Add current device
+- Enter a friendly name for your current device
+
+### User Whereforartthou
+- Sign up on [whereforartthou.com](http://whereforartthou.com/)
+- Enter some sign up information (Does not need to relate to Coposition in any way)
+- Enter your Coposition username when prompted
+
+Have a go at messing around with your Coposition permissions, and see how it affects WFAT
+
 ## Setup
 
 Add the following routes to your /etc/hosts
@@ -53,6 +67,8 @@ Approving this allows the company to have access to that user's location data of
 `GET http://api.coposition-dev.com/v1/users/testuser/devices`
 With `X-API-KEY: YourApiKey` passed as a header
 Returns an index of devices.
+
+
 
 
 --------
