@@ -8,7 +8,7 @@ You go an a website. Let's call it ~~Facebook~~ LifeInvader.
 
 LifeInvader will immediately start tracking your location. :eyes:
 
-But, if LifeInvader used Coposition, you'd have to specifically which of your devices it can see. :cop:
+But, if LifeInvader used Coposition, you'd have to specify which of your devices it can see. :cop:
 
 Keeping your data yours. :thumbsup:
 
