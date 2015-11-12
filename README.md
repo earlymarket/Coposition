@@ -1,6 +1,26 @@
 # Coposition
 [![Build Status](https://travis-ci.org/earlymarket/CoPosition.svg?branch=master)](https://travis-ci.org/earlymarket/CoPosition)
 
+## What's it all about?
+
+### For the users
+You go an a website. Let's call it ~~Facebook~~ LifeInvader.
+
+LifeInvader will immediately start tracking your location. :eyes:
+
+But, if LifeInvader used Coposition, you'd have to specify which of your devices it can see. :cop:
+
+Keeping your data yours. :thumbsup:
+
+
+### For the developers
+A very easy to use HTTP REST API, giving you some cool location-aware data. :neckbeard:
+
+Instant trust from your users. :innocent:
+
+Open source. If you see something you think could be improved, improve it! :shipit:
+
+
 ## Example usage with demo app
 
 ### Setup Coposition
@@ -15,7 +35,8 @@
 
 Have a go at messing around with your Coposition permissions, and see how it affects WFAT
 
-## Setup
+--------
+# Setup
 
 Add the following routes to your /etc/hosts
 
@@ -34,6 +55,15 @@ Create a user with the username `testuser`.
 Create a developer.
 
 Note the API key.
+
+### Create a device
+
+To start posting a checkin, you need to tell us which device you're posting to.
+This is determined by the UUID of the device.
+If you're creating a new device, all you need to do is request a new UUID
+
+`GET http://api.coposition.com/v1/uuid`
+With `X-API-KEY: YourApiKey` passed as a header
 
 ### Posting a checkin
 
