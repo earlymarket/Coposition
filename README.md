@@ -28,13 +28,21 @@ Add the following routes to your /etc/hosts
 `rake db:create && rake db:migrate && rake db:seed`
 
 ## Example
-### Out of date as of 12/11/15, will be updated soon
 
 Create a user with the username `testuser`.
 
 Create a developer.
 
 Note the API key.
+
+### Create a device
+
+To start posting a checkin, you need to tell us which device you're posting to.
+This is determined by the UUID of the device.
+If you're creating a new device, all you need to do is request a new UUID
+
+`GET http://api.coposition.com/v1/uuid`
+With `X-API-KEY: YourApiKey` passed as a header
 
 ### Posting a checkin
 
