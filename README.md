@@ -35,7 +35,8 @@ Open source. If you see something you think could be improved, improve it! :ship
 
 Have a go at messing around with your Coposition permissions, and see how it affects WFAT
 
-## Setup
+--------
+# Setup
 
 Add the following routes to your /etc/hosts
 
