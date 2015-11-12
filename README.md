@@ -28,6 +28,7 @@ Add the following routes to your /etc/hosts
 `rake db:create && rake db:migrate && rake db:seed`
 
 ## Example
+### Out of date as of 12/11/15, will be updated soon
 
 Create a user with the username `testuser`.
 
