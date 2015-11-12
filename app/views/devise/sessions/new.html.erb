@@ -64,6 +64,7 @@
         <% end %>
 
         <% if resource.respond_to? :username %>
+          <small><em>Lowercase letters, dashes and underscores only</em></small>
           <div class="form-group">
             <%= f.label :username, class: "col-md-2 control-label" %>
             <div class="col-md-10">
