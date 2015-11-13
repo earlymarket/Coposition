@@ -15,8 +15,9 @@
     </th>
   </tr>
   <% @device.checkins.each do |checkin| %>
+    <% binding.pry %>
     <tr id="checkin<%= checkin.id %>" class="animated">
-      <% checkin.non_geocoded_data(exception: "device_id").values.compact.each do |val| %>
+      <% checkin.non_geocoded_data(exception: "device_id").values.each do |val| %>
         <td>
           <%= val %>
         </td>
