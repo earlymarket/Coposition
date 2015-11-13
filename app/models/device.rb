@@ -18,6 +18,7 @@ class Device < ActiveRecord::Base
   def switch_fog
     self.fogged = !self.fogged
     save
+    self.fogged
   end
 
   def privilege_for(dev)

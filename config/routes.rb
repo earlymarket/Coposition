@@ -53,6 +53,7 @@ Rails.application.routes.draw do
       member do
         delete "checkin"
         post "switch_privilige_for_developer"
+        put "fog"
       end
       collection do
         get "add_current"

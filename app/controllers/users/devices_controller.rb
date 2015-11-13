@@ -11,6 +11,11 @@ class Users::DevicesController < ApplicationController
 
   def show
     @device = Device.find(params[:id]) if user_owns_device?
+    if @device.fogged?
+      @fogmessage = "Currently fogged"
+    else
+      @fogmessage = "Fog"
+    end
   end
 
   def new
@@ -78,6 +83,17 @@ class Users::DevicesController < ApplicationController
   def add_current
     flash[:notice] = "Just enter a friendly name, and this device is good to go."
     redirect_to new_user_device_path(uuid: Device.create.uuid, curr_device: true)
+  end
+
+  def fog
+    @device = Device.find(params[:id])
+    if @device.switch_fog
+      @message = "has been fogged."
+      @button_text = "Fogged"
+    else
+      @message = "is no longer fogged."
+      @button_text = "Fog"
+    end
   end
 
   private
