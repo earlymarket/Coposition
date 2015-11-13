@@ -12,10 +12,7 @@ class Device < ActiveRecord::Base
   # TODO: refactor duplicated code (duped with developer)
 
   def generate_uuid
-    loop do
-      token = SecureRandom.base64.tr('+/=', 'Qrt')
-      break token unless Developer.exists?(api_key: token)
-    end
+    SecureRandom.uuid
   end
 
   def privilege_for(dev)

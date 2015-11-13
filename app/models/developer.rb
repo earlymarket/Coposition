@@ -21,10 +21,7 @@ class Developer < ActiveRecord::Base
   end
 
   def generate_api_key
-    loop do
-      token = SecureRandom.base64.tr('+/=', 'Qrt')
-      break token unless Developer.exists?(api_key: token)
-    end
+    token = SecureRandom.uuid
   end
 
   def approved_users
