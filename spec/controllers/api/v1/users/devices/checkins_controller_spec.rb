@@ -31,7 +31,20 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
       expect(response_to_hash[:lat]).to be_within(0.00001).of(@checkin.lat)
     end
 
-    it "should fetch the last reported location's address" do
+    it "should fetch the last reported location's address in full by default" do
+      get :last, {
+        user_id: @user.id,
+        device_id: @device.id,
+        type: "address"
+      }
+
+      expect(response_to_hash[:address]).to eq "The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK"
+    end
+
+    it "should fetch the last reported location's address in full by default" do
+      # Make it fogged
+      @device.switch_fog
+
       get :last, {
         user_id: @user.id,
         device_id: @device.id,
@@ -40,7 +53,6 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
 
       expect(response_to_hash[:address]).to eq "Denham, GB"
     end
-
   end
 
 end
