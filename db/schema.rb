@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 20151113094140) do
     t.string  "uuid"
     t.integer "user_id"
     t.string  "name"
-    t.boolean "fogged"
+    t.boolean "fogged",  default: false
   end
 
   add_index "devices", ["uuid"], name: "index_devices_on_uuid", using: :btree
