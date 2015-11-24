@@ -41,9 +41,11 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
       }
 
       expect(res_hash[:address]).to eq "The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK"
+      expect(res_hash[:lat]).to eq @checkin.lat
+      expect(res_hash[:lng]).to eq @checkin.lng
     end
 
-    it "should fetch the last reported location's address in full by default" do
+    it "should fog the last reported location's address if fogged" do
       # Make it fogged
       @device.switch_fog
 
@@ -54,6 +56,8 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
       }
 
       expect(res_hash[:address]).to eq "Denham, GB"
+      expect(res_hash[:lat]).to eq(51.57471)
+      expect(res_hash[:lng]).to eq(-0.50626)
     end
   end
 
