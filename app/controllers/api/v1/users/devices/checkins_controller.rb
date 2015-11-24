@@ -8,7 +8,6 @@ class Api::V1::Users::Devices::CheckinsController < Api::ApiController
     if params[:type] == "address"
     	checkin.reverse_geocode!
       data = checkin.get_data
-      data[:address] = checkin.address
       render json: data
     else
     	render json: checkin.slice(:id, :uuid, :lat, :lng)
