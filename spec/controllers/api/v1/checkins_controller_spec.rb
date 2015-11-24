@@ -16,7 +16,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         }
 
       post :create, @demo
-      res = response_to_hash
+      res = res_hash
       
       expect(res[:uuid]).to eq @demo[:checkin][:uuid]
       expect(Checkin.count).to be (checkin_count + 1)
@@ -41,7 +41,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         }
 
       post :create, @demo
-      res = response_to_hash
+      res = res_hash
       
       expect(res[:uuid]).to eq @demo[:checkin][:uuid]
       expect(Checkin.count).to be (checkin_count + 1)

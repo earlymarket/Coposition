@@ -30,7 +30,7 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
         device_id: @device.id
       }
 
-      expect(response_to_hash[:lat]).to be_within(0.00001).of(@checkin.lat)
+      expect(res_hash[:lat]).to be_within(0.00001).of(@checkin.lat)
     end
 
     it "should fetch the last reported location's address in full by default" do
@@ -40,7 +40,7 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
         type: "address"
       }
 
-      expect(response_to_hash[:address]).to eq "The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK"
+      expect(res_hash[:address]).to eq "The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK"
     end
 
     it "should fetch the last reported location's address in full by default" do
@@ -53,7 +53,7 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
         type: "address"
       }
 
-      expect(response_to_hash[:address]).to eq "Denham, GB"
+      expect(res_hash[:address]).to eq "Denham, GB"
     end
   end
 

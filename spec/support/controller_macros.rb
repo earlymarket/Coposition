@@ -14,7 +14,7 @@ module ControllerMacros
     end
   end
 
-  def response_to_hash
+  def res_hash
     # Check if it's a different request
     @json = nil if response != @res
 
