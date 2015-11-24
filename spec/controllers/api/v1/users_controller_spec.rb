@@ -21,7 +21,6 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
 		request.headers["X-Api-Key"] = @dev.api_key
 		get :index, format: :json
-		res = res_hash
-		expect(res.first["username"]).to eq @user.username
+		expect(res_hash.first["username"]).to eq @user.username
 	end
 end
