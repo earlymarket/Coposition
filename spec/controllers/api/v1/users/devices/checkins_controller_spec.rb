@@ -1,11 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
-  include ControllerMacros
+  include ControllerMacros, CityMacros
 
   describe "endpoint" do
 
     before do
+      # Simulating all city records where name == Denham
+      @cities = create_denhams
       @developer = FactoryGirl::create :developer
       @user = FactoryGirl::create :user
       @device = FactoryGirl::create :device
