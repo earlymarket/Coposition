@@ -15,8 +15,14 @@ module ControllerMacros
   end
 
   def response_to_hash
-    json = JSON(response.body)
-    json = json.symbolize_keys unless json.is_a? Array
-    json
+    # Check if it's a different request
+    @json = nil if response != @res
+
+    @json ||= begin
+      json = JSON(response.body)
+      json = JSON(response.body).symbolize_keys unless JSON(response.body).is_a? Array
+      @res = response.dup
+      json
+    end
   end
 end
