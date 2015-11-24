@@ -29,6 +29,8 @@ gem 'faker'
 gem 'geocoder'
 
 gem "paperclip", "~> 4.3"
+
+gem 'colorize'
 # Use Unicorn as the app server
 
 group :production do
