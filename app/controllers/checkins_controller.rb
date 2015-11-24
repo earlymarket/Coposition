@@ -20,7 +20,7 @@ class CheckinsController < ApplicationController
   end
 
   def destroy
-    @@model.where(device: params[:id]).destroy_all
+    @@model.where(device: params[:id]).destroy_all if user_owns_device?
     flash[:notice] = "History deleted."
     redirect_to user_device_path(current_user.id, params[:id])
   end

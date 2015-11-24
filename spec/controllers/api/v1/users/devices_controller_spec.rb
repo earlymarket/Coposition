@@ -23,8 +23,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
 
     it "should GET a list of devices of a specific user" do
       get :index, user_id: @user.username, format: :json
-      res = response_to_hash
-      expect(res.first["id"]).to be @device.id
+      expect(res_hash.first["id"]).to be @device.id
     end
 
     it "should record the request" do
@@ -35,20 +34,17 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
 
     it "should GET information on a specific device for a specific user" do
       get :show, user_id: @user.username, id: @device.id, format: :json
-      res = response_to_hash
-      expect(res.first["id"]).to be @device.id
+      expect(res_hash.first["id"]).to be @device.id
 		end
 
     it "should let you know the last checkin for a list of devices if there is one" do
       get :index, user_id: @user.username, id: @device.id, format: :json
-      res = response_to_hash
-      expect(res.first["last_checkin"]["id"]).to eq @checkin.id
+      expect(res_hash.first["last_checkin"]["id"]).to eq @checkin.id
     end
 
     it "should let you know the last checkin for device if there is one" do
       get :show, user_id: @user.username, id: @device.id, format: :json
-      res = response_to_hash
-      expect(res.first["last_checkin"]["id"]).to eq @checkin.id
+      expect(res_hash.first["last_checkin"]["id"]).to eq @checkin.id
     end
 
     it "should not only return devices for which the developer has permission" do

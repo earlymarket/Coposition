@@ -1,5 +1,6 @@
 <h1><%= @device.name %></h1>
 <br>
+<%= link_to(@fogmessage, fog_user_device_path(current_user.id, @device.id), { method: :put, class: "btn btn-info btn-lg m-m", id:"fogButton", remote: true  })%>
 <%= link_to("Delete history", redbox_checkin_path, { method: :delete, class: "btn btn-danger btn-lg m-m"  })%>
 <%= link_to("Delete device", "#{user_devices_path}/#{@device.id}", { method: :delete, class: "btn btn-danger btn-lg m-m" })%>
 

@@ -16,9 +16,8 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         }
 
       post :create, @demo
-      res = response_to_hash
       
-      expect(res[:uuid]).to eq @demo[:checkin][:uuid]
+      expect(res_hash[:uuid]).to eq @demo[:checkin][:uuid]
       expect(Checkin.count).to be (checkin_count + 1)
       expect(Device.count).to be (device_count + 1)
     end
@@ -41,9 +40,8 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         }
 
       post :create, @demo
-      res = response_to_hash
       
-      expect(res[:uuid]).to eq @demo[:checkin][:uuid]
+      expect(res_hash[:uuid]).to eq @demo[:checkin][:uuid]
       expect(Checkin.count).to be (checkin_count + 1)
       expect(Device.find_by(uuid: uuid)).to_not be nil
     end

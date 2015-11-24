@@ -47,6 +47,15 @@ class Checkin < ActiveRecord::Base
 
   end
 
+  # The method to be used for public-facing data 
+  def get_data
+    return self unless device.fogged?
+    self.lat = nearest_city.latitude
+    self.lng = nearest_city.longitude
+    self.address = "#{city}, #{country}"
+    self
+  end
+
   def non_geocoded_data(exception: nil)
     self.as_json.except(*Checkin.geocoded_keys, exception)
   end
@@ -62,6 +71,11 @@ class Checkin < ActiveRecord::Base
   def reverse_geocoded?
     !address.nil?
   end
+
+  def nearest_city
+    @nearest_city ||= City.where(name: city, country_code: country).near(self).first
+  end
+
 
   protected
 

@@ -15,6 +15,12 @@ class Device < ActiveRecord::Base
     SecureRandom.uuid
   end
 
+  def switch_fog
+    self.fogged = !self.fogged
+    save
+    self.fogged
+  end
+
   def privilege_for(dev)
     device_developer_privileges.find_by(developer: dev).privilege
   end
