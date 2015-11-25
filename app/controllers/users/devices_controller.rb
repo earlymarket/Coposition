@@ -26,26 +26,12 @@ class Users::DevicesController < ApplicationController
   end
 
   def create
-    device = Device.find_by uuid: allowed_params[:uuid]
-    if device
+    @device = Device.find_by uuid: allowed_params[:uuid]
+    if @device
       # Providing that there isn't anyone currently assigned
-      if device.user.nil?
-        device.user = current_user
-        device.name = allowed_params[:name]
-        device.developers << current_user.approved_developers.map do |app|
-          app.developer
-        end
-        device.save
-        flash[:notice] = "This device has been bound to your account!"
-
-        device.create_checkin(lat: params[:location].split(",").first,
-            lng: params[:location].split(",").last) unless params[:location].blank?
-
-        if params[:redirect].blank?
-          redirect_to user_device_path(current_user.id, device.id)
-        else
-          redirect_to params[:redirect]
-        end
+      if @device.user.nil?
+        create_checkin
+        redirect_using_param_or(default: user_device_path(current_user.id, @device.id))
       else
         flash[:alert] = "This device has already been assigned an account!"
         redirect_to new_user_device_path
@@ -101,4 +87,24 @@ class Users::DevicesController < ApplicationController
     params.require(:device).permit(:uuid,:name)
   end
 
+  def create_checkin
+    @device.user = current_user
+    @device.name = allowed_params[:name]
+    @device.developers << current_user.approved_developers.map do |app|
+      app.developer
+    end
+    @device.save
+    flash[:notice] = "This device has been bound to your account!"
+
+    @device.create_checkin(lat: params[:location].split(",").first,
+        lng: params[:location].split(",").last) unless params[:location].blank?
+  end
+
+  def redirect_using_param_or(default:)
+    if params[:redirect].blank?
+      redirect_to default
+    else
+      redirect_to params[:redirect]
+    end
+  end
 end
