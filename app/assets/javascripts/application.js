@@ -13,7 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require lettering
-//= require toastr.min
+//= require libs/lettering
+//= require libs/toastr.min
 //= require utility
 //= require_tree .

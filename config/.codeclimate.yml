@@ -1,0 +1,7 @@
+languages:
+   Ruby: true
+   JavaScript: true
+exclude_paths:
+- "app/assets/javascripts/libs/*"
+- "app/assets/stylesheets/libs/*"
+- "public/assets/*"
