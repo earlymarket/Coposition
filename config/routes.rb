@@ -78,18 +78,7 @@ Rails.application.routes.draw do
   end
 
 
-
-
-
-  # Redbox
-
-  namespace :redbox do
-    resources :checkins, only: [:index, :show, :create, :destroy] do
-      collection do
-        get :spoof
-        post :create_spoofs
-      end
-    end
-  end
+  # Checkins
+  resources :checkins, only: [:index, :show, :destroy]
 
 end
