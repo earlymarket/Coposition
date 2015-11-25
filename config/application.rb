@@ -44,6 +44,5 @@ module Coposition
 
     require './lib/approval_methods'
 
-    require "./lib/request_fixture"
   end
 end
