@@ -1,5 +1,6 @@
 # Coposition
 [![Build Status](https://travis-ci.org/earlymarket/CoPosition.svg?branch=master)](https://travis-ci.org/earlymarket/CoPosition)
+[![Code Climate](https://codeclimate.com/github/earlymarket/CoPosition/badges/gpa.svg)](https://codeclimate.com/github/earlymarket/CoPosition)
 
 ## What's it all about?
 
