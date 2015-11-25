@@ -56,6 +56,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'codeclimate-test-reporter', require: nil
   gem 'selenium-webdriver'
   gem 'cucumber-rails', :require => false
   gem 'launchy'
