@@ -11,19 +11,42 @@ RSpec.describe Users::DevicesController, type: :controller do
 
   describe "posting" do
 
+    let(:empty_device) { Device.create }
+    let(:device) { FactoryGirl::create :device }
+    let(:user) { User.last }
+
     it "should POST to with a UUID" do
       # For some reason, subject.current user was returning some weird results. Using last User instead
-      @device = Device.create
-      @user = User.last
       post :create, {
-      	user_id: @user.username,
-      	device: { uuid: @device.uuid }
+      	user_id: user.username,
+      	device: { uuid: empty_device.uuid }
       }
       
       expect(response.code).to eq "302"
-      expect(@user.devices.count).to be 1
-      expect(@user.devices.last).to eq @device
+      expect(user.devices.count).to be 1
+      expect(user.devices.last).to eq empty_device
     end
+
+  it "should switch fogging status to true by default" do
+    expect(device.fogged?).to be false
+    request.accept = "text/javascript"
+    put :fog, {
+      user_id: user.username,
+      id: device.id
+    }
+
+    device.reload
+    expect(device.fogged?).to be true
+    
+    request.accept = "text/javascript"
+    put :fog, {
+      user_id: user.username,
+      id: device.id
+    }
+
+    device.reload
+    expect(device.fogged?).to be false
+  end
 
   end
 
