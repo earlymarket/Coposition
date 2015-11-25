@@ -11,92 +11,14 @@
   <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
 </head>
 <body>
-  <nav class="navbar navbar-inverse" data-turbolinks-permanent>
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/">CoPosition</a>
-      </div>
 
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-        <ul class="nav navbar-nav">
-          <li><a href="<%= signed_in? ? developers_console_path : new_developer_session_path %>">Developers</a></li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">About <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#">Security</a></li>
-              <li><a href="#">Enrolled companies</a></li>
-              <li><a href="#">Why use CoPosition</a></li>
-              <li class="divider"></li>
-              <li><a href="#">Redbox</a></li>
-            </ul>
-          </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-        <% if  user_signed_in? && developer_signed_in? %>
-          <li>
-            <%= link_to("Sign out", destroy_user_session_path, method: :delete)  %>
-          </li>
-          <li>
-            <%= link_to("Dashboard", user_dashboard_path(current_user)) %>
-          </li>
-        <% else %>
-          <% if user_signed_in? %>
-            <li>
-              <%= link_to("Sign out", destroy_user_session_path, method: :delete) %>
-            </li>
-            <li>
-              <%= link_to("Dashboard", user_dashboard_path(current_user)) %>
-            </li>
-            <% else %>
-            <li>
-              <%= link_to("Sign in", new_user_session_path) %>
-            </li>
-          <% end %>
-          <!-- <li>
-            <%= developer_signed_in? ? link_to("Sign out", destroy_developer_session_path, method: :delete) : link_to("Developer sign in", new_developer_session_path) %>
-          </li> -->
-        <% end %>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <%= render partial: "layouts/navbar" %>
+
   <% if developer_signed_in? %>
     <%= link_to image_tag(current_developer.logo.url(:thumb), class: "small-curved-border half-opacity negative-m-m"), developers_console_path, class: "fixed bottom left" %>
   <% end %>
-  <center>
-    <% if alert %>
-      <div class="col-xs-4 col-xs-offset-4 alert alert-dismissible alert-danger animated flipInX">
-        <button type="button" class="close">×</button>
-          <%= alert %>
-      </div>
-      <div class="clearfix"></div>
-    <% end %>
-    <% if notice %>
-      <div class="col-xs-4 col-xs-offset-4 alert alert-dismissible alert-info animated flipInX">
-        <button type="button" class="close">×</button>
-          <%= notice %>
-      </div>
-      <div class="clearfix"></div>
-    <% end %>
-    <% if flash[:notification] %>
-      <% flash[:notification].each do |n|%>
-        <div class="col-xs-4 col-xs-offset-4 alert alert-dismissible alert-info animated tada">
-          <button type="button" class="close">×</button>
-          <%= link_to(n[:notification][:msg].html_safe, eval(n[:notification][:link_path])) %>
-        </div>
-      <% end %>
-      <div class="clearfix"></div>
-      <% flash.discard(:notification) %>
-    <% end %>
-    <div id="container" class="animated-fast slideInRight container">
-      <%= yield %>
-    </div>
-  </center>
+  
+  <%= render partial: "layouts/notifications" %>
+
 </body>
 </html>
