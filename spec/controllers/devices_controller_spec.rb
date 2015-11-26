@@ -10,11 +10,13 @@ RSpec.describe Users::DevicesController, type: :controller do
     expect(subject.current_user).to_not be nil
   end
 
+  let(:empty_device) { Device.create }
+  let(:device) { FactoryGirl::create :device }
+  let(:user) { User.last }
+
+
   describe "posting" do
 
-    let(:empty_device) { Device.create }
-    let(:device) { FactoryGirl::create :device }
-    let(:user) { User.last }
 
     it "should POST to with a UUID" do
       # For some reason, subject.current user was returning some weird results. Using last User instead
@@ -56,7 +58,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       device.user = user
       device.save
       priv = device.privilege_for(developer)
-      
+
       request.accept = "text/javascript"
       post :switch_privilege_for_developer, {
         id: device.id,
@@ -65,6 +67,18 @@ RSpec.describe Users::DevicesController, type: :controller do
       }
 
       expect(device.privilege_for(developer)).to_not be priv
+    end
+
+    it "should delete" do
+      device.user = user
+      device.save
+      count = Device.count
+      delete :destroy, { 
+        user_id: user.username,
+        id: device.id
+      }
+
+      expect(Device.count).to be (count-1)
     end
 
   end
