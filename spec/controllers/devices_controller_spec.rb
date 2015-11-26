@@ -27,26 +27,40 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(user.devices.last).to eq empty_device
     end
 
-  it "should switch fogging status to true by default" do
-    expect(device.fogged?).to be false
-    request.accept = "text/javascript"
-    put :fog, {
-      user_id: user.username,
-      id: device.id
-    }
+    it "should switch fogging status to true by default" do
+      expect(device.fogged?).to be false
+      request.accept = "text/javascript"
+      put :fog, {
+        user_id: user.username,
+        id: device.id
+      }
 
-    device.reload
-    expect(device.fogged?).to be true
-    
-    request.accept = "text/javascript"
-    put :fog, {
-      user_id: user.username,
-      id: device.id
-    }
+      device.reload
+      expect(device.fogged?).to be true
+      
+      request.accept = "text/javascript"
+      put :fog, {
+        user_id: user.username,
+        id: device.id
+      }
 
-    device.reload
-    expect(device.fogged?).to be false
-  end
+      device.reload
+      expect(device.fogged?).to be false
+    end
+
+
+    it "should switch privilege for a developer" do
+      developer = FactoryGirl::create(:developer)
+      device.developers << developer
+      priv = device.privilege_for(developer)
+      post :switch_privilege_for_developer, {
+        id: device.id,
+        user_id: user.username,
+        developer: developer.id
+      }
+
+      expect(device.privilege_for(developer)).to_not be priv
+    end
 
   end
 

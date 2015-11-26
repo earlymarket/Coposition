@@ -10,7 +10,7 @@
         <div class="col-lg-12 list-group-item-text">
           <% device.developers.each do |developer| %>
             <div id="<%= "device#{device.id}developer#{developer.id}" %>" class="col-lg-2 col-lg-offset-1 dev-box small-curved-border small-height clearfix tiny-shadow m-tb-s <%= "privilege-#{device.privilege_for(developer)}" %>">
-              <%= link_to(developer.company_name, switch_privilige_for_developer_user_device_path(current_user.id, device.id, developer: developer.id), html_options={ method: :post, remote: true, class: "white-link" })  %>
+              <%= link_to(developer.company_name, switch_privilege_for_developer_user_device_path(current_user.id, device.id, developer: developer.id), html_options={ method: :post, remote: true, class: "white-link" })  %>
             </div>
           <% end %>
         </div>

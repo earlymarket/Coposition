@@ -52,7 +52,7 @@ Rails.application.routes.draw do
     resources :devices, except: [:update, :edit] do
       member do
         delete "checkin"
-        post "switch_privilige_for_developer"
+        post "switch_privilege_for_developer"
         put "fog"
       end
       collection do

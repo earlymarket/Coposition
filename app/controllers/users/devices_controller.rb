@@ -58,7 +58,7 @@ class Users::DevicesController < ApplicationController
     Device.find(params[:id]).checkins.find(@checkin_id).delete if user_owns_device?
   end
 
-  def switch_privilige_for_developer
+  def switch_privilege_for_developer
     @device = Device.find(params[:id]) if user_owns_device?
     @developer = Developer.find(params[:developer])
     @device.change_privilege_for(@developer, @device.reverse_privilege_for(@developer))
