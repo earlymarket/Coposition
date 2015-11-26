@@ -1,10 +1,19 @@
 module ControllerMacros
-  # def login_admin
-  #   before(:each) do
-  #     @request.env["devise.mapping"] = Devise.mappings[:admin]
-  #     sign_in FactoryGirl.create(:admin) # Using factory girl as an example
-  #   end
-  # end
+
+  class << self
+    def included(target)
+      overwrite_actor_owns_resource
+    end
+
+    def overwrite_actor_owns_resource
+      ApplicationController.class_eval do
+        def actor_owns_resource?(actor, resource, id)
+          resource = resource.titleize.constantize
+          resource.find(id).send(actor) == User.last
+        end
+      end
+    end
+  end
 
   def login_user
     before(:each) do
@@ -25,4 +34,5 @@ module ControllerMacros
       json
     end
   end
+
 end

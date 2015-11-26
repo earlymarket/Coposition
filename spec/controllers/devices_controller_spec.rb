@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Users::DevicesController, type: :controller do
+  include ControllerMacros
 
   login_user
 
@@ -52,7 +53,11 @@ RSpec.describe Users::DevicesController, type: :controller do
     it "should switch privilege for a developer" do
       developer = FactoryGirl::create(:developer)
       device.developers << developer
+      device.user = user
+      device.save
       priv = device.privilege_for(developer)
+      
+      request.accept = "text/javascript"
       post :switch_privilege_for_developer, {
         id: device.id,
         user_id: user.username,

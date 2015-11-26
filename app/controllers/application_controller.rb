@@ -19,8 +19,9 @@ class ApplicationController < ActionController::Base
       # Usage: user_owns_device?
       # Checks whether resource belongs to actor
 
+      # Overwritten by ControllerMacros in tests (when included)
+      
       resource = resource.titleize.constantize
-      item = resource.find(id)
-      item.send(actor) == send("current_#{actor}")
+      resource.find(id).send(actor) == send("current_#{actor}")
     end
 end
