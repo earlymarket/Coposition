@@ -75,13 +75,4 @@ class Checkin < ActiveRecord::Base
   def nearest_city
     @nearest_city ||= City.where(name: city, country_code: country).near(self).first
   end
-
-
-  protected
-
-  def self.range_array(from, size)
-    from = [from]
-    (size - 1).times {|x| from << (from.last + 1)}
-    from
-  end
 end
