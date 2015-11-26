@@ -56,16 +56,18 @@ class User < ActiveRecord::Base
 
 
   def notifications
-    x = []
-    if pending_approvals.present?
-      x << {
-        notification: {
-            msg: "You have #{pending_approvals.count} pending approvals",
-            link_path: "user_approvals_path"
+    @notes ||= begin
+      @notes = []
+      if pending_approvals.present?
+        @notes << {
+          notification: {
+              msg: "You have #{pending_approvals.count} pending approvals",
+              link_path: "user_approvals_path"
+            }
           }
-        }
+      end
+      @notes
     end
-    x
   end
 
 end

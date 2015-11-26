@@ -17,11 +17,7 @@ class Developer < ActiveRecord::Base
 
 
   before_create do |dev|
-    dev.api_key = generate_api_key
-  end
-
-  def generate_api_key
-    token = SecureRandom.uuid
+    dev.api_key = SecureRandom.uuid
   end
 
   def approved_users
