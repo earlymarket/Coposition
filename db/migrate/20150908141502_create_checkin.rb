@@ -13,6 +13,7 @@ class CreateCheckin < ActiveRecord::Migration
       t.string :date
       t.float :rotorspeed
       t.string :enginespeed
+      t.timestamps
     end
   end
 end
