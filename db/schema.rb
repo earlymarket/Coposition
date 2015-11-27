@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151123140935) do
+ActiveRecord::Schema.define(version: 20151127104219) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(version: 20151123140935) do
     t.integer "user_id"
     t.string  "name"
     t.boolean "fogged",  default: false
+    t.integer "delayed"
   end
 
   add_index "devices", ["uuid"], name: "index_devices_on_uuid", using: :btree
