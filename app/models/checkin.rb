@@ -49,11 +49,6 @@ class Checkin < ActiveRecord::Base
 
   # The method to be used for public-facing data 
   def get_data
-    if device.delayed?
-      binding.pry
-    end 
-
-
     if device.fogged?
       self.lat = nearest_city.latitude
       self.lng = nearest_city.longitude
