@@ -1,2 +1,16 @@
 toastr["success"]("<%= @device.name %> <%= @message %>", "Privilege change")
-$('#fogButton').html("<%= @button_text %>")
+
+var button = $('#fogButton');
+var delaySpan = $('#delaySpan')
+
+button.html("<%= @button_text %>")
+
+delaySpan.removeClass();
+
+<% if @device.fogged? %>
+  delaySpan.show(300);
+  delaySpan.animateCSS("fadeIn");
+<% else %>
+  delaySpan.animateCSS("fadeOut");
+  delaySpan.hide(300);
+<% end %>
