@@ -37,7 +37,25 @@ function addClickListeners() {
   $(".close").click(function(e){
     utility.animations.removeEl($(e.currentTarget).parent());
   });
+  
+  applyFoggleClickListener();
 };
+
+function applyFoggleClickListener() {
+  var fSection = $('#fogging-section');
+  var foggle = $('#foggle');
+  foggle.click(function() {
+  fSection.removeClass("fadeOutUp fadeInDown")
+    fSection.show(500);
+    fSection.animateCSS("fadeInDown")
+    foggle.click(function() {
+      fSection.hide(1000);
+      fSection.animateCSS("fadeOutUp")
+      foggle.unbind( "click" )
+      applyFoggleClickListener();
+    });
+  });
+}
 
 toastr.options = {
   "closeButton": false,
