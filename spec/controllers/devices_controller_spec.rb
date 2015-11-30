@@ -51,6 +51,17 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(device.fogged?).to be false
     end
 
+    it "should set a delay" do
+      request.accept = "text/javascript"
+      post :set_delay, {
+        id: device.id,
+        user_id: user.username,
+        mins: 13
+      }
+
+      device.reload
+      expect(device.delayed).to be 13
+    end
 
     it "should switch privilege for a developer" do
       developer = FactoryGirl::create(:developer)
@@ -80,6 +91,7 @@ RSpec.describe Users::DevicesController, type: :controller do
 
       expect(Device.count).to be (count-1)
     end
+
 
   end
 
