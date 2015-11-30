@@ -5,14 +5,13 @@ class Device < ActiveRecord::Base
   has_many :developers, through: :device_developer_privileges
 
   before_create do |dev|
-    dev.uuid = generate_uuid
+    dev.uuid = SecureRandom.uuid
   end
 
-  # TODO: refactor duplicated code (duped with developer)
-
-  def generate_uuid
-    SecureRandom.uuid
+  def checkins
+    delayed? ? super.where("created_at < ?", delayed.minutes.ago) : super
   end
+
 
   def switch_fog
     self.fogged = !self.fogged

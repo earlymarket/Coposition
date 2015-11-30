@@ -51,6 +51,7 @@ Rails.application.routes.draw do
     resource :dashboard, only: [:show]
     resources :devices, except: [:update, :edit] do
       member do
+        post "set_delay"
         delete "checkin"
         post "switch_privilege_for_developer"
         put "fog"

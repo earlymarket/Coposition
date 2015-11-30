@@ -82,6 +82,12 @@ class Users::DevicesController < ApplicationController
     end
   end
 
+  def set_delay
+    @device = Device.find(params[:id])
+    @device.delayed = params[:mins]
+    @device.save
+  end
+
   private
   def allowed_params
     params.require(:device).permit(:uuid,:name)

@@ -49,10 +49,12 @@ class Checkin < ActiveRecord::Base
 
   # The method to be used for public-facing data 
   def get_data
-    return self unless device.fogged?
-    self.lat = nearest_city.latitude
-    self.lng = nearest_city.longitude
-    self.address = "#{city}, #{country}"
+    if device.fogged?
+      self.lat = nearest_city.latitude
+      self.lng = nearest_city.longitude
+      self.address = "#{city}, #{country}"
+    end
+
     self
   end
 

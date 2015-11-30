@@ -1,0 +1,12 @@
+<div id="fogging-section" style="display:none;">
+  <hr>
+  <%= link_to(@fogmessage, fog_user_device_path(current_user.id, @device.id), { method: :put, class: "btn btn-info btn-lg m-m", id:"fogButton", remote: true, data: { fogged: @device.fogged? }  })%>
+    <span id="delaySpan" style="<%= 'display:none;' if !@device.fogged? %>">
+      with a delay of 
+      <%= form_tag(set_delay_user_device_path(current_user.id, @device.id) + ".js" , method: "post", class:"inline", remote: true) do %>
+        <%= text_field_tag(:mins, @device.delayed, size: 1) %>
+      <% end %> 
+      minutes.
+    </span>
+  <hr>
+</div>

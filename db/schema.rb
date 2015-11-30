@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151123140935) do
+ActiveRecord::Schema.define(version: 20151127142618) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,24 +30,26 @@ ActiveRecord::Schema.define(version: 20151123140935) do
   add_index "approvals", ["user_id"], name: "index_approvals_on_user_id", using: :btree
 
   create_table "checkins", force: :cascade do |t|
-    t.string  "status"
-    t.float   "lat"
-    t.float   "lng"
-    t.string  "n_s"
-    t.string  "e_w"
-    t.float   "gspeed"
-    t.float   "altitude"
-    t.float   "course"
-    t.string  "time"
-    t.string  "date"
-    t.float   "rotorspeed"
-    t.string  "enginespeed"
-    t.string  "uuid"
-    t.integer "device_id"
-    t.string  "address"
-    t.string  "city"
-    t.string  "postal_code"
-    t.string  "country"
+    t.string   "status"
+    t.float    "lat"
+    t.float    "lng"
+    t.string   "n_s"
+    t.string   "e_w"
+    t.float    "gspeed"
+    t.float    "altitude"
+    t.float    "course"
+    t.string   "time"
+    t.string   "date"
+    t.float    "rotorspeed"
+    t.string   "enginespeed"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "uuid"
+    t.integer  "device_id"
+    t.string   "address"
+    t.string   "city"
+    t.string   "postal_code"
+    t.string   "country"
   end
 
   create_table "cities", force: :cascade do |t|
@@ -95,6 +97,7 @@ ActiveRecord::Schema.define(version: 20151123140935) do
     t.integer "user_id"
     t.string  "name"
     t.boolean "fogged",  default: false
+    t.integer "delayed"
   end
 
   add_index "devices", ["uuid"], name: "index_devices_on_uuid", using: :btree
