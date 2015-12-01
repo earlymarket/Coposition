@@ -31,6 +31,10 @@ gem 'geocoder'
 gem "paperclip", "~> 4.3"
 
 gem 'colorize'
+
+gem 'simple_token_authentication'
+
+
 # Use Unicorn as the app server
 
 group :production do

@@ -35,4 +35,8 @@ class Api::ApiController < ActionController::Base
       return false
     end
   end
+
+  def ensure_app
+    # Have something here to ensure that the data is coming from the Copo app
+  end
 end

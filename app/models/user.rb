@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
   extend FriendlyId
   include ApprovalMethods
 
+  acts_as_token_authenticatable
+
   friendly_id :username, use: [:slugged, :finders]
 
   devise :database_authenticatable, :registerable,

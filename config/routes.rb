@@ -5,12 +5,12 @@ Rails.application.routes.draw do
 
   # Devise
 
-  devise_for :users, controllers:
-   { registrations: 'users/devise/registrations' }
+  devise_for :users, controllers: { 
+    registrations: 'users/devise/registrations',
+    sessions: 'users/devise/sessions'
+  }
   devise_for :developers, controllers:
    { registrations: 'developers/devise/registrations' }
-
-
 
   # API
 
@@ -40,6 +40,9 @@ Rails.application.routes.draw do
           end
         end
       end
+      namespace :mobile_app do
+        resources :sessions, only: [:create, :destroy]
+      end
     end
   end
 
@@ -51,19 +54,19 @@ Rails.application.routes.draw do
     resource :dashboard, only: [:show]
     resources :devices, except: [:update, :edit] do
       member do
-        post "set_delay"
-        delete "checkin"
-        post "switch_privilege_for_developer"
-        put "fog"
+        post 'set_delay'
+        delete 'checkin'
+        post 'switch_privilege_for_developer'
+        put 'fog'
       end
       collection do
-        get "add_current"
+        get 'add_current'
       end
     end
     resources :approvals, only: [:index] do
       member do
-        post "approve"
-        post "reject"
+        post 'approve'
+        post 'reject'
       end 
     end
   end
