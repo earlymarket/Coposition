@@ -9,6 +9,7 @@ h5 {
 }
 
 #placeholderTitle {
+	font-family: inherit;
     color: white;
     width: 7em;
     border: 1px solid white;
