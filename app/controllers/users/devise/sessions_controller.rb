@@ -6,18 +6,14 @@ class Users::Devise::SessionsController < Devise::SessionsController
   protect_from_forgery with: :null_session
 
   def create
-    coposition_app? ? respond_with_auth_token : super
+    req_from_coposition_app? ? respond_with_auth_token : super
   end
 
   def destroy
-    coposition_app? ? respond_with_auth_token : super
+    req_from_coposition_app? ? destroy_auth_token : super
   end
 
   private
-
-    def coposition_app?
-      request.headers["Secret-app-key"] == Rails.application.secrets.mobile_app_key
-    end
 
     def respond_with_auth_token
     # Fetch params

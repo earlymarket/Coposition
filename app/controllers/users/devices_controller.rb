@@ -1,5 +1,7 @@
 class Users::DevicesController < ApplicationController
 
+  acts_as_token_authentication_handler_for User
+  protect_from_forgery with: :null_session
   before_action :authenticate_user!
 
   def index
@@ -31,7 +33,7 @@ class Users::DevicesController < ApplicationController
       # Providing that there isn't anyone currently assigned
       if @device.user.nil?
         create_device
-        redirect_using_param_or_default
+        redirect_using_param_or_default unless via_app
       else
         flash[:alert] = "This device has already been assigned an account!"
         redirect_to new_user_device_path
@@ -89,6 +91,10 @@ class Users::DevicesController < ApplicationController
   end
 
   private
+    def via_app
+      render json: @device.to_json if req_from_coposition_app?
+    end
+
     def allowed_params
       params.require(:device).permit(:uuid,:name)
     end
