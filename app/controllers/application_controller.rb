@@ -12,6 +12,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def req_from_coposition_app?
+    request.headers["Secret-app-key"] == Rails.application.secrets.mobile_app_key
+  end
+
+
   protected
 
     def actor_owns_resource?(actor, resource, id)
