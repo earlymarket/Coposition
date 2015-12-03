@@ -89,7 +89,7 @@ RSpec.describe Users::DevicesController, type: :controller do
         id: device.id
       }
 
-      expect(Device.count).to be (count-1)
+      expect(Device.count).to be count-1
     end
 
 

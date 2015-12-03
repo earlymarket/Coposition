@@ -21,16 +21,16 @@ class Users::Devise::SessionsController < Devise::SessionsController
 
     def respond_with_auth_token
     # Fetch params
-      email = params[:user][:email] if params[:user]
-      password = params[:user][:password] if params[:user]
+      @email = params[:user][:email] if params[:user]
+      @password = params[:user][:password] if params[:user]
 
       # Validations
       validate_request
 
       # Authentication
-      user = User.find_by(email: email)
+      user = User.find_by(email: @email)
 
-      if user && user.valid_password?(password)
+      if user && user.valid_password?(@password)
         user.restore_authentication_token!
         # Note that the data which should be returned depends heavily of the API client needs.
         render status: 200, json: { email: user.email, authentication_token: user.authentication_token }
@@ -58,7 +58,7 @@ class Users::Devise::SessionsController < Devise::SessionsController
         return
       end
 
-      if email.nil? or password.nil?
+      if @email.nil? or @password.nil?
         render status: 400, json: { message: 'The request MUST contain the user email and password.' }
         return
       end
