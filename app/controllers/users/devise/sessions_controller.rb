@@ -25,27 +25,15 @@ class Users::Devise::SessionsController < Devise::SessionsController
       password = params[:user][:password] if params[:user]
 
       # Validations
-      if request.format != :json
-        render status: 406, json: { message: 'The request must be JSON.' }
-        return
-      end
-
-      if email.nil? or password.nil?
-        render status: 400, json: { message: 'The request MUST contain the user email and password.' }
-        return
-      end
+      validate_request
 
       # Authentication
       user = User.find_by(email: email)
 
-      if user
-        if user.valid_password? password
-          user.restore_authentication_token!
-          # Note that the data which should be returned depends heavily of the API client needs.
-          render status: 200, json: { email: user.email, authentication_token: user.authentication_token }
-        else
-          render status: 401, json: { message: 'Invalid email or password.' }
-        end
+      if user && user.valid_password?(password)
+        user.restore_authentication_token!
+        # Note that the data which should be returned depends heavily of the API client needs.
+        render status: 200, json: { email: user.email, authentication_token: user.authentication_token }
       else
         render status: 401, json: { message: 'Invalid email or password.' }
       end
@@ -61,6 +49,18 @@ class Users::Devise::SessionsController < Devise::SessionsController
         user.authentication_token = nil
         user.save!
         render status: 204, json: nil
+      end
+    end
+
+    def validate_request
+      if request.format != :json
+        render status: 406, json: { message: 'The request must be JSON.' }
+        return
+      end
+
+      if email.nil? or password.nil?
+        render status: 400, json: { message: 'The request MUST contain the user email and password.' }
+        return
       end
     end
 
