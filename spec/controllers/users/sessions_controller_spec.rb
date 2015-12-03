@@ -31,6 +31,34 @@ RSpec.describe Users::Devise::SessionsController, type: :controller do
       expect(res_hash[:authentication_token]).to eq user.authentication_token
     end
 
+    it "should make sure the secret app key is correct" do
+      request.headers["Secret-app-key"] = "NOT-a-mobile-app" 
+      request.env['devise.mapping'] = Devise.mappings[:user]
+      post :create, 
+        user: {
+          email: user.email,
+          password: user.password
+        }, 
+        format: :json
+      
+      expect(res_hash[:email]).to be nil
+      expect(res_hash[:authentication_token]).to be nil
+    end
+
+    it "should make sure the password is correct" do
+      request.headers["Secret-app-key"] = "this-is-a-mobile-app"
+      request.env['devise.mapping'] = Devise.mappings[:user]
+      post :create, 
+        user: {
+          email: user.email,
+          password: user.password + "incorrect",
+        }, 
+        format: :json
+      
+      expect(res_hash[:email]).to be nil
+      expect(res_hash[:authentication_token]).to be nil
+    end
+
 
   end
 
