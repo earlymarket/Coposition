@@ -1,5 +1,6 @@
 class Api::ApiController < ActionController::Base
-  
+
+
   private
  
   def authenticate
@@ -36,7 +37,4 @@ class Api::ApiController < ActionController::Base
     end
   end
 
-  def ensure_app
-    # Have something here to ensure that the data is coming from the Copo app
-  end
 end

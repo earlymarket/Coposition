@@ -25,7 +25,7 @@ class Users::Devise::SessionsController < Devise::SessionsController
       @password = params[:user][:password] if params[:user]
 
       # Validations
-      validate_request
+      return unless valid_request?
 
       # Authentication
       user = User.find_by(email: @email)
@@ -52,16 +52,18 @@ class Users::Devise::SessionsController < Devise::SessionsController
       end
     end
 
-    def validate_request
+    def valid_request?
       if request.format != :json
         render status: 406, json: { message: 'The request must be JSON.' }
-        return
+        return false
       end
 
       if @email.nil? or @password.nil?
         render status: 400, json: { message: 'The request MUST contain the user email and password.' }
-        return
+        return false
       end
+
+      true
     end
 
 end
