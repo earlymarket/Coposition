@@ -24,8 +24,6 @@ class Users::Devise::SessionsController < Devise::SessionsController
       email = params[:user][:email] if params[:user]
       password = params[:user][:password] if params[:user]
 
-      id = User.find_by(email: email).try(:id) if email.presence
-
       # Validations
       if request.format != :json
         render status: 406, json: { message: 'The request must be JSON.' }
