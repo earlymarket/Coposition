@@ -30,7 +30,7 @@ class Users::DevicesController < ApplicationController
     if @device
       # Providing that there isn't anyone currently assigned
       if @device.user.nil?
-        create_checkin
+        create_device
         redirect_using_param_or(default: user_device_path(current_user.id, @device.id))
       else
         flash[:alert] = "This device has already been assigned an account!"
@@ -93,7 +93,7 @@ class Users::DevicesController < ApplicationController
     params.require(:device).permit(:uuid,:name)
   end
 
-  def create_checkin
+  def create_device
     @device.user = current_user
     @device.name = allowed_params[:name]
     @device.developers << current_user.approved_developers.map do |app|
