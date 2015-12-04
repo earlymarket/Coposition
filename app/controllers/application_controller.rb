@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   end
 
   def req_from_coposition_app?
-    request.headers["Secret-app-key"] == Rails.application.secrets.mobile_app_key
+    request.headers["X-Secret-App-Key"] == Rails.application.secrets.mobile_app_key
   end
 
 

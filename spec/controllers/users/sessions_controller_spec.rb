@@ -18,7 +18,7 @@ RSpec.describe Users::Devise::SessionsController, type: :controller do
     end
 
     it "should be able to sign in" do
-      request.headers["Secret-app-key"] = "this-is-a-mobile-app" 
+      request.headers["X-Secret-App-Key"] = "this-is-a-mobile-app" 
       request.env['devise.mapping'] = Devise.mappings[:user]
       post :create, 
         user: {
@@ -32,7 +32,7 @@ RSpec.describe Users::Devise::SessionsController, type: :controller do
     end
 
     it "should make sure the secret app key is correct" do
-      request.headers["Secret-app-key"] = "NOT-a-mobile-app" 
+      request.headers["X-Secret-App-Key"] = "NOT-a-mobile-app" 
       request.env['devise.mapping'] = Devise.mappings[:user]
       post :create, 
         user: {
@@ -46,7 +46,7 @@ RSpec.describe Users::Devise::SessionsController, type: :controller do
     end
 
     it "should make sure the password is correct" do
-      request.headers["Secret-app-key"] = "this-is-a-mobile-app"
+      request.headers["X-Secret-App-Key"] = "this-is-a-mobile-app"
       request.env['devise.mapping'] = Devise.mappings[:user]
       post :create, 
         user: {
