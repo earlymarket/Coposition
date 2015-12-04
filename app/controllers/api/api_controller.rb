@@ -1,5 +1,6 @@
 class Api::ApiController < ActionController::Base
-  
+
+
   private
  
   def authenticate
@@ -35,4 +36,5 @@ class Api::ApiController < ActionController::Base
       return false
     end
   end
+
 end

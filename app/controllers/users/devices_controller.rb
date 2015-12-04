@@ -1,5 +1,7 @@
 class Users::DevicesController < ApplicationController
 
+  acts_as_token_authentication_handler_for User
+  protect_from_forgery with: :null_session
   before_action :authenticate_user!
 
   def index
@@ -30,8 +32,8 @@ class Users::DevicesController < ApplicationController
     if @device
       # Providing that there isn't anyone currently assigned
       if @device.user.nil?
-        create_checkin
-        redirect_using_param_or(default: user_device_path(current_user.id, @device.id))
+        create_device
+        redirect_using_param_or_default unless via_app
       else
         flash[:alert] = "This device has already been assigned an account!"
         redirect_to new_user_device_path
@@ -89,28 +91,32 @@ class Users::DevicesController < ApplicationController
   end
 
   private
-  def allowed_params
-    params.require(:device).permit(:uuid,:name)
-  end
-
-  def create_checkin
-    @device.user = current_user
-    @device.name = allowed_params[:name]
-    @device.developers << current_user.approved_developers.map do |app|
-      app.developer
+    def via_app
+      render json: @device.to_json if req_from_coposition_app?
     end
-    @device.save
-    flash[:notice] = "This device has been bound to your account!"
 
-    @device.create_checkin(lat: params[:location].split(",").first,
-        lng: params[:location].split(",").last) unless params[:location].blank?
-  end
-
-  def redirect_using_param_or(default:)
-    if params[:redirect].blank?
-      redirect_to default
-    else
-      redirect_to params[:redirect]
+    def allowed_params
+      params.require(:device).permit(:uuid,:name)
     end
-  end
+
+    def create_device
+      @device.user = current_user
+      @device.name = allowed_params[:name]
+      @device.developers << current_user.approved_developers.map do |app|
+        app.developer
+      end
+      @device.save
+      flash[:notice] = "This device has been bound to your account!"
+
+      @device.create_checkin(lat: params[:location].split(",").first,
+          lng: params[:location].split(",").last) unless params[:location].blank?
+    end
+
+    def redirect_using_param_or_default(default: user_device_path(current_user.id, @device.id))
+      if params[:redirect].blank?
+        redirect_to default
+      else
+        redirect_to params[:redirect]
+      end
+    end
 end

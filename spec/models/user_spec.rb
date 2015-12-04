@@ -17,6 +17,16 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "methods" do
+    it "should create an authentication token on save" do
+      user = FactoryGirl::build :user
+
+      expect(user.authentication_token).to be nil
+      user.save
+      expect(user.authentication_token).to be_an_instance_of String
+    end
+  end
+
   describe "approvals" do
 
     it "should approve a developer" do
