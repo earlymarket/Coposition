@@ -1,9 +1,11 @@
 class Users::Devise::SessionsController < Devise::SessionsController
 
+
+
   # Added for coposition app
   respond_to :json
 
-  protect_from_forgery with: :null_session
+  # protect_from_forgery with: :null_session
 
   def create
     req_from_coposition_app? ? respond_with_auth_token : super
@@ -14,6 +16,10 @@ class Users::Devise::SessionsController < Devise::SessionsController
   end
 
   private
+
+    def verify_signed_out_user
+      true
+    end
 
     def respond_with_auth_token
     # Fetch params
@@ -37,7 +43,7 @@ class Users::Devise::SessionsController < Devise::SessionsController
 
     def destroy_auth_token
       # Fetch params
-      user = User.find_by(authentication_token: params[:user_token])
+      user = User.find_by(authentication_token: request.headers["X-User-Token"])
 
       if user.nil?
         render status: 404, json: { message: 'Invalid token.' }
