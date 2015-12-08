@@ -34,7 +34,7 @@ gem 'colorize'
 
 gem 'simple_token_authentication'
 
-
+gem 'newrelic_rpm'
 # Use Unicorn as the app server
 
 group :production do
