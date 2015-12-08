@@ -59,6 +59,15 @@ RSpec.describe Users::Devise::SessionsController, type: :controller do
       expect(res_hash[:authentication_token]).to be nil
     end
 
+    it "should be able to sign out" do
+      token_before = user.authentication_token
+      request.env['devise.mapping'] = Devise.mappings[:user]
+      request.headers["X-Secret-App-Key"] = "this-is-a-mobile-app"
+      request.headers["X-User-Token"] = token_before
+      delete :destroy, nil, format: :json
+      expect(user.reload.authentication_token).to_not eq token_before
+    end
+
 
   end
 
