@@ -2,6 +2,8 @@ class Users::Devise::SessionsController < Devise::SessionsController
 
   respond_to :json
 
+  protect_from_forgery with: :null_session
+
   def create
     req_from_coposition_app? ? respond_with_auth_token : super
   end
