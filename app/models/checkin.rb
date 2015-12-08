@@ -19,9 +19,9 @@ class Checkin < ActiveRecord::Base
       reverse_geocode! if device.checkins.count == 1
     else
       if Rails.env.test?
-        # TODO: Decide whether or not this is the best idea
-        # The alternative is to explicitly state this step in every test
-        # Perhaps with a test helper?
+        # TODO: Decide whether or not this is the best idea.
+           # The alternative is to explicitly state this step in every test,
+           # perhaps with a test helper?
         dev = Device.create(uuid: uuid)
         dev.checkins << self
         reverse_geocode!
