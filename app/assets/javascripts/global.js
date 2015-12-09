@@ -1,3 +1,5 @@
+/*global utility toastr c3:true*/
+
 $(document).on('page:change', function(){
   setup();
 });
