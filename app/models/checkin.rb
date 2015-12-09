@@ -3,8 +3,9 @@ class Checkin < ActiveRecord::Base
   belongs_to :device
 
   reverse_geocoded_by :lat, :lng do |obj,results|
-    if geo = results.first
-      obj.address = results.first.formatted_address
+    if results.first
+      geo = results.first
+      obj.address = geo.formatted_address
       obj.city    = geo.city
       obj.postal_code = geo.postal_code
       obj.country = geo.country_code
