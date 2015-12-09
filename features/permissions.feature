@@ -19,4 +19,4 @@ Feature: Devices
       When I click "Dashboard"
         And I click "Devices"
         And I click "Wherefore Art Thou"
-      Then I should see the first ".dev-box" have a "#e51c23" coloured background
+      Then I should see the first ".dev-box" have a class named "disallowed"
