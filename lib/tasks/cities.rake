@@ -16,9 +16,6 @@ namespace :cities do
 
     end
   end
-end
-
-namespace :cities do
   desc "Destroys all of the cities table in a singe transaction."
   task destroy_all: :environment do
 
