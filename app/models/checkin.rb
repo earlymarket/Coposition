@@ -3,11 +3,8 @@ class Checkin < ActiveRecord::Base
   belongs_to :device
 
   reverse_geocoded_by :lat, :lng do |obj,results|
-    if geo = results.first
-      obj.address = results.first.formatted_address
-      obj.city    = geo.city
-      obj.postal_code = geo.postal_code
-      obj.country = geo.country_code
+    results.first.methods.each do |m|
+      obj.send("#{m}=", results.first.send(m)) if column_names.include? m.to_s
     end
   end
 
@@ -52,7 +49,7 @@ class Checkin < ActiveRecord::Base
     if device.fogged?
       self.lat = nearest_city.latitude
       self.lng = nearest_city.longitude
-      self.address = "#{city}, #{country}"
+      self.address = "#{city}, #{country_code}"
     end
 
     self
@@ -75,6 +72,6 @@ class Checkin < ActiveRecord::Base
   end
 
   def nearest_city
-    @nearest_city ||= City.where(name: city, country_code: country).near(self).first
+    @nearest_city ||= City.where(name: city, country_code: country_code).near(self).first
   end
 end
