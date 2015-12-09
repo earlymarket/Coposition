@@ -2,6 +2,8 @@ namespace :cities do
   desc "Imports all of the city data into the app for internal fogging"
   task import: :environment do
 
+    # Taken from http://download.geonames.org/export/dump/
+
     puts "There are already #{City.count} cities." if City.count > 0
 
     log_city_transaction do
