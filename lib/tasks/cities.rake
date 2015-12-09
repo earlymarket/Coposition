@@ -35,7 +35,7 @@ namespace :cities do
   end
 end
 
-def log_city_transaction(&block)
+def log_city_transaction
   puts "Constructing transaction"
   logged_time = Time.now
 
