@@ -1,3 +1,5 @@
+/*global c3:true*/
+
 $(document).on('page:change',function() {
 
     var chart = c3.generate({
