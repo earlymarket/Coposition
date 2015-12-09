@@ -44,5 +44,5 @@ def log_city_transaction(&block)
     puts "Beginning transaction"
   end
   print "Complete!".green
-  puts "#{City.count} Cities found after #{(Time.now - logged_time).seconds} seconds"
+  puts " #{City.count} Cities found after #{(Time.now - logged_time).seconds} seconds"
 end
