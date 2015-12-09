@@ -1,4 +1,4 @@
-/*global utility toastr c3:true*/
+/*global utility toastr:true*/
 
 $(document).on('page:change', function(){
   setup();
