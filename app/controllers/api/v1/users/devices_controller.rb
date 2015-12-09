@@ -9,12 +9,12 @@ class Api::V1::Users::DevicesController < Api::ApiController
     list = []
     @user.devices.except(:fogged).map do |dev|
       if dev.privilege_for(@dev) == "complete"
-      	hash = dev.as_json
+        hash = dev.as_json
         hash[:last_checkin] = dev.checkins.last.get_data
-      	list << hash
+        list << hash
       end
-  	end
-  	respond_with list
+    end
+    respond_with list
   end
 
   def show
@@ -28,7 +28,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
         return head status: :unauthorized
       end
     end
-  	respond_with list
+    respond_with list
   end
 
 end
