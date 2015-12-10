@@ -45,7 +45,6 @@ RSpec.describe User, type: :model do
     end
 
     it "should approve devices for a developer by default when a developer is approved" do
-      #user.devices << [FactoryGirl::create(:device)]
       user.approvals << Approval.create(developer: developer)
       user.approve_developer(developer)
       expect(user.devices.first.developers.count).to be 1
