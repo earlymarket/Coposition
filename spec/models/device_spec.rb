@@ -8,13 +8,15 @@ RSpec.describe Device, type: :model do
     dev.developers << developer
     dev
   end
+  let(:checkins) do
+    checks = [FactoryGirl::create(:checkin)]
+    checks << FactoryGirl::create(:checkin)
+    device.checkins << checks
+  end
 
   describe "relationships" do
 
     it "should have some checkins" do
-      checkins = [FactoryGirl::create(:checkin)]
-      checkins << FactoryGirl::create(:checkin)
-      device.checkins << checkins
       expect(device.checkins).to match_array(checkins)
     end
 
