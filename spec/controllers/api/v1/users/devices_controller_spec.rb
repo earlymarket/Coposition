@@ -7,7 +7,12 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   describe "GET" do
 
     let(:device){FactoryGirl::create :device}
-    let(:developer){FactoryGirl::create :developer}
+    let(:developer) do
+      dev = FactoryGirl::create :developer
+      dev.request_approval_from(user)
+      user.approve_developer(dev)
+      dev
+    end
 
     let(:user) do
       us = FactoryGirl::create :user
@@ -15,13 +20,10 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       us
     end
 
-    before do
-      
+    before do      
       @checkin = FactoryGirl::build :checkin
       @checkin.uuid = device.uuid
       @checkin.save
-      developer.request_approval_from(user)
-      user.approve_developer(developer)
       request.headers["X-Api-Key"] = developer.api_key
     end
 
