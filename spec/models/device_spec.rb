@@ -21,7 +21,7 @@ RSpec.describe Device, type: :model do
     end
 
     it "should have some approved developers" do
-      expect( device.developers.first ).to eq developer
+      expect(device.developers.first).to eq developer
     end
 
   end
@@ -32,6 +32,7 @@ RSpec.describe Device, type: :model do
 
   it "should change privilege levels for a developer" do
     expect(device.privilege_for developer).to eq "complete"
+    
     device.change_privilege_for(developer, 2)
 
     expect(device.privilege_for developer).to eq "disallowed"
