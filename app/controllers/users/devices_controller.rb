@@ -6,8 +6,8 @@ class Users::DevicesController < ApplicationController
 
   def index
     @devices = current_user.devices.map do |dev|
-    	dev.checkins.last.reverse_geocode!
-    	dev
+      dev.checkins.last.reverse_geocode! if dev.checkins.exists?
+      dev
     end
   end
 
