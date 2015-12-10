@@ -10,8 +10,8 @@ RSpec.describe Checkin, type: :model do
 	end
 
 	describe "relationships" do
-    it "should have a device" do
-      expect(checkin.device).to eq device
+		it "should have a device" do
+    	expect(checkin.device).to eq device
 		end
 	end 
 
