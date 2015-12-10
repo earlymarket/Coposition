@@ -4,7 +4,11 @@
     <div class="list-group-item">
       <a id="<%= device.name %>" href="<%= user_device_path(current_user.username, device) %>" class="list-group-item">
         <h4 class="list-group-item-heading"><%= device.name %></h4>
-        <p class="list-group-item-text">Last reported in <%= device.checkins.last.address %></p>
+        <% if device.checkins.exists? %>
+          <p class="list-group-item-text">Last reported in <%= device.checkins.last.address%></p>
+        <% else %>
+          <p class="list-group-item-text">No checkins found</p>
+        <% end %>
       </a>
       <div class="row pt-m">
         <div class="col-lg-12 list-group-item-text">
