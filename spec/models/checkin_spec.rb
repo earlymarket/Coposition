@@ -4,12 +4,12 @@ RSpec.describe Checkin, type: :model do
 
 	let(:device) { FactoryGirl::create(:device) }
 	let(:checkin) do
-    check = FactoryGirl::create(:checkin)
-    device.checkins << check
-    check
-  end
+  	check = FactoryGirl::create(:checkin)
+  	device.checkins << check
+  	check
+	end
 
-  describe "relationships" do
+	describe "relationships" do
 
     it "should have a device" do
       expect(checkin.device).to eq device
