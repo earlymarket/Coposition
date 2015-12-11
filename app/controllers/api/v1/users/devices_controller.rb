@@ -10,7 +10,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
     @user.devices.except(:fogged).map do |dev|
       if dev.privilege_for(@dev) == "complete"
         hash = dev.as_json
-        hash[:last_checkin] = dev.checkins.last.get_data
+        hash[:last_checkin] = dev.checkins.last.get_data if dev.checkins.exists?
         list << hash
       end
     end
@@ -22,7 +22,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
     @user.devices.where(id: params[:id]).except(:fogged).map do |dev|
       if dev.privilege_for(@dev) == "complete"
         hash = dev.as_json
-        hash[:last_checkin] = dev.checkins.last.get_data
+        hash[:last_checkin] = dev.checkins.last.get_data if dev.checkins.exists?
         list << hash
       else
         return head status: :unauthorized
