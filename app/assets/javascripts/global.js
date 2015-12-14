@@ -1,27 +1,27 @@
 /*global utility toastr:true*/
 
 $(document).on('page:change', function(){
-  setup();
+  setup()
 });
 
 $(document).on('page:fetch', function() {
-  utility.animations.exitPage();
+  utility.animations.exitPage()
 });
 
 
 function setup() {
-  animateThings();
-  addEventListeners();
+  animateThings()
+  addEventListeners()
 };
 
 function addEventListeners() {
-  addClickListeners();
+  addClickListeners()
 };
 
 
 function animateThings() {
-  utility.animations.enterPage();
-  setupTextillate();
+  utility.animations.enterPage()
+  setupTextillate()
 };
 
 
@@ -37,7 +37,7 @@ function setupTextillate() {
 
 function addClickListeners() {
   $(".close").click(function(e){
-    utility.animations.removeEl($(e.currentTarget).parent());
+    utility.animations.removeEl($(e.currentTarget).parent())
   });
   
   applyFoggleClickListener();
