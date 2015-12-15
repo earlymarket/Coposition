@@ -3,8 +3,6 @@ class Api::V1::Users::DevicesController < Api::ApiController
 
   before_action :authenticate, :check_user_approved_developer
 
-  # TODO: Think about refactoring this
-
   def index
     list = []
     @user.devices.except(:fogged).map do |devc|
