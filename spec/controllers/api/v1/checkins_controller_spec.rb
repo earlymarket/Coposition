@@ -18,8 +18,8 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       post :create, @demo
       
       expect(res_hash[:uuid]).to eq @demo[:checkin][:uuid]
-      expect(Checkin.count).to be (checkin_count + 1)
-      expect(Device.count).to be (device_count + 1)
+      expect(Checkin.count).to be(checkin_count + 1)
+      expect(Device.count).to be(device_count + 1)
     end
 
     it "should POST a checkin with a pre-existing device" do
@@ -42,7 +42,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       post :create, @demo
       
       expect(res_hash[:uuid]).to eq @demo[:checkin][:uuid]
-      expect(Checkin.count).to be (checkin_count + 1)
+      expect(Checkin.count).to be(checkin_count + 1)
       expect(Device.find_by(uuid: uuid)).to_not be nil
     end
 
