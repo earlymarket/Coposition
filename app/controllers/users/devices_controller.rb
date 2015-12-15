@@ -28,6 +28,7 @@ class Users::DevicesController < ApplicationController
   end
 
   def create
+    return unless valid_request?
     @device = Device.find_by uuid: allowed_params[:uuid]
     if @device
       # Providing that there isn't anyone currently assigned
@@ -93,6 +94,14 @@ class Users::DevicesController < ApplicationController
   private
     def via_app
       render json: @device.to_json if req_from_coposition_app?
+    end
+
+    def valid_request?
+      if allowed_params[:uuid].nil? or allowed_params[:name].nil?
+        render status: 400, json: { message: 'The request MUST contain a UUID and device name.' }
+        return false
+      end
+      true
     end
 
     def allowed_params
