@@ -3,15 +3,11 @@ class Api::V1::Users::DevicesController < Api::ApiController
 
   before_action :authenticate, :check_user_approved_developer
 
-  # TODO: Think about refactoring this
-
   def index
     list = []
-    @user.devices.except(:fogged).map do |dev|
-      if dev.privilege_for(@dev) == "complete"
-        hash = dev.as_json
-        hash[:last_checkin] = dev.checkins.last.get_data if dev.checkins.exists?
-        list << hash
+    @user.devices.except(:fogged).map do |devc|
+      if devc.privilege_for(@dev) == "complete"
+        list << device_checkin_hash(devc)
       end
     end
     respond_with list
@@ -19,16 +15,22 @@ class Api::V1::Users::DevicesController < Api::ApiController
 
   def show
     list = []
-    @user.devices.where(id: params[:id]).except(:fogged).map do |dev|
-      if dev.privilege_for(@dev) == "complete"
-        hash = dev.as_json
-        hash[:last_checkin] = dev.checkins.last.get_data if dev.checkins.exists?
-        list << hash
+    @user.devices.where(id: params[:id]).except(:fogged).map do |devc|
+      if devc.privilege_for(@dev) == "complete"
+        list << device_checkin_hash(devc)
       else
         return head status: :unauthorized
       end
     end
     respond_with list
   end
+
+  private
+
+    def device_checkin_hash(device)
+      hash = device.as_json
+      hash[:last_checkin] = device.checkins.last.get_data if device.checkins.exists?
+      hash
+    end
 
 end
