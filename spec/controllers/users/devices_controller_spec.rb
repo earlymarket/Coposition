@@ -22,7 +22,10 @@ RSpec.describe Users::DevicesController, type: :controller do
       # For some reason, subject.current user was returning some weird results. Using last User instead
       post :create, {
       	user_id: user.username,
-      	device: { uuid: empty_device.uuid }
+      	device: { 
+          uuid: empty_device.uuid,
+          name: "empty_device"
+        }
       }
       
       expect(response.code).to eq "302"
