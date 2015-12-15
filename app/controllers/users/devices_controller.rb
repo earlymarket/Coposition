@@ -30,23 +30,14 @@ class Users::DevicesController < ApplicationController
   def create
     @device = Device.find_by uuid: allowed_params[:uuid]
     if @device
-      # Providing that there isn't anyone currently assigned
       if @device.user.nil?
         create_device
         redirect_using_param_or_default unless via_app
-      elsif req_from_coposition_app?
-        render status: 400, json: { message: 'This device has already been assigned to a user' }
       else
-        flash[:alert] = "This device has already been assigned an account!"
-        redirect_to new_user_device_path
+        invalid_uuid 'This device has already been assigned to a user'
       end
     else
-      if req_from_coposition_app?
-        render status: 400, json: { message: 'The UUID provided does not match an existing device' }
-      else
-        flash[:alert] = "Not found"
-        redirect_to new_user_device_path
-      end
+      invalid_uuid 'The UUID provided does not match an existing device'
     end
   end
 
@@ -123,6 +114,15 @@ class Users::DevicesController < ApplicationController
         redirect_to default
       else
         redirect_to params[:redirect]
+      end
+    end
+
+    def invalid_uuid(msg)
+      if req_from_coposition_app?
+        render status: 400, json: { message: msg }
+      else
+        flash[:alert] = msg
+        redirect_to new_user_device_path
       end
     end
 end
