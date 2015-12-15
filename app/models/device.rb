@@ -45,8 +45,8 @@ class Device < ActiveRecord::Base
   end
 
   def device_checkin_hash
-    hash = self.as_json
-    hash[:last_checkin] = self.checkins.last.get_data if self.checkins.exists?
+    hash = as_json
+    hash[:last_checkin] = checkins.last.get_data if checkins.exists?
     hash
   end
 end
