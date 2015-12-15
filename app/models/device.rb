@@ -43,4 +43,10 @@ class Device < ActiveRecord::Base
     record.privilege = new_privilege
     record.save
   end
+
+  def device_checkin_hash
+    hash = self.as_json
+    hash[:last_checkin] = self.checkins.last.get_data if self.checkins.exists?
+    hash
+  end
 end

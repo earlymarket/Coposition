@@ -7,7 +7,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
     list = []
     @user.devices.except(:fogged).map do |devc|
       if devc.privilege_for(@dev) == "complete"
-        list << device_checkin_hash(devc)
+        list << devc.device_checkin_hash
       end
     end
     respond_with list
@@ -17,20 +17,12 @@ class Api::V1::Users::DevicesController < Api::ApiController
     list = []
     @user.devices.where(id: params[:id]).except(:fogged).map do |devc|
       if devc.privilege_for(@dev) == "complete"
-        list << device_checkin_hash(devc)
+        list << devc.device_checkin_hash
       else
         return head status: :unauthorized
       end
     end
     respond_with list
   end
-
-  private
-
-    def device_checkin_hash(device)
-      hash = device.as_json
-      hash[:last_checkin] = device.checkins.last.get_data if device.checkins.exists?
-      hash
-    end
 
 end
