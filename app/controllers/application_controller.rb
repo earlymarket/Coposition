@@ -16,6 +16,15 @@ class ApplicationController < ActionController::Base
     @from_copo_app ||= request.headers["X-Secret-App-Key"] == Rails.application.secrets.mobile_app_key
   end
 
+  def invalid_payload(msg, redirect_path)
+    if req_from_coposition_app?
+      render status: 400, json: { message: msg }
+    else
+      flash[:alert] = msg
+      redirect_to redirect_path
+    end
+  end
+
 
   protected
 
