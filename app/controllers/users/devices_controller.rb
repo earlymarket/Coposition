@@ -34,10 +34,10 @@ class Users::DevicesController < ApplicationController
         create_device
         redirect_using_param_or_default unless via_app
       else
-        invalid_uuid 'This device has already been assigned to a user'
+        invalid_payload('This device has already been assigned to a user', new_user_device_path)
       end
     else
-      invalid_uuid 'The UUID provided does not match an existing device'
+      invalid_payload('The UUID provided does not match an existing device', new_user_device_path)
     end
   end
 
@@ -117,12 +117,4 @@ class Users::DevicesController < ApplicationController
       end
     end
 
-    def invalid_uuid(msg)
-      if req_from_coposition_app?
-        render status: 400, json: { message: msg }
-      else
-        flash[:alert] = msg
-        redirect_to new_user_device_path
-      end
-    end
 end
