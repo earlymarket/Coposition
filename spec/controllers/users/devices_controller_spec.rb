@@ -34,6 +34,10 @@ RSpec.describe Users::DevicesController, type: :controller do
   describe 'GET #new' do
     it 'should assign :uuid to @device.uuid if exists' do
       get :new, {
+        user_id: user.username
+      }
+      expect(assigns(:device).uuid).to eq(nil)
+      get :new, {
         user_id: user.username,
         uuid: '123412341234'
       }
@@ -42,6 +46,10 @@ RSpec.describe Users::DevicesController, type: :controller do
 
     it 'should set @adding_current_device to true if :curr_device exists' do
       get :new, {
+        user_id: user.username
+      }
+      expect(assigns :adding_current_device).to eq(nil)
+      get :new, {
         user_id: user.username,
         curr_device: true
       }
@@ -49,6 +57,10 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
 
     it 'should assign :redirect to @redirect_target if exists' do
+      get :new, {
+        user_id: user.username,
+      }
+      expect(assigns :redirect_target).to eq(nil)
       get :new, {
         user_id: user.username,
         redirect: 'http://www.coposition.com/'
