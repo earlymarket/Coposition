@@ -41,11 +41,6 @@ class Users::DevicesController < ApplicationController
     end
   end
 
-  def edit
-    @device = Device.find(params[:id]) if user_owns_device?
-    redirect_to user_devices_path
-  end
-
   def destroy
     Device.find(params[:id]).destroy if user_owns_device?
     flash[:notice] = "Device deleted"
