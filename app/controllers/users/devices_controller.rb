@@ -50,6 +50,7 @@ class Users::DevicesController < ApplicationController
   def checkin
     @checkin_id = params[:checkin_id]
     Device.find(params[:id]).checkins.find(@checkin_id).delete if user_owns_device?
+    redirect_to user_device_path
   end
 
   def switch_privilege_for_developer
