@@ -12,17 +12,17 @@ $(document).on('page:fetch', function() {
 function setup() {
   animateThings()
   addEventListeners()
-};
+}
 
 function addEventListeners() {
   addClickListeners()
-};
+}
 
 
 function animateThings() {
   utility.animations.enterPage()
   setupTextillate()
-};
+}
 
 
 function setupTextillate() {
@@ -33,7 +33,7 @@ function setupTextillate() {
       }
     }
   );
-};
+}
 
 function addClickListeners() {
   $(".close").click(function(e){
@@ -41,7 +41,7 @@ function addClickListeners() {
   });
   
   applyFoggleClickListener();
-};
+}
 
 function applyFoggleClickListener() {
   var fSection = $('#fogging-section');
