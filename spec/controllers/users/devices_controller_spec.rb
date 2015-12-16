@@ -69,6 +69,19 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
   end
 
+  describe 'DELETE #checkin' do
+    it 'should delete a checkin by :checkin_id' do
+      device.checkins << FactoryGirl::create(:checkin)
+      count = device.checkins.count
+      delete :checkin, {
+        user_id: user.username,
+        id: device.id,
+        checkin_id: device.checkins.last.id
+      }
+      expect(device.checkins.count).to eq(count-1)
+    end
+  end
+
   describe 'posting' do
 
 
@@ -138,7 +151,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       device.user = user
       device.save
       count = Device.count
-      delete :destroy, { 
+      delete :destroy, {
         user_id: user.username,
         id: device.id
       }
