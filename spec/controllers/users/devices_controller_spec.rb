@@ -15,14 +15,14 @@ RSpec.describe Users::DevicesController, type: :controller do
   let(:device) { FactoryGirl::create :device, user_id: user.id }
 
   describe 'GET #index' do
-    it 'assigns current_user.devices to @devices' do
+    it 'should assign current_user.devices to @devices' do
       get :index, user_id: user.username
       expect(assigns :devices).to eq(user.devices)
     end
   end
 
   describe 'GET #show' do
-    it 'assigns :id.device to @device' do
+    it 'should assign :id.device to @device' do
       get :show, {
         user_id: user.username,
         id: device.id
@@ -32,7 +32,7 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
 
   describe 'GET #new' do
-    it 'assigns :uuid to @device.uuid if exists' do
+    it 'should assign :uuid to @device.uuid if exists' do
       get :new, {
         user_id: user.username,
         uuid: '123412341234'
@@ -40,7 +40,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(assigns(:device).uuid).to eq('123412341234')
     end
 
-    it 'sets @adding_current_device to true if :curr_device exists' do
+    it 'should set @adding_current_device to true if :curr_device exists' do
       get :new, {
         user_id: user.username,
         curr_device: true
@@ -48,14 +48,13 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(assigns :adding_current_device).to eq(true)
     end
 
-    it 'assigns :redirect to @redirect_target if exists' do
+    it 'should assign :redirect to @redirect_target if exists' do
       get :new, {
         user_id: user.username,
         redirect: 'http://www.coposition.com/'
       }
       expect(assigns :redirect_target).to eq('http://www.coposition.com/')
     end
-
   end
 
   describe 'posting' do
