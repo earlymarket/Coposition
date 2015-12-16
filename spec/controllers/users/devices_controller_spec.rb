@@ -14,6 +14,14 @@ RSpec.describe Users::DevicesController, type: :controller do
   let(:device) { FactoryGirl::create :device }
   let(:user) { User.last }
 
+  describe "GET #index" do
+    it "assigns current_user.devices to @devices" do
+      get :index, {
+        user_id: user.username
+      }
+      expect(assigns(:devices)).to eq(user.devices)
+    end
+  end
 
   describe "posting" do
 
@@ -21,8 +29,8 @@ RSpec.describe Users::DevicesController, type: :controller do
     it "should POST to with a UUID" do
       # For some reason, subject.current user was returning some weird results. Using last User instead
       post :create, {
-      	user_id: user.username,
-      	device: { uuid: empty_device.uuid }
+        user_id: user.username,
+        device: { uuid: empty_device.uuid }
       }
       
       expect(response.code).to eq "302"
