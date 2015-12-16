@@ -28,7 +28,11 @@ class Users::DevicesController < ApplicationController
   end
 
   def create
-    @device = Device.find_by uuid: allowed_params[:uuid]
+    if allowed_params[:uuid]
+      @device = Device.find_by uuid: allowed_params[:uuid]
+    else
+      @device = Device.create
+    end
     if @device
       # Providing that there isn't anyone currently assigned
       if @device.user.nil?

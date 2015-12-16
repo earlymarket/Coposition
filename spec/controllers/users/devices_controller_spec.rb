@@ -10,7 +10,6 @@ RSpec.describe Users::DevicesController, type: :controller do
     expect(subject.current_user).to_not be nil
   end
 
-  let(:empty_device) { Device.create }
   let(:device) { FactoryGirl::create :device }
   let(:user) { User.last }
 
@@ -22,12 +21,11 @@ RSpec.describe Users::DevicesController, type: :controller do
       # For some reason, subject.current user was returning some weird results. Using last User instead
       post :create, {
       	user_id: user.username,
-      	device: { uuid: empty_device.uuid }
+      	device: { uuid: device.uuid }
       }
-      
       expect(response.code).to eq "302"
       expect(user.devices.count).to be 1
-      expect(user.devices.last).to eq empty_device
+      expect(user.devices.last).to eq device
     end
 
     it "should switch fogging status to true by default" do
