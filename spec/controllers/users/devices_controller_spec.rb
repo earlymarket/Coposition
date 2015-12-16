@@ -11,15 +11,23 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
 
   let(:empty_device) { Device.create }
-  let(:device) { FactoryGirl::create :device }
   let(:user) { User.last }
+  let(:device) { FactoryGirl::create :device, user_id: user.id }
 
   describe "GET #index" do
     it "assigns current_user.devices to @devices" do
-      get :index, {
-        user_id: user.username
+      get :index, user_id: user.username
+      expect(assigns :devices).to eq(user.devices)
+    end
+  end
+
+  describe "GET #show" do
+    it "assigns @device to :id.device" do
+      get :show, {
+        user_id: user.username,
+        id: device.id
       }
-      expect(assigns(:devices)).to eq(user.devices)
+      expect(assigns :device).to eq(Device.find(device.id))
     end
   end
 
