@@ -3,7 +3,7 @@
     <h4 class="list-group-item-heading"><%= device.name %></h4>
     <% if device.checkins.exists? %>
       <p class="list-group-item-text">Last reported in <%= device.checkins.last.address%> </p>
-      <p class="list-group-item-text"><%= "Fogging is enabled on this device" if device.fogged %> </p>
+      <p class="list-group-item-text"><%= "Fogging is enabled on this device with a delay of #{device.delayed ? device.delayed : 0} minutes" if device.fogged %> </p>
     <% else %>
       <p class="list-group-item-text">No checkins found </p>
     <% end %>
