@@ -3,22 +3,28 @@ namespace :cities do
   task import: :environment do
 
     # Taken from http://download.geonames.org/export/dump/
+    # db/cities/1,2,3.txt together contain all info for cities with over 1000 people.
 
     puts "There are already #{City.count} cities." if City.count > 0
 
     log_city_transaction do
-
+      quote_chars = %w(" | ~ ^ & * ` ')
       i = 0
-
-      CSV.foreach("db/GB.txt", { col_sep: "\t", quote_char: "`" }) do |row|
-        City.create(id: row[0], name: row[1], latitude: row[4], longitude: row[5], country_code: row[8])
-        puts "Parsed #{i} cities" if i % 500 == 0
-        i += 1
+      for x in 1..3
+        begin
+          CSV.foreach("db/cities/#{x}.txt", { col_sep: "\t", quote_char: quote_chars.shift }) do |row|
+            City.create(name: row[1], latitude: row[4], longitude: row[5], country_code: row[8])
+            puts "Parsed #{i} cities" if i % 500 == 0
+            i += 1
+          end
+        rescue CSV::MalformedCSVError
+          quote_chars.empty? ? raise : retry 
+        end
       end
 
     end
   end
-  desc "Destroys all of the cities table in a singe transaction."
+  desc "Destroys all of the cities table in a single transaction."
   task destroy_all: :environment do
 
     print "Are you sure you want to destroy the cities table? (y/n): "

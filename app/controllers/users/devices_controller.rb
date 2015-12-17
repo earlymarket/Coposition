@@ -30,29 +30,15 @@ class Users::DevicesController < ApplicationController
   def create
     @device = Device.find_by uuid: allowed_params[:uuid]
     if @device
-      # Providing that there isn't anyone currently assigned
       if @device.user.nil?
         create_device
         redirect_using_param_or_default unless via_app
-      elsif req_from_coposition_app?
-        render status: 400, json: { message: 'This device has already been assigned to a user' }
       else
-        flash[:alert] = "This device has already been assigned an account!"
-        redirect_to new_user_device_path
+        invalid_payload('This device has already been assigned to a user', new_user_device_path)
       end
     else
-      if req_from_coposition_app?
-        render status: 400, json: { message: 'The UUID provided does not match an existing device' }
-      else
-        flash[:alert] = "Not found"
-        redirect_to new_user_device_path
-      end
+      invalid_payload('The UUID provided does not match an existing device', new_user_device_path)
     end
-  end
-
-  def edit
-    @device = Device.find(params[:id]) if user_owns_device?
-    redirect_to user_devices_path
   end
 
   def destroy
@@ -64,6 +50,7 @@ class Users::DevicesController < ApplicationController
   def checkin
     @checkin_id = params[:checkin_id]
     Device.find(params[:id]).checkins.find(@checkin_id).delete if user_owns_device?
+    redirect_to user_device_path
   end
 
   def switch_privilege_for_developer
@@ -125,4 +112,5 @@ class Users::DevicesController < ApplicationController
         redirect_to params[:redirect]
       end
     end
+
 end
