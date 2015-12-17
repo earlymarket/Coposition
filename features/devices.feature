@@ -3,7 +3,7 @@ Feature: Devices
   Background: There are some devices
     Given I am signed in as a user
       And I click "Dashboard"
-      And I click "Devices"
+      And I click the link "Devices"
       And there's a device in the database with the UUID "123456789123"
 
     Scenario: User adds and views a device
@@ -12,7 +12,6 @@ Feature: Devices
       When I click "Add"
       Then I should see "This device has been bound to your account!"
         And I should see "G-RALA"
-      When I click "Dashboard"
         And I click "Devices"
       Then I should see "Denham"
         When I click "Denham"
@@ -30,5 +29,5 @@ Feature: Devices
         Then I should see "Fog"
       When I click "Fog"
       And I click "Dashboard"
-      And I click "Devices"
+      And I click the link "Devices"
         Then I should see "Fogging is enabled"

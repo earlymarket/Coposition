@@ -25,30 +25,23 @@
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-      <% if  user_signed_in? && developer_signed_in? %>
-        <li>
-          <%= link_to("Sign out", destroy_user_session_path, method: :delete)  %>
-        </li>
-        <li>
-          <%= link_to("Dashboard", user_dashboard_path(current_user)) %>
-        </li>
-      <% else %>
         <% if user_signed_in? %>
           <li>
             <%= link_to("Sign out", destroy_user_session_path, method: :delete) %>
           </li>
-          <li>
-            <%= link_to("Dashboard", user_dashboard_path(current_user)) %>
+          <li class="dropdown">
+          <a href="<%= user_dashboard_path(current_user) %>" role="button" aria-expanded="false">
+          Dashboard <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="<%= user_devices_path(current_user) %>" role="button">Devices</a></li>
+            <li><a href="<%= user_approvals_path(current_user) %>" role="button">Approvals</a></li>
+          </ul>
           </li>
-          <% else %>
+        <% else %>
           <li>
             <%= link_to("Sign in", new_user_session_path) %>
           </li>
         <% end %>
-        <!-- <li>
-          <%= developer_signed_in? ? link_to("Sign out", destroy_developer_session_path, method: :delete) : link_to("Developer sign in", new_developer_session_path) %>
-        </li> -->
-      <% end %>
       </ul>
     </div>
   </div>
