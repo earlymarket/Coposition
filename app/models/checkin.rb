@@ -1,5 +1,7 @@
 class Checkin < ActiveRecord::Base
-
+  validates :uuid, presence: :true
+  validates :lat, presence: :true
+  validates :lng, presence: :true
   belongs_to :device
 
   reverse_geocoded_by :lat, :lng do |obj,results|
