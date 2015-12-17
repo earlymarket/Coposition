@@ -41,11 +41,6 @@ class Users::DevicesController < ApplicationController
     end
   end
 
-  def edit
-    @device = Device.find(params[:id]) if user_owns_device?
-    redirect_to user_devices_path
-  end
-
   def destroy
     Device.find(params[:id]).destroy if user_owns_device?
     flash[:notice] = "Device deleted"
@@ -55,6 +50,7 @@ class Users::DevicesController < ApplicationController
   def checkin
     @checkin_id = params[:checkin_id]
     Device.find(params[:id]).checkins.find(@checkin_id).delete if user_owns_device?
+    redirect_to user_device_path
   end
 
   def switch_privilege_for_developer
