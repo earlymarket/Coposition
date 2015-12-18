@@ -11,5 +11,5 @@ Then(/^I should see "(.*?)"$/) do |text|
 end
 
 Then(/^I should not see "(.*?)"$/) do |text|
-	expect(page.has_content? text).to be false
+  expect(page.has_content? text).to be false
 end
