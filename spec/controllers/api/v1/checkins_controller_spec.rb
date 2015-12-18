@@ -22,6 +22,17 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       expect(Device.count).to be(device_count + 1)
     end
 
+    it "should return 400 if you POST a device with missing parameters" do
+      @demo = {
+        checkin: {
+          uuid: nil
+          }
+        }   
+      post :create , @demo
+      expect(response.status).to eq(400)
+      expect(JSON.parse(response.body)).to eq('message' => 'You must provide a UUID, lat and lng')
+    end
+
     it "should POST a checkin with a pre-existing device" do
       uuid = Faker::Number.number(12)
 
