@@ -5,9 +5,7 @@ Feature: Pricing
   Credits should be added and managed from the developer console
 
   Background:
-    Given I am on the homepage
-    I sign in as a developer using "gary@gary.com"
-    And I click "Developers"
+    Given I am signed in as developer
 
   Scenario Outline: an app makes some API calls while in credit
     Given there are <start> credits
@@ -25,14 +23,14 @@ Feature: Pricing
     Given there are 5 credits
     When my app makes 5 API calls
     Then there should be 0 credits
-    And I should see "You have no more credit. Add more to keep using CoPosition!"
-    And I should not be able to make more API calls
+      And I should see "You have no more credit. Add more to keep using CoPosition!"
+      And I should not be able to make more API calls
 
-  Scenario: a developer adds more credits to their account
+  Scenario Outline: a developer adds more credits to their account
     Given there are <start> credits
     When I click the button with <number>
     Then I should see "<number> credits were added"
-    And there should be <end> credits
+      And there should be <end> credits
 
   Examples:
     | start | number | end   |
