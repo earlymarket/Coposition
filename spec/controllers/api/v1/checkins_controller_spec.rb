@@ -25,12 +25,15 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     it "should return 400 if you POST a device with missing parameters" do
       @demo = {
         checkin: {
-          uuid: nil
+            uuid: Faker::Number.number(12),
+            lat: Faker::Address.latitude
+            # lng: Faker::Address.longitude
           }
-        }   
-      post :create , @demo
+        }
+      post :create, @demo
       expect(response.status).to eq(400)
       expect(JSON.parse(response.body)).to eq('message' => 'You must provide a UUID, lat and lng')
+      # TODO: Write a spec helper that generates permutations of missing params
     end
 
     it "should POST a checkin with a pre-existing device" do
