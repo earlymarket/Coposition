@@ -20,3 +20,23 @@ Feature: Pricing
     | 10    | 5      | 5   |
     | 12    | 5      | 7   |
     | 20    | 2      | 18  |
+
+  Scenario: a developer runs out of credits
+    Given there are 5 credits
+    When my app makes 5 API calls
+    Then there should be 0 credits
+    And I should see "You have no more credit. Add more to keep using CoPosition!"
+    And I should not be able to make more API calls
+
+  Scenario: a developer adds more credits to their account
+    Given there are <start> credits
+    When I click the button with <number>
+    Then I should see "<number> credits were added"
+    And there should be <end> credits
+
+  Examples:
+    | start | number | end   |
+    | 0     | 10000  | 10000 |
+    | 0     | 20000  | 20000 |
+    | 1234  | 10000  | 11234 |
+    | 20    | 50000  | 50020 |
