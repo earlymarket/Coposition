@@ -6,7 +6,7 @@
     <% else %>
       <p class="list-group-item-text">No checkins found </p>
     <% end %>
-    <p class="list-group-item-text"><%= "Fogging is enabled on this device with a delay of #{device.delayed ? device.delayed : 0} minutes" if device.fogged %> </p>
+    <p class="list-group-item-text"><%= "Fogging is enabled on this device with #{device.delayed ? 'a delay of '+device.delayed.to_s+' minutes' : 'no delay'}" if device.fogged %> </p>
   </a>
   <div class="row pt-m">
     <div class="col-lg-12 list-group-item-text">
