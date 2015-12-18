@@ -13,6 +13,7 @@ RSpec.describe Users::DevicesController, type: :controller do
   let(:empty_device) { Device.create }
   let(:user) { User.last }
   let(:device) { FactoryGirl::create :device, user_id: user.id }
+  let(:developer) { FactoryGirl::create :developer }
 
   describe 'GET #index' do
     it 'should assign current_user.devices to @devices' do
@@ -95,6 +96,46 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(response.code).to eq '302'
       expect(user.devices.count).to be 1
       expect(user.devices.last).to eq empty_device
+    end
+
+    it 'should POST to create with a UUID from APP' do
+      # For some reason, subject.current user was returning some weird results. Using last User instead
+      headers = {
+        "X-Api-Key" => developer.api_key,
+        "X-User-Token" => user.authentication_token,
+        "X-User-Email" => user.email,
+        "X-Secret-App-Key" => Rails.application.secrets.mobile_app_key
+      }
+      post :create, {
+        user_id: user.username,
+        device: { uuid: empty_device.uuid }
+      }, headers
+      
+      expect(response.code).to eq '302'
+      expect(user.devices.count).to be 1
+      expect(user.devices.last).to eq empty_device
+    end
+
+    it 'should fail to to create a device with an invalid UUID' do
+      post :create, {
+        user_id: user.username,
+        device: { uuid: 123 }
+      }
+      expect(user.devices.count).to be 0
+    end
+
+    it 'should fail to to create a device with an invalid UUID from APP' do
+      headers = {
+        "X-Api-Key" => developer.api_key,
+        "X-User-Token" => user.authentication_token,
+        "X-User-Email" => user.email,
+        "X-Secret-App-Key" => Rails.application.secrets.mobile_app_key
+      }
+      post :create, {
+        user_id: user.username,
+        device: { uuid: 123 }
+      }, headers
+      expect(user.devices.count).to be 0
     end
 
     it 'should switch fogging status to true by default' do
