@@ -98,43 +98,11 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(user.devices.last).to eq empty_device
     end
 
-    it 'should POST to create with a UUID from APP' do
-      # For some reason, subject.current user was returning some weird results. Using last User instead
-      headers = {
-        "X-Api-Key" => developer.api_key,
-        "X-User-Token" => user.authentication_token,
-        "X-User-Email" => user.email,
-        "X-Secret-App-Key" => Rails.application.secrets.mobile_app_key
-      }
-      post :create, {
-        user_id: user.username,
-        device: { uuid: empty_device.uuid }
-      }, headers
-      
-      expect(response.code).to eq '302'
-      expect(user.devices.count).to be 1
-      expect(user.devices.last).to eq empty_device
-    end
-
     it 'should fail to to create a device with an invalid UUID' do
       post :create, {
         user_id: user.username,
         device: { uuid: 123 }
       }
-      expect(user.devices.count).to be 0
-    end
-
-    it 'should fail to to create a device with an invalid UUID from APP' do
-      headers = {
-        "X-Api-Key" => developer.api_key,
-        "X-User-Token" => user.authentication_token,
-        "X-User-Email" => user.email,
-        "X-Secret-App-Key" => Rails.application.secrets.mobile_app_key
-      }
-      post :create, {
-        user_id: user.username,
-        device: { uuid: 123 }
-      }, headers
       expect(user.devices.count).to be 0
     end
 
@@ -200,7 +168,40 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(Device.count).to be count-1
     end
 
-
   end
 
+  describe 'posting from app', :type => :request do
+
+    it 'should POST to create with a UUID' do
+      # For some reason, subject.current user was returning some weird results. Using last User instead
+      headers = {
+        "X-Api-Key" => developer.api_key,
+        "X-User-Token" => user.authentication_token,
+        "X-User-Email" => user.email,
+        "X-Secret-App-Key" => Rails.application.secrets.mobile_app_key
+      }
+      post "/users/#{user.username}/devices", {
+        device: { uuid: empty_device.uuid }
+      }, headers
+      
+      expect(user.devices.count).to be 1
+      expect(user.devices.last).to eq empty_device
+    end
+
+    it 'should fail to to create a device with an invalid UUID' do
+      headers = {
+        "X-Api-Key" => developer.api_key,
+        "X-User-Token" => user.authentication_token,
+        "X-User-Email" => user.email,
+        "X-Secret-App-Key" => Rails.application.secrets.mobile_app_key
+      }
+      post "/users/#{user.username}/devices", {
+        device: { uuid: 123 }
+      }, headers
+
+      expect(response.code).to eq '400'
+      expect(user.devices.count).to be 0
+    end
+
+  end
 end
