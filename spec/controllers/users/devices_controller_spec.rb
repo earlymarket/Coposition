@@ -14,11 +14,16 @@ RSpec.describe Users::DevicesController, type: :controller do
   let(:user) { User.last }
   let(:device) { FactoryGirl::create :device, user_id: user.id }
   let(:developer) { FactoryGirl::create :developer }
+  let(:user_with_device) do
+    us = User.last
+    us.devices << FactoryGirl::create(:device)
+    us
+  end
 
   describe 'GET #index' do
     it 'should assign current_user.devices to @devices' do
-      get :index, user_id: user.username
-      expect(assigns :devices).to eq(user.devices)
+      get :index, user_id: user_with_device.username
+      expect(assigns :devices).to eq(user_with_device.devices)
     end
   end
 
@@ -29,6 +34,15 @@ RSpec.describe Users::DevicesController, type: :controller do
         id: device.id
       }
       expect(assigns :device).to eq(Device.find(device.id))
+    end
+
+    it 'should assign @fogmessage' do
+      device.switch_fog
+      get :show, {
+        user_id: user.username,
+        id: device.id
+      }
+      expect(assigns :fogmessage).to eq("Currently fogged")
     end
   end
 
