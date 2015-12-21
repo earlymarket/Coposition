@@ -147,6 +147,22 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(device.privilege_for(developer)).to_not be priv
     end
 
+    it 'should switch privilege for a developer on all devices' do
+      developer = FactoryGirl::create(:developer)
+      device.developers << developer
+      device.user = user
+      device.save
+      priv = device.privilege_for(developer)
+
+      request.accept = 'text/javascript'
+      post :switch_all_privileges_for_developer, {
+        user_id: user.username,
+        developer: developer.id
+      }
+
+      expect(device.privilege_for(developer)).to_not be priv
+    end
+
     it 'should delete' do
       device.user = user
       device.save
