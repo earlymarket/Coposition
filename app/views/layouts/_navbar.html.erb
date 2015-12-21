@@ -37,9 +37,16 @@
             <li><a href="<%= user_approvals_path(current_user) %>" role="button">Approvals</a></li>
           </ul>
           </li>
+        <% elsif developer_signed_in? %>
+          <li>
+            <%= link_to("Developer Sign out", destroy_user_session_path, method: :delete) %>
+          </li>
+          <li>
+            <%= link_to("User Sign in", new_user_session_path) %>
+          </li>
         <% else %>
           <li>
-            <%= link_to("Sign in", new_user_session_path) %>
+            <%= link_to("User Sign in", new_user_session_path) %>
           </li>
         <% end %>
       </ul>
