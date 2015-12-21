@@ -60,6 +60,7 @@ Rails.application.routes.draw do
         put 'fog'
       end
       collection do
+        post 'switch_all_privileges_for_developer'
         get 'add_current'
       end
     end

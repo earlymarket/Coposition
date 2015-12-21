@@ -6,7 +6,7 @@
       <%= form_tag(set_delay_user_device_path(current_user.id, @device.id) + ".js" , method: "post", class:"inline", remote: true) do %>
         <%= text_field_tag(:mins, @device.delayed, size: 1) %>
       <% end %> 
-      minutes.
+      minutes. (Hit Enter to Update)
     </span>
   <hr>
 </div>
