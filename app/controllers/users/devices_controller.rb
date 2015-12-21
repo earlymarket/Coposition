@@ -61,6 +61,16 @@ class Users::DevicesController < ApplicationController
     @r_privilege = @device.reverse_privilege_for(@developer)
   end
 
+  def switch_all_privileges_for_developer
+    @devices = current_user.devices
+    @developer = Developer.find(params[:developer])
+    @devices.each do |device|
+      device.change_privilege_for(@developer, device.reverse_privilege_for(@developer))
+      @privilege = device.privilege_for(@developer)
+      @r_privilege = device.reverse_privilege_for(@developer)
+    end
+  end
+
   def add_current
     flash[:notice] = "Just enter a friendly name, and this device is good to go."
     redirect_to new_user_device_path(uuid: Device.create.uuid, curr_device: true)
