@@ -57,7 +57,6 @@ Rails.application.routes.draw do
         post 'set_delay'
         delete 'checkin'
         post 'switch_privilege_for_developer'
-        post 'switch_all_privileges_for_developer'
         put 'fog'
       end
       collection do
