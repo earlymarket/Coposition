@@ -1,9 +1,9 @@
-Feature: Devices
+Feature: Permissions
 
   Background: There is a device and an approval
     Given I am signed in as a user
       And I click "Dashboard"
-      And I click "Devices"
+      And I click the link "Devices"
       And there's a device in the database with the UUID "123456789123"
       And the developer "Wherefore Art Thou" exists
       And the developer "Wherefore Art Thou" sends me an approval request
@@ -17,6 +17,6 @@ Feature: Devices
       Then I should see "This device has been bound to your account!"
         And I should see "G-RALA"
       When I click "Dashboard"
-        And I click "Devices"
+        And I click the link "Devices"
         And I click "Wherefore Art Thou"
       Then I should see the first ".dev-box" have a class named "disallowed"

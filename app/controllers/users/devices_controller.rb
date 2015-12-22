@@ -28,7 +28,11 @@ class Users::DevicesController < ApplicationController
   end
 
   def create
-    @device = Device.find_by uuid: allowed_params[:uuid]
+    if allowed_params[:uuid]
+      @device = Device.find_by uuid: allowed_params[:uuid]
+    else
+      @device = Device.create
+    end
     if @device
       if @device.user.nil?
         create_device
@@ -59,6 +63,16 @@ class Users::DevicesController < ApplicationController
     @device.change_privilege_for(@developer, @device.reverse_privilege_for(@developer))
     @privilege = @device.privilege_for(@developer)
     @r_privilege = @device.reverse_privilege_for(@developer)
+  end
+
+  def switch_all_privileges_for_developer
+    @devices = current_user.devices
+    @developer = Developer.find(params[:developer])
+    @devices.each do |device|
+      device.change_privilege_for(@developer, device.reverse_privilege_for(@developer))
+      @privilege = device.privilege_for(@developer)
+      @r_privilege = device.reverse_privilege_for(@developer)
+    end
   end
 
   def add_current

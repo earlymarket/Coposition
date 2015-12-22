@@ -2,7 +2,7 @@
 <div class='list-group'>
   <% @approved_devs.each do |app| %>
     <div class='list-group-item'>
-      <a href='#' class='list-group-item'>
+      <a href='<%= switch_all_privileges_for_developer_user_devices_path(current_user.id, developer: app.developer.id) %>' data-method='post' data-remote='true' class='white-link'> 
         <h4 class='list-group-item-heading'><%= app.developer.company_name %></h4>
         <% if app.developer.tagline %>
           <p class='list-group-item-text'><%= app.developer.tagline %></p>
@@ -11,9 +11,11 @@
       <div class='row pt-m'>
         <div class='col-lg-12 list-group-item-text'>
           <% app.user.devices.each do |device|  %>
-            <div id='<%= "device#{device.id}developer#{app.developer.id}" %>' class='col-lg-3 dev-box small-curved-border small-height clearfix tiny-shadow <%= "privilege-#{device.privilege_for(app.developer)}" %>'>
-              <a href='<%= switch_privilege_for_developer_user_device_path(current_user.id, device.id, developer: app.developer.id) %>' data-method='post' data-remote='true' class='white-link' ><%= device.name %></a>
-            </div>
+            <a href='<%= switch_privilege_for_developer_user_device_path(current_user.id, device.id, developer: app.developer.id) %>' data-method='post' data-remote='true' class='white-link' >
+              <div id='<%= "device#{device.id}developer#{app.developer.id}" %>' class='col-lg-3 dev-box small-curved-border small-height clearfix tiny-shadow <%= "privilege-#{device.privilege_for(app.developer)}" %>'>
+                <%= device.name %>
+              </div>
+            </a>
           <% end %>
         </div>
       </div>
