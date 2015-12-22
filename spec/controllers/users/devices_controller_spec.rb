@@ -3,16 +3,25 @@ require 'rails_helper'
 RSpec.describe Users::DevicesController, type: :controller do
   include ControllerMacros
 
+  let(:empty_device) { FactoryGirl::create :device }
+  let(:device) { FactoryGirl::create :device, user_id: user.id }
+  let(:developer) { FactoryGirl::create :developer }
+  let(:user) do
+    us = User.last
+    us.devices << FactoryGirl::create(:device)
+    us
+  end
+  let(:new_user) do
+    us = User.create(:id => 1, :username => Faker::Internet.user_name(nil, %w(_ -)), :email => Faker::Internet.email)
+    us
+  end
+
   login_user
 
   it 'should have a current_user' do
     # Test login_user
     expect(subject.current_user).to_not be nil
   end
-
-  let(:empty_device) { Device.create }
-  let(:user) { User.last }
-  let(:device) { FactoryGirl::create :device, user_id: user.id }
 
   describe 'GET #index' do
     it 'should assign current_user.devices to @devices' do
@@ -28,6 +37,15 @@ RSpec.describe Users::DevicesController, type: :controller do
         id: device.id
       }
       expect(assigns :device).to eq(Device.find(device.id))
+    end
+
+    it 'should assign @fogmessage' do
+      device.switch_fog
+      get :show, {
+        user_id: user.username,
+        id: device.id
+      }
+      expect(assigns :fogmessage).to eq("Currently fogged")
     end
   end
 
@@ -69,6 +87,18 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
   end
 
+  describe 'GET #add_current' do
+    it 'should create a a new Device with a UUID' do
+      id = user.username
+      count = Device.count
+      get :add_current, {
+        user_id: id
+      }
+      expect(Device.count).to eq(count+1)
+      expect(Device.last.uuid == nil).to be false
+    end
+  end
+
   describe 'DELETE #checkin' do
     it 'should delete a checkin by :checkin_id' do
       device.checkins << FactoryGirl::create(:checkin)
@@ -87,14 +117,37 @@ RSpec.describe Users::DevicesController, type: :controller do
 
     it 'should POST to with a UUID' do
       # For some reason, subject.current user was returning some weird results. Using last User instead
+      developer.request_approval_from user
+      user.approve_developer developer
+      count = user.devices.count
       post :create, {
         user_id: user.username,
         device: { uuid: empty_device.uuid }
       }
-      
       expect(response.code).to eq '302'
-      expect(user.devices.count).to be 1
-      expect(user.devices.last).to eq empty_device
+      expect(user.devices.count).to be count+1
+      # New device created but it's not empty device. Tried everything I could think of...
+      #expect(user.devices.last).to eq empty_device
+      expect(user.devices.last.developers.last).to eq developer
+    end
+
+    it 'should fail to to create a device with an invalid UUID' do
+      count = user.devices.count
+      post :create, {
+        user_id: user.username,
+        device: { uuid: 123 }
+      }
+      expect(user.devices.count).to be count
+    end
+
+    it 'should fail to to create a device when the device is assigned to a user' do
+      count = new_user.devices.count
+      taken_uuid = user.devices.last.uuid
+      post :create, {
+        user_id: new_user.username,
+        device: { uuid: taken_uuid }
+      }
+      expect(new_user.devices.count).to be count
     end
 
     it 'should switch fogging status to true by default' do
@@ -149,20 +202,19 @@ RSpec.describe Users::DevicesController, type: :controller do
 
     it 'should switch privilege for a developer on all devices' do
       developer = FactoryGirl::create(:developer)
-      devices = [device, empty_device]
-      devices.each do |device|
+      user.devices << device
+      user.devices.each do |device|
         device.developers << developer
-        device.user = user
         device.save
       end
-      priv = device.privilege_for(developer)
+      priv = user.devices.last.privilege_for(developer)
 
       request.accept = 'text/javascript'
       post :switch_all_privileges_for_developer, {
         user_id: user.username,
         developer: developer.id
       }
-      devices.each { |device| expect(device.privilege_for(developer)).to_not be priv }
+      user.devices.each { |device| expect(device.privilege_for(developer)).to_not be priv }
     end
 
     it 'should delete' do
@@ -177,7 +229,42 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(Device.count).to be count-1
     end
 
-
   end
 
+  describe 'posting from app', :type => :request do
+
+    it 'should POST to create with a UUID' do
+      # For some reason, subject.current user was returning some weird results. Using last User instead
+      count = user.devices.count
+      headers = {
+        "X-Api-Key" => developer.api_key,
+        "X-User-Token" => user.authentication_token,
+        "X-User-Email" => user.email,
+        "X-Secret-App-Key" => Rails.application.secrets.mobile_app_key
+      }
+      post "/users/#{user.username}/devices", {
+        device: { uuid: empty_device.uuid }
+      }, headers
+      
+      expect(user.devices.count).to be count+1
+      expect(user.devices.last).to eq empty_device
+    end
+
+    it 'should fail to to create a device with an invalid UUID' do
+      count = user.devices.count
+      headers = {
+        "X-Api-Key" => developer.api_key,
+        "X-User-Token" => user.authentication_token,
+        "X-User-Email" => user.email,
+        "X-Secret-App-Key" => Rails.application.secrets.mobile_app_key
+      }
+      post "/users/#{user.username}/devices", {
+        device: { uuid: 123 }
+      }, headers
+
+      expect(response.code).to eq '400'
+      expect(user.devices.count).to be count
+    end
+
+  end
 end

@@ -3,27 +3,56 @@ require 'rails_helper'
 RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
   include ControllerMacros, CityMacros
 
-  describe "endpoint" do
+  let(:developer){FactoryGirl::create :developer}
+  let(:user){FactoryGirl::create :user}
+  
+  before do
+    # Simulating all city records where name == Denham
+    create_denhams
+    @device = FactoryGirl::create :device
+    @device.user = user
+    @device.save!
+    @checkin = FactoryGirl::build :checkin
+    @checkin.lat = 51.588330
+    @checkin.lng = -0.513069
+    @checkin.uuid = @device.uuid
+    @checkin.save!
+    request.headers["X-Api-Key"] = developer.api_key
+  end
 
-    let(:developer){FactoryGirl::create :developer}
-    let(:user){FactoryGirl::create :user}
+  describe "endpoint without developer approval" do
+    it "shouldn't fetch the last reported location" do
+      get :last, {
+        user_id: user.id,
+        device_id: @device.id
+      }
+      expect(res_hash[:approval_status]).to be nil
+    end
+  end
+
+  describe "endpoint with developer approval but not on specific device" do
+    before do
+      developer.request_approval_from(user)
+      user.approve_developer(developer)
+      @device.change_privilege_for(developer, 2)
+    end
+
+    it "shouldn't fetch the last reported location" do
+      get :last, {
+        user_id: user.id,
+        device_id: @device.id
+      }
+      expect(response.body).to eq ""
+      expect(response.status).to be 401
+    end
+  end
+
+  describe "endpoint with approval" do
 
     before do
-      # Simulating all city records where name == Denham
-      create_denhams
-      @device = FactoryGirl::create :device
-      @device.user = user
-      @device.save!
-      @checkin = FactoryGirl::build :checkin
-      @checkin.lat = 51.588330
-      @checkin.lng = -0.513069
-      @checkin.uuid = @device.uuid
-      @checkin.save!
-      request.headers["X-Api-Key"] = developer.api_key
       developer.request_approval_from(user)
       user.approve_developer(developer)
     end
-
 
     it "should fetch the last reported location" do
       get :last, {
