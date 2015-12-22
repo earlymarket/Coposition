@@ -1,4 +1,6 @@
 class Device < ActiveRecord::Base
+  include SlackNotifiable
+
   belongs_to :user
   has_many :checkins
   has_many :device_developer_privileges
@@ -49,4 +51,5 @@ class Device < ActiveRecord::Base
     hash[:last_checkin] = checkins.last.get_data if checkins.exists?
     hash
   end
+
 end

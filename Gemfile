@@ -35,6 +35,9 @@ gem 'colorize'
 gem 'simple_token_authentication'
 
 gem 'newrelic_rpm'
+
+gem "slack-notifier"
+
 # Use Unicorn as the app server
 
 group :production do
