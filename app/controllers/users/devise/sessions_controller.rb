@@ -45,7 +45,7 @@ class Users::Devise::SessionsController < Devise::SessionsController
       else
         user.authentication_token = nil
         user.save!
-        render status: 204, json: nil
+        render status: 200, json: { message: 'User successfully signed out.' }
       end
     end
 
