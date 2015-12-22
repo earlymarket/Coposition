@@ -6,6 +6,10 @@ Given(/^I click "(.*?)"$/) do |target|
   click_on target
 end
 
+Given(/^I click the link "(.*?)"$/) do |target|
+  click_link(target, match: :first)
+end
+
 Then(/^I should see "(.*?)"$/) do |text|
   expect(page.has_content? text).to be true
 end
