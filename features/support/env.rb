@@ -8,9 +8,11 @@ require 'cucumber/rails'
 
 require 'simplecov'
 require "codeclimate-test-reporter"
+require 'webmock/cucumber'
 
 SimpleCov.start
 CodeClimate::TestReporter.start
+WebMock.disable_net_connect!(:allow_localhost => true)
 
 # Capybara defaults to CSS3 selectors rather than XPath.
 # If you'd prefer to use XPath, just uncomment this line and adjust any
