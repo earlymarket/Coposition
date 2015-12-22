@@ -108,6 +108,7 @@ ActiveRecord::Schema.define(version: 20151222141122) do
   create_table "requests", force: :cascade do |t|
     t.integer  "developer_id"
     t.datetime "created_at"
+    t.boolean  "paid",         default: false
   end
 
   create_table "users", force: :cascade do |t|

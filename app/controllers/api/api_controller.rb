@@ -11,7 +11,6 @@ class Api::ApiController < ActionController::Base
       head status: :unauthorized
       return false
     end
-
     Request.create(developer: @dev, created_at: Time.now)
   end
 
