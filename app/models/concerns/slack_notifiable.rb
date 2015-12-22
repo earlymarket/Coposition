@@ -5,17 +5,11 @@ module SlackNotifiable
   extend ActiveSupport::Concern
   
   included do
-    after_create :ping_slack
+    after_create :ping_slack if Rails.env.production?
   end
 
   def ping_slack
-    return unless Rails.env.production?
-
-    begin
-      Slack::Notifier.new(Rails.application.secrets.webhook_url, channel: '#dev', username: 'Coposition Event').ping(slack_message)
-    rescue Exception => e
-      # non-essential so do nothing
-    end
+    Slack::Notifier.new(Rails.application.secrets.webhook_url, channel: '#dev', username: 'Coposition Event').ping(slack_message)
   end
 
   def slack_message
