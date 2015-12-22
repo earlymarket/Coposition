@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
 
   root to: "welcome#index"
-  get '/reset_for_demo', to: 'welcome#reset_for_demo'
+
+  # Specified routes
+
+  get '/api', to: 'welcome#api'
 
   # Devise
 

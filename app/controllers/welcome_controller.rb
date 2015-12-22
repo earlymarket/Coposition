@@ -4,4 +4,8 @@ class WelcomeController < ApplicationController
   	render "placeholder", layout: false if (Rails.env == "production" && !params[:admin] && !signed_in?)
   end
 
+  def api
+    render html: ReadmeInterpreter.new("README.md").text
+  end
+
 end
