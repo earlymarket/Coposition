@@ -50,16 +50,10 @@ class Users::Devise::SessionsController < Devise::SessionsController
     end
 
     def valid_request?
-      if request.format != :json
-        render status: 406, json: { message: 'The request must be JSON.' }
-        return false
-      end
-
       if @email.nil? or @password.nil?
         render status: 400, json: { message: 'The request MUST contain the user email and password.' }
         return false
       end
-
       true
     end
 
