@@ -36,7 +36,9 @@ gem 'simple_token_authentication'
 
 gem 'newrelic_rpm'
 
-gem "slack-notifier"
+gem 'slack-notifier'
+
+gem 'redcarpet'
 
 # Use Unicorn as the app server
 
