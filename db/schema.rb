@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151209170037) do
+ActiveRecord::Schema.define(version: 20151222154929) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,18 +30,8 @@ ActiveRecord::Schema.define(version: 20151209170037) do
   add_index "approvals", ["user_id"], name: "index_approvals_on_user_id", using: :btree
 
   create_table "checkins", force: :cascade do |t|
-    t.string   "status"
     t.float    "lat"
     t.float    "lng"
-    t.string   "n_s"
-    t.string   "e_w"
-    t.float    "gspeed"
-    t.float    "altitude"
-    t.float    "course"
-    t.string   "time"
-    t.string   "date"
-    t.float    "rotorspeed"
-    t.string   "enginespeed"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "uuid"
@@ -118,6 +108,7 @@ ActiveRecord::Schema.define(version: 20151209170037) do
   create_table "requests", force: :cascade do |t|
     t.integer  "developer_id"
     t.datetime "created_at"
+    t.boolean  "paid",         default: false
   end
 
   create_table "users", force: :cascade do |t|
