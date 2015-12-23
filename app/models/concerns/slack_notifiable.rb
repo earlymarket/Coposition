@@ -12,8 +12,4 @@ module SlackNotifiable
     Slack::Notifier.new(Rails.application.secrets.webhook_url, channel: '#dev', username: 'Coposition Event').ping(slack_message)
   end
 
-  def slack_message
-    self.inspect
-  end
-
 end
