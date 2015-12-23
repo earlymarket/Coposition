@@ -53,7 +53,7 @@ class Device < ActiveRecord::Base
   end
 
   def slack_message
-    "A device has been created by #{self.user.username}"
+    "A new device has been created"
   end
 
 end
