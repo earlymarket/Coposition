@@ -84,6 +84,6 @@ Rails.application.routes.draw do
 
 
   # Checkins
-  resources :checkins, only: [:index, :show, :destroy]
+  resources :checkins, only: [:destroy]
 
 end
