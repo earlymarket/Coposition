@@ -50,7 +50,7 @@ Add the following routes to your /etc/hosts
 
 `rake db:create && rake db:migrate && rake db:seed`
 
-## Example
+## Example API usage
 
 Create a user with the username `testuser`.
 
@@ -81,8 +81,7 @@ With the payload:
 }
 ```
 
-If you then go to your Dashboard > Devices > Add a device, add the UUID `1234567890`, and the device will be bound to your account.
-
+If you then go to your Dashboard > Devices > Add a device, add the UUID `07b47a50-6f22-468f-b387-b314768f4649`, and the device will be bound to your account.
 
 ### Asking for approval
 
@@ -92,7 +91,6 @@ With `X-API-KEY: YourApiKey` passed as a header
 If you go to the user dashboard, you'll now see an approval request from the company you created.
 
 Approving this allows the company to have access to that user's location data of all devices (by default).
-
 
 ### Getting the device information
 
