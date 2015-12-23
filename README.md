@@ -81,7 +81,7 @@ With the payload:
 }
 ```
 
-If you then go to your Dashboard > Devices > Add a device, add the UUID `1234567890`, and the device will be bound to your account.
+If you then go to your Dashboard > Devices > Add a device, add the UUID `07b47a50-6f22-468f-b387-b314768f4649`, and the device will be bound to your account.
 
 ### Asking for approval
 
