@@ -52,4 +52,8 @@ class Device < ActiveRecord::Base
     hash
   end
 
+  def slack_message
+    "A device has been created by #{user.username}"
+  end
+
 end
