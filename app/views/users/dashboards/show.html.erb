@@ -1,7 +1,5 @@
 <h1>Dashboard</h1>
-<br>
-<small>I have a nice vision for this page, and will look amazing when I've been able to spend some good time on it!</small>
-<br>
+<%= current_user.username %>, you have <%= current_user.devices.count %> devices and <%= current_user.approved_developers.count %> approved developers
+<hr>
 <%= link_to("Devices", user_devices_path, class: "btn btn-primary m-m") %>
-<br>
 <%= link_to("Approvals", user_approvals_path, class: "btn btn-primary m-m") %>

@@ -6,7 +6,7 @@ Geocoder.configure(
   # :use_https    => false,       # use HTTPS for lookup requests? (if supported)
   # :http_proxy   => nil,         # HTTP proxy server (user:pass@host:port)
   # :https_proxy  => nil,         # HTTPS proxy server (user:pass@host:port)
-  :api_key      => "AIzaSyAvJbwnUkxwWHUWyk9nZ-BbtSfbny3iDGU"
+  # :api_key      => ""
   # :cache        => nil,         # cache object (must respond to #[], #[]=, and #keys)
   # :cache_prefix => "geocoder:", # prefix (string) to use for all cache keys
 
@@ -18,4 +18,19 @@ Geocoder.configure(
   # calculation options
   # :units     => :mi,       # :km for kilometers or :mi for miles
   # :distances => :linear    # :spherical or :linear
+)
+Geocoder.configure(:lookup => :test) if Rails.env.test?
+
+Geocoder::Lookup::Test.set_default_stub(
+  [
+    {
+      'latitude'     => 51.588330,
+      'longitude'    => -0.513069,
+      'address'      => 'The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK',
+      'city'         => 'Denham',
+      'postal_code'  => 'UB9 5DF',
+      'country'      => 'United Kingdom',
+      'country_code' => 'GB'
+    }
+  ]
 )
