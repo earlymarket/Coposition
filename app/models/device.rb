@@ -56,15 +56,20 @@ class Device < ActiveRecord::Base
     "A device has been created by #{user.username}"
   end
 
-  # Metadata
+  ###########
+
+  ## Metadata ##
+
   def checkins_at(param, value)
     checkins.where("extract( #{param} from created_at) = ?", value)
   end
 
   def checkins_over_range(time_range)
     checks = []
-    time_range.step do |hour_v|
-      checks << checkins_at('hour', hour_v)
+    Checkin.transaction do
+      time_range.step do |hour_v|
+        checks << checkins_at('hour', hour_v)
+      end
     end
     checks = checks.reject { |c| c.empty? }
     checks.flatten
