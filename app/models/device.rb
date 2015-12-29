@@ -83,18 +83,16 @@ class Device < ActiveRecord::Base
     most_frequent_address(checkins_over_range(time_range))[0]
   end
 
-  # Probably too complicated for actual use.
-=begin 
+  # Probably too complicated for actual use, returns first address found for a specific hour on a specific date.
   def location_at(day_v, month_v, year_v, hour_v)
-    checkins = checkins.where('extract (day from created_at) = ? AND extract(month from created_at) = ? AND extract(year from created_at) = ? AND extract(hour from created_at) = ?', day_v, month_v, year_v, hour_v)
-    if checkins.exists?
-      checkins.each do |checkin|
+    checks = checkins.where('extract (day from created_at) = ? AND extract(month from created_at) = ? AND extract(year from created_at) = ? AND extract(hour from created_at) = ?', day_v, month_v, year_v, hour_v)
+    if checks.exists?
+      checks.each do |checkin|
         return checkin.address unless checkin.address.nil?
       end
       return "No address for checkins at this date"
     end
     return "No Checkins at date"
   end
-=end
 
 end
