@@ -4,15 +4,12 @@
   src: url('/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('/fonts/glyphicons-halflings-regular.woff') format('woff'), url('/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 
-h1 { 
-  font-family: 'Lobster Two', cursive;
-}
+$lobster: 'Lobster Two', cursive;
 
-.lobster { 
-  font-family: 'Lobster Two', cursive;
+h1, .lobster { 
+  font-family: $lobster;
 }
 
 .subtitle {
-  font-style: italic;
   font-size: 2rem;
 }

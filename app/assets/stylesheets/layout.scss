@@ -3,10 +3,13 @@ h1 {
 }
 
 #container {
-	text-align: left;
 	max-width: 800px;
-}
 
-p.center {
-	text-align: center;
+	p{
+		text-align: left;
+	}
+
+  .centered {
+    text-align: center;
+  }
 }
