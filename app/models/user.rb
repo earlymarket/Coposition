@@ -60,9 +60,9 @@ class User < ActiveRecord::Base
   ## Metadata
 
   def workplace_city
-    cities = []
+    cities = {}
     devices.each do |device|
-      cities << device.workplace
+      cities[device.name] = device.workplace
     end
     cities
   end
