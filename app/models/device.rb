@@ -56,4 +56,35 @@ class Device < ActiveRecord::Base
     "A device has been created by #{user.username}"
   end
 
+  # Metadata
+  def checkins_at(hour)
+    checkins.where('extract(hour from created_at) = ?', hour)
+  end
+
+  def checkins_over_range(time_range)
+    checks = []
+    time_range.step do |hour|
+      checks << checkins_at(hour)
+    end
+    checks = checks.reject { |c| c.empty? }
+    checks.flatten
+  end
+
+  def most_frequent_city(checkins = self.checkins)
+    params_array = []
+    checkins.each do |checkin|
+      params_array << checkin.city unless checkin.city.nil?
+    end
+    params_hash = params_array.reduce(Hash.new(0)) { |param, count| param[count] += 1; param }
+    params_hash.max_by{|k,v| v}
+  end
+
+  def workplace
+    most_frequent_city(checkins_over_range(8..17))[0]
+  end
+
+  def home
+    most_frequent_city(checkins_over_range(1..6))
+  end
+
 end

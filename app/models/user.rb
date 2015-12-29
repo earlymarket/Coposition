@@ -55,6 +55,26 @@ class User < ActiveRecord::Base
     devices.where(developer: developer)
   end
 
+  ################
+
+  ## Metadata
+
+  def workplace_city
+    cities = []
+    devices.each do |device|
+      cities << device.workplace
+    end
+    cities
+  end
+
+  def checkins
+    checkins = []
+    devices.each do |device|
+      checkins << device.checkins
+    end
+    checkins.flatten
+  end
+
   ##############
 
   def slack_message
