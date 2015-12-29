@@ -1,3 +1,42 @@
 <h1>Getting started with CoPosition</h1>
 <hr>
-<%= @html %>
+
+<p>Create a user with the username <code>testuser</code>.</p>
+
+<p>Create a developer.</p>
+
+<p>Note the API key.</p>
+
+<h3>Create a device</h3>
+
+<p>To start posting a checkin, you need to tell us which device you&#39;re posting to. This is determined by the UUID of the device. If you&#39;re creating a new device, all you need to do is request a new UUID</p>
+
+<p><code>GET http://api.coposition.com/v1/uuid</code> With <code>X-API-KEY: YourApiKey</code> passed as a header</p>
+
+<h3>Posting a checkin</h3>
+
+<p><code>POST http://api.coposition-dev.com/v1/checkins</code> With the payload:
+  <pre>
+    {
+      "checkin": {
+        "uuid":"07b47a50-6f22-468f-b387-b314768f4649",
+        "lat":"51.588330",
+        "lng":"-0.513069"
+      }
+    }
+  </pre>
+</p>
+
+<p>If you then go to your Dashboard &gt; Devices &gt; Add a device, add the UUID <code>07b47a50-6f22-468f-b387-b314768f4649</code>, and the device will be bound to your account.</p>
+
+<h3>Asking for approval</h3>
+
+<p><code>POST http://api.coposition-dev.com/v1/users/testuser/approvals</code> With <code>X-API-KEY: YourApiKey</code> passed as a header</p>
+
+<p>If you go to the user dashboard, you&#39;ll now see an approval request from the company you created.</p>
+
+<p>Approving this allows the company to have access to that user&#39;s location data of all devices (by default).</p>
+
+<h3>Getting the device information</h3>
+
+<p><code>GET http://api.coposition-dev.com/v1/users/testuser/devices</code> With <code>X-API-KEY: YourApiKey</code> passed as a header Returns an index of devices.</p>
