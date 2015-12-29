@@ -57,14 +57,14 @@ class Device < ActiveRecord::Base
   end
 
   # Metadata
-  def checkins_at(hour)
-    checkins.where('extract(hour from created_at) = ?', hour)
+  def checkins_at(param, value)
+    checkins.where("extract( #{param} from created_at) = ?", value)
   end
 
   def checkins_over_range(time_range)
     checks = []
-    time_range.step do |hour|
-      checks << checkins_at(hour)
+    time_range.step do |hour_v|
+      checks << checkins_at('hour', hour_v)
     end
     checks = checks.reject { |c| c.empty? }
     checks.flatten
@@ -83,16 +83,18 @@ class Device < ActiveRecord::Base
     most_frequent_address(checkins_over_range(time_range))[0]
   end
 
-  def location_at(hour)
-    if checkins_at(hour).exists?
-      checkins_at(hour).each do |checkin|
-        unless checkin.address.nil?
-          return checkin.address
-        end
+  # Probably too complicated for actual use.
+=begin 
+  def location_at(day_v, month_v, year_v, hour_v)
+    checkins = checkins.where('extract (day from created_at) = ? AND extract(month from created_at) = ? AND extract(year from created_at) = ? AND extract(hour from created_at) = ?', day_v, month_v, year_v, hour_v)
+    if checkins.exists?
+      checkins.each do |checkin|
+        return checkin.address unless checkin.address.nil?
       end
-      return "No address for checkins at this hour"
+      return "No address for checkins at this date"
     end
-    return "No Checkins at #{hour}"
+    return "No Checkins at date"
   end
+=end
 
 end

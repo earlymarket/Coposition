@@ -46,9 +46,9 @@ RSpec.describe Device, type: :model do
     expect(device.privilege_for developer).to eq "disallowed"
   end
 
-  it "should get the most city visited most during the day" do
+  it "should get the most address visited most during a specific time period" do
     expect(device.checkins).to match_array(checkins)
-    expect(device.workplace).to eq "Denham"
+    expect(device.most_frequent_address_at(0..24)).to eq "The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK"
   end
 
 end

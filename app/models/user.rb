@@ -75,6 +75,14 @@ class User < ActiveRecord::Base
     checkins.flatten
   end
 
+  def most_used_device
+    device_uses = {}
+    devices.each do |device|
+      device_uses[device] = device.checkins.count
+    end
+    device_uses.max_by{|k,v| v}[0]
+  end
+
   ##############
 
   def slack_message
