@@ -239,7 +239,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       headers = {
         "X-Api-Key" => developer.api_key,
         "X-User-Token" => user.authentication_token,
-        "X-User-Email" => user.email,
+        "X-User-Username" => user.username,
         "X-Secret-App-Key" => Rails.application.secrets.mobile_app_key
       }
       post "/users/#{user.username}/devices", {
@@ -255,7 +255,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       headers = {
         "X-Api-Key" => developer.api_key,
         "X-User-Token" => user.authentication_token,
-        "X-User-Email" => user.email,
+        "X-User-Username" => user.username,
         "X-Secret-App-Key" => Rails.application.secrets.mobile_app_key
       }
       post "/users/#{user.username}/devices", {

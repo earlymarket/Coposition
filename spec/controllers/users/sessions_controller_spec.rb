@@ -22,27 +22,12 @@ RSpec.describe Users::Devise::SessionsController, type: :controller do
       request.env['devise.mapping'] = Devise.mappings[:user]
       post :create, 
         user: {
-          email: user.email,
+          username: user.username,
           password: user.password
         }, 
         format: :json
-      
-      expect(res_hash[:email]).to eq user.email
+      expect(res_hash[:username]).to eq user.username
       expect(res_hash[:authentication_token]).to eq user.authentication_token
-    end
-
-    it "should make sure the secret app key is correct" do
-      request.headers["X-Secret-App-Key"] = "NOT-a-mobile-app" 
-      request.env['devise.mapping'] = Devise.mappings[:user]
-      post :create, 
-        user: {
-          email: user.email,
-          password: user.password
-        }, 
-        format: :json
-      
-      expect(res_hash[:email]).to be nil
-      expect(res_hash[:authentication_token]).to be nil
     end
 
     it "should make sure the password is correct" do
@@ -50,40 +35,15 @@ RSpec.describe Users::Devise::SessionsController, type: :controller do
       request.env['devise.mapping'] = Devise.mappings[:user]
       post :create, 
         user: {
-          email: user.email,
+          username: user.username,
           password: user.password + "incorrect",
         }, 
         format: :json
       
       expect(response.status).to be 401
-      expect(res_hash[:email]).to be nil
+      expect(res_hash[:username]).to be nil
       expect(res_hash[:authentication_token]).to be nil
     end
-
-    it "should make sure the email/password is present" do
-      request.headers["X-Secret-App-Key"] = "this-is-a-mobile-app"
-      request.env['devise.mapping'] = Devise.mappings[:user]
-      post :create, 
-        user: {
-          email: user.email,
-          password: nil,
-        }, 
-        format: :json
-      
-      expect(response.status).to be 400
-      expect(res_hash[:email]).to be nil
-      expect(res_hash[:authentication_token]).to be nil
-    end
-
-    it "should be able to sign out" do
-      token_before = user.authentication_token
-      request.env['devise.mapping'] = Devise.mappings[:user]
-      request.headers["X-Secret-App-Key"] = "this-is-a-mobile-app"
-      request.headers["X-User-Token"] = token_before
-      delete :destroy, nil, format: :json
-      expect(user.reload.authentication_token).to_not eq token_before
-    end
-
 
   end
 
