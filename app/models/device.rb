@@ -70,21 +70,29 @@ class Device < ActiveRecord::Base
     checks.flatten
   end
 
-  def most_frequent_city(checkins = self.checkins)
+  def most_frequent_address(checkins = self.checkins)
     params_array = []
     checkins.each do |checkin|
-      params_array << checkin.city unless checkin.city.nil?
+      params_array << checkin.address unless checkin.address.nil?
     end
     params_hash = params_array.reduce(Hash.new(0)) { |param, count| param[count] += 1; param }
     params_hash.max_by{|k,v| v}
   end
 
-  def workplace
-    most_frequent_city(checkins_over_range(8..17))[0]
+  def most_frequent_address_at(time_range)
+    most_frequent_address(checkins_over_range(time_range))[0]
   end
 
-  def home
-    most_frequent_city(checkins_over_range(1..6))
+  def location_at(hour)
+    if checkins_at(hour).exists?
+      checkins_at(hour).each do |checkin|
+        unless checkin.address.nil?
+          return checkin.address
+        end
+      end
+      return "No address for checkins at this hour"
+    end
+    return "No Checkins at #{hour}"
   end
 
 end
