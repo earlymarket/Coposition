@@ -39,8 +39,6 @@ function addClickListeners() {
   $(".close").click(function(e){
     utility.animations.removeEl($(e.currentTarget).parent())
   });
-  
-  applyFoggleClickListener();
 }
 
 toastr.options = {
