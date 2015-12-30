@@ -24,10 +24,18 @@ Feature: Devices
       Given I click "Add new device"
         When I enter UUID "123456789123" and a friendly name "G-RALA"
       And I click "Add"
-        Then I should see "Fogging"
-      When I click "Fogging"
-        Then I should see "Fog"
+        Then I should see a link that says "Fog"
       When I click "Fog"
-      And I click "Dashboard"
+        Then I should see a link that says "Currently Fogged"
+      When I click "Dashboard"
       And I click the link "Devices"
         Then I should see "Fogging is enabled"
+
+    @javascript
+    Scenario: User enables timeshift on a device
+      Given I click "Add new device"
+        When I enter UUID "123456789123" and a friendly name "G-RALA"
+        And I click "Add"
+        And I fill in "mins" with "10"
+      When I click "Update"
+        Then I should be timeshifted by "10" mins
