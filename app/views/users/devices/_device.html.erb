@@ -6,7 +6,13 @@
     <% else %>
       <p class="list-group-item-text">No checkins found </p>
     <% end %>
-    <p class="list-group-item-text"><%= "Fogging is enabled on this device with #{device.delayed ? 'a delay of '+device.delayed.to_s+' minutes' : 'no delay'}" if device.fogged %> </p>
+    <% if device.fogged %>
+      <p class="list-group-item-text">Fogging is enabled on this device.</p>
+    <% end %>
+    <% if device.delayed %>
+      <p class="list-group-item-text">Timeshifted with a delay of <%= "#{device.delayed.to_s+' minutes'}"%></p>
+    <% end %>
+    
   </a>
   <div class="row pt-m">
     <div class="col-lg-12 list-group-item-text">
