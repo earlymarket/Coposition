@@ -62,7 +62,7 @@ class User < ActiveRecord::Base
   def workplace_address
     addresses = {}
     devices.each do |device|
-      addresses[device.name] = device.most_frequent_address_at(8..17)
+      addresses[device.name] = device.most_frequent_address_over('hour', 8..17)
     end
     addresses
   end

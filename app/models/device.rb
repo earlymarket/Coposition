@@ -60,32 +60,18 @@ class Device < ActiveRecord::Base
 
   ## Metadata ##
 
-  def checkins_at(param, value)
-    checkins.where("extract( #{param} from created_at) = ?", value)
-  end
-
-  def checkins_over_range(time_range)
-    checks = []
-    Checkin.transaction do
-      time_range.step do |hour_v|
-        checks << checkins_at('hour', hour_v)
-      end
-    end
-    checks = checks.reject { |c| c.empty? }
-    checks.flatten
+  def checkins_over(param, range)
+    checkins.where("extract( #{param} from created_at) IN (?)", range)
   end
 
   def most_frequent_address(checkins = self.checkins)
-    params_array = []
-    checkins.each do |checkin|
-      params_array << checkin.address unless checkin.address.nil?
-    end
-    params_hash = params_array.reduce(Hash.new(0)) { |param, count| param[count] += 1; param }
-    params_hash.max_by{|k,v| v}
+    lat = checkins.group(:lat).count.max_by{|k,v| v}[0]
+    lng = checkins.group(:lng).count.max_by{|k,v| v}[0]
+    return lat,lng
   end
 
-  def most_frequent_address_at(time_range)
-    most_frequent_address(checkins_over_range(time_range))[0]
+  def most_frequent_address_over(param, range)
+    most_frequent_address(checkins_over(param, range))
   end
 
   # Probably too complicated for actual use, returns first address found for a specific hour on a specific date.

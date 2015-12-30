@@ -48,7 +48,7 @@ RSpec.describe Device, type: :model do
 
   it "should get the most address visited most during a specific time period" do
     expect(device.checkins).to match_array(checkins)
-    expect(device.most_frequent_address_at(0..24)).to eq "The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK"
+    expect(device.most_frequent_address_over('hour', 0..24)).to eq [51.58833, -0.513069]
   end
 
 end
