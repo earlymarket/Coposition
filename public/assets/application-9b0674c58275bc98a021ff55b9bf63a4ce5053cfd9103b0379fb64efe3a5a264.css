@@ -3350,6 +3350,11 @@ h1 {
 }
 
 /* line 11, /home/earlymarket/projects/CoPosition/app/assets/stylesheets/fonts.scss */
+.lobster {
+  font-family: 'Lobster Two', cursive;
+}
+
+/* line 15, /home/earlymarket/projects/CoPosition/app/assets/stylesheets/fonts.scss */
 .subtitle {
   font-style: italic;
   font-size: 2rem;
@@ -3362,6 +3367,11 @@ h1 {
 .small-height {
   line-height: 30px;
   height: 30px;
+}
+/* line 1, /home/earlymarket/projects/CoPosition/app/assets/stylesheets/hovers.scss */
+.dropdown:hover .dropdown-menu {
+  display: block;
+  margin-top: 0;
 }
 /* line 1, /home/earlymarket/projects/CoPosition/app/assets/stylesheets/margins.scss */
 .m-m {
@@ -3407,6 +3417,7 @@ h5 {
 }
 
 #placeholderTitle {
+	font-family: inherit;
     color: white;
     width: 7em;
     border: 1px solid white;

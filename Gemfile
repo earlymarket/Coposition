@@ -50,6 +50,8 @@ end
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'derailed', group: :development
+
 group :development, :test do
   gem 'pry'
   gem 'pry-rails'
