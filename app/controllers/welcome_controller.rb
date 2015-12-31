@@ -5,7 +5,6 @@ class WelcomeController < ApplicationController
   end
 
   def api
-    # @html = ReadmeInterpreter.new("README.md").create_api_page.html_safe
   end
 
 end

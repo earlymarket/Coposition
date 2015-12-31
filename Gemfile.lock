@@ -188,7 +188,6 @@ GEM
     raindrops (0.15.0)
     rake (10.4.2)
     rdoc (4.2.0)
-    redcarpet (3.3.3)
     rename (1.0.2)
       rails (>= 3.0.0)
     responders (2.1.0)
@@ -298,7 +297,6 @@ DEPENDENCIES
   rack-cors
   rails (= 4.2.3)
   rails_12factor
-  redcarpet
   rename
   responders (~> 2.0)
   rspec-rails
