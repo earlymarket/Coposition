@@ -5,4 +5,5 @@ exclude_paths:
 - "app/assets/javascripts/libs/*"
 - "app/assets/stylesheets/libs/*"
 - "public/assets/*"
-- "db/Cities/*"
+- "db/cities/*"
+- "db/migrate/*"
