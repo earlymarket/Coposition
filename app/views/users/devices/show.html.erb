@@ -3,7 +3,6 @@
 <%= link_to("Delete history", checkin_path, { method: :delete, class: "btn btn-danger btn-lg m-m"  })%>
 <%= link_to("Delete device", "#{user_devices_path}/#{@device.id}", { method: :delete, class: "btn btn-danger btn-lg m-m" })%>
 <br>
-<button id="foggle" class="btn-lg btn-primary m-m">Fogging <span class="glyphicon glyphicon-chevron-down"></span></button>
 <%= render partial: "fogging" %>
 
 <%= render partial: "checkin_table" %>

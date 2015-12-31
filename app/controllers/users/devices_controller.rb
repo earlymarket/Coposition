@@ -84,7 +84,7 @@ class Users::DevicesController < ApplicationController
     @device = Device.find(params[:id])
     if @device.switch_fog
       @message = "has been fogged."
-      @button_text = "Fogged"
+      @button_text = "Currently Fogged"
     else
       @message = "is no longer fogged."
       @button_text = "Fog"
