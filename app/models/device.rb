@@ -64,26 +64,43 @@ class Device < ActiveRecord::Base
     checkins.where("extract( #{param} from created_at) IN (?)", range)
   end
 
-  def most_frequent_address(checkins = self.checkins)
+  def most_frequent_coords(checkins = self.checkins)
     lat = checkins.group(:lat).count.max_by{|k,v| v}[0]
     lng = checkins.group(:lng).count.max_by{|k,v| v}[0]
     return lat,lng
   end
 
-  def most_frequent_address_over(param, range)
-    most_frequent_address(checkins_over(param, range))
+  def most_frequent_coords_over(param, range)
+    most_frequent_coords(checkins_over(param, range))
   end
 
-  # Probably too complicated for actual use, returns first address found for a specific hour on a specific date.
+  def recent_checkins(range)
+    today = Date.today
+    past = today - range
+    checkins.where(["created_at >= ? and created_at <= ?", past.beginning_of_day, today.end_of_day])
+  end
+
+  def recent_cities_coords(range)
+    lat, lng = most_frequent_coords
+    recent_checks = recent_checkins(7)
+    checks = recent_checks.where("(lat - ?).abs > 1 OR (lng - ?).abs > 1", lat, lng).select("DISTINCT lat,lng")
+    cities_coords = checks.map do |check|
+      [check.lat, check.lng]
+    end
+  end
+
+  # Probably too complicated for actual use, returns first coords found for a specific hour on a specific date.
   def location_at(day_v, month_v, year_v, hour_v)
     checks = checkins.where('extract (day from created_at) = ? AND extract(month from created_at) = ? AND extract(year from created_at) = ? AND extract(hour from created_at) = ?', day_v, month_v, year_v, hour_v)
     if checks.exists?
       checks.each do |checkin|
-        return checkin.address unless checkin.address.nil?
+        return checkin.lat unless checkin.lat.nil?
       end
       return "No address for checkins at this date"
     end
     return "No Checkins at date"
   end
+
+
 
 end

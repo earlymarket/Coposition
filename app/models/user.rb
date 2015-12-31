@@ -59,12 +59,12 @@ class User < ActiveRecord::Base
 
   ## Metadata
 
-  def workplace_address
-    addresses = {}
+  def workplace_coords
+    coords = {}
     devices.each do |device|
-      addresses[device.name] = device.most_frequent_address_over('hour', 8..17)
+      coords[device.name] = device.most_frequent_coords_over('hour', 8..17)
     end
-    addresses
+    coords
   end
 
   def checkins
