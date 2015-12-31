@@ -45,14 +45,14 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       expect(res_hash.first["id"]).to be device.id
     end
 
-    it "should let you know the last checkin for a list of devices if there is one" do
-      get :index, user_id: user.username, id: device.id, format: :json
-      expect(res_hash.first["last_checkin"]["id"]).to eq @checkin.id
-    end
-
-    it "should let you know the last checkin for device if there is one" do
-      get :show, user_id: user.username, id: device.id, format: :json
-      expect(res_hash.first["last_checkin"]["id"]).to eq @checkin.id
+    it "should let you know the last checkin for devices if there is one" do
+      req = Proc.new { |loc| get loc, user_id: user.username, id: device.id, format: :json }
+      expect = Proc.new { expect(res_hash.first["last_checkin"]["id"]).to eq @checkin.id }
+      
+      req.call(:index)
+      expect.call
+      req.call(:show)
+      expect.call
     end
 
     it "should not only return devices for which the developer has permission" do
