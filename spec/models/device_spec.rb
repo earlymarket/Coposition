@@ -45,10 +45,11 @@ RSpec.describe Device, type: :model do
   
     expect(device.privilege_for developer).to eq "disallowed"
   end
-
-  it "should get the most address visited most during a specific time period" do
-    expect(device.checkins).to match_array(checkins)
-    expect(device.most_frequent_coords_over('hour', 0..24)).to eq [51.58833, -0.513069]
+  
+  describe "metadata" do
+    it "should get the most address visited most during a specific time period" do
+      expect(device.checkins).to match_array(checkins)
+      expect(device.most_frequent_coords_over('hour', 0..24)).to eq [51.58833, -0.513069]
+    end
   end
-
 end

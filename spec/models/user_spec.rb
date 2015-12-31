@@ -10,6 +10,11 @@ RSpec.describe User, type: :model do
     us.devices << device
     us
   end
+  let(:checkins) do
+    checks = [FactoryGirl::create(:checkin)]
+    checks << FactoryGirl::create(:checkin)
+    device.checkins << checks
+  end
 
   describe "relationships" do
     it "should have some devices" do
@@ -79,4 +84,22 @@ RSpec.describe User, type: :model do
       expect(user.notifications.first[:notification][:msg]).to_not be nil
     end
   end
+
+  describe "metadata" do
+    it "should find the most common coords for each device over a certain time range" do
+      name = device.name
+      lat, lng = checkins.last.lat, checkins.last.lng
+      expect( user.devices_coords_at('hour',0..24) ).to eq ({name => [lat, lng]})
+    end
+
+    it "should get a list of all checkins for users devices" do
+      checkins = device.checkins
+      expect( user.checkins ).to eq checkins
+    end
+
+    it "should find the users most used device" do
+      expect( user.most_used_device ).to eq device
+    end
+  end
+
 end

@@ -65,8 +65,8 @@ class Device < ActiveRecord::Base
   end
 
   def most_frequent_coords(checkins = self.checkins)
-    lat = checkins.group(:lat).count.max_by{|_k,v| v}[0]
-    lng = checkins.group(:lng).count.max_by{|_k,v| v}[0]
+    lat = checkins.group(:lat).count.max_by{|_k,v| v}[0] if checkins.exists?
+    lng = checkins.group(:lng).count.max_by{|_k,v| v}[0] if checkins.exists?
     return lat,lng
   end
 
@@ -88,19 +88,5 @@ class Device < ActiveRecord::Base
       [check.lat, check.lng]
     end
   end
-
-  # Probably too complicated for actual use, returns first coords found for a specific hour on a specific date.
-  def location_at(day_v, month_v, year_v, hour_v)
-    checks = checkins.where('extract (day from created_at) = ? AND extract(month from created_at) = ? AND extract(year from created_at) = ? AND extract(hour from created_at) = ?', day_v, month_v, year_v, hour_v)
-    if checks.exists?
-      checks.each do |checkin|
-        return checkin.lat unless checkin.lat.nil?
-      end
-      return "No address for checkins at this date"
-    end
-    return "No Checkins at date"
-  end
-
-
 
 end

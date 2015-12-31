@@ -59,10 +59,10 @@ class User < ActiveRecord::Base
 
   ## Metadata
 
-  def workplace_coords
+  def devices_coords_at(param, range)
     coords = {}
     devices.each do |device|
-      coords[device.name] = device.most_frequent_coords_over('hour', 8..17)
+      coords[device.name] = device.most_frequent_coords_over(param, range)
     end
     coords
   end
@@ -81,6 +81,14 @@ class User < ActiveRecord::Base
       device_uses[device] = device.checkins.count
     end
     device_uses.max_by{|_k,v| v}[0]
+  end
+
+  def last_used_device
+    last_checkins = []
+    devices.each do |device|
+      last_checkins << device.checkins.last
+    end
+    Device.find(last_checkins.sort_by(&:created_at).last.device_id)
   end
 
   ##############
