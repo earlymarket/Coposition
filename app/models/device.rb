@@ -65,8 +65,8 @@ class Device < ActiveRecord::Base
   end
 
   def most_frequent_coords(checkins = self.checkins)
-    lat = checkins.group(:lat).count.max_by{|k,v| v}[0]
-    lng = checkins.group(:lng).count.max_by{|k,v| v}[0]
+    lat = checkins.group(:lat).count.max_by{|_k,v| v}[0]
+    lng = checkins.group(:lng).count.max_by{|_k,v| v}[0]
     return lat,lng
   end
 
@@ -82,9 +82,9 @@ class Device < ActiveRecord::Base
 
   def recent_cities_coords(range)
     lat, lng = most_frequent_coords
-    recent_checks = recent_checkins(7)
+    recent_checks = recent_checkins(range)
     checks = recent_checks.where("(lat - ?).abs > 1 OR (lng - ?).abs > 1", lat, lng).select("DISTINCT lat,lng")
-    cities_coords = checks.map do |check|
+    checks.map do |check|
       [check.lat, check.lng]
     end
   end

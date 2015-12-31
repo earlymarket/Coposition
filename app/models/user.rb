@@ -80,7 +80,7 @@ class User < ActiveRecord::Base
     devices.each do |device|
       device_uses[device] = device.checkins.count
     end
-    device_uses.max_by{|k,v| v}[0]
+    device_uses.max_by{|_k,v| v}[0]
   end
 
   ##############
