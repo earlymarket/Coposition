@@ -38,6 +38,8 @@ gem 'newrelic_rpm'
 
 gem 'slack-notifier'
 
+gem 'materialize-sass'
+
 # Use Unicorn as the app server
 
 group :production do
