@@ -44,7 +44,7 @@ class Checkin < ActiveRecord::Base
       %w{address city country postal_code}
     end
 
-    def most_common_coord
+    def most_common_coords(number)
       coord = group(:lat, :lng).count.max_by{|_k,v| v}[0]
       return coord
     end

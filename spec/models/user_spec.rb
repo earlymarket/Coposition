@@ -89,16 +89,16 @@ RSpec.describe User, type: :model do
     it "should find the most common coords for each device over a certain time range" do
       name = device.name
       lat, lng = checkins.last.lat, checkins.last.lng
-      expect( user.devices_coords_at('hour',0..24) ).to eq ({name => [lat, lng]})
+      expect(user.devices_coords_at('hour',0..24)).to eq ({name => [lat, lng]})
     end
 
     it "should get a list of all checkins for users devices" do
       checkins = device.checkins
-      expect( user.checkins ).to eq checkins
+      expect(user.checkins).to eq checkins
     end
 
     it "should find the users most used device" do
-      expect( user.most_used_device ).to eq device
+      expect(user.most_used_device).to eq device
     end
   end
 
