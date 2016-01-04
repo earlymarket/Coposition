@@ -31,7 +31,7 @@
         <%= checkin.created_at %>
       </td>
       <td>
-        <%= button_to "x", checkin_user_device_path(current_user.id, @device.id, checkin_id: checkin.id), method: :delete, class: "btn btn-danger" %>
+        <%= button_to "x", checkin_user_device_path(current_user.id, @device.id, checkin_id: checkin.id), method: :delete, remote: :true, class: "btn btn-danger" %>
       </td>
     </tr>  
   <% end %>

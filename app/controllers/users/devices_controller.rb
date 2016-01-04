@@ -55,7 +55,6 @@ class Users::DevicesController < ApplicationController
     @checkin_id = params[:checkin_id]
     Device.find(params[:id]).checkins.find(@checkin_id).delete if user_owns_device?
     flash[:notice] = "Checkin deleted"
-    redirect_to user_device_path
   end
 
   def switch_privilege_for_developer
