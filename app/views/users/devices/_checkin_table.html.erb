@@ -16,7 +16,7 @@
       Delete
     </th>
   </tr>
-  <% @device.checkins.order(created_at: :desc).each do |checkin| %>
+  <% @checkins.each do |checkin| %>
     <tr id="checkin<%= checkin.id %>" class="animated">
       <td>
         <%= checkin.lat %>
@@ -35,4 +35,5 @@
       </td>
     </tr>  
   <% end %>
+  <%= will_paginate @checkins %>
 </table>
