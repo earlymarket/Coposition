@@ -19,7 +19,6 @@ class Api::V1::Users::Devices::CheckinsController < Api::ApiController
   end
 
   def resolve checkin
-    binding.pry
     if params[:type] == "address"
         checkin.reverse_geocode!
         checkin.get_data
