@@ -1,23 +1,37 @@
 <table class="table table-striped table-hover">
   <tr>
-    <% Checkin.non_geocoded_keys(exception: "device_id").each do |key| %>
-      <th>
-        <%= key.titleize %>
-      </th>
-    <% end %>
+    <th>
+      Latitude
+    </th>
+    <th>
+      Longitude
+    </th>
+    <th>
+      Country Code
+    </th>
+    <th>
+      Created At
+    </th>
     <th>
       Delete
     </th>
   </tr>
-  <% @device.checkins.each do |checkin| %>
+  <% @device.checkins.order(created_at: :desc).each do |checkin| %>
     <tr id="checkin<%= checkin.id %>" class="animated">
-      <% checkin.non_geocoded_data(exception: "device_id").values.each do |val| %>
-        <td>
-          <%= val %>
-        </td>
-      <% end %>
       <td>
-        <%= button_to "x", checkin_user_device_path(current_user.id, @device.id, checkin_id: checkin.id), method: :delete, remote: true, class: "btn btn-danger" %>
+        <%= checkin.lat %>
+      </td>
+      <td>
+        <%= checkin.lng %>
+      </td>
+      <td>
+        <%= checkin.country_code %>
+      </td>
+      <td>
+        <%= checkin.created_at %>
+      </td>
+      <td>
+        <%= button_to "x", checkin_user_device_path(current_user.id, @device.id, checkin_id: checkin.id), method: :delete, class: "btn btn-danger" %>
       </td>
     </tr>  
   <% end %>

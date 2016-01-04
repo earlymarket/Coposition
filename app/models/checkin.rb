@@ -36,14 +36,6 @@ class Checkin < ActiveRecord::Base
       order(:id).find(range_array(from, size))
     end
 
-    def non_geocoded_keys(exception: nil)
-      (column_names - [exception]) - geocoded_keys
-    end
-
-    def geocoded_keys
-      %w{address city country postal_code}
-    end
-
   end
 
   # The method to be used for public-facing data 
@@ -55,10 +47,6 @@ class Checkin < ActiveRecord::Base
     end
 
     self
-  end
-
-  def non_geocoded_data(exception: nil)
-    self.as_json.except(*Checkin.geocoded_keys, exception)
   end
 
   def reverse_geocode!
