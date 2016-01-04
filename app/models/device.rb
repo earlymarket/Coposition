@@ -64,14 +64,8 @@ class Device < ActiveRecord::Base
     checkins.where("extract( #{param} from created_at) IN (?)", range)
   end
 
-  def most_frequent_coords(checkins = self.checkins)
-    lat = checkins.group(:lat).count.max_by{|_k,v| v}[0] if checkins.exists?
-    lng = checkins.group(:lng).count.max_by{|_k,v| v}[0] if checkins.exists?
-    return lat,lng
-  end
-
   def most_frequent_coords_over(param, range)
-    most_frequent_coords(checkins_over(param, range))
+    checkins_over(param, range).most_common_coords
   end
 
   def recent_checkins(range)
@@ -81,10 +75,11 @@ class Device < ActiveRecord::Base
   end
 
   def recent_cities_coords(range)
-    lat, lng = most_frequent_coords
+    lat, lng = checkins.most_common_coords[0], checkins.most_common_coords[1]
     recent_checks = recent_checkins(range)
     checks = recent_checks.where("(lat - ?).abs > 1 OR (lng - ?).abs > 1", lat, lng).select("DISTINCT lat,lng")
     checks.map do |check|
+      binding.pry
       [check.lat, check.lng]
     end
   end

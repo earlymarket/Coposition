@@ -127,7 +127,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(response.code).to eq '302'
       expect(user.devices.count).to be count+1
       # New device created but it's not empty device. Tried everything I could think of...
-      #expect(user.devices.last).to eq empty_device
+      # expect(user.devices.last).to eq empty_device
       expect(user.devices.last.developers.last).to eq developer
     end
 
