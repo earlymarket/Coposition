@@ -78,10 +78,7 @@ class Device < ActiveRecord::Base
     lat, lng = checkins.most_common_coords[0], checkins.most_common_coords[1]
     recent_checks = recent_checkins(range)
     checks = recent_checks.where("(lat - ?).abs > 1 OR (lng - ?).abs > 1", lat, lng).select("DISTINCT lat,lng")
-    checks.map do |check|
-      binding.pry
-      [check.lat, check.lng]
-    end
+    checks.map { |check|  [check.lat, check.lng] }
   end
 
 end
