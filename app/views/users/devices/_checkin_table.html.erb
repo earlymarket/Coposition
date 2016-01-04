@@ -9,7 +9,7 @@
       Delete
     </th>
   </tr>
-  <% @device.checkins.each do |checkin| %>
+  <% @checkins.each do |checkin| %>
     <tr id="checkin<%= checkin.id %>" class="animated">
       <% checkin.non_geocoded_data(exception: "device_id").values.each do |val| %>
         <td>
@@ -21,4 +21,5 @@
       </td>
     </tr>  
   <% end %>
+  <%= will_paginate @checkins %>
 </table>
