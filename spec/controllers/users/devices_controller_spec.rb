@@ -103,6 +103,7 @@ RSpec.describe Users::DevicesController, type: :controller do
     it 'should delete a checkin by :checkin_id' do
       device.checkins << FactoryGirl::create(:checkin)
       count = device.checkins.count
+      request.accept = 'text/javascript'
       delete :checkin, {
         user_id: user.username,
         id: device.id,
