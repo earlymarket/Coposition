@@ -3,6 +3,7 @@ class Users::DevicesController < ApplicationController
   acts_as_token_authentication_handler_for User
   protect_from_forgery with: :null_session
   before_action :authenticate_user!
+  before_action :user_owns_device?, only: [:show, :destroy, :switch_privilege_for_developer, :checkin]
 
   def index
     @devices = current_user.devices.map do |dev|
@@ -12,7 +13,7 @@ class Users::DevicesController < ApplicationController
   end
 
   def show
-    @device = Device.find(params[:id]) if user_owns_device?
+    @device = Device.find(params[:id])
     @checkins = @device.checkins.order('created_at DESC').paginate(page: params[:page], per_page: 10)
     if @device.fogged?
       @fogmessage = "Currently fogged"
@@ -47,18 +48,18 @@ class Users::DevicesController < ApplicationController
   end
 
   def destroy
-    Device.find(params[:id]).destroy if user_owns_device?
+    Device.find(params[:id]).destroy
     flash[:notice] = "Device deleted"
     redirect_to user_devices_path
   end
 
   def checkin
     @checkin_id = params[:checkin_id]
-    Device.find(params[:id]).checkins.find(@checkin_id).delete if user_owns_device?
+    Device.find(params[:id]).checkins.find(@checkin_id).delete
   end
 
   def switch_privilege_for_developer
-    @device = Device.find(params[:id]) if user_owns_device?
+    @device = Device.find(params[:id])
     @developer = Developer.find(params[:developer])
     @device.change_privilege_for(@developer, @device.reverse_privilege_for(@developer))
     @privilege = @device.privilege_for(@developer)
@@ -124,6 +125,16 @@ class Users::DevicesController < ApplicationController
         redirect_to default
       else
         redirect_to params[:redirect]
+      end
+    end
+
+    def user_owns_device?
+      device_owner = Device.find(params[:id]).user
+      if device_owner != current_user
+        flash[:notice] = "Not authorised"
+        redirect_to root_path
+      else
+        true
       end
     end
 
