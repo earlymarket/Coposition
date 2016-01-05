@@ -4,7 +4,7 @@ class Api::V1::Users::Devices::CheckinsController < Api::ApiController
   before_action :authenticate, :check_user_approved_developer, :find_device, :check_privilege
 
   def index
-    checkins = @device.checkins.order('created_at DESC').paginate(page: params[:page], per_page: 10)
+    checkins = @device.checkins.order('created_at DESC').paginate(page: params[:page], per_page: 30)
     response['Current-Page'] = checkins.current_page.to_json
     response['Next-Page'] = checkins.next_page.to_json
     response['Total-Entries'] = checkins.total_entries.to_json
