@@ -86,8 +86,4 @@ Rails.application.routes.draw do
     resources :approvals, only: [:index, :new, :create]
   end
 
-
-  # Checkins
-  resources :checkins, only: [:index]
-
 end
