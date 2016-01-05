@@ -35,6 +35,11 @@ gem 'colorize'
 gem 'simple_token_authentication'
 
 gem 'newrelic_rpm'
+
+gem 'slack-notifier'
+
+gem 'will_paginate-bootstrap'
+
 # Use Unicorn as the app server
 
 group :production do
@@ -44,6 +49,8 @@ end
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+
+gem 'derailed', group: :development
 
 group :development, :test do
   gem 'pry'
@@ -63,7 +70,7 @@ end
 
 group :test do
   gem 'codeclimate-test-reporter', require: nil
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', '2.47.1'
   gem 'cucumber-rails', :require => false
   gem 'launchy'
   gem 'database_cleaner'

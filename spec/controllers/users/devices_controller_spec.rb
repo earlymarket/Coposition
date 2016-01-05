@@ -103,6 +103,7 @@ RSpec.describe Users::DevicesController, type: :controller do
     it 'should delete a checkin by :checkin_id' do
       device.checkins << FactoryGirl::create(:checkin)
       count = device.checkins.count
+      request.accept = 'text/javascript'
       delete :checkin, {
         user_id: user.username,
         id: device.id,
@@ -239,7 +240,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       headers = {
         "X-Api-Key" => developer.api_key,
         "X-User-Token" => user.authentication_token,
-        "X-User-Email" => user.email,
+        "X-User-Username" => user.username,
         "X-Secret-App-Key" => Rails.application.secrets.mobile_app_key
       }
       post "/users/#{user.username}/devices", {
@@ -255,7 +256,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       headers = {
         "X-Api-Key" => developer.api_key,
         "X-User-Token" => user.authentication_token,
-        "X-User-Email" => user.email,
+        "X-User-Username" => user.username,
         "X-Secret-App-Key" => Rails.application.secrets.mobile_app_key
       }
       post "/users/#{user.username}/devices", {

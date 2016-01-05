@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
 
   root to: "welcome#index"
-  get '/reset_for_demo', to: 'welcome#reset_for_demo'
+
+  # Specified routes
+
+  get '/api', to: 'welcome#api'
 
   # Devise
 
@@ -33,7 +36,7 @@ Rails.application.routes.draw do
           end
         end
         resources :devices, only: [:index, :show], module: :users do
-          resources :checkins, module: :devices do
+          resources :checkins, only: [:index], module: :devices do
             collection do
               get :last
             end

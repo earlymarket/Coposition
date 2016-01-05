@@ -13,6 +13,7 @@ class Users::DevicesController < ApplicationController
 
   def show
     @device = Device.find(params[:id]) if user_owns_device?
+    @checkins = @device.checkins.order('created_at DESC').paginate(page: params[:page], per_page: 10)
     if @device.fogged?
       @fogmessage = "Currently fogged"
     else
@@ -54,7 +55,6 @@ class Users::DevicesController < ApplicationController
   def checkin
     @checkin_id = params[:checkin_id]
     Device.find(params[:id]).checkins.find(@checkin_id).delete if user_owns_device?
-    redirect_to user_device_path
   end
 
   def switch_privilege_for_developer
@@ -84,7 +84,7 @@ class Users::DevicesController < ApplicationController
     @device = Device.find(params[:id])
     if @device.switch_fog
       @message = "has been fogged."
-      @button_text = "Fogged"
+      @button_text = "Currently Fogged"
     else
       @message = "is no longer fogged."
       @button_text = "Fog"
