@@ -84,8 +84,11 @@ Rails.application.routes.draw do
     resource :console, only: [:show]
     resources :approvals, only: [:index, :new, :create]
     # For cool API usage stats in the future
-    resources :requests, only: [:index]
-    put 'requests/pay', to: 'requests#pay'
+    resources :requests, only: [:index] do
+      collection do
+        put :pay
+      end
+    end
   end
 
 
