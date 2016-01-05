@@ -13,6 +13,9 @@
       Created At
     </th>
     <th>
+      More Info
+    </th>
+    <th>
       Delete
     </th>
   </tr>
@@ -29,6 +32,9 @@
       </td>
       <td>
         <%= checkin.created_at %>
+      </td>
+      <td>
+        <%= link_to ".", checkin_path(checkin), class: "btn btn-primary" %>
       </td>
       <td>
         <%= button_to "x", checkin_user_device_path(current_user.id, @device.id, checkin_id: checkin.id), method: :delete, remote: :true, class: "btn btn-danger" %>

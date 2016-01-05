@@ -7,13 +7,10 @@ class CheckinsController < ApplicationController
   end
 
   def show
-    checkin = Checkin.find(params[:id])
-    unless params[:range] 
-      render json: checkin.to_json
-    else
-      # /2?range=3 returns IDs 2,3,4
-      render json: Checkin.find_range(checkin.id, params[:range].to_i)
-    end
+    @checkin = Checkin.find(params[:id])
+    @checkin.reverse_geocode!
+    @checkin.get_data
+    render @checkin
   end
 
   def destroy
