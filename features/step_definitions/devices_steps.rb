@@ -11,3 +11,12 @@ Given(/^I enter UUID "(.*?)" and a friendly name "(.*?)"$/) do |uuid, name|
   fill_in "device[uuid]", with: uuid
   fill_in "device[name]", with: name
 end
+
+When(/^I fill in "(.*?)" with "(.*?)"$/) do |input, mins|
+  fill_in input, with: mins
+end
+
+Then(/^I should be timeshifted by "(.*?)" mins$/) do |mins|
+  sleep 0.5
+    expect(page.has_content? "timeshifted by #{mins} minutes").to be true
+end
