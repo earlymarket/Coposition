@@ -9,16 +9,12 @@ RSpec.describe Users::CheckinsController, type: :controller do
     dev
   end
   let(:user) do
-    @request.env["devise.mapping"] = Devise.mappings[:user]
-    user = FactoryGirl.create(:user)
-    sign_in user
+    user = create_user
     user.devices << FactoryGirl::create(:device)
     user
   end
   let(:new_user) do
-    @request.env["devise.mapping"] = Devise.mappings[:user]
-    user = FactoryGirl.create(:user)
-    sign_in user
+    user = create_user
     user
   end
   let(:checkin) do

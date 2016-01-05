@@ -7,25 +7,14 @@ RSpec.describe Users::DevicesController, type: :controller do
   let(:device) { FactoryGirl::create :device, user_id: user.id }
   let(:developer) { FactoryGirl::create :developer }
   let(:user) do
-    @request.env["devise.mapping"] = Devise.mappings[:user]
-    user = FactoryGirl.create(:user)
-    sign_in user
+    user = create_user
     user.devices << FactoryGirl::create(:device)
     user
-    #us = User.last
-    #us.devices << FactoryGirl::create(:device)
-    #us
   end
   let(:new_user) do
-    @request.env["devise.mapping"] = Devise.mappings[:user]
-    user = FactoryGirl.create(:user)
-    sign_in user
-    user.id = 1
-    #user = User.create(:id => 1, :username => Faker::Internet.user_name(nil, %w(_ -)), :email => Faker::Internet.email)
+    user = create_user
     user
   end
-
-  #login_user
 
   it 'should have a current_user' do
     # Test login_user
