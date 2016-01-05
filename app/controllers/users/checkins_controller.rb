@@ -7,9 +7,9 @@ class Users::CheckinsController < ApplicationController
   end
 
   def destroy
-    Checkin.where(device: params[:device_id]).destroy_all if user_owns_device?
+    Checkin.where(device: params[:device_id]).destroy_all
     flash[:notice] = "History deleted."
-    redirect_to user_device_path(current_user.id, params[:id])
+    redirect_to user_device_path(current_user.id, params[:device_id])
   end
 
   def user_owns_checkin?
@@ -17,6 +17,8 @@ class Users::CheckinsController < ApplicationController
     if checkin_owner != current_user
       flash[:notice] = "Not authorised"
       redirect_to root_path
+    else
+      true
     end
   end
 end
