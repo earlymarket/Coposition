@@ -7,19 +7,29 @@ RSpec.describe Users::DevicesController, type: :controller do
   let(:device) { FactoryGirl::create :device, user_id: user.id }
   let(:developer) { FactoryGirl::create :developer }
   let(:user) do
-    us = User.last
-    us.devices << FactoryGirl::create(:device)
-    us
+    @request.env["devise.mapping"] = Devise.mappings[:user]
+    user = FactoryGirl.create(:user)
+    sign_in user
+    user.devices << FactoryGirl::create(:device)
+    user
+    #us = User.last
+    #us.devices << FactoryGirl::create(:device)
+    #us
   end
   let(:new_user) do
-    us = User.create(:id => 1, :username => Faker::Internet.user_name(nil, %w(_ -)), :email => Faker::Internet.email)
-    us
+    @request.env["devise.mapping"] = Devise.mappings[:user]
+    user = FactoryGirl.create(:user)
+    sign_in user
+    user.id = 1
+    #user = User.create(:id => 1, :username => Faker::Internet.user_name(nil, %w(_ -)), :email => Faker::Internet.email)
+    user
   end
 
-  login_user
+  #login_user
 
   it 'should have a current_user' do
     # Test login_user
+    user
     expect(subject.current_user).to_not be nil
   end
 
@@ -31,12 +41,21 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
 
   describe 'GET #show' do
-    it 'should assign :id.device to @device' do
+    it 'should assign :id.device to @device if user owns device' do
       get :show, {
         user_id: user.username,
         id: device.id
       }
       expect(assigns :device).to eq(Device.find(device.id))
+    end
+
+    it 'should not assign to @device if user does not own device' do
+      user
+      get :show, {
+        user_id: new_user.username,
+        id: device.id
+      }
+      expect(assigns :device).to eq(nil)
     end
 
     it 'should assign @fogmessage' do
@@ -110,6 +129,19 @@ RSpec.describe Users::DevicesController, type: :controller do
         checkin_id: device.checkins.last.id
       }
       expect(device.checkins.count).to eq(count-1)
+    end
+
+    it 'should not delete a checkin if user does not own device' do
+      user
+      device.checkins << FactoryGirl::create(:checkin)
+      count = device.checkins.count
+      request.accept = 'text/javascript'
+      delete :checkin, {
+        user_id: new_user.username,
+        id: device.id,
+        checkin_id: device.checkins.last.id
+      }
+      expect(device.checkins.count).to eq(count)
     end
   end
 
@@ -218,6 +250,23 @@ RSpec.describe Users::DevicesController, type: :controller do
       user.devices.each { |device| expect(device.privilege_for(developer)).to_not be priv }
     end
 
+    it 'should not switch privilege if user does not own device' do
+      developer = FactoryGirl::create(:developer)
+      user.devices << device
+      user.devices.each do |device|
+        device.developers << developer
+        device.save
+      end
+      priv = user.devices.last.privilege_for(developer)
+
+      request.accept = 'text/javascript'
+      post :switch_all_privileges_for_developer, {
+        user_id: new_user.username,
+        developer: developer.id
+      }
+      user.devices.each { |device| expect(device.privilege_for(developer)).to be priv }
+    end
+
     it 'should delete' do
       device.user = user
       device.save
@@ -228,6 +277,18 @@ RSpec.describe Users::DevicesController, type: :controller do
       }
 
       expect(Device.count).to be count-1
+    end
+
+    it 'should not delete if user does not own device' do
+      device.user = user
+      device.save
+      count = Device.count
+      delete :destroy, {
+        user_id: new_user.username,
+        id: device.id
+      }
+
+      expect(Device.count).to be count
     end
 
   end
