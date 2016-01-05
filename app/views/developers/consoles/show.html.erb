@@ -8,7 +8,7 @@
   You've made <%= current_developer.requests.where(paid: false).count %> requests since you last paid.
 </p>
 <p>
-  <%= link_to('Pay now', developers_requests_pay_path, class: 'btn btn-default', method: 'put') %>
+  <%= link_to('Pay now', developers_requests_pay_path, class: 'btn btn-primary', method: 'put') %>
 </p>
 <hr>
 <p>
