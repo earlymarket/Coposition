@@ -227,15 +227,6 @@ RSpec.describe Users::DevicesController, type: :controller do
         user.devices.each { |device| expect(device.privilege_for(developer)).to_not be priv }
       end
 
-      it 'should not switch privilege if user does not own device' do
-        priv
-        request.accept = 'text/javascript'
-        post :switch_all_privileges_for_developer, {
-          user_id: new_user.username,
-          developer: developer.id
-        }
-        user.devices.each { |device| expect(device.privilege_for(developer)).to be priv }
-      end
     end
 
     it 'should delete' do
