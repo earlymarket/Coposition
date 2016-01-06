@@ -10,7 +10,6 @@ module ControllerMacros
   def res_hash
     # Check if it's a different request
     @json = nil if response != @res
-
     @json ||= begin
       json = JSON(response.body)
       json = JSON(response.body).symbolize_keys unless JSON(response.body).is_a? Array
