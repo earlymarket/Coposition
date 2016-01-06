@@ -9,6 +9,10 @@ RSpec.describe Users::DevicesController, type: :controller do
   let(:user) do
     user = create_user
     user.devices << FactoryGirl::create(:device)
+    user.devices.each do |device|
+      device.developers << developer
+      device.save
+    end
     user
   end
   let(:new_user) do
@@ -136,11 +140,7 @@ RSpec.describe Users::DevicesController, type: :controller do
 
   describe 'posting' do
 
-
     it 'should POST to with a UUID' do
-      # For some reason, subject.current user was returning some weird results. Using last User instead
-      developer.request_approval_from user
-      user.approve_developer developer
       count = user.devices.count
       post :create, {
         user_id: user.username,
@@ -148,9 +148,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       }
       expect(response.code).to eq '302'
       expect(user.devices.count).to be count+1
-      # New device created but it's not empty device. Tried everything I could think of...
-      #expect(user.devices.last).to eq empty_device
-      expect(user.devices.last.developers.last).to eq developer
+      expect(user.devices.all.last).to eq empty_device
     end
 
     it 'should fail to to create a device with an invalid UUID' do
@@ -205,55 +203,38 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(device.delayed).to be 13
     end
 
-    it 'should switch privilege for a developer' do
-      developer = FactoryGirl::create(:developer)
-      device.developers << developer
-      device.user = user
-      device.save
-      priv = device.privilege_for(developer)
+    context "switch privilege" do
 
-      request.accept = 'text/javascript'
-      post :switch_privilege_for_developer, {
-        id: device.id,
-        user_id: user.username,
-        developer: developer.id
-      }
-
-      expect(device.privilege_for(developer)).to_not be priv
-    end
-
-    it 'should switch privilege for a developer on all devices' do
-      developer = FactoryGirl::create(:developer)
-      user.devices << device
-      user.devices.each do |device|
-        device.developers << developer
-        device.save
+      it 'should switch privilege for a developer' do
+        priv = user.devices.last.privilege_for(developer)
+        request.accept = 'text/javascript'
+        post :switch_privilege_for_developer, {
+          id: user.devices.last.id,
+          user_id: user.username,
+          developer: developer.id
+        }
+        expect(user.devices.last.privilege_for(developer)).to_not be priv
       end
-      priv = user.devices.last.privilege_for(developer)
 
-      request.accept = 'text/javascript'
-      post :switch_all_privileges_for_developer, {
-        user_id: user.username,
-        developer: developer.id
-      }
-      user.devices.each { |device| expect(device.privilege_for(developer)).to_not be priv }
-    end
-
-    it 'should not switch privilege if user does not own device' do
-      developer = FactoryGirl::create(:developer)
-      user.devices << device
-      user.devices.each do |device|
-        device.developers << developer
-        device.save
+      it 'should switch privilege for a developer on all devices' do
+        priv = user.devices.last.privilege_for(developer)
+        request.accept = 'text/javascript'
+        post :switch_all_privileges_for_developer, {
+          user_id: user.username,
+          developer: developer.id
+        }
+        user.devices.each { |device| expect(device.privilege_for(developer)).to_not be priv }
       end
-      priv = user.devices.last.privilege_for(developer)
 
-      request.accept = 'text/javascript'
-      post :switch_all_privileges_for_developer, {
-        user_id: new_user.username,
-        developer: developer.id
-      }
-      user.devices.each { |device| expect(device.privilege_for(developer)).to be priv }
+      it 'should not switch privilege if user does not own device' do
+        priv = user.devices.last.privilege_for(developer)
+        request.accept = 'text/javascript'
+        post :switch_all_privileges_for_developer, {
+          user_id: new_user.username,
+          developer: developer.id
+        }
+        user.devices.each { |device| expect(device.privilege_for(developer)).to be priv }
+      end
     end
 
     it 'should delete' do
@@ -285,7 +266,6 @@ RSpec.describe Users::DevicesController, type: :controller do
   describe 'posting from app', :type => :request do
 
     it 'should POST to create with a UUID' do
-      # For some reason, subject.current user was returning some weird results. Using last User instead
       count = user.devices.count
       headers = {
         "X-Api-Key" => developer.api_key,
@@ -296,9 +276,8 @@ RSpec.describe Users::DevicesController, type: :controller do
       post "/users/#{user.username}/devices", {
         device: { uuid: empty_device.uuid }
       }, headers
-      
-      expect(user.devices.count).to be count+1
-      expect(user.devices.last).to eq empty_device
+      expect(user.devices.count).to be(count+1)
+      expect(user.devices.all.last).to eq empty_device
     end
 
     it 'should fail to to create a device with an invalid UUID' do
