@@ -4,21 +4,18 @@ RSpec.describe Users::DevicesController, type: :controller do
   include ControllerMacros
 
   let(:empty_device) { FactoryGirl::create :device }
-  let(:device) { FactoryGirl::create :device, user_id: user.id }
+  let(:device) { FactoryGirl::create :device }
   let(:developer) { FactoryGirl::create :developer }
   let(:user) do
     user = create_user
-    user.devices << FactoryGirl::create(:device)
+    user.devices << device
     user.devices.each do |device|
       device.developers << developer
       device.save
     end
     user
   end
-  let(:new_user) do
-    user = create_user
-    user
-  end
+  let(:new_user) { create_user }
   let(:priv) { user.devices.last.privilege_for(developer) }
 
   it 'should have a current_user' do
@@ -43,11 +40,11 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
 
     it 'should not assign to @device if user does not own device' do
-      user
       get :show, {
         user_id: new_user.username,
         id: device.id
       }
+      expect(response).to redirect_to(root_path)
       expect(assigns :device).to eq(nil)
     end
 
@@ -101,10 +98,10 @@ RSpec.describe Users::DevicesController, type: :controller do
 
   describe 'GET #add_current' do
     it 'should create a a new Device with a UUID' do
-      id = user.username
+      user
       count = Device.count
       get :add_current, {
-        user_id: id
+        user_id: user.username
       }
       expect(Device.count).to eq(count+1)
       expect(Device.last.uuid == nil).to be false
@@ -125,7 +122,6 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
 
     it 'should not delete a checkin if user does not own device' do
-      user
       device.checkins << FactoryGirl::create(:checkin)
       count = device.checkins.count
       request.accept = 'text/javascript'
@@ -134,6 +130,7 @@ RSpec.describe Users::DevicesController, type: :controller do
         id: device.id,
         checkin_id: device.checkins.last.id
       }
+      expect(response).to redirect_to(root_path)
       expect(device.checkins.count).to eq(count)
     end
   end
@@ -157,6 +154,7 @@ RSpec.describe Users::DevicesController, type: :controller do
         user_id: user.username,
         device: { uuid: 123 }
       }
+      expect(response).to redirect_to(new_user_device_path)
       expect(user.devices.count).to be count
     end
 
@@ -167,6 +165,7 @@ RSpec.describe Users::DevicesController, type: :controller do
         user_id: new_user.username,
         device: { uuid: taken_uuid }
       }
+      expect(response).to redirect_to(new_user_device_path)
       expect(new_user.devices.count).to be count
     end
 
@@ -229,8 +228,7 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
 
     it 'should delete' do
-      device.user = user
-      device.save
+      user
       count = Device.count
       delete :destroy, {
         user_id: user.username,
@@ -241,14 +239,13 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
 
     it 'should not delete if user does not own device' do
-      device.user = user
-      device.save
+      user
       count = Device.count
       delete :destroy, {
         user_id: new_user.username,
         id: device.id
       }
-
+      expect(response).to redirect_to(root_path)
       expect(Device.count).to be count
     end
 

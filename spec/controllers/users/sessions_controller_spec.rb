@@ -3,15 +3,10 @@ require 'rails_helper'
 RSpec.describe Users::Devise::SessionsController, type: :controller do
 
   include ControllerMacros
+  
+  let(:user) { FactoryGirl::create(:user) }
 
   describe "api authentication" do
-    let(:user) do 
-      us = FactoryGirl::build(:user)
-      us.password = "12345678"
-      us.password_confirmation = "12345678"
-      us.save
-      us
-    end
 
     it "should have an auth token" do
       expect(user.authentication_token).to be_an_instance_of String
