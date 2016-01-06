@@ -130,7 +130,7 @@ class Users::DevicesController < ApplicationController
 
     def require_ownership
       unless user_owns_device?
-        flash[:notice] = "Not authorised"
+        flash[:notice] = "You do not own that device"
         redirect_to root_path
       end
     end

@@ -15,7 +15,7 @@ class Users::CheckinsController < ApplicationController
   private
     def require_ownership
       unless user_owns_checkin?
-        flash[:notice] = "Not authorised"
+        flash[:notice] = "You do not own that checkin"
         redirect_to root_path
       end
     end
