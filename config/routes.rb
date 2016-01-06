@@ -66,6 +66,7 @@ Rails.application.routes.draw do
         post 'switch_all_privileges_for_developer'
         get 'add_current'
       end
+      resources :checkins, only: [:show, :destroy]
     end
     resources :approvals, only: [:index] do
       member do
@@ -90,9 +91,4 @@ Rails.application.routes.draw do
       end
     end
   end
-
-
-  # Checkins
-  resources :checkins, only: [:destroy]
-
 end

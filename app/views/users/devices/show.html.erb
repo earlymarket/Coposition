@@ -1,6 +1,6 @@
 <h1><%= @device.name %></h1>
 <br>
-<%= link_to("Delete history", checkin_path, { method: :delete, class: "btn btn-danger btn-lg m-m"  })%>
+<%= link_to("Delete history", user_device_checkin_path(current_user.username, @device.id, @device.checkins.last.id), { method: :delete, class: "btn btn-danger btn-lg m-m"  }) if @device.checkins.exists? %>
 <%= link_to("Delete device", "#{user_devices_path}/#{@device.id}", { method: :delete, class: "btn btn-danger btn-lg m-m" })%>
 <br>
 <%= render partial: "fogging" %>

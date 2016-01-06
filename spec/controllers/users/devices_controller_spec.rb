@@ -7,19 +7,22 @@ RSpec.describe Users::DevicesController, type: :controller do
   let(:device) { FactoryGirl::create :device, user_id: user.id }
   let(:developer) { FactoryGirl::create :developer }
   let(:user) do
-    us = User.last
-    us.devices << FactoryGirl::create(:device)
-    us
+    user = create_user
+    user.devices << FactoryGirl::create(:device)
+    user.devices.each do |device|
+      device.developers << developer
+      device.save
+    end
+    user
   end
   let(:new_user) do
-    us = User.create(:id => 1, :username => Faker::Internet.user_name(nil, %w(_ -)), :email => Faker::Internet.email)
-    us
+    user = create_user
+    user
   end
-
-  login_user
+  let(:priv) { user.devices.last.privilege_for(developer) }
 
   it 'should have a current_user' do
-    # Test login_user
+    user
     expect(subject.current_user).to_not be nil
   end
 
@@ -31,12 +34,21 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
 
   describe 'GET #show' do
-    it 'should assign :id.device to @device' do
+    it 'should assign :id.device to @device if user owns device' do
       get :show, {
         user_id: user.username,
         id: device.id
       }
       expect(assigns :device).to eq(Device.find(device.id))
+    end
+
+    it 'should not assign to @device if user does not own device' do
+      user
+      get :show, {
+        user_id: new_user.username,
+        id: device.id
+      }
+      expect(assigns :device).to eq(nil)
     end
 
     it 'should assign @fogmessage' do
@@ -111,15 +123,24 @@ RSpec.describe Users::DevicesController, type: :controller do
       }
       expect(device.checkins.count).to eq(count-1)
     end
+
+    it 'should not delete a checkin if user does not own device' do
+      user
+      device.checkins << FactoryGirl::create(:checkin)
+      count = device.checkins.count
+      request.accept = 'text/javascript'
+      delete :checkin, {
+        user_id: new_user.username,
+        id: device.id,
+        checkin_id: device.checkins.last.id
+      }
+      expect(device.checkins.count).to eq(count)
+    end
   end
 
   describe 'posting' do
 
-
     it 'should POST to with a UUID' do
-      # For some reason, subject.current user was returning some weird results. Using last User instead
-      developer.request_approval_from user
-      user.approve_developer developer
       count = user.devices.count
       post :create, {
         user_id: user.username,
@@ -127,9 +148,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       }
       expect(response.code).to eq '302'
       expect(user.devices.count).to be count+1
-      # New device created but it's not empty device. Tried everything I could think of...
-      #expect(user.devices.last).to eq empty_device
-      expect(user.devices.last.developers.last).to eq developer
+      expect(user.devices.all.last).to eq empty_device
     end
 
     it 'should fail to to create a device with an invalid UUID' do
@@ -184,38 +203,29 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(device.delayed).to be 13
     end
 
-    it 'should switch privilege for a developer' do
-      developer = FactoryGirl::create(:developer)
-      device.developers << developer
-      device.user = user
-      device.save
-      priv = device.privilege_for(developer)
+    context "switch privilege" do
 
-      request.accept = 'text/javascript'
-      post :switch_privilege_for_developer, {
-        id: device.id,
-        user_id: user.username,
-        developer: developer.id
-      }
-
-      expect(device.privilege_for(developer)).to_not be priv
-    end
-
-    it 'should switch privilege for a developer on all devices' do
-      developer = FactoryGirl::create(:developer)
-      user.devices << device
-      user.devices.each do |device|
-        device.developers << developer
-        device.save
+      it 'should switch privilege for a developer' do
+        priv
+        request.accept = 'text/javascript'
+        post :switch_privilege_for_developer, {
+          id: user.devices.last.id,
+          user_id: user.username,
+          developer: developer.id
+        }
+        expect(user.devices.last.privilege_for(developer)).to_not be priv
       end
-      priv = user.devices.last.privilege_for(developer)
 
-      request.accept = 'text/javascript'
-      post :switch_all_privileges_for_developer, {
-        user_id: user.username,
-        developer: developer.id
-      }
-      user.devices.each { |device| expect(device.privilege_for(developer)).to_not be priv }
+      it 'should switch privilege for a developer on all devices' do
+        priv
+        request.accept = 'text/javascript'
+        post :switch_all_privileges_for_developer, {
+          user_id: user.username,
+          developer: developer.id
+        }
+        user.devices.each { |device| expect(device.privilege_for(developer)).to_not be priv }
+      end
+
     end
 
     it 'should delete' do
@@ -230,12 +240,23 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(Device.count).to be count-1
     end
 
+    it 'should not delete if user does not own device' do
+      device.user = user
+      device.save
+      count = Device.count
+      delete :destroy, {
+        user_id: new_user.username,
+        id: device.id
+      }
+
+      expect(Device.count).to be count
+    end
+
   end
 
   describe 'posting from app', :type => :request do
 
     it 'should POST to create with a UUID' do
-      # For some reason, subject.current user was returning some weird results. Using last User instead
       count = user.devices.count
       headers = {
         "X-Api-Key" => developer.api_key,
@@ -246,9 +267,8 @@ RSpec.describe Users::DevicesController, type: :controller do
       post "/users/#{user.username}/devices", {
         device: { uuid: empty_device.uuid }
       }, headers
-      
-      expect(user.devices.count).to be count+1
-      expect(user.devices.last).to eq empty_device
+      expect(user.devices.count).to be(count+1)
+      expect(user.devices.all.last).to eq empty_device
     end
 
     it 'should fail to to create a device with an invalid UUID' do
