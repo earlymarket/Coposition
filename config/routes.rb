@@ -36,7 +36,7 @@ Rails.application.routes.draw do
           end
         end
         resources :devices, only: [:index, :show], module: :users do
-          resources :checkins, only: [:index], module: :devices do
+          resources :checkins, only: [:index, :create], module: :devices do
             collection do
               get :last
             end
@@ -84,6 +84,11 @@ Rails.application.routes.draw do
   namespace :developers do
     resource :console, only: [:show]
     resources :approvals, only: [:index, :new, :create]
+    # For cool API usage stats in the future
+    resources :requests, only: [:index] do
+      collection do
+        put :pay
+      end
+    end
   end
-
 end
