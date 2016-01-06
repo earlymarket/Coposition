@@ -36,7 +36,7 @@ Rails.application.routes.draw do
           end
         end
         resources :devices, only: [:index, :show], module: :users do
-          resources :checkins, only: [:index], module: :devices do
+          resources :checkins, only: [:index, :create], module: :devices do
             collection do
               get :last
             end
