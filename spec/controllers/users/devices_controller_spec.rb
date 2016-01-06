@@ -19,6 +19,7 @@ RSpec.describe Users::DevicesController, type: :controller do
     user = create_user
     user
   end
+  let(:priv) { user.devices.last.privilege_for(developer) }
 
   it 'should have a current_user' do
     # Test login_user
@@ -206,7 +207,7 @@ RSpec.describe Users::DevicesController, type: :controller do
     context "switch privilege" do
 
       it 'should switch privilege for a developer' do
-        priv = user.devices.last.privilege_for(developer)
+        priv
         request.accept = 'text/javascript'
         post :switch_privilege_for_developer, {
           id: user.devices.last.id,
@@ -217,7 +218,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       end
 
       it 'should switch privilege for a developer on all devices' do
-        priv = user.devices.last.privilege_for(developer)
+        priv
         request.accept = 'text/javascript'
         post :switch_all_privileges_for_developer, {
           user_id: user.username,
@@ -227,7 +228,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       end
 
       it 'should not switch privilege if user does not own device' do
-        priv = user.devices.last.privilege_for(developer)
+        priv
         request.accept = 'text/javascript'
         post :switch_all_privileges_for_developer, {
           user_id: new_user.username,
