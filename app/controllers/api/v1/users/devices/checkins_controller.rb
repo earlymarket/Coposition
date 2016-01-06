@@ -26,7 +26,7 @@ class Api::V1::Users::Devices::CheckinsController < Api::ApiController
         checkin.reverse_geocode!
         checkin.get_data
     else
-      checkin.slice(:id, :uuid, :lat, :lng)
+      checkin.slice(:id, :uuid, :lat, :lng,:created_at)
     end
   end
 
