@@ -128,14 +128,4 @@ class Users::DevicesController < ApplicationController
       end
     end
 
-    def user_owns_device?
-      device_owner = Device.find(params[:id]).user
-      if device_owner != current_user
-        flash[:notice] = "Not authorised"
-        redirect_to root_path
-      else
-        true
-      end
-    end
-
 end

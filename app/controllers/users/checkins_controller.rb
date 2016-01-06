@@ -12,13 +12,4 @@ class Users::CheckinsController < ApplicationController
     redirect_to user_device_path(current_user.id, params[:device_id])
   end
 
-  def user_owns_checkin?
-    checkin_owner = Checkin.find(params[:id]).device.user
-    if checkin_owner != current_user
-      flash[:notice] = "Not authorised"
-      redirect_to root_path
-    else
-      true
-    end
-  end
 end
