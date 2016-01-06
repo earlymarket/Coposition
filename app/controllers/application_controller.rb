@@ -34,12 +34,12 @@ class ApplicationController < ActionController::Base
       # Checks whether resource belongs to actor
       # Overwritten by ControllerMacros in tests (when included)
 
-      resource = resource.titleize.constantize
-      resource_instance = resource.find(id)
-      if (resource == Checkin && actor == 'user')
-        owner = resource_instance.device.user
+      model = resource.titleize.constantize
+      resource = model.find(id)
+      if (model == Checkin && actor == 'user')
+        owner = resource.device.user
       else
-        owner = resource_instance.send(actor)
+        owner = resource.send(actor)
       end
       owner == send("current_#{actor}")
     end
