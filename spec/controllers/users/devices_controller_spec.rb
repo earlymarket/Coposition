@@ -22,7 +22,6 @@ RSpec.describe Users::DevicesController, type: :controller do
   let(:priv) { user.devices.last.privilege_for(developer) }
 
   it 'should have a current_user' do
-    # Test login_user
     user
     expect(subject.current_user).to_not be nil
   end

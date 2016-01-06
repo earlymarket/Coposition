@@ -3,7 +3,7 @@ class Users::DevicesController < ApplicationController
   acts_as_token_authentication_handler_for User
   protect_from_forgery with: :null_session
   before_action :authenticate_user!
-  before_action :user_owns_device?, only: [:show, :destroy, :switch_privilege_for_developer, :checkin]
+  before_action :require_ownership, only: [:show, :destroy, :switch_privilege_for_developer, :checkin]
 
   def index
     @devices = current_user.devices.map do |dev|
@@ -125,6 +125,13 @@ class Users::DevicesController < ApplicationController
         redirect_to default
       else
         redirect_to params[:redirect]
+      end
+    end
+
+    def require_ownership
+      unless user_owns_device?
+        flash[:notice] = "Not authorised"
+        redirect_to root_path
       end
     end
 
