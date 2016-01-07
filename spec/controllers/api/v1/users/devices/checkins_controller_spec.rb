@@ -104,7 +104,7 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
     end
 
     context 'with no page param given' do
-      it 'should fetch the most recent checkins (up to 30 checkins)' do
+      it "should fetch the most recent checkins (up to 30 checkins)" do
         get :index, {
           user_id: user.id,
           device_id: device.id
@@ -118,7 +118,7 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
     end
     
     context 'with page param' do
-      it'should fetch the checkins on that page if they exist' do
+      it "should fetch the checkins on that page if they exist" do
         page = 2
         get :index, {
           user_id: user.id,
@@ -130,7 +130,7 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
         expect(response.header['Next-Page']).to eq "null"
       end
 
-      it'should not get any checkins if page does not exist' do
+      it "should not get any checkins if page does not exist" do
         get :index, {
           user_id: user.id,
           device_id: device.id,
@@ -143,28 +143,24 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
 
   describe "POST #create" do
 
-    it "should POST a checkin without a pre-existing device, and create one" do
-      uuid = Faker::Number.number(12)
-      checkin_count = Checkin.count
-      device_count = Device.count
+    it "should POST a checkin with a pre-existing device" do
+      count = Checkin.count
       post :create, {
-        format: :json,
         user_id: user.id,
         device_id: device.id,
         checkin: {
-          uuid: uuid,
+          uuid: device.uuid,
           lat: Faker::Address.latitude,
           lng: Faker::Address.longitude
         }
       }
-      expect(res_hash[:uuid]).to eq uuid
-      expect(Checkin.count).to be(checkin_count + 1)
-      expect(Device.count).to be(device_count + 1)
+      expect(res_hash[:uuid]).to eq device.uuid
+      expect(Checkin.count).to be(count + 1)
+      expect(Device.find_by(uuid: device.uuid)).to_not be nil
     end
 
     it "should return 400 if you POST a device with missing parameters" do
       post :create, {
-        format: :json,
         user_id: user.id,
         device_id: device.id,
         checkin: {
@@ -174,29 +170,7 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
       }
       expect(response.status).to eq(400)
       expect(JSON.parse(response.body)).to eq('message' => 'You must provide a UUID, lat and lng')
-      # TODO: Write a spec helper that generates permutations of missing params
     end
-
-    it "should POST a checkin with a pre-existing device" do
-      uuid = Faker::Number.number(12)
-      checkin_count = Checkin.count
-      device.uuid = uuid
-      device.save!
-      post :create, {
-        format: :json,
-        user_id: user.id,
-        device_id: device.id,
-        checkin: {
-          uuid: uuid,
-          lat: Faker::Address.latitude,
-          lng: Faker::Address.longitude
-        }
-      }
-      expect(res_hash[:uuid]).to eq uuid
-      expect(Checkin.count).to be(checkin_count + 1)
-      expect(Device.find_by(uuid: uuid)).to_not be nil
-    end
-
   end
 
 end
