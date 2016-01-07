@@ -136,37 +136,74 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
 
   describe 'posting' do
+    context 'to #create' do
 
-    it 'should POST to with a UUID' do
-      count = user.devices.count
-      post :create, {
-        user_id: user.username,
-        device: { uuid: empty_device.uuid }
-      }
-      expect(response.code).to eq '302'
-      expect(user.devices.count).to be count+1
-      expect(user.devices.all.last).to eq empty_device
-    end
+      it 'should create a new device' do
+        count = user.devices.count
+        post :create, {
+          user_id: user.username,
+          device: { name: 'New Device' }
+        }
+        expect(response.code).to eq '302'
+        expect(user.devices.count).to be count+1
+        expect(user.devices.all.last.name).to eq 'New Device'
+      end
 
-    it 'should fail to to create a device with an invalid UUID' do
-      count = user.devices.count
-      post :create, {
-        user_id: user.username,
-        device: { uuid: 123 }
-      }
-      expect(response).to redirect_to(new_user_device_path)
-      expect(user.devices.count).to be count
-    end
+      it 'should create a device with a given UUID' do
+        count = user.devices.count
+        post :create, {
+          user_id: user.username,
+          device: { uuid: empty_device.uuid }
+        }
+        expect(response.code).to eq '302'
+        expect(user.devices.count).to be count+1
+        expect(user.devices.all.last).to eq empty_device
+      end
 
-    it 'should fail to to create a device when the device is assigned to a user' do
-      count = new_user.devices.count
-      taken_uuid = user.devices.last.uuid
-      post :create, {
-        user_id: new_user.username,
-        device: { uuid: taken_uuid }
-      }
-      expect(response).to redirect_to(new_user_device_path)
-      expect(new_user.devices.count).to be count
+      it 'should create a new device and redirect if provided' do
+        count = user.devices.count
+        post :create, {
+          user_id: user.username,
+          redirect: 'http://www.coposition.com/',
+          device: { name: 'New Device' }
+        }
+        expect(user.devices.count).to be count+1
+        expect(response).to redirect_to('http://www.coposition.com/')
+      end
+
+      it 'should create a new device and a checkin if location provided' do
+        devices_count = user.devices.count
+        checkins_count = Checkin.count
+        post :create, {
+          user_id: user.username,
+          location: '51.588330,-0.513069',
+          device: { name: 'New Device' }
+        }
+        expect(user.devices.count).to be devices_count+1
+        expect(Checkin.count).to be checkins_count+1
+        expect(Checkin.last.lat).to eq 51.588330
+      end
+
+      it 'should fail to to create a device with an invalid UUID' do
+        count = user.devices.count
+        post :create, {
+          user_id: user.username,
+          device: { uuid: 123 }
+        }
+        expect(response).to redirect_to(new_user_device_path)
+        expect(user.devices.count).to be count
+      end
+
+      it 'should fail to to create a device when the device is assigned to a user' do
+        count = new_user.devices.count
+        taken_uuid = user.devices.last.uuid
+        post :create, {
+          user_id: new_user.username,
+          device: { uuid: taken_uuid }
+        }
+        expect(response).to redirect_to(new_user_device_path)
+        expect(new_user.devices.count).to be count
+      end
     end
 
     it 'should switch fogging status to true by default' do

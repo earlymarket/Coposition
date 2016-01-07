@@ -30,14 +30,6 @@ class Checkin < ActiveRecord::Base
     end
   end
 
-  class << self
-
-    def find_range(from, size)
-      order(:id).find(range_array(from, size))
-    end
-
-  end
-
   # The method to be used for public-facing data 
   def get_data
     if device.fogged?
