@@ -7,6 +7,13 @@ module ControllerMacros
     user
   end
 
+  def create_developer
+    @request.env["devise.mapping"] = Devise.mappings[:developer]
+    developer = FactoryGirl.create(:developer)
+    sign_in developer
+    developer
+  end
+
   def res_hash
     # Check if it's a different request
     @json = nil if response != @res

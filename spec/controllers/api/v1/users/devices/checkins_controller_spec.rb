@@ -5,88 +5,198 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
 
   let(:developer){FactoryGirl::create :developer}
   let(:user){FactoryGirl::create :user}
-  
-  before do
-    # Simulating all city records where name == Denham
+  let(:device) do
+    device = FactoryGirl::create :device
+    user.devices << device
+    device
+  end
+  let(:checkin) do
+    checkin = FactoryGirl::create :checkin
+    device.checkins << checkin
+    checkin
+  end
+
+  before do |example|
     create_denhams
-    @device = FactoryGirl::create :device
-    @device.user = user
-    @device.save!
-    @checkin = FactoryGirl::build :checkin
-    @checkin.uuid = @device.uuid
-    @checkin.save!
     request.headers["X-Api-Key"] = developer.api_key
-  end
-
-  describe "endpoint without developer approval" do
-    it "shouldn't fetch the last reported location" do
-      get :last, {
-        user_id: user.id,
-        device_id: @device.id
-      }
-      expect(res_hash[:approval_status]).to be nil
-    end
-  end
-
-  describe "endpoint with developer approval but not on specific device" do
-    before do
-      developer.request_approval_from(user)
-      user.approve_developer(developer)
-      @device.change_privilege_for(developer, 2)
-    end
-
-    it "shouldn't fetch the last reported location" do
-      get :last, {
-        user_id: user.id,
-        device_id: @device.id
-      }
-      expect(response.body).to eq ""
-      expect(response.status).to be 401
-    end
-  end
-
-  describe "endpoint with approval" do
-
-    before do
+    unless example.metadata[:skip_before]
+      device
       developer.request_approval_from(user)
       user.approve_developer(developer)
     end
+  end
 
-    it "should fetch the last reported location" do
-      get :last, {
-        user_id: user.id,
-        device_id: @device.id
-      }
-
-      expect(res_hash[:lat]).to be_within(0.00001).of(@checkin.lat)
+  describe "GET #last" do
+    context "without developer approval" do
+      it "shouldn't fetch the last reported location", :skip_before do
+        get :last, {
+          user_id: user.id,
+          device_id: device.id
+        }
+        expect(res_hash[:approval_status]).to be nil
+      end
     end
 
-    it "should fetch the last reported location's address in full by default" do
-      get :last, {
-        user_id: user.id,
-        device_id: @device.id,
-        type: "address"
-      }
+    context "with developer approval but not on specific device" do
+      before do
+        device.change_privilege_for(developer, 2)
+      end
 
-      expect(res_hash[:address]).to eq "The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK"
-      expect(res_hash[:lat]).to eq @checkin.lat
-      expect(res_hash[:lng]).to eq @checkin.lng
+      it "shouldn't fetch the last reported location" do
+        get :last, {
+          user_id: user.id,
+          device_id: device.id
+        }
+        expect(response.body).to eq ""
+        expect(response.status).to be 401
+      end
     end
 
-    it "should fog the last reported location's address if fogged" do
-      # Make it fogged
-      @device.switch_fog
+    context "with approval" do
 
-      get :last, {
-        user_id: user.id,
-        device_id: @device.id,
-        type: "address"
-      }
+      before do
+        checkin
+      end
 
-      expect(res_hash[:address]).to eq "Denham, GB"
-      expect(res_hash[:lat]).to eq(51.57471)
-      expect(res_hash[:lng]).to eq(-0.50626)
+      it "should fetch the last reported location" do
+        get :last, {
+          user_id: user.id,
+          device_id: device.id
+        }
+
+        expect(res_hash[:lat]).to be_within(0.00001).of(checkin.lat)
+      end
+
+      it "should fetch the last reported location's address in full by default" do
+        get :last, {
+          user_id: user.id,
+          device_id: device.id,
+          type: "address"
+        }
+
+        expect(res_hash[:address]).to eq "The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK"
+        expect(res_hash[:lat]).to eq checkin.lat
+        expect(res_hash[:lng]).to eq checkin.lng
+      end
+
+      it "should fog the last reported location's address if fogged" do
+        # Make it fogged
+        device.switch_fog
+
+        get :last, {
+          user_id: user.id,
+          device_id: device.id,
+          type: "address"
+        }
+        expect(res_hash[:address]).to eq "Denham, GB"
+        expect(res_hash[:lat]).to eq(51.57471)
+        expect(res_hash[:lng]).to eq(-0.50626)
+      end
     end
+  end
+
+  describe "GET #index when the device has 31 checkins" do
+    before do
+      31.times do
+        checkin = FactoryGirl::create :checkin
+        device.checkins << checkin
+      end
+    end
+
+    context 'with no page param given' do
+      it 'should fetch the most recent checkins (up to 30 checkins)' do
+        get :index, {
+          user_id: user.id,
+          device_id: device.id
+        }
+        expect(res_hash[0]['id']).to be device.checkins.last.id
+        expect(response.header['Next-Page']).to eq "2"
+        expect(response.header['Current-Page']).to eq "1"
+        expect(response.header['Total-Entries']).to eq "#{device.checkins.count}"
+        expect(response.header['Per-Page']).to eq "30"
+      end
+    end
+    
+    context 'with page param' do
+      it'should fetch the checkins on that page if they exist' do
+        page = 2
+        get :index, {
+          user_id: user.id,
+          device_id: device.id,
+          page: page
+        }
+        expect(res_hash[0]['id']).to be device.checkins.first.id
+        expect(response.header['Current-Page']).to eq "#{page}"
+        expect(response.header['Next-Page']).to eq "null"
+      end
+
+      it'should not get any checkins if page does not exist' do
+        get :index, {
+          user_id: user.id,
+          device_id: device.id,
+          page: 3
+        }
+        expect(response.body).to eq "[]"
+      end
+    end
+  end
+
+  describe "POST #create" do
+
+    it "should POST a checkin without a pre-existing device, and create one" do
+      uuid = Faker::Number.number(12)
+      checkin_count = Checkin.count
+      device_count = Device.count
+      post :create, {
+        format: :json,
+        user_id: user.id,
+        device_id: device.id,
+        checkin: {
+          uuid: uuid,
+          lat: Faker::Address.latitude,
+          lng: Faker::Address.longitude
+        }
+      }
+      expect(res_hash[:uuid]).to eq uuid
+      expect(Checkin.count).to be(checkin_count + 1)
+      expect(Device.count).to be(device_count + 1)
+    end
+
+    it "should return 400 if you POST a device with missing parameters" do
+      post :create, {
+        format: :json,
+        user_id: user.id,
+        device_id: device.id,
+        checkin: {
+          uuid: Faker::Number.number(12),
+          lat: Faker::Address.latitude
+        }
+      }
+      expect(response.status).to eq(400)
+      expect(JSON.parse(response.body)).to eq('message' => 'You must provide a UUID, lat and lng')
+      # TODO: Write a spec helper that generates permutations of missing params
+    end
+
+    it "should POST a checkin with a pre-existing device" do
+      uuid = Faker::Number.number(12)
+      checkin_count = Checkin.count
+      device.uuid = uuid
+      device.save!
+      post :create, {
+        format: :json,
+        user_id: user.id,
+        device_id: device.id,
+        checkin: {
+          uuid: uuid,
+          lat: Faker::Address.latitude,
+          lng: Faker::Address.longitude
+        }
+      }
+      expect(res_hash[:uuid]).to eq uuid
+      expect(Checkin.count).to be(checkin_count + 1)
+      expect(Device.find_by(uuid: uuid)).to_not be nil
+    end
+
   end
 
 end
