@@ -156,7 +156,7 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
       }
       expect(res_hash[:uuid]).to eq device.uuid
       expect(Checkin.count).to be(count + 1)
-      expect(Device.find_by(uuid: device.uuid)).to_not be nil
+      expect(checkin.device).to be device
     end
 
     it "should return 400 if you POST a device with missing parameters" do
