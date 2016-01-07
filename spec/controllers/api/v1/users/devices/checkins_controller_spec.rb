@@ -13,8 +13,6 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
     @device.user = user
     @device.save!
     @checkin = FactoryGirl::build :checkin
-    @checkin.lat = 51.588330
-    @checkin.lng = -0.513069
     @checkin.uuid = @device.uuid
     @checkin.save!
     request.headers["X-Api-Key"] = developer.api_key
