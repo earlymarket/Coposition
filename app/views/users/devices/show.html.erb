@@ -1,4 +1,8 @@
 <h1><%= @device.name %></h1>
+<div style='width: 600px;'>
+  <div id="map" style='width: 600px; height: 300px;'></div>
+</div>
+
 <br>
 <%= link_to("Delete history", user_device_checkin_path(current_user.username, @device.id, @device.checkins.last.id), { method: :delete, class: "btn btn-danger btn-lg m-m"  }) if @device.checkins.exists? %>
 <%= link_to("Delete device", "#{user_devices_path}/#{@device.id}", { method: :delete, class: "btn btn-danger btn-lg m-m" })%>
@@ -6,3 +10,34 @@
 <%= render partial: "fogging" %>
 
 <%= render partial: "checkin_table" %>
+
+<script>
+
+  handler = Gmaps.build('Google',
+    { markers:
+      { clusterer:
+        { minimumClusterSize: 1,
+        zoomOnClick: false
+        }
+      }
+    });
+  handler.buildMap({
+    provider: {
+      // pass in other Google Maps API options here
+    },
+    internal: {
+      id: 'map'
+    }
+  },
+    function() {
+      markers = handler.addMarkers(<%= raw @hash.to_json %>);
+      handler.bounds.extendWith(markers);
+      handler.fitMapToBounds();
+      var map = handler.getMap()
+      var listener = google.maps.event.addListenerOnce(map, "idle", function() { 
+        if (map.getZoom() > 16) map.setZoom(16); 
+      })
+    }
+  );
+
+</script>

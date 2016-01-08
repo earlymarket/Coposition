@@ -15,6 +15,12 @@ class Users::DevicesController < ApplicationController
   def show
     @device = Device.find(params[:id])
     @checkins = @device.checkins.order('created_at DESC').paginate(page: params[:page], per_page: 10)
+
+    @hash = Gmaps4rails.build_markers(@checkins) do |user, marker|
+       marker.lat user.lat
+       marker.lng user.lng
+     end
+
     if @device.fogged?
       @fogmessage = "Currently fogged"
     else
