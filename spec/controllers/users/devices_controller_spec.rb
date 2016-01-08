@@ -4,22 +4,22 @@ RSpec.describe Users::DevicesController, type: :controller do
   include ControllerMacros
 
   let(:empty_device) { FactoryGirl::create :device }
-  let(:device) { FactoryGirl::create :device, user_id: user.id }
+  let(:device) { FactoryGirl::create :device }
   let(:developer) { FactoryGirl::create :developer }
   let(:user) do
-    us = User.last
-    us.devices << FactoryGirl::create(:device)
-    us
+    user = create_user
+    user.devices << device
+    user.devices.each do |device|
+      device.developers << developer
+      device.save
+    end
+    user
   end
-  let(:new_user) do
-    us = User.create(:id => 1, :username => Faker::Internet.user_name(nil, %w(_ -)), :email => Faker::Internet.email)
-    us
-  end
-
-  login_user
+  let(:new_user) { create_user }
+  let(:priv) { user.devices.last.privilege_for(developer) }
 
   it 'should have a current_user' do
-    # Test login_user
+    user
     expect(subject.current_user).to_not be nil
   end
 
@@ -31,12 +31,21 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
 
   describe 'GET #show' do
-    it 'should assign :id.device to @device' do
+    it 'should assign :id.device to @device if user owns device' do
       get :show, {
         user_id: user.username,
         id: device.id
       }
       expect(assigns :device).to eq(Device.find(device.id))
+    end
+
+    it 'should not assign to @device if user does not own device' do
+      get :show, {
+        user_id: new_user.username,
+        id: device.id
+      }
+      expect(response).to redirect_to(root_path)
+      expect(assigns :device).to eq(nil)
     end
 
     it 'should assign @fogmessage' do
@@ -89,10 +98,10 @@ RSpec.describe Users::DevicesController, type: :controller do
 
   describe 'GET #add_current' do
     it 'should create a a new Device with a UUID' do
-      id = user.username
+      user
       count = Device.count
       get :add_current, {
-        user_id: id
+        user_id: user.username
       }
       expect(Device.count).to eq(count+1)
       expect(Device.last.uuid == nil).to be false
@@ -103,6 +112,7 @@ RSpec.describe Users::DevicesController, type: :controller do
     it 'should delete a checkin by :checkin_id' do
       device.checkins << FactoryGirl::create(:checkin)
       count = device.checkins.count
+      request.accept = 'text/javascript'
       delete :checkin, {
         user_id: user.username,
         id: device.id,
@@ -110,44 +120,90 @@ RSpec.describe Users::DevicesController, type: :controller do
       }
       expect(device.checkins.count).to eq(count-1)
     end
+
+    it 'should not delete a checkin if user does not own device' do
+      device.checkins << FactoryGirl::create(:checkin)
+      count = device.checkins.count
+      request.accept = 'text/javascript'
+      delete :checkin, {
+        user_id: new_user.username,
+        id: device.id,
+        checkin_id: device.checkins.last.id
+      }
+      expect(response).to redirect_to(root_path)
+      expect(device.checkins.count).to eq(count)
+    end
   end
 
   describe 'posting' do
+    context 'to #create' do
 
+      it 'should create a new device' do
+        count = user.devices.count
+        post :create, {
+          user_id: user.username,
+          device: { name: 'New Device' }
+        }
+        expect(response.code).to eq '302'
+        expect(user.devices.count).to be count+1
+        expect(user.devices.all.last.name).to eq 'New Device'
+      end
 
-    it 'should POST to with a UUID' do
-      # For some reason, subject.current user was returning some weird results. Using last User instead
-      developer.request_approval_from user
-      user.approve_developer developer
-      count = user.devices.count
-      post :create, {
-        user_id: user.username,
-        device: { uuid: empty_device.uuid }
-      }
-      expect(response.code).to eq '302'
-      expect(user.devices.count).to be count+1
-      # New device created but it's not empty device. Tried everything I could think of...
-      #expect(user.devices.last).to eq empty_device
-      expect(user.devices.last.developers.last).to eq developer
-    end
+      it 'should create a device with a given UUID' do
+        count = user.devices.count
+        post :create, {
+          user_id: user.username,
+          device: { uuid: empty_device.uuid }
+        }
+        expect(response.code).to eq '302'
+        expect(user.devices.count).to be count+1
+        expect(user.devices.all.last).to eq empty_device
+      end
 
-    it 'should fail to to create a device with an invalid UUID' do
-      count = user.devices.count
-      post :create, {
-        user_id: user.username,
-        device: { uuid: 123 }
-      }
-      expect(user.devices.count).to be count
-    end
+      it 'should create a new device and redirect if provided' do
+        count = user.devices.count
+        post :create, {
+          user_id: user.username,
+          redirect: 'http://www.coposition.com/',
+          device: { name: 'New Device' }
+        }
+        expect(user.devices.count).to be count+1
+        expect(response).to redirect_to('http://www.coposition.com/')
+      end
 
-    it 'should fail to to create a device when the device is assigned to a user' do
-      count = new_user.devices.count
-      taken_uuid = user.devices.last.uuid
-      post :create, {
-        user_id: new_user.username,
-        device: { uuid: taken_uuid }
-      }
-      expect(new_user.devices.count).to be count
+      it 'should create a new device and a checkin if location provided' do
+        devices_count = user.devices.count
+        checkins_count = Checkin.count
+        post :create, {
+          user_id: user.username,
+          location: '51.588330,-0.513069',
+          device: { name: 'New Device' }
+        }
+        expect(user.devices.count).to be devices_count+1
+        expect(Checkin.count).to be checkins_count+1
+        expect(Checkin.last.lat).to eq 51.588330
+      end
+
+      it 'should fail to to create a device with an invalid UUID' do
+        count = user.devices.count
+        post :create, {
+          user_id: user.username,
+          device: { uuid: 123 }
+        }
+        expect(response).to redirect_to(new_user_device_path)
+        expect(user.devices.count).to be count
+      end
+
+      it 'should fail to to create a device when the device is assigned to a user' do
+        count = new_user.devices.count
+        taken_uuid = user.devices.last.uuid
+        post :create, {
+          user_id: new_user.username,
+          device: { uuid: taken_uuid }
+        }
+        expect(response).to redirect_to(new_user_device_path)
+        expect(new_user.devices.count).to be count
+      end
     end
 
     it 'should switch fogging status to true by default' do
@@ -183,43 +239,33 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(device.delayed).to be 13
     end
 
-    it 'should switch privilege for a developer' do
-      developer = FactoryGirl::create(:developer)
-      device.developers << developer
-      device.user = user
-      device.save
-      priv = device.privilege_for(developer)
+    context "switch privilege" do
 
-      request.accept = 'text/javascript'
-      post :switch_privilege_for_developer, {
-        id: device.id,
-        user_id: user.username,
-        developer: developer.id
-      }
-
-      expect(device.privilege_for(developer)).to_not be priv
-    end
-
-    it 'should switch privilege for a developer on all devices' do
-      developer = FactoryGirl::create(:developer)
-      user.devices << device
-      user.devices.each do |device|
-        device.developers << developer
-        device.save
+      it 'should switch privilege for a developer' do
+        priv
+        request.accept = 'text/javascript'
+        post :switch_privilege_for_developer, {
+          id: user.devices.last.id,
+          user_id: user.username,
+          developer: developer.id
+        }
+        expect(user.devices.last.privilege_for(developer)).to_not be priv
       end
-      priv = user.devices.last.privilege_for(developer)
 
-      request.accept = 'text/javascript'
-      post :switch_all_privileges_for_developer, {
-        user_id: user.username,
-        developer: developer.id
-      }
-      user.devices.each { |device| expect(device.privilege_for(developer)).to_not be priv }
+      it 'should switch privilege for a developer on all devices' do
+        priv
+        request.accept = 'text/javascript'
+        post :switch_all_privileges_for_developer, {
+          user_id: user.username,
+          developer: developer.id
+        }
+        user.devices.each { |device| expect(device.privilege_for(developer)).to_not be priv }
+      end
+
     end
 
     it 'should delete' do
-      device.user = user
-      device.save
+      user
       count = Device.count
       delete :destroy, {
         user_id: user.username,
@@ -229,12 +275,22 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(Device.count).to be count-1
     end
 
+    it 'should not delete if user does not own device' do
+      user
+      count = Device.count
+      delete :destroy, {
+        user_id: new_user.username,
+        id: device.id
+      }
+      expect(response).to redirect_to(root_path)
+      expect(Device.count).to be count
+    end
+
   end
 
   describe 'posting from app', :type => :request do
 
     it 'should POST to create with a UUID' do
-      # For some reason, subject.current user was returning some weird results. Using last User instead
       count = user.devices.count
       headers = {
         "X-Api-Key" => developer.api_key,
@@ -245,9 +301,8 @@ RSpec.describe Users::DevicesController, type: :controller do
       post "/users/#{user.username}/devices", {
         device: { uuid: empty_device.uuid }
       }, headers
-      
-      expect(user.devices.count).to be count+1
-      expect(user.devices.last).to eq empty_device
+      expect(user.devices.count).to be(count+1)
+      expect(user.devices.all.last).to eq empty_device
     end
 
     it 'should fail to to create a device with an invalid UUID' do
