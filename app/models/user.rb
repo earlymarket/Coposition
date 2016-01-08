@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
     message: "only allows letters, underscores and dashes" }
 
   has_many :devices
-  has_many :approvals
+  has_many :approvals, dependent: :destroy
   has_many :developers, through: :approvals
 
 
