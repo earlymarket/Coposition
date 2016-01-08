@@ -14,7 +14,7 @@ class Developer < ActiveRecord::Base
 
   has_many :approvals, dependent: :destroy
   has_many :users, through: :approvals
-  has_many :requests
+  has_many :requests, dependent: :destroy
 
 
   before_create do |dev|
