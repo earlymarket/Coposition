@@ -23,18 +23,6 @@ class Checkin < ActiveRecord::Base
 
   class << self
 
-    def find_range(from, size)
-      order(:id).find(range_array(from, size))
-    end
-
-    def non_geocoded_keys(exception: nil)
-      (column_names - [exception]) - geocoded_keys
-    end
-
-    def geocoded_keys
-      %w{address city country postal_code}
-    end
-
     def most_common_coords
       group(:lat, :lng).count.max_by{|_k,v| v}[0]
     end
