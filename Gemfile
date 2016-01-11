@@ -38,7 +38,7 @@ gem 'newrelic_rpm'
 
 gem 'slack-notifier'
 
-gem 'redcarpet'
+gem 'will_paginate-bootstrap'
 
 # Use Unicorn as the app server
 

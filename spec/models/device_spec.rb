@@ -50,4 +50,10 @@ RSpec.describe Device, type: :model do
       expect(device.most_frequent_coords_over('hour', 0..24)).to eq [51.58833, -0.513069]
     end
   end
+
+  it "should create a checkin for a device" do
+    count = device.checkins.count
+    device.create_checkin(lat: 51.588330, lng: -0.513069)
+    expect(device.checkins.count).to be count+1
+  end
 end
