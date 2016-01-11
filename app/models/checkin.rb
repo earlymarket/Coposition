@@ -23,7 +23,6 @@ class Checkin < ActiveRecord::Base
 
   # The method to be used for public-facing data 
   def get_data
-    binding.pry
     fogged_checkin = self
     if device.fogged?
       fogged_checkin.lat = nearest_city.latitude
