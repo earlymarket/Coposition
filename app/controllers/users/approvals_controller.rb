@@ -27,6 +27,9 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def check_user
-    redirect_to new_user_session_path unless current_user?(params[:user_id])
+    unless current_user?(params[:user_id])
+      flash[:notice] = "You are not signed in as #{params[:user_id]}"
+      redirect_to root_path
+    end
   end
 end
