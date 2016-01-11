@@ -28,8 +28,13 @@ class Users::ApprovalsController < ApplicationController
 
   def check_user
     unless current_user?(params[:user_id])
-      flash[:notice] = "You are not signed in as #{params[:user_id]}"
-      redirect_to root_path
+      message = "You are not signed in as #{params[:user_id]}"
+      flash[:notice] = message
+      if params[:origin]
+        redirect_to params[:origin]+"?error=#{message}"
+      else
+        redirect_to root_path
+      end
     end
   end
 end
