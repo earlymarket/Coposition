@@ -2,8 +2,8 @@ class Device < ActiveRecord::Base
   include SlackNotifiable
 
   belongs_to :user
-  has_many :checkins
-  has_many :device_developer_privileges
+  has_many :checkins, dependent: :destroy
+  has_many :device_developer_privileges, dependent: :destroy
   has_many :developers, through: :device_developer_privileges
 
   before_create do |dev|

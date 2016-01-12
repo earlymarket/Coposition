@@ -17,7 +17,7 @@ RSpec.describe Users::Devise::SessionsController, type: :controller do
       request.env['devise.mapping'] = Devise.mappings[:user]
       post :create, 
         user: {
-          username: user.username,
+          email: user.email,
           password: user.password
         }, 
         format: :json
@@ -30,7 +30,7 @@ RSpec.describe Users::Devise::SessionsController, type: :controller do
       request.env['devise.mapping'] = Devise.mappings[:user]
       post :create, 
         user: {
-          username: user.username,
+          email: user.email,
           password: user.password + "incorrect",
         }, 
         format: :json
