@@ -13,5 +13,6 @@
  *= require_tree ./libs
  */
 
-@import 'materialize',
-'./*';
+@import 'materialize';
+// @import './*;'
+@import 'code.scss','colours.scss','fonts.scss','hovers.scss','layout.scss','opacities.scss','placeholder.scss','positions.scss','round-map.scss';

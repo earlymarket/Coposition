@@ -1,5 +1,21 @@
 h1 {
-	text-align: center;
+  text-align: center;
+}
+
+section{
+  width: 100%;
+
+  .row{
+    height: 85vh;
+
+    .col{
+      padding: 3rem;
+    }
+  }
+}
+
+.center{
+  margin: 0 auto;
 }
 
 .toast-top-right {
