@@ -20,8 +20,8 @@
   <ul class="right">
     <% if user_signed_in? %>
       <ul id="dropdown-dashboard" class="dropdown-content">
-        <li><a href="<%= user_devices_path(current_user) %>" role="button">Devices</a></li>
-        <li><a href="<%= user_approvals_path(current_user) %>" role="button">Approvals</a></li>
+        <li><a href="<%= user_devices_path(current_user.url_id) %>" role="button">Devices</a></li>
+        <li><a href="<%= user_approvals_path(current_user.url_id) %>" role="button">Approvals</a></li>
       </ul>
 
       <li>
@@ -29,7 +29,7 @@
       </li>
 
       <li>
-        <a class="dropdown-button" href="<%= user_dashboard_path(current_user) %>" data-activates="dropdown-dashboard">Dashboard<i class="material-icons right">arrow_drop_down</i></a>
+        <a class="dropdown-button" href="<%= user_dashboard_path(current_user.url_id) %>" data-activates="dropdown-dashboard">Dashboard<i class="material-icons right">arrow_drop_down</i></a>
       </li>
 
     <% elsif developer_signed_in? %>
