@@ -8,37 +8,29 @@ $lobster: 'Lobster Two', cursive;
 
 .monospace{
   font-family: "Fira Mono", monospace;
+  font-size: 1.1rem;
 }
 
-body {
+html {
   font-family: "Fira Sans", "Helvetica", sans-serif;
 }
 
-h1, .lobster { 
+h1, .lobster {
   font-family: $lobster;
 }
 
-.navbar-brand{
-  font-size: 3rem;
-}
-
-.subtitle {
-  font-size: 2rem;
-}
-
-p, div {
-  line-height: 2.5rem;
-  font-size: 2rem;
+p {
+  line-height: 1.7rem;
+  font-size: 1.2rem;
+  text-align: left;
 }
 
 code {
   @extend .monospace;
-  font-size: 1.6rem;
 }
 
 pre {
   @extend .monospace;
-  font-size: 1.6rem;
   padding: 2rem;
   padding-left: 4rem;
 }

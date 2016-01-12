@@ -2,18 +2,13 @@ h1 {
 	text-align: center;
 }
 
-#container {
-	max-width: 800px;
-
-	p{
-		text-align: left;
-	}
-
-  .centered {
-    text-align: center;
-  }
-}
-
 .toast-top-right {
   top: 74px;
+}
+
+.side-nav{
+  .collapsible-header{
+    padding: 0px;
+    width: 100%;
+  }
 }
