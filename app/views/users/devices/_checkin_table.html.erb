@@ -34,12 +34,12 @@
         <%= checkin.created_at %>
       </td>
       <td>
-        <%= link_to user_device_checkin_path(current_user.username, @device.id, checkin.id), class: "btn btn-primary" do %>
+        <%= link_to user_device_checkin_path(current_user.url_id, @device.id, checkin.id), class: "btn btn-primary" do %>
           <span class="glyphicon glyphicon-info-sign"></span>
         <% end %>
       </td>
       <td>
-        <%= button_to checkin_user_device_path(current_user.id, @device.id, checkin_id: checkin.id), method: :delete, remote: :true, class: "btn btn-danger" do %>
+        <%= button_to checkin_user_device_path(current_user.url_id, @device.id, checkin_id: checkin.id), method: :delete, remote: :true, class: "btn btn-danger" do %>
           <span class="glyphicon glyphicon-remove-circle"></span>
         <% end %>
       </td>

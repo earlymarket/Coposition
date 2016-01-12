@@ -4,21 +4,18 @@ RSpec.describe Users::DevicesController, type: :controller do
   include ControllerMacros
 
   let(:empty_device) { FactoryGirl::create :device }
-  let(:device) { FactoryGirl::create :device, user_id: user.id }
+  let(:device) { FactoryGirl::create :device }
   let(:developer) { FactoryGirl::create :developer }
   let(:user) do
     user = create_user
-    user.devices << FactoryGirl::create(:device)
+    user.devices << device
     user.devices.each do |device|
       device.developers << developer
       device.save
     end
     user
   end
-  let(:new_user) do
-    user = create_user
-    user
-  end
+  let(:new_user) { create_user }
   let(:priv) { user.devices.last.privilege_for(developer) }
 
   it 'should have a current_user' do
@@ -43,11 +40,11 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
 
     it 'should not assign to @device if user does not own device' do
-      user
       get :show, {
         user_id: new_user.username,
         id: device.id
       }
+      expect(response).to redirect_to(root_path)
       expect(assigns :device).to eq(nil)
     end
 
@@ -101,10 +98,10 @@ RSpec.describe Users::DevicesController, type: :controller do
 
   describe 'GET #add_current' do
     it 'should create a a new Device with a UUID' do
-      id = user.username
+      user
       count = Device.count
       get :add_current, {
-        user_id: id
+        user_id: user.username
       }
       expect(Device.count).to eq(count+1)
       expect(Device.last.uuid == nil).to be false
@@ -125,7 +122,6 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
 
     it 'should not delete a checkin if user does not own device' do
-      user
       device.checkins << FactoryGirl::create(:checkin)
       count = device.checkins.count
       request.accept = 'text/javascript'
@@ -134,40 +130,80 @@ RSpec.describe Users::DevicesController, type: :controller do
         id: device.id,
         checkin_id: device.checkins.last.id
       }
+      expect(response).to redirect_to(root_path)
       expect(device.checkins.count).to eq(count)
     end
   end
 
   describe 'posting' do
+    context 'to #create' do
 
-    it 'should POST to with a UUID' do
-      count = user.devices.count
-      post :create, {
-        user_id: user.username,
-        device: { uuid: empty_device.uuid }
-      }
-      expect(response.code).to eq '302'
-      expect(user.devices.count).to be count+1
-      expect(user.devices.all.last).to eq empty_device
-    end
+      it 'should create a new device' do
+        count = user.devices.count
+        post :create, {
+          user_id: user.username,
+          device: { name: 'New Device' }
+        }
+        expect(response.code).to eq '302'
+        expect(user.devices.count).to be count+1
+        expect(user.devices.all.last.name).to eq 'New Device'
+      end
 
-    it 'should fail to to create a device with an invalid UUID' do
-      count = user.devices.count
-      post :create, {
-        user_id: user.username,
-        device: { uuid: 123 }
-      }
-      expect(user.devices.count).to be count
-    end
+      it 'should create a device with a given UUID' do
+        count = user.devices.count
+        post :create, {
+          user_id: user.username,
+          device: { uuid: empty_device.uuid }
+        }
+        expect(response.code).to eq '302'
+        expect(user.devices.count).to be count+1
+        expect(user.devices.all.last).to eq empty_device
+      end
 
-    it 'should fail to to create a device when the device is assigned to a user' do
-      count = new_user.devices.count
-      taken_uuid = user.devices.last.uuid
-      post :create, {
-        user_id: new_user.username,
-        device: { uuid: taken_uuid }
-      }
-      expect(new_user.devices.count).to be count
+      it 'should create a new device and redirect if provided' do
+        count = user.devices.count
+        post :create, {
+          user_id: user.username,
+          redirect: 'http://www.coposition.com/',
+          device: { name: 'New Device' }
+        }
+        expect(user.devices.count).to be count+1
+        expect(response).to redirect_to('http://www.coposition.com/')
+      end
+
+      it 'should create a new device and a checkin if location provided' do
+        devices_count = user.devices.count
+        checkins_count = Checkin.count
+        post :create, {
+          user_id: user.username,
+          location: '51.588330,-0.513069',
+          device: { name: 'New Device' }
+        }
+        expect(user.devices.count).to be devices_count+1
+        expect(Checkin.count).to be checkins_count+1
+        expect(Checkin.last.lat).to eq 51.588330
+      end
+
+      it 'should fail to to create a device with an invalid UUID' do
+        count = user.devices.count
+        post :create, {
+          user_id: user.username,
+          device: { uuid: 123 }
+        }
+        expect(response).to redirect_to(new_user_device_path)
+        expect(user.devices.count).to be count
+      end
+
+      it 'should fail to to create a device when the device is assigned to a user' do
+        count = new_user.devices.count
+        taken_uuid = user.devices.last.uuid
+        post :create, {
+          user_id: new_user.username,
+          device: { uuid: taken_uuid }
+        }
+        expect(response).to redirect_to(new_user_device_path)
+        expect(new_user.devices.count).to be count
+      end
     end
 
     it 'should switch fogging status to true by default' do
@@ -229,8 +265,7 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
 
     it 'should delete' do
-      device.user = user
-      device.save
+      user
       count = Device.count
       delete :destroy, {
         user_id: user.username,
@@ -241,14 +276,13 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
 
     it 'should not delete if user does not own device' do
-      device.user = user
-      device.save
+      user
       count = Device.count
       delete :destroy, {
         user_id: new_user.username,
         id: device.id
       }
-
+      expect(response).to redirect_to(root_path)
       expect(Device.count).to be count
     end
 
