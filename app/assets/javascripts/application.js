@@ -16,5 +16,7 @@
 //= require libs/lettering
 //= require libs/toastr.min
 //= require utility
+//= require underscore
+//= require gmaps/google
 //= require materialize
 //= require_tree .
