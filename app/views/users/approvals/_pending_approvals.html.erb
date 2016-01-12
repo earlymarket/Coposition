@@ -11,8 +11,8 @@
         <%= image_tag app.developer.logo.url(:thumb) %>
       </div>
       <div class="panel-body input-group">
-        <%= button_to "Approve", approve_user_approval_path(current_user, app.id), remote: true, class: "btn btn-success m-m" %>
-        <%= button_to "Reject", reject_user_approval_path(current_user, app.id), remote: true, class: "btn btn-danger" %>
+        <%= button_to "Approve", approve_user_approval_path(current_user.url_id, app.id), remote: true, class: "btn btn-success m-m" %>
+        <%= button_to "Reject", reject_user_approval_path(current_user.url_id, app.id), remote: true, class: "btn btn-danger" %>
       </div>
       <br>
     </div>

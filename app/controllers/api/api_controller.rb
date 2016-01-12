@@ -22,7 +22,9 @@ class Api::ApiController < ActionController::Base
   end
 
   def find_user
-    @user = User.find(params[:user_id])
+    @user = User.find_by_username(params[:user_id])
+    @user = User.find_by_email(params[:user_id]) unless @user
+    @user = User.find(params[:user_id]) unless @user
   end
 
   def find_device
