@@ -40,6 +40,8 @@ gem 'slack-notifier'
 
 gem 'materialize-sass'
 
+gem 'will_paginate-materialize'
+
 # Use Unicorn as the app server
 
 group :production do

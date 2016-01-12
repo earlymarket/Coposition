@@ -17,48 +17,21 @@ class Checkin < ActiveRecord::Base
       device.checkins << self
       reverse_geocode! if device.checkins.count == 1
     else
-      if Rails.env.test?
-        # TODO: Decide whether or not this is the best idea.
-           # The alternative is to explicitly state this step in every test,
-           # perhaps with a test helper?
-        dev = Device.create(uuid: uuid)
-        dev.checkins << self
-        reverse_geocode!
-      else
-        raise "UUID #{uuid} does not match a device."
-      end
+      raise "UUID #{uuid} does not match a device." unless Rails.env.test?
     end
-  end
-
-  class << self
-
-    def find_range(from, size)
-      order(:id).find(range_array(from, size))
-    end
-
-    def non_geocoded_keys(exception: nil)
-      (column_names - [exception]) - geocoded_keys
-    end
-
-    def geocoded_keys
-      %w{address city country postal_code}
-    end
-
   end
 
   # The method to be used for public-facing data 
   def get_data
+    fogged_checkin = self
     if device.fogged?
-      self.lat = nearest_city.latitude
-      self.lng = nearest_city.longitude
-      self.address = "#{city}, #{country_code}"
+      fogged_checkin.lat = nearest_city.latitude
+      fogged_checkin.lng = nearest_city.longitude
+      fogged_checkin.address = "#{city}, #{country_code}"
+      fogged_checkin
+    else
+      self
     end
-
-    self
-  end
-
-  def non_geocoded_data(exception: nil)
-    self.as_json.except(*Checkin.geocoded_keys, exception)
   end
 
   def reverse_geocode!
