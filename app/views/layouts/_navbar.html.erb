@@ -1,55 +1,93 @@
-<nav class="navbar navbar-inverse" data-turbolinks-permanent>
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand lobster" href="/">CoPosition</a>
-    </div>
+<nav class="nav-wrapper red lighten-1" role="navigation" data-turbolinks-permanent>
+  <ul id="dropdown-about" class="dropdown-content">
+    <li><a href="#">Security</a></li>
+    <li><a href="#">Enrolled companies</a></li>
+    <li><a href="#">Why use CoPosition</a></li>
+    <li class="divider"></li>
+    <li><%= link_to("API", api_path) %></li>
+  </ul>
 
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-      <ul class="nav navbar-nav">
-        <li><a href="<%= signed_in? ? developers_console_path : new_developer_session_path %>">Developers</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">About <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Security</a></li>
-            <li><a href="#">Enrolled companies</a></li>
-            <li><a href="#">Why use CoPosition</a></li>
-            <li class="divider"></li>
-            <li><%= link_to("API", api_path) %></li>
-          </ul>
+  <a href="/" class="brand-logo lobster center">CoPosition</a>
+
+
+
+  <ul class="left">
+    <li><a href="<%= signed_in? ? developers_console_path : new_developer_session_path %>">Developers</a></li>
+    <!-- Dropdown Trigger -->
+    <li><a class="dropdown-button" href="#!" data-activates="dropdown-about">About<i class="material-icons right">arrow_drop_down</i></a></li>
+  </ul>
+
+  <ul class="right">
+    <% if user_signed_in? %>
+      <ul id="dropdown-dashboard" class="dropdown-content">
+        <li><a href="<%= user_devices_path(current_user) %>" role="button">Devices</a></li>
+        <li><a href="<%= user_approvals_path(current_user) %>" role="button">Approvals</a></li>
+      </ul>
+
+      <li>
+        <%= link_to("Sign out", destroy_user_session_path, method: :delete) %>
+      </li>
+
+      <li>
+        <a class="dropdown-button" href="<%= user_dashboard_path(current_user) %>" data-activates="dropdown-dashboard">Dashboard<i class="material-icons right">arrow_drop_down</i></a>
+      </li>
+
+    <% elsif developer_signed_in? %>
+      <li>
+        <%= link_to("Developer Sign out", destroy_user_session_path, method: :delete) %>
+      </li>
+      <li>
+        <%= link_to("User Sign in", new_user_session_path) %>
+      </li>
+    <% else %>
+      <li>
+        <%= link_to("User Sign in", new_user_session_path) %>
+      </li>
+    <% end %>
+  </ul>
+
+
+
+  <!-- mobile navigation sidebar -->
+  <!-- <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
+  <ul class="side-nav" id="mobile-nav">
+    <li><a href="<%= signed_in? ? developers_console_path : new_developer_session_path %>">Developers</a></li>
+
+    <li>
+      <ul class="collapsible">
+        <li>
+          <div class="collapsible-header"><a class="" href="#!">About<i class="material-icons right">arrow_drop_down</i></a></div>
+          <div class="collapsible-body">
+            <ul>
+              <li><a href="#">Security</a></li>
+              <li><a href="#">Enrolled companies</a></li>
+              <li><a href="#">Why use CoPosition</a></li>
+              <li><%= link_to("API", api_path) %></li>
+            </ul>
+          </div>
         </li>
       </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <% if user_signed_in? %>
-          <li>
-            <%= link_to("Sign out", destroy_user_session_path, method: :delete) %>
-          </li>
-          <li class="dropdown">
-          <a href="<%= user_dashboard_path(current_user) %>" role="button" aria-expanded="false">
-          Dashboard <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="<%= user_devices_path(current_user) %>" role="button">Devices</a></li>
-            <li><a href="<%= user_approvals_path(current_user) %>" role="button">Approvals</a></li>
-          </ul>
-          </li>
-        <% elsif developer_signed_in? %>
-          <li>
-            <%= link_to("Developer Sign out", destroy_user_session_path, method: :delete) %>
-          </li>
-          <li>
-            <%= link_to("User Sign in", new_user_session_path) %>
-          </li>
-        <% else %>
-          <li>
-            <%= link_to("User Sign in", new_user_session_path) %>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-  </div>
+    </li>
+
+    <% if user_signed_in? %>
+      <li>
+        <a href="<%= user_dashboard_path(current_user) %>">Dashboard</a>
+      </li>
+      <li>
+        <%= link_to("Sign out", destroy_user_session_path, method: :delete) %>
+      </li>
+
+    <% elsif developer_signed_in? %>
+      <li>
+        <%= link_to("Developer Sign out", destroy_user_session_path, method: :delete) %>
+      </li>
+      <li>
+        <%= link_to("User Sign in", new_user_session_path) %>
+      </li>
+    <% else %>
+      <li>
+        <%= link_to("User Sign in", new_user_session_path) %>
+      </li>
+    <% end %>
+  </ul> -->
 </nav>
