@@ -12,7 +12,7 @@ class Developer < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
 
-  has_many :approvals, depedent: :destroy
+  has_many :approvals, dependent: :destroy
   has_many :users, through: :approvals
   has_many :requests, dependent: :destroy
   has_many :device_developer_privileges, dependent: :destroy
