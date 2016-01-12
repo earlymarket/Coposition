@@ -15,8 +15,8 @@ class User < ActiveRecord::Base
   validates :username, format: { with: /\A[-a-zA-Z_]+\z/,
     message: "only allows letters, underscores and dashes" }
 
-  has_many :devices
-  has_many :approvals
+  has_many :devices, dependent: :destroy
+  has_many :approvals, dependent: :destroy
   has_many :developers, through: :approvals
 
 
@@ -49,10 +49,6 @@ class User < ActiveRecord::Base
     devices.each do |device|
       device.developers << developer
     end
-  end
-
-  def approved_devices_for_developer(developer)
-    devices.where(developer: developer)
   end
 
   ##############
