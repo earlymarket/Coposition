@@ -1,3 +1,9 @@
+$primary-colour: color("red", "lighten-1");
+
+.primary-colour{
+  background-color: $primary-colour;
+}
+
 success-color {
   background-color: #4caf50;
 }
