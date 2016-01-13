@@ -24,6 +24,10 @@
     <% flash.discard(:notification) %>
   <% end %>
   <div id="container" class="animated-fast slideInRight">
+    <%= yield :landing_page %>
+  </div>
+
+  <div id="container" class="animated-fast slideInRight container">
     <%= yield %>
   </div>
 </main>
