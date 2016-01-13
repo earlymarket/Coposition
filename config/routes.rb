@@ -30,6 +30,9 @@ Rails.application.routes.draw do
       end
       resources :checkins, only: [:create]
       resources :users do
+        member do
+          get 'last_checkin'
+        end
         resources :approvals, only: [:create], module: :users do
           collection do
             get :status

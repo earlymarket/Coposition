@@ -77,6 +77,14 @@ class User < ActiveRecord::Base
     checkins.flatten
   end
 
+  def last_checkin
+    last_checkins = []
+    devices.each do |device|
+      last_checkins << device.checkins.last
+    end
+    last_checkins.sort_by(&:created_at).last
+  end
+
   def most_used_device
     device_uses = {}
     devices.each do |device|
@@ -86,11 +94,7 @@ class User < ActiveRecord::Base
   end
 
   def last_used_device
-    last_checkins = []
-    devices.each do |device|
-      last_checkins << device.checkins.last
-    end
-    Device.find(last_checkins.sort_by(&:created_at).last.device_id)
+    Device.find(last_checkin.device_id)
   end
 
   ##############
