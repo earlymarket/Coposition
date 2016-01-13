@@ -1,6 +1,6 @@
 class Checkin < ActiveRecord::Base
   include SharedMethods
-  
+
   validates :uuid, presence: :true
   validates :lat, presence: :true
   validates :lng, presence: :true
@@ -16,11 +16,7 @@ class Checkin < ActiveRecord::Base
   after_create do
     device = Device.find_by(uuid: uuid)
     if device
-      if device.fogged?
-        self.fogged = true
-      else
-        self.fogged = false
-      end
+      self.fogged = device.fogged
       device.checkins << self
       reverse_geocode! if device.checkins.count == 1
     else
