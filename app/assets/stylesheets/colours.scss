@@ -1,7 +1,11 @@
 $primary-colour: color("red", "lighten-1");
 
 .primary-colour{
-  background-color: $primary-colour;
+  background-color: $primary-colour !important;
+}
+
+.page-footer{
+  @extend .primary-colour;
 }
 
 success-color {

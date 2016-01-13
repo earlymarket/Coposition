@@ -4,7 +4,7 @@
   src: url('/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('/fonts/glyphicons-halflings-regular.woff') format('woff'), url('/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 
-$lobster: 'Fira Sans';
+$brand: "Comfortaa", "Helvetica", sans-serif;
 
 .monospace{
   font-family: "Fira Mono", monospace;
@@ -15,8 +15,8 @@ html {
   font-family: "Fira Sans", "Helvetica", sans-serif;
 }
 
-h1, .lobster {
-  font-family: $lobster;
+.brand {
+  font-family: $brand;
 }
 
 p {

@@ -5,7 +5,7 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
-  <link href='https://fonts.googleapis.com/css?family=Lobster+Two' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Fira+Sans' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Fira+Mono' rel='stylesheet' type='text/css'>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -17,11 +17,12 @@
 
   <%= render partial: "layouts/navbar" %>
 
-  <% if developer_signed_in? %>
-    <%= link_to image_tag(current_developer.logo.url(:thumb), class: "small-curved-border half-opacity negative-m-m"), developers_console_path, class: "fixed bottom left" %>
-  <% end %>
+  <!-- <% if developer_signed_in? %>
+    <%= link_to image_tag(current_developer.logo.url(:thumb), class: "small-curved-border half-opacity"), developers_console_path, class: "fixed bottom left" %>
+  <% end %> -->
   
   <%= render partial: "layouts/notifications" %>
 
+  <%= render partial: "layouts/footer" %>
 </body>
 </html>
