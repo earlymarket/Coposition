@@ -120,7 +120,7 @@ class Users::DevicesController < ApplicationController
           lng: params[:location].split(",").last) unless params[:location].blank?
     end
 
-    def redirect_using_param_or_default(default: user_device_path(current_user.id, @device.id))
+    def redirect_using_param_or_default(default: user_device_path(current_user.url_id, @device.id))
       if params[:redirect].blank?
         redirect_to default
       else

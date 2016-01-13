@@ -4,21 +4,12 @@
     <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "form-horizontal well" }) do |f| %>
       <legend>Log in</legend>
       <fieldset>
-        <% if resource.respond_to? :username %>
-          <div class="form-group">
-            <%= f.label :username, class: "col-md-2 control-label" %>
-            <div class="col-md-10">
-              <%= f.text_field :username, autofocus: true, placeholder: "Username", id: "login_#{resource.class.to_s.downcase}_username" %>
-            </div>
+        <div class="form-group">
+          <%= f.label :email, class: "col-md-2 control-label" %>
+          <div class="col-md-10">
+            <%= f.email_field :email, autofocus: true, placeholder: "Password", id: "login_#{resource.class.to_s.downcase}_email" %>
           </div>
-        <% else %>
-          <div class="form-group">
-            <%= f.label :email, class: "col-md-2 control-label" %>
-            <div class="col-md-10">
-              <%= f.email_field :email, autofocus: true, placeholder: "Password", id: "login_#{resource.class.to_s.downcase}_email" %>
-            </div>
-          </div>
-        <% end %>
+        </div>
 
         <div class="form-group">
           <%= f.label :password, class: "col-md-2 control-label" %>
@@ -63,22 +54,22 @@
           </div>
         <% end %>
 
-        <% if resource.respond_to? :username %>
-          <small><em>Lowercase letters, dashes and underscores only</em></small>
-          <div class="form-group">
-            <%= f.label :username, class: "col-md-2 control-label" %>
-            <div class="col-md-10">
-              <%= f.text_field :username, placeholder: "Username", id: "register_#{resource.class.to_s.downcase}_username" %>
-            </div>
-          </div>
-        <% end %>
-
         <div class="form-group">
           <%= f.label :email, class: "col-md-2 control-label" %>
           <div class="col-md-10">
             <%= f.email_field :email, placeholder: "Email", id: "register_#{resource.class.to_s.downcase}_email" %>
           </div>
         </div>
+
+        <% if resource.respond_to? :username %>
+          <small><em>Lowercase letters, dashes and underscores only</em></small>
+          <div class="form-group">
+            <%= f.label :username, class: "col-md-2 control-label" %>
+            <div class="col-md-10">
+              <%= f.text_field :username, placeholder: "Optional username", id: "register_#{resource.class.to_s.downcase}_username" %>
+            </div>
+          </div>
+        <% end %>        
 
         <% if resource.respond_to? :redirect_url %>
           <div class="form-group">
