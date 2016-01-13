@@ -29,7 +29,7 @@ class Checkin < ActiveRecord::Base
   # The method to be used for public-facing data 
   def get_data
     fogged_checkin = self
-    if checkin.fogged?
+    if fogged?
       fogged_checkin.lat = nearest_city.latitude
       fogged_checkin.lng = nearest_city.longitude
       fogged_checkin.address = "#{city}, #{country_code}"

@@ -82,7 +82,7 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
       it "should fog the last reported location's address if fogged" do
         # Make it fogged
         device.switch_fog
-
+        device.checkins.create(lat: 51.57471, lng: -0.50626, uuid: device.uuid)
         get :last, {
           user_id: user.id,
           device_id: device.id,
