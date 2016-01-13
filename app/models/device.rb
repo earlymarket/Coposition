@@ -1,5 +1,6 @@
 class Device < ActiveRecord::Base
   include SlackNotifiable
+  include SharedMethods
 
   belongs_to :user
   has_many :checkins, dependent: :destroy
@@ -12,13 +13,6 @@ class Device < ActiveRecord::Base
 
   def checkins
     delayed? ? super.where("created_at < ?", delayed.minutes.ago) : super
-  end
-
-
-  def switch_fog
-    self.fogged = !self.fogged
-    save
-    self.fogged
   end
 
   def privilege_for(dev)
