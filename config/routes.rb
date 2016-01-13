@@ -31,6 +31,9 @@ Rails.application.routes.draw do
       resources :checkins, only: [:create]
       resources :users do
         resources :approvals, only: [:create], module: :users do
+          member do
+            post 'approve'
+          end
           collection do
             get :status
           end

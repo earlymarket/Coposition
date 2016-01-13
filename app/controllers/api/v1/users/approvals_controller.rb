@@ -6,7 +6,17 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   def create
   	# For some reason respond_with doesn't work here
   	# TODO: research why
-    render json: @dev.request_approval_from(@user).select(:id, :approved, :pending).first
+    @dev.request_approval_from(@user).select(:id, :approved, :pending).first
+    approval = Approval.where(user: @user, developer: @dev)
+    render json: approval.to_json
+  end
+
+  def approve
+    @approval = Approval.where(id: params[:id], 
+      user: @user).first
+    @approval.approve!
+    @approved_devs = @user.approved_developers
+    render nothing: true
   end
 
   def status
