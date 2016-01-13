@@ -30,7 +30,7 @@ class Users::ApprovalsController < ApplicationController
     unless current_user?(params[:user_id])
       flash[:notice] = "You are signed in as #{current_user.username}"
       if params[:origin]
-        developer = Developer.find_by(company_name: params[:company_name])
+        developer = Developer.find_by(api_key: params[:api_key])
         redirect_to developer.redirect_url+"?copo_user=#{current_user.username}"
       else
         redirect_to root_path
