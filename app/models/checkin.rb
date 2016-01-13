@@ -1,4 +1,6 @@
 class Checkin < ActiveRecord::Base
+  include SharedMethods
+  
   validates :uuid, presence: :true
   validates :lat, presence: :true
   validates :lng, presence: :true
