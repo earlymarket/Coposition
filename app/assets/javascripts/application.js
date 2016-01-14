@@ -17,4 +17,5 @@
 //= require libs/toastr.min
 //= require utility
 //= require materialize
+//= require markerclusterer
 //= require_tree .
