@@ -1,5 +1,6 @@
 class Api::V1::Users::ApprovalsController < Api::ApiController
   respond_to :json
+  acts_as_token_authentication_handler_for User
 
   before_action :authenticate, :find_user
   before_action :authenticate_user!, only: :approve
