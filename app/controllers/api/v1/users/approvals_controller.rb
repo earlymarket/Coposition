@@ -2,6 +2,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   respond_to :json
 
   before_action :authenticate, :find_user
+  before_action :authenticate_user!, only: :approve
 
   def create
   	# For some reason respond_with doesn't work here
@@ -18,9 +19,8 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
     render nothing: true
   end
 
-  def pending_approvals
-    @pending_approvals = @user.pending_approvals
-    render json: @pending_approvals
+  def index
+    render json: @user.approvals
   end
 
   def status
