@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151222154929) do
+ActiveRecord::Schema.define(version: 20160113130830) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,7 +40,10 @@ ActiveRecord::Schema.define(version: 20151222154929) do
     t.string   "city"
     t.string   "postal_code"
     t.string   "country_code"
+    t.boolean  "fogged"
   end
+
+  add_index "checkins", ["device_id"], name: "index_checkins_on_device_id", using: :btree
 
   create_table "cities", force: :cascade do |t|
     t.string "name"
@@ -69,6 +72,7 @@ ActiveRecord::Schema.define(version: 20151222154929) do
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
     t.string   "tagline"
+    t.string   "redirect_url"
   end
 
   add_index "developers", ["email"], name: "index_developers_on_email", unique: true, using: :btree
@@ -91,25 +95,6 @@ ActiveRecord::Schema.define(version: 20151222154929) do
   end
 
   add_index "devices", ["uuid"], name: "index_devices_on_uuid", using: :btree
-
-  create_table "doctors", force: :cascade do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
-    t.string   "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.inet     "current_sign_in_ip"
-    t.inet     "last_sign_in_ip"
-    t.string   "degree"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-  end
-
-  add_index "doctors", ["email"], name: "index_doctors_on_email", unique: true, using: :btree
-  add_index "doctors", ["reset_password_token"], name: "index_doctors_on_reset_password_token", unique: true, using: :btree
 
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string   "slug",                      null: false
