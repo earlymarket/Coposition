@@ -20,12 +20,10 @@ class Users::Devise::SessionsController < Devise::SessionsController
       @email = params[:user][:email] if params[:user]   
       @password = params[:user][:password] if params[:user]   
     
-      # Validations   
       return unless valid_request?    
     
       user = User.find_by(email: @email)    
       if user && user.valid_password?(@password)
-        user.restore_authentication_token!    
         render status: 200, json: {     
           email: user.email,    
           authentication_token: user.authentication_token   
@@ -43,7 +41,7 @@ class Users::Devise::SessionsController < Devise::SessionsController
       else    
         user.authentication_token = nil
         user.save!
-        render status: 204, json: { message: 'You are signed out' }   
+        render status: 200, json: { message: 'You are signed out' }   
       end   
     end   
     
