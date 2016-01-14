@@ -9,6 +9,7 @@ main {
   flex: 1 0 auto;
 }
 
+// Presets
 // Other layouts
 h1 {
   text-align: center;
@@ -18,11 +19,17 @@ h1 {
   width: 100%;
 
   .row{
-    height: 85vh;
+    height: 100vh;
 
     .col{
       padding: 3rem;
     }
+  }
+}
+
+.landing-section.first{
+  .valign{
+    transform: translate(0, -10vh);
   }
 }
 
