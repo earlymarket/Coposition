@@ -35,7 +35,7 @@ Rails.application.routes.draw do
             get :status
           end
         end
-        resources :devices, only: [:index, :show], module: :users do
+        resources :devices, only: [:index, :show, :update], module: :users do
           resources :checkins, only: [:index, :create], module: :devices do
             collection do
               get :last

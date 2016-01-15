@@ -25,4 +25,19 @@ class Api::V1::Users::DevicesController < Api::ApiController
     respond_with list
   end
 
+  def update
+    if device = Device.find(params[:id])
+      device.update(device_params)
+      render json: device
+    else
+      render status: 400, json: { message: 'Device does not exist' }
+    end
+  end
+
+  private
+
+    def device_params
+      params.require(:device).permit(:name, :fogged, :delayed)
+    end
+
 end
