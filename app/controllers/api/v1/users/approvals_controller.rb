@@ -9,7 +9,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   def create
     @dev.request_approval_from(@user).select(:id, :approved, :pending).first
     approval = Approval.where(user: @user, developer: @dev)
-    render json: approval.to_json
+    render json: approval
   end
 
   def update
