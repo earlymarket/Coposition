@@ -36,6 +36,12 @@ Rails.application.routes.draw do
           end
         end
         resources :devices, only: [:index, :show, :update], module: :users do
+          member do
+            post 'switch_privilege_for_developer'
+          end
+          collection do
+            post 'switch_all_privileges_for_developer'
+          end
           resources :checkins, only: [:index, :create], module: :devices do
             collection do
               get :last
