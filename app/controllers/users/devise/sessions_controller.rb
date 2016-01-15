@@ -24,8 +24,10 @@ class Users::Devise::SessionsController < Devise::SessionsController
     
       user = User.find_by(email: @email)    
       if user && user.valid_password?(@password)
-        render status: 200, json: {     
-          email: user.email,    
+        render status: 200, json: {
+          id: user.id,     
+          email: user.email,
+          username: user.username,    
           authentication_token: user.authentication_token   
         }   
       else    
