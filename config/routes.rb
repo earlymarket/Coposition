@@ -30,7 +30,7 @@ Rails.application.routes.draw do
       end
       resources :checkins, only: [:create]
       resources :users do
-        resources :approvals, only: [:create], module: :users do
+        resources :approvals, only: [:create, :index, :update], module: :users do
           collection do
             get :status
           end
