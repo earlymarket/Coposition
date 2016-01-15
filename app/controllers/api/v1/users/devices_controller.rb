@@ -39,7 +39,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
   end
 
   def switch_privilege_for_developer
-    device = Device.where(id: params[:id], user: @user).first
+    device = @user.devices.where(id: params[:id]).first
     developer = Developer.where(id: params[:developer_id]).first
     if device && developer
       device.change_privilege_for(developer, device.reverse_privilege_for(developer))
