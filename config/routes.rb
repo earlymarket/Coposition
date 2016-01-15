@@ -35,7 +35,7 @@ Rails.application.routes.draw do
             get :status
           end
         end
-        resources :devices, only: [:index, :show], module: :users do
+        resources :devices, only: [:index, :show, :update], module: :users do
           member do
             post 'switch_privilege_for_developer'
           end

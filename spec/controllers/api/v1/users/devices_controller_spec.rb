@@ -10,13 +10,11 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     user.approve_developer(dev)
     dev
   end
-
   let(:user) do
     us = FactoryGirl::create :user
     us.devices << device
     us
   end
-
   let(:second_user) do
     us = FactoryGirl::create :user
     developer.request_approval_from(us)
@@ -29,9 +27,12 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     @checkin.uuid = device.uuid
     @checkin.save
     request.headers["X-Api-Key"] = developer.api_key
+    request.headers["X-User-Token"] = user.authentication_token
+    request.headers["X-User-Email"] = user.email
   end
 
   describe "GET" do
+
 
     it "should GET a list of devices of a specific user" do
       get :index, user_id: user.username, format: :json
@@ -74,11 +75,8 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     end
   end
 
+
   describe "POST" do
-    before do
-      request.headers["X-User-Token"] = user.authentication_token
-      request.headers["X-User-Email"] = user.email
-    end
 
     it 'should change privilege for developer on a device' do
       priv = device.device_developer_privileges.where(developer: developer).first
@@ -127,4 +125,23 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     end
   end
 
+  describe "PUT" do
+
+    it "should update settings" do
+      put :update, { user_id: user.id, id: device.id,  device: { fogged: true }, format: :json }
+      expect(res_hash[:fogged]).to eq(true)
+      put :update, { user_id: user.id, id: device.id,  device: { fogged: false }, format: :json }
+      device.reload
+      expect(res_hash[:fogged]).to eq(false)
+    end
+
+    it "should reject non-existant device ids" do
+      put :update, { user_id: user.id, id: 999999999,  device: { fogged: true }, format: :json }
+      expect(response.status).to eq(400)
+      expect(res_hash[:message]).to eq('Device does not exist')
+    end
+
+  end
+
 end
+
