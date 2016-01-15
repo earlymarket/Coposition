@@ -29,7 +29,8 @@ class Api::V1::Users::DevicesController < Api::ApiController
   end
 
   def update
-    if device = @user.devices.where(id: params[:id]).first
+    device = @user.devices.where(id: params[:id]).first
+    if device
       device.update(device_params)
       render json: device
     else
