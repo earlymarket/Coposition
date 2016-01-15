@@ -17,6 +17,13 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     us
   end
 
+  let(:second_user) do
+    us = FactoryGirl::create :user
+    developer.request_approval_from(us)
+    us.approve_developer(developer)
+    us
+  end
+
   before do      
     @checkin = FactoryGirl::build :checkin
     @checkin.uuid = device.uuid
@@ -74,6 +81,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     end
 
     it 'should change privilege for developer on a device' do
+      priv = device.device_developer_privileges.where(developer: developer).first
       post :switch_privilege_for_developer, {
         developer_id: developer.id,
         user_id: user.username,
@@ -81,15 +89,41 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
         format: :json
       }
       expect(response.status).to be 200
+      expect(res_hash.first['privilege']).to_not eq priv.privilege
     end
 
     it 'should change privilege for developer on all devices' do
+      priv = device.device_developer_privileges.where(developer: developer).first
       post :switch_all_privileges_for_developer, {
         developer_id: developer.id,
         user_id: user.username,
         format: :json
       }
+      expect(res_hash.first.first['privilege']).to_not eq priv.privilege
       expect(response.status).to be 200
+    end
+
+    it 'should not change privilege for developer if user not signed in user' do
+      post :switch_all_privileges_for_developer, {
+        developer_id: developer.id,
+        user_id: second_user.username,
+        format: :json
+      }
+      expect(res_hash[:message]).to eq 'Incorrect User'
+      expect(response.status).to be 403
+
+    end
+
+    it 'should not change privilege for developer if user does not own device' do
+      device = FactoryGirl::create(:device)
+      post :switch_privilege_for_developer, {
+        id: device.id,
+        developer_id: developer.id,
+        user_id: user.username,
+        format: :json
+      }
+      expect(res_hash[:message]).to eq 'Device/Developer not found'
+      expect(response.status).to be 404
     end
   end
 
