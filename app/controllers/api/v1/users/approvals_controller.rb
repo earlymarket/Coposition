@@ -40,8 +40,8 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
 
     def check_user
       unless current_user?(params[:user_id])
-        render status: 403, json: { message: 'Incorrect User' } 
+        render status: 403, json: { message: 'Incorrect User' }
       end
-    end	
+    end
 
 end

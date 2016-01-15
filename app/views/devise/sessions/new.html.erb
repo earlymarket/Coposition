@@ -71,15 +71,6 @@
           </div>
         <% end %>        
 
-        <% if resource.respond_to? :redirect_url %>
-          <div class="form-group">
-            <%= f.label :redirect_url, class: "col-md-2 control-label" %>
-            <div class="col-md-10">
-              <%= f.text_field :redirect_url, placeholder: "Your Site URL", id: "register_#{resource.class.to_s.downcase}_redirect_url" %>
-            </div>
-          </div>
-        <% end %>
-
         <div class="form-group">
           <%= f.label :password, class: "col-md-2 control-label" %>
           <div class="col-md-10">

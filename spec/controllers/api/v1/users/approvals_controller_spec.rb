@@ -6,11 +6,12 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
   let(:user){FactoryGirl::create :user}
   let(:developer){FactoryGirl::create :developer}
 
+  before do
+    request.headers["X-Api-Key"] = developer.api_key
+  end
+
   describe "a developer" do
 
-    before do
-      request.headers["X-Api-Key"] = developer.api_key
-    end
 
     it "should be able to submit an approval request" do
       post :create, user_id: user.username, format: :json
@@ -46,7 +47,6 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
     end
 
     before do
-      request.headers["X-Api-Key"] = developer.api_key
       request.headers["X-User-Token"] = user.authentication_token
       request.headers["X-User-Email"] = user.email
     end
