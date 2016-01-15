@@ -53,7 +53,7 @@ class User < ActiveRecord::Base
 
   def approve_devices_for_developer(developer)
     devices.each do |device|
-      device.developers << developer
+      device.developers << developer unless device.developers.include? developer
     end
   end
 
