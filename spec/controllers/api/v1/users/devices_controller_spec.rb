@@ -4,29 +4,32 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   include ControllerMacros
 
 
+  let(:device){FactoryGirl::create :device}
+  let(:developer) do
+    dev = FactoryGirl::create :developer
+    dev.request_approval_from(user)
+    user.approve_developer(dev)
+    dev
+  end
+
+  let(:user) do
+    us = FactoryGirl::create :user
+    us.devices << device
+    us
+  end
+
+  before do      
+    @checkin = FactoryGirl::build :checkin
+    @checkin.uuid = device.uuid
+    @checkin.save
+    request.headers["X-Api-Key"] = developer.api_key
+  end
+
+
+
+
+
   describe "GET" do
-
-    let(:device){FactoryGirl::create :device}
-    let(:developer) do
-      dev = FactoryGirl::create :developer
-      dev.request_approval_from(user)
-      user.approve_developer(dev)
-      dev
-    end
-
-    let(:user) do
-      us = FactoryGirl::create :user
-      us.devices << device
-      us
-    end
-
-    before do      
-      @checkin = FactoryGirl::build :checkin
-      @checkin.uuid = device.uuid
-      @checkin.save
-      request.headers["X-Api-Key"] = developer.api_key
-    end
-
 
 
     it "should GET a list of devices of a specific user" do
@@ -68,6 +71,25 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       expect(response.body).to eq ""
       expect(response.status).to be 401
     end
+  end
+
+  describe "PUT" do
+
+    it "should update settings" do
+      put :update, { user_id: user.id, id: device.id,  device: { fogged: true }, format: :json }
+      expect(res_hash[:fogged]).to eq(true)
+      put :update, { user_id: user.id, id: device.id,  device: { fogged: false }, format: :json }
+      device.reload
+      expect(res_hash[:fogged]).to eq(false)
+    end
+
+    it "should reject non-existant device ids" do
+      put :update, { user_id: user.id, id: 999999999,  device: { fogged: true }, format: :json }
+      expect(response.status).to eq(400)
+      expect(res_hash[:message]).to eq('Device does not exist')
+    end
+
+
   end
 
 end
