@@ -7,8 +7,6 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   before_action :check_user, only: :update
 
   def create
-  	# For some reason respond_with doesn't work here
-  	# TODO: research why
     @dev.request_approval_from(@user).select(:id, :approved, :pending).first
     approval = Approval.where(user: @user, developer: @dev)
     render json: approval.to_json

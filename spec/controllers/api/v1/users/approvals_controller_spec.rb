@@ -12,7 +12,6 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
 
   describe "a developer" do
 
-
     it "should be able to submit an approval request" do
       post :create, user_id: user.username, format: :json
 
@@ -38,7 +37,8 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
   end
 
   describe "a user" do
-    let(:approval) do 
+
+    let(:approval) do
       approval = FactoryGirl::create :approval
       approval.developer = developer
       approval.user = user
@@ -59,7 +59,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
         approval: {
           approved: true,
           pending: false
-        }, 
+        },
         format: :json
       }
       expect(user.approved_developer? developer).to be true
@@ -73,7 +73,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
         approval: {
           approved: false,
           pending: false
-        }, 
+        },
         format: :json
       }
       expect(user.approved_developer? developer).to be false

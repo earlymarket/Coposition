@@ -25,10 +25,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def current_user?(user_id)
-    user = User.find(user_id)
-    current_user == user
-  end
 
   protected
 

@@ -1,6 +1,6 @@
 class Users::ApprovalsController < ApplicationController
 
-  before_action :authenticate_user! 
+  before_action :authenticate_user!
 
   def index
     @approved_devs = current_user.approved_developers
