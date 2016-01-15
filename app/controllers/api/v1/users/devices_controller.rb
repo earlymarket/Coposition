@@ -4,7 +4,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
   acts_as_token_authentication_handler_for User, only: [:switch_privilege_for_developer, :switch_all_privileges_for_developer]
 
   before_action :authenticate, :check_user_approved_developer
-  before_action :find_user, :check_user, only: [:switch_privilege_for_developer, :switch_all_privileges_for_developer]
+  before_action :check_user, only: [:switch_privilege_for_developer, :switch_all_privileges_for_developer]
 
   def index
     list = []
