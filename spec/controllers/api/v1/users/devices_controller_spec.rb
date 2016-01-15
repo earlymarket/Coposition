@@ -85,7 +85,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
 
     it "should reject non-existant device ids" do
       put :update, { user_id: user.id, id: 999999999,  device: { fogged: true }, format: :json }
-      expect(response.status).to eq(400)
+      expect(response.status).to eq(404)
       expect(res_hash[:message]).to eq('Device does not exist')
     end
 

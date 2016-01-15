@@ -26,11 +26,10 @@ class Api::V1::Users::DevicesController < Api::ApiController
   end
 
   def update
-    if device = @user.devices.where(id: params[:id]).first
+    device = @user.devices.where(id: params[:id]).first
+    if device_exists? device
       device.update(device_params)
       render json: device
-    else
-      render status: 400, json: { message: 'Device does not exist' }
     end
   end
 
