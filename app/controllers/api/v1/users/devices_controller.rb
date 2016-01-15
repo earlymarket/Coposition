@@ -57,7 +57,6 @@ class Api::V1::Users::DevicesController < Api::ApiController
     if devices && developer
       devices.each do |device|
         device.change_privilege_for(developer, device.reverse_privilege_for(developer))
-        device.privilege_for(developer)
         device.reverse_privilege_for(developer)
         privileges << device.device_developer_privileges.where(developer: developer)
       end
