@@ -30,23 +30,18 @@ class Api::V1::Users::DevicesController < Api::ApiController
 
   def update
     device = @user.devices.where(id: params[:id]).first
-    if device
+    if device_exists? device
       device.update(device_params)
       render json: device
-    else
-      render status: 400, json: { message: 'Device does not exist' }
     end
   end
 
   def switch_privilege_for_developer
     device = @user.devices.where(id: params[:id]).first
     developer = Developer.where(id: params[:developer_id]).first
-    if device && developer
+    if (device_exists? device) && (developer_exists? developer)
       device.change_privilege_for(developer, device.reverse_privilege_for(developer))
-      device.reverse_privilege_for(developer)
       render status: 200, json: device.device_developer_privileges.where(developer: developer)
-    else
-      render status: 404, json: { message: 'Device/Developer not found' }
     end
   end
 
@@ -54,15 +49,12 @@ class Api::V1::Users::DevicesController < Api::ApiController
     devices = @user.devices
     developer = Developer.where(id: params[:developer_id]).first
     privileges = []
-    if devices && developer
+    if (device_exists? devices) && (developer_exists? developer)
       devices.each do |device|
         device.change_privilege_for(developer, device.reverse_privilege_for(developer))
-        device.reverse_privilege_for(developer)
         privileges << device.device_developer_privileges.where(developer: developer)
       end
       render status: 200, json: privileges
-    else
-      render status: 404, json: { message: 'Device/Developer not found' }
     end
   end
 
