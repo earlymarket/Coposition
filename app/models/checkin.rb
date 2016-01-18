@@ -1,4 +1,6 @@
 class Checkin < ActiveRecord::Base
+  include SharedMethods
+
   validates :uuid, presence: :true
   validates :lat, presence: :true
   validates :lng, presence: :true
@@ -14,6 +16,7 @@ class Checkin < ActiveRecord::Base
   after_create do
     device = Device.find_by(uuid: uuid)
     if device
+      self.fogged = device.fogged
       device.checkins << self
       reverse_geocode! if device.checkins.count == 1
     else
@@ -24,7 +27,7 @@ class Checkin < ActiveRecord::Base
   # The method to be used for public-facing data 
   def get_data
     fogged_checkin = self
-    if device.fogged?
+    if fogged?
       fogged_checkin.lat = nearest_city.latitude
       fogged_checkin.lng = nearest_city.longitude
       fogged_checkin.address = "#{city}, #{country_code}"

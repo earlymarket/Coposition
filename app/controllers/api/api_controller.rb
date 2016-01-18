@@ -38,4 +38,9 @@ class Api::ApiController < ActionController::Base
     end
   end
 
+  def current_user?(user_id)
+    auth_token = User.find(user_id).authentication_token
+    request.headers['X-User-Token'] == auth_token
+  end
+
 end
