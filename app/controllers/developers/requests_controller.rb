@@ -5,4 +5,5 @@ class Developers::RequestsController < ApplicationController
     balance.update_all(paid: true)
     redirect_to developers_console_path
   end
+
 end
