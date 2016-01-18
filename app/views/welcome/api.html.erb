@@ -31,6 +31,7 @@
 <p>If you then go to your Dashboard &gt; Devices &gt; Add a device, add the UUID <code>07b47a50-6f22-468f-b387-b314768f4649</code>, and the device will be bound to your account.</p>
 
 <h3>Asking for approval</h3>
+<p> In order to be able to access your users location data, you first need to ask them for approval. </p>
 
 <p><code>POST http://api.coposition-dev.com/v1/users/testuser/approvals</code>
 
@@ -38,7 +39,23 @@
 
 <p>Approving this allows the company to have access to that user&#39;s location data of all devices (by default).</p>
 
+ <h3>Approving/Rejecting a Developer</h3>
+
+<p> You can approve or reject a developer via the API.</p>
+
+<p><code>PUT http://api.coposition-dev.com/v1/users/testuser/approvals/approval_id</code> With the payload:
+  <pre>
+{
+    "approval": {
+        "approved": true,
+        "pending": false
+    }
+}</pre></p>
+ <p> You can approve a developer by setting approved to true and pending to false, or reject by setting both to false. Returns the approval</p>
+
 <h3>Getting device information</h3>
+
+<p> Once the user has approved you as a developer, you can get information about their devices and checkins.</p>
 
 <p><code>GET http://api.coposition-dev.com/v1/users/testuser/devices</code></p>
  <p> Returns an index of devices.</p>
@@ -57,3 +74,37 @@
 
 <p><code>GET http://api.coposition-dev.com/v1/users/testuser/devices/testdevice_id/checkins?page=1&per_page=50</code></p>
  <p>You can specify which page and how many checkins per page (limit 1000) to return, checkins are returned most recent first. </p>
+
+ <h3>Updating Device Settings (fogged/timeshift)</h3>
+
+<p> A user may want to update their personal settings.</p>
+
+<p><code>PUT http://api.coposition-dev.com/v1/users/testuser/devices/testdevice_id</code> With the payload:
+  <pre>
+{
+  "device": {
+    "name": 'Test Device'
+    "fogged": "true",
+    "timeshift" : "30"
+  }
+}</pre></p>
+ <p> You can update the name, the fogged setting and the timeshift delay on a device by supplying these atttributes in the payload.</p>
+
+ <h3>Switching privilege for one developer</h3>
+
+<p> This allows you to toggle which specific devices a developer can see information for.</p>
+<p><code>POST http://api.coposition-dev.com/v1/users/testuser/devices/testdevice_id/switch_privilege_for_developer</code> With the payload:
+  <pre>
+{
+  "developer_id" : 3
+}</pre></p>
+ <p> Specify which developer you would like to switch the privilege for the device in the payload, returns the device_developer_privilege relationship. </p>
+
+  <h3>Switching developer privilege on all devices</h3>
+
+<p><code>POST http://api.coposition-dev.com/v1/users/testuser/devices/switch_all_privileges_for_developer</code> With the payload:
+  <pre>
+{
+  "developer_id" : 3
+}</pre></p>
+ <p> Specify which developer you would like to switch privileges for all devices, returns all privilege for each device. </p>
