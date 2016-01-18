@@ -54,9 +54,7 @@ class Api::ApiController < ActionController::Base
 
   def resource_exists?(resource, arguments)
     model = resource.titleize.constantize
-    unless arguments
-      render status: 404, json: { message: "#{model} does not exist" }
-    end
+    render status: 404, json: { message: "#{model} does not exist" } unless arguments
     arguments
   end
 

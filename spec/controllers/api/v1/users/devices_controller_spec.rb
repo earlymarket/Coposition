@@ -79,7 +79,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   describe "POST" do
 
     it 'should change privilege for developer on a device' do
-      priv = device.device_developer_privileges.where(developer: developer).first
+      expect(device.privilege_for(developer)).to eq 'complete'
       post :switch_privilege_for_developer, {
         developer_id: developer.id,
         user_id: user.username,
@@ -87,18 +87,18 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
         format: :json
       }
       expect(response.status).to be 200
-      expect(res_hash.first['privilege']).to_not eq priv.privilege
+      expect(device.privilege_for(developer)).to eq 'disallowed'
     end
 
     it 'should change privilege for developer on all devices' do
-      priv = device.device_developer_privileges.where(developer: developer).first
+      expect(user.devices.last.privilege_for(developer)).to eq 'complete'
       post :switch_all_privileges_for_developer, {
         developer_id: developer.id,
         user_id: user.username,
         format: :json
       }
-      expect(res_hash.first.first['privilege']).to_not eq priv.privilege
       expect(response.status).to be 200
+      expect(user.devices.last.privilege_for(developer)).to eq 'disallowed'
     end
 
     it 'should not change privilege for developer if user not signed in user' do
@@ -120,7 +120,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
         user_id: user.username,
         format: :json
       }
-      expect(res_hash[:message]).to eq 'Device/Developer not found'
+      expect(res_hash[:message]).to eq 'Device does not exist'
       expect(response.status).to be 404
     end
   end
