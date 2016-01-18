@@ -1,5 +1,6 @@
 $primary-colour: color("light-blue", "base");
 $secondary-colour: color("orange", "accent-2");
+$secondary-text: color("grey", "darken-4");
 
 
 .primary-colour{
@@ -15,6 +16,7 @@ $secondary-colour: color("orange", "accent-2");
 
 .btn{
   @extend .secondary-colour;
+  color: $secondary-text !important;
 }
 
 

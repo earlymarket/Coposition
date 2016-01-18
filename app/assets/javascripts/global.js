@@ -39,8 +39,15 @@ function addClickListeners() {
   $(".close").click(function(e){
     utility.animations.removeEl($(e.currentTarget).parent())
   });
+
+  $(".landing-section .start-btn").click(function(e){
+    var offset = $(".landing-section.first").height() + $("nav").height();
+    $("body").animate({ scrollTop: offset });
+  });
 }
 
+
+// Potentially remove
 toastr.options = {
   "closeButton": false,
   "debug": false,

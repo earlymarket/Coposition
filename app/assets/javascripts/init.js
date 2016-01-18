@@ -5,4 +5,5 @@ $(document).on('page:change', function() {
 	});
 	$(".button-collapse").sideNav();
 	$('.collapsible').collapsible();
+	$('.parallax').parallax();
 });

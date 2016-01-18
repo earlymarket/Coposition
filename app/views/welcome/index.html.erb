@@ -1,14 +1,15 @@
 <% content_for :landing_page do %>
 <section class="landing-section first">
-  <div class="row valign-wrapper">
+  <div class="row valign-wrapper parallax-container">
     <div class="valign center-align center">
-      <h1 class="brand" data-in-effect="bounceIn">CoPosition</h1>
-      <div>Worry free location data management.</div>
+      <%= image_tag("coposition.png", style: "margin: 2em") %>
+      <h1 class="brand" data-in-effect="bounceIn">CONTROL YOUR LOCATION DATA</h1>
+      <h5>Worry free location data management.</h5>
+      <a class="start-btn btn-large wave-light">Getting Started</a>
     </div>
+    <div class="parallax"><%= image_tag("background.jpg") %></div>
   </div>
 </section>
-
-<div class="divider"></div>
 
 <section class="landing-section second">
   <div class="row">
@@ -36,7 +37,7 @@
       <p>One easy to use API to manage all your users location data. CoPosition is secure, easy to implement and dependable.</p>
 
       <p>Our API enables you to focus on what matters for your app and we'll take care of managing your user's location data and geocoding for you while freeing up valuable bandwidth you would be using otherwise. </p>
-      <a class="btn wave-light">Learn more</a>
+      <%= link_to("Learn more", api_path, class: "btn wave-light") %>
     </div>
   </div>
 </section>

@@ -20,9 +20,20 @@ h1 {
 
   .row{
     height: 100vh;
+    max-height: 900px;
 
     .col{
       padding: 3rem;
+      max-width: 50rem;
+    }
+  }
+
+  .parallax-container {
+    height: 100vh;
+    max-height: 1024px;
+    
+    .parallax{
+      opacity: 0.5;
     }
   }
 }
@@ -30,6 +41,11 @@ h1 {
 .landing-section.first{
   .valign{
     transform: translate(0, -10vh);
+
+    .start-btn{
+      font-size: 1.5rem;
+      margin-top: 1rem;
+    }
   }
 }
 
