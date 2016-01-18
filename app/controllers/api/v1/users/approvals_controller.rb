@@ -14,12 +14,10 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
 
   def update
     approval = Approval.where(id: params[:id], user: @user).first
-    if approval
+    if approval_exists? approval
       approval.update(allowed_params)
       @user.approve_devices_for_developer(@dev) if allowed_params[:approved]
       render json: approval
-    else
-      render status: 400, json: { message: 'Approval does not exist/belong to user' }
     end
   end
 

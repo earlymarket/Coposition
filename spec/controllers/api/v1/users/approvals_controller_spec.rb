@@ -94,7 +94,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
         },
         format: :json
       }
-      expect(response.status).to be 400
+      expect(response.status).to be 404
       expect(user.approved_developer? developer).to be false
     end
 
