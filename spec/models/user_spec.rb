@@ -93,11 +93,13 @@ RSpec.describe User, type: :model do
     end
 
     it "should get a list of all checkins for users devices" do
+      checkins
       checkins = device.checkins
       expect(user.checkins).to eq checkins
     end
 
     it "should find the users most used device" do
+      checkins
       expect(user.most_used_device).to eq device
     end
   end
