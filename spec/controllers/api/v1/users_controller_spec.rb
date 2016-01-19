@@ -41,7 +41,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     before do
       request.headers['X-Api-Key'] = dev.api_key
     end
-  
+
     it 'should create an unpaid request when Developer authenticates successfully' do
       count = dev.requests.count
       get :index, format: :json

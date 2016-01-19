@@ -24,14 +24,6 @@ class Checkin < ActiveRecord::Base
     end
   end
 
-  class << self
-
-    def most_common_coords
-      group(:lat, :lng).count.max_by{|_k,v| v}[0]
-    end
-
-  end
-
   # The method to be used for public-facing data 
   def get_data
     fogged_checkin = self

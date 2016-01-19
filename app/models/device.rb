@@ -50,29 +50,4 @@ class Device < ActiveRecord::Base
     "A new device has been created"
   end
 
-  ###########
-
-  ## Metadata ##
-
-  def checkins_over(param, range)
-    checkins.where("extract( #{param} from created_at) IN (?)", range)
-  end
-
-  def most_frequent_coords_over(param, range)
-    checkins_over(param, range).most_common_coords
-  end
-
-  def recent_checkins(range)
-    today = Date.today
-    past = today - range
-    checkins.where(["created_at >= ? and created_at <= ?", past.beginning_of_day, today.end_of_day])
-  end
-
-  def recent_cities_coords(range)
-    lat, lng = checkins.most_common_coords[0], checkins.most_common_coords[1]
-    recent_checks = recent_checkins(range)
-    checks = recent_checks.where("(lat - ?).abs > 1 OR (lng - ?).abs > 1", lat, lng).select("DISTINCT lat,lng")
-    checks.map { |check|  [check.lat, check.lng] }
-  end
-
 end
