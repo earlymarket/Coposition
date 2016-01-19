@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   has_many :devices, dependent: :destroy
   has_many :approvals, dependent: :destroy
   has_many :developers, through: :approvals
+  has_many :checkins, through: :devices
 
   ## Pathing
 
@@ -69,20 +70,8 @@ class User < ActiveRecord::Base
     coords
   end
 
-  def checkins
-    checkins = []
-    devices.each do |device|
-      checkins << device.checkins
-    end
-    checkins.flatten
-  end
-
   def last_checkin
-    last_checkins = []
-    devices.each do |device|
-      last_checkins << device.checkins.last
-    end
-    last_checkins.sort_by(&:created_at).last
+    checkins.sort_by(&:created_at).last
   end
 
   def most_used_device
@@ -91,10 +80,6 @@ class User < ActiveRecord::Base
       device_uses[device] = device.checkins.count
     end
     device_uses.max_by{|_k,v| v}[0]
-  end
-
-  def last_used_device
-    Device.find(last_checkin.device_id)
   end
 
   ##############

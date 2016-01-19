@@ -14,14 +14,14 @@ class Api::V1::UsersController < Api::ApiController
 
   def last_checkin
     user = User.find(params[:id])
-    device = user.last_used_device
     checkin = user.last_checkin
-    respond_with [device, checkin] if user.approved_developer?(@dev)
+    device = Device.find(checkin.device_id)
+    render json: [device, checkin] if user.approved_developer?(@dev)
   end
 
   def all_checkins
     user = User.find(params[:id])
-    checkins = user.checkins.order('created_at DESC').paginate()
+    checkins = user.checkins.order('created_at DESC').paginate(page: params[:page])
     render json: checkins
   end
 
