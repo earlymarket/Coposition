@@ -43,7 +43,7 @@ RSpec.describe Device, type: :model do
   
     expect(device.privilege_for developer).to eq "disallowed"
   end
-  
+
   it "should create a checkin for a device" do
     count = device.checkins.count
     device.create_checkin(lat: 51.588330, lng: -0.513069)
