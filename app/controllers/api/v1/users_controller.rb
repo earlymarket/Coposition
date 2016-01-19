@@ -29,11 +29,11 @@ class Api::V1::UsersController < Api::ApiController
     else
       requests = @user.requests.order('created_at DESC').paginate(page: params[:page])
     end
-    desc = ""
+    requests_descriptions = []
     requests.each do |request|
-      desc = request.description[request.controller.intern][request.action.intern]
+      requests_descriptions << [request, request.description[request.controller.intern][request.action.intern]]
     end
-    render json: [requests, desc]
+    render json: requests_descriptions
   end
 
   def last_request

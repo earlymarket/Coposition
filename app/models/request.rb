@@ -17,10 +17,15 @@ class Request < ActiveRecord::Base
       "api/v1/users":
       {
         "last_checkin": "getting your last checkin",
-        "all_checkins": "getting a list of all of your checkins"
+        "all_checkins": "getting a list of all of your checkins",
+        "requests": "getting a list of your requests",
+        "last_request": "getting the last made request"
+      },
+      "api/v1/users/approvals":
+      {
+        "index": "getting a list of approvals"
       }
     }
   end
-
 
 end

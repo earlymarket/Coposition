@@ -10,11 +10,17 @@ class Api::ApiController < ActionController::Base
       head status: :unauthorized
       return false
     end
-    params[:user_id] ||= params[:id]
-    Request.create(developer: @dev, 
-                   user_id: params[:user_id],
-                   action: params[:action],
-                   controller: params[:controller])
+    find_user if (params[:user_id] || params[:id])
+    if @user
+      Request.create(developer: @dev, 
+                     user_id: @user.id,
+                     action: params[:action],
+                     controller: params[:controller])
+    else
+      Request.create(developer: @dev, 
+                     action: params[:action],
+                     controller: params[:controller])
+    end 
   end
 
   def check_user_approved_developer
