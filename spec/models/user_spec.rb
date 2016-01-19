@@ -10,11 +10,6 @@ RSpec.describe User, type: :model do
     us.devices << device
     us
   end
-  let(:checkins) do
-    checks = [FactoryGirl::create(:checkin)]
-    checks << FactoryGirl::create(:checkin)
-    device.checkins << checks
-  end
 
   describe "relationships" do
     it "should have some devices" do
