@@ -6,12 +6,14 @@ class Api::ApiController < ActionController::Base
   def authenticate
     api_key = request.headers['X-Api-Key']
     @dev = Developer.where(api_key: api_key).first if api_key
-   
     unless @dev
       head status: :unauthorized
       return false
     end
-    Request.create(developer: @dev, created_at: Time.now)
+    Request.create(developer: @dev, 
+                   user_id: params[:user_id],
+                   action: params[:action],
+                   controller: params[:controller])
   end
 
   def check_user_approved_developer
@@ -36,6 +38,26 @@ class Api::ApiController < ActionController::Base
       head status: :unauthorized
       return false
     end
+  end
+
+  def current_user?(user_id)
+    auth_token = User.find(user_id).authentication_token
+    request.headers['X-User-Token'] == auth_token
+  end
+
+  def method_missing(method_sym, *arguments, &block)
+    method_string = method_sym.to_s
+    if /(?<resource>[\w]+)_exists\?$/ =~ method_string
+      resource_exists?(resource, arguments[0])
+    else
+      super
+    end
+  end
+
+  def resource_exists?(resource, arguments)
+    model = resource.titleize.constantize
+    render status: 404, json: { message: "#{model} does not exist" } unless arguments
+    arguments
   end
 
 end

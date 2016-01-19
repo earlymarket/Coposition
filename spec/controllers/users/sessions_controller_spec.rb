@@ -21,7 +21,7 @@ RSpec.describe Users::Devise::SessionsController, type: :controller do
           password: user.password
         }, 
         format: :json
-      expect(res_hash[:username]).to eq user.username
+      expect(res_hash[:email]).to eq user.email
       expect(res_hash[:authentication_token]).to eq user.authentication_token
     end
 
@@ -36,7 +36,7 @@ RSpec.describe Users::Devise::SessionsController, type: :controller do
         format: :json
       
       expect(response.status).to be 401
-      expect(res_hash[:username]).to be nil
+      expect(res_hash[:email]).to be nil
       expect(res_hash[:authentication_token]).to be nil
     end
 
