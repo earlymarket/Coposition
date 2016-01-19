@@ -46,10 +46,11 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
 
   config.action_mailer.smtp_settings = {
-    :address              => "mail3.gridhost.co.uk",
-    :port                 => 465,
-    :user_name            => ENV['MAIL_PASSWORD'],
-    :password             => ENV['MAIL_ADDRESS'],
+    :address              => "smtp.gmail.com",
+    :port                 => 587,
+    :domain               => "gmail.com",
+    :user_name            => "coposition.dev@gmail.com",
+    :password             => "ZX12PO09",
     :authentication       => "plain",
     :enable_starttls_auto => true
   }
