@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   has_many :devices, dependent: :destroy
   has_many :approvals, dependent: :destroy
   has_many :developers, through: :approvals
+  has_many :requests
 
   ## Pathing
 

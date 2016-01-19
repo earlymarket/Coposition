@@ -25,6 +25,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def current_user?(user_id)
+    current_user.username == user_id
+  end
 
   protected
 
