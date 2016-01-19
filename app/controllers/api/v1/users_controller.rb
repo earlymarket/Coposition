@@ -9,29 +9,25 @@ class Api::V1::UsersController < Api::ApiController
   end
 
   def show
-    @user = User.find(params[:id])
-    respond_with @user if @user.approved_developer?(@dev)
+    respond_with @user
   end
 
   def last_checkin
-    user = User.find(params[:id])
-    checkin = user.last_checkin
+    checkin = @user.last_checkin
     device = Device.find(checkin.device_id)
-    render json: [device, checkin] if user.approved_developer?(@dev)
+    render json: [device, checkin]
   end
 
   def all_checkins
-    user = User.find(params[:id])
-    checkins = user.checkins.order('created_at DESC').paginate(page: params[:page])
+    checkins = @user.checkins.order('created_at DESC').paginate(page: params[:page])
     render json: checkins
   end
 
   def requests
-    user = User.find(params[:id])
     if params[:developer_id]
-      requests = user.requests.where(developer_id: params[:developer_id]).order('created_at DESC').paginate(page: params[:page])
+      requests = @user.requests.where(developer_id: params[:developer_id]).order('created_at DESC').paginate(page: params[:page])
     else
-      requests = user.requests.order('created_at DESC').paginate(page: params[:page])
+      requests = @user.requests.order('created_at DESC').paginate(page: params[:page])
     end
     desc = ""
     requests.each do |request|
@@ -41,8 +37,7 @@ class Api::V1::UsersController < Api::ApiController
   end
 
   def last_request
-    user = User.find(params[:id])
-    request = user.requests.last
+    request = @user.requests.last
     description = request.description[request.controller.intern][request.action.intern]
     render json: [request, description]
   end
