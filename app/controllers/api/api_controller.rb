@@ -6,12 +6,14 @@ class Api::ApiController < ActionController::Base
   def authenticate
     api_key = request.headers['X-Api-Key']
     @dev = Developer.where(api_key: api_key).first if api_key
-   
     unless @dev
       head status: :unauthorized
       return false
     end
-    Request.create(developer: @dev, created_at: Time.now)
+    Request.create(developer: @dev, 
+                   user_id: params[:user_id],
+                   action: params[:action],
+                   controller: params[:controller])
   end
 
   def check_user_approved_developer
