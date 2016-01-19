@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   has_many :devices, dependent: :destroy
   has_many :approvals, dependent: :destroy
   has_many :developers, through: :approvals
+  has_many :requests
 
   ## Pathing
 
@@ -53,7 +54,7 @@ class User < ActiveRecord::Base
 
   def approve_devices_for_developer(developer)
     devices.each do |device|
-      device.developers << developer
+      device.developers << developer unless device.developers.include? developer
     end
   end
 
