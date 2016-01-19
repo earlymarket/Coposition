@@ -79,9 +79,19 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     end
 
     it 'should get a list of (developer) requests' do
+      get :requests, {
+        id: user.id,
+        format: :json
+      }
+      expect(res_hash.first.first['action']).to eq "requests"
     end
 
     it 'should get the last request related to this user' do
+      get :last_request, {
+        id: user.id,
+        format: :json
+      }
+      expect(res_hash.first['action']).to eq "last_request"
     end
 
   end

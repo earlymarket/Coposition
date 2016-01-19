@@ -2,6 +2,7 @@ class Api::V1::UsersController < Api::ApiController
   respond_to :json
 
   before_action :authenticate
+  before_action :check_user_approved_developer, except: [:index]
 
   def index
     respond_with User.all.select(:id, :username)
@@ -28,9 +29,9 @@ class Api::V1::UsersController < Api::ApiController
   def requests
     user = User.find(params[:id])
     if params[:developer_id]
-      requests = user.requests.where(developer_id: params[:developer_id]).order('created_at DESC').paginate()
+      requests = user.requests.where(developer_id: params[:developer_id]).order('created_at DESC').paginate(page: params[:page])
     else
-      requests = user.requests.order('created_at DESC').paginate()
+      requests = user.requests.order('created_at DESC').paginate(page: params[:page])
     end
     desc = ""
     requests.each do |request|

@@ -10,6 +10,7 @@ class Api::ApiController < ActionController::Base
       head status: :unauthorized
       return false
     end
+    params[:user_id] ||= params[:id]
     Request.create(developer: @dev, 
                    user_id: params[:user_id],
                    action: params[:action],
@@ -24,7 +25,8 @@ class Api::ApiController < ActionController::Base
   end
 
   def find_user
-    @user = User.find_by_username(params[:user_id])
+    @user = User.find(params[:id]) if params[:controller] == "api/v1/users"
+    @user = User.find_by_username(params[:user_id]) unless @user
     @user = User.find_by_email(params[:user_id]) unless @user
     @user = User.find(params[:user_id]) unless @user
   end
