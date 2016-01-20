@@ -20,6 +20,10 @@ class Api::V1::UsersController < Api::ApiController
 
   def all_checkins
     checkins = @user.checkins.order('created_at DESC').paginate(page: params[:page])
+    response['X-Current-Page'] = checkins.current_page.to_json
+    response['X-Next-Page'] = checkins.next_page.to_json
+    response['X-Total-Entries'] = checkins.total_entries.to_json
+    response['X-Per-Page'] = checkins.per_page.to_json
     render json: checkins
   end
 
@@ -33,6 +37,10 @@ class Api::V1::UsersController < Api::ApiController
     requests.each do |request|
       requests_descriptions << [request, request.description[request.controller.intern][request.action.intern]]
     end
+    response['X-Current-Page'] = requests.current_page.to_json
+    response['X-Next-Page'] = requests.next_page.to_json
+    response['X-Total-Entries'] = requests.total_entries.to_json
+    response['X-Per-Page'] = requests.per_page.to_json
     render json: requests_descriptions
   end
 
