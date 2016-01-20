@@ -22,6 +22,13 @@ class Api::ApiController < ActionController::Base
     end
   end
 
+  def paginated_response_headers(resource)
+    response['X-Current-Page'] = resource.current_page.to_json
+    response['X-Next-Page'] = resource.next_page.to_json
+    response['X-Total-Entries'] = resource.total_entries.to_json
+    response['X-Per-Page'] = resource.per_page.to_json
+  end
+
   def check_user_approved_developer
     find_user
     unless @user.approved_developer?(@dev)

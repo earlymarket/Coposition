@@ -6,10 +6,7 @@ class Api::V1::Users::Devices::CheckinsController < Api::ApiController
   def index
     params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 30
     checkins = @device.checkins.order('created_at DESC').paginate(page: params[:page], per_page: per_page)
-    response['X-Current-Page'] = checkins.current_page.to_json
-    response['X-Next-Page'] = checkins.next_page.to_json
-    response['X-Total-Entries'] = checkins.total_entries.to_json
-    response['X-Per-Page'] = checkins.per_page.to_json
+    paginated_response_headers(checkins)
     checkins = checkins.map do |checkin|
       resolve checkin
     end
