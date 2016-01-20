@@ -1,5 +1,56 @@
+// Sticky footer
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+// Presets
+// Other layouts
 h1 {
-	text-align: center;
+  text-align: center;
+}
+
+.landing-section{
+  width: 100%;
+
+  .row{
+    height: 100vh;
+    max-height: 900px;
+
+    .col{
+      padding: 3rem;
+      max-width: 50rem;
+    }
+  }
+
+  .parallax-container {
+    height: 100vh;
+    max-height: 1024px;
+    
+    .parallax{
+      opacity: 0.5;
+    }
+  }
+}
+
+.landing-section.first{
+  .valign{
+    transform: translate(0, -10vh);
+
+    .start-btn{
+      font-size: 1.5rem;
+      margin-top: 1rem;
+    }
+  }
+}
+
+.center{
+  margin: 0 auto;
 }
 
 .toast-top-right {

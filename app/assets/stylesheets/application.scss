@@ -10,9 +10,9 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= require_tree ./libs 
- *= require_tree .
- *= require_self
+ *= require_tree ./libs
  */
 
-@import "materialize";
+@import 'materialize';
+// @import './*;'
+@import 'code.scss','colours.scss','fonts.scss','hovers.scss','layout.scss','opacities.scss','placeholder.scss','positions.scss','round-map.scss';
