@@ -43,6 +43,8 @@ ActiveRecord::Schema.define(version: 20160118130917) do
     t.boolean  "fogged"
   end
 
+  add_index "checkins", ["device_id"], name: "index_checkins_on_device_id", using: :btree
+
   create_table "cities", force: :cascade do |t|
     t.string "name"
     t.float  "latitude"
@@ -70,6 +72,7 @@ ActiveRecord::Schema.define(version: 20160118130917) do
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
     t.string   "tagline"
+    t.string   "redirect_url"
   end
 
   add_index "developers", ["email"], name: "index_developers_on_email", unique: true, using: :btree
