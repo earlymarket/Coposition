@@ -6,7 +6,11 @@ class Users::ApprovalsController < ApplicationController
   def index
     @approved_devs = current_user.approved_developers
     @pending_approvals = current_user.pending_approvals
-    if @pending_approvals.length == 0 && params[:redirect]
+    if @approved_devs.length == 0 && @pending_approvals.length == 0 && params[:redirect]
+      developer = Developer.find_by(api_key: params[:api_key])
+      developer.request_approval_from current_user
+      @pending_approvals = current_user.pending_approvals
+    elsif @pending_approvals.length == 0 && params[:redirect]
       redirect_to params[:redirect]
     end
   end
