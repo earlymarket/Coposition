@@ -17,9 +17,15 @@ class User < ActiveRecord::Base
                          message: "only allows letters, underscores and dashes" }
 
   has_many :devices, dependent: :destroy
-  has_many :approvals, dependent: :destroy
-  has_many :developers, through: :approvals
   has_many :requests
+
+  has_many :approvals, dependent: :destroy
+  has_many :developers, -> { where "status = 'accepted'" }, through: :approvals, source: :approvable, :source_type => "Developer"
+  has_many :friends, -> { where "status = 'accepted'" }, through: :approvals, source: :approvable, :source_type => "User"
+  has_many :pending_friends, -> { where "status = 'pending'" }, :through => :approvals, source: :approvable, :source_type => "User"
+  has_many :friend_requests, -> { where "status = 'requested'" }, :through => :approvals, source: :approvable, :source_type => "User"
+  has_many :developer_requests, -> { where "status = 'developer-requested'" }, :through => :approvals, source: :approvable, :source_type => "Developer"
+  
 
   ## Pathing
 
@@ -30,12 +36,15 @@ class User < ActiveRecord::Base
   ## Approvals
 
   def approved_developers
-    approvals.where(approved: true)
+    approvals.where(status: 'accepted', approvable_type: 'Developer')
   end
 
+  def request_link_with(developer)
+    approvals << Approval.create(user_id: self.id, approvable_id: developer.id, approvable_type: 'Developer', status: 'accepted')
+  end
 
-  def approve_developer(dev)
-    app = approvals.where(approved: false, developer: dev).first
+  def approve_developer(developer)
+    app = approvals.where(status: 'developer-requested', approvable_id: developer.id).first
     unless app
       return false
     end
@@ -43,8 +52,8 @@ class User < ActiveRecord::Base
   end
 
   def approved_developer?(dev)
-    app = approvals.where(developer: dev).first
-    app && app.approved?
+    app = approvals.where(approvable_id: dev.id).first
+    app && app.status == 'accepted'
   end
 
   ##############

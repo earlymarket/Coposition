@@ -1,12 +1,17 @@
 module ApprovalMethods
 
   def pending_approvals
-    approvals.where(pending: true)
+    approvals.where("status IN (?)",['developer-requested','pending'])
   end
   
-  def approval_status_for(model)
-    app = approvals.where({ model.class.to_s.downcase.to_sym => model }).first
-    app.approved? if app
+  def approval_status_for(resource)
+    model = resource.class.to_s.downcase.to_sym
+    if model == :developer
+      app = approvals.where(approvable_id: resource.id).first
+    else
+      app = approvals.where({ model => resource }).first
+    end
+    app.status if app
   end
   
 end
