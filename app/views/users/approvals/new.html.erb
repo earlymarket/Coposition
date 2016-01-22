@@ -1,9 +1,18 @@
 Enter the email address of a registered user or developer so that you can ask for their approval.<br>
 
-<%= form_for @approval, url: user_approvals_path, class: "form-group" do |f| %>
-  <%= f.label :email %>:
-  <%= f.email_field :user, class: "form-control input-lg fifth-width" %><br />
-  <%= f.label :approvable_type %>:
-  <%= f.text_field :approvable_type, placeholder: 'User or Developer?', class: "form-control input-lg fifth-width" %><br />
-  <%= f.submit("Request", class: "form-control btn btn-default") %>
+<%= form_for @approval, url: user_approvals_path do |f| %>
+  <div class="row">
+    <div class="input-field col s12">
+      <%= f.label :user, 'Email', class: "active" %>
+      <%= f.email_field :user, placeholder: "email@email.com", class: "validate" %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12">
+      <%= f.label :approvable_type %>
+      <%= f.select :approvable_type, options_for_select([['User', 'User'], ['Developer', 'Developer']]), class: "input-field col s12" %>
+    </div>
+  </div>
+
+  <%= f.submit("Request", class: "waves-effect waves-light btn") %>
 <% end %>
