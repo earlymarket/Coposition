@@ -43,8 +43,6 @@ ActiveRecord::Schema.define(version: 20160121151037) do
     t.boolean  "fogged"
   end
 
-  add_index "checkins", ["device_id"], name: "index_checkins_on_device_id", using: :btree
-
   create_table "cities", force: :cascade do |t|
     t.string "name"
     t.float  "latitude"
