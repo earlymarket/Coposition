@@ -41,6 +41,7 @@ class User < ActiveRecord::Base
 
   def link_with(developer)
     approvals << Approval.create(user_id: self.id, approvable_id: developer.id, approvable_type: 'Developer', status: 'accepted')
+    approvals.last.approve!
   end
 
   def approve_developer(developer)
@@ -52,7 +53,7 @@ class User < ActiveRecord::Base
   end
 
   def approved_developer?(dev)
-    app = approvals.where(approvable_id: dev.id).first
+    app = approvals.where(approvable_id: dev.id, approvable_type: 'Developer').first
     app && app.status == 'accepted'
   end
 

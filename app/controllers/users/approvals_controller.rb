@@ -17,7 +17,7 @@ class Users::ApprovalsController < ApplicationController
       Approval.accept(current_user.id, @approvable.id, 'User')
       flash[:notice] = "Friend added."
     elsif @approvable.class.to_s == 'Developer'
-      current_user.link_with(@approvable) unless approve_developer(@approvable)
+      current_user.link_with(@approvable) unless current_user.approve_developer(@approvable)
       flash[:notice] = "Developer added."
     else
       Approval.link(current_user.id, @approvable.id, 'User')
@@ -30,6 +30,7 @@ class Users::ApprovalsController < ApplicationController
     @approved_devs = current_user.developers
     @friends = current_user.friends
     @friend_requests = current_user.friend_requests
+    @pending_friends = current_user.pending_friends
     @pending_approvals = current_user.pending_approvals
     if @pending_approvals.length == 0 && params[:redirect]
       redirect_to params[:redirect]

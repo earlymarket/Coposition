@@ -1,8 +1,6 @@
 <% if @friend_requests %>
 
-You have
-  <span id="friendcount"><%= @friend_requests.length %></span>
-  friend requests.
+You have <%= @friend_requests.length %> friend requests and <%= @pending_friends.length %> pending friends.
 <div class='list-group'>
   <% @friend_requests.each do |friend| %>
     <div class='list-group-item'>

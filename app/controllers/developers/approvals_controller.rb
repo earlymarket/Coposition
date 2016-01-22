@@ -4,6 +4,7 @@ class Developers::ApprovalsController < ApplicationController
 
   def index
     @approvals = current_developer.pending_approvals
+    @users = current_developer.users
   end
 
   def new

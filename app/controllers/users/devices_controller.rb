@@ -110,8 +110,8 @@ class Users::DevicesController < ApplicationController
     def create_device
       @device.user = current_user
       @device.name = allowed_params[:name]
-      @device.developers << current_user.approved_developers.map do |app|
-        Developer.find(app.approvable_id)
+      @device.developers << current_user.developers.map do |dev|
+        dev
       end
       @device.save
       flash[:notice] = "This device has been bound to your account!"
