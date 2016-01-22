@@ -35,7 +35,7 @@ class Approval < ActiveRecord::Base
   end
 
   def reject!
-    update(status: 'rejected')
+    destroy
   end
 
 end
