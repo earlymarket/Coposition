@@ -4,7 +4,6 @@ class Users::ApprovalsController < ApplicationController
   before_action :check_user, only: :index
 
   def new
-    puts 'Sup'
     @approval = Approval.new
   end
 
