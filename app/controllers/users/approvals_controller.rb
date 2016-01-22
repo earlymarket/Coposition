@@ -13,17 +13,22 @@ class Users::ApprovalsController < ApplicationController
     else
       @approvable = Developer.find_by(email: allowed_params[:user])
     end
-    if current_user.friend_requests.include?(@approvable)
-      Approval.accept(current_user.id, @approvable.id, 'User')
-      flash[:notice] = "Friend added."
-    elsif @approvable.class.to_s == 'Developer'
-      current_user.link_with(@approvable) unless current_user.approve_developer(@approvable)
-      flash[:notice] = "Developer added."
+    if @approvable
+      if current_user.friend_requests.include?(@approvable)
+        Approval.accept(current_user.id, @approvable.id, 'User')
+        flash[:notice] = "Friend added."
+      elsif @approvable.class.to_s == 'Developer'
+        current_user.link_with(@approvable) unless current_user.approve_developer(@approvable)
+        flash[:notice] = "Developer added."
+      else
+        Approval.link(current_user.id, @approvable.id, 'User')
+        flash[:alert] = "Friend request sent."
+      end
+      redirect_to user_approvals_path
     else
-      Approval.link(current_user.id, @approvable.id, 'User')
-      flash[:alert] = "Friend request sent."
+      flash[:alert] = "User/Developer not found"
+      redirect_to new_user_approval_path
     end
-    redirect_to user_approvals_path
   end
 
   def index
