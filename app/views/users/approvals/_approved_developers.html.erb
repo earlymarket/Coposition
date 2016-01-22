@@ -2,7 +2,7 @@
 <div class='list-group'>
   <% @approved_devs.each do |dev| %>
       <div class='list-group-item'>
-        <a href='<%= switch_all_privileges_for_developer_user_devices_path(current_user.url_id, developer: dev) %>' data-method='post' data-remote='true' class='white-link'> 
+        <a href='<%= switch_all_privileges_for_developer_user_devices_path(current_user.url_id, developer: dev) %>' data-method='post' data-remote='true'> 
           <h4 class='list-group-item-heading'><%= dev.company_name %></h4>
           <% if dev.tagline %>
             <p class='list-group-item-text'><%= dev.tagline %></p>
