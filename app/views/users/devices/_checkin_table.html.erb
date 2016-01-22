@@ -1,20 +1,22 @@
-<table class="table table-striped table-hover">
-  <tr>
-    <th>
-      Latitude
-    </th>
-    <th>
-      Longitude
-    </th>
-    <th>
-      Created At
-    </th>
-    <th>
-      More Info
-    </th>
-    <th>
-      Delete
-    </th>
+<table class="highlight">
+  <thead>
+    <tr>
+      <th>
+        Latitude
+      </th>
+      <th>
+        Longitude
+      </th>
+      <th>
+        Created At
+      </th>
+      <th>
+        More Info
+      </th>
+      <th>
+        Delete
+      </th>
+  </thead>
   </tr>
   <% @checkins.each do |checkin| %>
     <tr id="checkin<%= checkin.id %>" class="animated">
