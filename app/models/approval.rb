@@ -4,11 +4,11 @@ class Approval < ActiveRecord::Base
   belongs_to :approvable, :polymorphic => true
 
   before_create do
-    bool = true
+    not_self = true
     if approvable_type == 'User'
-      bool = (user_id != approvable_id)
+      not_self = (user_id != approvable_id)
     end
-    bool && !Approval.exists?(user_id: user_id, approvable_id: approvable_id, approvable_type: approvable_type)
+    not_self && !Approval.exists?(user_id: user_id, approvable_id: approvable_id, approvable_type: approvable_type)
   end
 
   def self.link(user_id, approvable_id, approvable_type)
