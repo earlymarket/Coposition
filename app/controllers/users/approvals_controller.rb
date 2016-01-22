@@ -48,7 +48,7 @@ class Users::ApprovalsController < ApplicationController
   def reject
     @approval = Approval.where(id: params[:id], 
       user: current_user).first
-    @approval.reject!
+    @approval.destroy
     @approved_devs = current_user.developers
     render "users/approvals/approve"
   end

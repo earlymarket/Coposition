@@ -34,8 +34,4 @@ class Approval < ActiveRecord::Base
     user.approve_devices_for_developer(Developer.find(approvable_id))
   end
 
-  def reject!
-    destroy
-  end
-
 end
