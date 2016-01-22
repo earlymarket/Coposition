@@ -53,7 +53,7 @@ class User < ActiveRecord::Base
   end
 
   def approved_developer?(dev)
-    app = approvals.where(approvable_id: dev.id).first
+    app = approvals.where(approvable_id: dev.id, approvable_type: 'Developer').first
     app && app.status == 'accepted'
   end
 
