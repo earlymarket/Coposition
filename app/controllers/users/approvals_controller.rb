@@ -30,6 +30,7 @@ class Users::ApprovalsController < ApplicationController
     @approved_devs = current_user.developers
     @friends = current_user.friends
     @friend_requests = current_user.friend_requests
+    @pending_friends = current_user.pending_friends
     @pending_approvals = current_user.pending_approvals
     if @pending_approvals.length == 0 && params[:redirect]
       redirect_to params[:redirect]
