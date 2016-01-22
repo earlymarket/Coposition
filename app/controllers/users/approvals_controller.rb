@@ -17,7 +17,7 @@ class Users::ApprovalsController < ApplicationController
       Approval.accept(current_user.id, @approvable.id, 'User')
       flash[:notice] = "Friend added."
     elsif @approvable.class.to_s == 'Developer'
-      current_user.link_with(@approvable) unless approve_developer(@approvable)
+      current_user.link_with(@approvable) unless current_user.approve_developer(@approvable)
       flash[:notice] = "Developer added."
     else
       Approval.link(current_user.id, @approvable.id, 'User')
