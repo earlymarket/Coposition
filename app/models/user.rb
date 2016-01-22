@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
     approvals.where(status: 'accepted', approvable_type: 'Developer')
   end
 
-  def request_link_with(developer)
+  def link_with(developer)
     approvals << Approval.create(user_id: self.id, approvable_id: developer.id, approvable_type: 'Developer', status: 'accepted')
   end
 

@@ -1,7 +1,7 @@
 module ApprovalMethods
 
   def pending_approvals
-    approvals.where("status IN (?)",['developer-requested','pending'])
+    approvals.where(status: 'developer-requested')
   end
   
   def approval_status_for(resource)

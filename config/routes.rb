@@ -74,7 +74,7 @@ Rails.application.routes.draw do
       end
       resources :checkins, only: [:show, :destroy]
     end
-    resources :approvals, only: [:index] do
+    resources :approvals, only: [:index, :new, :create] do
       member do
         post 'approve'
         post 'reject'

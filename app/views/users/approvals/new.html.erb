@@ -1,0 +1,9 @@
+Enter the email address of a registered user or developer so that you can ask for their approval.<br>
+
+<%= form_for @approval, url: user_approvals_path, class: "form-group" do |f| %>
+  <%= f.label :email %>:
+  <%= f.email_field :user, class: "form-control input-lg fifth-width" %><br />
+  <%= f.label :approvable_type %>:
+  <%= f.text_field :approvable_type, placeholder: 'User or Developer?', class: "form-control input-lg fifth-width" %><br />
+  <%= f.submit("Request", class: "form-control btn btn-default") %>
+<% end %>

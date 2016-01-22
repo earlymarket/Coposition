@@ -1,0 +1,19 @@
+<% if @friend_requests %>
+
+You have
+  <span id="friendcount"><%= @friend_requests.length %></span>
+  friend requests.
+<div class='list-group'>
+  <% @friend_requests.each do |friend| %>
+    <div class='list-group-item'>
+      <h5 class='list-group-item-heading'><%= friend.email %></h5>
+      <%= form_for Approval.new, url: user_approvals_path, class: "form-group" do |f| %>
+        <%= f.hidden_field :user, value: friend.email, class: "form-control input-lg fifth-width" %><br />
+        <%= f.hidden_field :approvable_type, value: 'User', class: "form-control input-lg fifth-width" %><br />
+        <%= f.submit("Accept", class: "form-control btn btn-default") %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<% end %>

@@ -18,13 +18,13 @@ class Approval < ActiveRecord::Base
 
   def self.accept(user_id, approvable_id, approvable_type)
     transaction do
-      accept_one_side(user_id, approvable_id)
-      accept_one_side(approvable_id, user_id) unless approvable_type == 'Developer'
+      accept_one_side(user_id, approvable_id, approvable_type)
+      accept_one_side(approvable_id, user_id, approvable_type) unless approvable_type == 'Developer'
     end
   end
 
-  def self.accept_one_side(user_id, approvable_id)
-    request = find_by_user_id_and_approvable_id(user_id, approvable_id)
+  def self.accept_one_side(user_id, approvable_id, approvable_type)
+    request = find_by_user_id_and_approvable_id_and_approvable_type(user_id, approvable_id, approvable_type)
     request.status = 'accepted'
     request.save!
   end
