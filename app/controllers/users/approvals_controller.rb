@@ -8,11 +8,7 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def create
-    if allowed_params[:approvable_type] == 'User'
-      @approvable = User.find_by(email: allowed_params[:user])
-    else
-      @approvable = Developer.find_by(email: allowed_params[:user])
-    end
+    set_approvable
     if @approvable
       if current_user.friend_requests.include?(@approvable)
         Approval.accept(current_user.id, @approvable.id, 'User')
@@ -26,8 +22,7 @@ class Users::ApprovalsController < ApplicationController
       end
       redirect_to user_approvals_path
     else
-      flash[:alert] = "User/Developer not found"
-      redirect_to new_user_approval_path
+      invalid_payload("User/Developer not found", new_user_approval_path) 
     end
   end
 
@@ -37,6 +32,7 @@ class Users::ApprovalsController < ApplicationController
     @friend_requests = current_user.friend_requests
     @pending_friends = current_user.pending_friends
     @pending_approvals = current_user.pending_approvals
+    # Redirect if foreign app failed to create a pending approval.
     if @pending_approvals.length == 0 && params[:redirect]
       redirect_to params[:redirect]
     end
@@ -57,20 +53,30 @@ class Users::ApprovalsController < ApplicationController
     render "users/approvals/approve"
   end
 
-  def check_user
-    unless current_user?(params[:user_id])
-      flash[:notice] = "You are signed in as #{current_user.username}"
-      if params[:origin]
-        developer = Developer.find_by(api_key: params[:api_key])
-        redirect_to developer.redirect_url+"?copo_user=#{current_user.username}"
-      else
-        redirect_to root_path
+  private
+
+    def check_user
+      unless current_user?(params[:user_id])
+        flash[:notice] = "You are signed in as #{current_user.username}"
+        if params[:origin]
+          developer = Developer.find_by(api_key: params[:api_key])
+          redirect_to developer.redirect_url+"?copo_user=#{current_user.username}"
+        else
+          redirect_to root_path
+        end
       end
     end
-  end
 
-  def allowed_params
-    params.require(:approval).permit(:user, :approvable_type)
-  end
+    def set_approvable
+      if allowed_params[:approvable_type] == 'User'
+        @approvable = User.find_by(email: allowed_params[:user])
+      else
+        @approvable = Developer.find_by(email: allowed_params[:user])
+      end
+    end
+
+    def allowed_params
+      params.require(:approval).permit(:user, :approvable_type)
+    end
 
 end
