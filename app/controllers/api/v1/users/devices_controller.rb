@@ -41,20 +41,20 @@ class Api::V1::Users::DevicesController < Api::ApiController
     developer = Developer.where(id: params[:developer_id]).first
     if (device_exists? device) && (developer_exists? developer)
       device.change_privilege_for(developer, device.reverse_privilege_for(developer))
-      render status: 200, json: device.device_developer_privileges.where(developer: developer)
+      render status: 200, json: device.permissions.where(permissible: developer)
     end
   end
 
   def switch_all_privileges_for_developer
     devices = @user.devices
     developer = Developer.where(id: params[:developer_id]).first
-    privileges = []
+    permissions = []
     if (device_exists? devices) && (developer_exists? developer)
       devices.each do |device|
         device.change_privilege_for(developer, device.reverse_privilege_for(developer))
-        privileges << device.device_developer_privileges.where(developer: developer)
+        permissions << device.permissions.where(permissible: developer)
       end
-      render status: 200, json: privileges
+      render status: 200, json: permissions
     end
   end
 

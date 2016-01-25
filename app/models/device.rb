@@ -4,8 +4,10 @@ class Device < ActiveRecord::Base
 
   belongs_to :user
   has_many :checkins, dependent: :destroy
-  has_many :device_developer_privileges, dependent: :destroy
-  has_many :developers, through: :device_developer_privileges
+  has_many :permissions, dependent: :destroy
+  has_many :developers, -> { where "privilege = 0" }, through: :permissions, source: :permissible, :source_type => "Developer"
+  has_many :permitted_users, -> { where "privilege = 0" }, through: :permissions, source: :permissible, :source_type => "User"
+
 
   before_create do |dev|
     dev.uuid = SecureRandom.uuid
@@ -16,7 +18,7 @@ class Device < ActiveRecord::Base
   end
 
   def privilege_for(dev)
-    device_developer_privileges.find_by(developer: dev).privilege
+    permissions.find_by(permissible_id: dev.id, permissible_type: 'Developer').privilege
   end
 
   def reverse_privilege_for(dev)
@@ -35,7 +37,7 @@ class Device < ActiveRecord::Base
     if dev.respond_to? :id
       dev = dev.id
     end
-    record = device_developer_privileges.find_by(developer: dev)
+    record = permissions.find_by(permissible_id: dev)
     record.privilege = new_privilege
     record.save
   end

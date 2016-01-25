@@ -1,8 +1,7 @@
-class DeviceDeveloperPrivilege < ActiveRecord::Base
-  validates :developer, uniqueness: { scope: :device }
-
+class Permission < ActiveRecord::Base
+  
   belongs_to :device
-  belongs_to :developer
+  belongs_to :permissible, :polymorphic => true
 
   before_create do |priv|
     priv.privilege = :complete
