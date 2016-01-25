@@ -79,4 +79,5 @@ RSpec.describe User, type: :model do
       expect(user.notifications.first[:notification][:msg]).to_not be nil
     end
   end
+
 end

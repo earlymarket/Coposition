@@ -9,9 +9,7 @@ RSpec.describe Device, type: :model do
     dev
   end
   let(:checkins) do
-    checks = [FactoryGirl::create(:checkin)]
-    checks << FactoryGirl::create(:checkin)
-    device.checkins << checks
+    device.checkins << FactoryGirl::create(:checkin)
   end
 
   describe "relationships" do
@@ -51,5 +49,4 @@ RSpec.describe Device, type: :model do
     device.create_checkin(lat: 51.588330, lng: -0.513069)
     expect(device.checkins.count).to be count+1
   end
-
 end

@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   has_many :devices, dependent: :destroy
   has_many :approvals, dependent: :destroy
   has_many :developers, through: :approvals
+  has_many :checkins, through: :devices
   has_many :requests
 
   ## Pathing
@@ -56,6 +57,14 @@ class User < ActiveRecord::Base
     devices.each do |device|
       device.developers << developer unless device.developers.include? developer
     end
+  end
+
+  ################
+
+  ## Metadata
+
+  def last_checkin
+    checkins.sort_by(&:created_at).last
   end
 
   ##############

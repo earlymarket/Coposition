@@ -110,10 +110,10 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
           device_id: device.id
         }
         expect(res_hash[0]['id']).to be device.checkins.last.id
-        expect(response.header['Next-Page']).to eq "2"
-        expect(response.header['Current-Page']).to eq "1"
-        expect(response.header['Total-Entries']).to eq "#{device.checkins.count}"
-        expect(response.header['Per-Page']).to eq "30"
+        expect(response.header['X-Next-Page']).to eq "2"
+        expect(response.header['X-Current-Page']).to eq "1"
+        expect(response.header['X-Total-Entries']).to eq "#{device.checkins.count}"
+        expect(response.header['X-Per-Page']).to eq "30"
       end
     end
     
@@ -126,8 +126,8 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
           page: page
         }
         expect(res_hash[0]['id']).to be device.checkins.first.id
-        expect(response.header['Current-Page']).to eq "#{page}"
-        expect(response.header['Next-Page']).to eq "null"
+        expect(response.header['X-Current-Page']).to eq "#{page}"
+        expect(response.header['X-Next-Page']).to eq "null"
       end
 
       it "should not get any checkins if page does not exist" do
