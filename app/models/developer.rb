@@ -30,8 +30,4 @@ class Developer < ActiveRecord::Base
     "A new developer has registered, there are now #{Developer.count} developers."
   end
 
-  def approved_users
-    approvals.where(status: 'accepted')
-  end
-
 end

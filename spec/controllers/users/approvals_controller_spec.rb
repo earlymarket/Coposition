@@ -87,6 +87,20 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         expect(Approval.last.status).to eq 'accepted'
       end
     end
+
+    context 'when an incorrect email is provided' do
+      it 'should not create or approve an approval if user/dev doesnt exist' do
+        post :create, {
+          user_id: user.id,
+          approval: { 
+            user: 'does@not.exist',
+            approvable_type: 'Developer'
+          }
+        }
+        expect(Approval.count).to eq 0
+        expect(flash[:alert]).to eq 'User/Developer not found'
+      end
+    end
   end
 
   describe 'GET #index' do

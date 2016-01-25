@@ -35,10 +35,6 @@ class User < ActiveRecord::Base
 
   ## Approvals
 
-  def approved_developers
-    approvals.where(status: 'accepted', approvable_type: 'Developer')
-  end
-
   def link_with(developer)
     approvals << Approval.create(user_id: self.id, approvable_id: developer.id, approvable_type: 'Developer', status: 'accepted')
     approvals.last.approve!
