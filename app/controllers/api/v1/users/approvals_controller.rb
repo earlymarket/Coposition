@@ -16,7 +16,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
     approval = Approval.where(id: params[:id], user: @user).first
     if approval_exists? approval
       approval.update(allowed_params)
-      @user.approve_devices_for_developer(@dev) if allowed_params[:status] == 'accepted'
+      @user.approve_devices(@dev) if allowed_params[:status] == 'accepted'
       render json: approval
     end
   end

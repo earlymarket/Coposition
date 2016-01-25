@@ -6,7 +6,7 @@ class Device < ActiveRecord::Base
   has_many :checkins, dependent: :destroy
   has_many :permissions, dependent: :destroy
   has_many :developers, -> { where "privilege = 0" }, through: :permissions, source: :permissible, :source_type => "Developer"
-  has_many :permitted_users, -> { where "privilege = 0" }, through: :permissions, source: :permissible, :source_type => "User"
+  has_many :permitted_users, -> { where "privilege = 3" }, through: :permissions, source: :permissible, :source_type => "User"
 
 
   before_create do |dev|
@@ -17,12 +17,12 @@ class Device < ActiveRecord::Base
     delayed? ? super.where("created_at < ?", delayed.minutes.ago) : super
   end
 
-  def privilege_for(dev)
-    permissions.find_by(permissible_id: dev.id, permissible_type: 'Developer').privilege
+  def privilege_for(permissible)
+    permissions.find_by(permissible_id: permissible.id, permissible_type: permissible.class.to_s).privilege
   end
 
-  def reverse_privilege_for(dev)
-    if privilege_for(dev) == "complete"
+  def reverse_privilege_for(permissible)
+    if privilege_for(permissible) == "complete"
       "disallowed"
     else
       "complete"
@@ -33,11 +33,11 @@ class Device < ActiveRecord::Base
     checkins << Checkin.create(uuid: uuid, lat: lat, lng: lng)
   end
 
-  def change_privilege_for(dev, new_privilege)
-    if dev.respond_to? :id
-      dev = dev.id
+  def change_privilege_for(permissible, new_privilege)
+    if permissible.respond_to? :id
+      id = permissible.id
     end
-    record = permissions.find_by(permissible_id: dev)
+    record = permissions.find_by(permissible_id: id, permissible_type: permissible.class.to_s)
     record.privilege = new_privilege
     record.save
   end

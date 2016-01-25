@@ -10,6 +10,17 @@ RSpec.describe User, type: :model do
     us.devices << device
     us
   end
+  let(:second_user) do
+    us = FactoryGirl::create(:user)
+    us.devices << FactoryGirl::create(:device)
+    us
+  end
+  let(:approval) do
+    app = FactoryGirl::create :approval
+    app.update(user: user, approvable: second_user, status: 'requested')
+    app.save
+    app
+  end
 
   describe "relationships" do
     it "should have some devices" do
@@ -55,18 +66,35 @@ RSpec.describe User, type: :model do
   end
 
   describe "privileges" do
-    before do
-      developer.request_approval_from user
-      user.approve_developer developer
+    context 'between a developer and a user' do
+      before do
+        developer.request_approval_from user
+        user.approve_developer developer
+      end
+
+      it "should have device privileges by default" do
+        expect( user.devices.first.privilege_for developer ).to eq "complete"
+      end
+
+      it "should be able to set privilege" do
+        user.devices.first.change_privilege_for developer, "disallowed"
+        expect( user.devices.first.privilege_for developer ).to eq "disallowed"
+      end
     end
 
-    it "should have device privileges by default" do
-      expect( user.devices.first.privilege_for developer ).to eq "complete"
-    end
+    context 'between users' do
+      before do
+        approval.approve!
+      end
 
-    it "should be able to set priviles" do
-      user.devices.first.change_privilege_for developer, "disallowed"
-      expect( user.devices.first.privilege_for developer ).to eq "disallowed"
+      it 'should have device privileges set to limited by default' do
+        expect( user.devices.first.privilege_for second_user ).to eq "limited"
+      end
+
+      it "should be able to set privilege" do
+        user.devices.first.change_privilege_for second_user, "complete"
+        expect( user.devices.first.privilege_for second_user ).to eq "complete"
+      end
     end
   end
 
