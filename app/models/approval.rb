@@ -1,22 +1,37 @@
 class Approval < ActiveRecord::Base
 
-  validates :developer, uniqueness: { scope: :user }
+  belongs_to :user
+  belongs_to :approvable, :polymorphic => true
 
-  before_create do |app|
-    app.approved = false
-    !Approval.exists?(user: user, developer: developer)
+  before_create do
+    not_self = true
+    if approvable_type == 'User'
+      not_self = (user_id != approvable_id)
+    end
+    not_self && !Approval.exists?(user_id: user_id, approvable_id: approvable_id, approvable_type: approvable_type)
   end
 
-  belongs_to :user
-  belongs_to :developer
+  def self.link(user_id, approvable_id, approvable_type)
+    Approval.create(:user_id => user_id, :approvable_id => approvable_id, :approvable_type => approvable_type, :status => 'pending' )
+    Approval.create(:user_id => approvable_id, :approvable_id => user_id, :approvable_type => approvable_type, :status => 'requested' ) unless approvable_type == 'Developer'
+  end
+
+  def self.accept(user_id, approvable_id, approvable_type)
+    transaction do
+      accept_one_side(user_id, approvable_id, approvable_type)
+      accept_one_side(approvable_id, user_id, approvable_type) unless approvable_type == 'Developer'
+    end
+  end
+
+  def self.accept_one_side(user_id, approvable_id, approvable_type)
+    request = find_by_user_id_and_approvable_id_and_approvable_type(user_id, approvable_id, approvable_type)
+    request.status = 'accepted'
+    request.save!
+  end
 
   def approve!
-    update(approved: true, pending: false)
-    user.approve_devices_for_developer(developer)
-  end
-
-  def reject!
-    update(approved: false, pending: false)
+    update(status: 'accepted')
+    user.approve_devices_for_developer(Developer.find(approvable_id))
   end
 
 end
