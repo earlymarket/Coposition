@@ -17,8 +17,8 @@ class User < ActiveRecord::Base
                          message: "only allows letters, underscores and dashes" }
 
   has_many :devices, dependent: :destroy
+  has_many :checkins, through: :devices
   has_many :requests
-
   has_many :approvals, dependent: :destroy
   has_many :developers, -> { where "status = 'accepted'" }, through: :approvals, source: :approvable, :source_type => "Developer"
   has_many :friends, -> { where "status = 'accepted'" }, through: :approvals, source: :approvable, :source_type => "User"
@@ -62,6 +62,14 @@ class User < ActiveRecord::Base
     devices.each do |device|
       device.developers << developer unless device.developers.include? developer
     end
+  end
+
+  ################
+
+  ## Metadata
+
+  def last_checkin
+    checkins.sort_by(&:created_at).last
   end
 
   ##############
