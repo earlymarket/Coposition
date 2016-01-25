@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
   ## Pathing
 
   def url_id
-    username.empty? ? id : username
+    username.empty? ? id : username.downcase
   end
 
   ## Approvals
