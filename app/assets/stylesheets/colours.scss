@@ -2,6 +2,9 @@ $primary-colour: color("light-blue", "base");
 $secondary-colour: color("orange", "accent-2");
 $secondary-text: color("grey", "darken-4");
 
+.pagination li.active{
+  background-color: $secondary-colour;
+}
 
 .primary-colour{
   background-color: $primary-colour !important;
