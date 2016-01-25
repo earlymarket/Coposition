@@ -11,22 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160118130917) do
+ActiveRecord::Schema.define(version: 20160121151037) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "approvals", force: :cascade do |t|
-    t.integer  "developer_id"
+    t.integer  "approvable_id"
     t.integer  "user_id"
     t.datetime "approval_date"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.boolean  "approved"
-    t.boolean  "pending",       default: true
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "status"
+    t.string   "approvable_type"
   end
 
-  add_index "approvals", ["developer_id"], name: "index_approvals_on_developer_id", using: :btree
+  add_index "approvals", ["approvable_id"], name: "index_approvals_on_approvable_id", using: :btree
   add_index "approvals", ["user_id"], name: "index_approvals_on_user_id", using: :btree
 
   create_table "checkins", force: :cascade do |t|

@@ -7,8 +7,8 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   before_action :check_user, only: :update
 
   def create
-    @dev.request_approval_from(@user).select(:id, :approved, :pending).first
-    approval = Approval.where(user: @user, developer: @dev)
+    @dev.request_approval_from(@user).select(:id, :status).first
+    approval = Approval.where(user: @user, approvable_id: @dev.id, approvable_type: 'Developer')
     render json: approval
   end
 
@@ -16,7 +16,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
     approval = Approval.where(id: params[:id], user: @user).first
     if approval_exists? approval
       approval.update(allowed_params)
-      @user.approve_devices_for_developer(@dev) if allowed_params[:approved]
+      @user.approve_devices_for_developer(@dev) if allowed_params[:status] == 'accepted'
       render json: approval
     end
   end
@@ -31,7 +31,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
 
   private
     def allowed_params
-      params.require(:approval).permit(:approved,:pending)
+      params.require(:approval).permit(:status)
     end
 
     def check_user

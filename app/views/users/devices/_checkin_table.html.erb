@@ -1,23 +1,22 @@
-<table class="table table-striped table-hover">
-  <tr>
-    <th>
-      Latitude
-    </th>
-    <th>
-      Longitude
-    </th>
-    <th>
-      Country Code
-    </th>
-    <th>
-      Created At
-    </th>
-    <th>
-      More Info
-    </th>
-    <th>
-      Delete
-    </th>
+<table class="highlight">
+  <thead>
+    <tr>
+      <th>
+        Latitude
+      </th>
+      <th>
+        Longitude
+      </th>
+      <th>
+        Created At
+      </th>
+      <th>
+        More Info
+      </th>
+      <th>
+        Delete
+      </th>
+  </thead>
   </tr>
   <% @checkins.each do |checkin| %>
     <tr id="checkin<%= checkin.id %>" class="animated">
@@ -28,18 +27,15 @@
         <%= checkin.lng %>
       </td>
       <td>
-        <%= checkin.country_code %>
+        <%= checkin.created_at.strftime("%a #{checkin.created_at.day.ordinalize} %b %T") %>
       </td>
       <td>
-        <%= checkin.created_at %>
-      </td>
-      <td>
-        <%= link_to user_device_checkin_path(current_user.url_id, @device.id, checkin.id), class: "btn btn-primary" do %>
+        <%= link_to user_device_checkin_path(current_user.url_id, @device.id, checkin.id), class: "waves-effect waves-orange btn-flat" do %>
           <i class="small material-icons">info_outline</i>
         <% end %>
       </td>
       <td>
-        <%= button_to checkin_user_device_path(current_user.url_id, @device.id, checkin_id: checkin.id), method: :delete, remote: :true, class: "btn btn-danger" do %>
+        <%= link_to checkin_user_device_path(current_user.url_id, @device.id, checkin_id: checkin.id), method: :delete, remote: :true, data: { confirm: "Are you sure?" }, class: "waves-effect waves-orange btn-flat" do %>
           <i class="small material-icons">delete</i>
         <% end %>
       </td>
