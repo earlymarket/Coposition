@@ -38,13 +38,9 @@ class Api::ApiController < ActionController::Base
 
   def find_user
     if params[:controller] == "api/v1/users"
-      @user = User.find_by_username(params[:id])
-      @user ||= User.find_by_email(params[:id])
-      @user ||= User.find(params[:id])
+      find_by_id(params[:id])
     else
-      @user = User.find_by_username(params[:user_id])
-      @user ||= User.find_by_email(params[:user_id])
-      @user ||= User.find(params[:user_id])
+      find_by_id(params[:user_id])
     end
   end
 
@@ -57,6 +53,12 @@ class Api::ApiController < ActionController::Base
       head status: :unauthorized
       return false
     end
+  end
+
+  def find_by_id(id)
+    @user = User.find_by_username(id)
+    @user ||= User.find_by_email(id)
+    @user ||= User.find(id)
   end
 
   def current_user?(user_id)
