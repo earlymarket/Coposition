@@ -42,6 +42,8 @@ gem 'materialize-sass'
 
 gem 'will_paginate-materialize'
 
+gem 'jquery-validation-rails'
+
 # Use Unicorn as the app server
 
 group :production do

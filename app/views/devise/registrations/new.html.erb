@@ -1,64 +1,73 @@
-<!-- PAGE NOT CURRENTLY USED -->
-<!-- This was merged into ../sessions/new -->
 <div class="row">
-  <div class="col-lg-6">
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { multipart: true, class: "form-horizontal well" }) do |f| %>
-      <%= devise_error_messages! %>
-      <legend>Sign up</legend>
-      <fieldset>
-        <% if resource.respond_to? :company_name %>
-          <div class="form-group">
-            <%= f.label :company_name, class: "col-lg-2 control-label" %>
-            <div class="col-lg-10">
-              <%= f.text_field :company_name, autofocus: true %>
-            </div>
-          </div>
-          <div class="form-group">
-            <%= f.label :company_name, class: "col-lg-2 control-label" %><em>(&lt; 1mb, square format, jpeg/png)</em>
-            <div class="col-lg-10">
-              <%= f.file_field :logo %>
-            </div>
-          </div>
-        <% end %>
-
-        <% if resource.respond_to? :username %>
-          <div class="form-group">
-            <%= f.label :username, class: "col-lg-2 control-label" %>
-            <div class="col-lg-10">
-              <%= f.text_field :username, autofocus: true %>
-            </div>
-          </div>
-        <% end %>
-
-        <div class="form-group">
-          <%= f.label :email, class: "col-lg-2 control-label" %>
-          <div class="col-lg-10">
-            <%= f.email_field :email %>
+  <section class="section col s12 m6 offset-m3">
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= devise_error_messages! %>
+    <fieldset class="card">
+      <div class="card-content">
+        <legend class="card-title"><%= resource.class %> sign up</legend>
+        <div class="row">
+          <div class="input-field col s12">
+            <%= f.label :email, "Your email" %>
+            <%= f.email_field :email, id: "register_#{resource.class.to_s.downcase}_email", autofocus: true, class: "validate" %>
           </div>
         </div>
-
-        <div class="form-group">
-          <%= f.label :password, class: "col-lg-2 control-label" %>
-          <div class="col-lg-10">
+        <div class="row">
+          <div class="input-field col s12">
+            <% password_label = "Your password" %>
             <% if @minimum_password_length %>
-              <em>(<%=@minimum_password_length %> characters minimum)</em>
+             <% password_label.concat(" (#{@minimum_password_length} characters minimum)") %>
             <% end %>
-          </div>
-          <%= f.password_field :password, autocomplete: "off" %>
-        </div>
-
-        <div class="form-group">
-          <%= f.label :password_confirmation, class: "col-lg-2 control-label" %>
-          <div class="col-lg-10">
-            <%= f.password_field :password_confirmation, autocomplete: "off" %>
+            <%= f.label :password, password_label %>
+            <%= f.password_field :password, autocomplete: "off", id: "register_#{resource.class.to_s.downcase}_password" %>
           </div>
         </div>
-
-        <div class="actions">
-          <%= f.submit "Sign up", class: "btn btn-success" %>
+        <div class="row">
+          <div class="input-field col s12">
+            <%= f.label :password_confirmation %>
+            <%= f.password_field :password_confirmation, autocomplete: "off", id: "register_#{resource.class.to_s.downcase}_password_confirmation" %>
+          </div>
         </div>
-      </fieldset>
+        <% if resource.respond_to? :company_name %>
+          <div class="row">
+            <div class="input-field col s12">
+              <%= f.label :company_name %>
+              <%= f.text_field :company_name, id: "register_#{resource.class.to_s.downcase}_company_name" %>
+            </div>
+          </div>
+            <div class="file-field input-field">
+              <div class="btn">
+                <span>Logo</span>
+                <%= f.file_field :logo, id: "register_#{resource.class.to_s.downcase}_logo" %>
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" placeholder="&lt; 1mb, square format, jpeg/png">
+              </div>
+            </div>
+        <% end %>
+        <% if resource.respond_to? :username %>
+          <div class="row">
+            <div class="input-field col s12">
+              <%= f.label :username, "Optional username" %>
+              <%= f.text_field :username, id: "register_#{resource.class.to_s.downcase}_username" %>
+            </div>
+          </div>
+        <% end %>
+        <% if resource.respond_to? :redirect_url %>
+          <div class="row">
+            <div class="input-field col s12">
+              <%= f.label :redirect_url, class: "active" %>
+              <%= f.text_field :redirect_url, placeholder: "Your Site URL", id: "register_#{resource.class.to_s.downcase}_redirect_url" %>
+            </div>
+          </div>
+        <% end %>
+        <%= f.button "Sign up", class: "waves-effect waves-light btn" %></div>
+    </fieldset>
     <% end %>
-  </div>
+    <div class="row">
+      <div class="col s12">
+        <%= link_to "Already registered as a #{resource.class.to_s.downcase}? Log in!", new_session_path(resource_name) %>
+      </div>
+    </div>
+  </section>
 </div>
 <%= render "devise/shared/links" %>
