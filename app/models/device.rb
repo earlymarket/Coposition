@@ -35,9 +35,9 @@ class Device < ActiveRecord::Base
 
   def change_privilege_for(permissible, new_privilege)
     if permissible.respond_to? :id
-      id = permissible.id
+      perm = permissible.id
     end
-    record = permissions.find_by(permissible_id: id, permissible_type: permissible.class.to_s)
+    record = permissions.find_by(permissible_id: perm, permissible_type: permissible.class.to_s)
     record.privilege = new_privilege
     record.save
   end

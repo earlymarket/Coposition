@@ -21,6 +21,12 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     us.approve_developer(developer)
     us
   end
+  let(:approval) do
+    app = FactoryGirl::create :approval
+    app.update(user: user, approvable: second_user, status: 'requested')
+    app.save
+    app
+  end
 
   before do      
     @checkin = FactoryGirl::build :checkin
@@ -80,6 +86,20 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
 
     it 'should change privilege for developer on a device' do
       expect(device.privilege_for(developer)).to eq 'complete'
+      post :switch_privilege_for_developer, {
+        developer_id: developer.id,
+        user_id: user.username,
+        id: device.id,
+        format: :json
+      }
+      expect(response.status).to be 200
+      expect(device.privilege_for(developer)).to eq 'disallowed'
+    end
+
+    #not finished with this
+    it 'should change privilege for user on a device' do
+      approval.approve!
+      expect(device.privilege_for(second_user)).to eq 'limited'
       post :switch_privilege_for_developer, {
         developer_id: developer.id,
         user_id: user.username,

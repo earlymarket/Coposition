@@ -60,19 +60,27 @@ class Users::DevicesController < ApplicationController
 
   def switch_privilege_for_developer
     @device = Device.find(params[:id])
-    @developer = Developer.find(params[:developer])
-    @device.change_privilege_for(@developer, @device.reverse_privilege_for(@developer))
-    @privilege = @device.privilege_for(@developer)
-    @r_privilege = @device.reverse_privilege_for(@developer)
+    if params[:developer]
+      @permissible = Developer.find(params[:developer])
+    else
+      @permissible = User.find(params[:user])
+    end
+    @device.change_privilege_for(@permissible, @device.reverse_privilege_for(@permissible))
+    @privilege = @device.privilege_for(@permissible)
+    @r_privilege = @device.reverse_privilege_for(@permissible)
   end
 
   def switch_all_privileges_for_developer
     @devices = current_user.devices
-    @developer = Developer.find(params[:developer])
+    if params[:developer]
+      @permissible = Developer.find(params[:developer])
+    else
+      @permissible = User.find(params[:user])
+    end
     @devices.each do |device|
-      device.change_privilege_for(@developer, device.reverse_privilege_for(@developer))
-      @privilege = device.privilege_for(@developer)
-      @r_privilege = device.reverse_privilege_for(@developer)
+      device.change_privilege_for(@permissible, device.reverse_privilege_for(@permissible))
+      @privilege = device.privilege_for(@permissible)
+      @r_privilege = device.reverse_privilege_for(@permissible)
     end
   end
 

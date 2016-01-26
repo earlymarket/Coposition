@@ -17,6 +17,12 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
   let(:new_user) { create_user }
   let(:priv) { user.devices.last.privilege_for(developer) }
+  let(:approval) do
+    app = FactoryGirl::create :approval
+    app.update(user: user, approvable: new_user, status: 'requested')
+    app.save
+    app
+  end
 
   it 'should have a current_user' do
     user
@@ -252,6 +258,19 @@ RSpec.describe Users::DevicesController, type: :controller do
         expect(user.devices.last.privilege_for(developer)).to_not be priv
       end
 
+      it 'should switch privilege for a user' do
+        new_user
+        approval.approve!
+        priv = user.devices.last.privilege_for(new_user)
+        request.accept = 'text/javascript'
+        post :switch_privilege_for_developer, {
+          id: user.devices.last.id,
+          user_id: user.username,
+          user: new_user.id
+        }
+        expect(user.devices.last.privilege_for(new_user)).to_not be priv
+      end
+
       it 'should switch privilege for a developer on all devices' do
         priv
         request.accept = 'text/javascript'
@@ -260,6 +279,18 @@ RSpec.describe Users::DevicesController, type: :controller do
           developer: developer.id
         }
         user.devices.each { |device| expect(device.privilege_for(developer)).to_not be priv }
+      end
+
+      it 'should switch privilege for a developer' do
+        new_user
+        approval.approve!
+        priv = user.devices.last.privilege_for(new_user)
+        request.accept = 'text/javascript'
+        post :switch_all_privileges_for_developer, {
+          user_id: user.username,
+          user: new_user.id
+        }
+        user.devices.each { |device| expect(device.privilege_for(new_user)).to_not be priv }
       end
 
     end
