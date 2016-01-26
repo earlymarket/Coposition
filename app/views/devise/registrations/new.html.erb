@@ -1,7 +1,8 @@
 <div class="row">
   <section class="section col s12 m6 offset-m3">
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-    <%= devise_error_messages! %>
+    <!-- <%= devise_error_messages! %> -->
+    <% flash[:notice] = resource.errors.full_messages.join(". ").concat(".") unless resource.errors.empty? %>
     <fieldset class="card">
       <div class="card-content">
         <legend class="card-title"><%= resource.class %> sign up</legend>
