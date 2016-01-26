@@ -21,7 +21,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     us.approve_developer(developer)
     us
   end
-  let(:approval) { create_approval }
+  let(:approval) { create_approval(user, second_user) }
 
   before do      
     @checkin = FactoryGirl::build :checkin

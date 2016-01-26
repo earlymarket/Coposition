@@ -15,7 +15,7 @@ RSpec.describe User, type: :model do
     us.devices << FactoryGirl::create(:device)
     us
   end
-  let(:approval) { create_approval }
+  let(:approval) { create_approval(user, second_user) }
 
   describe "relationships" do
     it "should have some devices" do

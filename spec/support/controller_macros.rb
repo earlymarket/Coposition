@@ -14,7 +14,7 @@ module ControllerMacros
     developer
   end
 
-  def create_approval
+  def create_approval(user, second_user)
     app = FactoryGirl::create :approval
     app.update(user: user, approvable: second_user, status: 'requested')
     app.save
