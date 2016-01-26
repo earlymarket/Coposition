@@ -1,0 +1,2 @@
+$('#<%= "device#{@device.id}developer#{@permissible.id}" %>').removeClass("<%= "privilege-#{@r_privilege}" %>").addClass("<%= "privilege-#{@privilege}" %>");
+toastr["success"]("<%= @permissible.company_name %> has been given the privilege level of <%= @privilege %> for <%= @device.name %>", "Privilege change")

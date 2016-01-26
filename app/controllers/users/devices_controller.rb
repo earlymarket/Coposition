@@ -3,7 +3,7 @@ class Users::DevicesController < ApplicationController
   acts_as_token_authentication_handler_for User
   protect_from_forgery with: :null_session
   before_action :authenticate_user!
-  before_action :require_ownership, only: [:show, :destroy, :switch_privilege_for_developer, :checkin]
+  before_action :require_ownership, only: [:show, :destroy, :switch_privilege, :checkin]
 
   def index
     @devices = current_user.devices.map do |dev|
@@ -58,7 +58,7 @@ class Users::DevicesController < ApplicationController
     Device.find(params[:id]).checkins.find(@checkin_id).delete
   end
 
-  def switch_privilege_for_developer
+  def switch_privilege
     @device = Device.find(params[:id])
     if params[:developer]
       @permissible = Developer.find(params[:developer])
@@ -70,7 +70,7 @@ class Users::DevicesController < ApplicationController
     @r_privilege = @device.reverse_privilege_for(@permissible)
   end
 
-  def switch_all_privileges_for_developer
+  def switch_all_privileges
     @devices = current_user.devices
     if params[:developer]
       @permissible = Developer.find(params[:developer])

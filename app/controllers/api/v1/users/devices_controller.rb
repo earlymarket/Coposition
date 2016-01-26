@@ -1,10 +1,10 @@
 class Api::V1::Users::DevicesController < Api::ApiController
   respond_to :json
 
-  acts_as_token_authentication_handler_for User, only: [:update, :switch_privilege_for_developer, :switch_all_privileges_for_developer]
+  acts_as_token_authentication_handler_for User, only: [:update, :switch_privilege, :switch_all_privileges]
 
   before_action :authenticate, :check_user_approved_developer
-  before_action :check_user, only: [:update, :switch_privilege_for_developer, :switch_all_privileges_for_developer]
+  before_action :check_user, only: [:update, :switch_privilege, :switch_all_privileges]
 
   def index
     list = []
@@ -36,16 +36,23 @@ class Api::V1::Users::DevicesController < Api::ApiController
     end
   end
 
-  def switch_privilege_for_developer
+  def switch_privilege
     device = @user.devices.where(id: params[:id]).first
-    developer = Developer.where(id: params[:developer_id]).first
-    if (device_exists? device) && (developer_exists? developer)
-      device.change_privilege_for(developer, device.reverse_privilege_for(developer))
-      render status: 200, json: device.permissions.where(permissible: developer)
+    if params[:developer_id]
+      permissible = Developer.where(id: params[:developer_id]).first
+      model = 'developer'
+    else
+      permissible = User.where(id: params[:user]).first
+      model = 'user'
+    end
+    check = "#{model}_exists? permissible"
+    if (device_exists? device) && eval(check)
+      device.change_privilege_for(permissible, device.reverse_privilege_for(permissible))
+      render status: 200, json: device.permissions.where(permissible: permissible)
     end
   end
 
-  def switch_all_privileges_for_developer
+  def switch_all_privileges
     devices = @user.devices
     developer = Developer.where(id: params[:developer_id]).first
     permissions = []

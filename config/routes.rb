@@ -43,10 +43,10 @@ Rails.application.routes.draw do
         end
         resources :devices, only: [:index, :show, :update], module: :users do
           member do
-            post 'switch_privilege_for_developer'
+            post 'switch_privilege'
           end
           collection do
-            post 'switch_all_privileges_for_developer'
+            post 'switch_all_privileges'
           end
           resources :checkins, only: [:index, :create], module: :devices do
             collection do
@@ -71,11 +71,11 @@ Rails.application.routes.draw do
       member do
         post 'set_delay'
         delete 'checkin'
-        post 'switch_privilege_for_developer'
+        post 'switch_privilege'
         put 'fog'
       end
       collection do
-        post 'switch_all_privileges_for_developer'
+        post 'switch_all_privileges'
         get 'add_current'
       end
       resources :checkins, only: [:show, :destroy]

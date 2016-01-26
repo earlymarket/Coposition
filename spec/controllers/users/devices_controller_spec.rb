@@ -250,7 +250,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       it 'should switch privilege for a developer' do
         priv
         request.accept = 'text/javascript'
-        post :switch_privilege_for_developer, {
+        post :switch_privilege, {
           id: user.devices.last.id,
           user_id: user.username,
           developer: developer.id
@@ -263,7 +263,7 @@ RSpec.describe Users::DevicesController, type: :controller do
         approval.approve!
         priv = user.devices.last.privilege_for(new_user)
         request.accept = 'text/javascript'
-        post :switch_privilege_for_developer, {
+        post :switch_privilege, {
           id: user.devices.last.id,
           user_id: user.username,
           user: new_user.id
@@ -274,7 +274,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       it 'should switch privilege for a developer on all devices' do
         priv
         request.accept = 'text/javascript'
-        post :switch_all_privileges_for_developer, {
+        post :switch_all_privileges, {
           user_id: user.username,
           developer: developer.id
         }
@@ -286,7 +286,7 @@ RSpec.describe Users::DevicesController, type: :controller do
         approval.approve!
         priv = user.devices.last.privilege_for(new_user)
         request.accept = 'text/javascript'
-        post :switch_all_privileges_for_developer, {
+        post :switch_all_privileges, {
           user_id: user.username,
           user: new_user.id
         }
