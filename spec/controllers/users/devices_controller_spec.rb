@@ -17,12 +17,7 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
   let(:new_user) { create_user }
   let(:priv) { user.devices.last.privilege_for(developer) }
-  let(:approval) do
-    app = FactoryGirl::create :approval
-    app.update(user: user, approvable: new_user, status: 'requested')
-    app.save
-    app
-  end
+  let(:approval) { create_approval }
 
   it 'should have a current_user' do
     user

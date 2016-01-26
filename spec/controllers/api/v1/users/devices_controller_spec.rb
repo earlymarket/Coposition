@@ -21,12 +21,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     us.approve_developer(developer)
     us
   end
-  let(:approval) do
-    app = FactoryGirl::create :approval
-    app.update(user: user, approvable: second_user, status: 'requested')
-    app.save
-    app
-  end
+  let(:approval) { create_approval }
 
   before do      
     @checkin = FactoryGirl::build :checkin
