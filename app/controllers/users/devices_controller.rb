@@ -132,6 +132,7 @@ class Users::DevicesController < ApplicationController
       @device.user = current_user
       @device.name = allowed_params[:name]
       @device.developers << current_user.developers
+      @device.permitted_users << current_user.friends
       @device.save
       flash[:notice] = "This device has been bound to your account!"
 
