@@ -27,15 +27,15 @@
                   <form action="#">
                     <p>
                       <input name="privilege" type="radio" id="<%="#{device.id}_#{developer.id}"%>_complete" />
-                      <label for="complete" class="radio_button" id="<%="#{device.id}_#{developer.id}"%>_complete">Complete</label>
+                      <label for="complete" class="privilege_label" id="<%="#{device.id}_#{developer.id}"%>_complete">Complete</label>
                     </p>
                     <p>
                       <input name="privilege" type="radio" id="<%="#{device.id}_#{developer.id}"%>_limited" />
-                      <label for="limited" class="radio_button" id="<%="#{device.id}_#{developer.id}"%>_limited">Limited</label>
+                      <label for="limited" class="privilege_label" id="<%="#{device.id}_#{developer.id}"%>_limited">Limited</label>
                     </p>
                     <p>
                       <input name="privilege" type="radio" id="<%="#{device.id}_#{developer.id}"%>_disallowed" />
-                      <label for="disallowed" class="radio_button" id="<%="#{device.id}_#{developer.id}"%>_disallowed">Disallowed</label>
+                      <label for="disallowed" class="privilege_label" id="<%="#{device.id}_#{developer.id}"%>_disallowed">Disallowed</label>
                     </p>
                   </form>
                 </div>
@@ -47,45 +47,3 @@
     </ul>
   </div>
 </div>
-<script>
-var current_user_id =  <%= @current_user_id %>
-
-function update_radios(data){
-  $.each( data, function( index, value ){
-    var id = value.device_id+"_"+value.permissible_id;
-    $("#"+id+"_"+value.privilege).prop('checked', true);
-  });
-}
-
-function get_permissions(){ 
-  $.ajax({
-    url: "/users/"+current_user_id+"/devices/permissions",
-    context: document.body
-  }).done(function(data) {
-    update_radios(data);
-  });
-}
-
-function update_permission(device_id, developer_id, privilege){
-  $.ajax({
-    url: "/users/"+current_user_id+"/devices/"+device_id+"/switch_privilege",
-    type: 'POST',
-    data: { developer: developer_id, privilege: privilege },
-  }).done(function(data) {
-    get_permissions();
-  });
-}
-
-function radio_click() {
-  $(".radio_button").on( "click", function( event ) {
-    $('input[type="radio"]').prop('checked', false);
-    var id_array = event.target.id.split('_');
-    var device_id = id_array[0];
-    var developer_id = id_array[1];
-    var privilege = id_array[2];
-    update_permission(device_id, developer_id, privilege)
-  });
-}
-get_permissions();
-radio_click();
-</script>
