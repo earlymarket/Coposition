@@ -40,7 +40,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
   def switch_privilege
     device = @user.devices.where(id: params[:id]).first
     if (device_exists? device) && (resource_exists?(@model, @permissible))
-      device.change_privilege_for(@permissible, device.reverse_privilege_for(@permissible))
+      device.change_privilege_for(@permissible, params[:privilege])
       render status: 200, json: device.permissions.where(permissible: @permissible)
     end
   end
@@ -50,7 +50,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
     permissions = []
     if (device_exists? devices) && (resource_exists?(@model, @permissible))
       devices.each do |device|
-        device.change_privilege_for(@permissible, device.reverse_privilege_for(@permissible))
+        device.change_privilege_for(@permissible, params[:privilege])
         permissions << device.permissions.where(permissible: @permissible)
       end
       render status: 200, json: permissions

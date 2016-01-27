@@ -80,7 +80,7 @@ class Users::DevicesController < ApplicationController
       @permissible = User.find(params[:user])
     end
     @devices.each do |device|
-      device.change_privilege_for(@permissible, device.reverse_privilege_for(@permissible))
+      device.change_privilege_for(@permissible, params[:privilege])
       @privilege = device.privilege_for(@permissible)
       @r_privilege = device.reverse_privilege_for(@permissible)
     end

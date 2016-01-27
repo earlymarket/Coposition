@@ -85,6 +85,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
         developer_id: developer.id,
         user_id: user.username,
         id: device.id,
+        privilege: 'disallowed',
         format: :json
       }
       expect(response.status).to be 200
@@ -93,15 +94,15 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
 
     it 'should change privilege for user on a device' do
       approval.approve!
-      priv = (device.privilege_for(second_user))
       post :switch_privilege, {
         user: second_user.id,
         user_id: user.username,
         id: device.id,
+        privilege: 'disallowed',
         format: :json
       }
       expect(response.status).to be 200
-      expect(device.privilege_for(second_user)).to_not eq priv
+      expect(device.privilege_for(second_user)).to eq 'disallowed'
     end
 
     it 'should change privilege for developer on all devices' do
@@ -109,6 +110,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       post :switch_all_privileges, {
         developer_id: developer.id,
         user_id: user.username,
+        privilege: 'disallowed',
         format: :json
       }
       expect(response.status).to be 200
@@ -119,6 +121,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       post :switch_all_privileges, {
         developer_id: developer.id,
         user_id: second_user.username,
+        privilege: 'disallowed',
         format: :json
       }
       expect(res_hash[:message]).to eq 'Incorrect User'
@@ -132,6 +135,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
         id: device.id,
         developer_id: developer.id,
         user_id: user.username,
+        privilege: 'disallowed',
         format: :json
       }
       expect(res_hash[:message]).to eq 'Device does not exist'
@@ -143,6 +147,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
         id: device.id,
         developer_id: 99999,
         user_id: user.username,
+        privilege: 'disallowed',
         format: :json
       }
       expect(res_hash[:message]).to eq 'Developer does not exist'
@@ -151,6 +156,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
         id: device.id,
         user: 99999,
         user_id: user.username,
+        privilege: 'disallowed',
         format: :json
       }
       expect(res_hash[:message]).to eq 'User does not exist'
