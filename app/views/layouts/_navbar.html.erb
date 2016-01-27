@@ -26,7 +26,7 @@
       </ul>
 
       <li>
-        <%= link_to("Sign out", destroy_user_session_path, method: :delete) %>
+        <%= link_to("Log out", destroy_user_session_path, method: :delete) %>
       </li>
 
       <li>
@@ -35,14 +35,14 @@
 
     <% elsif developer_signed_in? %>
       <li>
-        <%= link_to("Developer Sign out", destroy_user_session_path, method: :delete) %>
+        <%= link_to("Developer log out", destroy_user_session_path, method: :delete) %>
       </li>
       <li>
-        <%= link_to("User Sign in", new_user_session_path) %>
+        <%= link_to("User log in", new_user_session_path) %>
       </li>
     <% else %>
       <li>
-        <%= link_to("User Sign in", new_user_session_path) %>
+        <%= link_to("User log in", new_user_session_path) %>
       </li>
     <% end %>
   </ul>
@@ -75,19 +75,19 @@
         <a href="<%= user_dashboard_path(current_user) %>">Dashboard</a>
       </li>
       <li>
-        <%= link_to("Sign out", destroy_user_session_path, method: :delete) %>
+        <%= link_to("Log out", destroy_user_session_path, method: :delete) %>
       </li>
 
     <% elsif developer_signed_in? %>
       <li>
-        <%= link_to("Developer Sign out", destroy_user_session_path, method: :delete) %>
+        <%= link_to("Developer log out", destroy_user_session_path, method: :delete) %>
       </li>
       <li>
-        <%= link_to("User Sign in", new_user_session_path) %>
+        <%= link_to("User log in", new_user_session_path) %>
       </li>
     <% else %>
       <li>
-        <%= link_to("User Sign in", new_user_session_path) %>
+        <%= link_to("User log in", new_user_session_path) %>
       </li>
     <% end %>
   </ul> -->
