@@ -1,0 +1,42 @@
+.btn {
+  color: $button-raised-color;
+}
+
+// Dan's legacy stuff
+
+.half-opacity {
+  opacity: 0.5;
+}
+
+.small-curved-border {
+  border-radius: 4px;
+}
+
+.small-height {
+  line-height: 30px;
+  height: 30px;
+}
+
+.round-map {
+  border-radius: 300px;
+  padding-left: 0;
+  padding-right: 0;
+  border: 3px solid #2196F3;
+  width: 100%;
+}
+
+.bottom {
+  bottom: 1em;
+}
+
+.left {
+  left: 1em;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.inline {
+  display: inline;
+}
