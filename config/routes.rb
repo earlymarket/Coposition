@@ -75,6 +75,7 @@ Rails.application.routes.draw do
         put 'fog'
       end
       collection do
+        get 'permissions'
         post 'switch_all_privileges'
         get 'add_current'
       end

@@ -2,10 +2,11 @@ class Users::DevicesController < ApplicationController
 
   acts_as_token_authentication_handler_for User
   protect_from_forgery with: :null_session
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:permissions]
   before_action :require_ownership, only: [:show, :destroy, :switch_privilege, :checkin]
 
   def index
+    @current_user_id = current_user.id
     @devices = current_user.devices.map do |dev|
       dev.checkins.last.reverse_geocode! if dev.checkins.exists?
       dev
@@ -65,7 +66,7 @@ class Users::DevicesController < ApplicationController
     else
       @permissible = User.find(params[:user])
     end
-    @device.change_privilege_for(@permissible, @device.reverse_privilege_for(@permissible))
+    @device.change_privilege_for(@permissible, params[:privilege])
     @privilege = @device.privilege_for(@permissible)
     @r_privilege = @device.reverse_privilege_for(@permissible)
   end
@@ -104,6 +105,17 @@ class Users::DevicesController < ApplicationController
     @device = Device.find(params[:id])
     @device.delayed = params[:mins]
     @device.save
+  end
+
+  def permissions
+    devices = current_user.devices
+    @permissions = []
+    devices.each do |device|
+      device.permissions.each do |permission|
+        @permissions << permission
+      end
+    end
+    render json: @permissions
   end
 
   private

@@ -5,7 +5,7 @@ class Device < ActiveRecord::Base
   belongs_to :user
   has_many :checkins, dependent: :destroy
   has_many :permissions, dependent: :destroy
-  has_many :developers, -> { where "privilege = 0" }, through: :permissions, source: :permissible, :source_type => "Developer"
+  has_many :developers, through: :permissions, source: :permissible, :source_type => "Developer"
   has_many :permitted_users, -> { where "privilege = 3" }, through: :permissions, source: :permissible, :source_type => "User"
 
 
