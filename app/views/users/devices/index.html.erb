@@ -20,7 +20,7 @@ var current_user_id =  <%= @current_user_id %>
 
 function update_radios(data){
   $.each( data, function( index, value ){
-    var id = value.device_id+"_"+value.permissible_id+"_"+value.permissible_type+"_"+value.privilege;
+    var id = value.device_id+"-"+value.permissible_id+"-"+value.permissible_type+"-"+value.privilege;
     $("#"+id).prop('checked', true);
   });
 }
@@ -45,13 +45,13 @@ function update_permission(device_id, permissible_id, type, privilege){
 }
 
 function radio_click() {
-  $(".privilege_label").on( "click", function( event ) {
-    $('input[type="radio"]').prop('checked', false);
-    var id_array = event.target.id.split('_');
+  $(".privilege-label").on( "click", function( event ) {
+    var id_array = event.target.id.split('-');
     var device_id = id_array[0];
     var permissible_id = id_array[1];
     var type = id_array[2];
     var privilege = id_array[3];
+    $("#"+event.target.id).prop('checked', false);
     update_permission(device_id, permissible_id, type, privilege)
   });
 }

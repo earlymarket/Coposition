@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   has_many :friend_requests, -> { where "status = 'requested'" }, :through => :approvals, source: :approvable, :source_type => "User"
   has_many :developer_requests, -> { where "status = 'developer-requested'" }, :through => :approvals, source: :approvable, :source_type => "Developer"
   has_many :permissions, :as => :permissible, dependent: :destroy
-  has_many :permitted_devices, -> { where "privilege = 0"}, through: :permissions, source: :permissible, :source_type => "Device"
+  has_many :permitted_devices, through: :permissions, source: :permissible, :source_type => "Device"
 
   ## Pathing
 

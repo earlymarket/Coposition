@@ -13,7 +13,7 @@ class Developer < ActiveRecord::Base
 
   has_many :requests, dependent: :destroy
   has_many :permissions, :as => :permissible, dependent: :destroy
-  has_many :devices, -> { where "privilege = 0"}, through: :permissions
+  has_many :devices, through: :permissions
 
   has_many :approvals, :as => :approvable, dependent: :destroy
   has_many :users, -> { where "status = 'accepted'" }, through: :approvals
