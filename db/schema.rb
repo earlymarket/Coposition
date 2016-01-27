@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160125144100) do
+ActiveRecord::Schema.define(version: 20160127131324) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -107,8 +107,6 @@ ActiveRecord::Schema.define(version: 20160125144100) do
     t.integer "privilege"
     t.string  "permissible_type"
   end
-
-  add_index "permissions", ["permissible_id", "device_id"], name: "index_permissions_on_permissible_id_and_device_id", unique: true, using: :btree
 
   create_table "requests", force: :cascade do |t|
     t.integer  "developer_id"

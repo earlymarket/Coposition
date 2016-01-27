@@ -6,8 +6,7 @@ class Device < ActiveRecord::Base
   has_many :checkins, dependent: :destroy
   has_many :permissions, dependent: :destroy
   has_many :developers, through: :permissions, source: :permissible, :source_type => "Developer"
-  has_many :permitted_users, -> { where "privilege = 3" }, through: :permissions, source: :permissible, :source_type => "User"
-
+  has_many :permitted_users, through: :permissions, source: :permissible, :source_type => "User"
 
   before_create do |dev|
     dev.uuid = SecureRandom.uuid

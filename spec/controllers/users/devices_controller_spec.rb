@@ -248,7 +248,8 @@ RSpec.describe Users::DevicesController, type: :controller do
         post :switch_privilege, {
           id: user.devices.last.id,
           user_id: user.username,
-          developer: developer.id
+          permissible: developer.id,
+          permissible_type: 'Developer',
         }
         expect(user.devices.last.privilege_for(developer)).to_not be priv
       end
@@ -261,7 +262,8 @@ RSpec.describe Users::DevicesController, type: :controller do
         post :switch_privilege, {
           id: user.devices.last.id,
           user_id: user.username,
-          user: new_user.id
+          permissible_type: 'User',
+          permissible: new_user.id
         }
         expect(user.devices.last.privilege_for(new_user)).to_not be priv
       end

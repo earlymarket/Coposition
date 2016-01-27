@@ -16,34 +16,48 @@
   </a>
   <div class="row pt-m">
     <ul class="collapsible">
-      <li>
-        <div class="collapsible-header">Permissions </div>
-        <div class="collapsible-body">
-          <ul class="collapsible">
-            <% device.developers.each do |developer| %>
-              <li>
-                <div class="collapsible-header"><%= developer.company_name%> </div>
-                <div class="collapsible-body">
-                  <form action="#">
-                    <p>
-                      <input name="privilege" type="radio" id="<%="#{device.id}_#{developer.id}"%>_complete" />
-                      <label for="complete" class="privilege_label" id="<%="#{device.id}_#{developer.id}"%>_complete">Complete</label>
-                    </p>
-                    <p>
-                      <input name="privilege" type="radio" id="<%="#{device.id}_#{developer.id}"%>_limited" />
-                      <label for="limited" class="privilege_label" id="<%="#{device.id}_#{developer.id}"%>_limited">Limited</label>
-                    </p>
-                    <p>
-                      <input name="privilege" type="radio" id="<%="#{device.id}_#{developer.id}"%>_disallowed" />
-                      <label for="disallowed" class="privilege_label" id="<%="#{device.id}_#{developer.id}"%>_disallowed">Disallowed</label>
-                    </p>
-                  </form>
-                </div>
-              </li>
-            <% end %>
-          </ul>
-        </div>
-      </li>
+      <% device.developers.each do |developer| %>
+        <li>
+          <div class="collapsible-header"><%= developer.company_name%> </div>
+          <div class="collapsible-body">
+            <form action="#">
+              <p>
+                <input name="privilege" type="radio" id="<%="#{device.id}_#{developer.id}"%>_Developer_complete" />
+                <label for="complete" class="privilege_label" id="<%="#{device.id}_#{developer.id}"%>_Developer_complete">Complete</label>
+              </p>
+              <p>
+                <input name="privilege" type="radio" id="<%="#{device.id}_#{developer.id}"%>_Developer_limited" />
+                <label for="limited" class="privilege_label" id="<%="#{device.id}_#{developer.id}"%>_Developer_limited">Limited</label>
+              </p>
+              <p>
+                <input name="privilege" type="radio" id="<%="#{device.id}_#{developer.id}"%>_Developer_disallowed" />
+                <label for="disallowed" class="privilege_label" id="<%="#{device.id}_#{developer.id}"%>_Developer_disallowed">Disallowed</label>
+              </p>
+            </form>
+          </div>
+        </li>
+      <% end %>
+      <% device.permitted_users.each do |user| %>
+        <li>
+          <div class="collapsible-header"><%= user.username%> </div>
+          <div class="collapsible-body">
+            <form action="#">
+              <p>
+                <input name="privilege" type="radio" id="<%="#{device.id}_#{user.id}"%>_User_complete" />
+                <label for="complete" class="privilege_label" id="<%="#{device.id}_#{user.id}"%>_User_complete">Complete</label>
+              </p>
+              <p>
+                <input name="privilege" type="radio" id="<%="#{device.id}_#{user.id}"%>_User_limited" />
+                <label for="limited" class="privilege_label" id="<%="#{device.id}_#{user.id}"%>_User_limited">Limited</label>
+              </p>
+              <p>
+                <input name="privilege" type="radio" id="<%="#{device.id}_#{user.id}"%>_User_disallowed" />
+                <label for="disallowed" class="privilege_label" id="<%="#{device.id}_#{user.id}"%>_User_disallowed">Disallowed</label>
+              </p>
+            </form>
+          </div>
+        </li>
+      <% end %>
     </ul>
   </div>
 </div>

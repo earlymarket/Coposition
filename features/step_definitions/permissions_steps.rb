@@ -15,5 +15,6 @@ end
 
 Then(/^I should see the first "(.*?)" have a class named "(.*?)"$/) do |css, class_name|
   sleep 0.3
+  binding.pry
   expect(first( :css, css)['class'].include? class_name).to be true
 end
