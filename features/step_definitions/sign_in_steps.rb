@@ -2,7 +2,7 @@ Given(/^I am signed in as developer$/) do
   steps %Q{
     Given I am on the homepage
       And I click "Developers"
-      Then I click the link "Not yet a developer? Sign up!"
+      Then I click the link "Sign up!"
     When I fill in the form with my "developer" details
       And I click "Sign up"
     Then I should see "You have signed up successfully."
@@ -13,7 +13,7 @@ Given(/^I am signed in as a user$/) do
   steps %Q{
     Given I am on the homepage
       And I click "User log in"
-      Then I click the link "Not yet a user? Sign up!"
+      Then I click the link "Sign up!"
     When I fill in the form with my "user" details
       And I click "Sign up"
     Then I should see "You have signed up successfully."
