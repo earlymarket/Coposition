@@ -9,7 +9,7 @@
         <div class="row">
           <div class="input-field col s12">
             <%= f.label :email, "Your email" %>
-            <%= f.email_field :email, id: "register_#{resource.class.to_s.downcase}_email", autofocus: true , name: "email" %>
+            <%= f.email_field :email, id: "register_#{resource.class.to_s.downcase}_email", autofocus: true, class: 'validate' %>
           </div>
         </div>
         <div class="row">
@@ -19,20 +19,20 @@
              <% password_label.concat(" (#{@minimum_password_length} characters minimum)") %>
             <% end %>
             <%= f.label :password, password_label %>
-            <%= f.password_field :password, autocomplete: "off", id: "register_#{resource.class.to_s.downcase}_password", name: "password" %>
+            <%= f.password_field :password, autocomplete: "off", id: "register_#{resource.class.to_s.downcase}_password" %>
           </div>
         </div>
         <div class="row">
           <div class="input-field col s12">
             <%= f.label :password_confirmation %>
-            <%= f.password_field :password_confirmation, autocomplete: "off", id: "register_#{resource.class.to_s.downcase}_password_confirmation", name: "cpassword" %>
+            <%= f.password_field :password_confirmation, autocomplete: "off", id: "register_#{resource.class.to_s.downcase}_password_confirmation" %>
           </div>
         </div>
         <% if resource.respond_to? :company_name %>
           <div class="row">
             <div class="input-field col s12">
               <%= f.label :company_name %>
-              <%= f.text_field :company_name, id: "register_#{resource.class.to_s.downcase}_company_name", name: "company_name" %>
+              <%= f.text_field :company_name, id: "register_#{resource.class.to_s.downcase}_company_name" %>
             </div>
           </div>
             <div class="file-field input-field">
@@ -57,7 +57,7 @@
           <div class="row">
             <div class="input-field col s12">
               <%= f.label :redirect_url, class: "active" %>
-              <%= f.text_field :redirect_url, placeholder: "Your Site URL", id: "register_#{resource.class.to_s.downcase}_redirect_url", name: "redirect_url" %>
+              <%= f.text_field :redirect_url, placeholder: "Your Site URL", id: "register_#{resource.class.to_s.downcase}_redirect_url" %>
             </div>
           </div>
         <% end %>
@@ -73,29 +73,25 @@
 </div>
 <script>
   $("#new_<%= resource_name %>").validate({
-    debug: true,
+    ignore: '#register_<%= resource_name %>_email',
     rules: {
-      email: {
-        required: true,
-        email: true
-      },
-      password: {
+      '<%= resource_name %>[password]': {
         required: true,
         minlength: 8
       },
-      cpassword: {
+      '<%= resource_name %>[password_confirmation]': {
         required: true,
-        equalTo: "#register_<%= raw resource.class.to_s.downcase %>_password"
+        equalTo: '#register_<%= raw resource.class.to_s.downcase %>_password'
       }
       <% if resource.respond_to? :company_name %>
       ,
-      company_name: {
+      '<%= resource_name %>[company_name]': {
         required: true
       }
       <% end %>
       <% if resource.respond_to? :redirect_url %>
       ,
-        redirect_url: {
+        '<%= resource_name %>[redirect_url]': {
           required: true,
           url: true
         }
@@ -109,9 +105,6 @@
       } else {
         error.insertAfter(element);
       }
-    },
-    messages: {
-      cpassword: "Invalid or doesn't match your password"
     },
     errorClass: "invalid",
     validClass: "valid"
