@@ -73,6 +73,11 @@
   </section>
 </div>
 <script>
+
+  $.validator.methods.email = function( value, element ) {
+    return this.optional( element ) || /[a-z]+@[a-z]+\.[a-z]+/.test( value );
+  }
+
   $("#new_<%= resource_name %>").validate({
     onkeyup: false,
     rules: {
