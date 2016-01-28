@@ -8,7 +8,8 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def create
-    @approvable = allowed_params[:approvable_type].titleize.constantize.find_by(email: allowed_params[:user])
+    model = [User, Developer].find { |x| x.name == allowed_params[:approvable_type].titleize}
+    @approvable = model.find_by(email: allowed_params[:user])
     if @approvable
       if current_user.friend_requests.include?(@approvable)
         Approval.accept(current_user.id, @approvable.id, 'User')

@@ -60,7 +60,8 @@ class Users::DevicesController < ApplicationController
   end
 
   def switch_privilege
-    @permissible = params[:permissible_type].titleize.constantize.find(params[:permissible])
+    model = [User, Developer].find { |x| x.name == params[:permissible_type]}
+    @permissible = model.find(params[:permissible])
     @device = Device.find(params[:id])
     @device.change_privilege_for(@permissible, params[:privilege])
     @privilege = @device.privilege_for(@permissible)
@@ -69,8 +70,9 @@ class Users::DevicesController < ApplicationController
   end
 
   def switch_all_privileges
+    model = [User, Developer].find { |x| x.name == params[:permissible_type]}
     @devices = current_user.devices
-    @permissible = params[:permissible_type].titleize.constantize.find(params[:permissible])
+    @permissible = model.find(params[:permissible])
     @devices.each do |device|
       device.change_privilege_for(@permissible, params[:privilege])
       @privilege = device.privilege_for(@permissible)
