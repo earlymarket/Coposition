@@ -55,7 +55,6 @@ function radio_click() {
     var permissible_id = dataset['permissible'];
     var type = dataset['permissibleType'];
     var privilege = dataset['privilege'];
-    $("#"+event.target.id).prop('checked', false);
     update_permission(device_id, permissible_id, type, privilege)
   });
 }

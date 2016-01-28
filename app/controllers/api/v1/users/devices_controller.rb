@@ -5,7 +5,6 @@ class Api::V1::Users::DevicesController < Api::ApiController
 
   before_action :authenticate, :check_user_approved_developer
   before_action :check_user, only: [:update, :switch_privilege, :switch_all_privileges]
-  before_action :find_permissible, only: [:switch_privilege, :switch_all_privileges]
 
   def index
     list = []
@@ -38,6 +37,8 @@ class Api::V1::Users::DevicesController < Api::ApiController
   end
 
   def switch_privilege
+    @model = params[:permissible_type]
+    @permissible = @model.titleize.constantize.where(id: params[:permissible_id]).first
     device = @user.devices.where(id: params[:id]).first
     if (device_exists? device) && (resource_exists?(@model, @permissible))
       device.change_privilege_for(@permissible, params[:privilege])
@@ -46,6 +47,8 @@ class Api::V1::Users::DevicesController < Api::ApiController
   end
 
   def switch_all_privileges
+    @model = params[:permissible_type]
+    @permissible = @model.titleize.constantize.where(id: params[:permissible_id]).first
     devices = @user.devices
     permissions = []
     if (device_exists? devices) && (resource_exists?(@model, @permissible))

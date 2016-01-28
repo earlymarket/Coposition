@@ -82,7 +82,8 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     it 'should change privilege for developer on a device' do
       expect(device.privilege_for(developer)).to eq 'complete'
       post :switch_privilege, {
-        developer_id: developer.id,
+        permissible_id: developer.id,
+        permissible_type: 'Developer',
         user_id: user.username,
         id: device.id,
         privilege: 'disallowed',
@@ -95,7 +96,8 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     it 'should change privilege for user on a device' do
       approval.approve!
       post :switch_privilege, {
-        user: second_user.id,
+        permissible_id: second_user.id,
+        permissible_type: 'User',
         user_id: user.username,
         id: device.id,
         privilege: 'disallowed',
@@ -108,7 +110,8 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     it 'should change privilege for developer on all devices' do
       expect(user.devices.last.privilege_for(developer)).to eq 'complete'
       post :switch_all_privileges, {
-        developer_id: developer.id,
+        permissible_id: developer.id,
+        permissible_type: 'Developer',
         user_id: user.username,
         privilege: 'disallowed',
         format: :json
@@ -119,7 +122,8 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
 
     it 'should not change privilege for developer if user not signed in user' do
       post :switch_all_privileges, {
-        developer_id: developer.id,
+        permissible_id: developer.id,
+        permissible_type: 'Developer',
         user_id: second_user.username,
         privilege: 'disallowed',
         format: :json
@@ -133,7 +137,8 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       device = FactoryGirl::create(:device)
       post :switch_privilege, {
         id: device.id,
-        developer_id: developer.id,
+        permissible_id: developer.id,
+        permissible_type: 'Developer',
         user_id: user.username,
         privilege: 'disallowed',
         format: :json
@@ -145,7 +150,8 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     it 'should not change privilege for developer if user or dev does not exist' do
       post :switch_privilege, {
         id: device.id,
-        developer_id: 99999,
+        permissible_id: 99999,
+        permissible_type: 'Developer',
         user_id: user.username,
         privilege: 'disallowed',
         format: :json
@@ -154,7 +160,8 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       expect(response.status).to be 404
       post :switch_privilege, {
         id: device.id,
-        user: 99999,
+        permissible_id: 99999,
+        permissible_type: 'User',
         user_id: user.username,
         privilege: 'disallowed',
         format: :json

@@ -274,7 +274,8 @@ RSpec.describe Users::DevicesController, type: :controller do
         post :switch_all_privileges, {
           user_id: user.username,
           privilege: 'disallowed',
-          developer: developer.id
+          permissible: developer.id,
+          permissible_type: 'Developer',
         }
         user.devices.each { |device| expect(device.privilege_for(developer)).to_not be priv }
       end
@@ -287,7 +288,8 @@ RSpec.describe Users::DevicesController, type: :controller do
         post :switch_all_privileges, {
           user_id: user.username,
           privilege: 'disallowed',
-          user: new_user.id
+          permissible_type: 'User',
+          permissible: new_user.id
         }
         user.devices.each { |device| expect(device.privilege_for(new_user)).to_not be priv }
       end

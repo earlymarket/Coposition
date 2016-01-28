@@ -47,16 +47,6 @@ class Api::ApiController < ActionController::Base
   def find_device
     @device = Device.find(params[:device_id])
   end
-
-  def find_permissible
-    if params[:developer_id]
-      @permissible = Developer.where(id: params[:developer_id]).first
-      @model = 'developer'
-    else
-      @permissible = User.where(id: params[:user]).first
-      @model = 'user'
-    end
-  end
   
   def check_privilege
     unless @device.privilege_for(@dev) == "complete"
