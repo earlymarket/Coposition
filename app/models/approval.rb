@@ -25,13 +25,13 @@ class Approval < ActiveRecord::Base
 
   def self.accept_one_side(user_id, approvable_id, approvable_type)
     request = find_by_user_id_and_approvable_id_and_approvable_type(user_id, approvable_id, approvable_type)
-    request.status = 'accepted'
+    request.approve!
     request.save!
   end
 
   def approve!
     update(status: 'accepted')
-    user.approve_devices_for_developer(Developer.find(approvable_id))
+    user.approve_devices(approvable)
   end
 
 end
