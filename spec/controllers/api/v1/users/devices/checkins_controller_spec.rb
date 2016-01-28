@@ -21,8 +21,8 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
     request.headers["X-Api-Key"] = developer.api_key
     unless example.metadata[:skip_before]
       device
-      Approval.link(user.id,developer.id,'Developer')
-      Approval.accept(user.id,developer.id,'Developer')
+      Approval.link(user,developer,'Developer')
+      Approval.accept(user,developer,'Developer')
     end
   end
 

@@ -24,12 +24,12 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
       # No approval
       get :status, user_id: user.username, format: :json
       expect(res_hash[:approval_status]).to be nil
-      Approval.link(user.id,developer.id,'Developer')
+      Approval.link(user,developer,'Developer')
       get :status, user_id: user.username, format: :json
       expect(res_hash[:approval_status]).to eq "developer-requested"
 
 
-      Approval.accept(user.id,developer.id,'Developer')
+      Approval.accept(user,developer,'Developer')
       get :status, user_id: user.username, format: :json
       expect(res_hash[:approval_status]).to eq "accepted"
     end

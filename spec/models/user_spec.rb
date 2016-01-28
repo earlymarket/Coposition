@@ -39,20 +39,20 @@ RSpec.describe User, type: :model do
       expect(user.pending_approvals.count).to be 0
       expect(user.approved_developer? developer).to be false
       
-      user.approvals << Approval.create(approvable_id: developer.id, approvable_type: 'Developer', status: 'developer-requested')
+      user.approvals << Approval.create(approvable: developer, approvable_type: 'Developer', status: 'developer-requested')
       user.save
 
       expect(user.pending_approvals.count).to be 1
       expect(user.developers.count).to be 0
 
-      Approval.accept(user.id,developer.id,'Developer')
+      Approval.accept(user,developer,'Developer')
       expect(user.pending_approvals.count).to be 0
       expect(user.developers.count).to be 1
     end
 
     it "should approve devices for a developer by default when a developer is approved" do
-      user.approvals <<  Approval.create(approvable_id: developer.id, approvable_type: 'Developer', status: 'developer-requested')
-      Approval.accept(user.id,developer.id,'Developer')
+      user.approvals <<  Approval.create(approvable: developer, approvable_type: 'Developer', status: 'developer-requested')
+      Approval.accept(user,developer,'Developer')
       expect(user.devices.first.developers.count).to be 1
       expect(user.devices.first.developers.first).to eq developer
       expect(user.devices.first.privilege_for(developer)).to eq "complete"
@@ -63,8 +63,8 @@ RSpec.describe User, type: :model do
   describe "privileges" do
     context 'between a developer and a user' do
       before do
-        Approval.link(user.id,developer.id,'Developer')
-        Approval.accept(user.id,developer.id,'Developer')
+        Approval.link(user,developer,'Developer')
+        Approval.accept(user,developer,'Developer')
       end
 
       it "should have device privileges by default" do
@@ -80,7 +80,7 @@ RSpec.describe User, type: :model do
 
   describe "notifications" do
     it "should have a notification if there's a pending approval" do
-      Approval.link(user.id,developer.id,'Developer')
+      Approval.link(user,developer,'Developer')
 
       expect(user.notifications).to be_an_instance_of Array
       expect(user.notifications.length).to eq 1

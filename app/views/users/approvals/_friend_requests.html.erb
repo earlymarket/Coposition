@@ -6,7 +6,7 @@ You have <%= @friend_requests.length %> friend requests and <%= @pending_friends
     <div class='list-group-item'>
       <h5 class='list-group-item-heading'><%= friend.email %></h5>
       <%= form_for Approval.new, url: user_approvals_path, class: "form-group" do |f| %>
-        <%= f.hidden_field :user, value: friend.email, class: "form-control input-lg fifth-width" %><br />
+        <%= f.hidden_field :approvable, value: friend.email, class: "form-control input-lg fifth-width" %><br />
         <%= f.hidden_field :approvable_type, value: 'User', class: "form-control input-lg fifth-width" %><br />
         <%= f.submit("Accept", class: "form-control btn btn-default") %>
       <% end %>

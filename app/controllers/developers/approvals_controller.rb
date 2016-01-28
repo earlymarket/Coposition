@@ -13,7 +13,7 @@ class Developers::ApprovalsController < ApplicationController
 
   def create
     user = User.find_by(email: allowed_params[:user])
-    if Approval.link(user.id, current_developer.id, 'Developer')
+    if Approval.link(user, current_developer, 'Developer')
       flash[:notice] = "Successfully sent" 
     else
       flash[:alert] = "Approval request already sent"

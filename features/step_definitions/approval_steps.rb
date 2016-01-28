@@ -1,6 +1,6 @@
 Given(/^A developer sends me an approval request$/) do
   dev = FactoryGirl::create :developer
-  Approval.link(@me.id,dev.id,'Developer')
+  Approval.link(@me,dev,'Developer')
 end
 
 Then(/^I should have an approval$/) do

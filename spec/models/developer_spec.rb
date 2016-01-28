@@ -11,12 +11,12 @@ RSpec.describe Developer, type: :model do
       expect(developer.pending_approvals.count).to be 0
       expect(developer.users.count).to be 0
 
-      Approval.link(user.id,developer.id,'Developer')
+      Approval.link(user,developer,'Developer')
 
       expect(developer.pending_approvals.count).to be 1
       expect(developer.users.count).to be 0
 
-      Approval.accept(user.id,developer.id,'Developer')
+      Approval.accept(user,developer,'Developer')
 
       expect(developer.pending_approvals.count).to be 0
       expect(developer.users.count).to be 1

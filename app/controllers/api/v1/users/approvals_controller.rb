@@ -7,7 +7,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   before_action :check_user, only: :update
 
   def create
-    Approval.link(@user.id, @dev.id, 'Developer')
+    Approval.link(@user, @dev, 'Developer')
     approval = Approval.where(user: @user, approvable_id: @dev.id, approvable_type: 'Developer')
     render json: approval
   end
