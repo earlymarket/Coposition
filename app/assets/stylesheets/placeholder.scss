@@ -1,19 +1,12 @@
 .placeholder{
-  h5:hover {
-    text-shadow:1px 1px 20px black;
-  	background-color: rgba(88, 69, 69, 0.5);
+  .bg-wrapper{
+    height: 100%;
+    background-image: asset-url('background.jpg');
+    background-size: cover;
   }
 
-  h5 {
-    padding: 10px;
-    width: 35%;
-  }
-
-  #placeholderTitle {
-  	font-family: inherit;
-      color: white;
-      width: 7em;
-      border: 1px solid white;
-      background-color: rgba(88,69,69,0.5);
+  .bg-ribbon{
+    background-color: hsla(0,0%,100%, .5);
+    width: 100%;
   }
 }

@@ -3,9 +3,10 @@ class Users::DevicesController < ApplicationController
   acts_as_token_authentication_handler_for User
   protect_from_forgery with: :null_session
   before_action :authenticate_user!
-  before_action :require_ownership, only: [:show, :destroy, :switch_privilege_for_developer, :checkin]
+  before_action :require_ownership, only: [:show, :destroy, :switch_privilege, :checkin]
 
   def index
+    @current_user_id = current_user.id
     @devices = current_user.devices.map do |dev|
       dev.checkins.last.reverse_geocode! if dev.checkins.exists?
       dev
@@ -58,21 +59,24 @@ class Users::DevicesController < ApplicationController
     Device.find(params[:id]).checkins.find(@checkin_id).delete
   end
 
-  def switch_privilege_for_developer
+  def switch_privilege
+    model = [User, Developer].find { |x| x.name == params[:permissible_type]}
+    @permissible = model.find(params[:permissible])
     @device = Device.find(params[:id])
-    @developer = Developer.find(params[:developer])
-    @device.change_privilege_for(@developer, @device.reverse_privilege_for(@developer))
-    @privilege = @device.privilege_for(@developer)
-    @r_privilege = @device.reverse_privilege_for(@developer)
+    @device.change_privilege_for(@permissible, params[:privilege])
+    @privilege = @device.privilege_for(@permissible)
+    @r_privilege = @device.reverse_privilege_for(@permissible)
+    render nothing: true
   end
 
-  def switch_all_privileges_for_developer
+  def switch_all_privileges
+    model = [User, Developer].find { |x| x.name == params[:permissible_type]}
     @devices = current_user.devices
-    @developer = Developer.find(params[:developer])
+    @permissible = model.find(params[:permissible])
     @devices.each do |device|
-      device.change_privilege_for(@developer, device.reverse_privilege_for(@developer))
-      @privilege = device.privilege_for(@developer)
-      @r_privilege = device.reverse_privilege_for(@developer)
+      device.change_privilege_for(@permissible, params[:privilege])
+      @privilege = device.privilege_for(@permissible)
+      @r_privilege = device.reverse_privilege_for(@permissible)
     end
   end
 
@@ -98,6 +102,17 @@ class Users::DevicesController < ApplicationController
     @device.save
   end
 
+  def permissions
+    devices = current_user.devices
+    @permissions = []
+    devices.each do |device|
+      device.permissions.each do |permission|
+        @permissions << permission
+      end
+    end
+    render json: @permissions
+  end
+
   private
     def via_app
       render json: @device.to_json if req_from_coposition_app?
@@ -111,6 +126,7 @@ class Users::DevicesController < ApplicationController
       @device.user = current_user
       @device.name = allowed_params[:name]
       @device.developers << current_user.developers
+      @device.permitted_users << current_user.friends
       @device.save
       flash[:notice] = "This device has been bound to your account!"
 

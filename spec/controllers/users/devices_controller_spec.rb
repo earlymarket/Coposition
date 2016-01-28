@@ -17,6 +17,7 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
   let(:new_user) { create_user }
   let(:priv) { user.devices.last.privilege_for(developer) }
+  let(:approval) { create_approval(user, new_user) }
 
   it 'should have a current_user' do
     user
@@ -244,22 +245,53 @@ RSpec.describe Users::DevicesController, type: :controller do
       it 'should switch privilege for a developer' do
         priv
         request.accept = 'text/javascript'
-        post :switch_privilege_for_developer, {
+        post :switch_privilege, {
           id: user.devices.last.id,
           user_id: user.username,
-          developer: developer.id
+          permissible: developer.id,
+          permissible_type: 'Developer',
         }
         expect(user.devices.last.privilege_for(developer)).to_not be priv
+      end
+
+      it 'should switch privilege for a user' do
+        new_user
+        approval.approve!
+        priv = user.devices.last.privilege_for(new_user)
+        request.accept = 'text/javascript'
+        post :switch_privilege, {
+          id: user.devices.last.id,
+          user_id: user.username,
+          permissible_type: 'User',
+          permissible: new_user.id
+        }
+        expect(user.devices.last.privilege_for(new_user)).to_not be priv
       end
 
       it 'should switch privilege for a developer on all devices' do
         priv
         request.accept = 'text/javascript'
-        post :switch_all_privileges_for_developer, {
+        post :switch_all_privileges, {
           user_id: user.username,
-          developer: developer.id
+          privilege: 'disallowed',
+          permissible: developer.id,
+          permissible_type: 'Developer',
         }
         user.devices.each { |device| expect(device.privilege_for(developer)).to_not be priv }
+      end
+
+      it 'should switch privilege for a developer' do
+        new_user
+        approval.approve!
+        priv = user.devices.last.privilege_for(new_user)
+        request.accept = 'text/javascript'
+        post :switch_all_privileges, {
+          user_id: user.username,
+          privilege: 'disallowed',
+          permissible_type: 'User',
+          permissible: new_user.id
+        }
+        user.devices.each { |device| expect(device.privilege_for(new_user)).to_not be priv }
       end
 
     end

@@ -18,5 +18,4 @@ Feature: Permissions
         And I should see "G-RALA"
       When I click "Dashboard"
         And I click the link "Devices"
-        And I click "Wherefore Art Thou"
-      Then I should see the first ".dev-box" have a class named "disallowed"
+      Then I should see "Wherefore Art Thou"

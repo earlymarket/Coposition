@@ -15,12 +15,97 @@
     
   </a>
   <div class="row pt-m">
-    <div class="col-lg-12 list-group-item-text">
+    <ul class="collapsible">
       <% device.developers.each do |developer| %>
-        <div id="<%= "device#{device.id}developer#{developer.id}" %>" class="col-lg-3 col-lg-offset-1 dev-box small-curved-border small-height clearfix tiny-shadow m-tb-s <%= "privilege-#{device.privilege_for(developer)}" %>">
-          <%= link_to(developer.company_name, switch_privilege_for_developer_user_device_path(current_user.url_id, device.id, developer: developer.id), html_options={ method: :post, remote: true, class: "white-link" })  %>
-        </div>
+        <li>
+          <div class="collapsible-header"><%= developer.company_name%> </div>
+          <div class="collapsible-body">
+            <form action="#">
+              <p>
+                <input name="privilege" type="radio"
+                 data-device='<%= device.id %>' 
+                 data-permissible='<%= developer.id %>' 
+                 data-privilege='complete' 
+                 data-permissible-type='Developer'/>
+                <label for="complete" class="privilege-label"
+                 data-device='<%= device.id %>'
+                 data-permissible='<%= developer.id %>' 
+                 data-privilege='complete' 
+                 data-permissible-type='Developer'>Complete</label>
+              </p>
+              <p>
+                <input name="privilege" type="radio" 
+                data-device='<%= device.id %>' 
+                data-permissible='<%= developer.id %>' 
+                data-privilege='limited' 
+                data-permissible-type='Developer'/>
+                <label for="limited" class="privilege-label" 
+                data-device='<%= device.id %>' 
+                data-permissible='<%= developer.id %>' 
+                data-privilege='limited' 
+                data-permissible-type='Developer'>Limited</label>
+              </p>
+              <p>
+                <input name="privilege" type="radio" 
+                data-device='<%= device.id %>' 
+                data-permissible='<%= developer.id %>' 
+                data-privilege='disallowed' 
+                data-permissible-type='Developer'/>
+                <label for="disallowed" class="privilege-label" 
+                data-device='<%= device.id %>' 
+                data-permissible='<%= developer.id %>' 
+                data-privilege='disallowed' 
+                data-permissible-type='Developer'>Disallowed</label>
+              </p>
+            </form>
+          </div>
+        </li>
       <% end %>
-    </div>
+      <% device.permitted_users.each do |user| %>
+        <li>
+          <div class="collapsible-header"><%= user.email%> </div>
+          <div class="collapsible-body">
+            <form action="#">
+              <p>
+                <input name="privilege" type="radio"
+                data-device='<%= device.id %>' 
+                data-permissible='<%= user.id %>' 
+                data-privilege='complete' 
+                data-permissible-type='User'/> 
+                <label for="complete" class="privilege-label"
+                data-device='<%= device.id %>' 
+                data-permissible='<%= user.id %>' 
+                data-privilege='complete' 
+                data-permissible-type='User'>Complete</label>
+              </p>
+              <p>
+                <input name="privilege" type="radio"
+                data-device='<%= device.id %>' 
+                data-permissible='<%= user.id %>' 
+                data-privilege='limited' 
+                data-permissible-type='User'/>
+                <label for="limited" class="privilege-label"
+                data-device='<%= device.id %>' 
+                data-permissible='<%= user.id %>' 
+                data-privilege='limited' 
+                data-permissible-type='User'>Limited</label>
+              </p>
+              <p>
+                <input name="privilege" type="radio"
+                data-device='<%= device.id %>' 
+                data-permissible='<%= user.id %>' 
+                data-privilege='disallowed' 
+                data-permissible-type='User'/>
+                <label for="disallowed" class="privilege-label"
+                data-device='<%= device.id %>' 
+                data-permissible='<%= user.id %>' 
+                data-privilege='disallowed' 
+                data-permissible-type='User'>Disallowed</label>
+              </p>
+            </form>
+          </div>
+        </li>
+      <% end %>
+    </ul>
   </div>
 </div>

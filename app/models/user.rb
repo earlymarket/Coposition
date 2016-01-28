@@ -25,7 +25,8 @@ class User < ActiveRecord::Base
   has_many :pending_friends, -> { where "status = 'pending'" }, :through => :approvals, source: :approvable, :source_type => "User"
   has_many :friend_requests, -> { where "status = 'requested'" }, :through => :approvals, source: :approvable, :source_type => "User"
   has_many :developer_requests, -> { where "status = 'developer-requested'" }, :through => :approvals, source: :approvable, :source_type => "Developer"
-  
+  has_many :permissions, :as => :permissible, dependent: :destroy
+  has_many :permitted_devices, through: :permissions, source: :permissible, :source_type => "Device"
 
   ## Pathing
 
@@ -58,9 +59,15 @@ class User < ActiveRecord::Base
 
   ## Devices
 
-  def approve_devices_for_developer(developer)
-    devices.each do |device|
-      device.developers << developer unless device.developers.include? developer
+  def approve_devices(permissible)
+    if permissible.class.to_s == 'Developer'
+      devices.each do |device|
+        device.developers << permissible unless device.developers.include? permissible
+      end
+    else
+      devices.each do |device|
+        device.permitted_users << permissible unless device.permitted_users.include? permissible
+      end
     end
   end
 

@@ -13,6 +13,14 @@
  *= require_tree ./libs
  */
 
+// Import materialize gem's palette
+@import 'materialize/components/color';
+// Set the scss color variables we want to override
+@import 'custom_color';
+// Import the rest of Materialize. It will ignore anything that is already set
 @import 'materialize';
+// css selectors/classes needs to be overriden after
+@import 'custom_class';
 // @import './*;'
-@import 'code.scss','colours.scss','fonts.scss','hovers.scss','layout.scss','opacities.scss','placeholder.scss','positions.scss','round-map.scss';
+@import 'fonts.scss','layout.scss','placeholder.scss';
+

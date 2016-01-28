@@ -12,8 +12,8 @@ class Developer < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :requests, dependent: :destroy
-  has_many :device_developer_privileges, dependent: :destroy
-  has_many :devices, through: :device_developer_privileges
+  has_many :permissions, :as => :permissible, dependent: :destroy
+  has_many :devices, through: :permissions
 
   has_many :approvals, :as => :approvable, dependent: :destroy
   has_many :users, -> { where "status = 'accepted'" }, through: :approvals

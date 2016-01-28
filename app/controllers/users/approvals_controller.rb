@@ -8,7 +8,8 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def create
-    set_approvable
+    model = [User, Developer].find { |x| x.name == allowed_params[:approvable_type].titleize}
+    @approvable = model.find_by(email: allowed_params[:user])
     if @approvable
       if current_user.friend_requests.include?(@approvable)
         Approval.accept(current_user.id, @approvable.id, 'User')
@@ -68,14 +69,6 @@ class Users::ApprovalsController < ApplicationController
         else
           redirect_to root_path
         end
-      end
-    end
-
-    def set_approvable
-      if allowed_params[:approvable_type] == 'User'
-        @approvable = User.find_by(email: allowed_params[:user])
-      else
-        @approvable = Developer.find_by(email: allowed_params[:user])
       end
     end
 
