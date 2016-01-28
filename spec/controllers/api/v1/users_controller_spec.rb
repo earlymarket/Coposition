@@ -15,8 +15,8 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   let(:dev) { FactoryGirl::create :developer }
   let(:user) do
     us = FactoryGirl::create :user
-    dev.request_approval_from(us)
-    us.approve_developer(dev)
+    Approval.link(us.id,dev.id,'Developer')
+    Approval.accept(us.id,dev.id,'Developer')
     us.devices << device
     us
   end
@@ -50,8 +50,8 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     end
 
     it 'should assign User.id(:id) to @user if the developer is approved' do
-      dev.request_approval_from user
-      user.approve_developer dev
+      Approval.link(user.id,dev.id,'Developer')
+      Approval.accept(user.id,dev.id,'Developer')
       get :show, {
         id: user.id,
         format: :json

@@ -8,14 +8,14 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def create
-    model = [User, Developer].find { |x| x.name == allowed_params[:approvable_type].titleize}
-    @approvable = model.find_by(email: allowed_params[:approvable])
-    if @approvable
-      Approval.link(current_user.id, @approvable.id, allowed_params[:approvable_type])
-      flash[:notice] = "Request sent"
-      if (allowed_params[:approvable_type] == 'Developer') || (current_user.friend_requests.include?(@approvable))
-        Approval.accept(current_user.id, @approvable.id, allowed_params[:approvable_type])
-        flash[:notice] = "User/Developer added!"
+    type = allowed_params[:approvable_type]
+    model = [User, Developer].find { |x| x.name == type.titleize}
+    approvable = model.find_by(email: allowed_params[:approvable])
+    if approvable
+      flash[:notice] = "Approval already exists"
+      flash[:notice] = "Request sent" if Approval.link(current_user.id, approvable.id, type)
+      if (type == 'Developer') || (current_user.friend_requests.include?(approvable))
+        flash[:notice] = "User/Developer added!" if Approval.accept(current_user.id, approvable.id, type)
       end
       redirect_to user_approvals_path
     else
@@ -32,7 +32,7 @@ class Users::ApprovalsController < ApplicationController
     # Redirect if foreign app failed to create a pending approval.
     if @approved_devs.length == 0 && @pending_approvals.length == 0 && params[:redirect]
       developer = Developer.find_by(api_key: params[:api_key])
-      developer.request_approval_from current_user
+      Approval.link(current_user.id, developer.id, 'Developer')
       @pending_approvals = current_user.pending_approvals
     elsif @pending_approvals.length == 0 && params[:redirect]
       redirect_to params[:redirect]
