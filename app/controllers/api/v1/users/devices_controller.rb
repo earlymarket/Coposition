@@ -37,21 +37,21 @@ class Api::V1::Users::DevicesController < Api::ApiController
   end
 
   def switch_privilege
-    @model = params[:permissible_type]
-    @permissible = @model.titleize.constantize.where(id: params[:permissible_id]).first
+    model = [User, Developer].find { |x| x.name == params[:permissible_type]}
+    @permissible = model.where(id: params[:permissible_id]).first
     device = @user.devices.where(id: params[:id]).first
-    if (device_exists? device) && (resource_exists?(@model, @permissible))
+    if (device_exists? device) && (resource_exists?(params[:permissible_type], @permissible))
       device.change_privilege_for(@permissible, params[:privilege])
       render status: 200, json: device.permissions.where(permissible: @permissible)
     end
   end
 
   def switch_all_privileges
-    @model = params[:permissible_type]
-    @permissible = @model.titleize.constantize.where(id: params[:permissible_id]).first
+    model = [User, Developer].find { |x| x.name == params[:permissible_type]}
+    @permissible = model.where(id: params[:permissible_id]).first
     devices = @user.devices
     permissions = []
-    if (device_exists? devices) && (resource_exists?(@model, @permissible))
+    if (device_exists? devices) && (resource_exists?(params[:permissible_type], @permissible))
       devices.each do |device|
         device.change_privilege_for(@permissible, params[:privilege])
         permissions << device.permissions.where(permissible: @permissible)
