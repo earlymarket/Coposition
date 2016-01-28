@@ -9,17 +9,13 @@ class Users::ApprovalsController < ApplicationController
 
   def create
     model = [User, Developer].find { |x| x.name == allowed_params[:approvable_type].titleize}
-    @approvable = model.find_by(email: allowed_params[:user])
+    @approvable = model.find_by(email: allowed_params[:approvable])
     if @approvable
-      if current_user.friend_requests.include?(@approvable)
-        Approval.accept(current_user.id, @approvable.id, 'User')
-        flash[:notice] = "Friend added."
-      elsif @approvable.class.to_s == 'Developer'
-        current_user.link_with(@approvable) unless current_user.approve_developer(@approvable)
-        flash[:notice] = "Developer added."
-      else
-        Approval.link(current_user.id, @approvable.id, 'User')
-        flash[:alert] = "Friend request sent."
+      Approval.link(current_user.id, @approvable.id, allowed_params[:approvable_type])
+      flash[:notice] = "Request sent"
+      if (allowed_params[:approvable_type] == 'Developer') || (current_user.friend_requests.include?(@approvable))
+        Approval.accept(current_user.id, @approvable.id, allowed_params[:approvable_type])
+        flash[:notice] = "User/Developer added!"
       end
       redirect_to user_approvals_path
     else
@@ -73,7 +69,7 @@ class Users::ApprovalsController < ApplicationController
     end
 
     def allowed_params
-      params.require(:approval).permit(:user, :approvable_type)
+      params.require(:approval).permit(:approvable, :approvable_type)
     end
 
 end

@@ -12,8 +12,12 @@ class Approval < ActiveRecord::Base
   end
 
   def self.link(user_id, approvable_id, approvable_type)
-    Approval.create(:user_id => user_id, :approvable_id => approvable_id, :approvable_type => approvable_type, :status => 'pending' )
-    Approval.create(:user_id => approvable_id, :approvable_id => user_id, :approvable_type => approvable_type, :status => 'requested' ) unless approvable_type == 'Developer'
+    if approvable_type == 'Developer'
+      Approval.create(:user_id => user_id, :approvable_id => approvable_id, :approvable_type => approvable_type, :status => 'developer-requested' )
+    else
+      Approval.create(:user_id => user_id, :approvable_id => approvable_id, :approvable_type => approvable_type, :status => 'pending' )
+      Approval.create(:user_id => approvable_id, :approvable_id => user_id, :approvable_type => approvable_type, :status => 'requested' )
+    end
   end
 
   def self.accept(user_id, approvable_id, approvable_type)

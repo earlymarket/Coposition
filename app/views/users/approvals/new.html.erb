@@ -3,8 +3,8 @@ Enter the email address of a registered user or developer so that you can ask fo
 <%= form_for @approval, url: user_approvals_path do |f| %>
   <div class="row">
     <div class="input-field col s12">
-      <%= f.label :user, 'Email', class: "active" %>
-      <%= f.email_field :user, placeholder: "email@email.com", class: "validate" %>
+      <%= f.label :approvable, 'Email', class: "active" %>
+      <%= f.email_field :approvable, placeholder: "email@email.com", class: "validate" %>
     </div>
   </div>
   <div class="row">
