@@ -42,15 +42,24 @@ class Users::ApprovalsController < ApplicationController
   def approve
     @approval = Approval.where(id: params[:id], 
       user: current_user).first
-    @approval.approve!
+    Approval.accept(current_user, @approval.approvable, @approval.approvable_type)
     @approved_devs = current_user.developers
+    @friends = current_user.friends
+    @friend_requests = current_user.friend_requests
+    @pending_friends = current_user.pending_friends
   end
 
   def reject
     @approval = Approval.where(id: params[:id], 
       user: current_user).first
+    if @approval.approvable_type == 'User'
+      Approval.where(user: @approval.approvable, approvable: @approval.user, approvable_type: 'User').first.destroy
+    end
     @approval.destroy
     @approved_devs = current_user.developers
+    @friends = current_user.friends
+    @friend_requests = current_user.friend_requests
+    @pending_friends = current_user.pending_friends
     render "users/approvals/approve"
   end
 
