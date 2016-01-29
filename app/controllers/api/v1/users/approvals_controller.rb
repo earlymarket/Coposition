@@ -11,17 +11,14 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
     model = model_find(type)
     approvable = model.find(allowed_params[:approvable])
     if resource_exists?(type,approvable)
-      if (@user.friend_requests.include? approvable) || (@user.developer_requests.include? approvable)
-        #temporary if statement until we have a way of checking if request came from Copo app
-        if params[:origin] == 'from-copo-app'
-          Approval.accept(@user, approvable, type)
-        end
-      else
-        Approval.link(@user, approvable, type)
-        #temporary if statement until we have a way of checking if request came from Copo app
-        if params[:origin] == 'from-copo-app'
-          Approval.accept(@user, approvable, type) if type == 'Developer'
-        end
+      Approval.link(@user, approvable, type)
+      #params[:origin] is temporary solution until we have a way of checking if request came from Copo app.
+      #If from app, then has originated from a user action, as no developer controls on app (currently)
+      # Below statement in english:
+      # If from copo app and friend_request or developer_request exists OR if from copo app and adding developer then
+      if (((params[:origin] == 'from-copo-app') && ((@user.friend_requests.include? approvable) || (@user.developer_requests.include? approvable))) ||
+        (params[:origin] == 'from-copo-app' && type == 'Developer'))
+        Approval.accept(@user, approvable, type)
       end
       approval = Approval.where(user: @user, approvable: approvable, approvable_type: type)
       render json: approval

@@ -118,7 +118,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
         expect(Approval.count).to eq 2
         expect(Approval.first.status).to eq 'pending'
         expect(Approval.last.status).to eq 'requested'
-    end
+      end
 
       it "should approve a developer request" do
         Approval.link(user,developer,'Developer')
