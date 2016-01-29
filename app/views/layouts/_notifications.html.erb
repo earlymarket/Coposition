@@ -1,4 +1,3 @@
-<main>
   <% if alert %>
     <div class="col-xs-4 col-xs-offset-4 alert alert-dismissible alert-danger animated flipInX">
       <button type="button" class="close">×</button>
@@ -23,11 +22,3 @@
     <div class="clearfix"></div>
     <% flash.discard(:notification) %>
   <% end %>
-  <div id="container" class="animated-fast slideInRight">
-    <%= yield :landing_page %>
-  </div>
-
-  <div id="container" class="animated-fast slideInRight container">
-    <%= yield %>
-  </div>
-</main>
