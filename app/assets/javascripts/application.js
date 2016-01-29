@@ -15,7 +15,6 @@
 //= require jquery.validate
 //= require jquery.validate.additional-methods
 //= require turbolinks
-//= require libs/toastr.min
 //= require utility
 //= require materialize
 //= require markerclusterer
