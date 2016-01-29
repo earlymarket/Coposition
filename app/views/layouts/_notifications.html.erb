@@ -1,24 +1,20 @@
-  <% if alert %>
-    <div class="col-xs-4 col-xs-offset-4 alert alert-dismissible alert-danger animated flipInX">
-      <button type="button" class="close">×</button>
-        <%= alert %>
-    </div>
-    <div class="clearfix"></div>
-  <% end %>
-  <% if notice %>
-    <div class="col-xs-4 col-xs-offset-4 alert alert-dismissible alert-info animated flipInX">
-      <button type="button" class="close">×</button>
-        <%= notice %>
-    </div>
-    <div class="clearfix"></div>
-  <% end %>
   <% if flash[:notification] %>
-    <% flash[:notification].each do |n|%>
-      <div class="col-xs-4 col-xs-offset-4 alert alert-dismissible alert-info animated tada">
-        <button type="button" class="close">×</button>
-        <%= link_to(n[:notification][:msg].html_safe, eval(n[:notification][:link_path])) %>
-      </div>
+    <script type="text/javascript">
+    <% flash[:notification].each do |message| %>
+        Materialize.toast('<%= message %>', 3000)
     <% end %>
-    <div class="clearfix"></div>
+    </script>
     <% flash.discard(:notification) %>
+  <% end %>
+  <% if flash[:alert] %>
+    <script type="text/javascript">
+      Materialize.toast('<%= flash[:alert] %>', 3000, 'red')
+    </script>
+    <% flash.discard(:alert) %>
+  <% end %>
+  <% if flash[:notice] %>
+    <script type="text/javascript">
+      Materialize.toast('<%= flash[:notice] %>', 3000)
+    </script>
+    <% flash.discard(:notice) %>
   <% end %>
