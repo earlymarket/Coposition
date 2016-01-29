@@ -12,7 +12,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
     approvable = model.find(allowed_params[:approvable])
     if resource_exists?(type,approvable)
       Approval.link(@user, approvable, type)
-      if (req_from_coposition_app? && (has_request_from(approvable) || type == 'Developer'))
+      if (req_from_coposition_app? && (@user.has_request_from(approvable) || type == 'Developer'))
         Approval.accept(@user, approvable, type)
       end
       approval = Approval.where(user: @user, approvable: approvable, approvable_type: type)
@@ -50,10 +50,6 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
       unless current_user?(params[:user_id])
         render status: 403, json: { message: 'Incorrect User' }
       end
-    end
-
-    def has_request_from(approvable)
-      @user.friend_requests.include?(approvable) || @user.developer_requests.include?(approvable)
     end
 
 end
