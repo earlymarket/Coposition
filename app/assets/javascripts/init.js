@@ -14,6 +14,8 @@ $(document).on('ready page:change', function() {
 
   // materialize parallax init
   $('.parallax').parallax();
+
+  // materialize wave effect init
   Waves.displayEffect();
 
   // materialize selectbox init
@@ -21,9 +23,9 @@ $(document).on('ready page:change', function() {
 
   // allow materialize toast to be dismissed on click instead of just the default swipe
   $(document).on('click', '#toast-container .toast', function() {
-      $(this).fadeOut(function(){
-          $(this).remove();
-      });
+    $(this).fadeOut(function(){
+      $(this).remove();
+    });
   });
 
 });
