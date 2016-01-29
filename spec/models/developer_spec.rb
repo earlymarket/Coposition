@@ -9,17 +9,17 @@ RSpec.describe Developer, type: :model do
 
     it "should ask for approval" do
       expect(developer.pending_approvals.count).to be 0
-      expect(developer.approved_users.count).to be 0
+      expect(developer.users.count).to be 0
 
-      developer.request_approval_from user
+      Approval.link(user,developer,'Developer')
 
       expect(developer.pending_approvals.count).to be 1
-      expect(developer.approved_users.count).to be 0
+      expect(developer.users.count).to be 0
 
-      user.approve_developer developer
+      Approval.accept(user,developer,'Developer')
 
       expect(developer.pending_approvals.count).to be 0
-      expect(developer.approved_users.count).to be 1
+      expect(developer.users.count).to be 1
     end
   end
 

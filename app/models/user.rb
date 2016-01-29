@@ -17,45 +17,49 @@ class User < ActiveRecord::Base
                          message: "only allows letters, underscores and dashes" }
 
   has_many :devices, dependent: :destroy
-  has_many :approvals, dependent: :destroy
-  has_many :developers, through: :approvals
+  has_many :checkins, through: :devices
   has_many :requests
+  has_many :approvals, dependent: :destroy
+  has_many :developers, -> { where "status = 'accepted'" }, through: :approvals, source: :approvable, :source_type => "Developer"
+  has_many :friends, -> { where "status = 'accepted'" }, through: :approvals, source: :approvable, :source_type => "User"
+  has_many :pending_friends, -> { where "status = 'pending'" }, :through => :approvals, source: :approvable, :source_type => "User"
+  has_many :friend_requests, -> { where "status = 'requested'" }, :through => :approvals, source: :approvable, :source_type => "User"
+  has_many :developer_requests, -> { where "status = 'developer-requested'" }, :through => :approvals, source: :approvable, :source_type => "Developer"
+  has_many :permissions, :as => :permissible, dependent: :destroy
+  has_many :permitted_devices, through: :permissions, source: :permissible, :source_type => "Device"
 
   ## Pathing
 
   def url_id
-    username.empty? ? id : username
+    username.empty? ? id : username.downcase
   end
 
   ## Approvals
 
-  def approved_developers
-    approvals.where(approved: true)
-  end
-
-
-  def approve_developer(dev)
-    app = approvals.where(approved: false, developer: dev).first
-    unless app
-      return false
-    end
-    app.approve!
-  end
-
   def approved_developer?(dev)
-    app = approvals.where(developer: dev).first
-    app && app.approved?
+    developers.include? dev
   end
-
-  ##############
-
 
   ## Devices
 
-  def approve_devices_for_developer(developer)
-    devices.each do |device|
-      device.developers << developer unless device.developers.include? developer
+  def approve_devices(permissible)
+    if permissible.class.to_s == 'Developer'
+      devices.each do |device|
+        device.developers << permissible unless device.developers.include? permissible
+      end
+    else
+      devices.each do |device|
+        device.permitted_users << permissible unless device.permitted_users.include? permissible
+      end
     end
+  end
+
+  ################
+
+  ## Checkins
+
+  def last_checkin
+    checkins.sort_by(&:created_at).last
   end
 
   ##############

@@ -9,10 +9,23 @@ class Api::ApiController < ActionController::Base
       head status: :unauthorized
       return false
     end
-    Request.create(developer: @dev, 
-                   user_id: params[:user_id],
-                   action: params[:action],
-                   controller: params[:controller])
+    create_request
+  end
+
+  def create_request
+    find_user if (params[:user_id] || params[:id])
+    if @user
+      @dev.requests.create(user_id: @user.id, action: params[:action], controller: params[:controller])
+    else
+      @dev.requests.create(action: params[:action], controller: params[:controller])
+    end
+  end
+
+  def paginated_response_headers(resource)
+    response['X-Current-Page'] = resource.current_page.to_json
+    response['X-Next-Page'] = resource.next_page.to_json
+    response['X-Total-Entries'] = resource.total_entries.to_json
+    response['X-Per-Page'] = resource.per_page.to_json
   end
 
   def check_user_approved_developer
@@ -23,13 +36,19 @@ class Api::ApiController < ActionController::Base
   end
 
   def find_user
-    @user = User.find_by_username(params[:user_id])
-    @user = User.find_by_email(params[:user_id]) unless @user
-    @user = User.find(params[:user_id]) unless @user
+    if params[:controller] == "api/v1/users"
+      find_by_id(params[:id])
+    else
+      find_by_id(params[:user_id])
+    end
   end
 
   def find_device
     @device = Device.find(params[:device_id])
+  end
+
+  def model_find(type)
+    [User, Developer].find { |model| model.name == type.titleize}
   end
   
   def check_privilege
@@ -37,6 +56,12 @@ class Api::ApiController < ActionController::Base
       head status: :unauthorized
       return false
     end
+  end
+
+  def find_by_id(id)
+    @user = User.find_by_username(id)
+    @user ||= User.find_by_email(id)
+    @user ||= User.find(id)
   end
 
   def current_user?(user_id)

@@ -1,5 +1,5 @@
 <h1>Dashboard</h1>
-You have <%= pluralize(current_user.devices.count, 'device') %> and <%= pluralize(current_user.approved_developers.count, 'approved developer') %>
+You have <%= pluralize(current_user.devices.count, 'device') %> and <%= pluralize(current_user.developers.count, 'approved developer') %>
 <hr>
 <%= link_to("Devices", user_devices_path, class: "btn btn-primary m-m") %>
 <%= link_to("Approvals", user_approvals_path, class: "btn btn-primary m-m") %>

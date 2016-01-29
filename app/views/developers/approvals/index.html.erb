@@ -9,3 +9,12 @@
 <% end %>
 <br>
 <%= link_to("New approval", new_developers_approval_path, class: "btn btn-default") %>
+
+<h3 class="m-m">Users</h3>
+<div class='list-group'>
+  <% @users.each do |user| %>
+    <div class='list-group-item'>
+      <h6 class='list-group-item-heading'><%= user.email %></h6>
+    </div>
+  <% end %>
+</div>

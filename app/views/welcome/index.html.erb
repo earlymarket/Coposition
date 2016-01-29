@@ -1,26 +1,44 @@
-<div class="row">
-  <h1 class="center" data-in-effect="bounceIn">CoPosition</h1>
-</div>
-
-<div class="row">
-  <span class="center">Clever data</span>
-</div>
-
-<div class="row m-top-l">
-  <div id="chart"></div>
-</div>
-
-<div class="row center">
-  <div class="col s12 m6 l6">
-    <h3>For the users</h3>
-    <p>Take back control of your location data.</p>
-    <p>Say exactly who can access your location data, and manage the data accuracy.</p>
-    <a class="btn wave-light">Learn more</a>
+<% content_for :landing_page do %>
+<section class="landing-section first">
+  <div class="row valign-wrapper parallax-container">
+    <div class="valign center-align center">
+      <%= image_tag("coposition.png", style: "margin: 2em") %>
+      <h1 class="brand" data-in-effect="bounceIn">CONTROL YOUR LOCATION DATA</h1>
+      <h5>Worry free location data management.</h5>
+      <a class="start-btn btn-large wave-light">Getting Started</a>
+    </div>
+    <div class="parallax"><%= image_tag("background.jpg") %></div>
   </div>
-  <div class="col s12 m6 l6">
-    <h3>For the developers</h3>
-    <p>Setup your location-aware app in minutes, using our HTTP API.</p>
-    <p>Let us manage the data, geocoding and bandwidth issues.</p>
-    <a class="btn wave-light">Learn more</a>
+</section>
+
+<section class="landing-section second">
+  <div class="row">
+    <div class="col s12 m6">
+      <h3>For the users</h3>
+      
+      <h5>Your location data, under your control</h5>
+      <p>Control your location data with all the privacy you want minus all the fuss. CoPosition lets you manage how you share your location with multiple apps across multiple devices all in one place.</p>
+
+      <h5>Fogging and Delay</h5>
+      <p>With CoPosition, you can fog your location data so that an app can only know your approximate location. You can also send a delayed location data to an app and the app will only know your location a set number of time in the past.</p>
+      <a class="btn wave-light">Learn more</a>
+    </div>
   </div>
-</div>
+</section>
+
+<div class="divider"></div>
+
+<section class="landing-section third">
+  <div class="row">
+    <div class="col s12 m6 offset-m6">
+      <h3>For the developers</h3>
+      
+      <h5>Easy, secure and fuss free</h5>
+      <p>One easy to use API to manage all your users location data. CoPosition is secure, easy to implement and dependable.</p>
+
+      <p>Our API enables you to focus on what matters for your app and we'll take care of managing your user's location data and geocoding for you while freeing up valuable bandwidth you would be using otherwise. </p>
+      <%= link_to("Learn more", api_path, class: "btn wave-light") %>
+    </div>
+  </div>
+</section>
+<% end %>

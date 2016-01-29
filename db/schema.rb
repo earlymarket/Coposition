@@ -11,22 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160118130917) do
+ActiveRecord::Schema.define(version: 20160128172526) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "approvals", force: :cascade do |t|
-    t.integer  "developer_id"
+    t.integer  "approvable_id"
     t.integer  "user_id"
     t.datetime "approval_date"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.boolean  "approved"
-    t.boolean  "pending",       default: true
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "status"
+    t.string   "approvable_type"
   end
 
-  add_index "approvals", ["developer_id"], name: "index_approvals_on_developer_id", using: :btree
+  add_index "approvals", ["approvable_id"], name: "index_approvals_on_approvable_id", using: :btree
   add_index "approvals", ["user_id"], name: "index_approvals_on_user_id", using: :btree
 
   create_table "checkins", force: :cascade do |t|
@@ -78,20 +78,13 @@ ActiveRecord::Schema.define(version: 20160118130917) do
   add_index "developers", ["email"], name: "index_developers_on_email", unique: true, using: :btree
   add_index "developers", ["reset_password_token"], name: "index_developers_on_reset_password_token", unique: true, using: :btree
 
-  create_table "device_developer_privileges", force: :cascade do |t|
-    t.integer "developer_id"
-    t.integer "device_id"
-    t.integer "privilege"
-  end
-
-  add_index "device_developer_privileges", ["developer_id", "device_id"], name: "index_device_developer_privileges_on_developer_id_and_device_id", unique: true, using: :btree
-
   create_table "devices", force: :cascade do |t|
     t.string  "uuid"
     t.integer "user_id"
     t.string  "name"
     t.boolean "fogged",  default: false
     t.integer "delayed"
+    t.string  "alias"
   end
 
   add_index "devices", ["uuid"], name: "index_devices_on_uuid", using: :btree
@@ -108,6 +101,13 @@ ActiveRecord::Schema.define(version: 20160118130917) do
   add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", using: :btree
   add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
+
+  create_table "permissions", force: :cascade do |t|
+    t.integer "permissible_id"
+    t.integer "device_id"
+    t.integer "privilege"
+    t.string  "permissible_type"
+  end
 
   create_table "requests", force: :cascade do |t|
     t.integer  "developer_id"

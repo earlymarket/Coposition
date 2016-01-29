@@ -10,9 +10,17 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= require_tree ./libs 
- *= require_tree .
- *= require_self
+ *= require_tree ./libs
  */
 
-@import "materialize";
+// Import materialize gem's palette
+@import 'materialize/components/color';
+// Set the scss color variables we want to override
+@import 'custom_color';
+// Import the rest of Materialize. It will ignore anything that is already set
+@import 'materialize';
+// css selectors/classes needs to be overriden after
+@import 'custom_class';
+// @import './*;'
+@import 'fonts.scss','layout.scss','placeholder.scss';
+

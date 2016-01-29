@@ -24,15 +24,14 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
       # No approval
       get :status, user_id: user.username, format: :json
       expect(res_hash[:approval_status]).to be nil
-
-      developer.request_approval_from user
+      Approval.link(user,developer,'Developer')
       get :status, user_id: user.username, format: :json
-      expect(res_hash[:approval_status]).to be false
+      expect(res_hash[:approval_status]).to eq "developer-requested"
 
 
-      user.approve_developer developer
+      Approval.accept(user,developer,'Developer')
       get :status, user_id: user.username, format: :json
-      expect(res_hash[:approval_status]).to be true
+      expect(res_hash[:approval_status]).to eq "accepted"
     end
 
   end
@@ -41,7 +40,8 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
 
     let(:approval) do
       approval = FactoryGirl::create :approval
-      approval.developer = developer
+      approval.approvable_id = developer.id
+      approval.approvable_type = 'Developer'
       approval.user = user
       approval.save
       approval
@@ -58,8 +58,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
         user_id: user.id,
         id: approval.id,
         approval: {
-          approved: true,
-          pending: false
+          status: 'accepted'
         },
         format: :json
       }
@@ -67,14 +66,13 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
     end
 
     it "should not be able to approve another users approval (user_id)" do
-      second_user.approvals.create(developer_id: developer.id)
+      second_user.approvals.create(approvable_id: developer.id)
       approval
       put :update, {
         user_id: second_user.id,
         id: approval.id,
         approval: {
-          approved: true,
-          pending: false
+          status: 'accepted'
         },
         format: :json
       }
@@ -83,14 +81,13 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
     end
 
     it "should not be able to approve an approval that does not exist/does not belong (approval_id)" do
-      second_user.approvals.create(developer_id: developer.id)
+      second_user.approvals.create(approvable_id: developer.id)
       approval
       put :update, {
         user_id: user.id,
         id: second_user.approvals.last.id,
         approval: {
-          approved: true,
-          pending: false
+          status: 'accepted'
         },
         format: :json
       }
@@ -104,8 +101,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
         user_id: user.id,
         id: approval.id,
         approval: {
-          approved: false,
-          pending: false
+          status: 'rejected'
         },
         format: :json
       }

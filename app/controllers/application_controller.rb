@@ -26,7 +26,11 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user?(user_id)
-    current_user.username == user_id
+    current_user == User.find(user_id)
+  end
+
+  def model_find(type)
+    [User, Developer].find { |model| model.name == type.titleize}
   end
 
   protected

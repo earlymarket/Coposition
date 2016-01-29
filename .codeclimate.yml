@@ -7,4 +7,5 @@ exclude_paths:
 - "public/assets/*"
 - "db/cities/*"
 - "db/migrate/*"
+- "db/schema.rb"
 - "vendor/*"

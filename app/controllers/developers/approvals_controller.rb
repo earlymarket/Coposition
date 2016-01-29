@@ -4,6 +4,7 @@ class Developers::ApprovalsController < ApplicationController
 
   def index
     @approvals = current_developer.pending_approvals
+    @users = current_developer.users
   end
 
   def new
@@ -11,7 +12,8 @@ class Developers::ApprovalsController < ApplicationController
   end
 
   def create
-    if current_developer.request_approval_from User.find_by(email: allowed_params["user"])
+    user = User.find_by(email: allowed_params[:user])
+    if Approval.link(user, current_developer, 'Developer')
       flash[:notice] = "Successfully sent" 
     else
       flash[:alert] = "Approval request already sent"

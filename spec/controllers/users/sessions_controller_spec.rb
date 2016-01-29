@@ -40,6 +40,40 @@ RSpec.describe Users::Devise::SessionsController, type: :controller do
       expect(res_hash[:authentication_token]).to be nil
     end
 
+    it "should be able to sign out" do
+      request.headers["X-Secret-App-Key"] = "this-is-a-mobile-app"
+      request.headers["X-User-Token"] = user.authentication_token
+      request.env['devise.mapping'] = Devise.mappings[:user]
+      post :destroy,
+        user: {
+          email: user.email,
+          password: user.password
+        },
+        format: :json
+      expect(res_hash[:message]).to eq 'Signed out'
+    end
+
+    context 'when incorrect user token or invalid request' do
+      it 'should fail' do
+        request.headers["X-Secret-App-Key"] = "this-is-a-mobile-app"
+        request.headers["X-User-Token"] = 'invalid token'
+        request.env['devise.mapping'] = Devise.mappings[:user]
+        post :destroy,
+          user: {
+            email: user.email,
+            password: user.password
+          },
+          format: :json
+        expect(res_hash[:message]).to eq 'Invalid token.'
+        post :create,
+          user: {
+            email: user.email,
+          },
+          format: :json
+        expect(res_hash[:message]).to eq 'The request MUST contain the user email and password.'
+      end
+    end
+
   end
 
 end

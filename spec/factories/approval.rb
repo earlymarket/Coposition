@@ -1,6 +1,5 @@
 FactoryGirl.define do
   factory :approval do
-    approved false
-    pending true
+    status 'pending'
   end
 end

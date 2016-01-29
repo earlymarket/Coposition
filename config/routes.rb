@@ -30,6 +30,12 @@ Rails.application.routes.draw do
       end
       resources :checkins, only: [:create]
       resources :users do
+        member do
+          get 'last_checkin'
+          get 'all_checkins'
+          get 'requests'
+          get 'last_request'
+        end
         resources :approvals, only: [:create, :index, :update], module: :users do
           collection do
             get :status
@@ -37,10 +43,10 @@ Rails.application.routes.draw do
         end
         resources :devices, only: [:index, :show, :update], module: :users do
           member do
-            post 'switch_privilege_for_developer'
+            post 'switch_privilege'
           end
           collection do
-            post 'switch_all_privileges_for_developer'
+            post 'switch_all_privileges'
           end
           resources :checkins, only: [:index, :create], module: :devices do
             collection do
@@ -65,16 +71,17 @@ Rails.application.routes.draw do
       member do
         post 'set_delay'
         delete 'checkin'
-        post 'switch_privilege_for_developer'
+        post 'switch_privilege'
         put 'fog'
       end
       collection do
-        post 'switch_all_privileges_for_developer'
+        get 'permissions'
+        post 'switch_all_privileges'
         get 'add_current'
       end
       resources :checkins, only: [:show, :destroy]
     end
-    resources :approvals, only: [:index] do
+    resources :approvals, only: [:index, :new, :create] do
       member do
         post 'approve'
         post 'reject'

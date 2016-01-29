@@ -42,6 +42,8 @@ gem 'materialize-sass'
 
 gem 'will_paginate-materialize'
 
+gem 'jquery-validation-rails'
+
 # Use Unicorn as the app server
 
 group :production do
@@ -52,7 +54,11 @@ end
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem 'derailed', group: :development
+
+group :development do
+  gem 'derailed'
+  gem 'guard-livereload', '~> 2.4', require: false
+end
 
 group :development, :test do
   gem 'pry'
@@ -69,6 +75,8 @@ group :development, :test do
   gem 'spring'
   gem 'bullet'
   gem 'letter_opener'
+  gem 'meta_request'
+
 end
 
 group :test do

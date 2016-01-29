@@ -1,13 +1,13 @@
 <head>
-	<title>CoPosition</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <title>CoPosition</title>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
 </head>
-<body style="margin:0px">
-	<center style="margin-top: 20em;color:white;">
-		<h1 id="placeholderTitle">COPOSITION</h1>
-		<%= image_tag("coposition.png", style: "margin: 2em") %>
-		<br>
-		<h5 style="color:white;">Secure and trusted geolocation</h5>
-	</center>
-	<%= image_tag("background.jpg", width: "100%", height: "100%", style: "position:fixed;top:0;left:0;z-index:-1", alt: "CoPosition") %>
+<body class="placeholder">
+  <div class="valign-wrapper bg-wrapper">
+    <div class="valign center-align center z-depth-3 bg-ribbon">
+      <%= image_tag("coposition.png", style: "margin: 2em") %>
+      <h1 class="brand" data-in-effect="bounceIn">CONTROL YOUR LOCATION DATA</h1>
+      <h5>Worry free location data management.</h5>
+    </div>
+  </div>
 </body>
