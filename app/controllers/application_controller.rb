@@ -29,6 +29,10 @@ class ApplicationController < ActionController::Base
     current_user == User.find(user_id)
   end
 
+  def model_find(type)
+    [User, Developer].find { |model| model.name == type.titleize}
+  end
+
   protected
 
     def actor_owns_resource?(actor, resource, id)

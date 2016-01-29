@@ -9,7 +9,7 @@ class Users::ApprovalsController < ApplicationController
 
   def create
     type = allowed_params[:approvable_type]
-    model = [User, Developer].find { |x| x.name == type.titleize}
+    model = model_find(type)
     approvable = model.find_by(email: allowed_params[:approvable])
     if approvable
       flash[:notice] = "Approval already exists"
