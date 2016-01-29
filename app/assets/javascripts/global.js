@@ -10,29 +10,11 @@ $(document).on('page:fetch', function() {
 
 
 function setup() {
-  animateThings()
   addEventListeners()
 }
 
 function addEventListeners() {
   addClickListeners()
-}
-
-
-function animateThings() {
-  utility.animations.enterPage()
-  setupTextillate()
-}
-
-
-function setupTextillate() {
-  $('.tlt').textillate(
-    {
-      in: {
-        delayScale: 0.9
-      }
-    }
-  );
 }
 
 function addClickListeners() {
