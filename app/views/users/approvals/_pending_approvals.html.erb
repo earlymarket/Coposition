@@ -1,8 +1,5 @@
 <% if @pending_approvals %>
 
-  You have
-  <span id="pending_count"><%= @pending_approvals.length %></span>
-  pending.
   <br>
   <% @pending_approvals.each do |app| %>
     <div id="<%= "app_#{app.id}" %>"class="panel panel-default m-m third-width animated flipInY">

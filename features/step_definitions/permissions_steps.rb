@@ -6,11 +6,11 @@ end
 
 Given(/^the developer "(.*?)" sends me an approval request$/) do |dev_name|
   @developer = Developer.find_by(company_name: dev_name)
-  @developer.request_approval_from @me
+  Approval.link(@me,@developer,'Developer')
 end
 
 Given(/^I accept the approval request$/) do
-  @me.approve_developer(@developer)
+  Approval.accept(@me,@developer,'Developer')
 end
 
 Then(/^I should see the first "(.*?)" have a class named "(.*?)"$/) do |css, class_name|

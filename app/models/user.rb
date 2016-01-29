@@ -36,26 +36,9 @@ class User < ActiveRecord::Base
 
   ## Approvals
 
-  def link_with(developer)
-    approvals << Approval.create(user_id: self.id, approvable_id: developer.id, approvable_type: 'Developer', status: 'accepted')
-    approvals.last.approve!
-  end
-
-  def approve_developer(developer)
-    app = approvals.where(status: 'developer-requested', approvable_id: developer.id).first
-    unless app
-      return false
-    end
-    app.approve!
-  end
-
   def approved_developer?(dev)
-    app = approvals.where(approvable_id: dev.id, approvable_type: 'Developer').first
-    app && app.status == 'accepted'
+    developers.include? dev
   end
-
-  ##############
-
 
   ## Devices
 
@@ -73,7 +56,7 @@ class User < ActiveRecord::Base
 
   ################
 
-  ## Metadata
+  ## Checkins
 
   def last_checkin
     checkins.sort_by(&:created_at).last

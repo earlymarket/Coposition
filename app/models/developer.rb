@@ -22,10 +22,6 @@ class Developer < ActiveRecord::Base
     dev.api_key = SecureRandom.uuid
   end
 
-  def request_approval_from(user)
-    approvals << Approval.create(user_id: user.id, approvable_id: self.id, approvable_type: 'Developer', status: 'developer-requested')
-  end
-
   def slack_message
     "A new developer has registered, there are now #{Developer.count} developers."
   end

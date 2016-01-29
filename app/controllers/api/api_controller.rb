@@ -47,6 +47,10 @@ class Api::ApiController < ActionController::Base
   def find_device
     @device = Device.find(params[:device_id])
   end
+
+  def model_find(type)
+    [User, Developer].find { |model| model.name == type.titleize}
+  end
   
   def check_privilege
     unless @device.privilege_for(@dev) == "complete"

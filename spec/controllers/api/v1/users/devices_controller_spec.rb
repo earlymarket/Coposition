@@ -6,8 +6,8 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   let(:device){FactoryGirl::create :device}
   let(:developer) do
     dev = FactoryGirl::create :developer
-    dev.request_approval_from(user)
-    user.approve_developer(dev)
+    Approval.link(user,dev,'Developer')
+    Approval.accept(user,dev,'Developer')
     dev
   end
   let(:user) do
@@ -17,8 +17,8 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   end
   let(:second_user) do
     us = FactoryGirl::create :user
-    developer.request_approval_from(us)
-    us.approve_developer(developer)
+    Approval.link(us,developer,'Developer')
+    Approval.accept(us,developer,'Developer')
     us
   end
   let(:approval) { create_approval(user, second_user) }
