@@ -1,4 +1,5 @@
 $brand: "Comfortaa", "Helvetica", sans-serif;
+$body-text: "Fira Sans", "Helvetica", sans-serif;
 
 .monospace{
   font-family: "Fira Mono", monospace;
@@ -9,8 +10,10 @@ $brand: "Comfortaa", "Helvetica", sans-serif;
   font-family: $brand;
 }
 
+
+
 html {
-  font-family: "Fira Sans", "Helvetica", sans-serif;
+  font-family: $body-text;
 }
 
 h1 {

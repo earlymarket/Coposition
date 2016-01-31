@@ -5,8 +5,9 @@ body {
   flex-direction: column;
 }
 
-nav{
-  position: fixed;
+// Fixed nav bar
+.nav-wrapper{
+  @extend .fixed;
   z-index: 10;
 }
 
@@ -15,18 +16,17 @@ main {
   padding-top: 64px;
 }
 
-// Presets
-.float-left{
-  float: left;
-}
-.float-right{
-  float: right;
+// Mobile navigation
+.side-nav{
+  .collapsible-header{
+    padding: 0px;
+    width: 100%;
+  }
 }
 
 // Other layouts
 .landing-section{
   width: 100%;
-
   .row{
     .col{
       padding: 2rem;
@@ -36,6 +36,7 @@ main {
   .parallax-container{
     height: 300px;
   }
+
 
   .image-container.iphone-map{
     height: 700px;
@@ -50,46 +51,37 @@ main {
       width: 100%;
     }
   }
-}
 
-.landing-section.splash{
-  .valign{
-    transform: translate(0, -10vh);
+  // Splash image/video
+  &.splash{
+    .valign{
+      transform: translate(0, -10vh);
 
-    .start-btn{
-      font-size: 1.5rem;
-      margin-top: 1rem;
+      .start-btn{
+        font-size: 1.5rem;
+        margin-top: 1rem;
+      }
+    }
+
+    .parallax-container {
+      height: 100vh;
+      max-height: 1024px;
+      
+      .parallax{
+        opacity: 0.5;
+      }
     }
   }
 
-  .parallax-container {
-    height: 100vh;
-    max-height: 1024px;
-    
-    .parallax{
-      opacity: 0.5;
+  // Apps using CoPosition section
+  &.already-using{
+    .app{
+      height: 300px;
     }
   }
 }
 
-.landing-section.already-using{
-  .app{
-    height: 300px;
-  }
-}
-
-.center{
-  margin-left: auto;
-  margin-right: auto;
-}
-
+// To be removed
 .toast-top-right {
   top: 74px;
-}
-
-.side-nav{
-  .collapsible-header{
-    padding: 0px;
-    width: 100%;
-  }
 }
