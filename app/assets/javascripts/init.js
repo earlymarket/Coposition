@@ -16,7 +16,6 @@ $(document).on('ready page:change', function() {
 
 
 function setup() {
-  animateThings();
   addEventListeners();
 }
 
@@ -25,16 +24,7 @@ function addEventListeners() {
 }
 
 
-function animateThings() {
-  utility.animations.enterPage();
-}
-
-
 function addClickListeners() {
-  $(".close").click(function(e){
-    utility.animations.removeEl($(e.currentTarget).parent());
-  });
-
   $(".landing-section .start-btn").click(function(e){
     var offset = $(".landing-section.splash").height();
     $("body").animate({ scrollTop: offset });
