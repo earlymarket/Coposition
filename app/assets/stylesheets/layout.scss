@@ -5,26 +5,60 @@ body {
   flex-direction: column;
 }
 
+nav{
+  position: fixed;
+  z-index: 10;
+}
+
 main {
   flex: 1 0 auto;
+  padding-top: 64px;
 }
 
 // Presets
-// Other layouts
-h1 {
-  text-align: center;
+.float-left{
+  float: left;
+}
+.float-right{
+  float: right;
 }
 
+// Other layouts
 .landing-section{
   width: 100%;
 
   .row{
-    height: 100vh;
-    max-height: 900px;
-
     .col{
-      padding: 3rem;
-      max-width: 50rem;
+      padding: 2rem;
+    }
+  }
+
+  .parallax-container{
+    height: 300px;
+  }
+
+  .image-container.iphone-map{
+    height: 700px;
+    overflow: hidden;
+    img{
+      height: 130%;
+    }
+  }
+  .image-container.cloud-cp{
+    height: auto;
+    img{
+      width: 100%;
+    }
+  }
+}
+
+.landing-section.splash{
+  .valign{
+    transform: translate(0, -10vh);
+
+    .start-btn{
+      font-size: 1.5rem;
+      margin-top: 1rem;
     }
   }
 
@@ -38,19 +72,15 @@ h1 {
   }
 }
 
-.landing-section.first{
-  .valign{
-    transform: translate(0, -10vh);
-
-    .start-btn{
-      font-size: 1.5rem;
-      margin-top: 1rem;
-    }
+.landing-section.already-using{
+  .app{
+    height: 300px;
   }
 }
 
 .center{
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .toast-top-right {

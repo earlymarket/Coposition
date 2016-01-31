@@ -41,7 +41,7 @@ function addClickListeners() {
   });
 
   $(".landing-section .start-btn").click(function(e){
-    var offset = $(".landing-section.first").height() + $("nav").height();
+    var offset = $(".landing-section.splash").height();
     $("body").animate({ scrollTop: offset });
   });
 }

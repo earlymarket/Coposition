@@ -5,12 +5,32 @@ $brand: "Comfortaa", "Helvetica", sans-serif;
   font-size: 1.1rem;
 }
 
+.brand {
+  font-family: $brand;
+}
+
 html {
   font-family: "Fira Sans", "Helvetica", sans-serif;
 }
 
-.brand {
-  font-family: $brand;
+h1 {
+  @extend .brand;
+  text-align: center;
+}
+h2 {
+
+}
+h3 {
+
+}
+h4{
+
+}
+h5{
+
+}
+h6{
+  
 }
 
 p {
