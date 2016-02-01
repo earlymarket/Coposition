@@ -1,17 +1,14 @@
   <% if flash[:notification] %>
     <script type="text/javascript">
     <% flash[:notification].each do |notice| %>
-      // If the flash notification has a link style it like this
-      if('<%= eval notice[:notification][:link_path] %>') {
-
-        var link = '<a href="<%= eval notice[:notification][:link_path] %>" class="grey-text text-darken-4">';
+      <% if notice[:notification][:link_path].empty? %>
+        Materialize.toast('<%= notice[:notification][:msg] %>', 3000);
+      <% else %>
+        var link = '<a href="<%= eval notice[:notification][:link_path] %>" class="white-text">';
         link += '<%= notice[:notification][:msg] %></a>';
         var $link = $(link);
-        Materialize.toast( $link, 5000, 'orange accent-2 z-depth-2');
-
-      } else {
-        Materialize.toast('<%= notice[:notification][:msg] %>', 3000);
-      }
+        Materialize.toast( $link, 5000, 'light-blue darken-3 z-depth-2');
+      <% end %>
     <% end %>
     </script>
     <% flash.discard(:notification) %>
