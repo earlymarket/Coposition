@@ -31,6 +31,11 @@
   width: 100%;
 }
 
-.btn {
+.btn, .btn-large, btn-flat, btn-floating {
+  @extend .dark-text;
   color: $button-raised-color;
+
+  &.disabled{
+    @extend .dark-text.hint;
+  }
 }
