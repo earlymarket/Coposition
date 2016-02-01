@@ -10,29 +10,11 @@ $(document).on('page:fetch', function() {
 
 
 function setup() {
-  animateThings()
   addEventListeners()
 }
 
 function addEventListeners() {
   addClickListeners()
-}
-
-
-function animateThings() {
-  utility.animations.enterPage()
-  setupTextillate()
-}
-
-
-function setupTextillate() {
-  $('.tlt').textillate(
-    {
-      in: {
-        delayScale: 0.9
-      }
-    }
-  );
 }
 
 function addClickListeners() {
@@ -44,40 +26,4 @@ function addClickListeners() {
     var offset = $(".landing-section.first").height() + $("nav").height();
     $("body").animate({ scrollTop: offset });
   });
-}
-
-
-// Potentially remove
-toastr.options = {
-  "closeButton": false,
-  "debug": false,
-  "newestOnTop": false,
-  "progressBar": false,
-  "positionClass": "toast-top-right",
-  "preventDuplicates": false,
-  "onclick": null,
-  "showDuration": "300",
-  "hideDuration": "1000",
-  "timeOut": "6000",
-  "extendedTimeOut": "1000",
-  "showEasing": "swing",
-  "hideEasing": "linear",
-  "showMethod": "fadeIn",
-  "hideMethod": "fadeOut",
-  "onShown": function(){
-    toastrOffset();
-  }
-}
-
-$(document).scroll(function() {
-  toastrOffset();
-});
-
-function toastrOffset(){
-  var offset = 64 - $(document).scrollTop() + 10;
-  if ($(document).scrollTop() >= 64){
-    $(".toast-top-right").css('top', '10px');
-  } else {
-    $(".toast-top-right").css('top', offset + 'px');
-  }
 }

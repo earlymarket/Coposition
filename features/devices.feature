@@ -1,3 +1,4 @@
+@javascript
 Feature: Devices
 
   Background: There are some devices
@@ -12,14 +13,14 @@ Feature: Devices
       When I click "Add"
       Then I should see "This device has been bound to your account!"
         And I should see "G-RALA"
-        And I click "Devices"
+        Then I click "Dashboard"
+        And I click the link "Devices"
       Then I should see "Denham"
         When I click "Denham"
       When I click "Delete device"
       Then I should see "Device deleted"
         And I should not see "G-RALA"
 
-    @javascript
     Scenario: User enables fogging on a device
       Given I click "Add new device"
         When I enter UUID "123456789123" and a friendly name "G-RALA"
@@ -31,7 +32,6 @@ Feature: Devices
       And I click the link "Devices"
         Then I should see "Fogging is enabled"
 
-    @javascript
     Scenario: User enables timeshift on a device
       Given I click "Add new device"
         When I enter UUID "123456789123" and a friendly name "G-RALA"

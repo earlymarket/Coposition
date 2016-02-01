@@ -1,1 +1,7 @@
-toastr["success"]("<%= @device.name %> now timeshifted by <%= @device.delayed %> minutes", "Timeshift change")
+if(<%= @device.delayed %>){
+  Materialize.toast("<%= @device.name %> now timeshifted by <%= @device.delayed %> minutes", 1500);
+  $('#mins').val('<%= @device.delayed %>');
+} else {
+  Materialize.toast("<%= @device.name %> not timeshifted.", 1500);
+  $('#mins').val('');
+}
