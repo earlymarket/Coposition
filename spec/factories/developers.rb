@@ -4,6 +4,7 @@ FactoryGirl.define do
     email { Faker::Internet.email }
     password "password"
     password_confirmation "password"
+    redirect_url { "http://#{Faker::Internet.domain_word}.#{Faker::Internet.domain_suffix}/" }
   end
 
 end

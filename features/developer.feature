@@ -1,5 +1,6 @@
 Feature: Developer
 
+@javascript
   Scenario: Developer asks user for approval
     Given I am signed in as developer
       And I click "Developers"

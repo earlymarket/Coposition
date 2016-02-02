@@ -28,6 +28,7 @@ When(/^I fill in the form with my "(.*?)" details$/) do |actor|
   fill_in "register_#{actor}_password_confirmation", with: @me.password_confirmation
   if actor == "developer"
     fill_in "register_#{actor}_company_name", with: @me.company_name
+    fill_in "register_#{actor}_redirect_url", with: @me.redirect_url
   elsif actor == "user"
     fill_in "register_#{actor}_username", with: @me.username
   end

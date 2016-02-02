@@ -3,12 +3,15 @@
 <p>
   Your <%= current_developer.company_name %> API key is <code><%= current_developer.api_key %></code>
   <br>
-  You've made <%= current_developer.requests.recent(1.day.ago).count %> requests in the last day.
+  You've made <span id="requests-today"><%= @requests_today %></span> requests in the last day.
   <br>
-  You've made <%= current_developer.requests.where(paid: false).count %> requests since you last paid.
+  You've made <span id="unpaid"><%= @unpaid %></span> requests since you last paid.
 </p>
-  
-<%= link_to('Pay now', pay_developers_requests_path, class: 'btn', method: 'put') %>
+
+<p>
+  <%= link_to('Pay now', pay_developers_requests_path, class: 'btn', method: 'put', remote: true) %>
+  <%= link_to('Refresh', developers_console_path, class: 'btn', remote: true) %>
+</p>
 
 <hr>
 
