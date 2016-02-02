@@ -17,13 +17,13 @@
 <body>
 
   <%= render partial: "layouts/navbar" %>
-
-  <!-- <% if developer_signed_in? %>
-    <%= link_to image_tag(current_developer.logo.url(:thumb), class: "small-curved-border half-opacity"), developers_console_path, class: "fixed bottom left" %>
-  <% end %> -->
-  
+  <main>
   <%= render partial: "layouts/notifications" %>
-
+      <%= yield :landing_page %>
+    <div class="container">
+      <%= yield %>
+    </div>
+  </main>
   <%= render partial: "layouts/footer" %>
 </body>
 </html>
