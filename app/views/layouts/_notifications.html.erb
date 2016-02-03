@@ -13,6 +13,7 @@
     </script>
     <% flash.discard(:notification) %>
   <% end %>
+
   <% if alert %>
     <script type="text/javascript">
       Materialize.toast('<%= alert %>', 3000, 'red')

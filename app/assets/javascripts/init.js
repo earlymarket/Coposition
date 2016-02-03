@@ -1,5 +1,5 @@
 $(document).on('ready page:change', function() {
-
+  // Materialize initialization
   // materialize dropdown menu init
   $(".dropdown-button").dropdown({
     hover: true,
@@ -28,4 +28,27 @@ $(document).on('ready page:change', function() {
     });
   });
 
+  // Event listeners
+  setup();
 });
+
+
+function setup() {
+  addEventListeners();
+}
+
+function addEventListeners() {
+  addClickListeners();
+}
+
+
+function addClickListeners() {
+  $(".close").click(function(e){
+    utility.animations.removeEl($(e.currentTarget).parent())
+  });
+  
+  $(".landing-section .start-btn").click(function(e){
+    var offset = $(".landing-section.splash").height();
+    $("body").animate({ scrollTop: offset });
+  });
+}

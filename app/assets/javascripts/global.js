@@ -1,29 +1,7 @@
 /*global utility toastr:true*/
-
-$(document).on('page:change', function(){
-  setup()
-});
-
-$(document).on('page:fetch', function() {
-  utility.animations.exitPage()
-});
-
-
-function setup() {
-  addEventListeners()
-}
-
-function addEventListeners() {
-  addClickListeners()
-}
-
-function addClickListeners() {
-  $(".close").click(function(e){
-    utility.animations.removeEl($(e.currentTarget).parent())
-  });
-
-  $(".landing-section .start-btn").click(function(e){
-    var offset = $(".landing-section.first").height() + $("nav").height();
-    $("body").animate({ scrollTop: offset });
-  });
-}
+$.fn.isOnScreen = function(){
+    var element = this.get(0);
+    var bounds = element.getBoundingClientRect();
+    console.log(bounds.top, bounds.bottom, window.innerHeight);
+    return bounds.top < window.innerHeight && bounds.bottom > 0;
+};

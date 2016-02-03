@@ -1,16 +1,16 @@
 <h3>Your current devices are:</h3><br>
-<div class="list-group">
+<div class="collection">
   <% @devices.each do |device| %>
     <%= render device %>
   <% end %>
 </div>
 
 <div class="row">
-  <div class="col-md-3 col-md-offset-2 m-tb-s">
+  <div class="col m3 offset-m2">
     <%= link_to("Add new device", new_user_device_path, class: "btn btn-primary btn-lg") %>
   </div>
 
-  <div class="col-md-3 col-md-offset-2 m-tb-s">
+  <div class="col m3 offset-m2">
     <%= link_to("Add current device", add_current_user_devices_path, class: "btn btn-primary btn-lg") %>
   </div>
 </div>

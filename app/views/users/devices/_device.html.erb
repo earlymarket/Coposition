@@ -1,5 +1,5 @@
-<div class="list-group-item">
-  <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>" class="list-group-item">
+<div class="collection-item">
+  <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>">
     <h4 class="list-group-item-heading"><%= device.name %></h4>
     <% if device.checkins.exists? %>
       <p class="list-group-item-text">Last reported in <%= device.checkins.last.address%> </p>
@@ -12,13 +12,18 @@
     <% if device.delayed %>
       <p class="list-group-item-text">Timeshifted with a delay of <%= "#{device.delayed.to_s+' minutes'}"%></p>
     <% end %>
-    
   </a>
-  <div class="row pt-m">
-    <ul class="collapsible">
+
+  <% if device.developers.exists? %>
+    <ul class="collapsible" data-collapsible="expandable">
       <% device.developers.each do |developer| %>
         <li>
-          <div class="collapsible-header"><%= developer.company_name%> </div>
+          <div class="collapsible-header">
+            <div class="valign-wrapper">
+              <%= image_tag(developer.logo.url(:thumb), alt: "", class: "circle icon") %>
+              <%= developer.company_name %>
+            </div>
+          </div>
           <div class="collapsible-body">
             <form action="#">
               <p>
@@ -61,6 +66,7 @@
           </div>
         </li>
       <% end %>
+
       <% device.permitted_users.each do |user| %>
         <li>
           <div class="collapsible-header"><%= user.email%> </div>
@@ -107,5 +113,5 @@
         </li>
       <% end %>
     </ul>
-  </div>
+  <% end %>
 </div>
