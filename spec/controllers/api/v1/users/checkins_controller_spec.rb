@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
+RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
   include ControllerMacros, CityMacros
 
   let(:developer){FactoryGirl::create :developer}
@@ -116,7 +116,7 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
         expect(response.header['X-Per-Page']).to eq "30"
       end
     end
-    
+
     context 'with page param' do
       it "should fetch the checkins on that page if they exist" do
         page = 2

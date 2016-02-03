@@ -38,6 +38,11 @@ Rails.application.routes.draw do
             get :status
           end
         end
+        resources :checkins, only: [:index], module: :users do
+          collection do
+            get :last
+          end
+        end
         resources :devices, only: [:index, :show, :update], module: :users do
           member do
             post 'switch_privilege'
@@ -45,7 +50,7 @@ Rails.application.routes.draw do
           collection do
             post 'switch_all_privileges'
           end
-          resources :checkins, only: [:index, :create], module: :devices do
+          resources :checkins, only: [:index, :create] do
             collection do
               get :last
             end

@@ -1,11 +1,11 @@
-class Api::V1::Users::Devices::CheckinsController < Api::ApiController
+class Api::V1::Users::CheckinsController < Api::ApiController
   respond_to :json
 
-  before_action :authenticate, :check_user_approved_developer, :find_device, :check_privilege
+  before_action :authenticate, :check_user_approved_developer, :find_device, :find_owner, :check_privilege
 
   def index
     params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 30
-    checkins = @device.checkins.order('created_at DESC').paginate(page: params[:page], per_page: per_page)
+    checkins = @owner.checkins.order('created_at DESC').paginate(page: params[:page], per_page: per_page)
     paginated_response_headers(checkins)
     checkins = checkins.map do |checkin|
       resolve checkin
@@ -14,7 +14,7 @@ class Api::V1::Users::Devices::CheckinsController < Api::ApiController
   end
 
   def last
-    checkin = @device.checkins.last
+    checkin = @owner.checkins.last
     checkin = resolve checkin
     render json: checkin.to_json
   end
