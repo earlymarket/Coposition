@@ -26,7 +26,6 @@ Rails.application.routes.draw do
           get :demo_user_approves_demo_dev
         end
       end
-      resources :checkins, only: [:create]
       resources :users do
         member do
           get 'last_checkin'
