@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   # Devise
 
-  devise_for :users, controllers: { 
+  devise_for :users, controllers: {
     registrations: 'users/devise/registrations',
     sessions: 'users/devise/sessions'
   }
@@ -16,8 +16,6 @@ Rails.application.routes.draw do
    { registrations: 'developers/devise/registrations' }
 
   # API
-
-  resources :api, only: [:index]
 
   namespace :api, path: '', constraints: {subdomain: 'api'}, defaults: {format: 'json'} do
     namespace :v1 do
@@ -85,7 +83,7 @@ Rails.application.routes.draw do
       member do
         post 'approve'
         post 'reject'
-      end 
+      end
     end
   end
 
