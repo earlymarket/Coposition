@@ -9,24 +9,24 @@ $secondary-color-darker: color("orange", "accent-3");
 $button-raised-color: color("grey", "darken-4");
 
 .dark-text{
-	opacity: 0.87;
+	color: rgba(0, 0, 0, 0.87);
 
 	&.secondary{
-		opacity: 0.54;
+		color: rgba(0, 0, 0, 0.54);
 	}
 	&.hint{
-		opacity: 0.38;
+		color: rgba(0, 0, 0, 0.38);
 	}
 }
 
 .light-text{
-	opacity:1;
+	color: rgba(255, 255, 255, 1);
 
 	&.secondary{
-		opacity: 0.7;
+		color: rgba(255, 255, 255, 0.7);
 	}
 	&.hint{
-		opacity: 0.3;
+		color: rgba(255, 255, 255, 0.3);
 	}
 }
 
