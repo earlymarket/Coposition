@@ -12,18 +12,6 @@ class Api::V1::UsersController < Api::ApiController
     respond_with @user
   end
 
-  def last_checkin
-    checkin = @user.last_checkin
-    device = Device.find(checkin.device_id)
-    render json: [device, checkin]
-  end
-
-  def all_checkins
-    checkins = @user.checkins.order('created_at DESC').paginate(page: params[:page])
-    paginated_response_headers(checkins)
-    render json: checkins
-  end
-
   def requests
     if params[:developer_id]
       requests = @user.requests.where(developer_id: params[:developer_id]).order('created_at DESC').paginate(page: params[:page])

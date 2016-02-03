@@ -28,8 +28,6 @@ Rails.application.routes.draw do
       end
       resources :users do
         member do
-          get 'last_checkin'
-          get 'all_checkins'
           get 'requests'
           get 'last_request'
         end
