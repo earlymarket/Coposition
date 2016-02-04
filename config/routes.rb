@@ -27,16 +27,17 @@ Rails.application.routes.draw do
         end
       end
       resources :users do
-        member do
-          get 'requests'
-          get 'last_request'
-        end
         resources :approvals, only: [:create, :index, :update], module: :users do
           collection do
             get :status
           end
         end
         resources :checkins, only: [:index], module: :users do
+          collection do
+            get :last
+          end
+        end
+        resources :requests, only: [:index], module: :users do
           collection do
             get :last
           end
