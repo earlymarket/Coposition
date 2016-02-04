@@ -87,9 +87,9 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
           device_id: device.id,
           type: "address"
         }
-        expect(res_hash.last['address']).to eq "Denham, GB"
-        expect(res_hash.last['lat']).to eq(51.57471)
-        expect(res_hash.last['lng']).to eq(-0.50626)
+        expect(res_hash.first['address']).to eq "Denham, GB"
+        expect(res_hash.first['lat']).to eq(51.57471)
+        expect(res_hash.first['lng']).to eq(-0.50626)
       end
     end
   end
