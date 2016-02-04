@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
+RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
   include ControllerMacros, CityMacros
 
   let(:developer){FactoryGirl::create :developer}
@@ -63,8 +63,7 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
           user_id: user.id,
           device_id: device.id
         }
-
-        expect(res_hash[:lat]).to be_within(0.00001).of(checkin.lat)
+        expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
       end
 
       it "should fetch the last reported location's address in full by default" do
@@ -74,9 +73,9 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
           type: "address"
         }
 
-        expect(res_hash[:address]).to eq "The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK"
-        expect(res_hash[:lat]).to eq checkin.lat
-        expect(res_hash[:lng]).to eq checkin.lng
+        expect(res_hash.first['address']).to eq "The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK"
+        expect(res_hash.first['lat']).to eq checkin.lat
+        expect(res_hash.first['lng']).to eq checkin.lng
       end
 
       it "should fog the last reported location's address if fogged" do
@@ -88,9 +87,9 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
           device_id: device.id,
           type: "address"
         }
-        expect(res_hash[:address]).to eq "Denham, GB"
-        expect(res_hash[:lat]).to eq(51.57471)
-        expect(res_hash[:lng]).to eq(-0.50626)
+        expect(res_hash.first['address']).to eq "Denham, GB"
+        expect(res_hash.first['lat']).to eq(51.57471)
+        expect(res_hash.first['lng']).to eq(-0.50626)
       end
     end
   end
@@ -109,14 +108,14 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
           user_id: user.id,
           device_id: device.id
         }
-        expect(res_hash[0]['id']).to be device.checkins.last.id
+        expect(res_hash.first['id']).to be device.checkins.last.id
         expect(response.header['X-Next-Page']).to eq "2"
         expect(response.header['X-Current-Page']).to eq "1"
         expect(response.header['X-Total-Entries']).to eq "#{device.checkins.count}"
         expect(response.header['X-Per-Page']).to eq "30"
       end
     end
-    
+
     context 'with page param' do
       it "should fetch the checkins on that page if they exist" do
         page = 2
@@ -125,7 +124,7 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
           device_id: device.id,
           page: page
         }
-        expect(res_hash[0]['id']).to be device.checkins.first.id
+        expect(res_hash.first['id']).to be device.checkins.first.id
         expect(response.header['X-Current-Page']).to eq "#{page}"
         expect(response.header['X-Next-Page']).to eq "null"
       end
@@ -154,7 +153,7 @@ RSpec.describe Api::V1::Users::Devices::CheckinsController, type: :controller do
           lng: Faker::Address.longitude
         }
       }
-      expect(res_hash[:uuid]).to eq device.uuid
+      expect(res_hash.first['uuid']).to eq device.uuid
       expect(Checkin.count).to be(count + 1)
       expect(checkin.device).to be device
     end
