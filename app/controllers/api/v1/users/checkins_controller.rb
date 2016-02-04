@@ -11,13 +11,13 @@ class Api::V1::Users::CheckinsController < Api::ApiController
     checkins = checkins.map do |checkin|
       resolve checkin
     end
-    render json: checkins.to_json
+    render json: checkins
   end
 
   def last
     checkin = @owner.checkins.last
     checkin = resolve checkin
-    render json: checkin.to_json
+    render json: [checkin]
   end
 
   def resolve checkin
@@ -32,7 +32,7 @@ class Api::V1::Users::CheckinsController < Api::ApiController
   def create
     checkin = Checkin.create(allowed_params)
     if checkin.id
-      render json: checkin.to_json
+      render json: [checkin]
     else
       render status: 400, json: { message: 'You must provide a UUID, lat and lng' }
     end
