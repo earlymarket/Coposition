@@ -108,7 +108,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
           user_id: user.id,
           device_id: device.id
         }
-        expect(res_hash[0]['id']).to be device.checkins.last.id
+        expect(res_hash.first['id']).to be device.checkins.last.id
         expect(response.header['X-Next-Page']).to eq "2"
         expect(response.header['X-Current-Page']).to eq "1"
         expect(response.header['X-Total-Entries']).to eq "#{device.checkins.count}"
@@ -124,7 +124,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
           device_id: device.id,
           page: page
         }
-        expect(res_hash[0]['id']).to be device.checkins.first.id
+        expect(res_hash.first['id']).to be device.checkins.first.id
         expect(response.header['X-Current-Page']).to eq "#{page}"
         expect(response.header['X-Next-Page']).to eq "null"
       end
