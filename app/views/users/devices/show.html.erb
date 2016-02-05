@@ -52,7 +52,7 @@
   renderMap();
 </script>
 <br>
-<%= link_to("Delete history", user_device_checkin_path(current_user.url_id, @device.id, @device.checkins.last.id), { method: :delete, class: "btn red white-text"  }) if @device.checkins.exists? %>
+<%= link_to("Delete history", user_device_checkins_path(current_user.url_id, @device.id), { method: :delete, class: "btn red white-text"  }) if @device.checkins.exists? %>
 <%= link_to("Delete device", "#{user_devices_path}/#{@device.id}", { method: :delete, class: "btn red white-text" })%>
 <br>
 <%= render partial: "privacy" %>

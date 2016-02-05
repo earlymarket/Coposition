@@ -79,7 +79,9 @@ Rails.application.routes.draw do
         post 'switch_all_privileges'
         get 'add_current'
       end
-      resources :checkins, only: [:show, :destroy]
+      resources :checkins, only: [:show]
+      delete '/checkins/', to: 'checkins#destroy_all'
+      delete '/checkins/:id', to: 'checkins#destroy'
     end
     resources :approvals, only: [:index, :new, :create] do
       member do
