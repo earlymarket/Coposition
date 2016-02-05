@@ -9,11 +9,13 @@ body {
 .nav-wrapper{
   @extend .fixed;
   z-index: 10;
+
+  // transparency transitions
+  transition: all 0.5s ease;
 }
 
 main {
   flex: 1 0 auto;
-  padding-top: 64px;
 }
 
 // Mobile navigation
@@ -25,6 +27,18 @@ main {
 }
 
 // Other layouts
+.transparent-nav{
+  background-color: rgba(0,0,0,0);
+  box-shadow: none;
+
+  a{
+    @extend .dark-text;
+  }
+  .brand{
+    @extend .dark-text;
+  }
+}
+
 .landing-section{
   width: 100%;
   .row{
@@ -67,10 +81,9 @@ main {
 
     .parallax-container {
       height: 100vh;
-      max-height: 1024px;
       
       .parallax{
-        opacity: 0.5;
+        opacity: 0.8;
       }
     }
   }

@@ -28,6 +28,14 @@ $(document).on('ready page:change', function() {
     });
   });
 
+  $(document).scroll(function(e) {
+    if($(window).scrollTop() > 10){
+      $("nav").removeClass('transparent-nav');
+    }else if($(window).scrollTop() <= 10){
+      $("nav").addClass('transparent-nav');
+    }
+  });
+
   // Event listeners
   setup();
 });
