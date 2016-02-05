@@ -71,7 +71,6 @@ Rails.application.routes.draw do
     resources :devices, except: [:update, :edit] do
       member do
         put 'set_delay'
-        delete 'checkin'
         post 'switch_privilege'
         put 'fog'
       end

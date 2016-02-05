@@ -35,11 +35,11 @@
         <% end %>
       </td>
       <td>
-        <%= link_to checkin_user_device_path(current_user.url_id, @device.id, checkin_id: checkin.id), method: :delete, remote: :true, data: { confirm: "Are you sure?" }, class: "waves-effect waves-orange btn-flat" do %>
+        <%= link_to user_device_checkin_path(current_user.url_id, @device.id, checkin.id), method: :delete, remote: :true, data: { confirm: "Are you sure?" }, class: "waves-effect waves-red btn-flat" do %>
           <i class="small material-icons">delete</i>
         <% end %>
       </td>
-    </tr>  
+    </tr>
   <% end %>
 </table>
 <%= will_paginate @checkins %>
