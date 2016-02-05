@@ -1,4 +1,3 @@
-/*global utility toastr:true*/
 $.fn.isOnScreen = function(){
     var element = this.get(0);
     var bounds = element.getBoundingClientRect();

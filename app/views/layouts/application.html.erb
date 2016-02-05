@@ -19,7 +19,9 @@
   <%= render partial: "layouts/navbar" %>
   <main>
   <%= render partial: "layouts/notifications" %>
+    <div class="landing-page">
       <%= yield :landing_page %>
+    </div>
     <div class="container">
       <%= yield %>
     </div>
