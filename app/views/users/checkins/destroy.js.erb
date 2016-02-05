@@ -1,5 +1,6 @@
 <% if flash[:notice] %>
-  Materialize.toast('<%= notice %>', 3000)
+  Materialize.toast('<%= notice %>', 3000);
   <% flash.discard(:notice) %>
 <% end %>
 utility.animations.removeEl($('#checkin<%= @checkin_id %>'));
+renderMap(<%= @checkin_id %>);
