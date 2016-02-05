@@ -9,10 +9,10 @@ $secondary-color-darker: color("orange", "accent-3");
 $button-raised-color: color("grey", "darken-4");
 
 .dark-text{
-  color: rgba(0, 0, 0, 0.87);
+  color: rgba(0, 0, 0, 0.8);
 
   &.secondary{
-    color: rgba(0, 0, 0, 0.54);
+    color: rgba(0, 0, 0, 0.7);
   }
   &.hint{
     color: rgba(0, 0, 0, 0.38);

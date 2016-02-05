@@ -28,6 +28,8 @@ main {
 .landing-section{
   width: 100%;
   .row{
+    margin-left: auto;
+    margin-right: auto;
     .col{
       padding: 2rem;
     }
@@ -79,9 +81,4 @@ main {
       height: 300px;
     }
   }
-}
-
-// To be removed
-.toast-top-right {
-  top: 74px;
 }

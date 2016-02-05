@@ -14,6 +14,7 @@ $body-text: "Fira Sans", "Helvetica", sans-serif;
 
 html {
   font-family: $body-text;
+  background-color: #fcfcfc;
 }
 
 h1 {
@@ -22,15 +23,19 @@ h1 {
 }
 h2 {
   @extend .dark-text;
+  font-weight: 700;
 }
 h3 {
   @extend .dark-text;
+  font-weight: 700;
 }
 h4{
   @extend .dark-text;
+  font-weight: 700;
 }
 h5{
-
+  @extend .dark-text;
+  font-weight: 700;
 }
 h6{
   
@@ -40,6 +45,7 @@ p {
   @extend .dark-text.secondary;
   line-height: 1.7rem;
   font-size: 1.2rem;
+  font-weight: 400;
   text-align: left;
 }
 
