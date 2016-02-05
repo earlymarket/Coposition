@@ -96,15 +96,14 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     it 'should change privilege for user on a device' do
       approval.approve!
       post :switch_privilege, {
-        permissible_id: second_user.id,
-        permissible_type: 'User',
-        user_id: user.username,
         id: device.id,
-        privilege: 'disallowed',
+        user_id: user.username,
+        permissible_type: 'User',
+        permissible_id: second_user.id,
+        privilege: 'complete',
         format: :json
       }
-      expect(response.status).to be 200
-      expect(device.privilege_for(second_user)).to eq 'disallowed'
+      expect(device.privilege_for(second_user)).to eq 'complete'
     end
 
     it 'should change privilege for developer on all devices' do
