@@ -21,6 +21,16 @@ $(document).on('ready page:change', function() {
   // materialize selectbox init
   $('select').material_select();
 
+  // materialize scrollspy init
+  $('.scrollspy').scrollSpy();
+
+  // materialize scrollfire
+  var options = [
+    {selector: '#security', offset: 100, callback: 'Materialize.fadeInImage("#security .image-container")'},
+    {selector: '#api', offset: 100, callback: 'Materialize.fadeInImage("#api .image-container")'}
+  ];
+  Materialize.scrollFire(options);
+
   // allow materialize toast to be dismissed on click instead of just the default swipe
   $(document).on('click', '#toast-container .toast', function() {
     $(this).fadeOut(function(){

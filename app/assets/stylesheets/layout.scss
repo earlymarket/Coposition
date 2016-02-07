@@ -42,9 +42,11 @@ main {
 
 .landing-section{
   width: 100%;
+  // height: 100vh;
   .row{
     margin-left: auto;
     margin-right: auto;
+
     .col{
       padding: 2rem;
     }
@@ -54,18 +56,21 @@ main {
     height: 300px;
   }
 
+  .image-container{
+    opacity:0;
 
-  .image-container.iphone-map{
-    height: 700px;
-    overflow: hidden;
-    img{
-      height: 130%;
+    &.iphone-map{
+      height: 700px;
+      overflow: hidden;
+      img{
+        height: 130%;
+      }
     }
-  }
-  .image-container.cloud-cp{
-    height: auto;
-    img{
-      width: 100%;
+    &.cloud-cp{
+      height: auto;
+      img{
+        width: 100%;
+      }
     }
   }
 
@@ -114,4 +119,24 @@ main {
       height: 300px;
     }
   }
+}
+
+.contents-menu{
+  position:relative;
+  float:right;
+  top: 100px;
+  right:50px;
+  z-index: 10;
+  
+  a, a:hover, a.active{
+    border-left-color: $primary-color;
+  }
+}
+
+#next-btn{
+  color: black;
+  opacity: 0;
+  bottom: 45px;
+  right: 24px;
+  transition: all 0.5s ease;
 }

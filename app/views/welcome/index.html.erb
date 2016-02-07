@@ -17,36 +17,62 @@
 </section>
 
 
-<section class="landing-section promotion">
-  <article class="row container">
-    <div class="center col s12 m4">
-      <i class="medium material-icons">group</i>
-      <h4>What is CoPosition?</h4>
-      <p>CoPosition is the new way for users and developers to manage location data. Built with customer privacy and developer's ease in mind, CoPosition is the location service you can trust.</p>
+<div class="col hide-on-small-only m3 l2 contents-menu">
+  <ul class="table-of-contents">
+    <li><a href="#coposition">What is CoPosition</a></li>
+    <li><a href="#developers">Develop</a></li>
+    <li><a href="#users">Users</a></li>
+    <li><a href="#security">Security</a></li>
+    <li><a href="#api">API</a></li>
+  </ul>
+</div>
+
+<!-- Down button -->
+<div id="next-btn" class="fixed-action-btn">
+  <a class="btn-floating btn-large">
+    <i class="large material-icons">arrow_downward</i>
+  </a>
+</div>
+
+
+
+<section class="landing-section promotion container">
+  <!-- <article class="row container"> -->
+    <div id="coposition" class="row scrollspy">
+      <div class="center col s12 l4 ">
+        <i class="medium material-icons">group</i>
+        <h4>What is CoPosition?</h4>
+        <p>CoPosition is the new way for users and developers to manage location data. Built with customer privacy and developer's ease in mind, CoPosition is the location service you can trust.</p>
+      </div>
     </div>
 
-    <div class="center col s12 m4">
-      <i class="medium material-icons">pin_drop</i>
-      <h4>For developers</h4>
-      <p>Location data management should be easy and intuitive, not painful and complicated. CoPosition allows you the developer to focus on developing your app while we take care of the location data for you.</p>
+    <div id="developers" class="row scrollspy">
+      <div class="center col s12 l4">
+        <i class="medium material-icons">pin_drop</i>
+        <h4>For developers</h4>
+        <p>Location data management should be easy and intuitive, not painful and complicated. CoPosition allows you the developer to focus on developing your app while we take care of the location data for you.</p>
+      </div>
     </div>
 
-    <div class="center col s12 m4">
-      <i class="medium material-icons">view_carousel</i>
-      <h4>For the users</h4>
-      <p>Add and manage location data of multiple devices all in one place while using advanced features such as fogging and delays to protect your privacy.</p>
+    <div id="users" class="row scrollspy">
+      <div class="center col s12 l4">
+        <i class="medium material-icons">view_carousel</i>
+        <h4>For the users</h4>
+        <p>Add and manage location data of multiple devices all in one place while using advanced features such as fogging and delays to protect your privacy.</p>
+      </div>
     </div>
-  </article>
+  <!-- </article> -->
 </section>
 
-<section class="landing-section buffer-1">
+<div class="divider"></div>
+<!-- <section class="landing-section buffer-1">
   <div class="row parallax-container">
     <div class="parallax"><%= image_tag("background.jpg") %></div>
   </div>
 </section>
+ -->
 
-
-<section class="landing-section full-width container">
+<section id="security" class="landing-section full-width container scrollspy">
   <article class="row">
     <div class="col m12 l6">
       <h3>Secure and Trustworthy</h3>
@@ -67,7 +93,7 @@
 
 <div class="divider"></div>
 
-<section class="landing-section full-width container">
+<section id="api" class="landing-section full-width container scrollspy">
   <article class="row">
     <div class="col l6 hide-on-med-and-down image-container cloud-cp">
       <%= image_tag("cloud-cp.png", class: "float-left slideInLeft") %>
@@ -92,6 +118,8 @@
     <div class="parallax"><%= image_tag("background.jpg") %></div>
   </div>
 </section>
+
+<!-- <div class="divider"></div> -->
 
 <section class="landing-section container already-using">
   <h3 class="center">Apps already using CoPosition</h3>
