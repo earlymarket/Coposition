@@ -64,7 +64,13 @@ table {
 }
 
 footer{
-  p{
+  h5{
+    color: $secondary-color;
+    font-weight: 400;
+    font-size: 1.5rem;
+  }
+
+  a, div{
     @extend .light-text;
   }
 }
