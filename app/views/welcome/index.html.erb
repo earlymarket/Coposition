@@ -37,32 +37,38 @@
 
 
 <section class="landing-section promotion container">
-  <!-- <article class="row container"> -->
-    <div id="coposition" class="row scrollspy">
-      <div class="center card col s12 m6 l4 offset-l1 active">
-        <i class="medium material-icons">group</i>
-        <h4>What is CoPosition?</h4>
-        
-        <p>CoPosition is the new way for users and developers to manage location data. Built with customer privacy and developer's ease in mind, CoPosition is the location service you can trust.</p>
+  <article class="row">
+    <div class="col m6">
+      <div id="coposition" class="row scrollspy">
+        <div class="center card col m10 offset-m1 active">
+          <i class="medium material-icons">group</i>
+          <h4>What is CoPosition?</h4>
+          
+          <p>CoPosition is the new way for users and developers to manage location data. Built with customer privacy and developer's ease in mind, CoPosition is the location service you can trust.</p>
+        </div>
+      </div>
+
+      <div id="developers" class="row scrollspy">
+        <div class="center card col m10 offset-m1">
+          <i class="medium material-icons">pin_drop</i>
+          <h4>For developers</h4>
+          <p>Location data management should be easy and intuitive, not painful and complicated. CoPosition allows you the developer to focus on developing your app while we take care of the location data for you.</p>
+        </div>
+      </div>
+
+      <div id="users" class="row scrollspy">
+        <div class="center card col m10 offset-m1">
+          <i class="medium material-icons">view_carousel</i>
+          <h4>For the users</h4>
+          <p>Add and manage location data of multiple devices all in one place while using advanced features such as fogging and delays to protect your privacy.</p>
+        </div>
       </div>
     </div>
 
-    <div id="developers" class="row scrollspy">
-      <div class="center card col s12 m6 l4 offset-l1">
-        <i class="medium material-icons">pin_drop</i>
-        <h4>For developers</h4>
-        <p>Location data management should be easy and intuitive, not painful and complicated. CoPosition allows you the developer to focus on developing your app while we take care of the location data for you.</p>
-      </div>
+    <div class="col m6">
+      <!-- <%= image_tag("placeholder.png") %> -->
     </div>
-
-    <div id="users" class="row scrollspy">
-      <div class="center card col s12 m6 l4 offset-l1">
-        <i class="medium material-icons">view_carousel</i>
-        <h4>For the users</h4>
-        <p>Add and manage location data of multiple devices all in one place while using advanced features such as fogging and delays to protect your privacy.</p>
-      </div>
-    </div>
-  <!-- </article> -->
+  </article>
 </section>
 
 <div class="divider"></div>
@@ -97,7 +103,7 @@
 <section id="api" class="landing-section full-width container scrollspy">
   <article class="row">
     <div class="col m12 l6 image-container cloud-cp">
-      <%= image_tag("", class: "float-left slideInLeft") %>
+      <!-- <%= image_tag("placeholder.png", class: "float-left slideInLeft") %> -->
     </div>
 
     <div class="col m9 l6">
@@ -114,25 +120,54 @@
   </article>
 </section>
 
+
 <section class="landing-section buffer-2">
   <div class="row parallax-container">
-    <div class="parallax"><%= image_tag("background.jpg") %></div>
+    <div class="parallax"><%= image_tag("picture-map.jpg") %></div>
   </div>
 </section>
-
-<!-- <div class="divider"></div> -->
 
 <section class="landing-section container already-using">
   <h3 class="center">Apps already using CoPosition</h3>
   <article class="row center">
     <div class="col s12 m4 app">
-
+      <!-- <%= image_tag("placeholder.png") %> -->
     </div>
     <div class="col s12 m4 app">
-
+      <!-- <%= image_tag("placeholder.png") %> -->
     </div>
     <div class="col s12 m4 app">
+      <!-- <%= image_tag("placeholder.png") %> -->
+    </div>
+  </article>
+</section>
 
+<div class="divider"></div>
+
+<section id="start" class="landing-section full-width scrollspy center">
+  <article class="row">
+    <div class="col m10 l8 offset-l2 offset-m1">
+      <h4>Ready to start using CoPosition?</h4>
+    </div>
+
+    <div class="row">
+      <form class="col m10 l8 offset-l2 offset-m1">
+        
+        <div class="row">
+          <div class="input-field col s12 m5">
+            <input placeholder="Email" id="email" type="text" class="validate">
+          </div>
+          <div class="input-field col s12 m4">
+            <input placeholder="Username (Optional)" id="username" type="text" class="validate">
+          </div>
+          <div class="col s12 m3">
+            <button class="btn-large waves-effect waves-light" type="submit" name="action">Sign up
+              <i class="material-icons right">send</i>
+            </button>
+          </div>
+        </div>
+
+      </form>
     </div>
   </article>
 </section>

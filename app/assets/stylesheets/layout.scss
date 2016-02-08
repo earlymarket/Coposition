@@ -19,6 +19,11 @@ main {
   padding-top: 64px;
 }
 
+// Footer (move and remove !important)
+footer{
+  margin-top: 0 !important;
+}
+
 // Mobile navigation
 .side-nav{
   .collapsible-header{
@@ -50,12 +55,13 @@ main {
     margin-right: auto;
 
     .col{
-      padding: 2rem;
+      padding-top: 2rem;
+      padding-bottom: 2rem;
     }
   }
 
   .parallax-container{
-    height: 300px;
+    height: 500px;
   }
 
   .image-container{
@@ -117,20 +123,55 @@ main {
 
   &.promotion{
     padding-top: 2.5rem;
-    cursor: pointer;
+    padding-bottom: 4rem; 
+    
+    .card{
+      padding: 2rem;
+      cursor: pointer;
+    }
 
     .active{
       @extend .primary-color.lighten;
       transition: all 0.2s ease;
 
       h4, i{
-        color: $primary-color-darker;
+        color: darken($primary-color-darker, 10%);
+      }
+    }
+  }
+
+  &.full-width{
+    padding: 2rem;
+    padding-top: 3rem;
+    padding-bottom: 4rem; 
+
+    &#start{
+      @extend .primary-color.lighten;
+      padding-bottom: 0;
+
+      article.row{
+        margin-bottom: 0;
+      }
+
+      form{
+        padding: 0;
+
+        input[type="text"]::-webkit-input-placeholder{
+          @extend .dark-text.hint;
+        }
+      }
+
+      #get-started{
+        font-size: 1.3rem;
       }
     }
   }
 
   // Apps using CoPosition section
   &.already-using{
+    padding-top: 2.5rem;
+    padding-bottom: 4rem; 
+
     .app{
       height: 300px;
     }
