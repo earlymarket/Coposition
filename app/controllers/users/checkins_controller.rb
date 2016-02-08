@@ -1,7 +1,21 @@
 class Users::CheckinsController < ApplicationController
   before_action :authenticate_user!
-  before_action :require_checkin_ownership, except: [:destroy_all]
-  before_action :require_device_ownership, only: [:destroy_all]
+  before_action :require_checkin_ownership, except: [:new, :create, :destroy_all]
+  before_action :require_device_ownership, only: [:new, :create, :destroy_all]
+
+  def new
+    @device = Device.find(params[:device_id])
+    @checkin = Device.find(params[:device_id]).checkins.new
+  end
+
+  def create
+    @checkin = Device.find(params[:device_id]).checkins.create(allowed_params)
+    flash[:notice] = "Checked in."
+    respond_to do |format|
+      format.html { redirect_to user_device_path(current_user.url_id, params[:device_id]) }
+      format.js
+    end
+  end
 
   def show
     @checkin = Checkin.find(params[:id])
@@ -25,6 +39,10 @@ class Users::CheckinsController < ApplicationController
   end
 
   private
+
+    def allowed_params
+      params.require(:checkin).permit(:uuid, :lat, :lng, :device_id)
+    end
 
     def require_checkin_ownership
       unless user_owns_checkin?

@@ -1,0 +1,6 @@
+<% if flash[:notice] %>
+  Materialize.toast('<%= notice %>', 3000);
+  <% flash.discard(:notice) %>
+<% end %>
+checkins.push(<%= raw @checkin.to_json %>)
+renderMap();
