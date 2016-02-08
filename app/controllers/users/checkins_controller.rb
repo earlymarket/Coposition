@@ -9,7 +9,8 @@ class Users::CheckinsController < ApplicationController
   end
 
   def create
-    @checkin = Device.find(params[:device_id]).checkins.create(allowed_params)
+    @device = Device.find(params[:device_id])
+    @checkin = @device.checkins.create(allowed_params)
     flash[:notice] = "Checked in."
     respond_to do |format|
       format.html { redirect_to user_device_path(current_user.url_id, params[:device_id]) }

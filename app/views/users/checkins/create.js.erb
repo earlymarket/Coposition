@@ -2,5 +2,6 @@
   Materialize.toast('<%= notice %>', 3000);
   <% flash.discard(:notice) %>
 <% end %>
+$('#checkin-table').prepend('<%= j render("users/devices/checkin_table_row", checkin: @checkin) %>');
 checkins.push(<%= raw @checkin.to_json %>)
 renderMap();
