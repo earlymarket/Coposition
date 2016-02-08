@@ -35,13 +35,13 @@ $button-raised-color: color("grey", "darken-4");
   background-color: $primary-color;
 
   &.lighten{
-    background-color: $secondary-color-lighter;
-    color: black;
+    @extend .dark-text;
+    background-color: $primary-color-lighter;
   }
 
   &.darken{
-    background-color: $secondary-color-darker;
-    color: white;
+    @extend .light-text;
+    background-color: $primary-color-darker;
   }
 }
 

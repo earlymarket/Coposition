@@ -40,6 +40,11 @@ $(document).on('ready page:change', function() {
       });
     });
 
+    $(".promotion .card").unbind('click').click(function(e) {
+      $(".promotion .card").removeClass('active');
+      $(this).addClass('active');
+    });
+
   } else {
     $("main").css('padding-top', '64px');
   }

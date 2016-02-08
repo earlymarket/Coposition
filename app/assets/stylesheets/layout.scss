@@ -115,6 +115,20 @@ main {
     }
   }
 
+  &.promotion{
+    padding-top: 2.5rem;
+    cursor: pointer;
+
+    .active{
+      @extend .primary-color.lighten;
+      transition: all 0.2s ease;
+
+      h4, i{
+        color: $primary-color-darker;
+      }
+    }
+  }
+
   // Apps using CoPosition section
   &.already-using{
     .app{
