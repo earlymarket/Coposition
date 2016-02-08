@@ -1,6 +1,6 @@
 <h1><%= @device.name %></h1>
 
-<div id="map" class="checkin-map valign-wrapper"></div>
+<div id="map" class="checkin-map center valign-wrapper"></div>
 <br>
 <%= link_to("Delete history", user_device_checkins_path(current_user.url_id, @device.id), { method: :delete, class: "btn red white-text"  }) if @device.checkins.exists? %>
 <%= link_to("Delete device", "#{user_devices_path}/#{@device.id}", { method: :delete, class: "btn red white-text" })%>
@@ -27,7 +27,8 @@
     var checkin = {
       'checkin[lat]': position.coords.latitude,
       'checkin[lng]': position.coords.longitude,
-      'checkin[uuid]': '<%= j @device.uuid %>'
+      'checkin[uuid]': '<%= j @device.uuid %>',
+      'checkin[fogged]': '<%= j "@device.fogged" %>'
     }
 
     checkinPath += '?'
