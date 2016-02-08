@@ -2,7 +2,7 @@ class Api::ApiController < ActionController::Base
 
 
   private
- 
+
   def authenticate
     api_key = request.headers['X-Api-Key']
     @dev = Developer.where(api_key: api_key).first if api_key
@@ -45,17 +45,23 @@ class Api::ApiController < ActionController::Base
   end
 
   def find_device
-    @device = Device.find(params[:device_id])
+    if params[:device_id] then @device = Device.find(params[:device_id]) end
+  end
+
+  def find_owner
+    @owner = @device || find_by_id(params[:user_id])
   end
 
   def model_find(type)
     [User, Developer].find { |model| model.name == type.titleize}
   end
-  
+
   def check_privilege
-    unless @device.privilege_for(@dev) == "complete"
-      head status: :unauthorized
-      return false
+    if @device
+      unless @device.privilege_for(@dev) == "complete"
+        head status: :unauthorized
+        return false
+      end
     end
   end
 
