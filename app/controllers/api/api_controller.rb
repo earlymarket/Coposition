@@ -91,8 +91,6 @@ class Api::ApiController < ActionController::Base
     arguments
   end
 
-  #params[:origin] is temporary solution until we have a way of checking if request came from Copo app.
-  #If from app, then has originated from a user action, as no developer controls on app (currently)
   def req_from_coposition_app?
     @from_copo_app ||= request.headers["X-Secret-App-Key"] == Rails.application.secrets.mobile_app_key
   end
