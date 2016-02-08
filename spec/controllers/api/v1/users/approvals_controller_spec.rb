@@ -76,13 +76,13 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
     context 'when post to create' do
 
       it "should be able to create a developer approval" do
+        request.headers['X-Secret-App-Key'] = "this-is-a-mobile-app"
         post :create, {
           user_id: user.id,
           approval: { 
             approvable: developer.id,
             approvable_type: 'Developer'
           },
-          origin: 'from-copo-app',
           format: :json
         }
         expect(Approval.last.user).to eq user
@@ -121,6 +121,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
       end
 
       it "should approve a developer request" do
+        request.headers['X-Secret-App-Key'] = "this-is-a-mobile-app"
         Approval.link(user,developer,'Developer')
         expect(Approval.last.status).to eq 'developer-requested' 
         post :create, {
@@ -129,13 +130,13 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
             approvable: developer.id,
             approvable_type: 'Developer'
           },
-          origin: 'from-copo-app',
           format: :json
         }
         expect(Approval.last.status).to eq 'accepted' 
       end
 
       it "should approve a friend request" do
+        request.headers['X-Secret-App-Key'] = "this-is-a-mobile-app"
         Approval.link(second_user,user,'User')
         expect(Approval.last.status).to eq 'requested' 
         post :create, {
@@ -144,7 +145,6 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
             approvable: second_user.id,
             approvable_type: 'User'
           },
-          origin: 'from-copo-app',
           format: :json
         }
         expect(Approval.first.status).to eq 'accepted'       
