@@ -1,12 +1,12 @@
 <tr id="checkin<%= checkin.id %>" class="animated">
   <td>
+    <%= checkin.created_at.strftime("%a #{checkin.created_at.day.ordinalize} %b %T") %>
+  </td>
+  <td>
     <%= checkin.lat %>
   </td>
   <td>
     <%= checkin.lng %>
-  </td>
-  <td>
-    <%= checkin.created_at.strftime("%a #{checkin.created_at.day.ordinalize} %b %T") %>
   </td>
   <td>
     <%= checkin.fogged.to_s.titleize %>
