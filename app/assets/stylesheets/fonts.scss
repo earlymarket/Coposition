@@ -22,19 +22,19 @@ h1 {
   text-align: center;
 }
 h2 {
-  @extend .dark-text;
+  @extend .dark-text, .brand;
   font-weight: 700;
 }
 h3 {
-  @extend .dark-text;
+  @extend .dark-text, .brand;
   font-weight: 700;
 }
 h4{
-  @extend .dark-text;
+  @extend .dark-text, .brand;
   font-weight: 700;
 }
 h5{
-  @extend .dark-text;
+  @extend .dark-text, .brand;
   font-weight: 700;
 }
 h6{
