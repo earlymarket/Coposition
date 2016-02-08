@@ -25,8 +25,8 @@
   navigator.geolocation.getCurrentPosition(function(position){
 
     var checkin = {
-      'checkin[lat]': position.coords.latitude,
-      'checkin[lng]': position.coords.longitude,
+      'checkin[lat]': position.coords.latitude.toFixed(6),
+      'checkin[lng]': position.coords.longitude.toFixed(6),
       'checkin[uuid]': '<%= j @device.uuid %>'
     }
 
