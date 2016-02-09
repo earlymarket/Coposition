@@ -17,32 +17,29 @@
 
 <script>
 var current_user_id =  <%= @current_user_id %>;
-var permissions_path = "<%= permissions_user_devices_path%>";
+var permissions_path = "<%= user_permissions_path%>";
 
 function update_radios(data){
   $.each( data, function( index, permission ){
-    var device = permission.device_id;
-    var permissible = permission.permissible_id;
-    var type = permission.permissible_type;
+    var permission_id = permission.id;
     var priv = permission.privilege;
-    $('input[data-device="'+device+'"][data-permissible="'+permissible+'"][data-permissible-type="'+type+'"][data-privilege="'+priv+'"]').prop('checked', true);
+    $('input[data-permission="'+permission_id+'"][data-privilege="'+priv+'"]').prop('checked', true);
   });
 }
 
 function get_permissions(){ 
   $.ajax({
-    url: permissions_path,
-    context: document.body
+    url: permissions_path
   }).done(function(data) {
     update_radios(data);
   });
 }
 
-function update_permission(device_id, permissible_id, type, privilege){
+function update_permission(permission, device_id, privilege){
   $.ajax({
-    url: "/users/"+current_user_id+"/devices/"+device_id+"/switch_privilege",
-    type: 'POST',
-    data: { permissible: permissible_id, privilege: privilege, permissible_type: type },
+    url: "/users/"+current_user_id+"/devices/"+device_id+"/permissions/"+permission+"",
+    type: 'PUT',
+    data: { permission : { privilege: privilege } },
   }).done(function() {
     get_permissions();
   });
@@ -51,11 +48,10 @@ function update_permission(device_id, permissible_id, type, privilege){
 function radio_click() {
   $(".privilege-label").on( "click", function( event ) {
     var dataset = event.target.dataset
+    var permission = dataset['permission'];
     var device_id = dataset['device'];
-    var permissible_id = dataset['permissible'];
-    var type = dataset['permissibleType'];
     var privilege = dataset['privilege'];
-    update_permission(device_id, permissible_id, type, privilege)
+    update_permission(permission, device_id, privilege)
   });
 }
 get_permissions();
