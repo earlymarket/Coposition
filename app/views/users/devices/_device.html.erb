@@ -14,7 +14,7 @@
     <% end %>
   </a>
 
-  <% if device.developers.exists? %>
+  <% if device.developers.exists? || device.permitted_users.exists? %>
     <ul class="collapsible" data-collapsible="expandable">
       <% device.developers.each do |developer| %>
         <li>
