@@ -19,11 +19,16 @@
 var current_user_id =  <%= @current_user_id %>;
 var permissions_path = "<%= user_permissions_path%>";
 
-function update_radios(data){
+function update_controls(data){
   $.each( data, function( index, permission ){
     var permission_id = permission.id;
     var priv = permission.privilege;
-    $('input[data-permission="'+permission_id+'"][data-privilege="'+priv+'"]').prop('checked', true);
+    var bypass_fogging = permission.bypass_fogging;
+    var show_history = permission.show_history;
+    $('li[data-permission="'+permission_id+'"]>div.bf>label>input').prop('checked', bypass_fogging);
+    $('li[data-permission="'+permission_id+'"]>div.sh>label>input').prop('checked', show_history);
+    $('li[data-permission="'+permission_id+'"]>div.input-field>div.select-wrapper> select').val(priv);
+    $('select').material_select();
   });
 }
 
@@ -31,29 +36,46 @@ function get_permissions(){
   $.ajax({
     url: permissions_path
   }).done(function(data) {
-    update_radios(data);
+    update_controls(data);
   });
 }
 
-function update_permission(permission, device_id, privilege){
+function update_permission(permission, device_id, attribute, value){
+  if (attribute == 'privilege'){
+    var data = { permission : { privilege: value } }
+  } else if (attribute == 'bypass_fogging'){
+    var data = { permission : { bypass_fogging: value } }
+  } else {
+    var data = { permission : { show_history: value } }
+  }
   $.ajax({
     url: "/users/"+current_user_id+"/devices/"+device_id+"/permissions/"+permission+"",
     type: 'PUT',
-    data: { permission : { privilege: privilege } },
+    data: data,
   }).done(function() {
     get_permissions();
   });
 }
 
-function radio_click() {
-  $(".privilege-label").on( "click", function( event ) {
-    var dataset = event.target.dataset
-    var permission = dataset['permission'];
-    var device_id = dataset['device'];
-    var privilege = dataset['privilege'];
-    update_permission(permission, device_id, privilege)
+function select_click() {
+  $(".privilege").change(function( event ) {
+    var privilege = $(this).find(':selected').val();
+    var permission = $(event.target).parents('li.collection-item').data().permission;
+    var device_id = $(event.target).parents('ul.collection').data().device;
+    update_permission(permission, device_id, 'privilege', privilege)
   });
 }
-get_permissions();
-radio_click();
+
+function toggle_click(){
+  $(".switch").change(function( event ) {
+    var state = $(event.target).prop('checked');
+    var permission = $(event.target).parents('li.collection-item').data().permission;
+    var device_id = $(event.target).parents('ul.collection').data().device;
+    var attribute = $(this).attr('name');
+    update_permission(permission, device_id, attribute, state)
+  });
+}
+
+select_click();
+toggle_click();
 </script>
