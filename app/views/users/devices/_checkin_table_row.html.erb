@@ -9,7 +9,7 @@
     <%= checkin.lng %>
   </td>
   <td>
-    <%= checkin.fogged.to_s.titleize %>
+    <%= checkin_fogged_icon(checkin.fogged) %>
   </td>
   <td>
     <%= link_to user_device_checkin_path(current_user.url_id, @device.id, checkin.id), class: "waves-effect waves-orange btn-flat" do %>
