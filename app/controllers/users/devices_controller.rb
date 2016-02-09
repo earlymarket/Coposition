@@ -98,7 +98,11 @@ class Users::DevicesController < ApplicationController
 
   def set_delay
     @device = Device.find(params[:id])
-    @device.delayed = params[:mins]
+    if @device.delayed.zero?
+      @device.delayed = nil
+    else
+      @device.delayed = params[:mins]
+    end
     @device.save
   end
 
