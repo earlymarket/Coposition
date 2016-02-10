@@ -1,19 +1,43 @@
 $brand: "Comfortaa", "Helvetica", sans-serif;
+$body-text: "Fira Sans", "Helvetica", sans-serif;
 
 .monospace{
   font-family: "Fira Mono", monospace;
   font-size: 1.1rem;
 }
 
-html {
-  font-family: "Fira Sans", "Helvetica", sans-serif;
-}
-
 .brand {
   font-family: $brand;
 }
 
+
+
+html {
+  font-family: $body-text;
+}
+
+h1 {
+  @extend .brand;
+  text-align: center;
+}
+h2 {
+  @extend .dark-text;
+}
+h3 {
+  @extend .dark-text;
+}
+h4{
+  @extend .dark-text;
+}
+h5{
+
+}
+h6{
+  
+}
+
 p {
+  @extend .dark-text.secondary;
   line-height: 1.7rem;
   font-size: 1.2rem;
   text-align: left;
@@ -31,5 +55,11 @@ pre {
 
 table {
   font-size: 1.5rem;
+}
+
+footer{
+  p{
+    @extend .light-text;
+  }
 }
 

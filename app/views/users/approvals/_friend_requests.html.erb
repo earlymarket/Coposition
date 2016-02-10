@@ -1,15 +1,19 @@
 <% if @friend_requests %>
 
-You have <%= @friend_requests.length %> friend requests and <%= @pending_friends.length %> pending friends.
 <div class='list-group'>
   <% @friend_requests.each do |friend| %>
     <div class='list-group-item'>
-      <h5 class='list-group-item-heading'><%= friend.email %></h5>
-      <%= form_for Approval.new, url: user_approvals_path, class: "form-group" do |f| %>
-        <%= f.hidden_field :user, value: friend.email, class: "form-control input-lg fifth-width" %><br />
-        <%= f.hidden_field :approvable_type, value: 'User', class: "form-control input-lg fifth-width" %><br />
-        <%= f.submit("Accept", class: "form-control btn btn-default") %>
-      <% end %>
+      <% app = current_user.approvals.where(approvable: friend).first %>
+      <div id="<%= "app_#{app.id}" %>"class="panel panel-default m-m third-width animated flipInY">
+        <div class="panel-heading">
+          <h4><%= User.find(app.approvable_id).email %></h4>
+        </div>
+        <div class="panel-body input-group">
+          <%= button_to "Accept", approve_user_approval_path(current_user.url_id, app.id), remote: true, class: "btn btn-success m-m" %>
+          <%= button_to "Reject", reject_user_approval_path(current_user.url_id, app.id), remote: true, class: "btn btn-danger" %>
+        </div>
+        <br>
+      </div>
     </div>
   <% end %>
 </div>

@@ -37,7 +37,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
   end
 
   def switch_privilege
-    model = [User, Developer].find { |x| x.name == params[:permissible_type]}
+    model = model_find(params[:permissible_type])
     @permissible = model.where(id: params[:permissible_id]).first
     device = @user.devices.where(id: params[:id]).first
     if (device_exists? device) && (resource_exists?(params[:permissible_type], @permissible))
@@ -47,7 +47,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
   end
 
   def switch_all_privileges
-    model = [User, Developer].find { |x| x.name == params[:permissible_type]}
+    model = model_find(params[:permissible_type])
     @permissible = model.where(id: params[:permissible_id]).first
     devices = @user.devices
     permissions = []
@@ -69,7 +69,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
     end
 
     def device_params
-      params.require(:device).permit(:name, :fogged, :delayed)
+      params.require(:device).permit(:name, :fogged, :delayed, :alias)
     end
 
 end

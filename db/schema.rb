@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160127131324) do
+ActiveRecord::Schema.define(version: 20160209103131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,7 @@ ActiveRecord::Schema.define(version: 20160127131324) do
     t.string  "name"
     t.boolean "fogged",  default: false
     t.integer "delayed"
+    t.string  "alias"
   end
 
   add_index "devices", ["uuid"], name: "index_devices_on_uuid", using: :btree
@@ -106,6 +107,8 @@ ActiveRecord::Schema.define(version: 20160127131324) do
     t.integer "device_id"
     t.integer "privilege"
     t.string  "permissible_type"
+    t.boolean "bypass_fogging",   default: false
+    t.boolean "show_history",     default: false
   end
 
   create_table "requests", force: :cascade do |t|

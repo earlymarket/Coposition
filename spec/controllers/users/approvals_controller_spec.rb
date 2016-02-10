@@ -29,7 +29,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         post :create, {
           user_id: user.id,
           approval: { 
-            user: developer.email,
+            approvable: developer.email,
             approvable_type: 'Developer'
           }
         }
@@ -44,7 +44,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         post :create, {
           user_id: user.id,
           approval: { 
-            user: developer.email,
+            approvable: developer.email,
             approvable_type: 'Developer'
           }
         }
@@ -59,7 +59,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         post :create, {
           user_id: user.id,
           approval: { 
-            user: friend.email,
+            approvable: friend.email,
             approvable_type: 'User'
           }
         }
@@ -76,7 +76,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         post :create, {
           user_id: user.id,
           approval: { 
-            user: friend.email,
+            approvable: friend.email,
             approvable_type: 'User'
           }
         }
@@ -93,7 +93,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         post :create, {
           user_id: user.id,
           approval: { 
-            user: 'does@not.exist',
+            approvable: 'does@not.exist',
             approvable_type: 'Developer'
           }
         }

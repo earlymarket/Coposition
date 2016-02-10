@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   # Devise
 
-  devise_for :users, controllers: { 
+  devise_for :users, controllers: {
     registrations: 'users/devise/registrations',
     sessions: 'users/devise/sessions'
   }
@@ -16,8 +16,6 @@ Rails.application.routes.draw do
    { registrations: 'developers/devise/registrations' }
 
   # API
-
-  resources :api, only: [:index]
 
   namespace :api, path: '', constraints: {subdomain: 'api'}, defaults: {format: 'json'} do
     namespace :v1 do
@@ -28,17 +26,20 @@ Rails.application.routes.draw do
           get :demo_user_approves_demo_dev
         end
       end
-      resources :checkins, only: [:create]
       resources :users do
-        member do
-          get 'last_checkin'
-          get 'all_checkins'
-          get 'requests'
-          get 'last_request'
-        end
         resources :approvals, only: [:create, :index, :update], module: :users do
           collection do
             get :status
+          end
+        end
+        resources :checkins, only: [:index], module: :users do
+          collection do
+            get :last
+          end
+        end
+        resources :requests, only: [:index], module: :users do
+          collection do
+            get :last
           end
         end
         resources :devices, only: [:index, :show, :update], module: :users do
@@ -48,7 +49,7 @@ Rails.application.routes.draw do
           collection do
             post 'switch_all_privileges'
           end
-          resources :checkins, only: [:index, :create], module: :devices do
+          resources :checkins, only: [:index, :create] do
             collection do
               get :last
             end
@@ -85,7 +86,7 @@ Rails.application.routes.draw do
       member do
         post 'approve'
         post 'reject'
-      end 
+      end
     end
   end
 

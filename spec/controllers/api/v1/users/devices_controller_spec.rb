@@ -6,8 +6,8 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   let(:device){FactoryGirl::create :device}
   let(:developer) do
     dev = FactoryGirl::create :developer
-    dev.request_approval_from(user)
-    user.approve_developer(dev)
+    Approval.link(user,dev,'Developer')
+    Approval.accept(user,dev,'Developer')
     dev
   end
   let(:user) do
@@ -17,8 +17,8 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   end
   let(:second_user) do
     us = FactoryGirl::create :user
-    developer.request_approval_from(us)
-    us.approve_developer(developer)
+    Approval.link(us,developer,'Developer')
+    Approval.accept(us,developer,'Developer')
     us
   end
   let(:approval) { create_approval(user, second_user) }
@@ -96,15 +96,14 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     it 'should change privilege for user on a device' do
       approval.approve!
       post :switch_privilege, {
-        permissible_id: second_user.id,
-        permissible_type: 'User',
-        user_id: user.username,
         id: device.id,
-        privilege: 'disallowed',
+        user_id: user.username,
+        permissible_type: 'User',
+        permissible_id: second_user.id,
+        privilege: 'complete',
         format: :json
       }
-      expect(response.status).to be 200
-      expect(device.privilege_for(second_user)).to eq 'disallowed'
+      expect(device.privilege_for(second_user)).to eq 'complete'
     end
 
     it 'should change privilege for developer on all devices' do

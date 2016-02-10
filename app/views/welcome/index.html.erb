@@ -1,44 +1,106 @@
 <% content_for :landing_page do %>
-<section class="landing-section first">
-  <div class="row valign-wrapper parallax-container">
-    <div class="valign center-align center">
-      <%= image_tag("coposition.png", style: "margin: 2em") %>
-      <h1 class="brand" data-in-effect="bounceIn">CONTROL YOUR LOCATION DATA</h1>
+<section class="landing-section splash">
+  <div class="valign-wrapper parallax-container">
+    <div class="valign center">
+      <%= image_tag("coposition.png") %>
+      <h1 class="brand">CONTROL YOUR LOCATION DATA</h1>
       <h5>Worry free location data management.</h5>
-      <a class="start-btn btn-large wave-light">Getting Started</a>
+      <a class="start-btn btn-large wave-light">What is CoPosition?</a>
     </div>
     <div class="parallax"><%= image_tag("background.jpg") %></div>
   </div>
 </section>
 
-<section class="landing-section second">
-  <div class="row">
-    <div class="col s12 m6">
-      <h3>For the users</h3>
+
+<section class="landing-section promotion">
+  <article class="row container">
+    <div class="center col s12 m4">
+      <i class="medium material-icons">group</i>
+      <h4>What is CoPosition?</h4>
+      <p>CoPosition is the new way for users and developers to manage location data. Built with customer privacy and developer's ease in mind, CoPosition is the location service you can trust.</p>
+    </div>
+
+    <div class="center col s12 m4">
+      <i class="medium material-icons">pin_drop</i>
+      <h4>For developers</h4>
+      <p>Location data management should be easy and intuitive, not painful and complicated. CoPosition allows you the developer to focus on developing your app while we take care of the location data for you.</p>
+    </div>
+
+    <div class="center col s12 m4">
+      <i class="medium material-icons">view_carousel</i>
+      <h4>For the users</h4>
+      <p>Add and manage location data of multiple devices all in one place while using advanced features such as fogging and delays to protect your privacy.</p>
+    </div>
+  </article>
+</section>
+
+<section class="landing-section buffer-1">
+  <div class="row parallax-container">
+    <div class="parallax"><%= image_tag("background.jpg") %></div>
+  </div>
+</section>
+
+
+<section class="landing-section full-width container">
+  <article class="row">
+    <div class="col m12 l6">
+      <h3>Secure and Trustworthy</h3>
       
-      <h5>Your location data, under your control</h5>
-      <p>Control your location data with all the privacy you want minus all the fuss. CoPosition lets you manage how you share your location with multiple apps across multiple devices all in one place.</p>
+      <p>Security of your data is of utmost importance to us that's why we strive to put security at the top of our priorities. You never have to worry about your location data being used for purposes you did not consent to.</p>
 
       <h5>Fogging and Delay</h5>
       <p>With CoPosition, you can fog your location data so that an app can only know your approximate location. You can also send a delayed location data to an app and the app will only know your location a set number of time in the past.</p>
-      <a class="btn wave-light">Learn more</a>
+
+      <!-- <a class="btn wave-light">Learn more</a> -->
     </div>
-  </div>
+
+    <div class="col l6 hide-on-med-and-down image-container iphone-map">
+      <%= image_tag("iphone-map.png", class: "float-right slideInRight") %>
+    </div>
+  </article>
 </section>
 
 <div class="divider"></div>
 
-<section class="landing-section third">
-  <div class="row">
-    <div class="col s12 m6 offset-m6">
-      <h3>For the developers</h3>
-      
-      <h5>Easy, secure and fuss free</h5>
-      <p>One easy to use API to manage all your users location data. CoPosition is secure, easy to implement and dependable.</p>
-
-      <p>Our API enables you to focus on what matters for your app and we'll take care of managing your user's location data and geocoding for you while freeing up valuable bandwidth you would be using otherwise. </p>
-      <%= link_to("Learn more", api_path, class: "btn wave-light") %>
+<section class="landing-section full-width container">
+  <article class="row">
+    <div class="col l6 hide-on-med-and-down image-container cloud-cp">
+      <%= image_tag("cloud-cp.png", class: "float-left slideInLeft") %>
     </div>
+
+    <div class="col m12 l6">
+      <h3>Easy but powerful</h3>
+      
+      <p>CoPosition provides a single easy to use dashboard for managing your location data settings between all the devices you own and all the apps that ask for your location data.</p>
+
+      <h5>Easy to use API</h5>
+
+      <p>Our HTTP API enables you, the developer, to focus on what matters for your app and we'll take care of managing your user's location data and geocoding for you while freeing up valuable bandwidth and processing power you would be using otherwise.</p>
+
+      <!-- <%= link_to("Learn more", api_path, class: "btn wave-light") %> -->
+    </div>
+  </article>
+</section>
+
+<section class="landing-section buffer-2">
+  <div class="row parallax-container">
+    <div class="parallax"><%= image_tag("background.jpg") %></div>
   </div>
 </section>
+
+<section class="landing-section container already-using">
+  <h3 class="center">Apps already using CoPosition</h3>
+  <article class="row center">
+    <div class="col s12 m4 app">
+
+    </div>
+    <div class="col s12 m4 app">
+
+    </div>
+    <div class="col s12 m4 app">
+
+    </div>
+  </article>
+</section>
+
 <% end %>

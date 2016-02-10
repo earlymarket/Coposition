@@ -8,18 +8,14 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def create
-    model = [User, Developer].find { |x| x.name == allowed_params[:approvable_type].titleize}
-    @approvable = model.find_by(email: allowed_params[:user])
-    if @approvable
-      if current_user.friend_requests.include?(@approvable)
-        Approval.accept(current_user.id, @approvable.id, 'User')
-        flash[:notice] = "Friend added."
-      elsif @approvable.class.to_s == 'Developer'
-        current_user.link_with(@approvable) unless current_user.approve_developer(@approvable)
-        flash[:notice] = "Developer added."
-      else
-        Approval.link(current_user.id, @approvable.id, 'User')
-        flash[:alert] = "Friend request sent."
+    type = allowed_params[:approvable_type]
+    model = model_find(type)
+    approvable = model.find_by(email: allowed_params[:approvable])
+    if approvable
+      flash[:notice] = "Approval already exists"
+      flash[:notice] = "Request sent" if Approval.link(current_user, approvable, type)
+      if (type == 'Developer') || (current_user.friend_requests.include?(approvable))
+        flash[:notice] = "#{type} added!" if Approval.accept(current_user, approvable, type)
       end
       redirect_to user_approvals_path
     else
@@ -36,7 +32,7 @@ class Users::ApprovalsController < ApplicationController
     # Redirect if foreign app failed to create a pending approval.
     if @approved_devs.length == 0 && @pending_approvals.length == 0 && params[:redirect]
       developer = Developer.find_by(api_key: params[:api_key])
-      developer.request_approval_from current_user
+      Approval.link(current_user, developer, 'Developer')
       @pending_approvals = current_user.pending_approvals
     elsif @pending_approvals.length == 0 && params[:redirect]
       redirect_to params[:redirect]
@@ -46,15 +42,24 @@ class Users::ApprovalsController < ApplicationController
   def approve
     @approval = Approval.where(id: params[:id], 
       user: current_user).first
-    @approval.approve!
+    Approval.accept(current_user, @approval.approvable, @approval.approvable_type)
     @approved_devs = current_user.developers
+    @friends = current_user.friends
+    @friend_requests = current_user.friend_requests
+    @pending_friends = current_user.pending_friends
   end
 
   def reject
     @approval = Approval.where(id: params[:id], 
       user: current_user).first
+    if @approval.approvable_type == 'User'
+      Approval.where(user: @approval.approvable, approvable: @approval.user, approvable_type: 'User').first.destroy
+    end
     @approval.destroy
     @approved_devs = current_user.developers
+    @friends = current_user.friends
+    @friend_requests = current_user.friend_requests
+    @pending_friends = current_user.pending_friends
     render "users/approvals/approve"
   end
 
@@ -73,7 +78,7 @@ class Users::ApprovalsController < ApplicationController
     end
 
     def allowed_params
-      params.require(:approval).permit(:user, :approvable_type)
+      params.require(:approval).permit(:approvable, :approvable_type)
     end
 
 end
