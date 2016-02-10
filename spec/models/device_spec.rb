@@ -31,7 +31,7 @@ RSpec.describe Device, type: :model do
   it "should change privilege levels for a developer" do
     expect(device.privilege_for developer).to eq "complete"
     
-    device.change_privilege_for(developer, 2)
+    device.change_privilege_for(developer, 'disallowed')
 
     expect(device.privilege_for developer).to eq "disallowed"
 
