@@ -7,6 +7,6 @@ class Permission < ActiveRecord::Base
     p.privilege = :complete
   end
 
-  enum privilege: [:complete, :last_only, :disallowed]
+  enum privilege: [:disallowed, :last_only, :complete]
 
 end
