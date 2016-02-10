@@ -16,10 +16,7 @@
           <% device.developers.each do |developer| %>
             <% @permission =  device.permissions.where(permissible: developer, permissible_type: 'Developer').first %>
             <li class="collection-item row" data-permission=<%=@permission.id%>>
-              <div class="valign-wrapper col s5">
-                <%= image_tag(developer.logo.url(:thumb), alt: "", class: "circle icon") %>
-                <%= developer.company_name %>
-              </div>
+              <%= permissible_title(developer) %>
               <%= render partial: "users/permissions/controls", object: @permission %>
             </li>
           <% end %>
@@ -27,9 +24,7 @@
           <% device.permitted_users.each do |friend| %>
             <% @permission =  device.permissions.where(permissible: friend, permissible_type: 'User').first %>
             <li class="collection-item row" data-permission=<%=@permission.id%>>
-              <div class="valign-wrapper col s5">
-                <%= friend.email %>
-              </div>
+              <%= permissible_title(friend) %>
               <%= render partial: "users/permissions/controls", object: @permission %>
             </li>
           <% end %>
