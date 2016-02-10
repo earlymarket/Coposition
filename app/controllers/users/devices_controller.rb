@@ -65,6 +65,7 @@ class Users::DevicesController < ApplicationController
     @device = Device.find(params[:id])
     @device.change_privilege_for(@permissible, params[:privilege])
     @privilege = @device.privilege_for(@permissible)
+    @r_privilege = @device.reverse_privilege_for(@permissible)
     render nothing: true
   end
 
@@ -75,6 +76,7 @@ class Users::DevicesController < ApplicationController
     @devices.each do |device|
       device.change_privilege_for(@permissible, params[:privilege])
       @privilege = device.privilege_for(@permissible)
+      @r_privilege = device.reverse_privilege_for(@permissible)
     end
   end
 
