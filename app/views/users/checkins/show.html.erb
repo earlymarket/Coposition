@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col s12 m7">
+  <div class="col">
     <div class="card">
       <div class="card-image">
         <img id="mapholder" src="" width="500" height="250">
@@ -9,10 +9,11 @@
         <ul>
           <li>Checkin ID: <%= @checkin.id %></li>
           <li>Created on: <%= checkins_humanize_date(@checkin.created_at) %></li>
-          <li>Coordinates: <%=  "[#{@checkin.lat}, #{@checkin.lng}]" %></li>
+          <li>Latitude: <%=  @checkin.lat %></li>
+          <li>Longitude <%= @checkin.lng %></li>
           <li>Address: <%= @checkin.address %></li>
           <li>Fogging status: <%= checkins_fogged_icon(@checkin.fogged) %></li>
-          <li>Fogged Address: <%= @fogged.address if @fogged %></li>
+          <%= checkins_fogged_address %>
         </ul>
       </div>
     </div>
@@ -20,9 +21,6 @@
 </div>
 
 <script>
-  navigator.geolocation.getCurrentPosition(function(position){
-    var latlon = position.coords.latitude + "," + position.coords.longitude;
-    var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=16&size=500x250&markers="+latlon;
-    $('#mapholder').attr("src", img_url);
-  });
+  var img_url = '<%= checkins_static_map_url %>';
+  $('#mapholder').attr("src", img_url);
 </script>

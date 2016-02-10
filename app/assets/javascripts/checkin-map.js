@@ -33,8 +33,8 @@ function renderMap(removeId){
     map.fitBounds(bounds)
 
     var options = {
-      minimumClusterSize: 1,
-      zoomOnClick: false
+      minimumClusterSize: 2,
+      zoomOnClick: true
     };
 
     var mc = new MarkerClusterer(map, markers, options)

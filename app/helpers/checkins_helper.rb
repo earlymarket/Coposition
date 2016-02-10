@@ -13,4 +13,21 @@ module CheckinsHelper
     date.strftime("%a #{date.day.ordinalize} %b %T")
   end
 
+  def checkins_fogged_address
+    "<li>Fogged Address: #{@fogged.address}</li>".html_safe if @fogged
+  end
+
+  def checkins_static_map_url
+    map_url = "http://maps.googleapis.com/maps/api/staticmap?size=500x250&markers=|'+'#{@checkin.lat},#{@checkin.lng}'+'|"
+    map_url.concat("'+'&markers=|icon:http://www.trenatics.com/public/images/iconfile/file/ic_cloud_done_black_18dp.png|'+'#{@fogged.lat},#{@fogged.lng}'+'|") if @fogged
+    map_url.html_safe
+  end
+
+  def checkins_short_address(address)
+    if address
+      short_address = address.to_s.split(', ', 3)
+      short_address.first(2).join(', ').concat('...')
+    end
+  end
+
 end

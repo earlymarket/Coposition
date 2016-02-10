@@ -19,9 +19,10 @@ class Users::CheckinsController < ApplicationController
   end
 
   def show
+    checkin = Checkin.find(params[:id])
+    checkin.reverse_geocode!
+    @fogged = Checkin.find(params[:id]).get_data if checkin.fogged
     @checkin = Checkin.find(params[:id])
-    @fogged = @checkin.get_data if @checkin.fogged
-    @checkin.reverse_geocode!
   end
 
   def destroy
