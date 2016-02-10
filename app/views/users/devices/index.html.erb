@@ -17,47 +17,25 @@
 
 <script>
 var current_user_id =  <%= @current_user_id %>;
-var permissions_path = "<%= user_permissions_path%>";
-
-function update_controls(data){
-  $.each( data, function( index, permission ){
-    var permission_id = permission.id;
-    var priv = permission.privilege;
-    var bypass_fogging = permission.bypass_fogging;
-    var show_history = permission.show_history;
-    $('li[data-permission="'+permission_id+'"]>div.bf>label>input').prop('checked', bypass_fogging);
-    $('li[data-permission="'+permission_id+'"]>div.sh>label>input').prop('checked', show_history);
-    $('li[data-permission="'+permission_id+'"]>div.input-field>div.select-wrapper> select').val(priv);
-    $('select').material_select();
-  });
-}
-
-function get_permissions(){ 
-  $.ajax({
-    url: permissions_path
-  }).done(function(data) {
-    update_controls(data);
-  });
-}
 
 function update_permission(permission, device_id, attribute, value){
   if (attribute == 'privilege'){
-    var data = { permission : { privilege: value } }
+    var data = { privilege: value }
   } else if (attribute == 'bypass_fogging'){
-    var data = { permission : { bypass_fogging: value } }
+    var data = { bypass_fogging: value }
   } else {
-    var data = { permission : { show_history: value } }
+    var data = { show_history: value }
   }
   $.ajax({
     url: "/users/"+current_user_id+"/devices/"+device_id+"/permissions/"+permission+"",
     type: 'PUT',
-    data: data,
+    data: { permission : data }
   }).done(function() {
-    get_permissions();
+
   });
 }
 
-function select_click() {
+function select_change(){
   $(".privilege").change(function( event ) {
     var privilege = $(this).find(':selected').val();
     var permission = $(event.target).parents('li.collection-item').data().permission;
@@ -66,7 +44,7 @@ function select_click() {
   });
 }
 
-function toggle_click(){
+function toggle_change(){
   $(".switch").change(function( event ) {
     var state = $(event.target).prop('checked');
     var permission = $(event.target).parents('li.collection-item').data().permission;
@@ -76,6 +54,6 @@ function toggle_click(){
   });
 }
 
-select_click();
-toggle_click();
+select_change();
+toggle_change();
 </script>

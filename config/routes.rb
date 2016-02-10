@@ -83,7 +83,6 @@ Rails.application.routes.draw do
       resources :checkins, only: [:show, :destroy]
       resources :permissions, only: [:update]
     end
-    resources :permissions, only: [:index]
     resources :approvals, only: [:index, :new, :create] do
       member do
         post 'approve'
