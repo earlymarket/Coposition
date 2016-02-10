@@ -40,10 +40,9 @@ class ApplicationController < ActionController::Base
       # Usage: user_owns_device?
       # Checks whether resource belongs to actor
       # Overwritten by ControllerMacros in tests (when included)
-
       model = resource.titleize.constantize
       resource = model.find(id)
-      if (model == Checkin && actor == 'user')
+      if (model == Checkin || model == Permission && actor == 'user')
         owner = resource.device.user
       else
         owner = resource.send(actor)
