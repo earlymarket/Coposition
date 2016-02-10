@@ -91,4 +91,7 @@ class Api::ApiController < ActionController::Base
     arguments
   end
 
+  def req_from_coposition_app?
+    @from_copo_app ||= request.headers["X-Secret-App-Key"] == Rails.application.secrets.mobile_app_key
+  end
 end

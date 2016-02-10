@@ -40,6 +40,10 @@ class User < ActiveRecord::Base
     developers.include? dev
   end
 
+  def has_request_from(approvable)
+    friend_requests.include?(approvable) || developer_requests.include?(approvable)
+  end
+
   ## Devices
 
   def approve_devices(permissible)

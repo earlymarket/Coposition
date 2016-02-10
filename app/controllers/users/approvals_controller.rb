@@ -15,7 +15,7 @@ class Users::ApprovalsController < ApplicationController
       flash[:notice] = "Approval already exists"
       flash[:notice] = "Request sent" if Approval.link(current_user, approvable, type)
       if (type == 'Developer') || (current_user.friend_requests.include?(approvable))
-        flash[:notice] = "User/Developer added!" if Approval.accept(current_user, approvable, type)
+        flash[:notice] = "#{type} added!" if Approval.accept(current_user, approvable, type)
       end
       redirect_to user_approvals_path
     else
