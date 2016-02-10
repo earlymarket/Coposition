@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Users::PermissionsController, type: :controller do
   include ControllerMacros
 
-  let(:user) { FactoryGirl::create :user}
+  let(:user) { create_user }
   let(:device) { FactoryGirl::create :device }
   let(:developer) { FactoryGirl::create :developer }
   let(:permission) do

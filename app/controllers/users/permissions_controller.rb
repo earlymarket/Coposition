@@ -1,5 +1,7 @@
 class Users::PermissionsController < ApplicationController
 
+  before_action :authenticate_user!
+  
   def update
     @permission = Permission.find(params[:id])
     @permission.update(allowed_params)
