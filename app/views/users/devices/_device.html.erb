@@ -1,4 +1,4 @@
-<div class="collection-item">
+<div class="list-group-item">
   <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>">
     <h4 class="list-group-item-heading"><%= device.name %></h4>
     <%= devices_last_checkin(device) %>
@@ -7,26 +7,35 @@
   </a>
 
   <% if device.developers.exists? || device.permitted_users.exists? %>
-    <ul class="collection" data-device=<%=device.id%>>
-      <% device.developers.each do |developer| %>
-        <% @permission =  device.permissions.where(permissible: developer, permissible_type: 'Developer').first %>
-        <li class="collection-item row" data-permission=<%=@permission.id%>>
-          <div class="valign-wrapper col s5">
-            <%= image_tag(developer.logo.url(:thumb), alt: "", class: "circle icon") %>
-            <%= developer.company_name %>
-          </div>
-          <%= render partial: "users/permissions/controls", object: @permission %>
-        </li>
-      <% end %>
-      <% device.permitted_users.each do |friend| %>
-        <% @permission =  device.permissions.where(permissible: friend, permissible_type: 'User').first %>
-        <li class="collection-item row" data-permission=<%=@permission.id%>>
-          <div class="valign-wrapper col s5">
-            <%= friend.email %>
-          </div>
-          <%= render partial: "users/permissions/controls", object: @permission %>
-        </li>
-      <% end %>
-    </ul>
+    <ul class="collapsible" data-collapsible="accordion">
+    <li>
+      <div class="collapsible-header">Permissions</div>
+      <div class="collapsible-body">
+        <ul class="permissions collection" data-device=<%=device.id%>>
+
+          <% device.developers.each do |developer| %>
+            <% @permission =  device.permissions.where(permissible: developer, permissible_type: 'Developer').first %>
+            <li class="collection-item row" data-permission=<%=@permission.id%>>
+              <div class="valign-wrapper col s5">
+                <%= image_tag(developer.logo.url(:thumb), alt: "", class: "circle icon") %>
+                <%= developer.company_name %>
+              </div>
+              <%= render partial: "users/permissions/controls", object: @permission %>
+            </li>
+          <% end %>
+
+          <% device.permitted_users.each do |friend| %>
+            <% @permission =  device.permissions.where(permissible: friend, permissible_type: 'User').first %>
+            <li class="collection-item row" data-permission=<%=@permission.id%>>
+              <div class="valign-wrapper col s5">
+                <%= friend.email %>
+              </div>
+              <%= render partial: "users/permissions/controls", object: @permission %>
+            </li>
+          <% end %>
+
+        </ul>
+      </div>
+    </li>
   <% end %>
 </div>

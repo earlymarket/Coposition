@@ -20,14 +20,6 @@ class Device < ActiveRecord::Base
     permissions.find_by(permissible_id: permissible.id, permissible_type: permissible.class.to_s).privilege
   end
 
-  def reverse_privilege_for(permissible)
-    if privilege_for(permissible) == "complete"
-      "disallowed"
-    else
-      "complete"
-    end
-  end
-
   def create_checkin(lat:, lng:)
     checkins << Checkin.create(uuid: uuid, lat: lat, lng: lng)
   end
