@@ -1,19 +1,17 @@
 <div class="input-field col s4">
-  <select class='privilege'>
-    <%= permissions_privilege_options(@permission) %>
-  </select>
+<%= select_tag "privilege", options_for_select({"Complete" => "complete", "Last only" => "last_only", "Disallowed" => "disallowed"}, @permission.privilege), class: 'privilege'%>
   <label>Privilege Level</label>
 </div>
 <div class="switch col s3 bf" name='bypass_fogging'>
   <label>
-    <%= permissions_fogging_checkbox(@permission) %>
+    <%= check_box_tag 'bypass_fogging','', @permission.bypass_fogging %>
     <span class="lever"></span>
     Bypass Fogging
   </label>
 </div>
 <div class="switch col s3 sh" name='show_history'>
   <label>
-    <%= permissions_history_checkbox(@permission) %>
+    <%= check_box_tag 'show_history','', @permission.show_history %>
     <span class="lever"></span>
     Show History
   </label>
