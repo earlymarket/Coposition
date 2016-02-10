@@ -17,7 +17,7 @@ module DevicesHelper
 
   def devices_delay_status(device)
     if device.delayed
-      message = "<p class='list-group-item-text'>Timeshifted with a delay of #{device.delayed.to_s} minutes</p>"
+      message = "<p class='list-group-item-text'>Timeshifted with a delay of #{device.delayed} minutes</p>"
       message.html_safe
     end
   end
