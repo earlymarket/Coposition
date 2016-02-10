@@ -81,6 +81,7 @@ Rails.application.routes.draw do
         get 'add_current'
       end
       resources :checkins, only: [:show, :destroy]
+      resources :permissions, only: [:update]
     end
     resources :approvals, only: [:index, :new, :create] do
       member do
