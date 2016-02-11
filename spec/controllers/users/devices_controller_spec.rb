@@ -109,33 +109,6 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
   end
 
-  describe 'DELETE #checkin' do
-    it 'should delete a checkin by :checkin_id' do
-      device.checkins << FactoryGirl::create(:checkin)
-      count = device.checkins.count
-      request.accept = 'text/javascript'
-      delete :checkin, {
-        user_id: user.username,
-        id: device.id,
-        checkin_id: device.checkins.last.id
-      }
-      expect(device.checkins.count).to eq(count-1)
-    end
-
-    it 'should not delete a checkin if user does not own device' do
-      device.checkins << FactoryGirl::create(:checkin)
-      count = device.checkins.count
-      request.accept = 'text/javascript'
-      delete :checkin, {
-        user_id: new_user.username,
-        id: device.id,
-        checkin_id: device.checkins.last.id
-      }
-      expect(response).to redirect_to(root_path)
-      expect(device.checkins.count).to eq(count)
-    end
-  end
-
   describe 'posting' do
     context 'to #create' do
 
@@ -217,7 +190,7 @@ RSpec.describe Users::DevicesController, type: :controller do
 
       device.reload
       expect(device.fogged?).to be true
-      
+
       request.accept = 'text/javascript'
       put :fog, {
         user_id: user.username,
