@@ -20,7 +20,7 @@ RSpec.describe Api::V1::Users::PermissionsController, type: :controller do
     request.headers["X-User-Email"] = user.email
   end
 
- describe 'update' do
+  describe 'update' do
     it 'should update the privilege level, bypass_fogging and show_history attributes' do
        put :update, {
         user_id: user.id,
