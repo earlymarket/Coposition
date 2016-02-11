@@ -23,11 +23,4 @@ module CheckinsHelper
     map_url.html_safe
   end
 
-  def checkins_short_address(address)
-    if address
-      short_address = address.to_s.split(', ', 3)
-      short_address.first(2).join(', ').concat('...')
-    end
-  end
-
 end
