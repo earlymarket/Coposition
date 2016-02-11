@@ -9,7 +9,7 @@
   <% if device.developers.exists? || device.permitted_users.exists? %>
     <ul class="collapsible">
     <li>
-      <div class="collapsible-header">Permissions</div>
+      <div class="collapsible-header permissions">Permissions</div>
       <div class="collapsible-body">
         <ul class="permissions collection" data-device=<%=device.id%>>
 

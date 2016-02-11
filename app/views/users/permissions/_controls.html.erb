@@ -1,6 +1,5 @@
 <div class="input-field col s4">
-<%= select_tag "privilege", options_for_select({"Complete" => "complete", "Last only" => "last_only", "Disallowed" => "disallowed"}, @permission.privilege), class: 'privilege'%>
-  <label>Privilege Level</label>
+<%= select_tag "privilege", options_for_select({"Complete" => "complete", "Last only" => "last_only", "Disallowed" => "disallowed"}, @permission.privilege), class: 'privilege browser-default'%>
 </div>
 <div class="switch col s3 bf" name='bypass_fogging'>
   <label>
