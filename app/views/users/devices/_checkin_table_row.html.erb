@@ -3,7 +3,7 @@
     <%= checkins_humanize_date(checkin.created_at) %>
   </td>
   <td>
-    <%= checkins_short_address(checkin.address) %>
+    <%= area_name(checkin) %>
   </td>
   <td>
     <%= checkins_fogged_icon(checkin.fogged) %>
