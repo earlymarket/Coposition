@@ -54,6 +54,7 @@ Rails.application.routes.draw do
               get :last
             end
           end
+          resources :permissions, only: [:update]
         end
       end
       namespace :mobile_app do
