@@ -39,7 +39,6 @@ class ApplicationController < ActionController::Base
       # Called from method_missing
       # Usage: user_owns_device?
       # Checks whether resource belongs to actor
-      # Overwritten by ControllerMacros in tests (when included)
       model = resource.titleize.constantize
       resource = model.find(id)
       if (model == Checkin || model == Permission && actor == 'user')
