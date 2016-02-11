@@ -30,8 +30,6 @@ function update_permission(permission, device_id, attribute, value){
     url: "/users/"+current_user_id+"/devices/"+device_id+"/permissions/"+permission+"",
     type: 'PUT',
     data: { permission : data }
-  }).done(function() {
-
   });
 }
 
