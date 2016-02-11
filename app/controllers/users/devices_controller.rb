@@ -15,7 +15,7 @@ class Users::DevicesController < ApplicationController
 
   def show
     @device = Device.find(params[:id])
-    @checkins = @device.checkins.order('created_at DESC').paginate(page: params[:page], per_page: 10)
+    @checkins = @device.checkins.order('created_at DESC').paginate(page: params[:page], per_page: 50)
     if @device.fogged?
       @fogmessage = "Currently fogged"
     else
@@ -98,19 +98,12 @@ class Users::DevicesController < ApplicationController
 
   def set_delay
     @device = Device.find(params[:id])
-    @device.delayed = params[:mins]
-    @device.save
-  end
-
-  def permissions
-    devices = current_user.devices
-    @permissions = []
-    devices.each do |device|
-      device.permissions.each do |permission|
-        @permissions << permission
-      end
+    if @device.delayed && @device.delayed.zero?
+      @device.delayed = nil
+    else
+      @device.delayed = params[:mins]
     end
-    render json: @permissions
+    @device.save
   end
 
   private
