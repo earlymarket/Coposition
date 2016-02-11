@@ -72,4 +72,9 @@ class Api::ApiController < ActionController::Base
     request.headers['X-User-Token'] == auth_token
   end
 
+  def resource_exists?(resource, arguments)
+    model = resource.titleize.constantize
+    render status: 404, json: { message: "#{model} does not exist" } unless arguments
+    arguments
+  end
 end

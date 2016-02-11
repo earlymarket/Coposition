@@ -11,12 +11,6 @@ module ApiApplicationMixin
     end
   end
 
-  def resource_exists?(resource, arguments)
-    model = resource.titleize.constantize
-    render status: 404, json: { message: "#{model} does not exist" } unless arguments
-    arguments
-  end
-
   def actor_owns_resource?(actor, resource, id)
     # Called from method_missing
     # Usage: user_owns_device?
