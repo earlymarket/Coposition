@@ -70,8 +70,7 @@ Rails.application.routes.draw do
     resource :dashboard, only: [:show]
     resources :devices, except: [:update, :edit] do
       member do
-        post 'set_delay'
-        delete 'checkin'
+        put 'set_delay'
         post 'switch_privilege'
         put 'fog'
       end
@@ -80,7 +79,9 @@ Rails.application.routes.draw do
         post 'switch_all_privileges'
         get 'add_current'
       end
-      resources :checkins, only: [:show, :destroy]
+      resources :checkins, only: [:show, :create, :new]
+      delete '/checkins/', to: 'checkins#destroy_all'
+      delete '/checkins/:id', to: 'checkins#destroy'
       resources :permissions, only: [:update]
     end
     resources :approvals, only: [:index, :new, :create] do

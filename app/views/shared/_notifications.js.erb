@@ -1,0 +1,21 @@
+<% if flash[:notification] %>
+  <% flash[:notification].each do |notice| %>
+    <% if notice[:notification][:link_path].empty? %>
+      Materialize.toast('<%= notice[:notification][:msg] %>', 3000);
+    <% else %>
+      var link = '<a href="<%= eval notice[:notification][:link_path] %>" class="white-text">';
+      link += '<%= notice[:notification][:msg] %></a>';
+      var $link = $(link);
+      Materialize.toast( $link, 5000, 'light-blue darken-3 z-depth-2');
+    <% end %>
+  <% end %>
+  <% flash.discard(:notification) %>
+<% end %>
+<% if alert %>
+    Materialize.toast('<%= alert %>', 3000, 'red')
+  <% flash.discard(:alert) %>
+<% end %>
+<% if notice %>
+  Materialize.toast('<%= notice %>', 3000);
+  <% flash.discard(:notice) %>
+<% end %>

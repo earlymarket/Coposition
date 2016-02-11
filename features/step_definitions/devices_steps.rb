@@ -1,3 +1,4 @@
+
 Given(/^there's a device in the database with the UUID "(.*?)"$/) do |uuid|
   dev = FactoryGirl::create :device
   dev.uuid = uuid
