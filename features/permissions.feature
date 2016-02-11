@@ -18,4 +18,5 @@ Feature: Permissions
         And I should see "G-RALA"
       When I click "Dashboard"
         And I click the link "Devices"
-      Then I should see "Wherefore Art Thou"
+      When I click the section "permissions"
+        Then I should see "Wherefore Art Thou"

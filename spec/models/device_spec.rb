@@ -39,7 +39,7 @@ RSpec.describe Device, type: :model do
 
     expect(device.privilege_for developer).to eq "complete"
 
-    device.change_privilege_for(developer, device.reverse_privilege_for(developer))
+    device.change_privilege_for(developer, 'disallowed')
   
     expect(device.privilege_for developer).to eq "disallowed"
   end

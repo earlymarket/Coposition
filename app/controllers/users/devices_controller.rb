@@ -106,17 +106,6 @@ class Users::DevicesController < ApplicationController
     @device.save
   end
 
-  def permissions
-    devices = current_user.devices
-    @permissions = []
-    devices.each do |device|
-      device.permissions.each do |permission|
-        @permissions << permission
-      end
-    end
-    render json: @permissions
-  end
-
   private
     def via_app
       render json: @device.to_json if req_from_coposition_app?
