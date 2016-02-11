@@ -1,4 +1,6 @@
-You have <%= @friend_requests.length %> friend requests and <%= @pending_friends.length %> pending friends.
+<% if @friend_requests.length > 0 || @pending_friends.length > 0 %>
+  You have <%= @friend_requests.length %> friend requests and <%= @pending_friends.length %> pending friends.
+<% end %>
 
 <div class='collection'>
   <% @friends.each do |friend| %>
