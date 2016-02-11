@@ -2,17 +2,14 @@
 
 <div class='collection'>
   <% @friend_requests.each do |friend| %>
-    <div class='collection-item row'>
-      <% app = current_user.approvals.where(approvable: friend).first %>
-      <div id="<%= "app_#{app.id}" %>">
-        <div class="col s6">
-          <h5><%= User.find(app.approvable_id).email %></h5>
-        </div>
-        <div class="col s6">
-          <%= button_to "Accept", approve_user_approval_path(current_user.url_id, app.id), remote: true, class: "btn btn-success m-m" %>
-          <%= button_to "Reject", reject_user_approval_path(current_user.url_id, app.id), remote: true, class: "btn btn-danger" %>
-        </div>
-        <br>
+    <% app = current_user.approvals.where(approvable: friend).first %>
+    <div id='<%= "app_#{app.id}" %>' class='collection-item row'>
+      <div class="col s8">
+        <h5><%= User.find(app.approvable_id).email %></h5>
+      </div>
+      <div class="col s4">
+        <%= button_to "Accept", approve_user_approval_path(current_user.url_id, app.id), remote: true, class: "btn btn-success m-m" %>
+        <%= button_to "Reject", reject_user_approval_path(current_user.url_id, app.id), remote: true, class: "btn btn-danger" %>
       </div>
     </div>
   <% end %>
