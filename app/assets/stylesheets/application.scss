@@ -21,6 +21,16 @@
 @import 'materialize';
 // css selectors/classes needs to be overriden after
 @import 'custom_class';
-// @import './*;'
-@import 'checkin-map.scss', 'fonts.scss','layout.scss','placeholder.scss','user.scss';
+// @import './*;
 
+// Leave them in seperate statements. It makes it easier to debug/reorder'
+// Especially in merge conflicts
+
+@import 'fonts.scss';
+@import 'layout.scss';
+
+// Page/feature specific
+@import 'placeholder.scss';
+@import 'user.scss';
+@import 'maitre.scss';
+@import 'checkin-map.scss';
