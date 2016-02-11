@@ -15,7 +15,7 @@ class Users::PermissionsController < ApplicationController
 
     def require_ownership
       unless user_owns_permission?
-        flash[:notice] = "You do not control that permission"
+        flash[:alert] = "You do not control that permission"
         redirect_to root_path
       end
     end

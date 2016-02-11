@@ -10,8 +10,8 @@ Given(/^I click the link "(.*?)"$/) do |target|
   click_link(target, match: :first)
 end
 
-Given (/^I click within "([^"]*)"$/) do |selector|
-  find(selector).click
+Given (/^I click the section "(.*?)"$/) do |selector|
+  find("div."+selector).click
 end
 
 Then(/^I should see a link that says "(.*?)"$/) do |text|
