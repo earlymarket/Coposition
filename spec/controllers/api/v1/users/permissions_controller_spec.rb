@@ -23,18 +23,14 @@ RSpec.describe Api::V1::Users::PermissionsController, type: :controller do
   describe 'update' do
     it 'should update the privilege level, bypass_fogging and show_history attributes' do
        put :update, {
-        user_id: user.id,
-        device_id: device.id,
         id: permission.id,
+        device_id: device.id,
+        user_id: user.id,
         permission: {
-          privilege: 'disallowed',
-          bypass_fogging: true,
-          show_history: true
+          privilege: 'last_only',
         },
       }
-      expect(res_hash[:privilege]).to eq 'disallowed'
-      expect(res_hash[:bypass_fogging]).to eq true
-      expect(res_hash[:show_history]).to eq true
+      expect(res_hash[:privilege]).to eq 'last_only'
     end
 
     it 'should fail to update permission if user is not the signed in user' do
@@ -43,7 +39,7 @@ RSpec.describe Api::V1::Users::PermissionsController, type: :controller do
         device_id: device.id,
         id: permission.id,
         permission: {
-          privilege: 'last_only',
+          privilege: 'disallowed',
         },
       }
       expect(response.status).to be 403

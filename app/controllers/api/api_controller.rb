@@ -98,9 +98,6 @@ class Api::ApiController < ActionController::Base
   end
 
   def actor_owns_resource?(actor, resource, id)
-    # Called from method_missing
-    # Usage: user_owns_device?
-    # Checks whether resource belongs to actor
     model = resource.titleize.constantize
     resource = model.find(id)
     if (model == Checkin || model == Permission && actor == 'user')
