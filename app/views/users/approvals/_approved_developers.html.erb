@@ -2,27 +2,12 @@
 <div class='collection'>
   <% @approved_devs.each do |dev| %>
       <div class='collection-item avatar'>
-
         <%= image_tag(dev.logo.url(:thumb), alt: "", class: "circle icon") %>
-        <a href='<%= switch_all_privileges_user_devices_path(current_user.url_id, developer: dev) %>' data-method='post' data-remote='true'> 
-          <h4 class='list-group-item-heading'><%= dev.company_name %></h4>
+          <h4><%= dev.company_name %></h4>
           <% if dev.tagline %>
-            <p class='list-group-item-text'><%= dev.tagline %></p>
+            <p><%= dev.tagline %></p>
           <% end %>
-        </a>
-        
-        <div class='row'>
-          <div class='col l12'>
-            <% current_user.devices.each do |device|  %>
-              <a href='<%= switch_privilege_user_device_path(current_user.url_id, device.id, developer: dev) %>' data-method='post' data-remote='true' class='white-link' >
-                <div id='<%= "device#{device.id}developer#{dev.id}" %>' class='col dev-box small-curved-border small-height clearfix <%= "privilege-#{device.privilege_for(dev)}" %>'>
-                  <%= device.name %>
-                </div>
-              </a>
-            <% end %>
-          </div>
-        </div>
-        
+        </a>       
       </div>
   <% end %>
 </div>

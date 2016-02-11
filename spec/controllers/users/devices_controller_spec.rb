@@ -213,62 +213,6 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(device.delayed).to be 13
     end
 
-    context "switch privilege" do
-
-      it 'should switch privilege for a developer' do
-        priv
-        request.accept = 'text/javascript'
-        post :switch_privilege, {
-          id: user.devices.last.id,
-          user_id: user.username,
-          permissible: developer.id,
-          permissible_type: 'Developer',
-        }
-        expect(user.devices.last.privilege_for(developer)).to_not be priv
-      end
-
-      it 'should switch privilege for a user' do
-        new_user
-        approval.approve!
-        priv = user.devices.last.privilege_for(new_user)
-        request.accept = 'text/javascript'
-        post :switch_privilege, {
-          id: user.devices.last.id,
-          user_id: user.username,
-          permissible_type: 'User',
-          permissible: new_user.id
-        }
-        expect(user.devices.last.privilege_for(new_user)).to_not be priv
-      end
-
-      it 'should switch privilege for a developer on all devices' do
-        priv
-        request.accept = 'text/javascript'
-        post :switch_all_privileges, {
-          user_id: user.username,
-          privilege: 'disallowed',
-          permissible: developer.id,
-          permissible_type: 'Developer',
-        }
-        user.devices.each { |device| expect(device.privilege_for(developer)).to_not be priv }
-      end
-
-      it 'should switch privilege for a developer' do
-        new_user
-        approval.approve!
-        priv = user.devices.last.privilege_for(new_user)
-        request.accept = 'text/javascript'
-        post :switch_all_privileges, {
-          user_id: user.username,
-          privilege: 'disallowed',
-          permissible_type: 'User',
-          permissible: new_user.id
-        }
-        user.devices.each { |device| expect(device.privilege_for(new_user)).to_not be priv }
-      end
-
-    end
-
     it 'should delete' do
       user
       count = Device.count

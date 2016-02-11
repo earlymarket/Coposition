@@ -1,9 +1,9 @@
 You have <%= @friend_requests.length %> friend requests and <%= @pending_friends.length %> pending friends.
 
-<div class='list-group'>
+<div class='collection'>
   <% @friends.each do |friend| %>
-    <div class='list-group-item'>
-      <h5 class='list-group-item-heading'><%= friend.email %></h5>
+    <div class='collection-item'>
+      <h5><%= friend.email %></h5>
     </div>
   <% end %>
 </div>
