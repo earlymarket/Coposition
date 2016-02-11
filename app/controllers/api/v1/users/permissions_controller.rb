@@ -3,7 +3,7 @@ class  Api::V1::Users::PermissionsController < Api::ApiController
   
   acts_as_token_authentication_handler_for User
   
-  before_action :check_user, :require_ownership
+  before_action :require_ownership
 
   def update
     permission = Permission.find(params[:id])
@@ -14,12 +14,6 @@ class  Api::V1::Users::PermissionsController < Api::ApiController
   private
     def allowed_params
       params.require(:permission).permit(:privilege, :bypass_fogging, :show_history)
-    end
-
-    def check_user
-      unless current_user?(params[:user_id])
-        render status: 403, json: { message: 'Incorrect User' }
-      end
     end
 
     def require_ownership

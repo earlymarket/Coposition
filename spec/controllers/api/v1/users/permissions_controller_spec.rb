@@ -33,19 +33,6 @@ RSpec.describe Api::V1::Users::PermissionsController, type: :controller do
       expect(res_hash[:privilege]).to eq 'last_only'
     end
 
-    it 'should fail to update permission if user is not the signed in user' do
-      put :update, {
-        user_id: second_user.id,
-        device_id: device.id,
-        id: permission.id,
-        permission: {
-          privilege: 'disallowed',
-        },
-      }
-      expect(response.status).to be 403
-      expect(res_hash[:message]).to eq 'Incorrect User'
-    end
-
     it 'should fail to update permission if user does not own permission' do
       request.headers["X-User-Token"] = second_user.authentication_token
       request.headers["X-User-Email"] = second_user.email
