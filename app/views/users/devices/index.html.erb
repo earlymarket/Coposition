@@ -1,5 +1,5 @@
 <h3>Your current devices are:</h3><br>
-<div class="collection">
+<div>
   <% @devices.each do |device| %>
     <%= render device %>
   <% end %>
@@ -17,47 +17,41 @@
 
 <script>
 var current_user_id =  <%= @current_user_id %>;
-var permissions_path = "<%= permissions_user_devices_path%>";
 
-function update_radios(data){
-  $.each( data, function( index, permission ){
-    var device = permission.device_id;
-    var permissible = permission.permissible_id;
-    var type = permission.permissible_type;
-    var priv = permission.privilege;
-    $('input[data-device="'+device+'"][data-permissible="'+permissible+'"][data-permissible-type="'+type+'"][data-privilege="'+priv+'"]').prop('checked', true);
-  });
-}
-
-function get_permissions(){ 
+function update_permission(permission, device_id, attribute, value){
+  if (attribute == 'privilege'){
+    var data = { privilege: value }
+  } else if (attribute == 'bypass_fogging'){
+    var data = { bypass_fogging: value }
+  } else {
+    var data = { show_history: value }
+  }
   $.ajax({
-    url: permissions_path,
-    context: document.body
-  }).done(function(data) {
-    update_radios(data);
+    url: "/users/"+current_user_id+"/devices/"+device_id+"/permissions/"+permission+"",
+    type: 'PUT',
+    data: { permission : data }
   });
 }
 
-function update_permission(device_id, permissible_id, type, privilege){
-  $.ajax({
-    url: "/users/"+current_user_id+"/devices/"+device_id+"/switch_privilege",
-    type: 'POST',
-    data: { permissible: permissible_id, privilege: privilege, permissible_type: type },
-  }).done(function() {
-    get_permissions();
+function select_change(){
+  $(".privilege").change(function( event ) {
+    var privilege = $(this).find(':selected').val();
+    var permission = $(event.target).parents('li.collection-item').data().permission;
+    var device_id = $(event.target).parents('ul.collection').data().device;
+    update_permission(permission, device_id, 'privilege', privilege)
   });
 }
 
-function radio_click() {
-  $(".privilege-label").on( "click", function( event ) {
-    var dataset = event.target.dataset
-    var device_id = dataset['device'];
-    var permissible_id = dataset['permissible'];
-    var type = dataset['permissibleType'];
-    var privilege = dataset['privilege'];
-    update_permission(device_id, permissible_id, type, privilege)
+function toggle_change(){
+  $(".switch").change(function( event ) {
+    var state = $(event.target).prop('checked');
+    var permission = $(event.target).parents('li.collection-item').data().permission;
+    var device_id = $(event.target).parents('ul.collection').data().device;
+    var attribute = $(this).attr('name');
+    update_permission(permission, device_id, attribute, state)
   });
 }
-get_permissions();
-radio_click();
+
+select_change();
+toggle_change();
 </script>
