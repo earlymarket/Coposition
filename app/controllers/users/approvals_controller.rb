@@ -47,6 +47,10 @@ class Users::ApprovalsController < ApplicationController
     @friends = current_user.friends
     @friend_requests = current_user.friend_requests
     @pending_friends = current_user.pending_friends
+    respond_to do |format|
+      format.html { redirect_to user_approvals_path }
+      format.js
+    end
   end
 
   def reject
@@ -60,7 +64,10 @@ class Users::ApprovalsController < ApplicationController
     @friends = current_user.friends
     @friend_requests = current_user.friend_requests
     @pending_friends = current_user.pending_friends
-    render "approve"
+    respond_to do |format|
+      format.html { redirect_to user_approvals_path }
+      format.js { render "approve" }
+    end
   end
 
   private
