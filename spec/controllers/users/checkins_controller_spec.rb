@@ -12,6 +12,57 @@ RSpec.describe Users::CheckinsController, type: :controller do
     check
   end
 
+  describe 'GET #new' do
+    it 'should assign a device with a matching :device_id to @device' do
+      get :new, {
+        user_id: user.username,
+        device_id: device.id,
+        id: checkin.id
+      }
+      expect(assigns :device).to eq(Device.find(device.id))
+    end
+
+    it 'should assign a new checkin to @checkin' do
+      get :new, {
+        user_id: user.username,
+        device_id: device.id,
+        id: checkin.id
+      }
+      expect(assigns :checkin).to be_a_new(Checkin)
+    end
+  end
+
+  describe 'POST #create' do
+    it 'should assign a device with a matching :device_id to @device' do
+      post :create, {
+        user_id: user.username,
+        device_id: device.id,
+        checkin: {
+          uuid: checkin.uuid,
+          lat: checkin.lat,
+          lng: checkin.lng
+        }
+      }
+      expect(assigns :device).to eq(Device.find(device.id))
+    end
+
+    it 'should create a new checkin and assign it to @checkin' do
+      checkin
+      count = device.checkins.count
+      post :create, {
+        user_id: user.username,
+        device_id: device.id,
+        checkin: {
+          uuid: checkin.uuid,
+          lat: checkin.lat,
+          lng: checkin.lng
+        }
+      }
+      expect(device.checkins.count).to eq count + 1
+      expect(assigns :checkin).to eq(Checkin.last)
+    end
+  end
+
   describe 'GET #show' do
     it 'should assign :id.checkin to @checkin if user owns device which owns checkin' do
       get :show, {
