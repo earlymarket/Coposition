@@ -3,7 +3,7 @@ class Users::DevicesController < ApplicationController
   acts_as_token_authentication_handler_for User
   protect_from_forgery with: :null_session
   before_action :authenticate_user!
-  before_action :require_ownership, only: [:show, :destroy, :switch_privilege, :checkin]
+  before_action :require_ownership, only: [:show, :destroy]
 
   def index
     @current_user_id = current_user.id
@@ -57,27 +57,6 @@ class Users::DevicesController < ApplicationController
   def checkin
     @checkin_id = params[:checkin_id]
     Device.find(params[:id]).checkins.find(@checkin_id).delete
-  end
-
-  def switch_privilege
-    model = model_find(params[:permissible_type])
-    @permissible = model.find(params[:permissible])
-    @device = Device.find(params[:id])
-    @device.change_privilege_for(@permissible, params[:privilege])
-    @privilege = @device.privilege_for(@permissible)
-    @r_privilege = @device.reverse_privilege_for(@permissible)
-    render nothing: true
-  end
-
-  def switch_all_privileges
-    model = model_find(params[:permissible_type])
-    @devices = current_user.devices
-    @permissible = model.find(params[:permissible])
-    @devices.each do |device|
-      device.change_privilege_for(@permissible, params[:privilege])
-      @privilege = device.privilege_for(@permissible)
-      @r_privilege = device.reverse_privilege_for(@permissible)
-    end
   end
 
   def add_current

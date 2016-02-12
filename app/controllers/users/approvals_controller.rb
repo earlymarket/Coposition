@@ -1,6 +1,6 @@
 class Users::ApprovalsController < ApplicationController
 
-  before_action :authenticate_user! 
+  before_action :authenticate_user!
   before_action :check_user, only: :index
 
   def new
@@ -19,7 +19,7 @@ class Users::ApprovalsController < ApplicationController
       end
       redirect_to user_approvals_path
     else
-      invalid_payload("User/Developer not found", new_user_approval_path) 
+      invalid_payload("User/Developer not found", new_user_approval_path)
     end
   end
 
@@ -40,7 +40,7 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def approve
-    @approval = Approval.where(id: params[:id], 
+    @approval = Approval.where(id: params[:id],
       user: current_user).first
     Approval.accept(current_user, @approval.approvable, @approval.approvable_type)
     @approved_devs = current_user.developers
@@ -50,7 +50,7 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def reject
-    @approval = Approval.where(id: params[:id], 
+    @approval = Approval.where(id: params[:id],
       user: current_user).first
     if @approval.approvable_type == 'User'
       Approval.where(user: @approval.approvable, approvable: @approval.user, approvable_type: 'User').first.destroy
@@ -60,7 +60,7 @@ class Users::ApprovalsController < ApplicationController
     @friends = current_user.friends
     @friend_requests = current_user.friend_requests
     @pending_friends = current_user.pending_friends
-    render "users/approvals/approve"
+    render "approve"
   end
 
   private
