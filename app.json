@@ -20,9 +20,9 @@
     "SECRET_KEY_BASE":{
       "required":true
     },
-    "SLACK_WEBHOOK_URL": {
-      "required": true
-    },
+    "SLACK_WEBHOOK_URL":{
+      "required":true
+    }
   },
   "addons":[
     "heroku-postgresql"
