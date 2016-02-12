@@ -24,7 +24,7 @@ class Checkin < ActiveRecord::Base
     end
   end
 
-  # The method to be used for public-facing data 
+  # The method to be used for public-facing data
   def get_data
     fogged_checkin = self
     if fogged?

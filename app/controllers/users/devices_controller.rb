@@ -3,7 +3,7 @@ class Users::DevicesController < ApplicationController
   acts_as_token_authentication_handler_for User
   protect_from_forgery with: :null_session
   before_action :authenticate_user!
-  before_action :require_ownership, only: [:show, :destroy, :switch_privilege, :checkin]
+  before_action :require_ownership, only: [:show, :destroy]
 
   def index
     @current_user_id = current_user.id
@@ -15,7 +15,7 @@ class Users::DevicesController < ApplicationController
 
   def show
     @device = Device.find(params[:id])
-    @checkins = @device.checkins.order('created_at DESC').paginate(page: params[:page], per_page: 10)
+    @checkins = @device.checkins.order('created_at DESC').paginate(page: params[:page], per_page: 50)
     if @device.fogged?
       @fogmessage = "Currently fogged"
     else
@@ -59,27 +59,6 @@ class Users::DevicesController < ApplicationController
     Device.find(params[:id]).checkins.find(@checkin_id).delete
   end
 
-  def switch_privilege
-    model = model_find(params[:permissible_type])
-    @permissible = model.find(params[:permissible])
-    @device = Device.find(params[:id])
-    @device.change_privilege_for(@permissible, params[:privilege])
-    @privilege = @device.privilege_for(@permissible)
-    @r_privilege = @device.reverse_privilege_for(@permissible)
-    render nothing: true
-  end
-
-  def switch_all_privileges
-    model = model_find(params[:permissible_type])
-    @devices = current_user.devices
-    @permissible = model.find(params[:permissible])
-    @devices.each do |device|
-      device.change_privilege_for(@permissible, params[:privilege])
-      @privilege = device.privilege_for(@permissible)
-      @r_privilege = device.reverse_privilege_for(@permissible)
-    end
-  end
-
   def add_current
     flash[:notice] = "Just enter a friendly name, and this device is good to go."
     redirect_to new_user_device_path(uuid: Device.create.uuid, curr_device: true)
@@ -98,19 +77,12 @@ class Users::DevicesController < ApplicationController
 
   def set_delay
     @device = Device.find(params[:id])
-    @device.delayed = params[:mins]
-    @device.save
-  end
-
-  def permissions
-    devices = current_user.devices
-    @permissions = []
-    devices.each do |device|
-      device.permissions.each do |permission|
-        @permissions << permission
-      end
+    if @device.delayed && @device.delayed.zero?
+      @device.delayed = nil
+    else
+      @device.delayed = params[:mins]
     end
-    render json: @permissions
+    @device.save
   end
 
   private

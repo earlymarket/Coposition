@@ -3284,7 +3284,6 @@ Copyright (c) 2015 Daniel Eden
   width: 600px; 
   border-radius: 10px
 }
-.toast-title{font-weight:700}.toast-message{-ms-word-wrap:break-word;word-wrap:break-word}.toast-message a,.toast-message label{color:#fff}.toast-message a:hover{color:#ccc;text-decoration:none}.toast-close-button{position:relative;right:-.3em;top:-.3em;float:right;font-size:20px;font-weight:700;color:#fff;-webkit-text-shadow:0 1px 0 #fff;text-shadow:0 1px 0 #fff;opacity:.8;-ms-filter:alpha(Opacity=80);filter:alpha(opacity=80)}.toast-close-button:focus,.toast-close-button:hover{color:#000;text-decoration:none;cursor:pointer;opacity:.4;-ms-filter:alpha(Opacity=40);filter:alpha(opacity=40)}button.toast-close-button{padding:0;cursor:pointer;background:0 0;border:0;-webkit-appearance:none}.toast-top-center{top:0;right:0;width:100%}.toast-bottom-center{bottom:0;right:0;width:100%}.toast-top-full-width{top:0;right:0;width:100%}.toast-bottom-full-width{bottom:0;right:0;width:100%}.toast-top-left{top:12px;left:12px}.toast-top-right{top:12px;right:12px}.toast-bottom-right{right:12px;bottom:12px}.toast-bottom-left{bottom:12px;left:12px}#toast-container{position:fixed;z-index:999999}#toast-container *{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}#toast-container>div{position:relative;overflow:hidden;margin:0 0 6px;padding:15px 15px 15px 50px;width:300px;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;background-position:15px center;background-repeat:no-repeat;-moz-box-shadow:0 0 12px #999;-webkit-box-shadow:0 0 12px #999;box-shadow:0 0 12px #999;color:#fff;opacity:.8;-ms-filter:alpha(Opacity=80);filter:alpha(opacity=80)}#toast-container>:hover{-moz-box-shadow:0 0 12px #000;-webkit-box-shadow:0 0 12px #000;box-shadow:0 0 12px #000;opacity:1;-ms-filter:alpha(Opacity=100);filter:alpha(opacity=100);cursor:pointer}#toast-container>.toast-info{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGwSURBVEhLtZa9SgNBEMc9sUxxRcoUKSzSWIhXpFMhhYWFhaBg4yPYiWCXZxBLERsLRS3EQkEfwCKdjWJAwSKCgoKCcudv4O5YLrt7EzgXhiU3/4+b2ckmwVjJSpKkQ6wAi4gwhT+z3wRBcEz0yjSseUTrcRyfsHsXmD0AmbHOC9Ii8VImnuXBPglHpQ5wwSVM7sNnTG7Za4JwDdCjxyAiH3nyA2mtaTJufiDZ5dCaqlItILh1NHatfN5skvjx9Z38m69CgzuXmZgVrPIGE763Jx9qKsRozWYw6xOHdER+nn2KkO+Bb+UV5CBN6WC6QtBgbRVozrahAbmm6HtUsgtPC19tFdxXZYBOfkbmFJ1VaHA1VAHjd0pp70oTZzvR+EVrx2Ygfdsq6eu55BHYR8hlcki+n+kERUFG8BrA0BwjeAv2M8WLQBtcy+SD6fNsmnB3AlBLrgTtVW1c2QN4bVWLATaIS60J2Du5y1TiJgjSBvFVZgTmwCU+dAZFoPxGEEs8nyHC9Bwe2GvEJv2WXZb0vjdyFT4Cxk3e/kIqlOGoVLwwPevpYHT+00T+hWwXDf4AJAOUqWcDhbwAAAAASUVORK5CYII=)!important}#toast-container>.toast-error{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHOSURBVEhLrZa/SgNBEMZzh0WKCClSCKaIYOED+AAKeQQLG8HWztLCImBrYadgIdY+gIKNYkBFSwu7CAoqCgkkoGBI/E28PdbLZmeDLgzZzcx83/zZ2SSXC1j9fr+I1Hq93g2yxH4iwM1vkoBWAdxCmpzTxfkN2RcyZNaHFIkSo10+8kgxkXIURV5HGxTmFuc75B2RfQkpxHG8aAgaAFa0tAHqYFfQ7Iwe2yhODk8+J4C7yAoRTWI3w/4klGRgR4lO7Rpn9+gvMyWp+uxFh8+H+ARlgN1nJuJuQAYvNkEnwGFck18Er4q3egEc/oO+mhLdKgRyhdNFiacC0rlOCbhNVz4H9FnAYgDBvU3QIioZlJFLJtsoHYRDfiZoUyIxqCtRpVlANq0EU4dApjrtgezPFad5S19Wgjkc0hNVnuF4HjVA6C7QrSIbylB+oZe3aHgBsqlNqKYH48jXyJKMuAbiyVJ8KzaB3eRc0pg9VwQ4niFryI68qiOi3AbjwdsfnAtk0bCjTLJKr6mrD9g8iq/S/B81hguOMlQTnVyG40wAcjnmgsCNESDrjme7wfftP4P7SP4N3CJZdvzoNyGq2c/HWOXJGsvVg+RA/k2MC/wN6I2YA2Pt8GkAAAAASUVORK5CYII=)!important}#toast-container>.toast-success{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADsSURBVEhLY2AYBfQMgf///3P8+/evAIgvA/FsIF+BavYDDWMBGroaSMMBiE8VC7AZDrIFaMFnii3AZTjUgsUUWUDA8OdAH6iQbQEhw4HyGsPEcKBXBIC4ARhex4G4BsjmweU1soIFaGg/WtoFZRIZdEvIMhxkCCjXIVsATV6gFGACs4Rsw0EGgIIH3QJYJgHSARQZDrWAB+jawzgs+Q2UO49D7jnRSRGoEFRILcdmEMWGI0cm0JJ2QpYA1RDvcmzJEWhABhD/pqrL0S0CWuABKgnRki9lLseS7g2AlqwHWQSKH4oKLrILpRGhEQCw2LiRUIa4lwAAAABJRU5ErkJggg==)!important}#toast-container>.toast-warning{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGYSURBVEhL5ZSvTsNQFMbXZGICMYGYmJhAQIJAICYQPAACiSDB8AiICQQJT4CqQEwgJvYASAQCiZiYmJhAIBATCARJy+9rTsldd8sKu1M0+dLb057v6/lbq/2rK0mS/TRNj9cWNAKPYIJII7gIxCcQ51cvqID+GIEX8ASG4B1bK5gIZFeQfoJdEXOfgX4QAQg7kH2A65yQ87lyxb27sggkAzAuFhbbg1K2kgCkB1bVwyIR9m2L7PRPIhDUIXgGtyKw575yz3lTNs6X4JXnjV+LKM/m3MydnTbtOKIjtz6VhCBq4vSm3ncdrD2lk0VgUXSVKjVDJXJzijW1RQdsU7F77He8u68koNZTz8Oz5yGa6J3H3lZ0xYgXBK2QymlWWA+RWnYhskLBv2vmE+hBMCtbA7KX5drWyRT/2JsqZ2IvfB9Y4bWDNMFbJRFmC9E74SoS0CqulwjkC0+5bpcV1CZ8NMej4pjy0U+doDQsGyo1hzVJttIjhQ7GnBtRFN1UarUlH8F3xict+HY07rEzoUGPlWcjRFRr4/gChZgc3ZL2d8oAAAAASUVORK5CYII=)!important}#toast-container.toast-bottom-center>div,#toast-container.toast-top-center>div{width:300px;margin:auto}#toast-container.toast-bottom-full-width>div,#toast-container.toast-top-full-width>div{width:96%;margin:auto}.toast{background-color:#030303}.toast-success{background-color:#51a351}.toast-error{background-color:#bd362f}.toast-info{background-color:#2f96b4}.toast-warning{background-color:#f89406}.toast-progress{position:absolute;left:0;bottom:0;height:4px;background-color:#000;opacity:.4;-ms-filter:alpha(Opacity=40);filter:alpha(opacity=40)}@media all and (max-width:240px){#toast-container>div{padding:8px 8px 8px 50px;width:11em}#toast-container .toast-close-button{right:-.2em;top:-.2em}}@media all and (min-width:241px) and (max-width:480px){#toast-container>div{padding:8px 8px 8px 50px;width:18em}#toast-container .toast-close-button{right:-.2em;top:-.2em}}@media all and (min-width:481px) and (max-width:768px){#toast-container>div{padding:15px 15px 15px 50px;width:25em}}
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.
@@ -3299,6 +3298,2761 @@ Copyright (c) 2015 Daniel Eden
  *
 
  */
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.materialize-red.lighten-5 {
+  background-color: #fdeaeb !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.materialize-red-text.text-lighten-5 {
+  color: #fdeaeb !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.materialize-red.lighten-4 {
+  background-color: #f8c1c3 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.materialize-red-text.text-lighten-4 {
+  color: #f8c1c3 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.materialize-red.lighten-3 {
+  background-color: #f3989b !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.materialize-red-text.text-lighten-3 {
+  color: #f3989b !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.materialize-red.lighten-2 {
+  background-color: #ee6e73 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.materialize-red-text.text-lighten-2 {
+  color: #ee6e73 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.materialize-red.lighten-1 {
+  background-color: #ea454b !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.materialize-red-text.text-lighten-1 {
+  color: #ea454b !important;
+}
+
+/* line 370, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.materialize-red {
+  background-color: #e51c23 !important;
+}
+
+/* line 373, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.materialize-red-text {
+  color: #e51c23 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.materialize-red.darken-1 {
+  background-color: #d0181e !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.materialize-red-text.text-darken-1 {
+  color: #d0181e !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.materialize-red.darken-2 {
+  background-color: #b9151b !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.materialize-red-text.text-darken-2 {
+  color: #b9151b !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.materialize-red.darken-3 {
+  background-color: #a21318 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.materialize-red-text.text-darken-3 {
+  color: #a21318 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.materialize-red.darken-4 {
+  background-color: #8b1014 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.materialize-red-text.text-darken-4 {
+  color: #8b1014 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red.lighten-5 {
+  background-color: #FFEBEE !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red-text.text-lighten-5 {
+  color: #FFEBEE !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red.lighten-4 {
+  background-color: #FFCDD2 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red-text.text-lighten-4 {
+  color: #FFCDD2 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red.lighten-3 {
+  background-color: #EF9A9A !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red-text.text-lighten-3 {
+  color: #EF9A9A !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red.lighten-2 {
+  background-color: #E57373 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red-text.text-lighten-2 {
+  color: #E57373 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red.lighten-1 {
+  background-color: #EF5350 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red-text.text-lighten-1 {
+  color: #EF5350 !important;
+}
+
+/* line 370, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red {
+  background-color: #F44336 !important;
+}
+
+/* line 373, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red-text {
+  color: #F44336 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red.darken-1 {
+  background-color: #E53935 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red-text.text-darken-1 {
+  color: #E53935 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red.darken-2 {
+  background-color: #D32F2F !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red-text.text-darken-2 {
+  color: #D32F2F !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red.darken-3 {
+  background-color: #C62828 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red-text.text-darken-3 {
+  color: #C62828 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red.darken-4 {
+  background-color: #B71C1C !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red-text.text-darken-4 {
+  color: #B71C1C !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red.accent-1 {
+  background-color: #FF8A80 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red-text.text-accent-1 {
+  color: #FF8A80 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red.accent-2 {
+  background-color: #FF5252 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red-text.text-accent-2 {
+  color: #FF5252 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red.accent-3 {
+  background-color: #FF1744 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red-text.text-accent-3 {
+  color: #FF1744 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red.accent-4 {
+  background-color: #D50000 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.red-text.text-accent-4 {
+  color: #D50000 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink.lighten-5 {
+  background-color: #fce4ec !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink-text.text-lighten-5 {
+  color: #fce4ec !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink.lighten-4 {
+  background-color: #f8bbd0 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink-text.text-lighten-4 {
+  color: #f8bbd0 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink.lighten-3 {
+  background-color: #f48fb1 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink-text.text-lighten-3 {
+  color: #f48fb1 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink.lighten-2 {
+  background-color: #f06292 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink-text.text-lighten-2 {
+  color: #f06292 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink.lighten-1 {
+  background-color: #ec407a !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink-text.text-lighten-1 {
+  color: #ec407a !important;
+}
+
+/* line 370, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink {
+  background-color: #e91e63 !important;
+}
+
+/* line 373, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink-text {
+  color: #e91e63 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink.darken-1 {
+  background-color: #d81b60 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink-text.text-darken-1 {
+  color: #d81b60 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink.darken-2 {
+  background-color: #c2185b !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink-text.text-darken-2 {
+  color: #c2185b !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink.darken-3 {
+  background-color: #ad1457 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink-text.text-darken-3 {
+  color: #ad1457 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink.darken-4 {
+  background-color: #880e4f !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink-text.text-darken-4 {
+  color: #880e4f !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink.accent-1 {
+  background-color: #ff80ab !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink-text.text-accent-1 {
+  color: #ff80ab !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink.accent-2 {
+  background-color: #ff4081 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink-text.text-accent-2 {
+  color: #ff4081 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink.accent-3 {
+  background-color: #f50057 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink-text.text-accent-3 {
+  color: #f50057 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink.accent-4 {
+  background-color: #c51162 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.pink-text.text-accent-4 {
+  color: #c51162 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple.lighten-5 {
+  background-color: #f3e5f5 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple-text.text-lighten-5 {
+  color: #f3e5f5 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple.lighten-4 {
+  background-color: #e1bee7 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple-text.text-lighten-4 {
+  color: #e1bee7 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple.lighten-3 {
+  background-color: #ce93d8 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple-text.text-lighten-3 {
+  color: #ce93d8 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple.lighten-2 {
+  background-color: #ba68c8 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple-text.text-lighten-2 {
+  color: #ba68c8 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple.lighten-1 {
+  background-color: #ab47bc !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple-text.text-lighten-1 {
+  color: #ab47bc !important;
+}
+
+/* line 370, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple {
+  background-color: #9c27b0 !important;
+}
+
+/* line 373, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple-text {
+  color: #9c27b0 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple.darken-1 {
+  background-color: #8e24aa !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple-text.text-darken-1 {
+  color: #8e24aa !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple.darken-2 {
+  background-color: #7b1fa2 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple-text.text-darken-2 {
+  color: #7b1fa2 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple.darken-3 {
+  background-color: #6a1b9a !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple-text.text-darken-3 {
+  color: #6a1b9a !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple.darken-4 {
+  background-color: #4a148c !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple-text.text-darken-4 {
+  color: #4a148c !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple.accent-1 {
+  background-color: #ea80fc !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple-text.text-accent-1 {
+  color: #ea80fc !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple.accent-2 {
+  background-color: #e040fb !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple-text.text-accent-2 {
+  color: #e040fb !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple.accent-3 {
+  background-color: #d500f9 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple-text.text-accent-3 {
+  color: #d500f9 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple.accent-4 {
+  background-color: #aa00ff !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.purple-text.text-accent-4 {
+  color: #aa00ff !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple.lighten-5 {
+  background-color: #ede7f6 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple-text.text-lighten-5 {
+  color: #ede7f6 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple.lighten-4 {
+  background-color: #d1c4e9 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple-text.text-lighten-4 {
+  color: #d1c4e9 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple.lighten-3 {
+  background-color: #b39ddb !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple-text.text-lighten-3 {
+  color: #b39ddb !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple.lighten-2 {
+  background-color: #9575cd !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple-text.text-lighten-2 {
+  color: #9575cd !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple.lighten-1 {
+  background-color: #7e57c2 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple-text.text-lighten-1 {
+  color: #7e57c2 !important;
+}
+
+/* line 370, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple {
+  background-color: #673ab7 !important;
+}
+
+/* line 373, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple-text {
+  color: #673ab7 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple.darken-1 {
+  background-color: #5e35b1 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple-text.text-darken-1 {
+  color: #5e35b1 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple.darken-2 {
+  background-color: #512da8 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple-text.text-darken-2 {
+  color: #512da8 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple.darken-3 {
+  background-color: #4527a0 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple-text.text-darken-3 {
+  color: #4527a0 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple.darken-4 {
+  background-color: #311b92 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple-text.text-darken-4 {
+  color: #311b92 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple.accent-1 {
+  background-color: #b388ff !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple-text.text-accent-1 {
+  color: #b388ff !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple.accent-2 {
+  background-color: #7c4dff !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple-text.text-accent-2 {
+  color: #7c4dff !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple.accent-3 {
+  background-color: #651fff !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple-text.text-accent-3 {
+  color: #651fff !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple.accent-4 {
+  background-color: #6200ea !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-purple-text.text-accent-4 {
+  color: #6200ea !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo.lighten-5 {
+  background-color: #e8eaf6 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo-text.text-lighten-5 {
+  color: #e8eaf6 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo.lighten-4 {
+  background-color: #c5cae9 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo-text.text-lighten-4 {
+  color: #c5cae9 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo.lighten-3 {
+  background-color: #9fa8da !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo-text.text-lighten-3 {
+  color: #9fa8da !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo.lighten-2 {
+  background-color: #7986cb !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo-text.text-lighten-2 {
+  color: #7986cb !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo.lighten-1 {
+  background-color: #5c6bc0 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo-text.text-lighten-1 {
+  color: #5c6bc0 !important;
+}
+
+/* line 370, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo {
+  background-color: #3f51b5 !important;
+}
+
+/* line 373, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo-text {
+  color: #3f51b5 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo.darken-1 {
+  background-color: #3949ab !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo-text.text-darken-1 {
+  color: #3949ab !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo.darken-2 {
+  background-color: #303f9f !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo-text.text-darken-2 {
+  color: #303f9f !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo.darken-3 {
+  background-color: #283593 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo-text.text-darken-3 {
+  color: #283593 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo.darken-4 {
+  background-color: #1a237e !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo-text.text-darken-4 {
+  color: #1a237e !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo.accent-1 {
+  background-color: #8c9eff !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo-text.text-accent-1 {
+  color: #8c9eff !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo.accent-2 {
+  background-color: #536dfe !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo-text.text-accent-2 {
+  color: #536dfe !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo.accent-3 {
+  background-color: #3d5afe !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo-text.text-accent-3 {
+  color: #3d5afe !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo.accent-4 {
+  background-color: #304ffe !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.indigo-text.text-accent-4 {
+  color: #304ffe !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue.lighten-5 {
+  background-color: #E3F2FD !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-text.text-lighten-5 {
+  color: #E3F2FD !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue.lighten-4 {
+  background-color: #BBDEFB !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-text.text-lighten-4 {
+  color: #BBDEFB !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue.lighten-3 {
+  background-color: #90CAF9 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-text.text-lighten-3 {
+  color: #90CAF9 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue.lighten-2 {
+  background-color: #64B5F6 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-text.text-lighten-2 {
+  color: #64B5F6 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue.lighten-1 {
+  background-color: #42A5F5 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-text.text-lighten-1 {
+  color: #42A5F5 !important;
+}
+
+/* line 370, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue {
+  background-color: #2196F3 !important;
+}
+
+/* line 373, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-text {
+  color: #2196F3 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue.darken-1 {
+  background-color: #1E88E5 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-text.text-darken-1 {
+  color: #1E88E5 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue.darken-2 {
+  background-color: #1976D2 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-text.text-darken-2 {
+  color: #1976D2 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue.darken-3 {
+  background-color: #1565C0 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-text.text-darken-3 {
+  color: #1565C0 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue.darken-4 {
+  background-color: #0D47A1 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-text.text-darken-4 {
+  color: #0D47A1 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue.accent-1 {
+  background-color: #82B1FF !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-text.text-accent-1 {
+  color: #82B1FF !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue.accent-2 {
+  background-color: #448AFF !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-text.text-accent-2 {
+  color: #448AFF !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue.accent-3 {
+  background-color: #2979FF !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-text.text-accent-3 {
+  color: #2979FF !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue.accent-4 {
+  background-color: #2962FF !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-text.text-accent-4 {
+  color: #2962FF !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue.lighten-5 {
+  background-color: #e1f5fe !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue-text.text-lighten-5 {
+  color: #e1f5fe !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue.lighten-4 {
+  background-color: #b3e5fc !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue-text.text-lighten-4 {
+  color: #b3e5fc !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue.lighten-3 {
+  background-color: #81d4fa !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue-text.text-lighten-3 {
+  color: #81d4fa !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue.lighten-2 {
+  background-color: #4fc3f7 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue-text.text-lighten-2 {
+  color: #4fc3f7 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue.lighten-1 {
+  background-color: #29b6f6 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue-text.text-lighten-1 {
+  color: #29b6f6 !important;
+}
+
+/* line 370, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue {
+  background-color: #03a9f4 !important;
+}
+
+/* line 373, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue-text {
+  color: #03a9f4 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue.darken-1 {
+  background-color: #039be5 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue-text.text-darken-1 {
+  color: #039be5 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue.darken-2 {
+  background-color: #0288d1 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue-text.text-darken-2 {
+  color: #0288d1 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue.darken-3 {
+  background-color: #0277bd !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue-text.text-darken-3 {
+  color: #0277bd !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue.darken-4 {
+  background-color: #01579b !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue-text.text-darken-4 {
+  color: #01579b !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue.accent-1 {
+  background-color: #80d8ff !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue-text.text-accent-1 {
+  color: #80d8ff !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue.accent-2 {
+  background-color: #40c4ff !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue-text.text-accent-2 {
+  color: #40c4ff !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue.accent-3 {
+  background-color: #00b0ff !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue-text.text-accent-3 {
+  color: #00b0ff !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue.accent-4 {
+  background-color: #0091ea !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-blue-text.text-accent-4 {
+  color: #0091ea !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan.lighten-5 {
+  background-color: #e0f7fa !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan-text.text-lighten-5 {
+  color: #e0f7fa !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan.lighten-4 {
+  background-color: #b2ebf2 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan-text.text-lighten-4 {
+  color: #b2ebf2 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan.lighten-3 {
+  background-color: #80deea !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan-text.text-lighten-3 {
+  color: #80deea !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan.lighten-2 {
+  background-color: #4dd0e1 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan-text.text-lighten-2 {
+  color: #4dd0e1 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan.lighten-1 {
+  background-color: #26c6da !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan-text.text-lighten-1 {
+  color: #26c6da !important;
+}
+
+/* line 370, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan {
+  background-color: #00bcd4 !important;
+}
+
+/* line 373, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan-text {
+  color: #00bcd4 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan.darken-1 {
+  background-color: #00acc1 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan-text.text-darken-1 {
+  color: #00acc1 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan.darken-2 {
+  background-color: #0097a7 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan-text.text-darken-2 {
+  color: #0097a7 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan.darken-3 {
+  background-color: #00838f !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan-text.text-darken-3 {
+  color: #00838f !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan.darken-4 {
+  background-color: #006064 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan-text.text-darken-4 {
+  color: #006064 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan.accent-1 {
+  background-color: #84ffff !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan-text.text-accent-1 {
+  color: #84ffff !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan.accent-2 {
+  background-color: #18ffff !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan-text.text-accent-2 {
+  color: #18ffff !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan.accent-3 {
+  background-color: #00e5ff !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan-text.text-accent-3 {
+  color: #00e5ff !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan.accent-4 {
+  background-color: #00b8d4 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.cyan-text.text-accent-4 {
+  color: #00b8d4 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal.lighten-5 {
+  background-color: #e0f2f1 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal-text.text-lighten-5 {
+  color: #e0f2f1 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal.lighten-4 {
+  background-color: #b2dfdb !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal-text.text-lighten-4 {
+  color: #b2dfdb !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal.lighten-3 {
+  background-color: #80cbc4 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal-text.text-lighten-3 {
+  color: #80cbc4 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal.lighten-2 {
+  background-color: #4db6ac !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal-text.text-lighten-2 {
+  color: #4db6ac !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal.lighten-1 {
+  background-color: #26a69a !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal-text.text-lighten-1 {
+  color: #26a69a !important;
+}
+
+/* line 370, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal {
+  background-color: #009688 !important;
+}
+
+/* line 373, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal-text {
+  color: #009688 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal.darken-1 {
+  background-color: #00897b !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal-text.text-darken-1 {
+  color: #00897b !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal.darken-2 {
+  background-color: #00796b !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal-text.text-darken-2 {
+  color: #00796b !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal.darken-3 {
+  background-color: #00695c !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal-text.text-darken-3 {
+  color: #00695c !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal.darken-4 {
+  background-color: #004d40 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal-text.text-darken-4 {
+  color: #004d40 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal.accent-1 {
+  background-color: #a7ffeb !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal-text.text-accent-1 {
+  color: #a7ffeb !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal.accent-2 {
+  background-color: #64ffda !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal-text.text-accent-2 {
+  color: #64ffda !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal.accent-3 {
+  background-color: #1de9b6 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal-text.text-accent-3 {
+  color: #1de9b6 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal.accent-4 {
+  background-color: #00bfa5 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.teal-text.text-accent-4 {
+  color: #00bfa5 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green.lighten-5 {
+  background-color: #E8F5E9 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green-text.text-lighten-5 {
+  color: #E8F5E9 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green.lighten-4 {
+  background-color: #C8E6C9 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green-text.text-lighten-4 {
+  color: #C8E6C9 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green.lighten-3 {
+  background-color: #A5D6A7 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green-text.text-lighten-3 {
+  color: #A5D6A7 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green.lighten-2 {
+  background-color: #81C784 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green-text.text-lighten-2 {
+  color: #81C784 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green.lighten-1 {
+  background-color: #66BB6A !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green-text.text-lighten-1 {
+  color: #66BB6A !important;
+}
+
+/* line 370, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green {
+  background-color: #4CAF50 !important;
+}
+
+/* line 373, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green-text {
+  color: #4CAF50 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green.darken-1 {
+  background-color: #43A047 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green-text.text-darken-1 {
+  color: #43A047 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green.darken-2 {
+  background-color: #388E3C !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green-text.text-darken-2 {
+  color: #388E3C !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green.darken-3 {
+  background-color: #2E7D32 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green-text.text-darken-3 {
+  color: #2E7D32 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green.darken-4 {
+  background-color: #1B5E20 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green-text.text-darken-4 {
+  color: #1B5E20 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green.accent-1 {
+  background-color: #B9F6CA !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green-text.text-accent-1 {
+  color: #B9F6CA !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green.accent-2 {
+  background-color: #69F0AE !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green-text.text-accent-2 {
+  color: #69F0AE !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green.accent-3 {
+  background-color: #00E676 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green-text.text-accent-3 {
+  color: #00E676 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green.accent-4 {
+  background-color: #00C853 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.green-text.text-accent-4 {
+  color: #00C853 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green.lighten-5 {
+  background-color: #f1f8e9 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green-text.text-lighten-5 {
+  color: #f1f8e9 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green.lighten-4 {
+  background-color: #dcedc8 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green-text.text-lighten-4 {
+  color: #dcedc8 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green.lighten-3 {
+  background-color: #c5e1a5 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green-text.text-lighten-3 {
+  color: #c5e1a5 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green.lighten-2 {
+  background-color: #aed581 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green-text.text-lighten-2 {
+  color: #aed581 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green.lighten-1 {
+  background-color: #9ccc65 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green-text.text-lighten-1 {
+  color: #9ccc65 !important;
+}
+
+/* line 370, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green {
+  background-color: #8bc34a !important;
+}
+
+/* line 373, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green-text {
+  color: #8bc34a !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green.darken-1 {
+  background-color: #7cb342 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green-text.text-darken-1 {
+  color: #7cb342 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green.darken-2 {
+  background-color: #689f38 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green-text.text-darken-2 {
+  color: #689f38 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green.darken-3 {
+  background-color: #558b2f !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green-text.text-darken-3 {
+  color: #558b2f !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green.darken-4 {
+  background-color: #33691e !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green-text.text-darken-4 {
+  color: #33691e !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green.accent-1 {
+  background-color: #ccff90 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green-text.text-accent-1 {
+  color: #ccff90 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green.accent-2 {
+  background-color: #b2ff59 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green-text.text-accent-2 {
+  color: #b2ff59 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green.accent-3 {
+  background-color: #76ff03 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green-text.text-accent-3 {
+  color: #76ff03 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green.accent-4 {
+  background-color: #64dd17 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.light-green-text.text-accent-4 {
+  color: #64dd17 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime.lighten-5 {
+  background-color: #f9fbe7 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime-text.text-lighten-5 {
+  color: #f9fbe7 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime.lighten-4 {
+  background-color: #f0f4c3 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime-text.text-lighten-4 {
+  color: #f0f4c3 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime.lighten-3 {
+  background-color: #e6ee9c !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime-text.text-lighten-3 {
+  color: #e6ee9c !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime.lighten-2 {
+  background-color: #dce775 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime-text.text-lighten-2 {
+  color: #dce775 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime.lighten-1 {
+  background-color: #d4e157 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime-text.text-lighten-1 {
+  color: #d4e157 !important;
+}
+
+/* line 370, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime {
+  background-color: #cddc39 !important;
+}
+
+/* line 373, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime-text {
+  color: #cddc39 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime.darken-1 {
+  background-color: #c0ca33 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime-text.text-darken-1 {
+  color: #c0ca33 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime.darken-2 {
+  background-color: #afb42b !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime-text.text-darken-2 {
+  color: #afb42b !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime.darken-3 {
+  background-color: #9e9d24 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime-text.text-darken-3 {
+  color: #9e9d24 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime.darken-4 {
+  background-color: #827717 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime-text.text-darken-4 {
+  color: #827717 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime.accent-1 {
+  background-color: #f4ff81 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime-text.text-accent-1 {
+  color: #f4ff81 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime.accent-2 {
+  background-color: #eeff41 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime-text.text-accent-2 {
+  color: #eeff41 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime.accent-3 {
+  background-color: #c6ff00 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime-text.text-accent-3 {
+  color: #c6ff00 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime.accent-4 {
+  background-color: #aeea00 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.lime-text.text-accent-4 {
+  color: #aeea00 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow.lighten-5 {
+  background-color: #fffde7 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow-text.text-lighten-5 {
+  color: #fffde7 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow.lighten-4 {
+  background-color: #fff9c4 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow-text.text-lighten-4 {
+  color: #fff9c4 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow.lighten-3 {
+  background-color: #fff59d !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow-text.text-lighten-3 {
+  color: #fff59d !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow.lighten-2 {
+  background-color: #fff176 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow-text.text-lighten-2 {
+  color: #fff176 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow.lighten-1 {
+  background-color: #ffee58 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow-text.text-lighten-1 {
+  color: #ffee58 !important;
+}
+
+/* line 370, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow {
+  background-color: #ffeb3b !important;
+}
+
+/* line 373, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow-text {
+  color: #ffeb3b !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow.darken-1 {
+  background-color: #fdd835 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow-text.text-darken-1 {
+  color: #fdd835 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow.darken-2 {
+  background-color: #fbc02d !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow-text.text-darken-2 {
+  color: #fbc02d !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow.darken-3 {
+  background-color: #f9a825 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow-text.text-darken-3 {
+  color: #f9a825 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow.darken-4 {
+  background-color: #f57f17 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow-text.text-darken-4 {
+  color: #f57f17 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow.accent-1 {
+  background-color: #ffff8d !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow-text.text-accent-1 {
+  color: #ffff8d !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow.accent-2 {
+  background-color: #ffff00 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow-text.text-accent-2 {
+  color: #ffff00 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow.accent-3 {
+  background-color: #ffea00 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow-text.text-accent-3 {
+  color: #ffea00 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow.accent-4 {
+  background-color: #ffd600 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.yellow-text.text-accent-4 {
+  color: #ffd600 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber.lighten-5 {
+  background-color: #fff8e1 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber-text.text-lighten-5 {
+  color: #fff8e1 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber.lighten-4 {
+  background-color: #ffecb3 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber-text.text-lighten-4 {
+  color: #ffecb3 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber.lighten-3 {
+  background-color: #ffe082 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber-text.text-lighten-3 {
+  color: #ffe082 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber.lighten-2 {
+  background-color: #ffd54f !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber-text.text-lighten-2 {
+  color: #ffd54f !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber.lighten-1 {
+  background-color: #ffca28 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber-text.text-lighten-1 {
+  color: #ffca28 !important;
+}
+
+/* line 370, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber {
+  background-color: #ffc107 !important;
+}
+
+/* line 373, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber-text {
+  color: #ffc107 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber.darken-1 {
+  background-color: #ffb300 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber-text.text-darken-1 {
+  color: #ffb300 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber.darken-2 {
+  background-color: #ffa000 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber-text.text-darken-2 {
+  color: #ffa000 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber.darken-3 {
+  background-color: #ff8f00 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber-text.text-darken-3 {
+  color: #ff8f00 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber.darken-4 {
+  background-color: #ff6f00 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber-text.text-darken-4 {
+  color: #ff6f00 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber.accent-1 {
+  background-color: #ffe57f !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber-text.text-accent-1 {
+  color: #ffe57f !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber.accent-2 {
+  background-color: #ffd740 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber-text.text-accent-2 {
+  color: #ffd740 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber.accent-3 {
+  background-color: #ffc400 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber-text.text-accent-3 {
+  color: #ffc400 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber.accent-4 {
+  background-color: #ffab00 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.amber-text.text-accent-4 {
+  color: #ffab00 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange.lighten-5 {
+  background-color: #fff3e0 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange-text.text-lighten-5 {
+  color: #fff3e0 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange.lighten-4 {
+  background-color: #ffe0b2 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange-text.text-lighten-4 {
+  color: #ffe0b2 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange.lighten-3 {
+  background-color: #ffcc80 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange-text.text-lighten-3 {
+  color: #ffcc80 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange.lighten-2 {
+  background-color: #ffb74d !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange-text.text-lighten-2 {
+  color: #ffb74d !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange.lighten-1 {
+  background-color: #ffa726 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange-text.text-lighten-1 {
+  color: #ffa726 !important;
+}
+
+/* line 370, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange {
+  background-color: #ff9800 !important;
+}
+
+/* line 373, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange-text {
+  color: #ff9800 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange.darken-1 {
+  background-color: #fb8c00 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange-text.text-darken-1 {
+  color: #fb8c00 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange.darken-2 {
+  background-color: #f57c00 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange-text.text-darken-2 {
+  color: #f57c00 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange.darken-3 {
+  background-color: #ef6c00 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange-text.text-darken-3 {
+  color: #ef6c00 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange.darken-4 {
+  background-color: #e65100 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange-text.text-darken-4 {
+  color: #e65100 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange.accent-1 {
+  background-color: #ffd180 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange-text.text-accent-1 {
+  color: #ffd180 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange.accent-2 {
+  background-color: #ffab40 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange-text.text-accent-2 {
+  color: #ffab40 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange.accent-3 {
+  background-color: #ff9100 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange-text.text-accent-3 {
+  color: #ff9100 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange.accent-4 {
+  background-color: #ff6d00 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.orange-text.text-accent-4 {
+  color: #ff6d00 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange.lighten-5 {
+  background-color: #fbe9e7 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange-text.text-lighten-5 {
+  color: #fbe9e7 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange.lighten-4 {
+  background-color: #ffccbc !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange-text.text-lighten-4 {
+  color: #ffccbc !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange.lighten-3 {
+  background-color: #ffab91 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange-text.text-lighten-3 {
+  color: #ffab91 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange.lighten-2 {
+  background-color: #ff8a65 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange-text.text-lighten-2 {
+  color: #ff8a65 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange.lighten-1 {
+  background-color: #ff7043 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange-text.text-lighten-1 {
+  color: #ff7043 !important;
+}
+
+/* line 370, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange {
+  background-color: #ff5722 !important;
+}
+
+/* line 373, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange-text {
+  color: #ff5722 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange.darken-1 {
+  background-color: #f4511e !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange-text.text-darken-1 {
+  color: #f4511e !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange.darken-2 {
+  background-color: #e64a19 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange-text.text-darken-2 {
+  color: #e64a19 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange.darken-3 {
+  background-color: #d84315 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange-text.text-darken-3 {
+  color: #d84315 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange.darken-4 {
+  background-color: #bf360c !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange-text.text-darken-4 {
+  color: #bf360c !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange.accent-1 {
+  background-color: #ff9e80 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange-text.text-accent-1 {
+  color: #ff9e80 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange.accent-2 {
+  background-color: #ff6e40 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange-text.text-accent-2 {
+  color: #ff6e40 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange.accent-3 {
+  background-color: #ff3d00 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange-text.text-accent-3 {
+  color: #ff3d00 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange.accent-4 {
+  background-color: #dd2c00 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.deep-orange-text.text-accent-4 {
+  color: #dd2c00 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.brown.lighten-5 {
+  background-color: #efebe9 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.brown-text.text-lighten-5 {
+  color: #efebe9 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.brown.lighten-4 {
+  background-color: #d7ccc8 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.brown-text.text-lighten-4 {
+  color: #d7ccc8 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.brown.lighten-3 {
+  background-color: #bcaaa4 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.brown-text.text-lighten-3 {
+  color: #bcaaa4 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.brown.lighten-2 {
+  background-color: #a1887f !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.brown-text.text-lighten-2 {
+  color: #a1887f !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.brown.lighten-1 {
+  background-color: #8d6e63 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.brown-text.text-lighten-1 {
+  color: #8d6e63 !important;
+}
+
+/* line 370, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.brown {
+  background-color: #795548 !important;
+}
+
+/* line 373, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.brown-text {
+  color: #795548 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.brown.darken-1 {
+  background-color: #6d4c41 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.brown-text.text-darken-1 {
+  color: #6d4c41 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.brown.darken-2 {
+  background-color: #5d4037 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.brown-text.text-darken-2 {
+  color: #5d4037 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.brown.darken-3 {
+  background-color: #4e342e !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.brown-text.text-darken-3 {
+  color: #4e342e !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.brown.darken-4 {
+  background-color: #3e2723 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.brown-text.text-darken-4 {
+  color: #3e2723 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-grey.lighten-5 {
+  background-color: #eceff1 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-grey-text.text-lighten-5 {
+  color: #eceff1 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-grey.lighten-4 {
+  background-color: #cfd8dc !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-grey-text.text-lighten-4 {
+  color: #cfd8dc !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-grey.lighten-3 {
+  background-color: #b0bec5 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-grey-text.text-lighten-3 {
+  color: #b0bec5 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-grey.lighten-2 {
+  background-color: #90a4ae !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-grey-text.text-lighten-2 {
+  color: #90a4ae !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-grey.lighten-1 {
+  background-color: #78909c !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-grey-text.text-lighten-1 {
+  color: #78909c !important;
+}
+
+/* line 370, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-grey {
+  background-color: #607d8b !important;
+}
+
+/* line 373, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-grey-text {
+  color: #607d8b !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-grey.darken-1 {
+  background-color: #546e7a !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-grey-text.text-darken-1 {
+  color: #546e7a !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-grey.darken-2 {
+  background-color: #455a64 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-grey-text.text-darken-2 {
+  color: #455a64 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-grey.darken-3 {
+  background-color: #37474f !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-grey-text.text-darken-3 {
+  color: #37474f !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-grey.darken-4 {
+  background-color: #263238 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.blue-grey-text.text-darken-4 {
+  color: #263238 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.grey.lighten-5 {
+  background-color: #fafafa !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.grey-text.text-lighten-5 {
+  color: #fafafa !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.grey.lighten-4 {
+  background-color: #f5f5f5 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.grey-text.text-lighten-4 {
+  color: #f5f5f5 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.grey.lighten-3 {
+  background-color: #eeeeee !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.grey-text.text-lighten-3 {
+  color: #eeeeee !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.grey.lighten-2 {
+  background-color: #e0e0e0 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.grey-text.text-lighten-2 {
+  color: #e0e0e0 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.grey.lighten-1 {
+  background-color: #bdbdbd !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.grey-text.text-lighten-1 {
+  color: #bdbdbd !important;
+}
+
+/* line 370, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.grey {
+  background-color: #9e9e9e !important;
+}
+
+/* line 373, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.grey-text {
+  color: #9e9e9e !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.grey.darken-1 {
+  background-color: #757575 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.grey-text.text-darken-1 {
+  color: #757575 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.grey.darken-2 {
+  background-color: #616161 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.grey-text.text-darken-2 {
+  color: #616161 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.grey.darken-3 {
+  background-color: #424242 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.grey-text.text-darken-3 {
+  color: #424242 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.grey.darken-4 {
+  background-color: #212121 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.grey-text.text-darken-4 {
+  color: #212121 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.shades.black {
+  background-color: #000000 !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.shades-text.text-black {
+  color: #000000 !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.shades.white {
+  background-color: #FFFFFF !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.shades-text.text-white {
+  color: #FFFFFF !important;
+}
+
+/* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.shades.transparent {
+  background-color: transparent !important;
+}
+
+/* line 381, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.shades-text.text-transparent {
+  color: transparent !important;
+}
+
+/* line 390, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.black {
+  background-color: #000000 !important;
+}
+
+/* line 393, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.black-text {
+  color: #000000 !important;
+}
+
+/* line 390, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.white {
+  background-color: #FFFFFF !important;
+}
+
+/* line 393, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.white-text {
+  color: #FFFFFF !important;
+}
+
+/* line 390, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.transparent {
+  background-color: transparent !important;
+}
+
+/* line 393, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
+.transparent-text {
+  color: transparent !important;
+}
+
+/* line 11, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_color.scss */
+.dark-text, .btn, .btn-large, btn-flat, btn-floating, h2, h3, h4 {
+  color: rgba(0, 0, 0, 0.87);
+}
+/* line 14, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_color.scss */
+.dark-text.secondary, .secondary.btn, .secondary.btn-large, btn-flat.secondary, btn-floating.secondary, h2.secondary, h3.secondary, h4.secondary, p {
+  color: rgba(0, 0, 0, 0.54);
+}
+/* line 17, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_color.scss */
+.dark-text.hint, .hint.btn, .hint.btn-large, btn-flat.hint, btn-floating.hint, .btn.disabled, .disabled.btn-large, btn-flat.disabled, btn-floating.disabled, h2.hint, h3.hint, h4.hint {
+  color: rgba(0, 0, 0, 0.38);
+}
+
+/* line 22, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_color.scss */
+.light-text, footer p {
+  color: white;
+}
+/* line 26, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_color.scss */
+.light-text.secondary, footer p.secondary {
+  color: rgba(255, 255, 255, 0.7);
+}
+/* line 29, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_color.scss */
+.light-text.hint, footer p.hint {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* line 34, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_color.scss */
+.primary-color {
+  background-color: #03a9f4;
+}
+/* line 37, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_color.scss */
+.primary-color.lighten {
+  background-color: #ffd180;
+  color: black;
+}
+/* line 42, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_color.scss */
+.primary-color.darken {
+  background-color: #ff9100;
+  color: white;
+}
+
+/* line 48, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_color.scss */
+.secondary-color {
+  background-color: #ffab40;
+  color: #212121;
+}
+/* line 52, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_color.scss */
+.secondary-color.lighten {
+  background-color: #ffd180;
+}
+/* line 56, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_color.scss */
+.secondary-color.darken {
+  background-color: #ff9100;
+}
+
 /* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
 .materialize-red.lighten-5 {
   background-color: #fdeaeb !important;
@@ -6563,7 +9317,7 @@ ul li {
 blockquote {
   margin: 20px 0;
   padding-left: 1.5rem;
-  border-left: 5px solid #ee6e73;
+  border-left: 5px solid #03a9f4;
 }
 
 /* line 109, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_global.scss */
@@ -6623,7 +9377,7 @@ video.responsive-video {
 }
 /* line 158, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_global.scss */
 .pagination li.active {
-  background-color: #ee6e73;
+  background-color: #03a9f4;
 }
 /* line 160, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_global.scss */
 .pagination li.disabled a {
@@ -6830,7 +9584,7 @@ ul.staggered-list li {
 footer.page-footer {
   margin-top: 20px;
   padding-top: 20px;
-  background-color: #ee6e73;
+  background-color: #03a9f4;
 }
 /* line 348, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_global.scss */
 footer.page-footer .footer-copyright {
@@ -7037,8 +9791,8 @@ td, th {
 }
 /* line 541, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_global.scss */
 .collection .collection-item.active {
-  background-color: #26a69a;
-  color: #eafaf9;
+  background-color: #ffab40;
+  color: white;
 }
 /* line 545, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_global.scss */
 .collection .collection-item.active .secondary-content {
@@ -7048,7 +9802,7 @@ td, th {
 .collection a.collection-item {
   display: block;
   transition: .25s;
-  color: #26a69a;
+  color: #ffab40;
 }
 /* line 555, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_global.scss */
 .collection a.collection-item:not(.active):hover {
@@ -7072,7 +9826,7 @@ td, th {
 /* line 577, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_global.scss */
 .secondary-content {
   float: right;
-  color: #26a69a;
+  color: #ffab40;
 }
 
 /* line 581, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_global.scss */
@@ -7098,7 +9852,7 @@ span.badge.new {
   font-weight: 300;
   font-size: 0.8rem;
   color: #fff;
-  background-color: #26a69a;
+  background-color: #ffab40;
   border-radius: 2px;
 }
 /* line 607, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_global.scss */
@@ -7135,7 +9889,7 @@ nav ul a span.badge {
   height: 4px;
   display: block;
   width: 100%;
-  background-color: #acece6;
+  background-color: white;
   border-radius: 2px;
   margin: 0.5rem 0 1rem 0;
   overflow: hidden;
@@ -7147,12 +9901,12 @@ nav ul a span.badge {
   top: 0;
   left: 0;
   bottom: 0;
-  background-color: #26a69a;
+  background-color: #ffab40;
   transition: width .3s linear;
 }
 /* line 652, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_global.scss */
 .progress .indeterminate {
-  background-color: #26a69a;
+  background-color: #ffab40;
 }
 /* line 654, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_global.scss */
 .progress .indeterminate:before {
@@ -12111,7 +14865,7 @@ nav ul a span.badge {
 /* line 1, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_navbar.scss */
 nav {
   color: #fff;
-  background-color: #ee6e73;
+  background-color: #03a9f4;
   width: 100%;
   height: 56px;
   line-height: 56px;
@@ -12811,7 +15565,7 @@ small {
 }
 /* line 31, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_tabs.scss */
 .tabs .tab a {
-  color: #ee6e73;
+  color: #03a9f4;
   display: block;
   width: 100%;
   height: 100%;
@@ -12821,11 +15575,11 @@ small {
 }
 /* line 39, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_tabs.scss */
 .tabs .tab a:hover {
-  color: #f9c9cb;
+  color: #60ccfd;
 }
 /* line 44, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_tabs.scss */
 .tabs .tab.disabled a {
-  color: #f9c9cb;
+  color: #60ccfd;
   cursor: default;
 }
 /* line 49, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_tabs.scss */
@@ -12833,7 +15587,7 @@ small {
   position: absolute;
   bottom: 0;
   height: 2px;
-  background-color: #f6b2b5;
+  background-color: #47c4fd;
   will-change: left, right;
 }
 
@@ -12913,7 +15667,7 @@ small {
 .btn, .btn-large {
   text-decoration: none;
   color: #fff;
-  background-color: #26a69a;
+  background-color: #ffab40;
   text-align: center;
   letter-spacing: .5px;
   transition: .2s ease-out;
@@ -12921,7 +15675,7 @@ small {
 }
 /* line 50, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_buttons.scss */
 .btn:hover, .btn-large:hover {
-  background-color: #2bbbad;
+  background-color: #ffb65a;
 }
 
 /* line 57, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_buttons.scss */
@@ -12935,7 +15689,7 @@ small {
   height: 37px;
   line-height: 37px;
   padding: 0;
-  background-color: #26a69a;
+  background-color: #ffab40;
   border-radius: 50%;
   transition: .3s;
   cursor: pointer;
@@ -12952,7 +15706,7 @@ small {
 }
 /* line 83, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_buttons.scss */
 .btn-floating:hover {
-  background-color: #26a69a;
+  background-color: #ffab40;
 }
 /* line 87, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_buttons.scss */
 .btn-floating:before {
@@ -13093,7 +15847,7 @@ button.btn-floating {
 /* line 37, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_dropdown.scss */
 .dropdown-content li > a, .dropdown-content li > span {
   font-size: 16px;
-  color: #26a69a;
+  color: #ffab40;
   display: block;
   line-height: 22px;
   padding: 14px 16px;
@@ -13367,18 +16121,21 @@ a.waves-effect .waves-ripple {
 
 /* line 44, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_collapsible.scss */
 .side-nav .collapsible,
-.side-nav.fixed .collapsible {
+.side-nav.fixed .collapsible,
+.side-nav.nav-wrapper .collapsible {
   border: none;
   box-shadow: none;
 }
 /* line 48, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_collapsible.scss */
 .side-nav .collapsible li,
-.side-nav.fixed .collapsible li {
+.side-nav.fixed .collapsible li,
+.side-nav.nav-wrapper .collapsible li {
   padding: 0;
 }
 /* line 51, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_collapsible.scss */
 .side-nav .collapsible-header,
-.side-nav.fixed .collapsible-header {
+.side-nav.fixed .collapsible-header,
+.side-nav.nav-wrapper .collapsible-header {
   background-color: transparent;
   border: none;
   line-height: inherit;
@@ -13387,23 +16144,27 @@ a.waves-effect .waves-ripple {
 }
 /* line 58, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_collapsible.scss */
 .side-nav .collapsible-header:hover,
-.side-nav.fixed .collapsible-header:hover {
+.side-nav.fixed .collapsible-header:hover,
+.side-nav.nav-wrapper .collapsible-header:hover {
   background-color: rgba(0, 0, 0, 0.05);
 }
 /* line 59, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_collapsible.scss */
 .side-nav .collapsible-header i,
-.side-nav.fixed .collapsible-header i {
+.side-nav.fixed .collapsible-header i,
+.side-nav.nav-wrapper .collapsible-header i {
   line-height: inherit;
 }
 /* line 62, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_collapsible.scss */
 .side-nav .collapsible-body,
-.side-nav.fixed .collapsible-body {
+.side-nav.fixed .collapsible-body,
+.side-nav.nav-wrapper .collapsible-body {
   border: 0;
   background-color: #fff;
 }
 /* line 66, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_collapsible.scss */
 .side-nav .collapsible-body li a,
-.side-nav.fixed .collapsible-body li a {
+.side-nav.fixed .collapsible-body li a,
+.side-nav.nav-wrapper .collapsible-body li a {
   padding: 0 37.5px 0 45px;
 }
 
@@ -13504,13 +16265,13 @@ a.waves-effect .waves-ripple {
 /* Remove Focus Boxes */
 /* line 2, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_form.scss */
 select:focus {
-  outline: 1px solid #c9f3ef;
+  outline: 1px solid white;
 }
 
 /* line 5, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_form.scss */
 button:focus {
   outline: none;
-  background-color: #2ab7a9;
+  background-color: #ffb454;
 }
 
 /* line 10, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_form.scss */
@@ -13637,8 +16398,8 @@ input[type=tel]:focus:not([readonly]),
 input[type=number]:focus:not([readonly]),
 input[type=search]:focus:not([readonly]),
 textarea.materialize-textarea:focus:not([readonly]) {
-  border-bottom: 1px solid #26a69a;
-  box-shadow: 0 1px 0 0 #26a69a;
+  border-bottom: 1px solid #ffab40;
+  box-shadow: 0 1px 0 0 #ffab40;
 }
 /* line 81, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_form.scss */
 input:not([type]):focus:not([readonly]) + label,
@@ -13653,7 +16414,7 @@ input[type=tel]:focus:not([readonly]) + label,
 input[type=number]:focus:not([readonly]) + label,
 input[type=search]:focus:not([readonly]) + label,
 textarea.materialize-textarea:focus:not([readonly]) + label {
-  color: #26a69a;
+  color: #ffab40;
 }
 /* line 85, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_form.scss */
 input:not([type]).valid, input:not([type]):focus.valid,
@@ -13831,7 +16592,7 @@ textarea.materialize-textarea + label:after {
 }
 /* line 153, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_form.scss */
 .input-field .prefix.active {
-  color: #26a69a;
+  color: #ffab40;
 }
 /* line 155, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_form.scss */
 .input-field .prefix ~ input,
@@ -13990,8 +16751,8 @@ textarea.materialize-textarea {
 /* line 297, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_form.scss */
 [type="radio"]:checked + label:after {
   border-radius: 50%;
-  border: 2px solid #26a69a;
-  background-color: #26a69a;
+  border: 2px solid #ffab40;
+  background-color: #ffab40;
   z-index: 0;
   transform: scale(1.02);
 }
@@ -14000,14 +16761,14 @@ textarea.materialize-textarea {
 /* line 306, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_form.scss */
 [type="radio"].with-gap:checked + label:before {
   border-radius: 50%;
-  border: 2px solid #26a69a;
+  border: 2px solid #ffab40;
 }
 
 /* line 310, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_form.scss */
 [type="radio"].with-gap:checked + label:after {
   border-radius: 50%;
-  border: 2px solid #26a69a;
-  background-color: #26a69a;
+  border: 2px solid #ffab40;
+  background-color: #ffab40;
   z-index: 0;
   transform: scale(0.5);
 }
@@ -14141,8 +16902,8 @@ form p:last-child {
   height: 22px;
   border-top: 2px solid transparent;
   border-left: 2px solid transparent;
-  border-right: 2px solid #26a69a;
-  border-bottom: 2px solid #26a69a;
+  border-right: 2px solid #ffab40;
+  border-bottom: 2px solid #ffab40;
   transform: rotate(40deg);
   backface-visibility: hidden;
   transform-origin: 100% 100%;
@@ -14162,7 +16923,7 @@ form p:last-child {
   height: 22px;
   border-top: none;
   border-left: none;
-  border-right: 2px solid #26a69a;
+  border-right: 2px solid #ffab40;
   border-bottom: none;
   transform: rotate(90deg);
   backface-visibility: hidden;
@@ -14229,8 +16990,8 @@ form p:last-child {
   top: 0px;
   width: 20px;
   height: 20px;
-  border: 2px solid #26a69a;
-  background-color: #26a69a;
+  border: 2px solid #ffab40;
+  background-color: #ffab40;
   z-index: 0;
 }
 /* line 534, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_form.scss */
@@ -14242,8 +17003,8 @@ form p:last-child {
 /* line 539, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_form.scss */
 [type="checkbox"].filled-in.tabbed:checked:focus + label:after {
   border-radius: 2px;
-  background-color: #26a69a;
-  border-color: #26a69a;
+  background-color: #ffab40;
+  border-color: #ffab40;
 }
 /* line 546, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_form.scss */
 [type="checkbox"].filled-in:disabled:not(:checked) + label:before {
@@ -14291,12 +17052,12 @@ form p:last-child {
 
 /* line 587, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_form.scss */
 .switch label input[type=checkbox]:checked + .lever {
-  background-color: #84c7c1;
+  background-color: #f7e2c7;
 }
 
 /* line 591, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_form.scss */
 .switch label input[type=checkbox]:checked + .lever:after {
-  background-color: #26a69a;
+  background-color: #ffab40;
 }
 
 /* line 595, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_form.scss */
@@ -14331,7 +17092,7 @@ form p:last-child {
 
 /* line 624, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_form.scss */
 input[type=checkbox]:checked:not(:disabled) ~ .lever:active:after {
-  box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 15px rgba(38, 166, 154, 0.1);
+  box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 15px rgba(255, 171, 64, 0.1);
 }
 
 /* line 628, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_form.scss */
@@ -14541,7 +17302,7 @@ input[type=range] + .thumb {
   height: 0;
   width: 0;
   border-radius: 50%;
-  background-color: #26a69a;
+  background-color: #ffab40;
   top: 10px;
   margin-left: -6px;
   transform-origin: 50% 50%;
@@ -14552,7 +17313,7 @@ input[type=range] + .thumb .value {
   display: block;
   width: 30px;
   text-align: center;
-  color: #26a69a;
+  color: #ffab40;
   font-size: 0;
   transform: rotate(45deg);
 }
@@ -14592,7 +17353,7 @@ input[type=range]::-webkit-slider-thumb {
   height: 14px;
   width: 14px;
   border-radius: 50%;
-  background-color: #26a69a;
+  background-color: #ffab40;
   transform-origin: 50% 50%;
   margin: -5px 0 0 0;
   transition: .3s;
@@ -14623,7 +17384,7 @@ input[type=range]::-moz-range-thumb {
   height: 14px;
   width: 14px;
   border-radius: 50%;
-  background: #26a69a;
+  background: #ffab40;
   margin-top: -5px;
 }
 
@@ -14667,7 +17428,7 @@ input[type=range]::-ms-thumb {
   height: 14px;
   width: 14px;
   border-radius: 50%;
-  background: #26a69a;
+  background: #ffab40;
 }
 
 /* line 936, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_form.scss */
@@ -14697,7 +17458,7 @@ select {
     Nav List
 ***************/
 /* line 5, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_table_of_contents.scss */
-.table-of-contents.fixed {
+.table-of-contents.fixed, .table-of-contents.nav-wrapper {
   position: fixed;
 }
 /* line 9, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_table_of_contents.scss */
@@ -14790,11 +17551,11 @@ select {
 }
 /* line 56, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_sideNav.scss */
 .side-nav a.btn:hover, .side-nav a.btn-large:hover, .side-nav a.btn-large:hover {
-  background-color: #2bbbad;
+  background-color: #ffb65a;
 }
 /* line 58, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_sideNav.scss */
 .side-nav a.btn-floating:hover {
-  background-color: #26a69a;
+  background-color: #ffab40;
 }
 
 /* line 64, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_sideNav.scss */
@@ -14807,42 +17568,44 @@ select {
 }
 
 /* line 75, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_sideNav.scss */
-.side-nav.fixed a {
+.side-nav.fixed a, .side-nav.nav-wrapper a {
   display: block;
   padding: 0 30px;
   color: #444;
 }
 
 /* line 84, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_sideNav.scss */
-.side-nav.fixed {
+.side-nav.fixed, .side-nav.nav-wrapper {
   left: 0;
   position: fixed;
 }
 /* line 89, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_sideNav.scss */
-.side-nav.fixed.right-aligned {
+.side-nav.fixed.right-aligned, .side-nav.right-aligned.nav-wrapper {
   right: 0;
   left: auto;
 }
 
 @media only screen and (max-width: 992px) {
   /* line 97, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_sideNav.scss */
-  .side-nav.fixed {
+  .side-nav.fixed, .side-nav.nav-wrapper {
     left: -105%;
   }
   /* line 100, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_sideNav.scss */
-  .side-nav.fixed.right-aligned {
+  .side-nav.fixed.right-aligned, .side-nav.right-aligned.nav-wrapper {
     right: -105%;
     left: auto;
   }
 }
 /* line 108, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_sideNav.scss */
 .side-nav .collapsible-body li.active,
-.side-nav.fixed .collapsible-body li.active {
-  background-color: #ee6e73;
+.side-nav.fixed .collapsible-body li.active,
+.side-nav.nav-wrapper .collapsible-body li.active {
+  background-color: #03a9f4;
 }
 /* line 111, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_sideNav.scss */
 .side-nav .collapsible-body li.active a,
-.side-nav.fixed .collapsible-body li.active a {
+.side-nav.fixed .collapsible-body li.active a,
+.side-nav.nav-wrapper .collapsible-body li.active a {
   color: #fff;
 }
 
@@ -14923,7 +17686,7 @@ select {
   width: 100%;
   height: 100%;
   opacity: 0;
-  border-color: #26a69a;
+  border-color: #ffab40;
 }
 
 /* line 69, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_preloader.scss */
@@ -16019,7 +18782,7 @@ select {
 /* line 314, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/date_picker/_default.date.scss */
 .picker__date-display {
   text-align: center;
-  background-color: #26a69a;
+  background-color: #ffab40;
   color: #fff;
   padding-bottom: 15px;
   font-weight: 300;
@@ -16030,12 +18793,12 @@ select {
 .picker__nav--next:hover {
   cursor: pointer;
   color: #000000;
-  background: #a1ded8;
+  background: #fef9f3;
 }
 
 /* line 329, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/date_picker/_default.date.scss */
 .picker__weekday-display {
-  background-color: #1f897f;
+  background-color: #ff9b1c;
   padding: 10px;
   font-weight: 200;
   letter-spacing: .5;
@@ -16092,7 +18855,7 @@ select {
 
 /* line 378, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/date_picker/_default.date.scss */
 .picker__day.picker__day--today {
-  color: #26a69a;
+  color: #ffab40;
 }
 
 /* line 382, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/date_picker/_default.date.scss */
@@ -16111,14 +18874,14 @@ select {
 .picker--focused .picker__day--selected {
   border-radius: 50%;
   transform: scale(0.9);
-  background-color: #26a69a;
+  background-color: #ffab40;
   color: #ffffff;
 }
 /* line 399, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/date_picker/_default.date.scss */
 .picker__day--selected.picker__day--outfocus,
 .picker__day--selected:hover.picker__day--outfocus,
 .picker--focused .picker__day--selected.picker__day--outfocus {
-  background-color: #a1ded8;
+  background-color: #fef9f3;
 }
 
 /* line 405, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/date_picker/_default.date.scss */
@@ -16131,7 +18894,7 @@ select {
 .picker__close, .picker__today {
   font-size: 1.1rem;
   padding: 0 1rem;
-  color: #26a69a;
+  color: #ffab40;
 }
 
 /* line 418, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/date_picker/_default.date.scss */
@@ -16155,7 +18918,7 @@ select {
 
 /* line 433, /Users/Gary/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/date_picker/_default.date.scss */
 button.picker__today:focus, button.picker__clear:focus, button.picker__close:focus {
-  background-color: #a1ded8;
+  background-color: #fef9f3;
 }
 
 /* ==========================================================================
@@ -16310,112 +19073,83 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
     margin-bottom: 5em;
   }
 }
-/* line 1, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/code.scss */
-pre {
-  text-align: left;
+/* line 2, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_class.scss */
+.fixed, .nav-wrapper {
+  position: fixed;
 }
 
-/* line 6, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/colours.scss */
-.primary-colour, .page-footer {
-  background-color: #03a9f4 !important;
+/* line 6, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_class.scss */
+.float-left {
+  float: left;
 }
 
-/* line 9, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/colours.scss */
-.secondary-colour, .btn, .btn-large {
-  background-color: #ffab40 !important;
+/* line 10, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_class.scss */
+.float-right {
+  float: right;
 }
 
-/* line 17, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/colours.scss */
-.btn, .btn-large {
-  color: #212121 !important;
+/* line 14, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_class.scss */
+.center {
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* line 23, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/colours.scss */
-success-color, .bg-success, .privilege-complete {
-  background-color: #4caf50;
+/* line 20, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_class.scss */
+.half-opacity {
+  opacity: 0.5;
 }
 
-/* line 27, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/colours.scss */
-danger-color, .bg-danger, .privilege-disallowed {
-  background-color: #e51c23;
+/* line 26, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_class.scss */
+.round-map {
+  border-radius: 300px;
+  padding-left: 0;
+  padding-right: 0;
+  border: 3px solid #2196F3;
+  width: 100%;
 }
 
-/* line 31, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/colours.scss */
-.bg-approved-true {
-  background-color: #DCFF9A;
+/* line 34, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_class.scss */
+.btn, .btn-large, .btn-large, btn-flat, btn-floating {
+  color: #212121;
 }
 
-/* line 35, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/colours.scss */
-.bg-approved-false {
-  background-color: #FFCCCC;
-}
-
-/* line 39, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/colours.scss */
-.white-link {
-  color: white;
-}
-
-/* line 43, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/colours.scss */
-.white-link:visited {
-  color: white;
-  text-decoration: none;
-}
-
-/* line 48, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/colours.scss */
-.white-link:hover {
-  color: white;
-  text-decoration: none;
-}
-
-/* line 53, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/colours.scss */
-.white-link:focus {
-  color: white;
-  text-decoration: none;
-}
-
-@font-face {
-  font-family: 'Glyphicons Halflings';
-  src: url("/fonts/glyphicons-halflings-regular.eot");
-  src: url("/fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("/fonts/glyphicons-halflings-regular.woff") format("woff"), url("/fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
-}
-/* line 9, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 4, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/fonts.scss */
 .monospace, code, pre {
   font-family: "Fira Mono", monospace;
   font-size: 1.1rem;
 }
 
-/* line 14, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 9, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/fonts.scss */
+.brand, h1 {
+  font-family: "Comfortaa", "Helvetica", sans-serif;
+}
+
+/* line 15, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/fonts.scss */
 html {
   font-family: "Fira Sans", "Helvetica", sans-serif;
 }
 
-/* line 18, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/fonts.scss */
-.brand {
-  font-family: "Comfortaa", "Helvetica", sans-serif;
+/* line 19, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/fonts.scss */
+h1 {
+  text-align: center;
 }
 
-/* line 22, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 39, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/fonts.scss */
 p {
   line-height: 1.7rem;
   font-size: 1.2rem;
   text-align: left;
 }
 
-/* line 32, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 50, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/fonts.scss */
 pre {
   padding: 2rem;
   padding-left: 4rem;
 }
 
-/* line 38, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 56, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/fonts.scss */
 table {
   font-size: 1.5rem;
-}
-
-/* line 1, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/hovers.scss */
-.dropdown:hover .dropdown-menu {
-  display: block;
-  margin-top: 0;
 }
 
 /* line 2, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
@@ -16425,115 +19159,348 @@ body {
   flex-direction: column;
 }
 
-/* line 8, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
-main {
-  flex: 1 0 auto;
+/* line 9, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
+.nav-wrapper {
+  z-index: 10;
 }
 
 /* line 14, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
-h1 {
-  text-align: center;
+main {
+  flex: 1 0 auto;
+  padding-top: 64px;
 }
 
-/* line 18, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
-.landing-section {
-  width: 100%;
-}
 /* line 21, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
-.landing-section .row {
-  height: 100vh;
-  max-height: 900px;
-}
-/* line 25, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
-.landing-section .row .col {
-  padding: 3rem;
-  max-width: 50rem;
-}
-/* line 31, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
-.landing-section .parallax-container {
-  height: 100vh;
-  max-height: 1024px;
-}
-/* line 35, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
-.landing-section .parallax-container .parallax {
-  opacity: 0.5;
-}
-
-/* line 42, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
-.landing-section.first .valign {
-  transform: translate(0, -10vh);
-}
-/* line 45, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
-.landing-section.first .valign .start-btn {
-  font-size: 1.5rem;
-  margin-top: 1rem;
-}
-
-/* line 52, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
-.center {
-  margin: 0 auto;
-}
-
-/* line 56, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
-.toast-top-right {
-  top: 74px;
-}
-
-/* line 61, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
 .side-nav .collapsible-header {
   padding: 0px;
   width: 100%;
 }
 
-/* line 1, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/opacities.scss */
-.half-opacity {
+/* line 28, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
+.landing-section {
+  width: 100%;
+}
+/* line 31, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
+.landing-section .row .col {
+  padding: 2rem;
+}
+/* line 36, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
+.landing-section .parallax-container {
+  height: 300px;
+}
+/* line 41, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
+.landing-section .image-container.iphone-map {
+  height: 700px;
+  overflow: hidden;
+}
+/* line 44, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
+.landing-section .image-container.iphone-map img {
+  height: 130%;
+}
+/* line 48, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
+.landing-section .image-container.cloud-cp {
+  height: auto;
+}
+/* line 50, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
+.landing-section .image-container.cloud-cp img {
+  width: 100%;
+}
+/* line 57, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
+.landing-section.splash .valign {
+  transform: translate(0, -10vh);
+}
+/* line 60, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
+.landing-section.splash .valign .start-btn {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+}
+/* line 66, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
+.landing-section.splash .parallax-container {
+  height: 100vh;
+  max-height: 1024px;
+}
+/* line 70, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
+.landing-section.splash .parallax-container .parallax {
   opacity: 0.5;
+}
+/* line 78, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
+.landing-section.already-using .app {
+  height: 300px;
+}
+
+/* line 85, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
+.toast-top-right {
+  top: 74px;
 }
 
 /* line 2, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/placeholder.scss */
-.placeholder h5:hover {
-  text-shadow: 1px 1px 20px black;
-  background-color: rgba(88, 69, 69, 0.5);
+.placeholder .bg-wrapper {
+  height: 100%;
+  background-image: url(/assets/background-6b6064092c33add904861a1a72a61fabbd1fd64e7a8d6950a2f3c109c3bc6ab8.jpg);
+  background-size: cover;
 }
-/* line 7, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/placeholder.scss */
-.placeholder h5 {
-  padding: 10px;
-  width: 35%;
-}
-/* line 12, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/placeholder.scss */
-.placeholder #placeholderTitle {
-  font-family: inherit;
-  color: white;
-  width: 7em;
-  border: 1px solid white;
-  background-color: rgba(88, 69, 69, 0.5);
-}
-
-/* line 1, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/positions.scss */
-.bottom {
-  bottom: 1em;
-}
-
-/* line 5, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/positions.scss */
-.left {
-  left: 1em;
-}
-
-/* line 9, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/positions.scss */
-.fixed {
-  position: fixed;
-}
-
-/* line 13, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/positions.scss */
-.inline {
-  display: inline;
-}
-
-/* line 1, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/round-map.scss */
-.round-map {
-  border-radius: 300px;
-  padding-left: 0;
-  padding-right: 0;
-  border: 3px solid #2196F3;
+/* line 8, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/placeholder.scss */
+.placeholder .bg-ribbon {
+  background-color: rgba(255, 255, 255, 0.5);
   width: 100%;
+}
+
+/* line 1, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/user.scss */
+.icon {
+  width: 4rem;
+  height: 4rem;
+  margin-right: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* line 1, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+#maitre-widget-container {
+  font-size: 14px;
+  margin: 0 auto;
+}
+
+/* line 6, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+#maitre-widget-container div, #maitre-widget-container span, #maitre-widget-container h1, #maitre-widget-container h2, #maitre-widget-container h3, #maitre-widget-container h4, #maitre-widget-container h5, #maitre-widget-container h6, #maitre-widget-container p, #maitre-widget-container a, #maitre-widget-container small, #maitre-widget-container strong, #maitre-widget-container ol, #maitre-widget-container ul, #maitre-widget-container li, #maitre-widget-container form, #maitre-widget-container label, #maitre-widget-container input, #maitre-widget-container button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 1em;
+  font-family: inherit;
+  vertical-align: baseline;
+  text-transform: initial;
+  color: #000;
+  outline: 0;
+  text-shadow: 0 0 0;
+}
+
+/* line 19, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+.hide {
+  display: none !important;
+}
+
+/* line 23, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+#maitre-widget-container input {
+  border: solid #ccc 1px;
+  border-radius: 3px;
+  padding: 5px;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  font-size: 1.2em;
+  box-shadow: none;
+}
+
+/* line 34, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+#maitre-widget-container div.maitre-field {
+  margin-bottom: 0.9em;
+}
+
+/* line 38, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+#maitre-widget-container label {
+  display: block;
+}
+
+/* line 42, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-submit-button] {
+  -webkit-appearance: none !important;
+  margin: 0 0 1.3em !important;
+  overflow: visible !important;
+  font: inherit !important;
+  text-transform: none !important;
+  display: inline-block !important;
+  box-sizing: border-box !important;
+  padding: 0 12px !important;
+  vertical-align: middle !important;
+  line-height: 28px !important;
+  min-height: 30px !important;
+  font-size: 1em !important;
+  text-decoration: none !important;
+  text-align: center !important;
+  border-radius: 4px !important;
+  text-shadow: 0 1px 0 #fff !important;
+  font-weight: 400 !important;
+  background-color: #009dd8 !important;
+  color: #fff !important;
+  cursor: pointer !important;
+  background-image: -webkit-linear-gradient(top, #00b4f5, #008dc5) !important;
+  background-image: linear-gradient(to bottom, #00b4f5, #008dc5) !important;
+  border-color: rgba(0, 0, 0, 0.2) !important;
+  border-bottom-color: rgba(0, 0, 0, 0.4) !important;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+
+/* line 70, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-submit-button]:active {
+  background-color: #008abf !important;
+  color: #fff !important;
+  background-image: none !important;
+  border-color: rgba(0, 0, 0, 0.2) !important;
+  border-top-color: rgba(0, 0, 0, 0.4) !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* line 79, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+#maitre-widget-container {
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+/* line 85, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-form] {
+  margin: 0 0 15px !important;
+}
+
+/* line 89, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-credit] {
+  display: none !important;
+  font-size: 0.85em !important;
+  margin-top: 1.2em !important;
+}
+
+/* line 95, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-credit] a {
+  color: #009dd8 !important;
+}
+
+/* line 99, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-content] {
+  display: none !important;
+}
+
+/* line 103, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-content].show {
+  display: block !important;
+}
+
+/* line 107, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-share-container] {
+  margin-top: 1.3em !important;
+}
+
+/* line 111, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-verification] {
+  color: #333 !important;
+  font-size: 1.1em !important;
+  margin-bottom: 1.2em !important;
+  text-decoration: underline !important;
+}
+
+/* line 118, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-verification].hide {
+  display: none !important;
+}
+
+/* line 122, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+#maitre-widget-container a.maitre-widget-social {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+  margin-right: 10px;
+  position: relative;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+}
+
+/* line 133, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+#maitre-widget-container a.maitre-widget-social:active {
+  top: 2px;
+}
+
+/* line 138, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-social-facebook] {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEwAACxMBAJqcGAAAC1pJREFUeJzdW3uMnUUVP2dmvue9++q6lb5IH2JFiAQbKkJh5SWJQUVDy8Niq1ZKgWCUkGiMXjeaYKIE9A9MIaGFloiUgGkwlpAUS4XQYFMtAUOlsLSl0G5pu+3ee7/HzDn+cXfvft/ee3fv7n5bWn7JTe53vpkzM79vHufMnEGYahQKort3rg2logI/p0okpKO0MLGFOjRCEE4XUpO0YorJiX2PIi2dSES6PL2UK23atCyayurhVChddNtaSxYDzyPXLtm2Gi2tYJw+2nt3gKO43ZwYiI717954bzHbmmZJQKEgrtm7wIuM9Ep2NGqjkxiLgCTcAY5sXx59YcHeo9DToydW0TQmT0ChIC7ZNSdnfPbJUePWNx4CqnkCTarN+Wj7zLf7JkvEpAhYdN1a32738loa0SiN0QotCBZKFotZ8DkA8BkgmMmIeTQmr+NiCzMSgjCAUEQhDyHSXka1BazcdhTEjXRbRupyrnR458Orj0y0DRMioLu7oEpnz28DQVa995JRCo6XgMYbWMBXEPBTjXTFwcnGBTESojgASm0i239CIpv6SsrljmPRvi1bfhSOsynjJ+DiG+73WLW21uvuArlFaF6JxN8HxLOa0TcqAQkwgxHCehls+StU7kc1ZQeamPoPvvr0PUebUjiIcRGw+Dt/aGXV6o+U2yRsZrOGjbkDhWgdj85mCRgGMwvrnzLv3QtGlke+lUofeeXRVQeb1dYsAdi9Yl1bCcCtKVDT5Qh0H4KY32yhSYyfgEGwiIRjPwiW+8TIV77S/S8+umo/ANBYapohAJfc8kR7aEVOqnxky4rhZwi8pvla12LCBAxCgPi3le9cFXMcJ+U2iZPbN373PRiDhDEJ6F6xrn3kl7dD7GTU60DgRROqdQKTJaACHEDLuQltd39SOtgT3hstZ8PlC6Ay5kc2njXPMRBvzqLx2YHzHEXPYBifn5SWtGq77IcbZoyWsyEB3SvWuTUTHpnZNpvNQk5svE8pkGwdFx8fSUIUmq4ltzzU0ShbXQK6uwsqCHVbUmaH2Clj/gugaGp5+ziACNLEpXXA8eyk3Gh71tKlT9n18tS12QeNnOr8wMiWEbReYPZffs5Z7XD2zHbI5xwQWDsl/XfvIeh9/1jzCpFtUy4/6eb8K4YmRnKV2G8dPhsA3q5JPlKw6Lq1vui0U2u5jOkXAuGO5msxOiwlYOm158G3rz4XZnTlR037wPqX4M/P7Rp3GSjULvTyK5MyfTQ8uPO5tNmcHgKFgrDbvVSNFJnLsmx8a96BP/3yOrjz5ovGbPxkwKQvxKB8c1LmtfnToVBI9foUAd1vnucnHRubhA3Ev82yYoU13XDu/IauQaYwOv6JEFS1X2Jp1JVvfbEzmSZBAGMg+3PJl0Tx7RO18OrhgoWfhosvmD12wqyAZJti8LukqEx9XQBcbXf1zzXLN6T8eYHcAsR3ZlmfK780L0t1TYEpvBxjrC6D5CrxheUbql2wSkBkpJfMKCJaMV7HZiwsmNNwOa6CiGt+kwMix8VCUtIVW+1D/xVAZQ+vFA5vY0lGicA/yHrL0Hfrbh8AAIA2BD/9/d/gpdfeybRMAABN0eXIOTm0nzDghO6i29b6Ox9eXRIAALIYpL4+GHPpqTZ4dr/1wZQ0HgBAIEgVlpYlZT77bQCDQ8AjN2UlCYYbpqQmo8CYMT3XSUGTvin5bJ8otwAACCgURHLr2miFjHzFlNbm4wCZOUyiOqYHHNuFQkFVDi0SsKn02dH28M5UIIJEKi5Oyrp75+bV4InNsFTIxSMzTxRzZ7bDwnnDdkdr3mmYtqsjB9+86vwa+X/eOgi9B8a1zdcQxvDXpIIdQ88y1I4CPzfCIcJzMikNAC65cA7ceXNz2wZzZ0+Dn6+5qkZe+OPzmRGATAuSz+yjK0okZCoRcmYEZIGPjpcy04WGUpsjpbKwhaN02iEimJlZiRng8NGBzHQxmpbks2ujFCa2UtYOIU6dizYBfNh3IjNdzOneHpWNEjo8keoBwtBpQ8DR4yUIwkzOQCug2h0wBZBLp8ERNE0CHx4ZgH+9MXxG8fkFXQ3N4eMny/C/3vQR37sZTX7DqDW2lJCaCYa9QEQTAMhMesHWHe/C1h3vVp8f/fU3YOG8+ibGG3s+hB/ftzmLYhuCyPDIjyuEitPuluYYPqFgpFQXsD2pRWRkSmiAs5t2TzMIFqlwmyBiIzw0qSNnBspu2j3NQECpj+t7FAly7dQ0iyR6meofw5/JINIgUR5IyrDEgbCMTI15aVmbyXzypgE2BCicp5My46hQTC/lUq2NhPeCIZPh4nt6gChm9Fv/npRtm9s7IDZtWmac4nCfl0ozAB74JHFARgNKdTIZb5QPowB6eip+QOQMpGJrhBIbyExpfOIpBekYpHCfTcqiVu8kwOCW2EB0NEhlcL1HyBhDdOb3gkobDItcxwNJeQlL/QCDBLy5qSdKDgNkjIWlXqR43EFXpx0ojgCVu2dk99/58OoSQOJcwHOtlOONjnMPs2HSZ+5QMDoGYAbf77grKe+z9PGh/1UCXliwtyxCXWWJUB0WYL1oTAjMU7tjOxVgJiAdAkp3T6zk4SG5CDTt3rim6nUNu4c9PSR9TPUC7uhaBSQiE5cBYLInNKcSDCYKABE5P23W8uQbT3AfAFa/aMo/fmXO/qJK+AYcl8rCUb9hIjDRmTMf6KjSa5WdXx9SUK24ZYze+uSqvmTa9AZBTw9FfjllL5PtPYIoXyOKwejTnwQTh8CkQSrrfZFvezD5LiyqQ8mvD9Dg8O+iWx/rTMYBq9g4cVR6HZlahLJBqsbb26Ph2ksXQGd7Ou7KxJUV+MChfvjHjr0T0jsE0mFl4hNKW10zviw0V2dwCUHxlcdvrymgboyQv++d/mDG7M6h43JtyVCg+1Uul7eRjmxgBmnVBI2Oiedfrm1gJnGCDGB0CGRiAERWfsuNycaLQNMsnra/Xta6UWLbtvVo1K0pt5iV1Sss93pmMGRi0FEZ+HSYGJnAxGUgEwMiguN13C6dXCoYyvbkgUZXbxrGCb769I1l1Cq1KpBr75KW93VgjJg0mLAIZD4+15lJQxyVgcgAILLtdawGz381mcZ2ZN+2x753vJGOMQMAltzyUEdoealBjzqeS+XgeURqBQBAqUAqF7BOmNtYmNAQYAY9ONkBAIBQWvktN4788s2Eyk44WFrFxtE6eAqMXjykCKUNUtkA4yBiPAQwM5COoOKpVoafUO4B2dn1reSYBwCw6cTJ7Rvv7oUxDJimdsD3vf5MOP+8ay0jreqkSVIYsOwnBcFxNrQEECSzATYRMDMgIiCOGopc0dOEqc1kgHQMJg6qVikisuW0rFet0+5GgtQ49JXu3/bYmvegCestkwsTaPkeH+tbCxBfnfr8iCCEAhQSUKi6Q6ReD2BmYDKVhpMG4OF2ICCgdPfkp81anjRyhmA7sm/7I7d+0GybMr0yY4dxZ8zR/WToKmSqWWIREABFhQhEAMBBArjSRibgyp/aiiIwKneP73fclbTthyACTbYnD4w24dXDlFyaihilG5ZXko5XMtM8xMZDLQ5G2YVHBJTqhBTusyLX8UCjG2QSguKs8rT9E7llOrlrc7et9e3S2NfmwAxcZjFdT8SfA6BZTNQqGCQzSh0NCEZmRAQgGQsp+lHIfSjtTei1bRnr2lxYpEOv/XVFzSWqZpHNxcn9c3KmdGovTnrC79tq1BHYtGxShkjmV2fLQeyHuebPV8dDQD50gj4rPr57461HRjo1E8WUXZ52tHStsueMdY94LALyYRRErd7JEpb6h7axssSUEJDE0qVPycN+0YJSToFfrF6fj8skyCgcuj5ve1IHERvfowhLXYFxjobb5vYOZHVJuhH+D4kvP1/ITQr+AAAAAElFTkSuQmCC");
+}
+
+/* line 142, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-social-twitter] {
+  background-image: url("data:image/png;base64,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");
+}
+
+/* line 146, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-social-email] {
+  background-image: url("data:image/png;base64,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");
+}
+
+/* line 150, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-social-plain] {
+  background-image: url("data:image/png;base64,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");
+  margin-right: 0 !important;
+}
+
+/* line 155, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-header] {
+  font-size: 2.8em !important;
+  margin: 0 0 0.5em !important;
+  font-weight: bold !important;
+}
+
+/* line 161, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-people-ahead-number] {
+  font-size: 3.5em !important;
+}
+
+/* line 165, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-people-behind-number] {
+  font-size: 2.14em !important;
+  margin: 0.7em 0 0 !important;
+}
+
+/* line 170, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-people-behind-text] {
+  display: none !important;
+}
+
+/* line 174, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-people-behind-text].show {
+  display: block !important;
+}
+
+/* line 178, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-people-ahead-text], [data-maitre-people-behind-text] {
+  font-size: 1.3em !important;
+}
+
+/* line 182, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-people-ahead-number], [data-maitre-people-ahead-text] {
+  color: #3498db !important;
+}
+
+/* line 186, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-instructions] {
+  color: #555 !important;
+  font-size: 1.2em !important;
+  margin-top: 2em !important;
+}
+
+/* line 192, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-share-plain] {
+  display: none !important;
+}
+
+/* line 196, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-share-plain].show {
+  display: block !important;
+}
+
+/* line 200, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-share-plain-explanation] {
+  color: #555 !important;
+  font-size: 1em !important;
+  margin-top: 1.2em !important;
+}
+
+/* line 206, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+[data-maitre-share-plain-url] {
+  margin-top: 1em !important;
+  background: #f1f1f1 !important;
+  padding: 10px !important;
+  font-size: 1em !important;
+  display: inline-block !important;
+}
+
+/* line 214, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/maitre.scss */
+#maitre-widget-container div.show p {
+  text-align: center;
 }

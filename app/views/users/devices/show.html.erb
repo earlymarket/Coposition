@@ -1,47 +1,42 @@
 <h1><%= @device.name %></h1>
 
-<div id="map" class="checkin-map"></div>
-<script type="text/javascript">
-  var checkins = <%= raw @checkins.to_json %>
-  if(checkins.length !== 0) {
-
-    var lastCheckin = {lat: checkins[0].lat, lng: checkins[0].lng};
-    var bounds = new google.maps.LatLngBounds();
-    var markers = []
-
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 16,
-      center: lastCheckin
-    });
-
-    $.each(checkins, function(i, checkin){
-      position = {lat: checkin.lat, lng: checkin.lng}
-      marker = new google.maps.Marker({
-        position: position,
-        map: map
-      });
-      bounds.extend(marker.getPosition())
-      markers.push(marker)
-    })
-
-    map.fitBounds(bounds)
-
-    var options = {
-      minimumClusterSize: 1,
-      zoomOnClick: false
-    };
-
-    var mc = new MarkerClusterer(map, markers, options)
-
-    var listener = google.maps.event.addListenerOnce(map, "idle", function() { 
-      if (map.getZoom() > 16) map.setZoom(16); 
-    })
-  }
-</script>
+<div id="map" class="checkin-map center valign-wrapper"></div>
 <br>
-<%= link_to("Delete history", user_device_checkin_path(current_user.url_id, @device.id, @device.checkins.last.id), { method: :delete, class: "btn btn-danger btn-lg m-m"  }) if @device.checkins.exists? %>
-<%= link_to("Delete device", "#{user_devices_path}/#{@device.id}", { method: :delete, class: "btn btn-danger btn-lg m-m" })%>
+<%= link_to("Delete history", user_device_checkins_path(current_user.url_id, @device.id), { method: :delete, class: "btn red white-text"  }) if @device.checkins.exists? %>
+<%= link_to("Delete device", user_device_path(current_user.url_id, @device), { method: :delete, class: "btn red white-text" })%>
+<%= link_to("Check-in now", new_user_device_checkin_path(current_user.url_id, @device.id), class: "btn green white-text", id: "checkin-button", remote: true) %>
 <br>
-<%= render partial: "fogging" %>
+<%= render partial: "privacy" %>
 
 <%= render partial: "checkin_table" %>
+
+<script type="text/javascript">
+  var $newCheckinButton = $('<%= j link_to("Check-in", new_user_device_checkin_path(current_user.url_id,
+    @device.id), class: "btn green white-text", method: "post", id: "checkin-button", remote: true) %>');
+  var $moreOptionsLink = $('<%=  j link_to(" ...more options", new_user_device_checkin_path(current_user.url_id, @device.id) ) %>')
+
+  var checkinPath = '<%= j user_device_checkins_path(current_user.url_id, @device.id) %>';
+
+  $('#checkin-button')
+    .toggleClass('green disabled')
+    .html('Getting position')
+    .after($moreOptionsLink);
+
+  navigator.geolocation.getCurrentPosition(function(position){
+
+    var checkin = {
+      'checkin[lat]': position.coords.latitude.toFixed(6),
+      'checkin[lng]': position.coords.longitude.toFixed(6),
+      'checkin[uuid]': '<%= j @device.uuid %>'
+    }
+
+    checkinPath += '?'
+    checkinPath += $.param(checkin)
+
+    $newCheckinButton.attr('href', checkinPath);
+    $('#checkin-button').replaceWith($newCheckinButton);
+  })
+
+  var checkins = <%= raw @checkins.to_json %>
+  renderMap();
+</script>

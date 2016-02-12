@@ -109,33 +109,6 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
   end
 
-  describe 'DELETE #checkin' do
-    it 'should delete a checkin by :checkin_id' do
-      device.checkins << FactoryGirl::create(:checkin)
-      count = device.checkins.count
-      request.accept = 'text/javascript'
-      delete :checkin, {
-        user_id: user.username,
-        id: device.id,
-        checkin_id: device.checkins.last.id
-      }
-      expect(device.checkins.count).to eq(count-1)
-    end
-
-    it 'should not delete a checkin if user does not own device' do
-      device.checkins << FactoryGirl::create(:checkin)
-      count = device.checkins.count
-      request.accept = 'text/javascript'
-      delete :checkin, {
-        user_id: new_user.username,
-        id: device.id,
-        checkin_id: device.checkins.last.id
-      }
-      expect(response).to redirect_to(root_path)
-      expect(device.checkins.count).to eq(count)
-    end
-  end
-
   describe 'posting' do
     context 'to #create' do
 
@@ -217,7 +190,7 @@ RSpec.describe Users::DevicesController, type: :controller do
 
       device.reload
       expect(device.fogged?).to be true
-      
+
       request.accept = 'text/javascript'
       put :fog, {
         user_id: user.username,
@@ -238,62 +211,6 @@ RSpec.describe Users::DevicesController, type: :controller do
 
       device.reload
       expect(device.delayed).to be 13
-    end
-
-    context "switch privilege" do
-
-      it 'should switch privilege for a developer' do
-        priv
-        request.accept = 'text/javascript'
-        post :switch_privilege, {
-          id: user.devices.last.id,
-          user_id: user.username,
-          permissible: developer.id,
-          permissible_type: 'Developer',
-        }
-        expect(user.devices.last.privilege_for(developer)).to_not be priv
-      end
-
-      it 'should switch privilege for a user' do
-        new_user
-        approval.approve!
-        priv = user.devices.last.privilege_for(new_user)
-        request.accept = 'text/javascript'
-        post :switch_privilege, {
-          id: user.devices.last.id,
-          user_id: user.username,
-          permissible_type: 'User',
-          permissible: new_user.id
-        }
-        expect(user.devices.last.privilege_for(new_user)).to_not be priv
-      end
-
-      it 'should switch privilege for a developer on all devices' do
-        priv
-        request.accept = 'text/javascript'
-        post :switch_all_privileges, {
-          user_id: user.username,
-          privilege: 'disallowed',
-          permissible: developer.id,
-          permissible_type: 'Developer',
-        }
-        user.devices.each { |device| expect(device.privilege_for(developer)).to_not be priv }
-      end
-
-      it 'should switch privilege for a developer' do
-        new_user
-        approval.approve!
-        priv = user.devices.last.privilege_for(new_user)
-        request.accept = 'text/javascript'
-        post :switch_all_privileges, {
-          user_id: user.username,
-          privilege: 'disallowed',
-          permissible_type: 'User',
-          permissible: new_user.id
-        }
-        user.devices.each { |device| expect(device.privilege_for(new_user)).to_not be priv }
-      end
-
     end
 
     it 'should delete' do

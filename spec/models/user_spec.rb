@@ -70,11 +70,6 @@ RSpec.describe User, type: :model do
       it "should have device privileges by default" do
         expect( user.devices.first.privilege_for developer ).to eq "complete"
       end
-
-      it "should be able to set privilege" do
-        user.devices.first.change_privilege_for developer, "disallowed"
-        expect( user.devices.first.privilege_for developer ).to eq "disallowed"
-      end
     end
   end
 

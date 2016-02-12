@@ -39,7 +39,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
     context "with developer approval but not on specific device" do
       before do
-        device.change_privilege_for(developer, 2)
+        device.permissions.last.update(privilege: 'disallowed')
       end
 
       it "shouldn't fetch the last reported location" do
