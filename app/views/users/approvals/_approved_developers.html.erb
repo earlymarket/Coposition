@@ -1,16 +1,15 @@
-<!-- Use single quotes (''), so that this can be user in a JS template -->
-<div class='collection'>
+<div class="collection">
   <% @approved_devs.each do |dev| %>
-    <div class='collection-item avatar row'>
-      <div class='col s8'>
+    <div class="collection-item avatar row">
+      <div class="col s8">
         <%= image_tag(dev.logo.url(:thumb), alt: "", class: "circle icon") %>
         <h5><%= dev.company_name %></h5>
         <% if dev.tagline %>
           <p><%= dev.tagline %></p>
         <% end %>
       </div>
-      <div class='col s4'>
-        <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, Approval.where(user: current_user, approvable: dev, approvable_type: 'Developer').first.id), remote: true, class: "btn btn-danger" %>
+      <div class="col s4">
+        <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, Approval.where(user: current_user, approvable: dev, approvable_type: "Developer").first.id), remote: true, class: "btn" %>
       </div>
     </div>
   <% end %>
