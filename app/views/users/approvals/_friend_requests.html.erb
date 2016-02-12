@@ -8,8 +8,8 @@
         <h5><%= User.find(app.approvable_id).email %></h5>
       </div>
       <div class="col s4">
-        <%= button_to "Accept", approve_user_approval_path(current_user.url_id, app.id), remote: true, class: "btn btn-success m-m" %>
-        <%= button_to "Reject", reject_user_approval_path(current_user.url_id, app.id), remote: true, class: "btn btn-danger" %>
+        <%= button_to "Accept", approve_user_approval_path(current_user.url_id, app.id), remote: true, class: "btn" %>
+        <%= button_to "Reject", reject_user_approval_path(current_user.url_id, app.id), remote: true, class: "btn" %>
       </div>
     </div>
   <% end %>
