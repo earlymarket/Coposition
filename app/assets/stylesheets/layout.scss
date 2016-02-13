@@ -45,6 +45,16 @@ footer{
   }
 }
 
+.transparent-btn{
+  @extend .transparent-nav;
+  border: solid 1px black;
+
+  &:hover{
+    border-color: $secondary-color;
+    box-shadow: none;
+  }
+}
+
 
 
 .landing-section{

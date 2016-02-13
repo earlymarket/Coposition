@@ -36,11 +36,11 @@
         <%= link_to("Developer log out", destroy_user_session_path, method: :delete) %>
       </li>
       <li>
-        <%= link_to("User log in", new_user_session_path) %>
+        <%= link_to("User log in", new_user_session_path, class: "login-btn btn transparent-btn") %>
       </li>
     <% else %>
       <li>
-        <%= link_to("User log in", new_user_session_path) %>
+        <%= link_to("User log in", new_user_session_path, class: "login-btn btn transparent-btn") %>
       </li>
     <% end %>
   </ul>
