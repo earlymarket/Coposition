@@ -42,6 +42,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
     context "without friend approval" do
       it "shouldn't fetch the last reported location", :skip_before do
+        device
         Approval.link(user,developer,'Developer')
         Approval.accept(user,developer,'Developer')
         get :last, {
