@@ -52,15 +52,6 @@ class Api::ApiController < ActionController::Base
     @owner = @device || find_by_id(params[:user_id])
   end
 
-  def check_privilege
-    if @device
-      unless @device.privilege_for(@dev) == "complete"
-        head status: :unauthorized
-        return false
-      end
-    end
-  end
-
   def find_by_id(id)
     @user = User.find_by_username(id)
     @user ||= User.find_by_email(id)
