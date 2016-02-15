@@ -79,7 +79,6 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
       end
 
       it "should fog the last reported location's address if fogged" do
-        # Make it fogged
         device.switch_fog
         device.checkins.create(lat: 51.57471, lng: -0.50626, uuid: device.uuid)
         get :last, {
@@ -90,6 +89,19 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
         expect(res_hash.first['address']).to eq "Denham, GB"
         expect(res_hash.first['lat']).to eq(51.57471)
         expect(res_hash.first['lng']).to eq(-0.50626)
+      end
+
+      it "should bypass fogging if bypass_fogging is true" do
+        # Make it fogged
+        device.switch_fog
+        device.checkins.create(lat: 51.57471, lng: -0.50626, uuid: device.uuid)
+        Permission.last.update(bypass_fogging: true)
+        get :last, {
+          user_id: user.id,
+          device_id: device.id,
+          type: "address"
+        }
+        expect(res_hash.first['address']).to eq "The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK"
       end
     end
   end

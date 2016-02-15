@@ -38,8 +38,12 @@ class Api::V1::Users::CheckinsController < Api::ApiController
 
   def resolve checkin
     if params[:type] == "address"
-        checkin.reverse_geocode!
+      checkin.reverse_geocode!
+      if checkin.device.bypass_fogging_for(@dev)
+        checkin
+      else
         checkin.get_data
+      end
     else
       checkin.slice(:id, :uuid, :lat, :lng, :created_at)
     end
@@ -66,9 +70,4 @@ class Api::V1::Users::CheckinsController < Api::ApiController
     end
   end
 
-  def check_show_history
-  end
-
-  def check_bypass_fogging
-  end
 end

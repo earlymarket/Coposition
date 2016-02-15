@@ -38,7 +38,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   end
 
   def status
-  	respond_with approval_status: @dev.approval_status_for(@user) 
+  	respond_with approval_status: @user.approval_status_for(@dev)
   end
 
   private
