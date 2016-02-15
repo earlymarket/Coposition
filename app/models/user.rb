@@ -44,8 +44,8 @@ class User < ActiveRecord::Base
     friend_requests.include?(approvable) || developer_requests.include?(approvable)
   end
 
-  def approval_date_for(approvable)
-    approvals.find_by(approvable_id: approvable.id, approvable_type: approvable.class.to_s).approval_date
+  def approval_for(approvable)
+    approvals.find_by(approvable_id: approvable.id, approvable_type: approvable.class.to_s)
   end
 
   ## Devices

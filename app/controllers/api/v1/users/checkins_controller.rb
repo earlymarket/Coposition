@@ -79,7 +79,7 @@ class Api::V1::Users::CheckinsController < Api::ApiController
     end
 
     def check_show_history(device)
-      approval_date = @user.approval_date_for(@permissible)
+      approval_date = @user.approval_for(@permissible).approval_date
       if device.permission_for(@permissible).show_history
         device.checkins
       else

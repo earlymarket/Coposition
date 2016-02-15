@@ -187,7 +187,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
       end
 
       it "should not fetch checkins from before date of approval creation" do
-        approval_date = user.approval_date_for(developer)
+        approval_date = user.approval_for(developer).approval_date
         checkin = FactoryGirl::create :checkin
         checkin.update(created_at: (approval_date - 1.day))
         device.checkins << checkin
@@ -200,7 +200,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
       end
 
       it "should fetch checkins from before date of approval creation if show_history is true" do
-        approval_date = user.approval_date_for(developer)
+        approval_date = user.approval_for(developer).approval_date
         checkin = FactoryGirl::create :checkin
         checkin.update(created_at: (approval_date - 1.day))
         device.checkins << checkin

@@ -15,7 +15,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
       if (req_from_coposition_app? && (@user.has_request_from(approvable) || type == 'Developer'))
         Approval.accept(@user, approvable, type)
       end
-      approval = Approval.where(user: @user, approvable: approvable, approvable_type: type)
+      approval = @user.approval_for(approvable)
       render json: approval
     end
   end
