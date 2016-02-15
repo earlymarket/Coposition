@@ -16,16 +16,8 @@ class Device < ActiveRecord::Base
     delayed? ? super.where("created_at < ?", delayed.minutes.ago) : super
   end
 
-  def privilege_for(permissible)
-    permissions.find_by(permissible_id: permissible.id, permissible_type: permissible.class.to_s).privilege
-  end
-
-  def bypass_fogging_for(permissible)
-    permissions.find_by(permissible_id: permissible.id, permissible_type: permissible.class.to_s).bypass_fogging
-  end
-
-  def show_history_for(permissible)
-    permissions.find_by(permissible_id: permissible.id, permissible_type: permissible.class.to_s).show_history
+  def permission_for(permissible)
+    permissions.find_by(permissible_id: permissible.id, permissible_type: permissible.class.to_s)
   end
 
   def create_checkin(lat:, lng:)

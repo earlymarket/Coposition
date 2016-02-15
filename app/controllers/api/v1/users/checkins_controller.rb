@@ -5,13 +5,8 @@ class Api::V1::Users::CheckinsController < Api::ApiController
   before_action :check_privilege, only: [:index, :last]
 
   def index
-    approval_date = @user.approval_date_for(@dev)
     params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 30
-    if @device.show_history_for(@dev)
-      checkins = @owner.checkins.order('created_at DESC').paginate(page: params[:page], per_page: per_page)
-    else
-      checkins = @owner.checkins.where("created_at > ?", approval_date).order('created_at DESC').paginate(page: params[:page], per_page: per_page)
-    end
+    checkins = get_checkins.order('created_at DESC').paginate(page: params[:page], per_page: per_page)
     paginated_response_headers(checkins)
     checkins = checkins.map do |checkin|
       resolve checkin
@@ -20,12 +15,7 @@ class Api::V1::Users::CheckinsController < Api::ApiController
   end
 
   def last
-    approval_date = @user.approval_date_for(@dev)
-    if @device.show_history_for(@dev)
-      checkin = @owner.checkins.last
-    else
-      checkin = @owner.checkins.where("created_at > ?", approval_date).last
-    end
+    checkin = get_checkins.last
     checkin = resolve checkin
     render json: [checkin]
   end
@@ -48,7 +38,7 @@ class Api::V1::Users::CheckinsController < Api::ApiController
   def resolve checkin
     if params[:type] == "address"
       checkin.reverse_geocode!
-      if checkin.device.bypass_fogging_for(@dev)
+      if checkin.device.permission_for(@dev).bypass_fogging
         checkin
       else
         checkin.get_data
@@ -69,14 +59,22 @@ class Api::V1::Users::CheckinsController < Api::ApiController
   end
 
   def check_level(device)
-    if device.privilege_for(@dev) == "disallowed"
+    if device.permission_for(@dev).privilege == "disallowed"
       head status: :unauthorized, json: { message: 'Device privilege set to disallowed' }
       return false
-    elsif device.privilege_for(@dev) == "last_only" && params[:action] == 'index'
+    elsif device.permission_for(@dev).privilege == "last_only" && params[:action] == 'index'
       head status: :unauthorized, json: { message: 'Device privilege set to last only' }
       return false
     else
     end
   end
 
+  def get_checkins
+    approval_date = @user.approval_date_for(@dev)
+    if @device.permission_for(@dev).show_history
+      checkins = @owner.checkins
+    else
+      checkins = @owner.checkins.where("created_at > ?", approval_date)
+    end
+  end
 end

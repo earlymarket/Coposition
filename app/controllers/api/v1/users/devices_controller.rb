@@ -9,7 +9,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
   def index
     list = []
     @user.devices.except(:fogged).map do |devc|
-      if devc.privilege_for(@dev) == "complete"
+      if devc.permission_for(@dev).privilege == "complete"
         list << devc.device_checkin_hash
       end
     end
@@ -19,7 +19,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
   def show
     list = []
     @user.devices.where(id: params[:id]).except(:fogged).map do |devc|
-      if devc.privilege_for(@dev) == "complete"
+      if devc.permission_for(@dev).privilege == "complete"
         list << devc.device_checkin_hash
       else
         return head status: :unauthorized
