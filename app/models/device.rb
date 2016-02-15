@@ -24,6 +24,10 @@ class Device < ActiveRecord::Base
     permissions.find_by(permissible_id: permissible.id, permissible_type: permissible.class.to_s).bypass_fogging
   end
 
+  def show_history_for(permissible)
+    permissions.find_by(permissible_id: permissible.id, permissible_type: permissible.class.to_s).show_history
+  end
+
   def create_checkin(lat:, lng:)
     checkins << Checkin.create(uuid: uuid, lat: lat, lng: lng)
   end

@@ -5,9 +5,13 @@ class Api::V1::Users::CheckinsController < Api::ApiController
   before_action :check_privilege, only: [:index, :last]
 
   def index
-    # TODO: Should check privilege for each device, not list ALL the checkins!
+    approval_date = @user.approval_date_for(@dev)
     params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 30
-    checkins = @owner.checkins.order('created_at DESC').paginate(page: params[:page], per_page: per_page)
+    if @device.show_history_for(@dev)
+      checkins = @owner.checkins.order('created_at DESC').paginate(page: params[:page], per_page: per_page)
+    else
+      checkins = @owner.checkins.where("created_at > ?", approval_date).order('created_at DESC').paginate(page: params[:page], per_page: per_page)
+    end
     paginated_response_headers(checkins)
     checkins = checkins.map do |checkin|
       resolve checkin
@@ -16,7 +20,8 @@ class Api::V1::Users::CheckinsController < Api::ApiController
   end
 
   def last
-    checkin = @owner.checkins.last
+    approval_date = @user.approval_date_for(@dev)
+    checkin = @owner.checkins.where("created_at > ?", approval_date).last
     checkin = resolve checkin
     render json: [checkin]
   end
