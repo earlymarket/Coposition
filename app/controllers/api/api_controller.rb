@@ -58,6 +58,14 @@ class Api::ApiController < ActionController::Base
     @user ||= User.find(id)
   end
 
+  def find_permissible
+    if params[:permissible_id]
+      @permissible = User.find(params[:permissible_id])
+    else
+      @permissible = @dev
+    end
+  end
+
   def current_user?(user_id)
     auth_token = User.find(user_id).authentication_token
     request.headers['X-User-Token'] == auth_token

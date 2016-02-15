@@ -2,7 +2,7 @@ class Api::V1::Users::CheckinsController < Api::ApiController
   respond_to :json
 
   before_action :authenticate, :check_user_approved_developer, :find_device, :find_owner
-  before_action :check_privilege, only: [:index, :last]
+  before_action :find_permissible, :check_privilege, only: [:index, :last]
 
   def index
     params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 30
@@ -16,7 +16,7 @@ class Api::V1::Users::CheckinsController < Api::ApiController
 
   def last
     checkin = get_checkins.last
-    checkin = resolve checkin
+    checkin = resolve checkin if checkin
     render json: [checkin]
   end
 
@@ -38,7 +38,7 @@ class Api::V1::Users::CheckinsController < Api::ApiController
     def resolve checkin
       if params[:type] == "address"
         checkin.reverse_geocode!
-        if checkin.device.permission_for(@dev).bypass_fogging
+        if checkin.device.permission_for(@permissible).bypass_fogging
           checkin
         else
           checkin.get_data
@@ -59,10 +59,10 @@ class Api::V1::Users::CheckinsController < Api::ApiController
     end
 
     def check_privilege_level(device)
-      if device.permission_for(@dev).privilege == "disallowed"
+      if device.permission_for(@permissible).privilege == "disallowed"
         head status: :unauthorized, json: { message: 'Device privilege set to disallowed' }
         return false
-      elsif device.permission_for(@dev).privilege == "last_only" && params[:action] == 'index'
+      elsif device.permission_for(@permissible).privilege == "last_only" && params[:action] == 'index'
         head status: :unauthorized, json: { message: 'Device privilege set to last only' }
         return false
       else
@@ -83,11 +83,11 @@ class Api::V1::Users::CheckinsController < Api::ApiController
     end
 
     def check_show_history(device)
-      approval_date = @user.approval_date_for(@dev)
-      if device.permission_for(@dev).show_history
-        checkins = device.checkins
+      approval_date = @user.approval_date_for(@permissible)
+      if device.permission_for(@permissible).show_history
+        device.checkins
       else
-        checkins = device.checkins.where("created_at > ?", approval_date)
+        device.checkins.where("created_at > ?", approval_date)
       end
     end
 
