@@ -21,7 +21,11 @@ class Api::V1::Users::CheckinsController < Api::ApiController
 
   def last
     approval_date = @user.approval_date_for(@dev)
-    checkin = @owner.checkins.where("created_at > ?", approval_date).last
+    if @device.show_history_for(@dev)
+      checkin = @owner.checkins.last
+    else
+      checkin = @owner.checkins.where("created_at > ?", approval_date).last
+    end
     checkin = resolve checkin
     render json: [checkin]
   end
