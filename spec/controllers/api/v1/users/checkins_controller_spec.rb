@@ -104,6 +104,16 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
         expect(res_hash.first['address']).to eq "The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK"
       end
     end
+
+    context "on a user" do
+      it "should fetch the last reported location" do
+        checkin
+        get :last, {
+          user_id: user.id
+        }
+        expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
+      end
+    end
   end
 
   describe "GET #index when the device has 31 checkins" do
@@ -175,6 +185,15 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
           page: 2
         }
         expect(res_hash.last['id']).to be device.checkins.last.id
+      end
+    end
+
+    context "on a user" do
+      it "should fetch the most recent checkins (up to 30 checkins)" do
+        get :index, {
+          user_id: user.id
+        }
+        expect(res_hash.first['id']).to be device.checkins.last.id
       end
     end
   end

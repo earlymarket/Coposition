@@ -70,11 +70,24 @@ class Api::V1::Users::CheckinsController < Api::ApiController
     end
 
     def get_checkins
-      approval_date = @user.approval_date_for(@dev)
-      if @device.permission_for(@dev).show_history
-        checkins = @owner.checkins
+      if @device
+        check_show_history(@device)
       else
-        checkins = @owner.checkins.where("created_at > ?", approval_date)
+        checkins = []
+        @user.devices.each do |device|
+          checkins << check_show_history(device)
+        end
+        checkins.flatten!
+        Checkin.where(id: checkins.map(&:id))
+      end
+    end
+
+    def check_show_history(device)
+      approval_date = @user.approval_date_for(@dev)
+      if device.permission_for(@dev).show_history
+        checkins = device.checkins
+      else
+        checkins = device.checkins.where("created_at > ?", approval_date)
       end
     end
 
