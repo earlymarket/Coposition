@@ -2,7 +2,7 @@ class Api::V1::Users::CheckinsController < Api::ApiController
   respond_to :json
 
   before_action :authenticate, :check_user_approved_approvable, :find_device, :find_owner
-  before_action :check_privilege, only: [:index, :last]
+  before_action :permissible_has_privilege?, only: [:index, :last]
 
   def index
     params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 30
@@ -38,13 +38,14 @@ class Api::V1::Users::CheckinsController < Api::ApiController
     def resolve checkin
       if params[:type] == "address"
         checkin.reverse_geocode!
-        get_address(checkin)
+        checkin.get_data unless checkin.device.permission_for(@permissible).bypass_fogging
+        checkin
       else
         checkin.slice(:id, :uuid, :lat, :lng, :created_at)
       end
     end
 
-    def check_privilege
+    def permissible_has_privilege?
       if @device
         check_privilege_level(@device)
       else
@@ -61,7 +62,6 @@ class Api::V1::Users::CheckinsController < Api::ApiController
       elsif device.permission_for(@permissible).privilege == "last_only" && params[:action] == 'index'
         head status: :unauthorized, json: { permission_status: device.permission_for(@permissible).privilege }
         return false
-      else
       end
     end
 
@@ -75,14 +75,6 @@ class Api::V1::Users::CheckinsController < Api::ApiController
         end
         checkins.flatten!
         Checkin.where(id: checkins.map(&:id))
-      end
-    end
-
-    def get_address(checkin)
-      if checkin.device.permission_for(@permissible).bypass_fogging
-        checkin
-      else
-        checkin.get_data
       end
     end
 
