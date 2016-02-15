@@ -31,50 +31,51 @@ class Api::V1::Users::CheckinsController < Api::ApiController
 
   private
 
-  def allowed_params
-    params.require(:checkin).permit(:uuid, :lat, :lng)
-  end
+    def allowed_params
+      params.require(:checkin).permit(:uuid, :lat, :lng)
+    end
 
-  def resolve checkin
-    if params[:type] == "address"
-      checkin.reverse_geocode!
-      if checkin.device.permission_for(@dev).bypass_fogging
-        checkin
+    def resolve checkin
+      if params[:type] == "address"
+        checkin.reverse_geocode!
+        if checkin.device.permission_for(@dev).bypass_fogging
+          checkin
+        else
+          checkin.get_data
+        end
       else
-        checkin.get_data
-      end
-    else
-      checkin.slice(:id, :uuid, :lat, :lng, :created_at)
-    end
-  end
-
-  def check_privilege
-    if @device
-      check_level(@device)
-    else
-      @user.devices.each do |device|
-        check_level(device)
+        checkin.slice(:id, :uuid, :lat, :lng, :created_at)
       end
     end
-  end
 
-  def check_level(device)
-    if device.permission_for(@dev).privilege == "disallowed"
-      head status: :unauthorized, json: { message: 'Device privilege set to disallowed' }
-      return false
-    elsif device.permission_for(@dev).privilege == "last_only" && params[:action] == 'index'
-      head status: :unauthorized, json: { message: 'Device privilege set to last only' }
-      return false
-    else
+    def check_privilege
+      if @device
+        check_privilege_level(@device)
+      else
+        @user.devices.each do |device|
+          check_privilege_level(device)
+        end
+      end
     end
-  end
 
-  def get_checkins
-    approval_date = @user.approval_date_for(@dev)
-    if @device.permission_for(@dev).show_history
-      checkins = @owner.checkins
-    else
-      checkins = @owner.checkins.where("created_at > ?", approval_date)
+    def check_privilege_level(device)
+      if device.permission_for(@dev).privilege == "disallowed"
+        head status: :unauthorized, json: { message: 'Device privilege set to disallowed' }
+        return false
+      elsif device.permission_for(@dev).privilege == "last_only" && params[:action] == 'index'
+        head status: :unauthorized, json: { message: 'Device privilege set to last only' }
+        return false
+      else
+      end
     end
-  end
+
+    def get_checkins
+      approval_date = @user.approval_date_for(@dev)
+      if @device.permission_for(@dev).show_history
+        checkins = @owner.checkins
+      else
+        checkins = @owner.checkins.where("created_at > ?", approval_date)
+      end
+    end
+
 end
