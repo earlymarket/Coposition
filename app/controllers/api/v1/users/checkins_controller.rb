@@ -38,11 +38,7 @@ class Api::V1::Users::CheckinsController < Api::ApiController
     def resolve checkin
       if params[:type] == "address"
         checkin.reverse_geocode!
-        if checkin.device.permission_for(@permissible).bypass_fogging
-          checkin
-        else
-          checkin.get_data
-        end
+        get_address(checkin)
       else
         checkin.slice(:id, :uuid, :lat, :lng, :created_at)
       end
@@ -79,6 +75,14 @@ class Api::V1::Users::CheckinsController < Api::ApiController
         end
         checkins.flatten!
         Checkin.where(id: checkins.map(&:id))
+      end
+    end
+
+    def get_address(checkin)
+      if checkin.device.permission_for(@permissible).bypass_fogging
+        checkin
+      else
+        checkin.get_data
       end
     end
 
