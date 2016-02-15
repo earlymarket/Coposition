@@ -36,8 +36,8 @@ class User < ActiveRecord::Base
 
   ## Approvals
 
-  def approved_developer?(dev)
-    developers.include? dev
+  def approved?(permissible)
+    developers.include?(permissible) || friends.include?(permissible)
   end
 
   def has_request_from(approvable)

@@ -37,7 +37,7 @@ RSpec.describe User, type: :model do
 
     it "should approve a developer" do
       expect(user.pending_approvals.count).to be 0
-      expect(user.approved_developer? developer).to be false
+      expect(user.approved? developer).to be false
 
       user.approvals << Approval.create(approvable: developer, approvable_type: 'Developer', status: 'developer-requested')
       user.save

@@ -29,9 +29,12 @@ class Api::ApiController < ActionController::Base
     response['X-Per-Page'] = resource.per_page.to_json
   end
 
-  def check_user_approved_developer
+  def check_user_approved_approvable
     find_user
-    unless @user.approved_developer?(@dev)
+    find_permissible
+    if @user.approved?(@dev)
+      render json: { "approval status": @user.approval_status_for(@permissible) } unless @user.approved?(@permissible)
+    else
       render json: { "approval status": @user.approval_status_for(@dev) }
     end
   end

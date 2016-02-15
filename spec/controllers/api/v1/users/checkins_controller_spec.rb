@@ -5,6 +5,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
   let(:developer){FactoryGirl::create :developer}
   let(:user){FactoryGirl::create :user}
+  let(:second_user){FactoryGirl::create :user}
   let(:device) do
     device = FactoryGirl::create :device
     user.devices << device
@@ -21,6 +22,8 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
     request.headers["X-Api-Key"] = developer.api_key
     unless example.metadata[:skip_before]
       device
+      Approval.link(user,second_user,'User')
+      Approval.accept(second_user,user,'User')
       Approval.link(user,developer,'Developer')
       Approval.accept(user,developer,'Developer')
     end
@@ -32,6 +35,19 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
         get :last, {
           user_id: user.id,
           device_id: device.id
+        }
+        expect(res_hash[:approval_status]).to be nil
+      end
+    end
+
+    context "without friend approval" do
+      it "shouldn't fetch the last reported location", :skip_before do
+        Approval.link(user,developer,'Developer')
+        Approval.accept(user,developer,'Developer')
+        get :last, {
+          user_id: user.id,
+          device_id: device.id,
+          permissible_id: second_user.id
         }
         expect(res_hash[:approval_status]).to be nil
       end
@@ -62,6 +78,15 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
         get :last, {
           user_id: user.id,
           device_id: device.id
+        }
+        expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
+      end
+
+      it "should fetch the last reported location for a friend" do
+        get :last, {
+          user_id: user.id,
+          device_id: device.id,
+          permissible_id: second_user.id
         }
         expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
       end

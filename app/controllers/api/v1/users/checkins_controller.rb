@@ -1,8 +1,8 @@
 class Api::V1::Users::CheckinsController < Api::ApiController
   respond_to :json
 
-  before_action :authenticate, :check_user_approved_developer, :find_device, :find_owner
-  before_action :find_permissible, :check_privilege, only: [:index, :last]
+  before_action :authenticate, :check_user_approved_approvable, :find_device, :find_owner
+  before_action :check_privilege, only: [:index, :last]
 
   def index
     params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 30
