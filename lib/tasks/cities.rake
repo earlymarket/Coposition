@@ -1,6 +1,6 @@
 namespace :cities do
   desc "Imports all of the city data into the app for internal fogging"
-  task :import, [:num] => :environment do |t, args|
+  task :import, [:num] => :environment do |_t, args|
     args.with_defaults(:num => -1)
     # Taken from http://download.geonames.org/export/dump/
     # db/cities/1,2,3.txt together contain all info for cities with over 1000 people.
