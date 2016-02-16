@@ -45,13 +45,31 @@ footer{
   }
 }
 
-.transparent-btn{
-  @extend .transparent-nav;
-  border: solid 1px black;
+.login-btn{
+  background-color: rgba(0,0,0,0);
+  box-shadow: none;
+  border: solid 1px white;
+}
 
-  &:hover{
-    border-color: $secondary-color;
-    box-shadow: none;
+.btn{
+  &.transparent-btn{
+    @extend .dark-text;
+    border: solid 1px rgba(0, 0, 0, 0.8);
+
+    &:hover{
+      @extend .light-text;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+  }
+
+  &.visible-btn{
+    @extend .light-text;
+    border: solid 1px white;
+
+    &:hover{
+      @extend .dark-text;
+      background-color: white;
+    }
   }
 }
 
