@@ -7,7 +7,7 @@
   </a>
 
   <% if device.developers.exists? || device.permitted_users.exists? %>
-      <a class="waves-effect waves-light btn modal-trigger" href="#modal<%=device.id%>"><i class="small material-icons">lock</i> Permissions</a>
+      <a class="waves-effect waves-light btn modal-trigger" href="#modal<%=device.id%>"><i class="material-icons left">lock</i>Permissions</a>
       <div id="modal<%=device.id%>" class="modal">
         <ul class="permissions collection" data-device=<%=device.id%>>
 
