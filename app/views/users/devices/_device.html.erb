@@ -7,10 +7,8 @@
   </a>
 
   <% if device.developers.exists? || device.permitted_users.exists? %>
-    <ul class="collapsible">
-    <li>
-      <div class="collapsible-header permissions">Permissions</div>
-      <div class="collapsible-body">
+      <a class="waves-effect waves-light btn modal-trigger" href="#modal<%=device.id%>"><i class="small material-icons">lock</i> Permissions</a>
+      <div id="modal<%=device.id%>" class="modal">
         <ul class="permissions collection" data-device=<%=device.id%>>
 
           <% device.developers.each do |developer| %>
@@ -31,6 +29,5 @@
 
         </ul>
       </div>
-    </li>
   <% end %>
 </div>

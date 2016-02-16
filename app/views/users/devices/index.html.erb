@@ -16,6 +16,10 @@
 </div>
 
 <script>
+$(document).ready(function(){
+  $('.modal-trigger').leanModal();
+});
+
 var current_user_id =  <%= @current_user_id %>;
 
 function update_permission(permission, device_id, attribute, value){
