@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
   end
 
   def approval_for(approvable)
-    approvals.find_by(approvable_id: approvable.id, approvable_type: approvable.class.to_s)
+    approvals.find_by(approvable_id: approvable.id, approvable_type: approvable.class.to_s) || NoApproval.new
   end
 
   ## Devices

@@ -44,7 +44,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
     it "should be told if the approval is still pending" do
       # No approval
       get :status, user_id: user.username, format: :json
-      expect(res_hash[:approval_status]).to be nil
+      expect(res_hash[:approval_status]).to eq "No Approval"
 
       Approval.link(user,developer,'Developer')
       get :status, user_id: user.username, format: :json

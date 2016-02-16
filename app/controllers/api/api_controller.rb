@@ -33,9 +33,9 @@ class Api::ApiController < ActionController::Base
     find_user
     find_permissible
     if !@user.approved?(@dev)
-      render status: 401, json: { "approval status": @user.approval_status_for(@dev) }
+      render status: 401, json: { "approval status": @user.approval_for(@dev).status }
     elsif !@user.approved?(@permissible)
-      render status: 401, json: { "approval status": @user.approval_status_for(@permissible) }
+      render status: 401, json: { "approval status": @user.approval_for(@permissible).status }
     end
   end
 
