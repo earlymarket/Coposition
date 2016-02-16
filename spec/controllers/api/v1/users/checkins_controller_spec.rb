@@ -64,7 +64,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
           user_id: user.id,
           device_id: device.id
         }
-        expect(res_hash[:permission_status]).to be 'disallowed'
+        expect(res_hash[:permission_status]).to eq 'disallowed'
         expect(response.status).to be 401
       end
     end
