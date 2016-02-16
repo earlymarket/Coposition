@@ -1,7 +1,7 @@
 namespace :cities do
   desc "Imports all of the city data into the app for internal fogging"
-  task import: :environment do
-
+  task :import, [:num] => :environment do |_t, args|
+    args.with_defaults(:num => -1)
     # Taken from http://download.geonames.org/export/dump/
     # db/cities/1,2,3.txt together contain all info for cities with over 1000 people.
 
@@ -13,31 +13,33 @@ namespace :cities do
       for x in 1..3
         begin
           CSV.foreach("db/cities/#{x}.txt", { col_sep: "\t", quote_char: quote_chars.shift }) do |row|
+            break if (i.to_s == args[:num])
             City.create(name: row[1], latitude: row[4], longitude: row[5], country_code: row[8])
             puts "Parsed #{i} cities" if i % 500 == 0
             i += 1
           end
         rescue CSV::MalformedCSVError
-          quote_chars.empty? ? raise : retry 
+          quote_chars.empty? ? raise : retry
         end
       end
 
     end
   end
+
   desc "Destroys all of the cities table in a single transaction."
   task destroy_all: :environment do
 
     print "Are you sure you want to destroy the cities table? (y/n): "
     ans = STDIN.gets.strip
-    
-    if ans == "y" 
+
+    if ans == "y"
       puts "Destroying cities...".red
       log_city_transaction do
         City.destroy_all
       end
     else
       puts "Cancelled"
-    end  
+    end
   end
 end
 
