@@ -6,11 +6,11 @@ class Api::ApiController < ActionController::Base
   def authenticate
     api_key = request.headers['X-Api-Key']
     @dev = Developer.where(api_key: api_key).first if api_key
-    unless @dev
-      head status: :unauthorized
-      return false
+    if @dev
+      create_request
+    else
+      render status: 401, json: { message: 'Developer not registered with Coposition' }
     end
-    create_request
   end
 
   def create_request
@@ -32,10 +32,10 @@ class Api::ApiController < ActionController::Base
   def check_user_approved_approvable
     find_user
     find_permissible
-    if @user.approved?(@dev)
-      render json: { "approval status": @user.approval_status_for(@permissible) } unless @user.approved?(@permissible)
-    else
-      render json: { "approval status": @user.approval_status_for(@dev) }
+    if !@user.approved?(@dev)
+      render status: 401, json: { "approval status": @user.approval_status_for(@dev) }
+    elsif !@user.approved?(@permissible)
+      render status: 401, json: { "approval status": @user.approval_status_for(@permissible) }
     end
   end
 
@@ -47,18 +47,18 @@ class Api::ApiController < ActionController::Base
     end
   end
 
+  def find_by_id(id)
+    @user = User.find_by_username(id)
+    @user ||= User.find_by_email(id)
+    @user ||= User.find(id)
+  end
+
   def find_device
     if params[:device_id] then @device = Device.find(params[:device_id]) end
   end
 
   def find_owner
     @owner = @device || find_by_id(params[:user_id])
-  end
-
-  def find_by_id(id)
-    @user = User.find_by_username(id)
-    @user ||= User.find_by_email(id)
-    @user ||= User.find(id)
   end
 
   def find_permissible

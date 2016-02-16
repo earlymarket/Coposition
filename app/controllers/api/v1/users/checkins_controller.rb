@@ -57,11 +57,9 @@ class Api::V1::Users::CheckinsController < Api::ApiController
 
     def check_privilege_level(device)
       if device.permission_for(@permissible).privilege == "disallowed"
-        head status: :unauthorized, json: { permission_status: device.permission_for(@permissible).privilege }
-        return false
+        render status: 401, json: { permission_status: device.permission_for(@permissible).privilege }
       elsif device.permission_for(@permissible).privilege == "last_only" && params[:action] == 'index'
-        head status: :unauthorized, json: { permission_status: device.permission_for(@permissible).privilege }
-        return false
+        render status: 401, json: { permission_status: device.permission_for(@permissible).privilege }
       end
     end
 
