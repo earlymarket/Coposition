@@ -25,7 +25,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
     if approval_exists? approval
       if allowed_params[:status] == 'accepted'
         Approval.accept(@user, approval.approvable, approval.approvable_type)
-        render json: approval
+        render json: approval.reload
       else
         approval.destroy
         render status: 200, json: { message: 'Approval Destroyed' }
