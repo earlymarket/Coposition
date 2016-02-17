@@ -39,11 +39,6 @@
     <div id="priv<%=device.id%>" class="modal">
     <div class="modal-content">
       <h4>Privacy Controls</h4>
-      <% if device.fogged? %>
-        <% @fogmessage = "Currently fogged" %>
-      <% else %>
-        <% @fogmessage = "Fog" %>
-      <% end %>
       <% @device = device %>
       <%= render partial: "privacy" %>
       </div>

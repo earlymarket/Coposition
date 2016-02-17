@@ -21,5 +21,13 @@ module DevicesHelper
       message.html_safe
     end
   end
+
+  def fog_message(device)
+    if device.fogged?
+      "Currently fogged"
+    else
+      "Fog"
+    end
+  end
 end
 

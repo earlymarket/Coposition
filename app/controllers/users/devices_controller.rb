@@ -16,11 +16,6 @@ class Users::DevicesController < ApplicationController
   def show
     @device = Device.find(params[:id])
     @checkins = @device.checkins.order('created_at DESC').paginate(page: params[:page], per_page: 50)
-    if @device.fogged?
-      @fogmessage = "Currently fogged"
-    else
-      @fogmessage = "Fog"
-    end
   end
 
   def new
