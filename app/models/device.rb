@@ -1,6 +1,6 @@
 class Device < ActiveRecord::Base
   include SlackNotifiable
-  include SharedMethods
+  include SwitchFogging
 
   belongs_to :user
   has_many :checkins, dependent: :destroy
@@ -22,12 +22,6 @@ class Device < ActiveRecord::Base
 
   def create_checkin(lat:, lng:)
     checkins << Checkin.create(uuid: uuid, lat: lat, lng: lng)
-  end
-
-  def device_checkin_hash
-    hash = as_json
-    hash[:last_checkin] = checkins.last.get_data if checkins.exists?
-    hash
   end
 
   def slack_message

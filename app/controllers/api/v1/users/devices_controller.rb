@@ -7,25 +7,13 @@ class Api::V1::Users::DevicesController < Api::ApiController
   before_action :check_user, only: :update
 
   def index
-    list = []
-    @user.devices.except(:fogged).map do |devc|
-      if devc.privilege_for(@dev) == "complete"
-        list << devc.device_checkin_hash
-      end
-    end
-    respond_with list
+    devices = @user.devices
+    render json: devices
   end
 
   def show
-    list = []
-    @user.devices.where(id: params[:id]).except(:fogged).map do |devc|
-      if devc.privilege_for(@dev) == "complete"
-        list << devc.device_checkin_hash
-      else
-        return head status: :unauthorized
-      end
-    end
-    respond_with list
+    device = @user.devices.where(id: params[:id])
+    render json: device
   end
 
   def update

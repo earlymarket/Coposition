@@ -1,0 +1,11 @@
+if(<%= !@message.nil? %>){
+  Materialize.toast('<%= @device.name %> <%= @message %>', 1500);
+  var button = $('#fogButton<%=@device.id%>');
+  button.html("<%= j fog_message(@device) %>");
+} else if(<%= !@device.delayed.nil? %>){
+  Materialize.toast("<%= @device.name %> is now timeshifted by <%= @device.delayed %> minutes", 1500);
+  $('#mins').val('<%= @device.delayed %>');
+} else {
+  Materialize.toast("<%= @device.name %> is not timeshifted.", 1500);
+  $('#mins').val('');
+}

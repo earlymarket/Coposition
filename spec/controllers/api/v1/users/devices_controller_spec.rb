@@ -23,7 +23,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   end
   let(:approval) { create_approval(user, second_user) }
 
-  before do      
+  before do
     @checkin = FactoryGirl::build :checkin
     @checkin.uuid = device.uuid
     @checkin.save
@@ -51,29 +51,6 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       expect(res_hash.first["id"]).to be device.id
     end
 
-    it "should let you know the last checkin for devices if there is one" do
-      req = Proc.new { |loc| get loc, user_id: user.username, id: device.id, format: :json }
-      expect = Proc.new { expect(res_hash.first["last_checkin"]["id"]).to eq @checkin.id }
-      
-      req.call(:index)
-      expect.call
-      req.call(:show)
-      expect.call
-    end
-
-    it "should not only return devices for which the developer has permission" do
-      device.permissions.last.update(privilege: "disallowed")
-      get :index, user_id: user.username, format: :json
-      expect(response.body).to eq "[]"
-      expect(response.status).to be 200
-    end
-
-    it "should not allow a developer to see a device for which it disallowed" do
-      device.permissions.last.update(privilege: "disallowed")
-      get :show, user_id: user.username, id: device.id, format: :json
-      expect(response.body).to eq ""
-      expect(response.status).to be 401
-    end
   end
 
   describe "PUT" do

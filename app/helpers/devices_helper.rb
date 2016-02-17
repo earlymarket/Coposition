@@ -24,7 +24,7 @@ module DevicesHelper
 
   def fog_message(device)
     if device.fogged?
-      "Currently fogged"
+      "Currently Fogged"
     else
       "Fog"
     end
