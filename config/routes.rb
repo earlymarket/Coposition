@@ -83,6 +83,7 @@ Rails.application.routes.draw do
         post 'reject'
       end
     end
+    resources :friends, only: [:show]
   end
 
 

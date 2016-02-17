@@ -1,0 +1,5 @@
+<h1><%=@friend.email%></h1>
+<% @devices.each do |device| %>
+  <h4><%= device.name %></h4>
+  <%= devices_last_checkin(device) %>
+<% end %>

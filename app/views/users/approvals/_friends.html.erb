@@ -6,7 +6,9 @@
   <% @friends.each do |friend| %>
     <div class="collection-item row">
       <div class="col s8">
+      <a id="<%= friend.email %>" href="<%= user_friend_path(current_user.url_id, friend) %>">
         <h5><%= friend.email %></h5>
+      </a>
       </div>
       <div class="col s4">
       <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, Approval.where(user: current_user, approvable: friend, approvable_type: "User").first.id), remote: true, class: "btn" %>
