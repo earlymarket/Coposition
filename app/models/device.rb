@@ -24,12 +24,6 @@ class Device < ActiveRecord::Base
     checkins << Checkin.create(uuid: uuid, lat: lat, lng: lng)
   end
 
-  def device_checkin_hash
-    hash = as_json
-    hash[:last_checkin] = checkins.last.get_data if checkins.exists?
-    hash
-  end
-
   def slack_message
     "A new device has been created"
   end
