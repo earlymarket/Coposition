@@ -1,5 +1,5 @@
 Materialize.toast('<%= @device.name %> <%= @message %>', 1500)
 
-var button = $('#fogButton');
+var button = $('#fogButton<%=@device.id%>');
 
 button.html("<%= @button_text %>")
