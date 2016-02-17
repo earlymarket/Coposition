@@ -1,4 +1,4 @@
-<div>
+<div class="section">
   <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>">
     <h4><%= device.name %></h4>
     <%= devices_last_checkin(device) %>
@@ -32,3 +32,4 @@
       </div>
   <% end %>
 </div>
+<div class="divider"></div>
