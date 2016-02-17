@@ -83,7 +83,11 @@ Rails.application.routes.draw do
         post 'reject'
       end
     end
-    resources :friends, only: [:show]
+    resources :friends, only: [:show] do
+      member do
+        get 'show_device'
+      end
+    end
   end
 
 

@@ -1,0 +1,10 @@
+<h1><%= @device.name %></h1>
+
+<div id="map" class="checkin-map center valign-wrapper"></div>
+
+<%= render partial: "users/devices/checkin_table" %>
+
+<script type="text/javascript">
+  var checkins = <%= raw @checkins.to_json %>
+  renderMap();
+</script>

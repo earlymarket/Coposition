@@ -9,7 +9,7 @@
     </tr>
   </thead>
   <% @checkins.each do |checkin| %>
-    <%= render "checkin_table_row", checkin: checkin %>
+    <%= render "users/devices/checkin_table_row", checkin: checkin %>
   <% end %>
 </table>
 <%= will_paginate @checkins %>
