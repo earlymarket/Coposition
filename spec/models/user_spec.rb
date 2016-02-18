@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
 
-  
+
   let(:developer) { FactoryGirl::create(:developer) }
   let(:device) { FactoryGirl::create(:device) }
   let(:user) do
@@ -10,16 +10,10 @@ RSpec.describe User, type: :model do
     us.devices << device
     us
   end
-  let(:second_user) do
-    us = FactoryGirl::create(:user)
-    us.devices << FactoryGirl::create(:device)
-    us
-  end
-  let(:approval) { create_approval(user, second_user) }
 
   describe "relationships" do
     it "should have some devices" do
-      expect(user.devices.last).to eq device 
+      expect(user.devices.last).to eq device
     end
   end
 
@@ -38,7 +32,7 @@ RSpec.describe User, type: :model do
     it "should approve a developer" do
       expect(user.pending_approvals.count).to be 0
       expect(user.approved_developer? developer).to be false
-      
+
       user.approvals << Approval.create(approvable: developer, approvable_type: 'Developer', status: 'developer-requested')
       user.save
 
@@ -70,6 +64,14 @@ RSpec.describe User, type: :model do
       it "should have device privileges by default" do
         expect( user.devices.first.privilege_for developer ).to eq "complete"
       end
+    end
+  end
+
+  describe "last_checkin" do
+    it "should get the users last checkin" do
+      checkin = FactoryGirl::create(:checkin)
+      device.checkins << checkin
+      expect(user.last_checkin).to eq checkin
     end
   end
 

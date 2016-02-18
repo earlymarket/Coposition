@@ -23,6 +23,15 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     app
   end
 
+  describe 'GET #new' do
+    it "should assign a new approval" do
+      get :new, {
+        user_id: user.username,
+      }
+      expect((assigns :approval).class).to eq Approval.new.class
+    end
+  end
+
   describe 'POST #create' do
     context 'when adding a developer' do
 

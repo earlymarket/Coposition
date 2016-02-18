@@ -17,7 +17,6 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
   let(:new_user) { create_user }
   let(:priv) { user.devices.last.privilege_for(developer) }
-  let(:approval) { create_approval(user, new_user) }
 
   it 'should have a current_user' do
     user
@@ -203,6 +202,18 @@ RSpec.describe Users::DevicesController, type: :controller do
 
       device.reload
       expect(device.delayed).to be 13
+    end
+
+    it 'should set a delay of 0 as nil' do
+      request.accept = 'text/javascript'
+      put :update, {
+        id: device.id,
+        user_id: user.username,
+        mins: 0
+      }
+
+      device.reload
+      expect(device.delayed).to be nil
     end
   end
 
