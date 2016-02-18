@@ -1,6 +1,6 @@
 class Device < ActiveRecord::Base
   include SlackNotifiable
-  include SharedMethods
+  include SwitchFogging
 
   belongs_to :user
   has_many :checkins, dependent: :destroy
