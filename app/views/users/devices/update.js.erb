@@ -2,7 +2,7 @@ if(<%= @updated == 'fogging' %>){
   Materialize.toast('<%= j devices_fog_message(@device) %>', 1500);
   var button = $('#fogButton<%=@device.id%>');
   button.html("<%= j devices_fog_button_text(@device) %>");
-} else {
+} else if(<%= @updated == 'delay' %>) {
   Materialize.toast("<%= j devices_delay_message(@device) %>", 1500);
   $('#mins').val('<%= @device.delayed %>');
 }
