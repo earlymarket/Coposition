@@ -53,8 +53,10 @@ class Users::DevicesController < ApplicationController
     @device = Device.find(params[:id])
     if params[:mins]
       set_delay
+      @updated = 'delay'
     else
-      fog
+      @device.switch_fog
+      @updated = 'fogging'
     end
   end
 
@@ -96,14 +98,6 @@ class Users::DevicesController < ApplicationController
       unless user_owns_device?
         flash[:notice] = "You do not own that device"
         redirect_to root_path
-      end
-    end
-
-    def fog
-      if @device.switch_fog
-        @message = "has been fogged."
-      else
-        @message = "is no longer fogged."
       end
     end
 
