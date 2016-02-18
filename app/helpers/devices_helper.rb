@@ -8,18 +8,27 @@ module DevicesHelper
     message.html_safe
   end
 
-  def devices_fog_status(device)
+  def devices_fog_message(device)
     if device.fogged
-      message = "<p>Fogging is enabled on this device.</p>"
-      message.html_safe
+      "#{device.name} has been fogged"
+    else
+      "#{device.name} is no longer fogged"
     end
   end
 
-  def devices_delay_status(device)
+  def devices_delay_message(device)
     if device.delayed
-      message = "<p>Timeshifted with a delay of #{device.delayed} minutes</p>"
-      message.html_safe
+      "#{device.name} is now timeshifted by #{device.delayed} minutes"
+    else
+      "#{device.name} is not timeshifted"
+    end
+  end
+
+  def devices_fog_button_text(device)
+    if device.fogged?
+      "Currently Fogged"
+    else
+      "Fog"
     end
   end
 end
-

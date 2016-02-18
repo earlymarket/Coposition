@@ -1,11 +1,14 @@
-class Users::PermissionsController < ApplicationController
-
-  before_action :authenticate_user!, :require_ownership
+class  Api::V1::Users::PermissionsController < Api::ApiController
+  respond_to :json
+  
+  acts_as_token_authentication_handler_for User
+  
+  before_action :require_ownership
 
   def update
     permission = Permission.find(params[:id])
     permission.update(allowed_params)
-    render nothing: true
+    render json: permission
   end
 
   private
@@ -15,8 +18,7 @@ class Users::PermissionsController < ApplicationController
 
     def require_ownership
       unless user_owns_permission?
-        flash[:alert] = "You do not control that permission"
-        redirect_to root_path
+        render status: 403, json: { message: "You do not control that permission" }
       end
     end
 end

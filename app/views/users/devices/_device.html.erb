@@ -1,36 +1,51 @@
-<div>
-  <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>">
-    <h4><%= device.name %></h4>
-    <%= devices_last_checkin(device) %>
-    <%= devices_fog_status(device) %>
-    <%= devices_delay_status(device)%>
-  </a>
+<div class="card row">
 
-  <% if device.developers.exists? || device.permitted_users.exists? %>
-    <ul class="collapsible">
-    <li>
-      <div class="collapsible-header permissions">Permissions</div>
-      <div class="collapsible-body">
-        <ul class="permissions collection" data-device=<%=device.id%>>
+  <div class="col s8">
+    <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>">
+      <h4><%= device.name %></h4>
+      <%= devices_last_checkin(device) %>
+    </a>
+  </div>
 
-          <% device.developers.each do |developer| %>
-            <% @permission =  device.permissions.where(permissible: developer, permissible_type: 'Developer').first %>
-            <li class="collection-item row" data-permission=<%=@permission.id%>>
-              <%= permissible_title(developer) %>
-              <%= render partial: "users/permissions/controls", object: @permission %>
-            </li>
-          <% end %>
+  <div class="col s4">
+    <% if device.developers.exists? || device.permitted_users.exists? %>
+      <a class="waves-effect waves-light btn-flat modal-trigger right" href="#perm<%=device.id%>"><i class="material-icons left">lock</i>Permissions</a>
+      <div id="perm<%=device.id%>" class="modal">
+        <div class="modal-content">
+          <h4 class="modal-content">Permissions Controls</h4>
+          <ul class="permissions collection" data-device=<%=device.id%>>
 
-          <% device.permitted_users.each do |friend| %>
-            <% @permission =  device.permissions.where(permissible: friend, permissible_type: 'User').first %>
-            <li class="collection-item row" data-permission=<%=@permission.id%>>
-              <%= permissible_title(friend) %>
-              <%= render partial: "users/permissions/controls", object: @permission %>
-            </li>
-          <% end %>
+            <% device.developers.each do |developer| %>
+              <% permission =  device.permissions.where(permissible: developer, permissible_type: "Developer").first %>
+              <li class="collection-item row" data-permission=<%=permission.id%>>
+                <%= permissible_title(developer) %>
+                <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
+              </li>
+            <% end %>
 
-        </ul>
+            <% device.permitted_users.each do |friend| %>
+              <% permission =  device.permissions.where(permissible: friend, permissible_type: "User").first %>
+              <li class="collection-item row" data-permission=<%=permission.id%>>
+                <%= permissible_title(friend) %>
+                <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
+              </li>
+            <% end %>
+
+          </ul>
+        </div>
       </div>
-    </li>
-  <% end %>
+    <% end %>
+  </div>
+
+  <div class="col s4">
+    <a class="waves-effect waves-light btn-flat modal-trigger right" href="#priv<%=device.id%>">
+      <i class="material-icons left">security</i>Privacy
+    </a>
+    <div id="priv<%=device.id%>" class="modal">
+    <div class="modal-content">
+      <h4>Privacy Controls</h4>
+      <%= render partial: "privacy", object: device, as: 'device' %>
+      </div>
+    </div>
+  </div>
 </div>

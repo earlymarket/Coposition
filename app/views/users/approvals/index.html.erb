@@ -1,13 +1,16 @@
 <h1>Approvals</h1>
-<%= render partial: "pending_approvals" %>
-<%= link_to("New Approval", new_user_approval_path, class: "btn waves-effect waves-light") %>
-<h3 class="m-m">Approved apps</h3>
+<h5>Approved apps</h5>
 <div id="approvedDevelopers" class="animated">
   <%= render partial: "approved_developers" %>
 </div>
-<h3 class="m-m">Friends</h3>
+<h5>Pending Approvals</h5>
+<%= render partial: "pending_approvals" %>
+<h5>Friends</h5>
 <div id="friends" class="animated">
   <%= render partial: "friends" %>
 </div>
+<h5>Friend Requests</h5>
 <%= render partial: "friend_requests" %>
-
+<div class='center-align'>
+<%= link_to("New Approval", new_user_approval_path, class: "btn waves-effect waves-light") %>
+</div>

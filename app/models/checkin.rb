@@ -1,5 +1,5 @@
 class Checkin < ActiveRecord::Base
-  include SharedMethods
+  include SwitchFogging
 
   validates :uuid, presence: :true
   validates :lat, presence: :true
@@ -30,7 +30,7 @@ class Checkin < ActiveRecord::Base
     if fogged?
       fogged_checkin.lat = nearest_city.latitude
       fogged_checkin.lng = nearest_city.longitude
-      fogged_checkin.address = "#{city}, #{country_code}"
+      fogged_checkin.address = "#{nearest_city.name}, #{nearest_city.country_code}"
       fogged_checkin
     else
       self
@@ -50,6 +50,6 @@ class Checkin < ActiveRecord::Base
   end
 
   def nearest_city
-    @nearest_city ||= City.where(name: city, country_code: country_code).near(self).first
+    @nearest_city ||= City.near(self).first || NoCity.new
   end
 end

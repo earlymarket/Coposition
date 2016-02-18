@@ -10,7 +10,7 @@ Given(/^I click the link "(.*?)"$/) do |target|
   click_link(target, match: :first)
 end
 
-Given (/^I click the section "(.*?)"$/) do |selector|
+Given(/^I click the section "(.*?)"$/) do |selector|
   find("div."+selector).click
 end
 

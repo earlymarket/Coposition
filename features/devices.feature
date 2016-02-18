@@ -30,7 +30,8 @@ Feature: Devices
         Then I should see a link that says "Currently Fogged"
       When I click "Dashboard"
       And I click the link "Devices"
-        Then I should see "Fogging is enabled"
+      And I click the link "Privacy"
+        Then I should see a link that says "Currently Fogged"
 
     Scenario: User enables timeshift on a device
       Given I click "Add new device"
