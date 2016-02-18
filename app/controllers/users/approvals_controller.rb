@@ -56,11 +56,11 @@ class Users::ApprovalsController < ApplicationController
   def reject
     @approval = Approval.where(id: params[:id],
       user: current_user).first
+    current_user.destroy_permissions_for(@approval.approvable)
     if @approval.approvable_type == 'User'
       Approval.where(user: @approval.approvable, approvable: @approval.user, approvable_type: 'User').first.destroy
     end
     @approval.destroy
-    current_user.destroy_permissions_for(@approval.approvable)
     @approved_devs = current_user.developers
     @friends = current_user.friends
     @friend_requests = current_user.friend_requests
