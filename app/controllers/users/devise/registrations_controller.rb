@@ -44,7 +44,6 @@ class Users::Devise::RegistrationsController < Devise::RegistrationsController
     user = User.new(user_api_params)
     if user.save
       render :json=> user.as_json, :status=>201
-      return
     else
       warden.custom_failure!
       render :json=> user.errors, :status=>422
