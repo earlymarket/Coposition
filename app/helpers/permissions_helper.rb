@@ -11,5 +11,5 @@ module PermissionsHelper
     end
     title.html_safe
   end
-  
+
 end
