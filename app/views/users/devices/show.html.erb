@@ -7,7 +7,7 @@
 <%= link_to("Check-in now", new_user_device_checkin_path(current_user.url_id, @device.id), class: "btn green white-text", id: "checkin-button", remote: true) %>
 <br>
 <hr>
-<%= render partial: "privacy" %>
+<%= render partial: "privacy", object: @device, as: 'device' %>
 <hr>
 <%= render partial: "checkin_table" %>
 

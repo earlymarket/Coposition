@@ -16,18 +16,18 @@
           <ul class="permissions collection" data-device=<%=device.id%>>
 
             <% device.developers.each do |developer| %>
-              <% @permission =  device.permissions.where(permissible: developer, permissible_type: "Developer").first %>
-              <li class="collection-item row" data-permission=<%=@permission.id%>>
+              <% permission =  device.permissions.where(permissible: developer, permissible_type: "Developer").first %>
+              <li class="collection-item row" data-permission=<%=permission.id%>>
                 <%= permissible_title(developer) %>
-                <%= render partial: "users/permissions/controls", object: @permission %>
+                <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
               </li>
             <% end %>
 
             <% device.permitted_users.each do |friend| %>
-              <% @permission =  device.permissions.where(permissible: friend, permissible_type: "User").first %>
-              <li class="collection-item row" data-permission=<%=@permission.id%>>
+              <% permission =  device.permissions.where(permissible: friend, permissible_type: "User").first %>
+              <li class="collection-item row" data-permission=<%=permission.id%>>
                 <%= permissible_title(friend) %>
-                <%= render partial: "users/permissions/controls", object: @permission %>
+                <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
               </li>
             <% end %>
 
@@ -44,8 +44,7 @@
     <div id="priv<%=device.id%>" class="modal">
     <div class="modal-content">
       <h4>Privacy Controls</h4>
-      <% @device = device %>
-      <%= render partial: "privacy" %>
+      <%= render partial: "privacy", object: device, as: 'device' %>
       </div>
     </div>
   </div>
