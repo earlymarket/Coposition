@@ -24,7 +24,7 @@ module DevicesHelper
     end
   end
 
-  def fog_button_text(device)
+  def devices_fog_button_text(device)
     if device.fogged?
       "Currently Fogged"
     else
