@@ -63,13 +63,8 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show], module: :users do
     resource :dashboard, only: [:show]
-    resources :devices, except: [:update, :edit] do
-      member do
-        put 'set_delay'
-        put 'fog'
-      end
+    resources :devices, except: [:edit] do
       collection do
-        get 'permissions'
         get 'add_current'
       end
       resources :checkins, only: [:show, :create, :new]
