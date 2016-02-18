@@ -48,9 +48,11 @@ $(document).on('ready page:change', function() {
     if($(window).scrollTop() > 10){
       $("nav").removeClass('transparent-nav');
       $(".login-btn").removeClass('transparent-btn').addClass('visible-btn');
+      $("svg path").attr('fill', '#FFFFFF');
     }else if($(window).scrollTop() <= 10){
       $("nav").addClass('transparent-nav');
       $(".login-btn").addClass('transparent-btn').removeClass('visible-btn');
+      $("svg path").attr('fill', '#000000');
     }
   });
 

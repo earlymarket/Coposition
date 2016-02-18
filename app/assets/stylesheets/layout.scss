@@ -12,6 +12,18 @@ body {
 
   // transparency transitions
   transition: all 0.5s ease;
+
+  .brand{
+    width: 50%;
+    height: 100%;
+    margin-left: 2.5%;
+    position: absolute;
+
+    #brand-logo{
+      width: 35%;
+      height: 100%;
+    }
+  }
 }
 
 main {
@@ -38,9 +50,6 @@ footer{
   box-shadow: none;
 
   a{
-    @extend .dark-text;
-  }
-  .brand{
     @extend .dark-text;
   }
 }
