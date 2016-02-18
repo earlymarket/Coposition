@@ -8,8 +8,8 @@
       <div class="col s8 valign">
         <h5><%= friend.email %></h5>
       </div>
-      <div class="col s4 valign">
-      <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, Approval.where(user: current_user, approvable: friend, approvable_type: "User").first.id), remote: true, class: "btn" %>
+      <div class="col s4 valign right-align">
+      <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, Approval.where(user: current_user, approvable: friend, approvable_type: "User").first.id), remote: true, class: "btn-flat" %>
       </div>
     </div>
   <% end %>
