@@ -60,6 +60,7 @@ class Users::ApprovalsController < ApplicationController
       Approval.where(user: @approval.approvable, approvable: @approval.user, approvable_type: 'User').first.destroy
     end
     @approval.destroy
+    destroy_permissions
     @approved_devs = current_user.developers
     @friends = current_user.friends
     @friend_requests = current_user.friend_requests
@@ -86,6 +87,13 @@ class Users::ApprovalsController < ApplicationController
 
     def allowed_params
       params.require(:approval).permit(:approvable, :approvable_type)
+    end
+
+    def destroy_permissions
+      current_user.devices.each do |device|
+        permission = device.permissions.where(permissible: @approval.approvable).first
+        permission.destroy if permission
+      end
     end
 
 end
