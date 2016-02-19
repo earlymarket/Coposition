@@ -47,8 +47,8 @@ RSpec.describe Api::V1::Users::PermissionsController, type: :controller do
         device_id: second_device.id,
         id: permission.id,
       }
-      expect(response.status).to be 404
-      expect(res_hash[:message]).to eq 'Permission does not exist'
+      expect(response.status).to be 403
+      expect(res_hash[:message]).to eq 'You do not control that permission'
     end
   end
 

@@ -6,11 +6,9 @@ class  Api::V1::Users::PermissionsController < Api::ApiController
   before_action :require_ownership
 
   def update
-    permission = Permission.where(id: params[:id], device_id: params[:device_id]).first
-    if permission_exists? permission
-      permission.update(allowed_params)
-      render json: permission
-    end
+    permission = Permission.find(params[:id])
+    permission.update(allowed_params)
+    render json: permission
   end
 
   def update_all
@@ -25,7 +23,11 @@ class  Api::V1::Users::PermissionsController < Api::ApiController
     end
 
     def require_ownership
-      params[:id] = params[:device_id]
-      render status: 403, json: { message: "You do not control that device" } unless user_owns_device?
+      if params[:id]
+        render status: 403, json: { message: "You do not control that permission" } unless user_owns_permission?
+      else
+        params[:id] = params[:device_id]
+        render status: 403, json: { message: "You do not control that device" } unless user_owns_device?
+      end
     end
 end
