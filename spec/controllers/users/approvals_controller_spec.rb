@@ -156,6 +156,18 @@ RSpec.describe Users::ApprovalsController, type: :controller do
       expect(Approval.count).to eq 0
     end
 
+    it 'should reject and destroy both sides of a user approval' do
+      approval.update(status: 'requested', approvable_id: friend.id, approvable_type: 'User')
+        approval_two.update(status: 'pending', approvable_id: user.id, approvable_type: 'User')
+      expect(Approval.count).to eq 2
+      request.accept = 'text/javascript'
+      post :reject, {
+        user_id: user,
+        id: approval.id
+      }
+      expect(Approval.count).to eq 0
+    end
+
     it 'should destroy an existing approval and permissions' do
       approval.update(status: 'developer-requested', approvable_id: developer.id, approvable_type: 'Developer')
       approval.approve!
