@@ -1,10 +1,10 @@
-<h3>Your current devices are:</h3><br>
+<h1>Devices</h1>
 <div>
   <% @devices.each do |device| %>
     <%= render device %>
   <% end %>
 </div>
-
+</br>
 <div class="row">
   <div class="col m3 offset-m2">
     <%= link_to("Add new device", new_user_device_path, class: "btn btn-primary btn-lg") %>
@@ -16,6 +16,10 @@
 </div>
 
 <script>
+$(document).ready(function(){
+  $('.modal-trigger').leanModal();
+});
+
 var current_user_id =  <%= @current_user_id %>;
 
 function update_permission(permission, device_id, attribute, value){

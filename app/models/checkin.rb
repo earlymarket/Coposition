@@ -1,5 +1,5 @@
 class Checkin < ActiveRecord::Base
-  include SharedMethods
+  include SwitchFogging
 
   validates :uuid, presence: :true
   validates :lat, presence: :true
