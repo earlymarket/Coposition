@@ -19,7 +19,7 @@ RSpec.describe DevicesHelper, :type => :helper do
   end
 
   describe '#devices_fog_message' do
-    it "should return a string indicating fog status has changed" do
+    it "should return a string indicating fogging has been updated" do
       expect(helper.devices_fog_message(device)).to match('no longer fogged')
       device.fogged = true
       expect(helper.devices_fog_message(device)).to match('has been fogged')
@@ -35,8 +35,8 @@ RSpec.describe DevicesHelper, :type => :helper do
   end
 
   describe '#devices_fog_button_text' do
-    it "should return a string indicating fog status of the device" do
-      expect(helper.devices_fog_button_text(device)).to match('Fog')
+    it "should return a string for the fogging button" do
+      expect(helper.devices_fog_button_text(device)).to eq('Fog')
       device.fogged = true
       expect(helper.devices_fog_button_text(device)).to match('Fogged')
     end
