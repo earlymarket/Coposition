@@ -47,15 +47,6 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(response).to redirect_to(root_path)
       expect(assigns :device).to eq(nil)
     end
-
-    it 'should assign @fogmessage' do
-      device.switch_fog
-      get :show, {
-        user_id: user.username,
-        id: device.id
-      }
-      expect(assigns :fogmessage).to eq("Currently fogged")
-    end
   end
 
   describe 'GET #new' do

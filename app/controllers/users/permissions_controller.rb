@@ -3,8 +3,8 @@ class Users::PermissionsController < ApplicationController
   before_action :authenticate_user!, :require_ownership
 
   def update
-    @permission = Permission.find(params[:id])
-    @permission.update(allowed_params)
+    permission = Permission.find(params[:id])
+    permission.update(allowed_params)
     render nothing: true
   end
 
