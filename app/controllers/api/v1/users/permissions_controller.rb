@@ -12,8 +12,7 @@ class  Api::V1::Users::PermissionsController < Api::ApiController
   end
 
   def update_all
-    device = Device.find(params[:device_id])
-    permissions = device.permissions
+    permissions = Permission.where(device_id: params[:device_id])
     permissions.update_all(allowed_params)
     render json: permissions
   end

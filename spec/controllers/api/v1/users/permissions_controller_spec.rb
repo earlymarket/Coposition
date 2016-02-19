@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Api::V1::Users::PermissionsController, type: :controller do
   include ControllerMacros
   let(:device) { FactoryGirl::create :device }
+  let(:second_device) { FactoryGirl::create :device }
   let(:user) do
     u = FactoryGirl::create :user
     u.devices << device
@@ -11,6 +12,7 @@ RSpec.describe Api::V1::Users::PermissionsController, type: :controller do
   let(:second_user) { FactoryGirl::create :user }
   let(:developer) { FactoryGirl::create :developer }
   let(:permission) do
+    device.permitted_users << second_user
     device.developers << developer
     Permission.last
   end
@@ -40,13 +42,32 @@ RSpec.describe Api::V1::Users::PermissionsController, type: :controller do
         user_id: second_user.id,
         device_id: device.id,
         id: permission.id,
-        permission: {
-          bypass_fogging: true,
-        },
       }
       expect(response.status).to be 403
       expect(res_hash[:message]).to eq 'You do not control that permission'
     end
   end
 
+  describe 'update_all' do
+    it "should update all the permissions on a device" do
+      permission
+      put :update_all, {
+        device_id: device.id,
+        user_id: user.id,
+        permission: {
+          show_history: true,
+        },
+      }
+      expect(res_hash.count).to eq 2
+      expect(res_hash.all? { |permission| permission["show_history"] == true }).to eq true
+    end
+
+    it "should fail to update if user does not own device" do
+      put :update_all, {
+        device_id: second_device.id,
+        user_id: user.id,
+      }
+      expect(res_hash[:message]).to eq 'You do not control that device'
+    end
+  end
 end
