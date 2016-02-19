@@ -16,11 +16,6 @@ class Users::DevicesController < ApplicationController
   def show
     @device = Device.find(params[:id])
     @checkins = @device.checkins.order('created_at DESC').paginate(page: params[:page], per_page: 50)
-    if @device.fogged?
-      @fogmessage = "Currently fogged"
-    else
-      @fogmessage = "Fog"
-    end
   end
 
   def new
@@ -58,8 +53,10 @@ class Users::DevicesController < ApplicationController
     @device = Device.find(params[:id])
     if params[:mins]
       set_delay
+      @updated = 'delay'
     else
-      fog
+      @device.switch_fog
+      @updated = 'fogging'
     end
   end
 
@@ -101,16 +98,6 @@ class Users::DevicesController < ApplicationController
       unless user_owns_device?
         flash[:notice] = "You do not own that device"
         redirect_to root_path
-      end
-    end
-
-    def fog
-      if @device.switch_fog
-        @message = "has been fogged."
-        @button_text = "Currently Fogged"
-      else
-        @message = "is no longer fogged."
-        @button_text = "Fog"
       end
     end
 
