@@ -63,10 +63,12 @@ $(document).on('ready page:change', function() {
 
 function setup() {
   addEventListeners();
+  responsiveVideo();
 }
 
 function addEventListeners() {
   addClickListeners();
+  addWindowResizeListeners();
 }
 
 function addClickListeners() {
@@ -74,4 +76,32 @@ function addClickListeners() {
     var offset = $(".landing-section.splash").height();
     $("body").animate({ scrollTop: offset });
   });
+}
+
+function addWindowResizeListeners(){
+  $(window).resize(function(e) {
+    responsiveVideo();
+  });
+}
+
+function responsiveVideo(){
+  var ratio = 1920/1080; 
+  var $h = $("#promo").height();
+  var $w = $("#promo").width();
+  var rRatio = $w/$h;
+
+  if(rRatio < ratio){
+    // Aspect ratio is lower than 16:9
+    $(".parallax-container #promo video").css({
+      width: 'auto',
+      height: '100%'
+    });
+  }else{
+    // Aspect ration is higher than 16:9
+    $(".parallax-container #promo video").css({
+      width: '100%',
+      height: 'auto'
+    });
+  }
+  
 }
