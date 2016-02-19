@@ -65,19 +65,10 @@ class Api::V1::Users::CheckinsController < Api::ApiController
 
     def get_checkins
       if @device
-        check_show_history(@device)
+        @device.checkins_for(@permissible)
       else
         approval_date = @user.approval_for(@permissible).approval_date
         @user.checkins.where("created_at > ?", approval_date)
-      end
-    end
-
-    def check_show_history(device)
-      approval_date = @user.approval_for(@permissible).approval_date
-      if device.permission_for(@permissible).show_history
-        device.checkins
-      else
-        device.checkins.where("created_at > ?", approval_date)
       end
     end
 
