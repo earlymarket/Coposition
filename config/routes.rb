@@ -48,11 +48,8 @@ Rails.application.routes.draw do
               get :last
             end
           end
-          resources :permissions, only: [:update] do
-            collection do
-              put :update_all
-            end
-          end
+          resources :permissions, only: [:update]
+          put '/permissions', to: 'permissions#update_all'
         end
       end
       namespace :mobile_app do
