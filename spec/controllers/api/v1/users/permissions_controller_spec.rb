@@ -9,7 +9,11 @@ RSpec.describe Api::V1::Users::PermissionsController, type: :controller do
     u.devices << device
     u
   end
-  let(:second_user) { FactoryGirl::create :user }
+  let(:second_user) do
+    u = FactoryGirl::create :user
+    u.devices << second_device
+    u
+  end
   let(:developer) { FactoryGirl::create :developer }
   let(:permission) do
     device.permitted_users << second_user
@@ -40,11 +44,11 @@ RSpec.describe Api::V1::Users::PermissionsController, type: :controller do
       request.headers["X-User-Email"] = second_user.email
       put :update, {
         user_id: second_user.id,
-        device_id: device.id,
+        device_id: second_device.id,
         id: permission.id,
       }
-      expect(response.status).to be 403
-      expect(res_hash[:message]).to eq 'You do not control that permission'
+      expect(response.status).to be 404
+      expect(res_hash[:message]).to eq 'Permission does not exist'
     end
   end
 
