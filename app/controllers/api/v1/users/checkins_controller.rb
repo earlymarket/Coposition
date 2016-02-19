@@ -67,12 +67,8 @@ class Api::V1::Users::CheckinsController < Api::ApiController
       if @device
         check_show_history(@device)
       else
-        checkins = []
-        @user.devices.each do |device|
-          checkins << check_show_history(device)
-        end
-        checkins.flatten!
-        Checkin.where(id: checkins.map(&:id))
+        approval_date = @user.approval_for(@permissible).approval_date
+        @user.checkins.where("created_at > ?", approval_date)
       end
     end
 
