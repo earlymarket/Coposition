@@ -67,8 +67,16 @@ class Api::V1::Users::CheckinsController < Api::ApiController
       if @device
         @device.checkins_for(@permissible)
       else
-        approval_date = @user.approval_for(@permissible).approval_date
-        @user.checkins.where("created_at > ?", approval_date)
+        # flatten takes ages, everything else is rapid
+        # alternative, only get since approval date for all devices:
+        # approval_date = user.approval_for(permissible).approval_date
+        # @user.checkins.where("created_at > ?", approval_date)
+        checkins = []
+        @user.devices.each do |device|
+          checkins << device.checkins_for(@permissible)
+        end
+        checkins = checkins.flatten
+        Checkin.where(id: checkins.map(&:id))
       end
     end
 
