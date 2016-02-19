@@ -55,11 +55,11 @@ RSpec.describe Api::V1::Users::PermissionsController, type: :controller do
         device_id: device.id,
         user_id: user.id,
         permission: {
-          show_history: true,
+          privilege: 1,
         },
       }
       expect(res_hash.count).to eq 2
-      expect(res_hash.all? { |permission| permission["show_history"] == true }).to eq true
+      expect(res_hash.all? { |permission| permission["privilege"] == "last_only" }).to eq true
     end
 
     it "should fail to update if user does not own device" do
