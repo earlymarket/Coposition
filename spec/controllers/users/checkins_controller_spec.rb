@@ -11,24 +11,15 @@ RSpec.describe Users::CheckinsController, type: :controller do
     device.checkins << check
     check
   end
+  let(:params) do
+    { user_id: user.username, device_id: device.id, id: checkin.id }
+  end
 
   describe 'GET #new' do
-    it 'should assign a device with a matching :device_id to @device' do
-      get :new, {
-        user_id: user.username,
-        device_id: device.id,
-        id: checkin.id
-      }
-      expect(assigns :device).to eq(Device.find(device.id))
-    end
-
-    it 'should assign a new checkin to @checkin' do
-      get :new, {
-        user_id: user.username,
-        device_id: device.id,
-        id: checkin.id
-      }
+    it 'should assign a device with a matching :device_id to @device and a new checkin to @checkin' do
+      get :new, params
       expect(assigns :checkin).to be_a_new(Checkin)
+      expect(assigns :device).to eq(Device.find(device.id))
     end
   end
 
@@ -54,11 +45,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
 
   describe 'GET #show' do
     it 'should assign :id.checkin to @checkin if user owns device which owns checkin' do
-      get :show, {
-        id: checkin.id,
-        user_id: user.username,
-        device_id: device.id
-      }
+      get :show, params
       expect(assigns :checkin).to eq(Checkin.find(checkin.id))
     end
 
@@ -101,11 +88,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
     it 'should delete a checkin by id' do
       count = checkin.device.checkins.count
       expect(count).to be > 0
-      delete :destroy, {
-        user_id: user.username,
-        device_id: device.id,
-        id: device.checkins.last.id
-      }
+      delete :destroy, params
       expect(device.checkins.count).to eq(count - 1)
     end
 
@@ -115,7 +98,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
       delete :destroy, {
         user_id: new_user.username,
         device_id: device.id,
-        id: device.checkins.last.id
+        id: checkin.id
       }
       expect(response).to redirect_to(root_path)
       expect(device.checkins.count).to eq count
