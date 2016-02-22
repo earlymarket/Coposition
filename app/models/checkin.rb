@@ -28,9 +28,9 @@ class Checkin < ActiveRecord::Base
   def get_data
     fogged_checkin = self
     if fogged?
+      fogged_checkin.address = "#{nearest_city.name}, #{nearest_city.country_code}"
       fogged_checkin.lat = self.lat + rand(-0.5..0.5)
       fogged_checkin.lng = self.lng + rand(-0.5..0.5)
-      fogged_checkin.address = "#{nearest_city.name}, #{nearest_city.country_code}"
       fogged_checkin
     else
       self
