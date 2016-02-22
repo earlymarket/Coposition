@@ -16,7 +16,7 @@ RSpec.describe Users::DevicesController, type: :controller do
     user
   end
   let(:new_user) { create_user }
-  let(:priv) { user.devices.last.privilege_for(developer) }
+  let(:approval) { create_approval(user, new_user) }
 
   it 'should have a current_user' do
     user

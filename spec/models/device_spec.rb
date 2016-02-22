@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Device, type: :model do
 
   let(:developer) { FactoryGirl::create :developer }
-  let(:device) do 
+  let(:device) do
     dev = FactoryGirl::create(:device)
     dev.developers << developer
     dev
@@ -25,7 +25,7 @@ RSpec.describe Device, type: :model do
   end
 
   it "should get the privilege level for a developer" do
-    expect(device.privilege_for developer).to eq "complete"
+    expect(device.permission_for(developer).privilege).to eq "complete"
   end
 
   it "should create a checkin for a device" do

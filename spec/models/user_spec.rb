@@ -31,7 +31,7 @@ RSpec.describe User, type: :model do
 
     it "should approve a developer" do
       expect(user.pending_approvals.count).to be 0
-      expect(user.approved_developer? developer).to be false
+      expect(user.approved? developer).to be false
 
       user.approvals << Approval.create(approvable: developer, approvable_type: 'Developer', status: 'developer-requested')
       user.save
@@ -49,7 +49,7 @@ RSpec.describe User, type: :model do
       Approval.accept(user,developer,'Developer')
       expect(user.devices.first.developers.count).to be 1
       expect(user.devices.first.developers.first).to eq developer
-      expect(user.devices.first.privilege_for(developer)).to eq "complete"
+      expect(user.devices.first.permission_for(developer).privilege).to eq "complete"
     end
 
   end
@@ -62,7 +62,7 @@ RSpec.describe User, type: :model do
       end
 
       it "should have device privileges by default" do
-        expect( user.devices.first.privilege_for developer ).to eq "complete"
+        expect( user.devices.first.permission_for(developer).privilege ).to eq "complete"
       end
     end
   end

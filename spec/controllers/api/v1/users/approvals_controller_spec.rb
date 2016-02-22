@@ -53,7 +53,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
     it "should be told if the approval is still pending" do
       # No approval
       get :status, user_id: user.username, format: :json
-      expect(res_hash[:approval_status]).to be nil
+      expect(res_hash[:approval_status]).to eq "No Approval"
 
       Approval.link(user,developer,'Developer')
       get :status, user_id: user.username, format: :json
@@ -173,7 +173,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
           },
           format: :json
         }
-        expect(user.approved_developer? developer).to be true
+        expect(user.approved? developer).to be true
       end
 
       it "should be able to approve a user approval request" do
@@ -203,7 +203,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
           format: :json
         }
         expect(response.status).to be 403
-        expect(user.approved_developer? developer).to be false
+        expect(user.approved? developer).to be false
       end
 
       it "should not be able to approve an approval that does not exist/does not belong (approval_id)" do
@@ -218,7 +218,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
           format: :json
         }
         expect(response.status).to be 404
-        expect(user.approved_developer? developer).to be false
+        expect(user.approved? developer).to be false
       end
 
       it "should be able to reject an approval" do
@@ -232,7 +232,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
           format: :json
         }
         expect(Approval.count).to eq 0
-        expect(user.approved_developer? developer).to be false
+        expect(user.approved? developer).to be false
       end
 
     end
