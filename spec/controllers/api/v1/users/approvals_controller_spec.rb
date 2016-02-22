@@ -16,12 +16,12 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
     it "should be able to submit an approval request" do
       post :create, {
         user_id: user.id,
-        approval: { 
+        approval: {
           approvable: developer.id,
           approvable_type: 'Developer'
         },
         format: :json
-      } 
+      }
       expect(Approval.first.status).to eq 'developer-requested'
       expect(user.pending_approvals.count).to be 1
     end
@@ -30,7 +30,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
       Approval.link(user,developer,'Developer')
       post :create, {
         user_id: user.id,
-        approval: { 
+        approval: {
           approvable: developer.id,
           approvable_type: 'Developer'
         },
@@ -44,7 +44,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
     it "should be told if the approval is still pending" do
       # No approval
       get :status, user_id: user.username, format: :json
-      expect(res_hash[:approval_status]).to be nil
+      expect(res_hash[:approval_status]).to eq "No Approval"
 
       Approval.link(user,developer,'Developer')
       get :status, user_id: user.username, format: :json
@@ -79,7 +79,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
         request.headers['X-Secret-App-Key'] = "this-is-a-mobile-app"
         post :create, {
           user_id: user.id,
-          approval: { 
+          approval: {
             approvable: developer.id,
             approvable_type: 'Developer'
           },
@@ -87,13 +87,13 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
         }
         expect(Approval.last.user).to eq user
         expect(Approval.last.approvable_id).to eq developer.id
-        expect(Approval.last.status).to eq 'accepted' 
+        expect(Approval.last.status).to eq 'accepted'
       end
 
       it "should be able to create a user approval request" do
         post :create, {
           user_id: user.id,
-          approval: { 
+          approval: {
             approvable: second_user.id,
             approvable_type: 'User'
           },
@@ -102,14 +102,14 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
         expect(Approval.count).to eq 2
         expect(Approval.last.user).to eq second_user
         expect(Approval.last.approvable_id).to eq user.id
-        expect(Approval.last.status).to eq 'requested' 
+        expect(Approval.last.status).to eq 'requested'
       end
 
       it "should be not be able to submit another request to same user" do
         Approval.link(user,second_user,'User')
         post :create, {
           user_id: user.id,
-          approval: { 
+          approval: {
             approvable: second_user.id,
             approvable_type: 'User'
           },
@@ -123,32 +123,32 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
       it "should approve a developer request" do
         request.headers['X-Secret-App-Key'] = "this-is-a-mobile-app"
         Approval.link(user,developer,'Developer')
-        expect(Approval.last.status).to eq 'developer-requested' 
+        expect(Approval.last.status).to eq 'developer-requested'
         post :create, {
           user_id: user.id,
-          approval: { 
+          approval: {
             approvable: developer.id,
             approvable_type: 'Developer'
           },
           format: :json
         }
-        expect(Approval.last.status).to eq 'accepted' 
+        expect(Approval.last.status).to eq 'accepted'
       end
 
       it "should approve a friend request" do
         request.headers['X-Secret-App-Key'] = "this-is-a-mobile-app"
         Approval.link(second_user,user,'User')
-        expect(Approval.last.status).to eq 'requested' 
+        expect(Approval.last.status).to eq 'requested'
         post :create, {
           user_id: user.id,
-          approval: { 
+          approval: {
             approvable: second_user.id,
             approvable_type: 'User'
           },
           format: :json
         }
-        expect(Approval.first.status).to eq 'accepted'       
-        expect(Approval.last.status).to eq 'accepted' 
+        expect(Approval.first.status).to eq 'accepted'
+        expect(Approval.last.status).to eq 'accepted'
       end
     end
 
@@ -164,7 +164,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
           },
           format: :json
         }
-        expect(user.approved_developer? developer).to be true
+        expect(user.approved? developer).to be true
       end
 
       it "should be able to approve a user approval request" do
@@ -194,7 +194,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
           format: :json
         }
         expect(response.status).to be 403
-        expect(user.approved_developer? developer).to be false
+        expect(user.approved? developer).to be false
       end
 
       it "should not be able to approve an approval that does not exist/does not belong (approval_id)" do
@@ -209,7 +209,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
           format: :json
         }
         expect(response.status).to be 404
-        expect(user.approved_developer? developer).to be false
+        expect(user.approved? developer).to be false
       end
 
       it "should be able to reject an approval" do
@@ -223,7 +223,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
           format: :json
         }
         expect(Approval.count).to eq 0
-        expect(user.approved_developer? developer).to be false
+        expect(user.approved? developer).to be false
       end
 
     end
