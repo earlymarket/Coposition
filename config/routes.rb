@@ -49,6 +49,7 @@ Rails.application.routes.draw do
             end
           end
           resources :permissions, only: [:update]
+          put '/permissions', to: 'permissions#update_all'
         end
       end
       namespace :mobile_app do
