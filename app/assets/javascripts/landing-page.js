@@ -48,7 +48,24 @@ $(document).on('ready page:change', function() {
   } else {
     $("main").css('padding-top', '64px');
   }
-});
-function scrollToNext() {
 
+  $(".contents-menu").hover(function() {
+    expandScrollSpy();
+  }, function() {
+    collapseScrollSpy();
+  });
+});
+
+function collapseScrollSpy(){
+  $(".table-of-contents").css({
+    left: "95%",
+    "background-color": "rgba(252,252,252,0)"
+  });
+}
+
+function expandScrollSpy(){
+  $(".table-of-contents").css({
+    left: "0%",
+    "background-color": "rgba(252,252,252,0.8)"
+  });
 }

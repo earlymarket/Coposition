@@ -221,6 +221,15 @@ footer{
   top: 100px;
   right:50px;
   z-index: 10;
+  overflow-x: hidden;
+
+  .table-of-contents{
+    position: relative;
+    transition: all .1s ease-out;
+    padding-right: 0.5em;
+    cursor: pointer;
+    left: 95%;
+  }
   
   a, a:hover, a.active{
     border-left-color: $primary-color;
