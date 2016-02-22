@@ -55,9 +55,9 @@ RSpec.describe Users::CheckinsController, type: :controller do
   describe 'GET #show' do
     it 'should assign :id.checkin to @checkin if user owns device which owns checkin' do
       get :show, {
-        user_id: user.username,
+        id: checkin.id,
         device_id: device.id,
-        id: checkin.id
+        user_id: user.username
       }
       expect(assigns :checkin).to eq(Checkin.find(checkin.id))
     end

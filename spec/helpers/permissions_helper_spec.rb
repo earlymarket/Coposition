@@ -17,8 +17,8 @@ RSpec.describe DevicesHelper, :type => :helper do
     end
 
     it "should return html with the company name if it's a developer" do
-      expect( helper.permissible_title(developer) ).to match(developer.company_name)
       expect( helper.permissible_title(developer).class ).to eq(safebuffer)
+      expect( helper.permissible_title(developer) ).to match(developer.company_name)
     end
 
   end
