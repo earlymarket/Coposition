@@ -203,6 +203,18 @@ RSpec.describe Users::DevicesController, type: :controller do
       device.reload
       expect(device.delayed).to be 13
     end
+
+    it 'should set a delay of 0 as nil' do
+      request.accept = 'text/javascript'
+      put :update, {
+        id: device.id,
+        user_id: user.username,
+        mins: 0
+      }
+
+      device.reload
+      expect(device.delayed).to be nil
+    end
   end
 
   describe 'DELETE #destroy' do

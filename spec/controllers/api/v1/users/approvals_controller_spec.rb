@@ -11,6 +11,15 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
     request.headers["X-Api-Key"] = developer.api_key
   end
 
+  describe "get #index" do
+    it "should get a list of a users approvals" do
+      Approval.link(user, developer, 'Developer')
+      get :index, user_id: user.id, format: :json
+      expect(res_hash.length).to eq 1
+      expect(res_hash.first["user_id"]).to eq user.id
+    end
+  end
+
   describe "a developer" do
 
     it "should be able to submit an approval request" do
