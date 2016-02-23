@@ -14,20 +14,15 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
     approval.save
     approval
   end
+  let(:params) {{  user_id: user.id, format: :json }}
   let(:dev_approval_create_params) do
-    { user_id: user.id, approval:
-      { approvable: developer.id, approvable_type: 'Developer' },
-      format: :json }
+    params.merge({ approval: { approvable: developer.id, approvable_type: 'Developer' } })
   end
   let(:friend_approval_create_params) do
-    { user_id: user.id, approval:
-      { approvable: second_user.id, approvable_type: 'User' },
-      format: :json }
+    params.merge({ approval: { approvable: second_user.id, approvable_type: 'User' } })
   end
   let(:approval_update_params) do
-    { user_id: user.id, id: approval.id, approval:
-      { status: 'accepted'},
-      format: :json }
+    params.merge({ id: approval.id, approval: { status: 'accepted'} })
   end
 
   before do
@@ -37,7 +32,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
   describe "get #index" do
     it "should get a list of a users approvals" do
       Approval.link(user, developer, 'Developer')
-      get :index, user_id: user.id, format: :json
+      get :index, params
       expect(res_hash.length).to eq 1
       expect(res_hash.first["user_id"]).to eq user.id
     end
@@ -61,15 +56,15 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
 
     it "should be told if the approval is still pending" do
       # No approval
-      get :status, user_id: user.username, format: :json
+      get :status, params
       expect(res_hash[:approval_status]).to eq "No Approval"
 
       Approval.link(user,developer,'Developer')
-      get :status, user_id: user.username, format: :json
+      get :status, params
       expect(res_hash[:approval_status]).to eq "developer-requested"
 
       Approval.accept(user,developer,'Developer')
-      get :status, user_id: user.username, format: :json
+      get :status, params
       expect(res_hash[:approval_status]).to eq "accepted"
     end
 
