@@ -8,12 +8,8 @@ device = FactoryGirl::create :device
 user.devices << device
 user.save!
 
-checkin = FactoryGirl::build :checkin
+checkin = FactoryGirl::create :checkin
 device.checkins << checkin
-checkin.save
-checkin.lat = 51.588330
-checkin.lng = -0.513069
-
 device.save!
 
 developer = FactoryGirl::build :developer
