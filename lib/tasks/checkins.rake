@@ -11,7 +11,7 @@ namespace :checkins do
         i += 1
         puts "Created #{i} checkins" if i % 1000 == 0
       end
-      puts "Finished, #{i} checkins created "
+      puts "Finished, #{i} checkins created"
     end
   end
 
