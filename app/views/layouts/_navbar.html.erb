@@ -7,7 +7,7 @@
     <li><%= link_to("API", api_path) %></li>
   </ul>
 
-  <a href="/" class="valign-wrapper left brand"><%= inline_svg('bordered-logo.svg', id: "brand-logo", class: "valign") %></a>
+  <a href="/" class="valign-wrapper left"><%= inline_svg('bordered-logo.svg', id: "brand-logo", class: "valign") %></a>
 
   <ul class="right">
     <% if user_signed_in? %>
@@ -22,19 +22,19 @@
       </li>
 
       <li>
-        <%= link_to("Log out", destroy_user_session_path, method: :delete, class: "login-btn btn transparent-btn") %>
+        <%= link_to("Log out", destroy_user_session_path, method: :delete, class: "login-btn btn") %>
       </li>
 
     <% elsif developer_signed_in? %>
       <li>
-        <%= link_to("Developer log out", destroy_user_session_path, method: :delete, class: "login-btn btn transparent-btn") %>
+        <%= link_to("Developer log out", destroy_user_session_path, method: :delete, class: "login-btn btn") %>
       </li>
       <li>
-        <%= link_to("User log in", new_user_session_path, class: "login-btn btn transparent-btn") %>
+        <%= link_to("User log in", new_user_session_path, class: "login-btn btn") %>
       </li>
     <% else %>
       <li>
-        <%= link_to("User log in", new_user_session_path, class: "login-btn btn transparent-btn") %>
+        <%= link_to("User log in", new_user_session_path, class: "login-btn btn") %>
       </li>
     <% end %>
   </ul>
