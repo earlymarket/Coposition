@@ -67,9 +67,8 @@ class Api::V1::Users::CheckinsController < Api::ApiController
       if @device
         @device.checkins_for(@permissible)
       else
-        checkins = []
-        @user.devices.each do |device|
-          checkins += device.checkins_for(@permissible)
+        checkins = @user.devices.inject([]) do |result, device|
+          result + device.checkins_for(@permissible)
         end
         Checkin.where(id: checkins.map(&:id))
       end
