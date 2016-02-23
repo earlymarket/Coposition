@@ -24,9 +24,9 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   end
 
   before do
-    @checkin = FactoryGirl::build :checkin
-    @checkin.uuid = device.uuid
-    @checkin.save
+    checkin = FactoryGirl::build :checkin
+    device.checkins << checkin
+    checkin.save
     request.headers["X-Api-Key"] = developer.api_key
     request.headers["X-User-Token"] = user.authentication_token
     request.headers["X-User-Email"] = user.email

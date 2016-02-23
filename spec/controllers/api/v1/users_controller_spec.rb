@@ -7,7 +7,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     devi = FactoryGirl::create :device
     3.times do
       checkin = FactoryGirl::build :checkin
-      checkin.uuid = devi.uuid
+      devi.checkins << checkin
       checkin.save
     end
     devi
