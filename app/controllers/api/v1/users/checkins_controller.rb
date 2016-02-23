@@ -1,7 +1,7 @@
 class Api::V1::Users::CheckinsController < Api::ApiController
   respond_to :json
 
-  before_action :authenticate, :check_user_approved_approvable, :find_device, :find_owner
+  before_action :authenticate, :check_user_approved_approvable, :find_device
   before_action :permissible_has_privilege?, only: [:index, :last]
 
   def index
