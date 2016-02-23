@@ -73,9 +73,8 @@ class Api::V1::Users::CheckinsController < Api::ApiController
         # @user.checkins.where("created_at > ?", approval_date)
         checkins = []
         @user.devices.each do |device|
-          checkins << device.checkins_for(@permissible)
+          checkins += device.checkins_for(@permissible)
         end
-        checkins = checkins.flatten
         Checkin.where(id: checkins.map(&:id))
       end
     end
