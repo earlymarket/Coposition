@@ -14,7 +14,7 @@ class Api::V1::Users::RequestsController < Api::ApiController
   end
 
   def last
-    if params[:developer_id] == @dev.id
+    if params[:developer_id] == @dev.id.to_s
       # We use [-2] instead of .last because the last request will ironically be the one you're making
       requests = @user.requests.where(developer_id: params[:developer_id])[-2]
     elsif params[:developer_id]
