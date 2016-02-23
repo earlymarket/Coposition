@@ -17,6 +17,7 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
   let(:new_user) { create_user }
   let(:approval) { create_approval(user, new_user) }
+  let(:params) {{ id: device.id, user_id: user.username }}
 
   it 'should have a current_user' do
     user
@@ -32,18 +33,12 @@ RSpec.describe Users::DevicesController, type: :controller do
 
   describe 'GET #show' do
     it 'should assign :id.device to @device if user owns device' do
-      get :show, {
-        user_id: user.username,
-        id: device.id
-      }
+      get :show, params
       expect(assigns :device).to eq(Device.find(device.id))
     end
 
     it 'should not assign to @device if user does not own device' do
-      get :show, {
-        user_id: new_user.username,
-        id: device.id
-      }
+      get :show, params.merge(user_id: new_user.username)
       expect(response).to redirect_to(root_path)
       expect(assigns :device).to eq(nil)
     end
@@ -174,19 +169,13 @@ RSpec.describe Users::DevicesController, type: :controller do
     it 'should switch fogging status to true by default' do
       expect(device.fogged?).to be false
       request.accept = 'text/javascript'
-      put :update, {
-        user_id: user.username,
-        id: device.id
-      }
+      put :update, params
 
       device.reload
       expect(device.fogged?).to be true
 
       request.accept = 'text/javascript'
-      put :update, {
-        user_id: user.username,
-        id: device.id
-      }
+      put :update, params
 
       device.reload
       expect(device.fogged?).to be false
@@ -194,11 +183,7 @@ RSpec.describe Users::DevicesController, type: :controller do
 
     it 'should set a delay' do
       request.accept = 'text/javascript'
-      put :update, {
-        id: device.id,
-        user_id: user.username,
-        mins: 13
-      }
+      put :update, params.merge(mins:13)
 
       device.reload
       expect(device.delayed).to be 13
@@ -206,11 +191,7 @@ RSpec.describe Users::DevicesController, type: :controller do
 
     it 'should set a delay of 0 as nil' do
       request.accept = 'text/javascript'
-      put :update, {
-        id: device.id,
-        user_id: user.username,
-        mins: 0
-      }
+      put :update, params.merge(mins:0)
 
       device.reload
       expect(device.delayed).to be nil
@@ -221,10 +202,7 @@ RSpec.describe Users::DevicesController, type: :controller do
     it 'should delete' do
       user
       count = Device.count
-      delete :destroy, {
-        user_id: user.username,
-        id: device.id
-      }
+      delete :destroy, params
 
       expect(Device.count).to be count-1
     end
@@ -232,10 +210,7 @@ RSpec.describe Users::DevicesController, type: :controller do
     it 'should not delete if user does not own device' do
       user
       count = Device.count
-      delete :destroy, {
-        user_id: new_user.username,
-        id: device.id
-      }
+      delete :destroy, params.merge(user_id: new_user.username)
       expect(response).to redirect_to(root_path)
       expect(Device.count).to be count
     end

@@ -11,9 +11,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
     device.checkins << check
     check
   end
-  let(:params) do
-    { user_id: user.username, device_id: device.id, id: checkin.id }
-  end
+  let(:params) {{ user_id: user.username, device_id: device.id, id: checkin.id }}
 
   describe 'GET #new' do
     it 'should assign a device with a matching :device_id to @device and a new checkin to @checkin' do
