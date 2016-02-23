@@ -8,18 +8,11 @@ module DevicesHelper
     message.html_safe
   end
 
-  def devices_fog_status(device)
-    if device.fogged
-      message = "<p>Fogging is enabled on this device.</p>"
-      message.html_safe
-    end
-  end
-
-  def devices_delay_status(device)
-    if device.delayed
-      message = "<p>Timeshifted with a delay of #{device.delayed} minutes</p>"
-      message.html_safe
+  def devices_fog_button_text(device)
+    if device.fogged?
+      "Currently Fogged"
+    else
+      "Fog"
     end
   end
 end
-

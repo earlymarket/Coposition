@@ -1,11 +1,5 @@
-if(<%= !@button_text.nil? %>){
-  Materialize.toast('<%= @device.name %> <%= @message %>', 1500);
-  var button = $('#fogButton');
-  button.html("<%= @button_text %>");
-} else if(<%= !@device.delayed.nil? %>){
-  Materialize.toast("<%= @device.name %> is now timeshifted by <%= @device.delayed %> minutes", 1500);
-  $('#mins').val('<%= @device.delayed %>');
-} else {
-  Materialize.toast("<%= @device.name %> is not timeshifted.", 1500);
-  $('#mins').val('');
-}
+<%= render("/shared/notifications") %>
+var button = $('#fogButton<%=@device.id%>');
+button.html("<%= devices_fog_button_text(@device) %>");
+$('#mins').val('<%= @device.delayed %>');
+

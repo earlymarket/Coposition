@@ -36,17 +36,21 @@ class User < ActiveRecord::Base
 
   ## Approvals
 
-  def approved_developer?(dev)
-    developers.include? dev
+  def approved?(permissible)
+    developers.include?(permissible) || friends.include?(permissible)
   end
 
   def has_request_from(approvable)
     friend_requests.include?(approvable) || developer_requests.include?(approvable)
   end
 
+  def approval_for(approvable)
+    approvals.find_by(approvable_id: approvable.id, approvable_type: approvable.class.to_s) || NoApproval.new
+  end
+
   def destroy_permissions_for(approvable)
     devices.each do |device|
-      permission = device.permissions.where(permissible: approvable).first
+      permission = device.permission_for(approvable)
       permission.destroy if permission
     end
   end

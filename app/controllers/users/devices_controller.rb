@@ -16,11 +16,6 @@ class Users::DevicesController < ApplicationController
   def show
     @device = Device.find(params[:id])
     @checkins = @device.checkins.order('created_at DESC').paginate(page: params[:page], per_page: 50)
-    if @device.fogged?
-      @fogmessage = "Currently fogged"
-    else
-      @fogmessage = "Fog"
-    end
   end
 
   def new
@@ -59,7 +54,8 @@ class Users::DevicesController < ApplicationController
     if params[:mins]
       set_delay
     else
-      fog
+      @device.switch_fog
+      flash[:notice] = "#{@device.name} fogging has been changed."
     end
   end
 
@@ -104,21 +100,13 @@ class Users::DevicesController < ApplicationController
       end
     end
 
-    def fog
-      if @device.switch_fog
-        @message = "has been fogged."
-        @button_text = "Currently Fogged"
-      else
-        @message = "is no longer fogged."
-        @button_text = "Fog"
-      end
-    end
-
     def set_delay
       if params[:mins] == "0"
         @device.update(delayed: nil)
+        flash[:notice] = "#{@device.name} is not timeshifted."
       else
         @device.update(delayed: params[:mins])
+        flash[:notice] = "#{@device.name} is now timeshifted by #{@device.delayed} minutes."
       end
     end
 

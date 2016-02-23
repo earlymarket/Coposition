@@ -3,7 +3,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
 
   acts_as_token_authentication_handler_for User, only: :update
 
-  before_action :authenticate, :check_user_approved_developer
+  before_action :authenticate, :check_user_approved_approvable
   before_action :check_user, only: :update
 
   def index
@@ -28,7 +28,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
 
     def check_user
       unless current_user?(params[:user_id])
-        render status: 403, json: { message: 'Incorrect User' }
+        render status: 403, json: { message: 'User does not own device' }
       end
     end
 
