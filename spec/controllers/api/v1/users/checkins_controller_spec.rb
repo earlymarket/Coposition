@@ -113,8 +113,8 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
           type: "address"
         }
         expect(res_hash.first['address']).to eq "Denham, GB"
-        expect(res_hash.first['lat']).to be_between(51,52.1)
-        expect(res_hash.first['lng']).to be_between(-1.1,0)
+        expect(res_hash.first['lat']).to eq(51.57471)
+        expect(res_hash.first['lng']).to eq(-0.50626)
       end
 
       it "should bypass fogging if bypass_fogging is true" do

@@ -22,7 +22,7 @@ RSpec.describe ApplicationHelper, :type => :helper do
 
   describe "#area_name" do
     it "returns a message if there are no near cities" do
-      expect(helper.area_name(checkin)).to match("No near cities")
+      expect(helper.area_name(checkin)).to match("No nearby cities")
     end
 
     it "returns the name of the nearest city when there is one" do
