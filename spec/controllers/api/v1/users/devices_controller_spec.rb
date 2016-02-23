@@ -8,6 +8,8 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     dev = FactoryGirl::create :developer
     Approval.link(user,dev,'Developer')
     Approval.accept(user,dev,'Developer')
+    Approval.link(second_user,dev,'Developer')
+    Approval.accept(second_user,dev,'Developer')
     dev
   end
   let(:user) do
@@ -17,11 +19,9 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   end
   let(:second_user) do
     us = FactoryGirl::create :user
-    Approval.link(us,developer,'Developer')
-    Approval.accept(us,developer,'Developer')
+    us.devices << FactoryGirl::create(:device)
     us
   end
-  let(:approval) { create_approval(user, second_user) }
 
   before do
     @checkin = FactoryGirl::build :checkin
@@ -69,6 +69,11 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       expect(res_hash[:message]).to eq('Device does not exist')
     end
 
+    it "should not allow you to update someone elses device" do
+      put :update, { user_id: second_user.id, id: second_user.devices.last.id,  device: { fogged: true }, format: :json }
+      expect(response.status).to eq(403)
+      expect(res_hash[:message]).to eq('User does not own device')
+    end
   end
 
 end
