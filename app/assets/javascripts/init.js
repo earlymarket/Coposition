@@ -6,9 +6,6 @@ $(document).on('ready page:change', function() {
     belowOrigin: true
   });
 
-  // sidebar menu collapses to a button on mobile
-  $(".button-collapse").sideNav();
-
   // materialize accordion init
   $('.collapsible').collapsible();
 
@@ -26,8 +23,13 @@ $(document).on('ready page:change', function() {
 
   // materialize scrollfire
   var options = [
-    {selector: '#security', offset: 100, callback: 'Materialize.fadeInImage("#security .image-container")'},
-    {selector: '#api', offset: 100, callback: 'Materialize.fadeInImage("#api .image-container")'}
+    // Landing-page fade in image
+    {selector: '#security',
+     offset: 100,
+     callback: 'Materialize.fadeInImage("#security .image-container")'},
+    {selector: '#api',
+     offset: 100,
+     callback: 'Materialize.fadeInImage("#api .image-container")'}
   ];
   Materialize.scrollFire(options);
 
@@ -36,22 +38,14 @@ $(document).on('ready page:change', function() {
     $(this).velocity({
       opacity: 0,
       marginTop: '-40px'
-    }, { duration: 375,
+    }, { 
+      duration: 375,
       easing: 'easeOutExpo',
       queue: false,
       complete: function(){
-      $(this).remove();
-    }});
-  });
-
-  $(document).scroll(function(e) {
-    if($(window).scrollTop() > 10){
-      $("nav").removeClass('transparent-nav');
-      $("svg path").attr('fill', '#FFFFFF');
-    }else if($(window).scrollTop() <= 10){
-      $("nav").addClass('transparent-nav');
-      $("svg path").attr('fill', '#000000');
-    }
+        $(this).remove();
+      }
+    });
   });
 
   // Event listeners
@@ -101,5 +95,4 @@ function responsiveVideo(){
       height: 'auto'
     });
   }
-  
 }

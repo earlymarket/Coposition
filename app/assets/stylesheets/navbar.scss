@@ -32,6 +32,8 @@
   .btn{
     @extend .light-text;
     border: solid 1px white;
+    background-color: rgba(0,0,0,0);
+    box-shadow: none;
 
     &:hover{
       @extend .dark-text;
@@ -52,10 +54,7 @@
 
   // Customised right align menu items
   .right{
-    .login-btn{
-      background-color: rgba(0,0,0,0);
-      box-shadow: none;
-    }
+
   }
 }
 
