@@ -27,8 +27,7 @@
 
     var checkin = {
       'checkin[lat]': position.coords.latitude.toFixed(6),
-      'checkin[lng]': position.coords.longitude.toFixed(6),
-      'checkin[uuid]': '<%= j @device.uuid %>'
+      'checkin[lng]': position.coords.longitude.toFixed(6)
     }
 
     checkinPath += '?'

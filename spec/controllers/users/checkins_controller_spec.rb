@@ -30,7 +30,6 @@ RSpec.describe Users::CheckinsController, type: :controller do
         user_id: user.username,
         device_id: device.id,
         checkin: {
-          uuid: checkin.uuid,
           lat: checkin.lat,
           lng: checkin.lng
         }
