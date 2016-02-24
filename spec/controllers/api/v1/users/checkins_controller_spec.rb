@@ -85,7 +85,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
       it "should fog the last reported location's address if fogged" do
         device.switch_fog
-        device.checkins.create(lat: 51.57471, lng: -0.50626, uuid: device.uuid)
+        device.checkins.create(lat: 51.57471, lng: -0.50626)
         get :last, params.merge(type: "address")
         expect(res_hash.first['address']).to eq "Denham, GB"
         expect(res_hash.first['lat']).to eq(51.57471)
@@ -95,7 +95,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
       it "should bypass fogging if bypass_fogging is true" do
         # Make it fogged
         device.switch_fog
-        device.checkins.create(lat: 51.57471, lng: -0.50626, uuid: device.uuid)
+        device.checkins.create(lat: 51.57471, lng: -0.50626)
         Permission.last.update(bypass_fogging: true)
         get :last, params.merge(type: "address")
         expect(res_hash.first['address']).to eq "The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK"
@@ -178,7 +178,6 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
       count = Checkin.count
       post :create, params.merge(
         checkin: {
-          uuid: device.uuid,
           lat: Faker::Address.latitude,
           lng: Faker::Address.longitude
         })
@@ -190,11 +189,10 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
     it "should return 400 if you POST a device with missing parameters" do
       post :create, params.merge(
         checkin: {
-          uuid: Faker::Number.number(12),
           lat: Faker::Address.latitude
         })
       expect(response.status).to eq(400)
-      expect(JSON.parse(response.body)).to eq('message' => 'You must provide a UUID, lat and lng')
+      expect(res_hash[:message]).to eq('You must provide a lat and lng')
     end
   end
 

@@ -81,7 +81,7 @@ class Users::DevicesController < ApplicationController
       @device.save
       flash[:notice] = "This device has been bound to your account!"
 
-      @device.create_checkin(lat: params[:location].split(",").first,
+      @device.checkins.create(lat: params[:location].split(",").first,
           lng: params[:location].split(",").last) unless params[:location].blank?
     end
 
@@ -101,7 +101,7 @@ class Users::DevicesController < ApplicationController
     end
 
     def set_delay
-      if params[:mins] == "0"
+      if params[:mins] == "0" || params[:mins] == ""
         @device.update(delayed: nil)
         flash[:notice] = "#{@device.name} is not timeshifted."
       else
