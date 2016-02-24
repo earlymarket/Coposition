@@ -9,19 +9,17 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   def create
     if req_from_coposition_app?
       type = allowed_params[:approvable_type]
-      model = model_find(type)
-      approvable = model.find(allowed_params[:approvable])
-      if resource_exists?(type,approvable)
-        Approval.link(@user, approvable, type)
-        if (@user.has_request_from(approvable)) || (type == 'Developer')
-          Approval.accept(@user, approvable, type)
-        end
+      approvable = model_find(type).find(allowed_params[:approvable])
+      resource_exists?(type,approvable)
+      Approval.link(@user, approvable, type)
+      if (@user.has_request_from(approvable)) || (type == 'Developer')
+        Approval.accept(@user, approvable, type)
       end
-      approval = @user.approval_for(approvable)
     else
-      Approval.link(@user, @dev, 'Developer')
-      approval = @user.approval_for(@dev)
+      approvable = @dev
+      Approval.link(@user, approvable, 'Developer')
     end
+    approval = @user.approval_for(approvable)
     render json: approval
   end
 
