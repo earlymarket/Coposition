@@ -6,7 +6,7 @@ class Api::V1::Users::CheckinsController < Api::ApiController
 
   def index
     params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 30
-    checkins = get_checkins.order('created_at DESC').paginate(page: params[:page], per_page: per_page)
+    checkins = @user.get_checkins(@permissible,@device).order('created_at DESC').paginate(page: params[:page], per_page: per_page)
     paginated_response_headers(checkins)
     checkins = checkins.map do |checkin|
       resolve checkin
@@ -60,17 +60,6 @@ class Api::V1::Users::CheckinsController < Api::ApiController
         render status: 401, json: { permission_status: device.permission_for(@permissible).privilege }
       elsif device.permission_for(@permissible).privilege == "last_only" && params[:action] == 'index'
         render status: 401, json: { permission_status: device.permission_for(@permissible).privilege }
-      end
-    end
-
-    def get_checkins
-      if @device
-        @device.checkins_for(@permissible)
-      else
-        checkins = @user.devices.inject([]) do |result, device|
-          result + device.checkins_for(@permissible)
-        end
-        Checkin.where(id: checkins.map(&:id))
       end
     end
 

@@ -6,6 +6,10 @@ class Checkin < ActiveRecord::Base
   validates :lng, presence: :true
   belongs_to :device
 
+  delegate :user, to: :device
+
+  scope :since, -> (date) { where("created_at > ?", date)}
+
   reverse_geocoded_by :lat, :lng do |obj,results|
     results.first.methods.each do |m|
       obj.send("#{m}=", results.first.send(m)) if column_names.include? m.to_s
