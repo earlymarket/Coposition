@@ -136,16 +136,17 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
         expect(user.friends.include? second_user).to be true
       end
 
-      it "should not be able to approve another users approval (user_id)" do
-        second_user.approvals.create(approvable_id: developer.id)
+      it "should not be able to approve if not signed in user" do
         put :update, approval_update_params.merge(user_id:second_user.id)
+        expect(res_hash[:message]).to match("Incorrect User")
         expect(response.status).to be 403
         expect(user.approved? developer).to be false
       end
 
-      it "should not be able to approve an approval that does not exist/does not belong (approval_id)" do
+      it "should not be able to approve an approval that does not belong to you" do
         second_user.approvals.create(approvable_id: developer.id)
         put :update, approval_update_params.merge(id:second_user.approvals.last.id)
+        expect(res_hash[:message]).to match("does not exist")
         expect(response.status).to be 404
         expect(user.approved? developer).to be false
       end

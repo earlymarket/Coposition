@@ -23,12 +23,10 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     app
   end
   let(:dev_approval_create_params) do
-    { user_id: user.id, approval:
-      { approvable: developer.email, approvable_type: 'Developer' } }
+    { user_id: user.id, approval: { approvable: developer.email, approvable_type: 'Developer' } }
   end
   let(:friend_approval_create_params) do
-    { user_id: user.id, approval:
-      { approvable: friend.email, approvable_type: 'User' } }
+    { user_id: user.id, approval: { approvable: friend.email, approvable_type: 'User' } }
   end
   let(:approve_reject_params) {{ user_id: user,id: approval.id }}
 
@@ -97,16 +95,12 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     it 'should assign current users developers, friends, and pending/requests' do
       approval.update(status: 'accepted', approvable_id: developer.id, approvable_type: 'Developer')
       approval_two.update(user: user, status: 'accepted', approvable_id: friend.id, approvable_type: 'User')
-      get :index, {
-        user_id: user.id
-      }
+      get :index, { user_id: user.id }
       expect(assigns :friends).to eq user.friends
       expect(assigns :approved_devs).to eq user.developers
       approval.update(status: 'developer-requested')
       approval_two.update(status: 'requested')
-      get :index, {
-        user_id: user.id
-      }
+      get :index, { user_id: user.id }
       expect(assigns :friend_requests).to eq user.friend_requests
       expect(assigns :pending_approvals).to eq user.pending_approvals
     end
@@ -132,7 +126,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
 
     it 'should reject and destroy both sides of a user approval' do
       approval.update(status: 'requested', approvable_id: friend.id, approvable_type: 'User')
-        approval_two.update(status: 'pending', approvable_id: user.id, approvable_type: 'User')
+      approval_two.update(status: 'pending', approvable_id: user.id, approvable_type: 'User')
       expect(Approval.count).to eq 2
       request.accept = 'text/javascript'
       post :reject, approve_reject_params

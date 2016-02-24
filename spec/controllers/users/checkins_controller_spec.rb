@@ -49,11 +49,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
 
     it 'should not assign :id.checkin if user does not own device which owns checkin' do
       user
-      get :show, {
-        user_id: new_user.username,
-        device_id: device.id,
-        id: checkin.id
-      }
+      get :show, params.merge(user_id: new_user.username)
       expect(response).to redirect_to(root_path)
       expect(assigns :checkin).to eq nil
     end
@@ -93,11 +89,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
     it 'should not delete a checkin if it does not belong to the user' do
       count = checkin.device.checkins.count
       expect(count).to be > 0
-      delete :destroy, {
-        user_id: new_user.username,
-        device_id: device.id,
-        id: checkin.id
-      }
+      delete :destroy, params.merge(user_id: new_user.username)
       expect(response).to redirect_to(root_path)
       expect(device.checkins.count).to eq count
     end

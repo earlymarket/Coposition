@@ -38,7 +38,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
       end
     end
 
-    context "without friend approval" do
+    context "with developer approval but without friend approval" do
       it "shouldn't fetch the last reported location", :skip_before do
         device
         Approval.link(user,developer,'Developer')
@@ -105,9 +105,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
     context "on a user" do
       it "should fetch the last reported location" do
         checkin
-        get :last, {
-          user_id: user.id
-        }
+        get :last, { user_id: user.id }
         expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
       end
     end
@@ -168,9 +166,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
     context "on a user" do
       it "should fetch the most recent checkins (up to 30 checkins)" do
-        get :index, {
-          user_id: user.id
-        }
+        get :index, { user_id: user.id }
         expect(res_hash.first['id']).to be device.checkins.last.id
       end
     end
