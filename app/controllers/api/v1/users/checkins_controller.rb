@@ -21,18 +21,19 @@ class Api::V1::Users::CheckinsController < Api::ApiController
   end
 
   def create
-    checkin = Checkin.create(allowed_params)
+    device = Device.find(params[:device_id])
+    checkin = device.checkins.create(allowed_params)
     if checkin.id
       render json: [checkin]
     else
-      render status: 400, json: { message: 'You must provide a UUID, lat and lng' }
+      render status: 400, json: { message: 'You must provide a lat and lng' }
     end
   end
 
   private
 
     def allowed_params
-      params.require(:checkin).permit(:uuid, :lat, :lng)
+      params.require(:checkin).permit(:lat, :lng)
     end
 
     def resolve checkin

@@ -81,7 +81,7 @@ class Users::DevicesController < ApplicationController
       @device.save
       flash[:notice] = "This device has been bound to your account!"
 
-      @device.create_checkin(lat: params[:location].split(",").first,
+      @device.checkins.create(lat: params[:location].split(",").first,
           lng: params[:location].split(",").last) unless params[:location].blank?
     end
 

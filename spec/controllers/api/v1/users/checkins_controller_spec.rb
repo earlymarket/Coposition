@@ -106,7 +106,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
       it "should fog the last reported location's address if fogged" do
         device.switch_fog
-        device.checkins.create(lat: 51.57471, lng: -0.50626, uuid: device.uuid)
+        device.checkins.create(lat: 51.57471, lng: -0.50626)
         get :last, {
           user_id: user.id,
           device_id: device.id,
@@ -120,7 +120,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
       it "should bypass fogging if bypass_fogging is true" do
         # Make it fogged
         device.switch_fog
-        device.checkins.create(lat: 51.57471, lng: -0.50626, uuid: device.uuid)
+        device.checkins.create(lat: 51.57471, lng: -0.50626)
         Permission.last.update(bypass_fogging: true)
         get :last, {
           user_id: user.id,
@@ -232,7 +232,6 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
         user_id: user.id,
         device_id: device.id,
         checkin: {
-          uuid: device.uuid,
           lat: Faker::Address.latitude,
           lng: Faker::Address.longitude
         }
@@ -247,12 +246,11 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
         user_id: user.id,
         device_id: device.id,
         checkin: {
-          uuid: Faker::Number.number(12),
           lat: Faker::Address.latitude
         }
       }
       expect(response.status).to eq(400)
-      expect(JSON.parse(response.body)).to eq('message' => 'You must provide a UUID, lat and lng')
+      expect(res_hash[:message]).to eq('You must provide a lat and lng')
     end
   end
 

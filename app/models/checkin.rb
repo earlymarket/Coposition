@@ -1,7 +1,6 @@
 class Checkin < ActiveRecord::Base
   include SwitchFogging
 
-  validates :uuid, presence: :true
   validates :lat, presence: :true
   validates :lng, presence: :true
   belongs_to :device
@@ -14,13 +13,13 @@ class Checkin < ActiveRecord::Base
 
 
   after_create do
-    device = Device.find_by(uuid: uuid)
     if device
+      self.uuid = device.uuid
       self.fogged = device.fogged
       device.checkins << self
       reverse_geocode! if device.checkins.count == 1
     else
-      raise "UUID #{uuid} does not match a device." unless Rails.env.test?
+      raise "Checkin is not assigned to a device." unless Rails.env.test?
     end
   end
 
