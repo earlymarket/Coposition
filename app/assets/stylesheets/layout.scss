@@ -6,6 +6,10 @@ body {
   flex-direction: column;
 }
 
+main {
+  flex: 1 0 auto;
+}
+
 footer.page-footer{
   margin-top: 0;
 }
