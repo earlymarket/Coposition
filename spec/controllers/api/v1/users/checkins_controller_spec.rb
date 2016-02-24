@@ -16,6 +16,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
     device.checkins << checkin
     checkin
   end
+  let(:params) {{ user_id: user.id, device_id: device.id }}
 
   before do |example|
     create_denhams
@@ -32,24 +33,17 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
   describe "GET #last" do
     context "without developer approval" do
       it "shouldn't fetch the last reported location", :skip_before do
-        get :last, {
-          user_id: user.id,
-          device_id: device.id
-        }
+        get :last, params
         expect(res_hash[:approval_status]).to be nil
       end
     end
 
-    context "without friend approval" do
+    context "with developer approval but without friend approval" do
       it "shouldn't fetch the last reported location", :skip_before do
         device
         Approval.link(user,developer,'Developer')
         Approval.accept(user,developer,'Developer')
-        get :last, {
-          user_id: user.id,
-          device_id: device.id,
-          permissible_id: second_user.id
-        }
+        get :last, params.merge(permissible_id: second_user.id)
         expect(res_hash[:approval_status]).to be nil
       end
     end
@@ -60,10 +54,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
       end
 
       it "shouldn't fetch the last reported location" do
-        get :last, {
-          user_id: user.id,
-          device_id: device.id
-        }
+        get :last, params
         expect(res_hash[:permission_status]).to eq 'disallowed'
         expect(response.status).to be 401
       end
@@ -76,29 +67,17 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
       end
 
       it "should fetch the last reported location" do
-        get :last, {
-          user_id: user.id,
-          device_id: device.id
-        }
+        get :last, params
         expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
       end
 
       it "should fetch the last reported location for a friend" do
-        get :last, {
-          user_id: user.id,
-          device_id: device.id,
-          permissible_id: second_user.id
-        }
+        get :last, params.merge(permissible_id: second_user.id)
         expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
       end
 
       it "should fetch the last reported location's address in full by default" do
-        get :last, {
-          user_id: user.id,
-          device_id: device.id,
-          type: "address"
-        }
-
+        get :last, params.merge(type: "address")
         expect(res_hash.first['address']).to eq "The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK"
         expect(res_hash.first['lat']).to eq checkin.lat
         expect(res_hash.first['lng']).to eq checkin.lng
@@ -107,11 +86,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
       it "should fog the last reported location's address if fogged" do
         device.switch_fog
         device.checkins.create(lat: 51.57471, lng: -0.50626, uuid: device.uuid)
-        get :last, {
-          user_id: user.id,
-          device_id: device.id,
-          type: "address"
-        }
+        get :last, params.merge(type: "address")
         expect(res_hash.first['address']).to eq "Denham, GB"
         expect(res_hash.first['lat']).to eq(51.57471)
         expect(res_hash.first['lng']).to eq(-0.50626)
@@ -122,11 +97,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
         device.switch_fog
         device.checkins.create(lat: 51.57471, lng: -0.50626, uuid: device.uuid)
         Permission.last.update(bypass_fogging: true)
-        get :last, {
-          user_id: user.id,
-          device_id: device.id,
-          type: "address"
-        }
+        get :last, params.merge(type: "address")
         expect(res_hash.first['address']).to eq "The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK"
       end
     end
@@ -134,9 +105,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
     context "on a user" do
       it "should fetch the last reported location" do
         checkin
-        get :last, {
-          user_id: user.id
-        }
+        get :last, { user_id: user.id }
         expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
       end
     end
@@ -152,10 +121,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
     context 'with no page param given' do
       it "should fetch the most recent checkins (up to 30 checkins)" do
-        get :index, {
-          user_id: user.id,
-          device_id: device.id
-        }
+        get :index, params
         expect(res_hash.first['id']).to be device.checkins.last.id
         expect(response.header['X-Next-Page']).to eq "2"
         expect(response.header['X-Current-Page']).to eq "1"
@@ -167,22 +133,14 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
     context 'with page param' do
       it "should fetch the checkins on that page if they exist" do
         page = 2
-        get :index, {
-          user_id: user.id,
-          device_id: device.id,
-          page: page
-        }
+        get :index, params.merge(page: page)
         expect(res_hash.first['id']).to be device.checkins.first.id
         expect(response.header['X-Current-Page']).to eq "#{page}"
         expect(response.header['X-Next-Page']).to eq "null"
       end
 
       it "should not get any checkins if page does not exist" do
-        get :index, {
-          user_id: user.id,
-          device_id: device.id,
-          page: 3
-        }
+        get :index, params.merge(page: 3)
         expect(response.body).to eq "[]"
       end
 
@@ -191,11 +149,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
         checkin = FactoryGirl::create :checkin
         checkin.update(created_at: (approval_date - 1.day))
         device.checkins << checkin
-        get :index, {
-          user_id: user.id,
-          device_id: device.id,
-          page: 2
-        }
+        get :index,  params.merge(page: 2)
         expect(res_hash.last['id']).to_not be device.checkins.last.id
       end
 
@@ -205,20 +159,14 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
         checkin.update(created_at: (approval_date - 1.day))
         device.checkins << checkin
         Permission.last.update(show_history: true)
-        get :index, {
-          user_id: user.id,
-          device_id: device.id,
-          page: 2
-        }
+        get :index,  params.merge(page: 2)
         expect(res_hash.last['id']).to be device.checkins.last.id
       end
     end
 
     context "on a user" do
       it "should fetch the most recent checkins (up to 30 checkins)" do
-        get :index, {
-          user_id: user.id
-        }
+        get :index, { user_id: user.id }
         expect(res_hash.first['id']).to be device.checkins.last.id
       end
     end
@@ -228,29 +176,23 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
     it "should POST a checkin with a pre-existing device" do
       count = Checkin.count
-      post :create, {
-        user_id: user.id,
-        device_id: device.id,
+      post :create, params.merge(
         checkin: {
           uuid: device.uuid,
           lat: Faker::Address.latitude,
           lng: Faker::Address.longitude
-        }
-      }
+        })
       expect(res_hash.first['uuid']).to eq device.uuid
       expect(Checkin.count).to be(count + 1)
       expect(checkin.device).to be device
     end
 
     it "should return 400 if you POST a device with missing parameters" do
-      post :create, {
-        user_id: user.id,
-        device_id: device.id,
+      post :create, params.merge(
         checkin: {
           uuid: Faker::Number.number(12),
           lat: Faker::Address.latitude
-        }
-      }
+        })
       expect(response.status).to eq(400)
       expect(JSON.parse(response.body)).to eq('message' => 'You must provide a UUID, lat and lng')
     end
