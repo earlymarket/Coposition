@@ -7,18 +7,24 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   before_action :check_user, only: :update
 
   def create
-    type = allowed_params[:approvable_type]
-    model = model_find(type)
-    approvable = model.find(allowed_params[:approvable])
-    if resource_exists?(type,approvable)
-      Approval.link(@user, approvable, type)
-      if (req_from_coposition_app? && (@user.has_request_from(approvable) || type == 'Developer'))
-        Approval.accept(@user, approvable, type)
+    if req_from_coposition_app?
+      type = allowed_params[:approvable_type]
+      model = model_find(type)
+      approvable = model.find(allowed_params[:approvable])
+      if resource_exists?(type,approvable)
+        Approval.link(@user, approvable, type)
+        if (@user.has_request_from(approvable)) || (type == 'Developer')
+          Approval.accept(@user, approvable, type)
+        end
       end
       approval = @user.approval_for(approvable)
-      render json: approval
+    else
+      Approval.link(@user, @dev, 'Developer')
+      approval = @user.approval_for(@dev)
     end
+    render json: approval
   end
+
 
   def update
     approval = Approval.where(id: params[:id], user: @user).first
