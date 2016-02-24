@@ -15,7 +15,7 @@ class Api::V1::Users::CheckinsController < Api::ApiController
   end
 
   def last
-    checkin = get_checkins.last
+    checkin = @user.get_checkins(@permissible,@device).last
     checkin = resolve checkin if checkin
     render json: [checkin]
   end
