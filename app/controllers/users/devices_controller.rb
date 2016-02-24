@@ -101,7 +101,7 @@ class Users::DevicesController < ApplicationController
     end
 
     def set_delay
-      if params[:mins] == "0"
+      if params[:mins] == "0" || params[:mins] == ""
         @device.update(delayed: nil)
         flash[:notice] = "#{@device.name} is not timeshifted."
       else
