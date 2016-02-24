@@ -5,7 +5,7 @@
 <div class="collection">
   <% @friends.each do |friend| %>
     <div class="collection-item row valign-wrapper">
-      <div class="col s8 valign">
+      <div class="col s8 valign hoverable">
       <a id="<%= friend.email %>" href="<%= user_friend_path(current_user.url_id, friend) %>">
         <h5><%= friend.email %></h5>
       </a>

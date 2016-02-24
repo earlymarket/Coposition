@@ -1,0 +1,16 @@
+<tr id="checkin<%= checkin.id %>">
+  <td>
+    <%= checkins_humanize_date(checkin.created_at) %>
+  </td>
+  <td>
+    <%= area_name(checkin) %>
+  </td>
+  <td>
+    <%= checkins_fogged_icon(checkin.fogged) %>
+  </td>
+  <td>
+    <%= link_to show_checkin_user_friend_path(current_user.url_id, @friend, checkin_id: checkin.id), class: "waves-effect waves-orange btn-flat" do %>
+      <i class="small material-icons">info_outline</i>
+    <% end %>
+  </td>
+</tr>

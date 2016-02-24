@@ -81,6 +81,7 @@ Rails.application.routes.draw do
     resources :friends, only: [:show] do
       member do
         get 'show_device'
+        get 'show_checkin'
       end
     end
   end
