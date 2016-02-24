@@ -3,7 +3,6 @@
   <div class="hoverable">
     <%= link_to show_device_user_friend_path(current_user.url_id, @friend, device_id: device.id) do %>
       <h4><%= device.name %></h4>
-      <%= devices_last_checkin(device) %>
     <% end %>
   </div>
 <% end %>

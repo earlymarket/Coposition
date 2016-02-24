@@ -11,7 +11,7 @@ class Users::FriendsController < ApplicationController
   end
 
   def show_checkin
-    @friend = current_user.friends.find(params[:id])
-    @checkin = @friend.checkins.find(params[:checkin_id])
+    friend = current_user.friends.find(params[:id])
+    @checkin = friend.checkins.find(params[:checkin_id])
   end
 end
