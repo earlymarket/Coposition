@@ -7,14 +7,11 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
   let(:developer){FactoryGirl::create :developer}
   let(:second_user){FactoryGirl::create :user}
   let(:approval) do
-    approval = FactoryGirl::create :approval
-    approval.approvable_id = developer.id
-    approval.approvable_type = 'Developer'
-    approval.user = user
-    approval.save
-    approval
+    app = FactoryGirl::create :approval
+    app.update(user: user, approvable_id: developer.id, approvable_type: 'Developer')
+    app
   end
-  let(:params) {{  user_id: user.id, format: :json }}
+  let(:params) {{ user_id: user.id, format: :json }}
   let(:dev_approval_create_params) do
     params.merge({ approval: { approvable: developer.id, approvable_type: 'Developer' } })
   end
