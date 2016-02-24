@@ -50,6 +50,20 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
       expect(user.pending_approvals.count).to be 1
     end
 
+    it "should be not be able to submit an approval request for another user" do
+      Approval.link(user,developer,'Developer')
+      post :create, {
+        user_id: user.id,
+        approval: {
+          approvable: second_user.id,
+          approvable_type: 'User'
+        },
+        format: :json
+      }
+      expect(Approval.count).to_not be 2
+      expect(Approval.first.approvable).to_not be second_user
+    end
+
     it "should be told if the approval is still pending" do
       # No approval
       get :status, user_id: user.username, format: :json
@@ -80,12 +94,13 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
     before do
       request.headers["X-User-Token"] = user.authentication_token
       request.headers["X-User-Email"] = user.email
+      request.headers['X-Secret-App-Key'] = "this-is-a-mobile-app"
     end
 
     context 'when post to create' do
 
       it "should be able to create a developer approval" do
-        request.headers['X-Secret-App-Key'] = "this-is-a-mobile-app"
+
         post :create, {
           user_id: user.id,
           approval: {
