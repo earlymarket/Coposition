@@ -12,7 +12,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
       approvable = model_find(type).find(allowed_params[:approvable])
       resource_exists?(type,approvable)
       Approval.link(@user, approvable, type)
-      if (@user.has_request_from(approvable)) || (type == 'Developer')
+      if @user.has_request_from(approvable) || type == 'Developer'
         Approval.accept(@user, approvable, type)
       end
     else
