@@ -12,8 +12,3 @@ end
 Given(/^I accept the approval request$/) do
   Approval.accept(@me,@developer,'Developer')
 end
-
-Then(/^I should see the first "(.*?)" have a class named "(.*?)"$/) do |css, class_name|
-  sleep 0.3
-  expect(first( :css, css)['class'].include? class_name).to be true
-end

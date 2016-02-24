@@ -23,6 +23,15 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     app
   end
 
+  describe 'GET #new' do
+    it "should assign a new approval" do
+      get :new, {
+        user_id: user.username,
+      }
+      expect((assigns :approval).class).to eq Approval.new.class
+    end
+  end
+
   describe 'POST #create' do
     context 'when adding a developer' do
 
@@ -139,6 +148,18 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     it 'should reject and destroy a developer approval request' do
       approval.update(status: 'developer-requested', approvable_id: developer.id, approvable_type: 'Developer')
       expect(Approval.count).to eq 1
+      request.accept = 'text/javascript'
+      post :reject, {
+        user_id: user,
+        id: approval.id
+      }
+      expect(Approval.count).to eq 0
+    end
+
+    it 'should reject and destroy both sides of a user approval' do
+      approval.update(status: 'requested', approvable_id: friend.id, approvable_type: 'User')
+        approval_two.update(status: 'pending', approvable_id: user.id, approvable_type: 'User')
+      expect(Approval.count).to eq 2
       request.accept = 'text/javascript'
       post :reject, {
         user_id: user,

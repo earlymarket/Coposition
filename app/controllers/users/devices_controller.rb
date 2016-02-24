@@ -53,10 +53,9 @@ class Users::DevicesController < ApplicationController
     @device = Device.find(params[:id])
     if params[:mins]
       set_delay
-      @updated = 'delay'
     else
       @device.switch_fog
-      @updated = 'fogging'
+      flash[:notice] = "#{@device.name} fogging has been changed."
     end
   end
 
@@ -102,10 +101,12 @@ class Users::DevicesController < ApplicationController
     end
 
     def set_delay
-      if params[:mins] == "0"
+      if params[:mins] == "0" || params[:mins] == ""
         @device.update(delayed: nil)
+        flash[:notice] = "#{@device.name} is not timeshifted."
       else
         @device.update(delayed: params[:mins])
+        flash[:notice] = "#{@device.name} is now timeshifted by #{@device.delayed} minutes."
       end
     end
 
