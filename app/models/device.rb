@@ -16,7 +16,7 @@ class Device < ActiveRecord::Base
     delayed? ? super.since(delayed.minutes.ago) : super
   end
 
-  def permitted_checkins(permissible)
+  def permitted_checkins_for(permissible)
     approval_date = user.approval_for(permissible).approval_date
     can_show_history?(permissible) ? checkins : checkins.since(approval_date)
   end

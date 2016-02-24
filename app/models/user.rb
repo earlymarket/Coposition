@@ -80,10 +80,10 @@ class User < ActiveRecord::Base
 
   def get_checkins(permissible,device)
     if device
-      device.permitted_checkins(permissible)
+      device.permitted_checkins_for(permissible)
     else
       checkins = devices.inject([]) do |result, device|
-        result + device.permitted_checkins(permissible)
+        result + device.permitted_checkins_for(permissible)
       end
       Checkin.where(id: checkins.map(&:id))
     end
