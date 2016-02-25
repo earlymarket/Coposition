@@ -54,9 +54,6 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
       end
     end
 
-<<<<<<< HEAD
-end
-=======
     def approvable_type
       allowed_params[:approvable_type]
     end
@@ -66,4 +63,3 @@ end
     end
 
 end
->>>>>>> dev
