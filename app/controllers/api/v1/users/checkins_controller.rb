@@ -5,7 +5,7 @@ class Api::V1::Users::CheckinsController < Api::ApiController
   before_action :permissible_has_privilege?, only: [:index, :last]
 
   def index
-    params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 30
+    params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 1000
     checkins = @user.get_checkins(@permissible,@device).order('created_at DESC').paginate(page: params[:page], per_page: per_page)
     paginated_response_headers(checkins)
     checkins = checkins.map do |checkin|
@@ -39,10 +39,10 @@ class Api::V1::Users::CheckinsController < Api::ApiController
     def resolve checkin
       if params[:type] == "address"
         checkin.reverse_geocode!
-        checkin.get_data unless checkin.device.permission_for(@permissible).bypass_fogging
+        checkin.get_data unless checkin.device.can_bypass_fogging?(@permissible)
         checkin
       else
-        checkin.slice(:id, :uuid, :lat, :lng, :created_at)
+        checkin.slice(:id, :uuid, :lat, :lng, :created_at, :updated_at, :fogged)
       end
     end
 

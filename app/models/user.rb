@@ -73,19 +73,14 @@ class User < ActiveRecord::Base
 
   ## Checkins
 
-  # defunct?
-  # def last_checkin
-  #   checkins.sort_by(&:created_at).last
-  # end
-
   def get_checkins(permissible,device)
     if device
       device.permitted_checkins_for(permissible)
     else
-      checkins = devices.inject([]) do |result, device|
-        result + device.permitted_checkins_for(permissible)
+      checkins_ids = devices.inject([]) do |result, device|
+        result + device.permitted_checkins_for(permissible).pluck(:id)
       end
-      Checkin.where(id: checkins.map(&:id))
+      Checkin.where(id: checkins_ids)
     end
   end
 
