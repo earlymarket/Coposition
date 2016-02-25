@@ -1,6 +1,7 @@
 class Checkin < ActiveRecord::Base
-  include SwitchFogging
+  include SharedMethods
 
+  validates :uuid, presence: :true
   validates :lat, presence: :true
   validates :lng, presence: :true
   belongs_to :device
@@ -13,23 +14,23 @@ class Checkin < ActiveRecord::Base
 
 
   after_create do
+    device = Device.find_by(uuid: uuid)
     if device
-      self.uuid = device.uuid
       self.fogged = device.fogged
       device.checkins << self
       reverse_geocode! if device.checkins.count == 1
     else
-      raise "Checkin is not assigned to a device." unless Rails.env.test?
+      raise "UUID #{uuid} does not match a device." unless Rails.env.test?
     end
   end
 
-  # The method to be used for public-facing data
+  # The method to be used for public-facing data 
   def get_data
     fogged_checkin = self
     if fogged?
-      fogged_checkin.address = "#{nearest_city.name}, #{nearest_city.country_code}"
-      fogged_checkin.lat = nearest_city.latitude || self.lat + rand(-0.5..0.5)
-      fogged_checkin.lng = nearest_city.longitude || self.lng + rand(-0.5..0.5)
+      fogged_checkin.lat = nearest_city.latitude
+      fogged_checkin.lng = nearest_city.longitude
+      fogged_checkin.address = "#{city}, #{country_code}"
       fogged_checkin
     else
       self
@@ -49,6 +50,6 @@ class Checkin < ActiveRecord::Base
   end
 
   def nearest_city
-    @nearest_city ||= City.near(self).first || NoCity.new
+    @nearest_city ||= City.where(name: city, country_code: country_code).near(self).first
   end
 end

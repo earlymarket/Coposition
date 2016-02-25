@@ -8,12 +8,12 @@ class User < ActiveRecord::Base
   friendly_id :username, use: [:slugged, :finders]
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
+         :recoverable, :rememberable, :trackable, :validatable, 
          :authentication_keys => { username: false, email: true }
 
-  validates :username, uniqueness: true,
-                       allow_blank: true,
-                       format: { with: /\A[-a-zA-Z_]+\z/,
+  validates :username, uniqueness: true, 
+                       allow_blank: true, 
+                       format: { with: /\A[-a-zA-Z_]+\z/, 
                          message: "only allows letters, underscores and dashes" }
 
   has_many :devices, dependent: :destroy
@@ -36,23 +36,12 @@ class User < ActiveRecord::Base
 
   ## Approvals
 
-  def approved?(permissible)
-    developers.include?(permissible) || friends.include?(permissible)
+  def approved_developer?(dev)
+    developers.include? dev
   end
 
   def has_request_from(approvable)
     friend_requests.include?(approvable) || developer_requests.include?(approvable)
-  end
-
-  def approval_for(approvable)
-    approvals.find_by(approvable_id: approvable.id, approvable_type: approvable.class.to_s) || NoApproval.new
-  end
-
-  def destroy_permissions_for(approvable)
-    devices.each do |device|
-      permission = device.permission_for(approvable)
-      permission.destroy if permission
-    end
   end
 
   ## Devices

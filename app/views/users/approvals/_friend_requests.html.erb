@@ -1,15 +1,18 @@
 <% if @friend_requests %>
 
-<div class='collection'>
+<div class='list-group'>
   <% @friend_requests.each do |friend| %>
-    <% app = current_user.approval_for(friend) %>
-    <div id='<%= "app_#{app.id}" %>' class='collection-item row valign-wrapper'>
-      <div class="col s8 valign">
-        <h5><%= User.find(app.approvable_id).email %></h5>
-      </div>
-      <div class="col s4 valign right-align">
-        <%= button_to "Approve", approve_user_approval_path(current_user.url_id, app.id), remote: true, class: "btn" %>
-        <%= button_to "Reject", reject_user_approval_path(current_user.url_id, app.id), remote: true, class: "btn" %>
+    <div class='list-group-item'>
+      <% app = current_user.approvals.where(approvable: friend).first %>
+      <div id="<%= "app_#{app.id}" %>"class="panel panel-default m-m third-width animated flipInY">
+        <div class="panel-heading">
+          <h4><%= User.find(app.approvable_id).email %></h4>
+        </div>
+        <div class="panel-body input-group">
+          <%= button_to "Accept", approve_user_approval_path(current_user.url_id, app.id), remote: true, class: "btn btn-success m-m" %>
+          <%= button_to "Reject", reject_user_approval_path(current_user.url_id, app.id), remote: true, class: "btn btn-danger" %>
+        </div>
+        <br>
       </div>
     </div>
   <% end %>

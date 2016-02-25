@@ -43,13 +43,17 @@ Rails.application.routes.draw do
           end
         end
         resources :devices, only: [:index, :show, :update], module: :users do
+          member do
+            post 'switch_privilege'
+          end
+          collection do
+            post 'switch_all_privileges'
+          end
           resources :checkins, only: [:index, :create] do
             collection do
               get :last
             end
           end
-          resources :permissions, only: [:update]
-          put '/permissions', to: 'permissions#update_all'
         end
       end
       namespace :mobile_app do
@@ -64,14 +68,19 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show], module: :users do
     resource :dashboard, only: [:show]
-    resources :devices, except: [:edit] do
+    resources :devices, except: [:update, :edit] do
+      member do
+        post 'set_delay'
+        delete 'checkin'
+        post 'switch_privilege'
+        put 'fog'
+      end
       collection do
+        get 'permissions'
+        post 'switch_all_privileges'
         get 'add_current'
       end
-      resources :checkins, only: [:show, :create, :new]
-      delete '/checkins/', to: 'checkins#destroy_all'
-      delete '/checkins/:id', to: 'checkins#destroy'
-      resources :permissions, only: [:update]
+      resources :checkins, only: [:show, :destroy]
     end
     resources :approvals, only: [:index, :new, :create] do
       member do

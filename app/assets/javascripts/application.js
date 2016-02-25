@@ -18,5 +18,4 @@
 //= require utility
 //= require materialize
 //= require markerclusterer
-//= require checkin-map
 //= require_tree .

@@ -34,7 +34,7 @@ class Approval < ActiveRecord::Base
   end
 
   def approve!
-    update(status: 'accepted', approval_date: Time.now)
+    update(status: 'accepted')
     user.approve_devices(approvable)
   end
 

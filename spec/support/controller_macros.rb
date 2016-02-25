@@ -14,6 +14,13 @@ module ControllerMacros
     developer
   end
 
+  def create_approval(user, second_user)
+    app = FactoryGirl::build :approval
+    app.update(user: user, approvable: second_user, status: 'requested')
+    app.save
+    app
+  end
+
   def res_hash
     # Check if it's a different request
     @json = nil if response != @res

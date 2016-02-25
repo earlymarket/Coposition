@@ -3,7 +3,7 @@ class Users::DevicesController < ApplicationController
   acts_as_token_authentication_handler_for User
   protect_from_forgery with: :null_session
   before_action :authenticate_user!
-  before_action :require_ownership, only: [:show, :destroy, :update]
+  before_action :require_ownership, only: [:show, :destroy, :switch_privilege, :checkin]
 
   def index
     @current_user_id = current_user.id
@@ -15,7 +15,12 @@ class Users::DevicesController < ApplicationController
 
   def show
     @device = Device.find(params[:id])
-    @checkins = @device.checkins.order('created_at DESC').paginate(page: params[:page], per_page: 50)
+    @checkins = @device.checkins.order('created_at DESC').paginate(page: params[:page], per_page: 10)
+    if @device.fogged?
+      @fogmessage = "Currently fogged"
+    else
+      @fogmessage = "Fog"
+    end
   end
 
   def new
@@ -49,19 +54,63 @@ class Users::DevicesController < ApplicationController
     redirect_to user_devices_path
   end
 
-  def update
+  def checkin
+    @checkin_id = params[:checkin_id]
+    Device.find(params[:id]).checkins.find(@checkin_id).delete
+  end
+
+  def switch_privilege
+    model = model_find(params[:permissible_type])
+    @permissible = model.find(params[:permissible])
     @device = Device.find(params[:id])
-    if params[:mins]
-      set_delay
-    else
-      @device.switch_fog
-      flash[:notice] = "#{@device.name} fogging has been changed."
+    @device.change_privilege_for(@permissible, params[:privilege])
+    @privilege = @device.privilege_for(@permissible)
+    @r_privilege = @device.reverse_privilege_for(@permissible)
+    render nothing: true
+  end
+
+  def switch_all_privileges
+    model = model_find(params[:permissible_type])
+    @devices = current_user.devices
+    @permissible = model.find(params[:permissible])
+    @devices.each do |device|
+      device.change_privilege_for(@permissible, params[:privilege])
+      @privilege = device.privilege_for(@permissible)
+      @r_privilege = device.reverse_privilege_for(@permissible)
     end
   end
 
   def add_current
     flash[:notice] = "Just enter a friendly name, and this device is good to go."
     redirect_to new_user_device_path(uuid: Device.create.uuid, curr_device: true)
+  end
+
+  def fog
+    @device = Device.find(params[:id])
+    if @device.switch_fog
+      @message = "has been fogged."
+      @button_text = "Currently Fogged"
+    else
+      @message = "is no longer fogged."
+      @button_text = "Fog"
+    end
+  end
+
+  def set_delay
+    @device = Device.find(params[:id])
+    @device.delayed = params[:mins]
+    @device.save
+  end
+
+  def permissions
+    devices = current_user.devices
+    @permissions = []
+    devices.each do |device|
+      device.permissions.each do |permission|
+        @permissions << permission
+      end
+    end
+    render json: @permissions
   end
 
   private
@@ -81,7 +130,7 @@ class Users::DevicesController < ApplicationController
       @device.save
       flash[:notice] = "This device has been bound to your account!"
 
-      @device.checkins.create(lat: params[:location].split(",").first,
+      @device.create_checkin(lat: params[:location].split(",").first,
           lng: params[:location].split(",").last) unless params[:location].blank?
     end
 
@@ -97,16 +146,6 @@ class Users::DevicesController < ApplicationController
       unless user_owns_device?
         flash[:notice] = "You do not own that device"
         redirect_to root_path
-      end
-    end
-
-    def set_delay
-      if params[:mins] == "0" || params[:mins] == ""
-        @device.update(delayed: nil)
-        flash[:notice] = "#{@device.name} is not timeshifted."
-      else
-        @device.update(delayed: params[:mins])
-        flash[:notice] = "#{@device.name} is now timeshifted by #{@device.delayed} minutes."
       end
     end
 
