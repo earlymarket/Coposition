@@ -24,7 +24,7 @@ class Checkin < ActiveRecord::Base
     end
   end
 
-  # The method to be used for public-facing data 
+  # The method to be used for public-facing data
   def get_data
     fogged_checkin = self
     if fogged?
@@ -50,6 +50,8 @@ class Checkin < ActiveRecord::Base
   end
 
   def nearest_city
-    @nearest_city ||= City.where(name: city, country_code: country_code).near(self).first
+    center_point = [self.lat, self.lng]
+    box = Geocoder::Calculations.bounding_box(center_point, 20)
+    @nearest_city ||= City.near(self).within_bounding_box(box).first || NoCity.new
   end
 end

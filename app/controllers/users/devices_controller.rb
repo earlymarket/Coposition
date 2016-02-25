@@ -81,7 +81,7 @@ class Users::DevicesController < ApplicationController
   end
 
   def add_current
-    flash[:notice] = "Just enter a friendly name, and this device is good to go."
+    flash[:notice] = "Enter a name for the device you are currently using and click ADD"
     redirect_to new_user_device_path(uuid: Device.create.uuid, curr_device: true)
   end
 

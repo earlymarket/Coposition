@@ -19,7 +19,7 @@ Feature: Devices
         When I click "Denham"
       When I click "Delete device"
       Then I should see "Device deleted"
-        And I should not see "G-RALA"
+        And I should not have a device
 
     Scenario: User enables fogging on a device
       Given I click "Add new device"

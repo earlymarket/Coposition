@@ -7,18 +7,20 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   before_action :check_user, only: :update
 
   def create
-    type = allowed_params[:approvable_type]
-    model = model_find(type)
-    approvable = model.find(allowed_params[:approvable])
-    if resource_exists?(type,approvable)
-      Approval.link(@user, approvable, type)
-      if (req_from_coposition_app? && (@user.has_request_from(approvable) || type == 'Developer'))
-        Approval.accept(@user, approvable, type)
+    if req_from_coposition_app?
+      resource_exists?(approvable_type,approvable)
+      Approval.link(@user, approvable, approvable_type)
+      if @user.has_request_from(approvable) || approvable_type == 'Developer'
+        Approval.accept(@user, approvable, approvable_type)
       end
-      approval = Approval.where(user: @user, approvable: approvable, approvable_type: type)
-      render json: approval
+      approval = @user.approval_for(approvable)
+    else
+      Approval.link(@user, @dev, 'Developer')
+      approval = @user.approval_for(@dev)
     end
+    render json: approval
   end
+
 
   def update
     approval = Approval.where(id: params[:id], user: @user).first
@@ -38,7 +40,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   end
 
   def status
-  	respond_with approval_status: @dev.approval_status_for(@user) 
+  	respond_with approval_status: @dev.approval_status_for(@user)
   end
 
   private
@@ -50,6 +52,14 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
       unless current_user?(params[:user_id])
         render status: 403, json: { message: 'Incorrect User' }
       end
+    end
+
+    def approvable_type
+      allowed_params[:approvable_type]
+    end
+
+    def approvable
+      model_find(approvable_type).find(allowed_params[:approvable])
     end
 
 end

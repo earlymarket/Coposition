@@ -12,8 +12,10 @@ Rails.application.routes.draw do
     registrations: 'users/devise/registrations',
     sessions: 'users/devise/sessions'
   }
-  devise_for :developers, controllers:
-   { registrations: 'developers/devise/registrations' }
+  devise_for :developers, controllers: {
+    registrations: 'developers/devise/registrations',
+    sessions: 'developers/devise/sessions'
+  }
 
   # API
 
