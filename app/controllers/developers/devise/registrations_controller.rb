@@ -49,7 +49,7 @@ before_filter :configure_account_update_params, only: [:update]
   end
 
   # The path used after sign up.
-  def after_sign_up_path_for(resource)
+  def after_sign_up_path_for(_resource)
     developers_console_path
   end
 

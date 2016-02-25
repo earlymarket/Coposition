@@ -65,7 +65,7 @@ class Users::Devise::RegistrationsController < Devise::RegistrationsController
   end
 
   # The path used after sign up.
-  def after_sign_up_path_for(resource)
+  def after_sign_up_path_for(_resource)
     add_current_user_devices_path(current_user)
   end
 
