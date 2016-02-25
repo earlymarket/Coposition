@@ -5,7 +5,7 @@
 
 ## What's it all about?
 
-### For the users
+### For users
 You go an a website. Let's call it ~~Facebook~~ LifeInvader.
 
 LifeInvader will immediately start tracking your location. :eyes:
