@@ -1,8 +1,13 @@
+<h1>Device Creation</h1>
 <%= form_for @device, url: {action: "create"}, html: {class: "form-group"} do |f| %>
-  <%= label(:uuid, "Enter UUID", class: "control-label") %>
-  <%= f.text_field(:uuid, class: "form-control input-lg fifth-width", placeholder: "15 digits, no spaces") %><br>
+  <% if @adding_current_device %>
+    <%= f.hidden_field :uuid %>
+  <% else %>
+    <%= label(:uuid, "Enter UUID", class: "control-label") %>
+    <%= f.text_field(:uuid, class: "form-control input-lg fifth-width", placeholder: "15 digits, no spaces") %><br>
+  <% end %>
   <%= label(:name, "Enter a friendly name", class: "control-label") %>
-  <%= f.text_field(:name, class: "form-control input-lg fifth-width", placeholder: "G-RALA") %>
+  <%= f.text_field(:name, class: "form-control input-lg fifth-width", placeholder: "Laptop") %>
   <%= f.submit("Add", class: "form-control btn btn-default") %>
   <%= hidden_field_tag('redirect', @redirect_target) %>
   <%= hidden_field_tag('location', nil) if @adding_current_device %>
