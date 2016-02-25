@@ -6,10 +6,11 @@ $secondary-color: #ffc952;
 $secondary-color-lighter: lighten(#ffc952, 15%);
 $secondary-color-darker: darken(#ffc952, 15%);
 
-$button-raised-color: color("grey", "darken-4");
+$dark-text-color: rgba(0, 0, 0, 0.8);
+$light-text-color: rgba(255, 255, 255, 1);
 
 .dark-text{
-  color: rgba(0, 0, 0, 0.8);
+  color: $dark-text-color;
 
   &.secondary{
     color: rgba(0, 0, 0, 0.7);
@@ -21,7 +22,7 @@ $button-raised-color: color("grey", "darken-4");
 
 .light-text{
 
-  color: rgba(255, 255, 255, 1);
+  color: $light-text-color;
 
   &.secondary{
     color: rgba(255, 255, 255, 0.7);
@@ -46,8 +47,8 @@ $button-raised-color: color("grey", "darken-4");
 }
 
 .secondary-color{
+  @extend .dark-text;
   background-color: $secondary-color;
-  color: $button-raised-color;
 
   &.lighten{
     background-color: $secondary-color-lighter;
