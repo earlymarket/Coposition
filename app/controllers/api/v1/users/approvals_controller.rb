@@ -8,18 +8,16 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
 
   def create
     if req_from_coposition_app?
-      type = allowed_params[:approvable_type]
-      approvable = model_find(type).find(allowed_params[:approvable])
-      resource_exists?(type,approvable)
-      Approval.link(@user, approvable, type)
-      if @user.has_request_from(approvable) || type == 'Developer'
-        Approval.accept(@user, approvable, type)
+      approvable_exists?
+      Approval.link(@user, approvable, approvable_type)
+      if @user.has_request_from(approvable) || approvable_type == 'Developer'
+        Approval.accept(@user, approvable, approvable_type)
       end
+      approval = @user.approval_for(approvable)
     else
-      approvable = @dev
-      Approval.link(@user, approvable, 'Developer')
+      Approval.link(@user, @dev, 'Developer')
+      approval = @user.approval_for(@dev)
     end
-    approval = @user.approval_for(approvable)
     render json: approval
   end
 
@@ -55,5 +53,18 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
         render status: 403, json: { message: 'Incorrect User' }
       end
     end
+
+    def approvable_type
+      allowed_params[:approvable_type]
+    end
+
+    def approvable
+      model_find(approvable_type).find(allowed_params[:approvable])
+    end
+
+    def approvable_exists?
+      resource_exists?(approvable_type,approvable)
+    end
+
 
 end
