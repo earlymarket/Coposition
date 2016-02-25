@@ -30,16 +30,6 @@ $(document).on('ready page:change', function() {
       }
     });
 
-    $("#next-btn").unbind('click').click(function(e) {
-      var $buffer = $(".contents-menu a");
-
-      $buffer.each(function(index, el) {
-        if($(this).hasClass('active')){
-          $(".contents-menu a:eq(" + (index+1) + ")").trigger('click');
-        }
-      });
-    });
-
     $(".promotion .card").unbind('click').click(function(e) {
       $(".promotion .card").removeClass('active');
       $(this).addClass('active');
