@@ -8,7 +8,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
 
   def create
     if req_from_coposition_app?
-      approvable_exists?
+      resource_exists?(approvable_type,approvable)
       Approval.link(@user, approvable, approvable_type)
       if @user.has_request_from(approvable) || approvable_type == 'Developer'
         Approval.accept(@user, approvable, approvable_type)
@@ -61,10 +61,5 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
     def approvable
       model_find(approvable_type).find(allowed_params[:approvable])
     end
-
-    def approvable_exists?
-      resource_exists?(approvable_type,approvable)
-    end
-
 
 end
