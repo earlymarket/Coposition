@@ -1,117 +1,51 @@
-<div class="collection-item">
-  <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>">
-    <h4 class="list-group-item-heading"><%= device.name %></h4>
-    <% if device.checkins.exists? %>
-      <p class="list-group-item-text">Last reported in <%= device.checkins.last.address%> </p>
-    <% else %>
-      <p class="list-group-item-text">No checkins found </p>
-    <% end %>
-    <% if device.fogged %>
-      <p class="list-group-item-text">Fogging is enabled on this device.</p>
-    <% end %>
-    <% if device.delayed %>
-      <p class="list-group-item-text">Timeshifted with a delay of <%= "#{device.delayed.to_s+' minutes'}"%></p>
-    <% end %>
-  </a>
+<div class="card row">
 
-  <% if device.developers.exists? || device.permitted_users.exists? %>
-    <ul class="collapsible" data-collapsible="expandable">
-      <% device.developers.each do |developer| %>
-        <li>
-          <div class="collapsible-header">
-            <div class="valign-wrapper">
-              <%= image_tag(developer.logo.url(:thumb), alt: "", class: "circle icon") %>
-              <%= developer.company_name %>
-            </div>
-          </div>
-          <div class="collapsible-body">
-            <form action="#">
-              <p>
-                <input name="privilege" type="radio"
-                 data-device='<%= device.id %>' 
-                 data-permissible='<%= developer.id %>' 
-                 data-privilege='complete' 
-                 data-permissible-type='Developer'/>
-                <label for="complete" class="privilege-label"
-                 data-device='<%= device.id %>'
-                 data-permissible='<%= developer.id %>' 
-                 data-privilege='complete' 
-                 data-permissible-type='Developer'>Complete</label>
-              </p>
-              <p>
-                <input name="privilege" type="radio" 
-                data-device='<%= device.id %>' 
-                data-permissible='<%= developer.id %>' 
-                data-privilege='limited' 
-                data-permissible-type='Developer'/>
-                <label for="limited" class="privilege-label" 
-                data-device='<%= device.id %>' 
-                data-permissible='<%= developer.id %>' 
-                data-privilege='limited' 
-                data-permissible-type='Developer'>Limited</label>
-              </p>
-              <p>
-                <input name="privilege" type="radio" 
-                data-device='<%= device.id %>' 
-                data-permissible='<%= developer.id %>' 
-                data-privilege='disallowed' 
-                data-permissible-type='Developer'/>
-                <label for="disallowed" class="privilege-label" 
-                data-device='<%= device.id %>' 
-                data-permissible='<%= developer.id %>' 
-                data-privilege='disallowed' 
-                data-permissible-type='Developer'>Disallowed</label>
-              </p>
-            </form>
-          </div>
-        </li>
-      <% end %>
+  <div class="col s8">
+    <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>">
+      <h4><%= device.name %></h4>
+      <%= devices_last_checkin(device) %>
+    </a>
+  </div>
 
-      <% device.permitted_users.each do |user| %>
-        <li>
-          <div class="collapsible-header"><%= user.email%> </div>
-          <div class="collapsible-body">
-            <form action="#">
-              <p>
-                <input name="privilege" type="radio"
-                data-device='<%= device.id %>' 
-                data-permissible='<%= user.id %>' 
-                data-privilege='complete' 
-                data-permissible-type='User'/> 
-                <label for="complete" class="privilege-label"
-                data-device='<%= device.id %>' 
-                data-permissible='<%= user.id %>' 
-                data-privilege='complete' 
-                data-permissible-type='User'>Complete</label>
-              </p>
-              <p>
-                <input name="privilege" type="radio"
-                data-device='<%= device.id %>' 
-                data-permissible='<%= user.id %>' 
-                data-privilege='limited' 
-                data-permissible-type='User'/>
-                <label for="limited" class="privilege-label"
-                data-device='<%= device.id %>' 
-                data-permissible='<%= user.id %>' 
-                data-privilege='limited' 
-                data-permissible-type='User'>Limited</label>
-              </p>
-              <p>
-                <input name="privilege" type="radio"
-                data-device='<%= device.id %>' 
-                data-permissible='<%= user.id %>' 
-                data-privilege='disallowed' 
-                data-permissible-type='User'/>
-                <label for="disallowed" class="privilege-label"
-                data-device='<%= device.id %>' 
-                data-permissible='<%= user.id %>' 
-                data-privilege='disallowed' 
-                data-permissible-type='User'>Disallowed</label>
-              </p>
-            </form>
-          </div>
-        </li>
-      <% end %>
-    </ul>
-  <% end %>
+  <div class="col s4">
+    <% if device.developers.exists? || device.permitted_users.exists? %>
+      <a class="waves-effect waves-light btn-flat modal-trigger right" href="#perm<%=device.id%>"><i class="material-icons left">lock</i>Permissions</a>
+      <div id="perm<%=device.id%>" class="modal">
+        <div class="modal-content">
+          <h4 class="modal-content">Permissions Controls</h4>
+          <ul class="permissions collection" data-device=<%=device.id%>>
+
+            <% device.developers.each do |developer| %>
+              <% permission =  device.permissions.where(permissible: developer, permissible_type: "Developer").first %>
+              <li class="collection-item row" data-permission=<%=permission.id%>>
+                <%= permissible_title(developer) %>
+                <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
+              </li>
+            <% end %>
+
+            <% device.permitted_users.each do |friend| %>
+              <% permission =  device.permissions.where(permissible: friend, permissible_type: "User").first %>
+              <li class="collection-item row" data-permission=<%=permission.id%>>
+                <%= permissible_title(friend) %>
+                <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
+              </li>
+            <% end %>
+
+          </ul>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col s4">
+    <a class="waves-effect waves-light btn-flat modal-trigger right" href="#priv<%=device.id%>">
+      <i class="material-icons left">security</i>Privacy
+    </a>
+    <div id="priv<%=device.id%>" class="modal">
+    <div class="modal-content">
+      <h4>Privacy Controls</h4>
+      <%= render partial: "privacy", object: device, as: 'device' %>
+      </div>
+    </div>
+  </div>
 </div>

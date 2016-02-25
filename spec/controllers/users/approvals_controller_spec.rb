@@ -5,6 +5,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
 
   let(:user) do
     user = create_user
+    user.devices << FactoryGirl::create(:device)
     user
   end
   let(:friend){FactoryGirl::create :user}
@@ -22,20 +23,29 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     app
   end
 
+  describe 'GET #new' do
+    it "should assign a new approval" do
+      get :new, {
+        user_id: user.username,
+      }
+      expect((assigns :approval).class).to eq Approval.new.class
+    end
+  end
+
   describe 'POST #create' do
     context 'when adding a developer' do
 
       it 'should create an accepted approval between user and developer' do
         post :create, {
           user_id: user.id,
-          approval: { 
+          approval: {
             approvable: developer.email,
             approvable_type: 'Developer'
           }
         }
         expect(Approval.last.user).to eq user
         expect(Approval.last.approvable_id).to eq developer.id
-        expect(Approval.last.status).to eq 'accepted' 
+        expect(Approval.last.status).to eq 'accepted'
       end
 
       it 'should confirm an existing developer approval request' do
@@ -43,7 +53,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         count = Approval.count
         post :create, {
           user_id: user.id,
-          approval: { 
+          approval: {
             approvable: developer.email,
             approvable_type: 'Developer'
           }
@@ -58,7 +68,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
       it 'should create a pending approval and a friend request with a user' do
         post :create, {
           user_id: user.id,
-          approval: { 
+          approval: {
             approvable: friend.email,
             approvable_type: 'User'
           }
@@ -75,7 +85,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         approval_two.update(status: 'pending', approvable_id: user.id, approvable_type: 'User')
         post :create, {
           user_id: user.id,
-          approval: { 
+          approval: {
             approvable: friend.email,
             approvable_type: 'User'
           }
@@ -92,7 +102,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
       it 'should not create or approve an approval if user/dev doesnt exist' do
         post :create, {
           user_id: user.id,
-          approval: { 
+          approval: {
             approvable: 'does@not.exist',
             approvable_type: 'Developer'
           }
@@ -143,6 +153,31 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         user_id: user,
         id: approval.id
       }
+      expect(Approval.count).to eq 0
+    end
+
+    it 'should reject and destroy both sides of a user approval' do
+      approval.update(status: 'requested', approvable_id: friend.id, approvable_type: 'User')
+        approval_two.update(status: 'pending', approvable_id: user.id, approvable_type: 'User')
+      expect(Approval.count).to eq 2
+      request.accept = 'text/javascript'
+      post :reject, {
+        user_id: user,
+        id: approval.id
+      }
+      expect(Approval.count).to eq 0
+    end
+
+    it 'should destroy an existing approval and permissions' do
+      approval.update(status: 'developer-requested', approvable_id: developer.id, approvable_type: 'Developer')
+      approval.approve!
+      expect(Permission.count).to eq 1
+      request.accept = 'text/javascript'
+      post :reject, {
+        user_id: user,
+        id: approval.id
+      }
+      expect(Permission.count).to eq 0
       expect(Approval.count).to eq 0
     end
   end

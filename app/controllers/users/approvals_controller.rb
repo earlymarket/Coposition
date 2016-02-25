@@ -1,6 +1,6 @@
 class Users::ApprovalsController < ApplicationController
 
-  before_action :authenticate_user! 
+  before_action :authenticate_user!
   before_action :check_user, only: :index
 
   def new
@@ -19,7 +19,7 @@ class Users::ApprovalsController < ApplicationController
       end
       redirect_to user_approvals_path
     else
-      invalid_payload("User/Developer not found", new_user_approval_path) 
+      invalid_payload("User/Developer not found", new_user_approval_path)
     end
   end
 
@@ -40,18 +40,23 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def approve
-    @approval = Approval.where(id: params[:id], 
+    @approval = Approval.where(id: params[:id],
       user: current_user).first
     Approval.accept(current_user, @approval.approvable, @approval.approvable_type)
     @approved_devs = current_user.developers
     @friends = current_user.friends
     @friend_requests = current_user.friend_requests
     @pending_friends = current_user.pending_friends
+    respond_to do |format|
+      format.html { redirect_to user_approvals_path }
+      format.js
+    end
   end
 
   def reject
-    @approval = Approval.where(id: params[:id], 
+    @approval = Approval.where(id: params[:id],
       user: current_user).first
+    current_user.destroy_permissions_for(@approval.approvable)
     if @approval.approvable_type == 'User'
       Approval.where(user: @approval.approvable, approvable: @approval.user, approvable_type: 'User').first.destroy
     end
@@ -60,20 +65,18 @@ class Users::ApprovalsController < ApplicationController
     @friends = current_user.friends
     @friend_requests = current_user.friend_requests
     @pending_friends = current_user.pending_friends
-    render "users/approvals/approve"
+    respond_to do |format|
+      format.html { redirect_to user_approvals_path }
+      format.js { render "approve" }
+    end
   end
 
   private
 
     def check_user
       unless current_user?(params[:user_id])
-        flash[:notice] = "You are signed in as #{current_user.username}"
-        if params[:origin]
-          developer = Developer.find_by(api_key: params[:api_key])
-          redirect_to developer.redirect_url+"?copo_user=#{current_user.username}"
-        else
-          redirect_to root_path
-        end
+        developer = Developer.find_by(api_key: params[:api_key])
+        redirect_to developer.redirect_url+"?copo_user=#{current_user.username}"
       end
     end
 

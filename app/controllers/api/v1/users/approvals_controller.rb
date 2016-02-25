@@ -15,7 +15,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
       if (req_from_coposition_app? && (@user.has_request_from(approvable) || type == 'Developer'))
         Approval.accept(@user, approvable, type)
       end
-      approval = Approval.where(user: @user, approvable: approvable, approvable_type: type)
+      approval = @user.approval_for(approvable)
       render json: approval
     end
   end
@@ -25,7 +25,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
     if approval_exists? approval
       if allowed_params[:status] == 'accepted'
         Approval.accept(@user, approval.approvable, approval.approvable_type)
-        render json: approval
+        render json: approval.reload
       else
         approval.destroy
         render status: 200, json: { message: 'Approval Destroyed' }
@@ -38,7 +38,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   end
 
   def status
-  	respond_with approval_status: @dev.approval_status_for(@user) 
+  	respond_with approval_status: @user.approval_for(@dev).status
   end
 
   private

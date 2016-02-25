@@ -1,6 +1,8 @@
 class Users::Devise::RegistrationsController < Devise::RegistrationsController
-before_filter :configure_sign_up_params, only: [:create]
-before_filter :configure_account_update_params, only: [:update]
+  protect_from_forgery with: :null_session, :if => :req_from_coposition_app?
+  respond_to :json
+  before_filter :configure_sign_up_params, only: [:create]
+  before_filter :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
   # def new
@@ -8,10 +10,9 @@ before_filter :configure_account_update_params, only: [:update]
   # end
 
   # POST /resource
-  # def create
-  #   binding.pry
-  #   super
-  # end
+  def create
+    req_from_coposition_app? ? app_sign_up : super
+  end
 
   # GET /resource/edit
   # def edit
@@ -39,6 +40,16 @@ before_filter :configure_account_update_params, only: [:update]
 
   protected
 
+  def app_sign_up
+    user = User.new(user_api_params)
+    if user.save
+      render :json=> user.as_json, :status=>201
+    else
+      warden.custom_failure!
+      render :json=> user.errors, :status=>422
+    end
+  end
+
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
     devise_parameter_sanitizer.for(:sign_up) << :username
@@ -47,6 +58,10 @@ before_filter :configure_account_update_params, only: [:update]
   # If you have extra params to permit, append them to the sanitizer.
   def configure_account_update_params
     devise_parameter_sanitizer.for(:account_update) << :username
+  end
+
+  def user_api_params
+    params.require(:user).permit(:email, :password, :username)
   end
 
   # The path used after sign up.
