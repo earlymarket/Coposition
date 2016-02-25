@@ -104,4 +104,4 @@ Returns an index of devices.
 --------
 
 ### License
-Copyright 2015 Earlymarket LLP
+Copyright 2016 Earlymarket LLP
