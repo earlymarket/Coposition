@@ -52,6 +52,6 @@ class Checkin < ActiveRecord::Base
     distance = 20
     center_point = [self.lat, self.lng]
     box = Geocoder::Calculations.bounding_box(center_point, distance)
-    @nearest_city ||= City.within_bounding_box(box).first || NoCity.new
+    @nearest_city ||= City.within_bounding_box(box).near(self).first || NoCity.new
   end
 end
