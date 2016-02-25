@@ -5,7 +5,7 @@
 
 ## What's it all about?
 
-### For users
+### For the users
 You go an a website. Let's call it ~~Facebook~~ LifeInvader.
 
 LifeInvader will immediately start tracking your location. :eyes:
@@ -104,4 +104,4 @@ Returns an index of devices.
 --------
 
 ### License
-Copyright 2016 Earlymarket LLP
+Copyright 2015 Earlymarket LLP

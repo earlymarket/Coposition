@@ -18,9 +18,7 @@
 
   <%= render partial: "layouts/navbar" %>
   <main>
-
-  <%= javascript_tag( render(partial: '/shared/notifications', formats: [:js]) ) %>
-
+  <%= render partial: "layouts/notifications" %>
       <%= yield :landing_page %>
     <div class="container">
       <%= yield %>

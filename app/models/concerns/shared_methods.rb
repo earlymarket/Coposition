@@ -1,10 +1,11 @@
 require 'active_support/concern'
 
-module SwitchFogging
+module SharedMethods
   extend ActiveSupport::Concern
-
+  
   def switch_fog
-    self.update(fogged: !self.fogged)
+    self.fogged = !self.fogged
+    save
     self.fogged
   end
 

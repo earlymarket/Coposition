@@ -1,0 +1,4 @@
+<% @devices.each do |device| %>
+  $('#<%= "device#{device.id}developer#{@developer.id}" %>').removeClass("<%= "privilege-#{@r_privilege}" %>").addClass("<%= "privilege-#{@privilege}" %>");
+  Materialize.toast('<%= @developer.company_name %> has been given the privilege level of <%= @privilege %> for <%= device.name %>', 2000)
+<% end %>

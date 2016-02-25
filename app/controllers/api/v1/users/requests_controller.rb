@@ -1,7 +1,8 @@
 class Api::V1::Users::RequestsController < Api::ApiController
   respond_to :json
 
-  before_action :authenticate, :check_user_approved_approvable
+  before_action :authenticate
+  before_action :check_user_approved_developer
 
   def index
     if params[:developer_id]
@@ -14,7 +15,7 @@ class Api::V1::Users::RequestsController < Api::ApiController
   end
 
   def last
-    if params[:developer_id] == @dev.id.to_s
+    if params[:developer_id] == @dev.id
       # We use [-2] instead of .last because the last request will ironically be the one you're making
       requests = @user.requests.where(developer_id: params[:developer_id])[-2]
     elsif params[:developer_id]
