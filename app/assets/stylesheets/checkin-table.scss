@@ -1,5 +1,5 @@
 .checkin-table {
   a {
-    color: black;
+    @extend .dark-text;
   }
 }

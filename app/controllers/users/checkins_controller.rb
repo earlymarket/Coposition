@@ -22,7 +22,6 @@ class Users::CheckinsController < ApplicationController
     checkin = Checkin.find(params[:id])
     checkin.reverse_geocode!
     @checkin = checkin
-    @fogged = Checkin.find(params[:id]).get_data if checkin.fogged
   end
 
   def update
