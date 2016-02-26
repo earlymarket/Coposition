@@ -1,5 +1,5 @@
 <% if current_user.pending_friends.present? %>
-  You have sent <%=current_user.pending_friends.length %> friend requests.
+  You have sent <%= pluralize(current_user.pending_friends.count, 'friend request') %>.
 <% end %>
 
 <div class="collection">
