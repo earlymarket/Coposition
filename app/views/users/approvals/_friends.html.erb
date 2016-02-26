@@ -1,5 +1,5 @@
-<% if current_user.friend_requests.present? || current_user.pending_friends.present? %>
-  You have <%= current_user.friend_requests.length %> friend requests and <%=current_user.pending_friends.length %> pending friends.
+<% if current_user.pending_friends.present? %>
+  You have sent <%=current_user.pending_friends.length %> friend requests.
 <% end %>
 
 <div class="collection">
