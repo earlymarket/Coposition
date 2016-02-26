@@ -49,6 +49,7 @@ class Users::ApprovalsController < ApplicationController
     Approval.accept(current_user, @approval.approvable, @approval.approvable_type)
     @approved_devs = current_user.developers
     @friends = current_user.friends
+    @pending_approvals = current_user.pending_approvals
     @friend_requests = current_user.friend_requests
     @pending_friends = current_user.pending_friends
     respond_to do |format|
@@ -67,6 +68,7 @@ class Users::ApprovalsController < ApplicationController
     @approval.destroy
     @approved_devs = current_user.developers
     @friends = current_user.friends
+    @pending_approvals = current_user.pending_approvals
     @friend_requests = current_user.friend_requests
     @pending_friends = current_user.pending_friends
     respond_to do |format|

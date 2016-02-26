@@ -5,3 +5,5 @@ if (utility.urlParam("redirect")) {
 utility.animations.removeEl($("#<%= "app_#{@approval.id}" %>"));
 $('#approvedDevelopers').html("<%= j (render partial: 'approved_developers').delete("\n").html_safe %>")
 $('#friends').html("<%= j (render partial: 'friends').delete("\n").html_safe %>")
+$('#friendRequests').html("<%= j (render partial: 'friend_requests').delete("\n").html_safe %>")
+$('#pendingApprovals').html("<%= j (render partial: 'pending_approvals').delete("\n").html_safe %>")

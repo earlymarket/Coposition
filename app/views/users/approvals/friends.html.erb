@@ -2,8 +2,9 @@
 <div id="friends" class="animated">
   <%= render partial: "friends" %>
 </div>
-<h5>Requests</h5>
-<%= render partial: "friend_requests" %>
+<div id="friendRequests">
+  <%= render partial: "friend_requests" %>
+</div>
 <div class='center-align'>
 <%= link_to("Add friend", new_user_approval_path(approvable_type: 'User'), class: "btn waves-effect waves-light") %>
 </div>
