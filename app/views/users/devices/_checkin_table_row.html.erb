@@ -6,7 +6,7 @@
     <%= area_name(checkin) %>
   </td>
   <td>
-    <%= checkins_fogged_icon(checkin.fogged) %>
+    <%= link_to(checkins_fogged_icon(checkin.fogged), user_device_checkin_path(current_user.url_id, @device.id, checkin.id), id: "fog#{checkin.id}", method: :put, remote: :true) %>
   </td>
   <td>
     <a class="waves-effect waves-orange btn-fla modal-trigger" href="#info<%=checkin.id%>"><i class="small material-icons">info_outline</i></a>
