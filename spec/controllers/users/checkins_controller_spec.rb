@@ -40,6 +40,20 @@ RSpec.describe Users::CheckinsController, type: :controller do
     end
   end
 
+  describe 'GET #show' do
+    it 'should assign :id.checkin to @checkin if user owns device which owns checkin' do
+      get :show, params
+      expect(assigns :checkin).to eq(Checkin.find(checkin.id))
+    end
+
+    it 'should not assign :id.checkin if user does not own device which owns checkin' do
+      user
+      get :show, params.merge(user_id: new_user.username)
+      expect(response).to redirect_to(root_path)
+      expect(assigns :checkin).to eq nil
+    end
+  end
+
   describe 'DELETE #destroy_all' do
     it 'should delete all checkins belonging to a device if user owns device' do
       count = checkin.device.checkins.count
