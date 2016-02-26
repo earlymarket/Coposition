@@ -1,4 +1,4 @@
-<% if current_user.pending_approvals.length > 0 %>
+<% if current_user.pending_approvals.present? %>
   <h5>Requests</h5>
   <div class='collection'>
     <% current_user.pending_approvals.each do |app| %>

@@ -1,4 +1,4 @@
-<% if current_user.friend_requests.length > 0 %>
+<% if current_user.friend_requests.present? %>
   <h5>Requests</h5>
   <div class='collection'>
     <% current_user.friend_requests.each do |friend| %>
