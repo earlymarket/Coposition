@@ -2,11 +2,12 @@ class Api::V1::Users::CheckinsController < Api::ApiController
   respond_to :json
 
   before_action :authenticate, :check_user_approved_approvable, :find_device
-  before_action :permissible_has_privilege?, only: [:index, :last]
 
   def index
     params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 1000
-    checkins = @user.get_checkins(@permissible,@device).order('created_at DESC').paginate(page: params[:page], per_page: per_page)
+
+    checkins = @user.get_checkins(@permissible, @device).order('created_at DESC') \
+      .paginate(page: params[:page], per_page: per_page)
     paginated_response_headers(checkins)
     checkins = checkins.map do |checkin|
       resolve checkin
@@ -15,7 +16,7 @@ class Api::V1::Users::CheckinsController < Api::ApiController
   end
 
   def last
-    checkin = @user.get_checkins(@permissible,@device).last
+    checkin = @user.get_checkins(permissible: @permissible, device: @device).last
     checkin = resolve checkin if checkin
     render json: [checkin]
   end
@@ -43,24 +44,6 @@ class Api::V1::Users::CheckinsController < Api::ApiController
         checkin
       else
         checkin.slice(:id, :uuid, :lat, :lng, :created_at, :updated_at, :fogged)
-      end
-    end
-
-    def permissible_has_privilege?
-      if @device
-        check_privilege_level(@device)
-      else
-        @user.devices.each do |device|
-          check_privilege_level(device)
-        end
-      end
-    end
-
-    def check_privilege_level(device)
-      if device.permission_for(@permissible).privilege == "disallowed"
-        render status: 401, json: { permission_status: device.permission_for(@permissible).privilege }
-      elsif device.permission_for(@permissible).privilege == "last_only" && params[:action] == 'index'
-        render status: 401, json: { permission_status: device.permission_for(@permissible).privilege }
       end
     end
 
