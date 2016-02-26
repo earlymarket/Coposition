@@ -22,17 +22,18 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     app.save
     app
   end
+  let(:user_params) {{ user_id: user.id }}
   let(:dev_approval_create_params) do
-    { user_id: user.id, approval: { approvable: developer.email, approvable_type: 'Developer' } }
+   user_params.merge(approval: { approvable: developer.email, approvable_type: 'Developer' })
   end
   let(:friend_approval_create_params) do
-    { user_id: user.id, approval: { approvable: friend.email, approvable_type: 'User' } }
+   user_params.merge(approval: { approvable: friend.email, approvable_type: 'User' })
   end
-  let(:approve_reject_params) {{ user_id: user,id: approval.id }}
+  let(:approve_reject_params) {user_params.merge(id: approval.id) }
 
   describe 'GET #new' do
     it "should assign a new approval" do
-      get :new, { user_id: user.username }
+      get :new, user_params
       expect((assigns :approval).class).to eq Approval.new.class
     end
   end
@@ -92,10 +93,10 @@ RSpec.describe Users::ApprovalsController, type: :controller do
   describe 'GET #applications' do
     it 'should assign current users developers, friends, and pending/requests' do
       approval.update(status: 'accepted', approvable_id: developer.id, approvable_type: 'Developer')
-      get :applications, { user_id: user.id }
+      get :applications, user_params
       expect(assigns :approved_devs).to eq user.developers
       approval.update(status: 'developer-requested')
-      get :applications, { user_id: user.id }
+      get :applications, user_params
       expect(assigns :pending_approvals).to eq user.pending_approvals
     end
   end
@@ -103,10 +104,10 @@ RSpec.describe Users::ApprovalsController, type: :controller do
   describe 'GET #friends' do
     it 'should assign current users developers, friends, and pending/requests' do
       approval_two.update(user: user, status: 'accepted', approvable_id: friend.id, approvable_type: 'User')
-      get :friends, { user_id: user.id }
+      get :friends, user_params
       expect(assigns :friends).to eq user.friends
       approval_two.update(status: 'requested')
-      get :friends, { user_id: user.id }
+      get :friends, user_params
       expect(assigns :friend_requests).to eq user.friend_requests
     end
   end
