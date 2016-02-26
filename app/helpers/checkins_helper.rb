@@ -14,8 +14,8 @@ module CheckinsHelper
   end
 
   def checkins_fogged_address(checkin)
-    fogged = Checkin.find(checkin.id).get_data if checkin.fogged
-    "<li>Fogged Address: #{fogged.address}</li>".html_safe if fogged
+    checkin.get_data
+    "<li>Fogged Address: #{checkin.address}</li>".html_safe if checkin.fogged
   end
 
   def checkins_static_map_url(checkin)

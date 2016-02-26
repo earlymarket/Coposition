@@ -70,7 +70,7 @@ Rails.application.routes.draw do
       collection do
         get 'add_current'
       end
-      resources :checkins, only: [:show, :create, :new, :update]
+      resources :checkins, only: [:create, :new, :update]
       delete '/checkins/', to: 'checkins#destroy_all'
       delete '/checkins/:id', to: 'checkins#destroy'
       resources :permissions, only: [:update]
