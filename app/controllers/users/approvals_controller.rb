@@ -25,33 +25,26 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def applications
-    @approved_devs = current_user.developers
-    @pending_approvals = current_user.pending_approvals
+    @applications = current_user.developers
     # Redirect if foreign app failed to create a pending approval.
-    if @approved_devs.length == 0 && @pending_approvals.length == 0 && params[:redirect]
+    if @applications.length == 0 && current_user.pending_approvals.length == 0 && params[:redirect]
       developer = Developer.find_by(api_key: params[:api_key])
       Approval.link(current_user, developer, 'Developer')
-      @pending_approvals = current_user.pending_approvals
-    elsif @pending_approvals.length == 0 && params[:redirect]
+    elsif current_user.pending_approvals.length == 0 && params[:redirect]
       redirect_to params[:redirect]
     end
   end
 
   def friends
     @friends = current_user.friends
-    @friend_requests = current_user.friend_requests
-    @pending_friends = current_user.pending_friends
   end
 
   def approve
     @approval = Approval.where(id: params[:id],
       user: current_user).first
     Approval.accept(current_user, @approval.approvable, @approval.approvable_type)
-    @approved_devs = current_user.developers
+    @applications = current_user.developers
     @friends = current_user.friends
-    @pending_approvals = current_user.pending_approvals
-    @friend_requests = current_user.friend_requests
-    @pending_friends = current_user.pending_friends
     respond_to do |format|
       format.html { redirect_to user_approvals_path }
       format.js
@@ -66,11 +59,8 @@ class Users::ApprovalsController < ApplicationController
       Approval.where(user: @approval.approvable, approvable: @approval.user, approvable_type: 'User').first.destroy
     end
     @approval.destroy
-    @approved_devs = current_user.developers
+    @applications = current_user.developers
     @friends = current_user.friends
-    @pending_approvals = current_user.pending_approvals
-    @friend_requests = current_user.friend_requests
-    @pending_friends = current_user.pending_friends
     respond_to do |format|
       format.html { redirect_to user_approvals_path }
       format.js { render "approve" }

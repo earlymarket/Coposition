@@ -91,24 +91,18 @@ RSpec.describe Users::ApprovalsController, type: :controller do
   end
 
   describe 'GET #applications' do
-    it 'should assign current users developers, friends, and pending/requests' do
+    it 'should assign current users applications' do
       approval.update(status: 'accepted', approvable_id: developer.id, approvable_type: 'Developer')
       get :applications, user_params
-      expect(assigns :approved_devs).to eq user.developers
-      approval.update(status: 'developer-requested')
-      get :applications, user_params
-      expect(assigns :pending_approvals).to eq user.pending_approvals
+      expect(assigns :applications).to eq user.developers
     end
   end
 
   describe 'GET #friends' do
-    it 'should assign current users developers, friends, and pending/requests' do
+    it 'should assign current users friends' do
       approval_two.update(user: user, status: 'accepted', approvable_id: friend.id, approvable_type: 'User')
       get :friends, user_params
       expect(assigns :friends).to eq user.friends
-      approval_two.update(status: 'requested')
-      get :friends, user_params
-      expect(assigns :friend_requests).to eq user.friend_requests
     end
   end
 
