@@ -18,7 +18,7 @@ class Users::ApprovalsController < ApplicationController
       if (type == 'Developer') || (current_user.friend_requests.include?(approvable))
         flash[:notice] = "#{type} added!" if Approval.accept(current_user, approvable, type)
       end
-      redirect_to user_approvals_path
+      redirect_to user_dashboard_path
     else
       invalid_payload("User/Developer not found", new_user_approval_path)
     end

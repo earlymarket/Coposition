@@ -32,9 +32,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
 
   describe 'GET #new' do
     it "should assign a new approval" do
-      get :new, {
-        user_id: user.username,
-      }
+      get :new, { user_id: user.username }
       expect((assigns :approval).class).to eq Approval.new.class
     end
   end
@@ -91,18 +89,25 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     end
   end
 
-  describe 'GET #index' do
+  describe 'GET #applications' do
     it 'should assign current users developers, friends, and pending/requests' do
       approval.update(status: 'accepted', approvable_id: developer.id, approvable_type: 'Developer')
-      approval_two.update(user: user, status: 'accepted', approvable_id: friend.id, approvable_type: 'User')
-      get :index, { user_id: user.id }
-      expect(assigns :friends).to eq user.friends
+      get :applications, { user_id: user.id }
       expect(assigns :approved_devs).to eq user.developers
       approval.update(status: 'developer-requested')
-      approval_two.update(status: 'requested')
-      get :index, { user_id: user.id }
-      expect(assigns :friend_requests).to eq user.friend_requests
+      get :applications, { user_id: user.id }
       expect(assigns :pending_approvals).to eq user.pending_approvals
+    end
+  end
+
+  describe 'GET #friends' do
+    it 'should assign current users developers, friends, and pending/requests' do
+      approval_two.update(user: user, status: 'accepted', approvable_id: friend.id, approvable_type: 'User')
+      get :friends, { user_id: user.id }
+      expect(assigns :friends).to eq user.friends
+      approval_two.update(status: 'requested')
+      get :friends, { user_id: user.id }
+      expect(assigns :friend_requests).to eq user.friend_requests
     end
   end
 
