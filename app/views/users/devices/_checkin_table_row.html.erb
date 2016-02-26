@@ -9,12 +9,9 @@
     <%= link_to(checkins_fogged_icon(checkin.fogged), user_device_checkin_path(current_user.url_id, checkin.device.id, checkin.id), id: "fog#{checkin.id}", method: :put, remote: :true) %>
   </td>
   <td>
-    <a class="waves-effect waves-orange btn-fla modal-trigger" href="#info<%=checkin.id%>"><i class="small material-icons">info_outline</i></a>
-    <div id="info<%=checkin.id%>" class="modal">
-      <div class="modal-content">
-        <%= render 'users/checkins/checkin', checkin: checkin %>
-      </div>
-    </div>
+    <%= link_to user_device_checkin_path(current_user.url_id, @device.id, checkin.id), class: "waves-effect waves-orange btn-flat" do %>
+      <i class="small material-icons">info_outline</i>
+    <% end %>
   </td>
   <td>
     <%= link_to user_device_checkin_path(current_user.url_id, checkin.device.id, checkin.id), method: :delete, remote: :true, class: "waves-effect waves-red btn-flat" do %>

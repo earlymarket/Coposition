@@ -19,6 +19,7 @@ module CheckinsHelper
   end
 
   def checkins_static_map_url(checkin)
+    checkin = Checkin.find(checkin.id)
     fogged = Checkin.find(checkin.id).get_data if checkin.fogged
     map_url = "http://maps.googleapis.com/maps/api/staticmap?size=500x250&markers=|'+'#{checkin.lat},#{checkin.lng}'+'|"
     map_url.concat("'+'&markers=|icon:http://www.trenatics.com/public/images/iconfile/file/ic_cloud_done_black_18dp.png|'+'#{fogged.lat},#{fogged.lng}'+'|") if fogged

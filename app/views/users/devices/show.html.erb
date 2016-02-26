@@ -12,9 +12,6 @@
 <%= render partial: "checkin_table" %>
 
 <script type="text/javascript">
-  $(document).ready(function(){
-    $('.modal-trigger').leanModal();
-  });
   var $newCheckinButton = $('<%= j link_to("Check-in", new_user_device_checkin_path(current_user.url_id,
     @device.id), class: "btn green white-text", method: "post", id: "checkin-button", remote: true) %>');
   var $moreOptionsLink = $('<%=  j link_to(" ...more options", new_user_device_checkin_path(current_user.url_id, @device.id) ) %>')
