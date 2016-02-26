@@ -10,9 +10,9 @@ module DevicesHelper
 
   def devices_fog_button_text(device)
     if device.fogged?
-      "Currently Fogged"
+      "Fogging is on"
     else
-      "Fog"
+      "Fogging is off"
     end
   end
 end
