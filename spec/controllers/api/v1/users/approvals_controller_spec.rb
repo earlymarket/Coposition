@@ -7,14 +7,11 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
   let(:developer){FactoryGirl::create :developer}
   let(:second_user){FactoryGirl::create :user}
   let(:approval) do
-    approval = FactoryGirl::create :approval
-    approval.approvable_id = developer.id
-    approval.approvable_type = 'Developer'
-    approval.user = user
-    approval.save
-    approval
+    app = FactoryGirl::create :approval
+    app.update(user: user, approvable_id: developer.id, approvable_type: 'Developer')
+    app
   end
-  let(:params) {{  user_id: user.id, format: :json }}
+  let(:params) {{ user_id: user.id, format: :json }}
   let(:dev_approval_create_params) do
     params.merge({ approval: { approvable: developer.id, approvable_type: 'Developer' } })
   end
@@ -54,6 +51,13 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
       expect(user.pending_approvals.count).to be 1
     end
 
+    it "should be not be able to submit an approval request for another user" do
+      Approval.link(user,developer,'Developer')
+      post :create, friend_approval_create_params
+      expect(Approval.count).to_not be 2
+      expect(Approval.first.approvable).to_not be second_user
+    end
+
     it "should be told if the approval is still pending" do
       # No approval
       get :status, params
@@ -75,12 +79,12 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
     before do
       request.headers["X-User-Token"] = user.authentication_token
       request.headers["X-User-Email"] = user.email
+      request.headers['X-Secret-App-Key'] = "this-is-a-mobile-app"
     end
 
     context 'when post to create' do
 
       it "should be able to create a developer approval" do
-        request.headers['X-Secret-App-Key'] = "this-is-a-mobile-app"
         post :create, dev_approval_create_params
         expect(Approval.last.user).to eq user
         expect(Approval.last.approvable_id).to eq developer.id
