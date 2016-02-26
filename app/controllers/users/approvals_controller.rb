@@ -5,6 +5,7 @@ class Users::ApprovalsController < ApplicationController
 
   def new
     @approval = Approval.new
+    @approval.approvable_type = params[:approvable_type]
   end
 
   def create
@@ -23,11 +24,8 @@ class Users::ApprovalsController < ApplicationController
     end
   end
 
-  def index
+  def applications
     @approved_devs = current_user.developers
-    @friends = current_user.friends
-    @friend_requests = current_user.friend_requests
-    @pending_friends = current_user.pending_friends
     @pending_approvals = current_user.pending_approvals
     # Redirect if foreign app failed to create a pending approval.
     if @approved_devs.length == 0 && @pending_approvals.length == 0 && params[:redirect]
@@ -37,6 +35,12 @@ class Users::ApprovalsController < ApplicationController
     elsif @pending_approvals.length == 0 && params[:redirect]
       redirect_to params[:redirect]
     end
+  end
+
+  def friends
+    @friends = current_user.friends
+    @friend_requests = current_user.friend_requests
+    @pending_friends = current_user.pending_friends
   end
 
   def approve

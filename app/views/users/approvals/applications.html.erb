@@ -1,0 +1,9 @@
+<h1>Applications</h1>
+<div id="approvedDevelopers" class="animated">
+  <%= render partial: "approved_developers" %>
+</div>
+<h5>Requests</h5>
+<%= render partial: "pending_approvals" %>
+<div class='center-align'>
+<%= link_to("New Approval", new_user_approval_path(approvable_type: 'Developer'), class: "btn waves-effect waves-light") %>
+</div>
