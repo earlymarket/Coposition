@@ -16,19 +16,20 @@ namespace :checkins do
   end
 
   desc "Creates a random checkin near a city"
-  task :create_near_cities, [:num] => :environment do |_t, args|
-    args.with_defaults(:num => 1)
+  task :create_near_cities, [:count,:device_id] => :environment do |_t, args|
+    args.with_defaults(:count => 1, :device_id => nil)
+    selected_device = Device.find(args[:device_id]) if args[:device_id]
     i = 0
     Checkin.transaction do
       puts "Began creating checkins"
-      args[:num].to_i.times do
+      args[:count].to_i.times do
         city = City.offset(rand(City.count)).first
         coords = Geocoder::Calculations.random_point_near(city, 20)
-        device = Device.all.sample
+        device = selected_device || Device.all.sample
         device.checkins.create(lat: coords[0], lng: coords[1])
         i += 1
         print "\rCreated #{i} checkins.".ljust(25)
-        print "Current city: #{city.name}".ljust(50)
+        print "Current city: #{city.name}".ljust(60)
         print " Device: #{device.name}" if device.name
         print "\e[0K"
       end
