@@ -20,6 +20,7 @@ $(document).on('ready page:change', function() {
       }
     });
   }else{
+    // Normailze if pages is not landing page (root)
     $(document).unbind('scroll');
     $("nav").css('transition', 'none').removeClass('transparent-nav');
     $("svg path").attr({

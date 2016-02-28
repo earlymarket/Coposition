@@ -1,15 +1,14 @@
 $(document).on('ready page:change', function() {
+  // Target only the landing page (assuming at root of "/")
   if (window.location.pathname == "/") {
     $("main").css('padding-top', '0');
+
+    // Click event for the main button on landing page
     $(".landing-section .start-btn").unbind('click').click(function(e) {
       var offset = $(".landing-section.splash").height() - 64;
       $("body").animate({
         scrollTop: offset
       });
-    });
-
-    $("#next-btn a").unbind('click').click(function(e) {
-      scrollToNext();
     });
 
     $(document).scroll(function(e) {
@@ -29,33 +28,13 @@ $(document).on('ready page:change', function() {
         $("#next-btn").css('opacity', '0');
       }
     });
-
     $(".promotion .card").unbind('click').click(function(e) {
       $(".promotion .card").removeClass('active');
       $(this).addClass('active');
     });
 
   } else {
+    // Normalize the other pages
     $("main").css('padding-top', '64px');
   }
-
-  $(".contents-menu").hover(function() {
-    expandScrollSpy();
-  }, function() {
-    collapseScrollSpy();
-  });
 });
-
-function collapseScrollSpy(){
-  $(".table-of-contents").css({
-    left: "95%",
-    "background-color": "rgba(252,252,252,0)"
-  });
-}
-
-function expandScrollSpy(){
-  $(".table-of-contents").css({
-    left: "0%",
-    "background-color": "rgba(252,252,252,0.8)"
-  });
-}
