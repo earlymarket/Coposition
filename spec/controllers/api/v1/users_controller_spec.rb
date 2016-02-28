@@ -3,15 +3,7 @@ require 'rails_helper'
 RSpec.describe Api::V1::UsersController, type: :controller do
   include ControllerMacros
 
-  let(:device) do
-    devi = FactoryGirl::create :device
-    3.times do
-      checkin = FactoryGirl::build :checkin
-      checkin.uuid = devi.uuid
-      checkin.save
-    end
-    devi
-  end
+  let(:device) { FactoryGirl::create :device }
   let(:dev) { FactoryGirl::create :developer }
   let(:user) do
     us = FactoryGirl::create :user

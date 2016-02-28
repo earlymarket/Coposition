@@ -60,7 +60,7 @@ class Users::DevicesController < ApplicationController
   end
 
   def add_current
-    flash[:notice] = "Just enter a friendly name, and this device is good to go."
+    flash[:notice] = "Enter a name for the device you are currently using and click ADD"
     redirect_to new_user_device_path(uuid: Device.create.uuid, curr_device: true)
   end
 
@@ -81,7 +81,7 @@ class Users::DevicesController < ApplicationController
       @device.save
       flash[:notice] = "This device has been bound to your account!"
 
-      @device.create_checkin(lat: params[:location].split(",").first,
+      @device.checkins.create(lat: params[:location].split(",").first,
           lng: params[:location].split(",").last) unless params[:location].blank?
     end
 
@@ -101,7 +101,7 @@ class Users::DevicesController < ApplicationController
     end
 
     def set_delay
-      if params[:mins] == "0"
+      if params[:mins] == "0" || params[:mins] == ""
         @device.update(delayed: nil)
         flash[:notice] = "#{@device.name} is not timeshifted."
       else

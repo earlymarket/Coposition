@@ -29,10 +29,6 @@ class Device < ActiveRecord::Base
     permissions.find_by(permissible_id: permissible.id, permissible_type: permissible.class.to_s)
   end
 
-  def create_checkin(lat:, lng:)
-    checkins << Checkin.create(uuid: uuid, lat: lat, lng: lng)
-  end
-
   def slack_message
     "A new device has been created"
   end

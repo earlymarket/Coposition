@@ -44,7 +44,7 @@ class Users::CheckinsController < ApplicationController
   private
 
     def allowed_params
-      params.require(:checkin).permit(:uuid, :lat, :lng, :device_id)
+      params.require(:checkin).permit(:lat, :lng, :device_id)
     end
 
     def require_checkin_ownership
