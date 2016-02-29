@@ -12,7 +12,7 @@
           <li>Latitude: <%=  @checkin.lat %></li>
           <li>Longitude <%= @checkin.lng %></li>
           <li>Address: <%= @checkin.address %></li>
-          <li>Fogging status: <%= checkins_fogged_icon(@checkin.fogged) %></li>
+          <li>Fogging status: <%= fogged_icon(@checkin.fogged) %></li>
           <%= checkins_fogged_address(@checkin) %>
         </ul>
       </div>

@@ -8,11 +8,12 @@ module DevicesHelper
     message.html_safe
   end
 
-  def devices_fog_button_text(device)
-    if device.fogged?
-      "Fogging is on"
+  def devices_delay_icon(value)
+    if value
+      value = '<i class="material-icons">hourglass_full</i>'
     else
-      "Fogging is off"
+      value = '<i class="material-icons">hourglass_empty</i>'
     end
+    value.html_safe
   end
 end

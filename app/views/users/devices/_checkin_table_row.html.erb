@@ -6,7 +6,7 @@
     <%= area_name(checkin) %>
   </td>
   <td>
-    <%= link_to(checkins_fogged_icon(checkin.fogged), user_device_checkin_path(current_user.url_id,  @device.id, checkin.id), id: "fog#{checkin.id}", method: :put, remote: :true) %>
+    <%= link_to(fogged_icon(checkin.fogged), user_device_checkin_path(current_user.url_id,  @device.id, checkin.id), id: "fog#{checkin.id}", method: :put, remote: :true) %>
   </td>
   <td>
     <%= link_to user_device_checkin_path(current_user.url_id, @device.id, checkin.id), class: "waves-effect waves-orange btn-flat" do %>

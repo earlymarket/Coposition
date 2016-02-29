@@ -18,11 +18,11 @@ RSpec.describe DevicesHelper, :type => :helper do
     end
   end
 
-  describe '#devices_fog_button_text' do
-    it "should return a string for the fogging button" do
-      expect(helper.devices_fog_button_text(device)).to eq('Fogging is off')
-      device.fogged = true
-      expect(helper.devices_fog_button_text(device)).to match('Fogging is on')
+  describe "#devices_delay_icon" do
+    it "returns different icons depending on a boolean input" do
+      expect(helper.devices_delay_icon(true)).not_to eq(helper.devices_delay_icon(false))
+      expect(helper.devices_delay_icon(true)).to match('icon')
+      expect(helper.devices_delay_icon(false)).to match('icon')
     end
   end
 

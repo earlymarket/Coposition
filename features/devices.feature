@@ -26,13 +26,13 @@ Feature: Devices
       Given I click "Add new device"
         When I enter UUID "123456789123" and a friendly name "G-RALA"
       And I click "Add"
-        Then I should see a link that says "off"
-      When I click "Fog"
-        Then I should see a link that says "on"
+        Then I should see a link that says "cloud_off"
+      When I click the link "cloud_off"
+        Then I should see a link that says "cloud_done"
       When I click "Dashboard"
       And I click the link "Devices"
       And I click the link "Privacy"
-        Then I should see a link that says "on"
+        Then I should see a link that says "cloud_done"
 
     Scenario: User enables timeshift on a device
       Given I click "Add new device"
