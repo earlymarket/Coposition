@@ -13,7 +13,7 @@ class Device < ActiveRecord::Base
   end
 
   def checkins
-    delayed? ? super.since(delayed.minutes.ago) : super
+    delayed? ? super.before(delayed.minutes.ago) : super
   end
 
   def permitted_history_for(permissible)

@@ -8,6 +8,7 @@ class Checkin < ActiveRecord::Base
   delegate :user, to: :device
 
   scope :since, -> (date) { where("created_at > ?", date)}
+  scope :before, -> (date) { where("created_at < ?", date)}
 
   reverse_geocoded_by :lat, :lng do |obj,results|
     results.first.methods.each do |m|
