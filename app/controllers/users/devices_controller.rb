@@ -26,7 +26,7 @@ class Users::DevicesController < ApplicationController
   end
 
   def create
-    if allowed_params[:uuid] != ""
+    if allowed_params[:uuid].present?
       @device = Device.find_by uuid: allowed_params[:uuid]
     else
       @device = Device.create
@@ -57,11 +57,6 @@ class Users::DevicesController < ApplicationController
       @device.switch_fog
       flash[:notice] = "#{@device.name} fogging has been changed."
     end
-  end
-
-  def add_current
-    flash[:notice] = "Enter a name for the device you are currently using and click ADD"
-    redirect_to new_user_device_path(curr_device: true)
   end
 
   private

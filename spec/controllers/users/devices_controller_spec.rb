@@ -68,16 +68,6 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
   end
 
-  describe 'GET #add_current' do
-    it 'should create a a new Device with a UUID' do
-      user
-      count = Device.count
-      get :add_current, user_param
-      expect(Device.count).to eq(count+1)
-      expect(Device.last.uuid == nil).to be false
-    end
-  end
-
   describe 'POST #create' do
 
     it 'should create a new device' do
@@ -111,7 +101,8 @@ RSpec.describe Users::DevicesController, type: :controller do
       checkins_count = Checkin.count
       post :create, user_param.merge({
         location: '51.588330,-0.513069',
-        device: { name: 'New Device' }
+        device: { name: 'New Device' },
+        create_checkin: true
       })
       expect(user.devices.count).to be devices_count+1
       expect(Checkin.count).to be checkins_count+1
