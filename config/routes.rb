@@ -75,12 +75,14 @@ Rails.application.routes.draw do
       delete '/checkins/:id', to: 'checkins#destroy'
       resources :permissions, only: [:update]
     end
-    resources :approvals, only: [:index, :new, :create] do
+    resources :approvals, only: [:new, :create] do
       member do
         post 'approve'
         post 'reject'
       end
     end
+    get '/applications', to: 'approvals#applications'
+    get '/friends', to: 'approvals#friends'
   end
 
 
