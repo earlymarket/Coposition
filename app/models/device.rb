@@ -33,10 +33,6 @@ class Device < ActiveRecord::Base
     permission_for(permissible).bypass_fogging
   end
 
-  def create_checkin(lat:, lng:)
-    checkins << Checkin.create(uuid: uuid, lat: lat, lng: lng)
-  end
-
   def slack_message
     "A new device has been created"
   end
