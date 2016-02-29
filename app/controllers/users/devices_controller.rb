@@ -21,7 +21,6 @@ class Users::DevicesController < ApplicationController
   def new
     @device = Device.new
     @device.uuid = params[:uuid] if params[:uuid]
-    @adding_current_device = true if params[:curr_device]
     @redirect_target = params[:redirect] if params[:redirect]
   end
 

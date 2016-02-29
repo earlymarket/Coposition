@@ -53,13 +53,6 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(assigns(:device).uuid).to eq('123412341234')
     end
 
-    it 'should set @adding_current_device to true if :curr_device exists' do
-      get :new, user_param
-      expect(assigns :adding_current_device).to eq(nil)
-      get :new, user_param.merge(curr_device: true)
-      expect(assigns :adding_current_device).to eq(true)
-    end
-
     it 'should assign :redirect to @redirect_target if exists' do
       get :new, user_param
       expect(assigns :redirect_target).to eq(nil)
