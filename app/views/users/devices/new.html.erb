@@ -13,4 +13,11 @@
   <%= hidden_field_tag('location', nil) %>
 <% end %>
 
-<%= render "preview_map" %>
+<script>
+$(document).ready(function() {
+  $("#create_checkin").change(function(){
+    $('#new_device').after("<%= j (render partial: 'preview_map') %>");
+    $("#create_checkin").unbind();
+  });
+});
+</script>
