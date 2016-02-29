@@ -63,6 +63,7 @@ class Checkin < ActiveRecord::Base
       get_data unless device.can_bypass_fogging?(permissible)
       self
     else
+      get_data unless device.can_bypass_fogging?(permissible)
       self.slice(:id, :uuid, :lat, :lng, :created_at, :updated_at, :fogged)
     end
   end
