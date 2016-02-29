@@ -1,5 +1,6 @@
 class Api::ApiController < ActionController::Base
   include ApiApplicationMixin
+  rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
 
   private
 
@@ -74,5 +75,10 @@ class Api::ApiController < ActionController::Base
     model = resource.titleize.constantize
     render status: 404, json: { message: "#{model} does not exist" } unless arguments
     arguments
+  end
+
+  def record_not_found(exception)
+    render json: {error: exception.message}.to_json, status: 404
+    return
   end
 end

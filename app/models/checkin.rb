@@ -27,7 +27,6 @@ class Checkin < ActiveRecord::Base
     end
   end
 
-  # The method to be used for public-facing data
   def get_data
     fogged_checkin = self
     if fogged?
@@ -57,4 +56,15 @@ class Checkin < ActiveRecord::Base
     box = Geocoder::Calculations.bounding_box(center_point, 20)
     @nearest_city ||= City.near(self).within_bounding_box(box).first || NoCity.new
   end
+
+  def resolve_address(permissible, type)
+    if type == "address"
+      reverse_geocode!
+      get_data unless device.can_bypass_fogging?(permissible)
+      self
+    else
+      self.slice(:id, :uuid, :lat, :lng, :created_at, :updated_at, :fogged)
+    end
+  end
+
 end
