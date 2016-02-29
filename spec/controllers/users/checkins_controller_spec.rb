@@ -54,6 +54,17 @@ RSpec.describe Users::CheckinsController, type: :controller do
     end
   end
 
+  describe 'PUT #update' do
+    it 'should switch fogging' do
+      checkin.update(fogged: false)
+      request.accept = 'text/javascript'
+      put :update, params
+      expect(Checkin.find(checkin.id).fogged).to be true
+      put :update, params
+      expect(Checkin.find(checkin.id).fogged).to be false
+    end
+  end
+
   describe 'DELETE #destroy_all' do
     it 'should delete all checkins belonging to a device if user owns device' do
       count = checkin.device.checkins.count
