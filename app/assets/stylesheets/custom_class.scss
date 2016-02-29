@@ -20,6 +20,9 @@
 .half-opacity {
   opacity: 0.5;
 }
+.quarter-opacity {
+  opacity: 0.25;
+}
 
 
 // Specific target classes
@@ -31,11 +34,14 @@
   width: 100%;
 }
 
-.btn, .btn-large, btn-flat, btn-floating {
-  @extend .dark-text;
-  color: $button-raised-color;
+.btn, .btn-large, .btn-flat, .btn-floating {
+  color: $dark-text-color;
 
   &.disabled{
     @extend .dark-text.hint;
+  }
+
+  i{
+    color: $dark-text-color;
   }
 }

@@ -10,7 +10,7 @@ Enter the email address of a registered user or developer so that you can ask fo
   <div class="row">
     <div class="col s12">
       <%= f.label :approvable_type %>
-      <%= f.select :approvable_type, options_for_select([['User', 'User'], ['Developer', 'Developer']]), class: "input-field col s12" %>
+      <%= f.select :approvable_type, options_for_select([['User', 'User'], ['Developer', 'Developer']], @approval.approvable_type), class: "input-field col s12" %>
     </div>
   </div>
 

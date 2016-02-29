@@ -27,10 +27,13 @@
 // Especially in merge conflicts
 
 @import 'fonts.scss';
+@import 'navbar.scss';
 @import 'layout.scss';
 
 // Page/feature specific
+@import 'landing-page.scss';
 @import 'placeholder.scss';
 @import 'user.scss';
 @import 'maitre.scss';
 @import 'checkin-map.scss';
+@import 'checkin-table.scss';

@@ -1,5 +1,6 @@
 <div class="valign-wrapper">
-  <%= link_to(devices_fog_button_text(device), user_device_path(current_user.url_id, device.id), { method: :put, class: "btn", id:"fogButton#{device.id}", remote: true, data: { fogged: device.fogged? }  })%>
+  <%= link_to(fogged_icon(device.fogged), user_device_path(current_user.url_id, device.id), { method: :put, id:"fogButton#{device.id}", remote: true, data: { fogged: device.fogged? }  })%>
+  <%= link_to(devices_delay_icon(device.delayed), user_device_path(current_user.url_id, device.id, { mins: device.delayed? }), { method: :put, id:"delayButton#{device.id}", remote: true })%>
   <span style="margin-left: 1em;">Timeshift with a delay of
     <%= form_tag(user_device_path(current_user.url_id, device.id), method: "put", remote: true, style: "display: inline;") do %>
       <%= text_field_tag(:mins, device.delayed, size: "2", style: "width: 2em; text-align: center;") %>
