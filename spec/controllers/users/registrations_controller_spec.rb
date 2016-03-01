@@ -44,7 +44,7 @@ RSpec.describe Users::Devise::RegistrationsController, type: :controller do
     let (:user){ create_user }
 
     context 'with a password' do
-      it 'should create a new user' do
+      it 'should destroy the user' do
         user
         delete :destroy, {
           user: {
@@ -57,7 +57,7 @@ RSpec.describe Users::Devise::RegistrationsController, type: :controller do
     end
 
     context 'with an invalid password' do
-      it 'should not create a new user' do
+      it 'should not destroy the user' do
         user
         delete :destroy, {
           user: {
