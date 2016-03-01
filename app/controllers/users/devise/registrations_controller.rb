@@ -25,9 +25,15 @@ class Users::Devise::RegistrationsController < Devise::RegistrationsController
   # end
 
   # DELETE /resource
-  # def destroy
-  #   super
-  # end
+  def destroy
+    resource_destroyed = resource.destroy_with_password(params[:user][:password])
+    if resource_destroyed
+      super
+    else
+      flash[:notice] = resource.errors.full_messages.first
+      respond_with resource, location: edit_user_registration_path
+    end
+  end
 
   # GET /resource/cancel
   # Forces the session data which is usually expired after sign
@@ -66,7 +72,7 @@ class Users::Devise::RegistrationsController < Devise::RegistrationsController
 
   # The path used after sign up.
   def after_sign_up_path_for(_resource)
-    add_current_user_devices_path(current_user)
+    new_user_device_path(current_user)
   end
 
   # The path used after sign up for inactive accounts.

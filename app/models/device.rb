@@ -13,20 +13,24 @@ class Device < ActiveRecord::Base
   end
 
   def checkins
-    delayed? ? super.where("created_at < ?", delayed.minutes.ago) : super
+    delayed? ? super.before(delayed.minutes.ago) : super
   end
 
-  def checkins_for(permissible)
+  def permitted_history_for(permissible)
     approval_date = user.approval_for(permissible).approval_date
-    if permission_for(permissible).show_history
-      checkins
-    else
-      checkins.where("created_at > ?", approval_date)
-    end
+    can_show_history?(permissible) ? checkins : checkins.since(approval_date)
   end
 
   def permission_for(permissible)
     permissions.find_by(permissible_id: permissible.id, permissible_type: permissible.class.to_s)
+  end
+
+  def can_show_history?(permissible)
+    permission_for(permissible).show_history
+  end
+
+  def can_bypass_fogging?(permissible)
+    permission_for(permissible).bypass_fogging
   end
 
   def slack_message

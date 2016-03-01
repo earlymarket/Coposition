@@ -67,13 +67,13 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "last_checkin" do
-    it "should get the users last checkin" do
-      checkin = FactoryGirl::create(:checkin)
-      device.checkins << checkin
-      expect(user.last_checkin).to eq checkin
-    end
-  end
+  # describe "last_checkin" do
+  #   it "should get the users last checkin" do
+  #     checkin = FactoryGirl::create(:checkin)
+  #     device.checkins << checkin
+  #     expect(user.last_checkin).to eq checkin
+  #   end
+  # end
 
   describe "notifications" do
     it "should have a notification if there's a pending approval" do
