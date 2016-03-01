@@ -30,7 +30,6 @@ class Users::Devise::RegistrationsController < Devise::RegistrationsController
     if resource_destroyed
       super
     else
-      clean_up_passwords resource
       flash[:notice] = resource.errors.full_messages.first
       respond_with resource, location: edit_user_registration_path
     end
