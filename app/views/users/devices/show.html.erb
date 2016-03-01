@@ -17,8 +17,7 @@
   </thead>
   <%= render partial: "checkin_table_row", collection: @checkins, as: :checkin %>
 </table>
-<%= will_paginate @checkins %>
-
+<div class="center"><%= will_paginate @checkins %></div>
 
 <script type="text/javascript">
   var $newCheckinButton = $('<%= j link_to("Check-in", new_user_device_checkin_path(current_user.url_id,
