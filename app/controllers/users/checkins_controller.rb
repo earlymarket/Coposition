@@ -34,7 +34,7 @@ class Users::CheckinsController < ApplicationController
   def destroy
     respond_to do |format|
       @checkin_id = params[:id]
-      Device.find(params[:device_id]).checkins.find(@checkin_id).delete
+      Checkin.find_by(id: @checkin_id).delete
       flash[:notice] = "Check-in deleted."
       format.js
       format.html {redirect_to user_device_path(current_user.url_id, params[:device_id])}
@@ -42,7 +42,7 @@ class Users::CheckinsController < ApplicationController
   end
 
   def destroy_all
-    Checkin.where(device: params[:device_id]).destroy_all
+    Checkin.where(device: params[:device_id]).delete_all
     flash[:notice] = "History deleted."
     redirect_to user_device_path(current_user.url_id, params[:device_id])
   end

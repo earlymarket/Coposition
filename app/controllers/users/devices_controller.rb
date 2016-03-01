@@ -15,6 +15,7 @@ class Users::DevicesController < ApplicationController
 
   def show
     @device = Device.find(params[:id])
+    Checkin.includes(:device).where(device_id: @device.id)
     @checkins = @device.checkins.order('created_at DESC').paginate(page: params[:page], per_page: 50)
   end
 
@@ -43,6 +44,7 @@ class Users::DevicesController < ApplicationController
   end
 
   def destroy
+    Checkin.where(device: params[:id]).delete_all
     Device.find(params[:id]).destroy
     flash[:notice] = "Device deleted"
     redirect_to user_devices_path
