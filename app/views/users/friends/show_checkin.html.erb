@@ -9,9 +9,9 @@
         <ul>
           <li>Checkin ID: <%= @checkin.id %></li>
           <li>Created on: <%= checkins_humanize_date(@checkin.created_at) %></li>
-          <li>Latitude: <%=  @checkin.get_data.lat %></li>
-          <li>Longitude <%= @checkin.get_data.lng %></li>
-          <li>Address: <%= @checkin.get_data.address %></li>
+          <li>Latitude: <%=  @fogged[:lat] %></li>
+          <li>Longitude <%= @fogged[:lng] %></li>
+          <li>Address: <%= @fogged[:address] %></li>
           <li>Fogging status: <%= fogged_icon(@checkin.fogged) %></li>
         </ul>
       </div>

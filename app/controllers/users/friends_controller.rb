@@ -14,5 +14,6 @@ class Users::FriendsController < ApplicationController
   def show_checkin
     friend = current_user.friends.find(params[:id])
     @checkin = friend.checkins.find(params[:checkin_id])
+    @fogged = @checkin.resolve_address(current_user, 'address')
   end
 end
