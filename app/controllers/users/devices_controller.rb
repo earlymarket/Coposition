@@ -43,6 +43,10 @@ class Users::DevicesController < ApplicationController
     end
   end
 
+  def edit
+    @device = Device.find(params[:id])
+  end
+
   def destroy
     Checkin.where(device: params[:id]).delete_all
     Device.find(params[:id]).destroy

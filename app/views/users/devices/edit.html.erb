@@ -1,5 +1,74 @@
-<%= form_for @device, url: {action: "edit"}, html: {class: "form-group"} do |f| %>
-  <%= label(:name, "Enter a friendly name", class: "control-label") %>
-  <%= f.text_field(:name, class: "form-control input-lg fifth-width") %>
-  <%= f.submit("Search", class: "form-control btn btn-default") %>
-<% end %>
+<h1><%= @device.name %> settings<h1>
+<h3>Privacy settings</h3>
+<div>
+  <%= link_to(fogged_icon(@device), user_device_path(current_user.url_id, @device.id), { method: :put, class: "btn", id:"fogButton#{@device.id}", remote: true, data: { fogged: @device.fogged? }  })%>
+  <span style="margin-left: 1em;">
+    Timeshift with a delay of
+    <%= form_tag(user_device_path(current_user.url_id, @device.id), method: "put", remote: true, style: "display: inline;") do %>
+      <%= text_field_tag(:mins, @device.delayed, size: "2", style: "width: 2em; text-align: center;") %>
+      minutes.
+      <%= button_tag("Update", type: "submit", class: "btn-flat waves-effect waves-orange") %>
+    <% end %>
+  </span>
+
+</div>
+
+<h3>Permission settings</h3>
+<ul class="permissions collection" data-device=<%=@device.id%>>
+  <% @device.developers.each do |developer| %>
+    <% permission =  @device.permissions.where(permissible: developer, permissible_type: "Developer").first %>
+    <li class="collection-item row" data-permission=<%=permission.id%>>
+      <%= permissible_title(developer) %>
+      <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
+    </li>
+  <% end %>
+
+  <% @device.permitted_users.each do |friend| %>
+    <% permission =  @device.permissions.where(permissible: friend, permissible_type: "User").first %>
+    <li class="collection-item row" data-permission=<%=permission.id%>>
+      <%= permissible_title(friend) %>
+      <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
+    </li>
+  <% end %>
+</ul>
+
+<script>
+var current_user_id =  '<%= current_user.id %>';
+
+function update_permission(permission, device_id, attribute, value){
+  if (attribute == 'privilege'){
+    var data = { privilege: value }
+  } else if (attribute == 'bypass_fogging'){
+    var data = { bypass_fogging: value }
+  } else {
+    var data = { show_history: value }
+  }
+  $.ajax({
+    url: "/users/"+current_user_id+"/devices/"+device_id+"/permissions/"+permission+"",
+    type: 'PUT',
+    data: { permission : data }
+  });
+}
+
+function select_change(){
+  $(".privilege").change(function( event ) {
+    var privilege = $(this).find(':selected').val();
+    var permission = $(event.target).parents('li.collection-item').data().permission;
+    var device_id = $(event.target).parents('ul.collection').data().device;
+    update_permission(permission, device_id, 'privilege', privilege)
+  });
+}
+
+function toggle_change(){
+  $(".switch").change(function( event ) {
+    var state = $(event.target).prop('checked');
+    var permission = $(event.target).parents('li.collection-item').data().permission;
+    var device_id = $(event.target).parents('ul.collection').data().device;
+    var attribute = $(this).attr('name');
+    update_permission(permission, device_id, attribute, state)
+  });
+}
+
+select_change();
+toggle_change();
+</script>

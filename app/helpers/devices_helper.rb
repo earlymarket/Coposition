@@ -16,4 +16,5 @@ module DevicesHelper
     end
     value.html_safe
   end
+
 end
