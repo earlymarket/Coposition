@@ -9,7 +9,16 @@
 <hr>
 <%= render partial: "privacy", object: @device, as: 'device' %>
 <hr>
-<%= render partial: "checkin_table" %>
+<table id="checkin-table" class="highlight checkin-table">
+  <thead>
+    <tr>
+      <th>Created</th><th>Area</th><th>Fogged</th><th>More Info</th>
+    </tr>
+  </thead>
+  <%= render partial: "checkin_table_row", collection: @checkins, as: :checkin %>
+</table>
+<%= will_paginate @checkins %>
+
 
 <script type="text/javascript">
   var $newCheckinButton = $('<%= j link_to("Check-in", new_user_device_checkin_path(current_user.url_id,
