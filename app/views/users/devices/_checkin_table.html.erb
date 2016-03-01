@@ -7,8 +7,6 @@
       <th>More Info</th>
     </tr>
   </thead>
-  <% @checkins.each do |checkin| %>
-    <%= render "checkin_table_row", checkin: checkin %>
-  <% end %>
+  <%= render partial: "checkin_table_row", collection: @checkins, as: :checkin %>
 </table>
 <%= will_paginate @checkins %>
