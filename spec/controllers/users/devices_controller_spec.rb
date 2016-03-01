@@ -53,28 +53,11 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(assigns(:device).uuid).to eq('123412341234')
     end
 
-    it 'should set @adding_current_device to true if :curr_device exists' do
-      get :new, user_param
-      expect(assigns :adding_current_device).to eq(nil)
-      get :new, user_param.merge(curr_device: true)
-      expect(assigns :adding_current_device).to eq(true)
-    end
-
     it 'should assign :redirect to @redirect_target if exists' do
       get :new, user_param
       expect(assigns :redirect_target).to eq(nil)
       get :new, user_param.merge(redirect: 'http://www.coposition.com/')
       expect(assigns :redirect_target).to eq('http://www.coposition.com/')
-    end
-  end
-
-  describe 'GET #add_current' do
-    it 'should create a a new Device with a UUID' do
-      user
-      count = Device.count
-      get :add_current, user_param
-      expect(Device.count).to eq(count+1)
-      expect(Device.last.uuid == nil).to be false
     end
   end
 
@@ -111,7 +94,8 @@ RSpec.describe Users::DevicesController, type: :controller do
       checkins_count = Checkin.count
       post :create, user_param.merge({
         location: '51.588330,-0.513069',
-        device: { name: 'New Device' }
+        device: { name: 'New Device' },
+        create_checkin: true
       })
       expect(user.devices.count).to be devices_count+1
       expect(Checkin.count).to be checkins_count+1

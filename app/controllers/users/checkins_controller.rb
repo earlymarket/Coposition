@@ -21,14 +21,20 @@ class Users::CheckinsController < ApplicationController
   def show
     checkin = Checkin.find(params[:id])
     checkin.reverse_geocode!
-    @fogged = Checkin.find(params[:id]).get_data if checkin.fogged
+    @checkin = checkin
+  end
+
+  def update
     @checkin = Checkin.find(params[:id])
+    @checkin.switch_fog
+    flash[:notice] = "Check-in fogging changed."
+    @checkin_id = params[:id]
   end
 
   def destroy
     respond_to do |format|
       @checkin_id = params[:id]
-      Device.find(params[:device_id]).checkins.find(@checkin_id).delete
+      Checkin.find_by(id: @checkin_id).delete
       flash[:notice] = "Check-in deleted."
       format.js
       format.html {redirect_to user_device_path(current_user.url_id, params[:device_id])}
@@ -36,7 +42,7 @@ class Users::CheckinsController < ApplicationController
   end
 
   def destroy_all
-    Checkin.where(device: params[:device_id]).destroy_all
+    Checkin.where(device: params[:device_id]).delete_all
     flash[:notice] = "History deleted."
     redirect_to user_device_path(current_user.url_id, params[:device_id])
   end

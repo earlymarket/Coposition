@@ -1,5 +1,5 @@
-<% if @friend_requests.length > 0 || @pending_friends.length > 0 %>
-  You have <%= @friend_requests.length %> friend requests and <%= @pending_friends.length %> pending friends.
+<% if current_user.pending_friends.present? %>
+  You have sent <%= pluralize(current_user.pending_friends.count, 'friend request') %>.
 <% end %>
 
 <div class="collection">
@@ -9,7 +9,7 @@
         <h5><%= friend.email %></h5>
       </div>
       <div class="col s4 valign right-align">
-      <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, Approval.where(user: current_user, approvable: friend, approvable_type: "User").first.id), remote: true, class: "btn-flat" %>
+      <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, Approval.where(user: current_user, approvable: friend, approvable_type: "User").first.id), remote: true, class: "btn-flat", data: { confirm: "Are you sure? This user will no longer have access to any of your data." } %>
       </div>
     </div>
   <% end %>

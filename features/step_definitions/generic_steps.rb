@@ -17,3 +17,8 @@ end
 Then(/^I should see "(.*?)"$/) do |text|
   expect(page.has_content? text).to be true
 end
+
+Given(/^I confirm$/) do
+  a = page.driver.browser.switch_to.alert
+  a.accept
+end

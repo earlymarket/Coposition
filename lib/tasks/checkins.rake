@@ -20,6 +20,7 @@ namespace :checkins do
     args.with_defaults(:count => 1, :device_id => nil)
     selected_device = Device.find(args[:device_id]) if args[:device_id]
     i = 0
+    start_time = Time.now
     Checkin.transaction do
       puts "Began creating checkins"
       args[:count].to_i.times do
@@ -30,10 +31,11 @@ namespace :checkins do
         i += 1
         print "\rCreated #{i} checkins.".ljust(25)
         print "Current city: #{city.name}".ljust(60)
-        print " Device: #{device.name}" if device.name
+        print "Device: #{device.name}".ljust(25) if device.name
+        print " Time elapsed: #{Time.now - start_time} seconds"
         print "\e[0K"
       end
-      puts "\nFinished, #{i} checkins created"
+      puts "\nFinished. #{i} checkins created."
     end
   end
 

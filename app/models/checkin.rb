@@ -5,6 +5,11 @@ class Checkin < ActiveRecord::Base
   validates :lng, presence: :true
   belongs_to :device
 
+  delegate :user, to: :device
+
+  scope :since, -> (date) { where("created_at > ?", date)}
+  scope :before, -> (date) { where("created_at < ?", date)}
+
   reverse_geocoded_by :lat, :lng do |obj,results|
     results.first.methods.each do |m|
       obj.send("#{m}=", results.first.send(m)) if column_names.include? m.to_s
@@ -18,18 +23,18 @@ class Checkin < ActiveRecord::Base
       self.fogged = device.fogged
       device.checkins << self
       reverse_geocode! if device.checkins.count == 1
+      add_fogged_info
     else
       raise "Checkin is not assigned to a device." unless Rails.env.test?
     end
   end
 
-  # The method to be used for public-facing data
   def get_data
     fogged_checkin = self
     if fogged?
       fogged_checkin.address = "#{nearest_city.name}, #{nearest_city.country_code}"
-      fogged_checkin.lat = nearest_city.latitude || self.lat + rand(-0.5..0.5)
-      fogged_checkin.lng = nearest_city.longitude || self.lng + rand(-0.5..0.5)
+      fogged_checkin.lat = self.fogged_lat || nearest_city.latitude || self.lat + rand(-0.5..0.5)
+      fogged_checkin.lng = self.fogged_lng || nearest_city.longitude || self.lng + rand(-0.5..0.5)
       fogged_checkin
     else
       self
@@ -53,4 +58,23 @@ class Checkin < ActiveRecord::Base
     box = Geocoder::Calculations.bounding_box(center_point, 20)
     @nearest_city ||= City.near(self).within_bounding_box(box).first || NoCity.new
   end
+
+  def add_fogged_info
+    self.fogged_lat ||= nearest_city.latitude || self.lat + rand(-0.5..0.5)
+    self.fogged_lng ||= nearest_city.longitude || self.lat + rand(-0.5..0.5)
+    self.fogged_area ||= nearest_city.name
+    save
+  end
+
+  def resolve_address(permissible, type)
+    if type == "address"
+      reverse_geocode!
+      get_data unless device.can_bypass_fogging?(permissible)
+      self
+    else
+      get_data unless device.can_bypass_fogging?(permissible)
+      self.slice(:id, :uuid, :lat, :lng, :created_at, :updated_at, :fogged)
+    end
+  end
+
 end

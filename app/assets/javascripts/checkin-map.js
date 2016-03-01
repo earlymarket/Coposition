@@ -1,7 +1,7 @@
 function renderMap(removeId){
 
   if(removeId) {
-    var removeThis = checkins.map(function(checkin) { return checkin.id}).indexOf(removeId);
+    var removeThis = checkins.map(function(checkin) { return checkin.id; }).indexOf(removeId);
     checkins.splice(removeThis, 1);
   }
 
@@ -13,7 +13,7 @@ function renderMap(removeId){
 
     var lastCheckin = {lat: checkins[0].lat, lng: checkins[0].lng};
     var bounds = new google.maps.LatLngBounds();
-    var markers = []
+    var markers = [];
 
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 16,
@@ -21,26 +21,26 @@ function renderMap(removeId){
     });
 
     $.each(checkins, function(i, checkin){
-      position = {lat: checkin.lat, lng: checkin.lng}
+      position = {lat: checkin.lat, lng: checkin.lng};
       marker = new google.maps.Marker({
         position: position,
         map: map
       });
-      bounds.extend(marker.getPosition())
-      markers.push(marker)
-    })
+      bounds.extend(marker.getPosition());
+      markers.push(marker);
+    });
 
-    map.fitBounds(bounds)
+    map.fitBounds(bounds);
 
     var options = {
       minimumClusterSize: 2,
       zoomOnClick: true
     };
 
-    var mc = new MarkerClusterer(map, markers, options)
+    var mc = new MarkerClusterer(map, markers, options);
 
     var listener = google.maps.event.addListenerOnce(map, "idle", function() {
       if (map.getZoom() > 16) map.setZoom(16);
-    })
+    });
   }
 }

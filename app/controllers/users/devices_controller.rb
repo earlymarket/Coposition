@@ -15,18 +15,18 @@ class Users::DevicesController < ApplicationController
 
   def show
     @device = Device.find(params[:id])
+    Checkin.includes(:device).where(device_id: @device.id)
     @checkins = @device.checkins.order('created_at DESC').paginate(page: params[:page], per_page: 50)
   end
 
   def new
     @device = Device.new
     @device.uuid = params[:uuid] if params[:uuid]
-    @adding_current_device = true if params[:curr_device]
     @redirect_target = params[:redirect] if params[:redirect]
   end
 
   def create
-    if allowed_params[:uuid]
+    if allowed_params[:uuid].present?
       @device = Device.find_by uuid: allowed_params[:uuid]
     else
       @device = Device.create
@@ -44,6 +44,7 @@ class Users::DevicesController < ApplicationController
   end
 
   def destroy
+    Checkin.where(device: params[:id]).delete_all
     Device.find(params[:id]).destroy
     flash[:notice] = "Device deleted"
     redirect_to user_devices_path
@@ -57,11 +58,6 @@ class Users::DevicesController < ApplicationController
       @device.switch_fog
       flash[:notice] = "#{@device.name} fogging has been changed."
     end
-  end
-
-  def add_current
-    flash[:notice] = "Enter a name for the device you are currently using and click ADD"
-    redirect_to new_user_device_path(uuid: Device.create.uuid, curr_device: true)
   end
 
   private
@@ -82,7 +78,7 @@ class Users::DevicesController < ApplicationController
       flash[:notice] = "This device has been bound to your account!"
 
       @device.checkins.create(lat: params[:location].split(",").first,
-          lng: params[:location].split(",").last) unless params[:location].blank?
+          lng: params[:location].split(",").last) unless params[:create_checkin].blank?
     end
 
     def redirect_using_param_or_default(default: user_device_path(current_user.url_id, @device.id))
