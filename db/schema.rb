@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160225112906) do
+ActiveRecord::Schema.define(version: 20160229162703) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,9 @@ ActiveRecord::Schema.define(version: 20160225112906) do
     t.string   "postal_code"
     t.string   "country_code"
     t.boolean  "fogged"
+    t.float    "fogged_lat"
+    t.float    "fogged_lng"
+    t.string   "fogged_area"
   end
 
   add_index "checkins", ["device_id"], name: "index_checkins_on_device_id", using: :btree

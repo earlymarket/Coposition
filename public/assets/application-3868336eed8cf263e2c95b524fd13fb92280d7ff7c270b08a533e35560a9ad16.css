@@ -19225,8 +19225,12 @@ footer h5 {
   width: 184px;
   height: 42px;
 }
+/* line 58, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/navbar.scss */
+.nav-wrapper .right .settings-icon {
+  height: 64px;
+}
 
-/* line 65, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/navbar.scss */
+/* line 67, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/navbar.scss */
 .side-nav .collapsible-header {
   padding: 0px;
   width: 100%;
