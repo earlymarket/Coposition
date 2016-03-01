@@ -12,7 +12,7 @@
           <li>Latitude: <%=  @checkin.get_data.lat %></li>
           <li>Longitude <%= @checkin.get_data.lng %></li>
           <li>Address: <%= @checkin.get_data.address %></li>
-          <li>Fogging status: <%= checkins_fogged_icon(@checkin.fogged) %></li>
+          <li>Fogging status: <%= fogged_icon(@checkin.fogged) %></li>
         </ul>
       </div>
     </div>
@@ -20,6 +20,6 @@
 </div>
 
 <script>
-  var img_url = '<%= checkins_static_map_url %>';
+  var img_url = '<%= checkins_static_map_url(@checkin) %>';
   $('#mapholder').attr("src", img_url);
 </script>

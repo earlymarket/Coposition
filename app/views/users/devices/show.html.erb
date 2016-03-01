@@ -2,8 +2,8 @@
 
 <div id="map" class="checkin-map center valign-wrapper"></div>
 <br>
-<%= link_to("Delete history", user_device_checkins_path(current_user.url_id, @device.id), { method: :delete, class: "btn red white-text"  }) if @device.checkins.exists? %>
-<%= link_to("Delete device", user_device_path(current_user.url_id, @device), { method: :delete, class: "btn red white-text" })%>
+<%= link_to("Delete history", user_device_checkins_path(current_user.url_id, @device.id), { method: :delete, class: "btn red white-text", data: { confirm: 'Delete all checkins for this device?' } })%>
+<%= link_to("Delete device", user_device_path(current_user.url_id, @device), { method: :delete, class: "btn red white-text", data: { confirm: 'Are you sure?' } })%>
 <%= link_to("Check-in now", new_user_device_checkin_path(current_user.url_id, @device.id), class: "btn green white-text", id: "checkin-button", remote: true) %>
 <br>
 <hr>
@@ -27,8 +27,7 @@
 
     var checkin = {
       'checkin[lat]': position.coords.latitude.toFixed(6),
-      'checkin[lng]': position.coords.longitude.toFixed(6),
-      'checkin[uuid]': '<%= j @device.uuid %>'
+      'checkin[lng]': position.coords.longitude.toFixed(6)
     }
 
     checkinPath += '?'

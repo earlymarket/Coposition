@@ -1,5 +1,6 @@
 class Api::ApiController < ActionController::Base
   include ApiApplicationMixin
+  rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
 
   private
 
@@ -9,7 +10,7 @@ class Api::ApiController < ActionController::Base
     if @dev
       create_request
     else
-      render status: 401, json: { message: 'Developer not registered with Coposition' }
+      render status: 401, json: { message: 'No valid API Key' }
     end
   end
 
@@ -57,10 +58,6 @@ class Api::ApiController < ActionController::Base
     if params[:device_id] then @device = Device.find(params[:device_id]) end
   end
 
-  def find_owner
-    @owner = @device || find_by_id(params[:user_id])
-  end
-
   def find_permissible
     if params[:permissible_id]
       @permissible = User.find(params[:permissible_id])
@@ -78,5 +75,10 @@ class Api::ApiController < ActionController::Base
     model = resource.titleize.constantize
     render status: 404, json: { message: "#{model} does not exist" } unless arguments
     arguments
+  end
+
+  def record_not_found(exception)
+    render json: {error: exception.message}.to_json, status: 404
+    return
   end
 end

@@ -1,0 +1,69 @@
+// Fixed top navbar
+.nav-wrapper{
+  @extend .fixed;
+  z-index: 10;
+  transition: all 0.5s ease;
+
+  // Transparent navbar for landing page
+  &.transparent-nav{
+    background-color: rgba(0,0,0,0);
+    box-shadow: none;
+
+    a{
+      @extend .dark-text;
+    }
+
+    .dropdown-content{
+      background-color: rgba(255,255,255,0.9);
+    }
+
+    .btn{
+      @extend .dark-text;
+      border: solid 1px rgba(0, 0, 0, 0.8);
+
+      &:hover{
+        @extend .light-text;
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+    }
+  }
+
+  // Normalize button appearance
+  .btn{
+    @extend .light-text;
+    border: solid 1px white;
+    background-color: rgba(0,0,0,0);
+    box-shadow: none;
+
+    &:hover{
+      @extend .dark-text;
+      background-color: white;
+    }
+  }
+
+  // Customised left align menu items
+  .left{
+    height: 100%;
+    width: auto;
+    margin-left: 2.5%;
+
+    #brand-logo{
+      width: 184px;
+      height: 42px;
+    }
+  }
+
+  // Customised right align menu items
+  .right{
+
+  }
+}
+
+
+// Mobile navigation
+.side-nav{
+  .collapsible-header{
+    padding: 0px;
+    width: 100%;
+  }
+}

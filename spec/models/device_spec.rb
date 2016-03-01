@@ -28,9 +28,4 @@ RSpec.describe Device, type: :model do
     expect(device.permission_for(developer).privilege).to eq "complete"
   end
 
-  it "should create a checkin for a device" do
-    count = device.checkins.count
-    device.create_checkin(lat: 51.588330, lng: -0.513069)
-    expect(device.checkins.count).to be count+1
-  end
 end

@@ -21,12 +21,11 @@ class Users::DevicesController < ApplicationController
   def new
     @device = Device.new
     @device.uuid = params[:uuid] if params[:uuid]
-    @adding_current_device = true if params[:curr_device]
     @redirect_target = params[:redirect] if params[:redirect]
   end
 
   def create
-    if allowed_params[:uuid]
+    if allowed_params[:uuid].present?
       @device = Device.find_by uuid: allowed_params[:uuid]
     else
       @device = Device.create
@@ -59,11 +58,6 @@ class Users::DevicesController < ApplicationController
     end
   end
 
-  def add_current
-    flash[:notice] = "Just enter a friendly name, and this device is good to go."
-    redirect_to new_user_device_path(uuid: Device.create.uuid, curr_device: true)
-  end
-
   private
     def via_app
       render json: @device.to_json if req_from_coposition_app?
@@ -81,8 +75,8 @@ class Users::DevicesController < ApplicationController
       @device.save
       flash[:notice] = "This device has been bound to your account!"
 
-      @device.create_checkin(lat: params[:location].split(",").first,
-          lng: params[:location].split(",").last) unless params[:location].blank?
+      @device.checkins.create(lat: params[:location].split(",").first,
+          lng: params[:location].split(",").last) unless params[:create_checkin].blank?
     end
 
     def redirect_using_param_or_default(default: user_device_path(current_user.url_id, @device.id))

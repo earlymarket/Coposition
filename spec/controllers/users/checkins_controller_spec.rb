@@ -11,9 +11,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
     device.checkins << check
     check
   end
-  let(:params) do
-    { user_id: user.username, device_id: device.id, id: checkin.id }
-  end
+  let(:params) {{ user_id: user.username, device_id: device.id, id: checkin.id }}
 
   describe 'GET #new' do
     it 'should assign a device with a matching :device_id to @device and a new checkin to @checkin' do
@@ -32,7 +30,6 @@ RSpec.describe Users::CheckinsController, type: :controller do
         user_id: user.username,
         device_id: device.id,
         checkin: {
-          uuid: checkin.uuid,
           lat: checkin.lat,
           lng: checkin.lng
         }
@@ -51,13 +48,20 @@ RSpec.describe Users::CheckinsController, type: :controller do
 
     it 'should not assign :id.checkin if user does not own device which owns checkin' do
       user
-      get :show, {
-        user_id: new_user.username,
-        device_id: device.id,
-        id: checkin.id
-      }
+      get :show, params.merge(user_id: new_user.username)
       expect(response).to redirect_to(root_path)
       expect(assigns :checkin).to eq nil
+    end
+  end
+
+  describe 'PUT #update' do
+    it 'should switch fogging' do
+      checkin.update(fogged: false)
+      request.accept = 'text/javascript'
+      put :update, params
+      expect(Checkin.find(checkin.id).fogged).to be true
+      put :update, params
+      expect(Checkin.find(checkin.id).fogged).to be false
     end
   end
 
@@ -95,11 +99,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
     it 'should not delete a checkin if it does not belong to the user' do
       count = checkin.device.checkins.count
       expect(count).to be > 0
-      delete :destroy, {
-        user_id: new_user.username,
-        device_id: device.id,
-        id: checkin.id
-      }
+      delete :destroy, params.merge(user_id: new_user.username)
       expect(response).to redirect_to(root_path)
       expect(device.checkins.count).to eq count
     end

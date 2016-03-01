@@ -22,11 +22,9 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     us.devices << FactoryGirl::create(:device)
     us
   end
+  let(:params) {{ user_id: user.id, id: device.id, format: :json }}
 
   before do
-    @checkin = FactoryGirl::build :checkin
-    @checkin.uuid = device.uuid
-    @checkin.save
     request.headers["X-Api-Key"] = developer.api_key
     request.headers["X-User-Token"] = user.authentication_token
     request.headers["X-User-Email"] = user.email
@@ -47,7 +45,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     end
 
     it "should GET information on a specific device for a specific user" do
-      get :show, user_id: user.username, id: device.id, format: :json
+      get :show, params
       expect(res_hash.first["id"]).to be device.id
     end
 
@@ -56,15 +54,15 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   describe "PUT" do
 
     it "should update settings" do
-      put :update, { user_id: user.id, id: device.id,  device: { fogged: true }, format: :json }
+      put :update, params.merge(device: { fogged: true })
       expect(res_hash[:fogged]).to eq(true)
-      put :update, { user_id: user.id, id: device.id,  device: { fogged: false }, format: :json }
+      put :update, params.merge(device: { fogged: false })
       device.reload
       expect(res_hash[:fogged]).to eq(false)
     end
 
     it "should reject non-existant device ids" do
-      put :update, { user_id: user.id, id: 999999999,  device: { fogged: true }, format: :json }
+      put :update, params.merge(id: 9999999, device: { fogged: true })
       expect(response.status).to eq(404)
       expect(res_hash[:message]).to eq('Device does not exist')
     end

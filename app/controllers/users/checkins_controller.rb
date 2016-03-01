@@ -21,8 +21,14 @@ class Users::CheckinsController < ApplicationController
   def show
     checkin = Checkin.find(params[:id])
     checkin.reverse_geocode!
-    @fogged = Checkin.find(params[:id]).get_data if checkin.fogged
+    @checkin = checkin
+  end
+
+  def update
     @checkin = Checkin.find(params[:id])
+    @checkin.switch_fog
+    flash[:notice] = "Check-in fogging changed."
+    @checkin_id = params[:id]
   end
 
   def destroy
@@ -44,7 +50,7 @@ class Users::CheckinsController < ApplicationController
   private
 
     def allowed_params
-      params.require(:checkin).permit(:uuid, :lat, :lng, :device_id)
+      params.require(:checkin).permit(:lat, :lng, :device_id)
     end
 
     def require_checkin_ownership

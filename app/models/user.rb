@@ -73,8 +73,15 @@ class User < ActiveRecord::Base
 
   ## Checkins
 
-  def last_checkin
-    checkins.sort_by(&:created_at).last
+  def get_checkins(permissible, device)
+    device ? device.permitted_history_for(permissible) : get_user_checkins(permissible)
+  end
+
+  def get_user_checkins(permissible)
+    checkins_ids = devices.inject([]) do |result, device|
+      result + device.permitted_history_for(permissible).pluck(:id)
+    end
+    Checkin.where(id: checkins_ids)
   end
 
   ##############
@@ -90,7 +97,15 @@ class User < ActiveRecord::Base
         @notes << {
           notification: {
               msg: "You have #{pending_approvals.count} pending approvals",
-              link_path: "user_approvals_path"
+              link_path: "user_applications_path"
+            }
+          }
+      end
+      if friend_requests.present?
+        @notes << {
+          notification: {
+              msg: "You have #{friend_requests.count} friend requests",
+              link_path: "user_friends_path"
             }
           }
       end

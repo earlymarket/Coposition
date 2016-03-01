@@ -12,8 +12,10 @@ Rails.application.routes.draw do
     registrations: 'users/devise/registrations',
     sessions: 'users/devise/sessions'
   }
-  devise_for :developers, controllers:
-   { registrations: 'developers/devise/registrations' }
+  devise_for :developers, controllers: {
+    registrations: 'developers/devise/registrations',
+    sessions: 'developers/devise/sessions'
+  }
 
   # API
 
@@ -65,15 +67,12 @@ Rails.application.routes.draw do
   resources :users, only: [:show], module: :users do
     resource :dashboard, only: [:show]
     resources :devices, except: [:edit] do
-      collection do
-        get 'add_current'
-      end
-      resources :checkins, only: [:show, :create, :new]
+      resources :checkins, only: [:show, :create, :new, :update]
       delete '/checkins/', to: 'checkins#destroy_all'
       delete '/checkins/:id', to: 'checkins#destroy'
       resources :permissions, only: [:update]
     end
-    resources :approvals, only: [:index, :new, :create] do
+    resources :approvals, only: [:new, :create] do
       member do
         post 'approve'
         post 'reject'
@@ -85,6 +84,8 @@ Rails.application.routes.draw do
         get 'show_checkin'
       end
     end
+    get '/applications', to: 'approvals#applications'
+    get '/friends', to: 'approvals#friends'
   end
 
 

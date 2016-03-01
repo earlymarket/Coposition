@@ -1,12 +1,6 @@
 <%= form_for @checkin, url: {action: "create"}, html: {class: "col s12"} do |f| %>
   <div class="row">
     <div class="col s12">
-      UUID: <%= @device.uuid %>
-    </div>
-  </div>
-  <%= f.hidden_field :uuid, value: @device.uuid %>
-  <div class="row">
-    <div class="col s12">
       <%= f.label :lat, "Latitude", class: "active" %>
       <%= f.text_field :lat, autofocus: true %>
     </div>

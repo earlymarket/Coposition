@@ -1,18 +1,19 @@
-$primary-color: color("light-blue", "base");
-$primary-color-lighter: color("light-blue", "lighten-4");
-$primary-color-darker: color("light-blue", "darken-2");
+$primary-color: #47b8e0;
+$primary-color-lighter: lighten(#47b8e0, 15%);
+$primary-color-darker: darken(#47b8e0, 15%);
 
-$secondary-color: color("orange", "accent-2");
-$secondary-color-lighter: color("orange", "accent-1");
-$secondary-color-darker: color("orange", "accent-3");
+$secondary-color: #ffc952;
+$secondary-color-lighter: lighten(#ffc952, 15%);
+$secondary-color-darker: darken(#ffc952, 15%);
 
-$button-raised-color: color("grey", "darken-4");
+$dark-text-color: rgba(0, 0, 0, 0.8);
+$light-text-color: rgba(255, 255, 255, 1);
 
 .dark-text{
-  color: rgba(0, 0, 0, 0.87);
+  color: $dark-text-color;
 
   &.secondary{
-    color: rgba(0, 0, 0, 0.54);
+    color: rgba(0, 0, 0, 0.7);
   }
   &.hint{
     color: rgba(0, 0, 0, 0.38);
@@ -21,7 +22,7 @@ $button-raised-color: color("grey", "darken-4");
 
 .light-text{
 
-  color: rgba(255, 255, 255, 1);
+  color: $light-text-color;
 
   &.secondary{
     color: rgba(255, 255, 255, 0.7);
@@ -35,19 +36,19 @@ $button-raised-color: color("grey", "darken-4");
   background-color: $primary-color;
 
   &.lighten{
-    background-color: $secondary-color-lighter;
-    color: black;
+    @extend .dark-text;
+    background-color: $primary-color-lighter;
   }
 
   &.darken{
-    background-color: $secondary-color-darker;
-    color: white;
+    @extend .light-text;
+    background-color: $primary-color-darker;
   }
 }
 
 .secondary-color{
+  @extend .dark-text;
   background-color: $secondary-color;
-  color: $button-raised-color;
 
   &.lighten{
     background-color: $secondary-color-lighter;
