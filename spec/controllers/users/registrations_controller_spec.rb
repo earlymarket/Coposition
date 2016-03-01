@@ -40,4 +40,34 @@ RSpec.describe Users::Devise::RegistrationsController, type: :controller do
     end
   end
 
+  describe 'destroy' do
+    let (:user){ create_user }
+
+    context 'with a password' do
+      it 'should create a new user' do
+        user
+        delete :destroy, {
+          user: {
+            password: user.password,
+          }
+        }
+        expect(flash[:notice]).to match "successfully cancelled"
+        expect(User.count).to eq 0
+      end
+    end
+
+    context 'with an invalid password' do
+      it 'should not create a new user' do
+        user
+        delete :destroy, {
+          user: {
+            password: "wrong",
+          }
+        }
+        expect(flash[:notice]).to match "invalid"
+        expect(User.count).to eq 1
+      end
+    end
+  end
+
 end
