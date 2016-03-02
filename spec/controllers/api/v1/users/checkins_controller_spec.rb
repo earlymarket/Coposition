@@ -48,18 +48,6 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
       end
     end
 
-    context "with developer approval but not on specific device" do
-      before do
-        device.permissions.last.update(privilege: 'disallowed')
-      end
-
-      it "shouldn't fetch the last reported location" do
-        get :last, params
-        expect(res_hash[:permission_status]).to eq 'disallowed'
-        expect(response.status).to be 401
-      end
-    end
-
     context "with approval" do
 
       before do
@@ -127,6 +115,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
         expect(response.header['X-Current-Page']).to eq "1"
         expect(response.header['X-Total-Entries']).to eq "#{device.checkins.count}"
         expect(response.header['X-Per-Page']).to eq "30"
+        expect(res_hash.size).to eq 30
       end
     end
 
