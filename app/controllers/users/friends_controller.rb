@@ -1,11 +1,13 @@
 class Users::FriendsController < ApplicationController
+  before_action :friends?
+
   def show
-    @friend = current_user.friends.find(params[:id])
+    @friend = User.find(params[:id])
     @devices = @friend.devices
   end
 
   def show_device
-    @friend = current_user.friends.find(params[:id])
+    @friend = User.find(params[:id])
     @device = @friend.devices.find(params[:device_id])
     @paginated_checkins = @friend.get_checkins(current_user, @device).order('created_at DESC') \
       .paginate(page: params[:page], per_page: 50)
@@ -16,8 +18,17 @@ class Users::FriendsController < ApplicationController
   end
 
   def show_checkin
-    friend = current_user.friends.find(params[:id])
+    friend = User.find(params[:id])
     @checkin = friend.checkins.find(params[:checkin_id])
     @fogged = @checkin.resolve_address(current_user, 'address')
   end
+
+  private
+    def friends?
+      friend = User.find(params[:id])
+      unless friend.approved?(current_user)
+        flash[:notice] = 'You are not friends with that user'
+        redirect_to user_friends_path(current_user)
+      end
+    end
 end
