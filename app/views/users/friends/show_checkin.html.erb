@@ -12,7 +12,6 @@
           <li>Latitude: <%=  @fogged[:lat] %></li>
           <li>Longitude <%= @fogged[:lng] %></li>
           <li>Address: <%= @fogged[:address] %></li>
-          <li>Fogging status: <%= fogged_icon(@checkin.fogged) %></li>
         </ul>
       </div>
     </div>
@@ -20,6 +19,6 @@
 </div>
 
 <script>
-  var img_url = '<%= checkins_static_map_url(@checkin) %>';
+  var img_url = '<%= checkins_static_map_url_for_friend(@checkin) %>';
   $('#mapholder').attr("src", img_url);
 </script>
