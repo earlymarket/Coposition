@@ -1,6 +1,6 @@
 <div class="valign-wrapper">
-  <%= link_to(fogged_icon(device.fogged), user_device_path(current_user.url_id, device.id), { method: :put, id:"fogButton#{device.id}", class: "tooltipped", remote: true, data: { tooltip: 'Fog checkin location for this device to the nearest city', fogged: device.fogged? }  })%>
-  <span style="margin-left: 1em;" class="tooltipped" data-tooltip= "Set the time delay for when checkins for this device become available to your data consumers">Timeshift with a delay of
+  <%= link_to(fogged_icon(device.fogged), user_device_path(current_user.url_id, device.id), { method: :put, id:"fogButton#{device.id}", class: "tooltipped", remote: true, data: { tooltip: 'Fog checkin location for this device to the nearest city or a nearby area.', fogged: device.fogged? }  })%>
+  <span style="margin-left: 1em;" class="tooltipped" data-tooltip= "Set the time delay for when checkins for this device become available to your data consumers.">Timeshift with a delay of
     <%= form_tag(user_device_path(current_user.url_id, device.id), method: "put", remote: true, style: "display: inline;") do %>
       <%= text_field_tag(:mins, device.delayed, size: "2", style: "width: 2em; text-align: center;") %>
     minutes.

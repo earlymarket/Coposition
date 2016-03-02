@@ -1,14 +1,14 @@
-<div class="input-field col s3 tooltipped" data-tooltip="Complete: All checkins since approval - Last only: Last checkin for this device only - Disallowed: Cannot view checkins.">
+<div class="input-field col s3 tooltipped" data-tooltip="Control the access this data consumer has to your checkins.">
 <%= select_tag "privilege", options_for_select({"Complete" => "complete", "Last only" => "last_only", "Disallowed" => "disallowed"}, permission.privilege), class: 'privilege browser-default'%>
 </div>
-<div class="switch col s4 tooltipped" name='bypass_fogging' data-tooltip='Allow data consumers to view unfogged data for fogged checkins.'>
+<div class="switch col s4 tooltipped" name='bypass_fogging' data-tooltip='Allow this data consumer to view unfogged data for fogged checkins.'>
   <label>
     <%= check_box_tag 'bypass_fogging','', permission.bypass_fogging %>
     <span class="lever"></span>
     Bypass Fogging
   </label>
 </div>
-<div class="switch col s4 tooltipped" name='show_history' data-tooltip='Allow data consumers to see checkins created before you approved them.'>
+<div class="switch col s4 tooltipped" name='show_history' data-tooltip='Allow this data consumer to see checkins created before you approved them.'>
   <label>
     <%= check_box_tag 'show_history','', permission.show_history %>
     <span class="lever"></span>
