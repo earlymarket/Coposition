@@ -27,7 +27,6 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
   describe "GET #last" do
 
     context 'with 2 checkins: 1 old, 1 new.' do
-
       before do
         historic_checkin
         checkin
@@ -155,6 +154,69 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
   end
 
   describe "GET #index" do
+
+    context 'with 2 checkins: 1 old, 1 new.' do
+      before do
+        historic_checkin
+        checkin
+      end
+
+      context "with privilege set to disallowed and can_show_history set to false" do
+        it "should return 0 checkins" do
+          device.permission_for(developer).update! privilege: 0
+          get :index, params
+          expect(res_hash.size).to be(0)
+        end
+      end
+
+      context "with privilege set to disallowed and can_show_history set to true" do
+        it "should return 0 checkins" do
+          device.permission_for(developer).update! privilege: 0
+          device.permission_for(developer).update! show_history: true
+          get :index, params
+          expect(res_hash.size).to be(0)
+        end
+      end
+
+      context "with privilege set to last_only and can_show_history set to true" do
+        it "should return 1 new checkin" do
+          device.permission_for(developer).update! privilege: 1
+          device.permission_for(developer).update! show_history: true
+          get :index, params
+          expect(res_hash.size).to be(1)
+          expect(res_hash.first['id']).to be(checkin.id)
+        end
+      end
+
+      context "with privilege set to last_only and can_show_history set to false" do
+        it "should return 1 new checkin" do
+          device.permission_for(developer).update! privilege: 1
+          device.permission_for(developer).update! show_history: false
+          get :index, params
+          expect(res_hash.size).to be(1)
+          expect(res_hash.first['id']).to be(checkin.id)
+        end
+      end
+
+      context "with privilege set to complete and can_show_history set to true" do
+        it "should return 2 checkins" do
+          device.permission_for(developer).update! privilege: 2
+          device.permission_for(developer).update! show_history: true
+          get :index, params
+          expect(res_hash.size).to be(2)
+        end
+      end
+
+      context "with privilege set to complete and can_show_history set to false" do
+        it "should return 1 new checkin" do
+          device.permission_for(developer).update! privilege: 2
+          device.permission_for(developer).update! show_history: false
+          get :index, params
+          expect(res_hash.size).to be(1)
+          expect(res_hash.first['id']).to be(checkin.id)
+        end
+      end
+    end
 
   end
 

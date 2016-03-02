@@ -21,7 +21,7 @@ class Device < ActiveRecord::Base
     approval_date = user.approval_for(permissible).approval_date
 
     if permission_for(permissible).privilege == "last_only"
-      can_show_history?(permissible) ? [checkins.last] : [checkins.since(approval_date).last]
+      can_show_history?(permissible) ? Checkin.where(id: checkins.last.id) : Checkin.where(id: checkins.since(approval_date).last.id)
     else
       can_show_history?(permissible) ? checkins : checkins.since(approval_date)
     end
