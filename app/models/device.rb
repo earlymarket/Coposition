@@ -17,8 +17,15 @@ class Device < ActiveRecord::Base
   end
 
   def permitted_history_for(permissible)
+    return Checkin.none if permission_for(permissible).privilege == "disallowed"
     approval_date = user.approval_for(permissible).approval_date
-    can_show_history?(permissible) ? checkins : checkins.since(approval_date)
+
+    if permission_for(permissible).privilege == "last_only"
+      can_show_history?(permissible) ? [checkins.last] : [checkins.since(approval_date).last]
+    else
+      can_show_history?(permissible) ? checkins : checkins.since(approval_date)
+    end
+
   end
 
   def permission_for(permissible)

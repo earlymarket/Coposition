@@ -7,6 +7,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
   let(:user){FactoryGirl::create :user}
   let(:second_user){FactoryGirl::create :user}
   let(:device){FactoryGirl::create :device, user_id: user.id}
+  let(:second_device){FactoryGirl::create :device, user_id: user.id}
   let(:checkin){FactoryGirl::create :checkin, device_id: device.id}
   let(:historic_checkin) do
     ad = user.approval_for(second_user).approval_date
@@ -75,7 +76,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
           device.permission_for(developer).update! show_history: true
           get :last, params
           expect(res_hash.size).to be(1)
-          expect(res_hash.first['id']).to be(historic_checkin.id)
+          expect(res_hash.first['id']).to be(checkin.id)
         end
       end
 
