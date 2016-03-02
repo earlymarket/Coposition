@@ -13,4 +13,8 @@ module ApplicationHelper
     value.html_safe
   end
 
+  def humanize_date(date)
+    date.strftime("%a #{date.day.ordinalize} %b %T")
+  end
+
 end

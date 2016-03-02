@@ -1,9 +1,5 @@
 module CheckinsHelper
 
-  def checkins_humanize_date(date)
-    date.strftime("%a #{date.day.ordinalize} %b %T")
-  end
-
   def checkins_fogged_address(checkin)
     "<li>Fogged Address: #{checkin.get_data.address}</li>".html_safe if checkin.fogged
   end
