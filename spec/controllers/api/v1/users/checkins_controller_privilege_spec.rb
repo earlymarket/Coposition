@@ -24,6 +24,11 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
     Approval.accept(user,developer,'Developer')
   end
 
+  def init_priv_start(privilege, show_history_state=false)
+    device.permission_for(developer).update! privilege: privilege
+    device.permission_for(developer).update! show_history: show_history_state
+  end
+
   describe "GET #last" do
 
     context 'with 2 checkins: 1 old, 1 new.' do
@@ -34,7 +39,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
       context "with privilege set to disallowed and can_show_history set to false" do
         it "should return 0 checkins" do
-          device.permission_for(developer).update! privilege: 0
+          init_priv_start(0)
           get :last, params
           expect(res_hash.size).to be(0)
         end
@@ -42,17 +47,13 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
       context "with privilege set to disallowed and can_show_history set to true" do
         it "should return 0 checkins" do
-          device.permission_for(developer).update! privilege: 0
-          device.permission_for(developer).update! show_history: true
-          get :last, params
-          expect(res_hash.size).to be(0)
+          init_priv_start(0, true)
         end
       end
 
       context "with privilege set to last_only and can_show_history set to true" do
         it "should return 1 new checkin" do
-          device.permission_for(developer).update! privilege: 1
-          device.permission_for(developer).update! show_history: true
+          init_priv_start(1, true)
           get :last, params
           expect(res_hash.size).to be(1)
           expect(res_hash.first['id']).to be(checkin.id)
@@ -61,8 +62,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
       context "with privilege set to last_only and can_show_history set to false" do
         it "should return 1 new checkin" do
-          device.permission_for(developer).update! privilege: 1
-          device.permission_for(developer).update! show_history: false
+          init_priv_start(1)
           get :last, params
           expect(res_hash.size).to be(1)
           expect(res_hash.first['id']).to be(checkin.id)
@@ -71,8 +71,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
       context "with privilege set to complete and can_show_history set to true" do
         it "should return 1 new checkin" do
-          device.permission_for(developer).update! privilege: 2
-          device.permission_for(developer).update! show_history: true
+          init_priv_start(2, true)
           get :last, params
           expect(res_hash.size).to be(1)
           expect(res_hash.first['id']).to be(checkin.id)
@@ -81,8 +80,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
       context "with privilege set to complete and can_show_history set to false" do
         it "should return 1 new checkin" do
-          device.permission_for(developer).update! privilege: 2
-          device.permission_for(developer).update! show_history: false
+          init_priv_start(2)
           get :last, params
           expect(res_hash.size).to be(1)
           expect(res_hash.first['id']).to be(checkin.id)
@@ -98,7 +96,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
       context "with privilege set to disallowed and can_show_history set to false" do
         it "should return 0 checkins" do
-          device.permission_for(developer).update! privilege: 0
+          init_priv_start(0)
           get :last, params
           expect(res_hash.size).to be(0)
         end
@@ -106,8 +104,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
       context "with privilege set to disallowed and can_show_history set to true" do
         it "should return 0 checkins" do
-          device.permission_for(developer).update! privilege: 0
-          device.permission_for(developer).update! show_history: true
+          init_priv_start(0, true)
           get :last, params
           expect(res_hash.size).to be(0)
         end
@@ -115,8 +112,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
       context "with privilege set to last_only and can_show_history set to true" do
         it "should return 1 historic checkin" do
-          device.permission_for(developer).update! privilege: 1
-          device.permission_for(developer).update! show_history: true
+          init_priv_start(1, true)
           get :last, params
           expect(res_hash.size).to be(1)
           expect(res_hash.first['id']).to be(historic_checkin.id)
@@ -133,8 +129,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
       context "with privilege set to complete and can_show_history set to true" do
         it "should return 1 historic checkin" do
-          device.permission_for(developer).update! privilege: 2
-          device.permission_for(developer).update! show_history: true
+          init_priv_start(2, true)
           get :last, params
           expect(res_hash.size).to be(1)
           expect(res_hash.first['id']).to be(historic_checkin.id)
@@ -163,7 +158,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
       context "with privilege set to disallowed and can_show_history set to false" do
         it "should return 0 checkins" do
-          device.permission_for(developer).update! privilege: 0
+          init_priv_start(0)
           get :index, params
           expect(res_hash.size).to be(0)
         end
@@ -171,8 +166,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
       context "with privilege set to disallowed and can_show_history set to true" do
         it "should return 0 checkins" do
-          device.permission_for(developer).update! privilege: 0
-          device.permission_for(developer).update! show_history: true
+          init_priv_start(0, true)
           get :index, params
           expect(res_hash.size).to be(0)
         end
@@ -180,8 +174,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
       context "with privilege set to last_only and can_show_history set to true" do
         it "should return 1 new checkin" do
-          device.permission_for(developer).update! privilege: 1
-          device.permission_for(developer).update! show_history: true
+          init_priv_start(1, true)
           get :index, params
           expect(res_hash.size).to be(1)
           expect(res_hash.first['id']).to be(checkin.id)
@@ -190,8 +183,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
       context "with privilege set to last_only and can_show_history set to false" do
         it "should return 1 new checkin" do
-          device.permission_for(developer).update! privilege: 1
-          device.permission_for(developer).update! show_history: false
+          init_priv_start(1)
           get :index, params
           expect(res_hash.size).to be(1)
           expect(res_hash.first['id']).to be(checkin.id)
@@ -200,8 +192,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
       context "with privilege set to complete and can_show_history set to true" do
         it "should return 2 checkins" do
-          device.permission_for(developer).update! privilege: 2
-          device.permission_for(developer).update! show_history: true
+          init_priv_start(2, true)
           get :index, params
           expect(res_hash.size).to be(2)
         end
@@ -209,8 +200,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
       context "with privilege set to complete and can_show_history set to false" do
         it "should return 1 new checkin" do
-          device.permission_for(developer).update! privilege: 2
-          device.permission_for(developer).update! show_history: false
+          init_priv_start(2)
           get :index, params
           expect(res_hash.size).to be(1)
           expect(res_hash.first['id']).to be(checkin.id)
