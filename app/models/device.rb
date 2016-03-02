@@ -16,7 +16,6 @@ class Device < ActiveRecord::Base
     update(user: current_user, name: device_name)
     developers << current_user.developers
     permitted_users << current_user.friends
-    save
   end
 
   def checkins
