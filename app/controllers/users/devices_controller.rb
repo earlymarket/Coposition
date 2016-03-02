@@ -31,7 +31,7 @@ class Users::DevicesController < ApplicationController
     if @device
       if @device.user.nil?
         @device.construct(current_user, allowed_params[:name])
-        @device.checkins.create(checkin_params) unless params[:create_checkin].blank?
+        @device.checkins.create(checkin_params) if params[:create_checkin].present?
         flash[:notice] = "This device has been bound to your account!"
         redirect_using_param_or_default unless via_app
       else
