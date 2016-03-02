@@ -18,9 +18,6 @@ $(document).on('ready page:change', function() {
   // materialize selectbox init
   $('select').material_select();
 
-  // materialize scrollspy init
-  $('.scrollspy').scrollSpy();
-
   // materialize tooltip init
   $('.tooltipped').tooltip({delay: 50});
 

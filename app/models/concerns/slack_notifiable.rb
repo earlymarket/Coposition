@@ -3,7 +3,7 @@ require 'slack-notifier'
 
 module SlackNotifiable
   extend ActiveSupport::Concern
-  
+
   included do
     after_create :ping_slack if Rails.env.production?
   end
