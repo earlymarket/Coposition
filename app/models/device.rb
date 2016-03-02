@@ -47,7 +47,7 @@ class Device < ActiveRecord::Base
   end
 
   def slack_message
-    "A new device has been created"
+    "A new device has been created, id: #{self.id}, name: #{self.name}, user_id: #{self.user_id}. There are now #{Device.count} devices"
   end
 
   def set_delay(mins)
