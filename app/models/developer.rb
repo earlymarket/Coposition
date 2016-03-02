@@ -23,7 +23,8 @@ class Developer < ActiveRecord::Base
   end
 
   def slack_message
-    "A new developer has registered, id: #{Developer.last.id}, there are now #{Developer.count} developers."
+    dev = Developer.last
+    "A new developer has registered, id: #{dev.id}, company_name: #{dev.company_name}, there are now #{Developer.count} developers."
   end
 
 end
