@@ -12,6 +12,12 @@ class Device < ActiveRecord::Base
     dev.uuid = SecureRandom.uuid
   end
 
+  def construct(current_user, device_name)
+    update(user: current_user, name: device_name)
+    developers << current_user.developers
+    permitted_users << current_user.friends
+  end
+
   def checkins
     delayed? ? super.before(delayed.minutes.ago) : super
   end
@@ -35,6 +41,14 @@ class Device < ActiveRecord::Base
 
   def slack_message
     "A new device has been created"
+  end
+
+  def set_delay(mins)
+    if mins.to_i == 0
+      update(delayed: nil)
+    else
+      update(delayed: mins)
+    end
   end
 
 end
