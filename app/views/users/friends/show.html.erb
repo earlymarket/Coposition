@@ -1,6 +1,6 @@
 <h1><%=@friend.email%></h1>
 <% @devices.each do |device| %>
-  <div class="hoverable">
+  <div class="card">
     <%= link_to show_device_user_friend_path(current_user.url_id, @friend, device_id: device.id) do %>
       <h4><%= device.name %></h4>
     <% end %>
