@@ -26,14 +26,13 @@ class Users::DevicesController < ApplicationController
   end
 
   def create
-    if allowed_params[:uuid].present?
-      @device = Device.find_by uuid: allowed_params[:uuid]
-    else
-      @device = Device.create
-    end
+    @device = Device.new
+    @device = Device.find_by uuid: allowed_params[:uuid] if allowed_params[:uuid].present?
     if @device
       if @device.user.nil?
-        create_device
+        @device.construct(current_user, allowed_params[:name])
+        @device.checkins.create(checkin_params) if params[:create_checkin].present?
+        flash[:notice] = "This device has been bound to your account!"
         redirect_using_param_or_default unless via_app
       else
         invalid_payload('This device has already been assigned to a user', new_user_device_path)
@@ -57,7 +56,8 @@ class Users::DevicesController < ApplicationController
   def update
     @device = Device.find(params[:id])
     if params[:mins]
-      set_delay
+      @device.set_delay(params[:mins])
+      flash[:notice] = "#{@device.name} timeshifted by #{@device.delayed.to_i} minutes."
     else
       @device.switch_fog
       flash[:notice] = "#{@device.name} fogging has been changed."
@@ -73,16 +73,8 @@ class Users::DevicesController < ApplicationController
       params.require(:device).permit(:uuid,:name)
     end
 
-    def create_device
-      @device.user = current_user
-      @device.name = allowed_params[:name]
-      @device.developers << current_user.developers
-      @device.permitted_users << current_user.friends
-      @device.save
-      flash[:notice] = "This device has been bound to your account!"
-
-      @device.checkins.create(lat: params[:location].split(",").first,
-          lng: params[:location].split(",").last) unless params[:create_checkin].blank?
+    def checkin_params
+      { lat: params[:location].split(",").first, lng: params[:location].split(",").last }
     end
 
     def redirect_using_param_or_default(default: user_device_path(current_user.url_id, @device.id))
@@ -97,16 +89,6 @@ class Users::DevicesController < ApplicationController
       unless user_owns_device?
         flash[:notice] = "You do not own that device"
         redirect_to root_path
-      end
-    end
-
-    def set_delay
-      if params[:mins] == "0" || params[:mins] == ""
-        @device.update(delayed: nil)
-        flash[:notice] = "#{@device.name} is not timeshifted."
-      else
-        @device.update(delayed: params[:mins])
-        flash[:notice] = "#{@device.name} is now timeshifted by #{@device.delayed} minutes."
       end
     end
 
