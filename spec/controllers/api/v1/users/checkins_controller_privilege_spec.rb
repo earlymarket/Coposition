@@ -11,7 +11,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
   let(:checkin){FactoryGirl::create :checkin, device_id: device.id}
   let(:historic_checkin) do
     ad = user.approval_for(second_user).approval_date
-    historic_checkin = FactoryGirl::create :checkin, device_id: device.id, created_at: ad - 1.day
+    FactoryGirl::create :checkin, device_id: device.id, created_at: ad - 1.day
   end
   let(:params) {{ user_id: user.id, device_id: device.id }}
 
