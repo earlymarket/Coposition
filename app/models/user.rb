@@ -87,7 +87,7 @@ class User < ActiveRecord::Base
   ##############
 
   def slack_message
-    "A new user has registered, there are now #{User.count} users."
+    "A new user has registered, id: #{User.last.id}, there are now #{User.count} users."
   end
 
   def notifications

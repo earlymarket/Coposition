@@ -34,7 +34,7 @@ class Device < ActiveRecord::Base
   end
 
   def slack_message
-    "A new device has been created"
+    "A new device has been created, id: #{Device.last.id}, user_id: #{Device.last.user_id}. There are now #{Device.count} devices"
   end
 
 end

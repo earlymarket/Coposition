@@ -2,9 +2,9 @@ class Developer < ActiveRecord::Base
   include ApprovalMethods
   include SlackNotifiable
 
-  has_attached_file :logo, 
+  has_attached_file :logo,
     styles: { medium: "300x300>", thumb: "60x60>" }, default_url: "missing.png"
-  validates_attachment :logo, 
+  validates_attachment :logo,
     content_type: { content_type: ["image/jpeg", "image/png"] },
     size: { in: 0..1.megabytes }
 
@@ -23,7 +23,7 @@ class Developer < ActiveRecord::Base
   end
 
   def slack_message
-    "A new developer has registered, there are now #{Developer.count} developers."
+    "A new developer has registered, id: #{Developer.last.id}, there are now #{Developer.count} developers."
   end
 
 end
