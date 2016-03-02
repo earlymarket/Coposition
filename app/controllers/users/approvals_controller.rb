@@ -24,10 +24,10 @@ class Users::ApprovalsController < ApplicationController
     end
   end
 
-  def applications
-    @applications = current_user.developers
+  def apps
+    @apps = current_user.developers
     # Redirect if foreign app failed to create a pending approval.
-    if @applications.length == 0 && current_user.pending_approvals.length == 0 && params[:redirect]
+    if @apps.length == 0 && current_user.pending_approvals.length == 0 && params[:redirect]
       developer = Developer.find_by(api_key: params[:api_key])
       Approval.link(current_user, developer, 'Developer')
     elsif current_user.pending_approvals.length == 0 && params[:redirect]
@@ -43,7 +43,7 @@ class Users::ApprovalsController < ApplicationController
     @approval = Approval.where(id: params[:id],
       user: current_user).first
     Approval.accept(current_user, @approval.approvable, @approval.approvable_type)
-    @applications = current_user.developers
+    @apps = current_user.developers
     @friends = current_user.friends
     respond_to do |format|
       format.html { redirect_to user_approvals_path }
@@ -59,7 +59,7 @@ class Users::ApprovalsController < ApplicationController
       Approval.where(user: @approval.approvable, approvable: @approval.user, approvable_type: 'User').first.destroy
     end
     @approval.destroy
-    @applications = current_user.developers
+    @apps = current_user.developers
     @friends = current_user.friends
     respond_to do |format|
       format.html { redirect_to user_approvals_path }

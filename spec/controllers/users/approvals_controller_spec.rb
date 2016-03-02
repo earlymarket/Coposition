@@ -90,11 +90,11 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     end
   end
 
-  describe 'GET #applications' do
-    it 'should assign current users applications' do
+  describe 'GET #apps' do
+    it 'should assign current users apps' do
       approval.update(status: 'accepted', approvable_id: developer.id, approvable_type: 'Developer')
-      get :applications, user_params
-      expect(assigns :applications).to eq user.developers
+      get :apps, user_params
+      expect(assigns :apps).to eq user.developers
     end
   end
 

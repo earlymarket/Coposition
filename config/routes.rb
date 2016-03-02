@@ -78,7 +78,7 @@ Rails.application.routes.draw do
         post 'reject'
       end
     end
-    get '/applications', to: 'approvals#applications'
+    get '/apps', to: 'approvals#apps'
     get '/friends', to: 'approvals#friends'
   end
 
