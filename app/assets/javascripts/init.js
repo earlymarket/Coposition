@@ -18,9 +18,6 @@ $(document).on('ready page:change', function() {
   // materialize selectbox init
   $('select').material_select();
 
-  // materialize scrollspy init
-  $('.scrollspy').scrollSpy();
-
   // materialize scrollfire
   var options = [
     // Landing-page fade in image
@@ -38,7 +35,7 @@ $(document).on('ready page:change', function() {
     $(this).velocity({
       opacity: 0,
       marginTop: '-40px'
-    }, { 
+    }, {
       duration: 375,
       easing: 'easeOutExpo',
       queue: false,
@@ -77,7 +74,7 @@ function addWindowResizeListeners(){
 }
 
 function responsiveVideo(){
-  var ratio = 1920/1080; 
+  var ratio = 1920/1080;
   var $h = $("#promo").height();
   var $w = $("#promo").width();
   var rRatio = $w/$h;
