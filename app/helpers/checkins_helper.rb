@@ -13,7 +13,7 @@ module CheckinsHelper
   end
 
   def checkins_static_map_url_for_friend(checkin)
-    checkin = Checkin.find(checkin.id).get_data
+    checkin.get_data
     map_url = "http://maps.googleapis.com/maps/api/staticmap?size=500x250&markers=|'+'#{checkin.lat},#{checkin.lng}'+'|"
     map_url.html_safe
   end
