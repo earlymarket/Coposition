@@ -1,1 +1,5 @@
-approvals_helper_spec.rb
+require "rails_helper"
+
+RSpec.describe ApprovalsHelper, :type => :helper do
+
+end
