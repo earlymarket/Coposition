@@ -40,8 +40,8 @@ Enter the email address of a registered user or developer so that you can ask fo
     };
   };
 
-  var devs = <%= raw @developers %>;
-  var users = <%= raw @users %>
+  var devs = <%= raw @developers.to_json %>;
+  var users = <%= raw @users.to_json %>;
 
   $('.email .devs_typeahead').typeahead({
     hint: true,
