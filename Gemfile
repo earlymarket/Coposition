@@ -46,6 +46,8 @@ gem 'jquery-validation-rails'
 
 gem 'inline_svg'
 
+gem 'twitter-typeahead-rails'
+
 # Use Unicorn as the app server
 
 group :production do

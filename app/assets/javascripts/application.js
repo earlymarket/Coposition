@@ -19,4 +19,5 @@
 //= require materialize
 //= require markerclusterer
 //= require checkin-map
+//= require twitter/typeahead
 //= require_tree .

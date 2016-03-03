@@ -2,9 +2,9 @@ Enter the email address of a registered user or developer so that you can ask fo
 
 <%= form_for @approval, url: user_approvals_path do |f| %>
   <div class="row">
-    <div class="input-field col s12">
+    <div class="input-field col s12 email">
       <%= f.label :approvable, 'Email', class: "active" %>
-      <%= f.email_field :approvable, placeholder: "email@email.com", class: "validate" %>
+      <%= f.email_field :approvable, placeholder: "email@email.com", class: "validate devs_typeahead" %>
     </div>
   </div>
   <div class="row">
@@ -16,3 +16,50 @@ Enter the email address of a registered user or developer so that you can ask fo
 
   <%= f.button "Request", class: "waves-effect waves-light btn", type: "submit" %>
 <% end %>
+
+<script>
+  var substringMatcher = function(strs) {
+    return function findMatches(q, cb) {
+      var matches, substringRegex;
+
+      // an array that will be populated with substring matches
+      matches = [];
+
+      // regex used to determine if a string contains the substring `q`
+      substrRegex = new RegExp(q, 'i');
+
+      // iterate through the pool of strings and for any string that
+      // contains the substring `q`, add it to the `matches` array
+      $.each(strs, function(i, str) {
+        if (substrRegex.test(str)) {
+          matches.push(str);
+        }
+      });
+
+      cb(matches);
+    };
+  };
+
+  var devs = <%= raw @developers %>;
+  var users = <%= raw @users %>
+
+  $('.email .devs_typeahead').typeahead({
+    hint: true,
+    highlight: true,
+    minLength: 1
+  },
+  {
+    name: 'devs',
+    source: substringMatcher(devs)
+  });
+
+  $('.email .users_typeahead').typeahead({
+    hint: true,
+    highlight: true,
+    minLength: 1
+  },
+  {
+    name: 'users',
+    source: substringMatcher(users)
+  });
+</script>
