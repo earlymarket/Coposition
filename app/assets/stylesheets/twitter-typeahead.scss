@@ -2,19 +2,6 @@
   .tt-input,
   .tt-hint {
     width: 396px;
-    font-size: 16px;
-    padding: 8px 12px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    outline: none;
-  }
-
-  .tt-input {
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  }
-
-  .tt-hint {
-      color: #999;
   }
 
   .tt-menu {
@@ -32,15 +19,5 @@
       padding: 3px 20px;
       font-size: 18px;
       line-height: 24px;
-  }
-
-  .tt-suggestion.tt-cursor {
-      color: #fff;
-      background-color: #0097cf;
-
-  }
-
-  .tt-suggestion p {
-      margin: 0;
   }
 }
