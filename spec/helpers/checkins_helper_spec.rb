@@ -28,13 +28,13 @@ RSpec.describe CheckinsHelper, :type => :helper do
 
   describe "#checkins_static_map_url" do
     it "should return a map url string" do
-      expect(checkins_static_map_url(checkin)).to match('http://')
+      expect(checkins_static_map_url(checkin)).to match('https://')
       expect(checkins_static_map_url(checkin)).to match(checkin.lat.to_s)
       expect(checkins_static_map_url(checkin)).to match(checkin.lng.to_s)
     end
 
     it "should also add a marker when checkin is fogged" do
-      expect(checkins_static_map_url(checkin)).to match('http://')
+      expect(checkins_static_map_url(checkin)).to match('https://')
       expect(checkins_static_map_url(checkin)).to match(checkin.lat.to_s)
       expect(checkins_static_map_url(checkin)).to match(checkin.lng.to_s)
 
