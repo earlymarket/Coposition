@@ -55,7 +55,7 @@ RSpec.describe CheckinsHelper, :type => :helper do
       expect(helper.checkins_visible_time(checkin)).to eq(nil)
     end
 
-    it "should return html with a date if device is delayed" do
+    it "should return html if device is delayed" do
       device.update(delayed: 10)
       expect(helper.checkins_visible_time(checkin).class).to eq(ActiveSupport::SafeBuffer)
       expect(helper.checkins_visible_time(checkin)).to match('Visible from:')
