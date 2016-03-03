@@ -9,12 +9,12 @@
         <ul>
           <li>Checkin ID: <%= @checkin.id %></li>
           <li>Created on: <%= checkins_humanize_date(@checkin.created_at) %></li>
+          <%= checkins_visible_time(@checkin) %>
           <li>Latitude: <%=  @checkin.lat %></li>
           <li>Longitude <%= @checkin.lng %></li>
           <li>Address: <%= @checkin.address %></li>
           <li>Fogging status: <%= fogged_icon(@checkin.fogged) %></li>
           <%= checkins_fogged_address(@checkin) %>
-          <%= checkins_visible_time(@checkin) %>
         </ul>
       </div>
     </div>
