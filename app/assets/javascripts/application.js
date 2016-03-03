@@ -15,8 +15,24 @@
 //= require jquery.validate
 //= require jquery.validate.additional-methods
 //= require turbolinks
-//= require utility
+
+
+// -- Libs from gems --
+
 //= require materialize
+
+// -- Vendor libs --
+
+//= require animateCSS.min.js
 //= require markerclusterer
+
+// -- Run every page
+
+//= require init
+//= require utility
+//= require navbar
+
+// -- Page specific --
+
 //= require checkin-map
-//= require_tree .
+//= require landing-page
