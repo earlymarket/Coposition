@@ -78,6 +78,12 @@ Rails.application.routes.draw do
         post 'reject'
       end
     end
+    resources :friends, only: [:show] do
+      member do
+        get 'show_device'
+        get 'show_checkin'
+      end
+    end
     get '/apps', to: 'approvals#apps'
     get '/friends', to: 'approvals#friends'
   end
