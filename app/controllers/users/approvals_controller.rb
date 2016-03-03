@@ -9,19 +9,22 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def create
-    invite if params[:invite]
-    type = allowed_params[:approvable_type]
-    model = model_find(type)
-    approvable = model.find_by(email: allowed_params[:approvable])
-    if approvable
-      flash[:notice] = "Approval already exists"
-      flash[:notice] = "Request sent" if Approval.link(current_user, approvable, type)
-      if (type == 'Developer') || (current_user.friend_requests.include?(approvable))
-        flash[:notice] = "#{type} added!" if Approval.accept(current_user, approvable, type)
-      end
-      redirect_to user_dashboard_path
+    if params[:invite]
+      invite
     else
-      invalid_payload("User/Developer not found", new_user_approval_path)
+      type = allowed_params[:approvable_type]
+      model = model_find(type)
+      approvable = model.find_by(email: allowed_params[:approvable])
+      if approvable
+        flash[:notice] = "Approval already exists"
+        flash[:notice] = "Request sent" if Approval.link(current_user, approvable, type)
+        if (type == 'Developer') || (current_user.friend_requests.include?(approvable))
+          flash[:notice] = "#{type} added!" if Approval.accept(current_user, approvable, type)
+        end
+        redirect_to user_dashboard_path
+      else
+        invalid_payload("User/Developer not found", new_user_approval_path)
+      end
     end
   end
 
@@ -82,9 +85,14 @@ class Users::ApprovalsController < ApplicationController
     end
 
     def invite
-      UserMailer.invite_email(allowed_params[:approvable]).deliver_now
-      flash[:notice] = "Invite sent!"
-      redirect_to user_dashboard_path
+      if allowed_params[:approvable].present?
+        UserMailer.invite_email(allowed_params[:approvable]).deliver_now
+        flash[:notice] = "Invite sent!"
+        redirect_to user_dashboard_path
+      else
+        flash[:notice] = "You need to enter an email"
+        redirect_to new_user_approval_path
+      end
     end
 
 end

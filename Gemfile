@@ -75,6 +75,7 @@ group :development, :test do
   gem 'spring'
   gem 'bullet'
   gem 'meta_request'
+  gem 'letter_opener'
 end
 
 group :test do
