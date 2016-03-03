@@ -9,6 +9,7 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def create
+    invite if params[:invite]
     type = allowed_params[:approvable_type]
     model = model_find(type)
     approvable = model.find_by(email: allowed_params[:approvable])
@@ -78,6 +79,12 @@ class Users::ApprovalsController < ApplicationController
 
     def allowed_params
       params.require(:approval).permit(:approvable, :approvable_type)
+    end
+
+    def invite
+      UserMailer.invite_email(allowed_params[:approvable]).deliver_now
+      flash[:notice] = "Invite sent!"
+      redirect_to user_dashboard_path
     end
 
 end
