@@ -3,7 +3,7 @@ module ApprovalsHelper
   def approvals_typeahead(type)
     if type == 'Developer'
       "validate devs_typeahead"
-    else
+    elsif type == 'User'
       "validate users_typeahead"
     end
   end
