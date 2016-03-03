@@ -15,8 +15,11 @@
 //= require jquery.validate
 //= require jquery.validate.additional-methods
 //= require turbolinks
+
+//= require init
 //= require utility
 //= require materialize
 //= require markerclusterer
 //= require checkin-map
-//= require_tree .
+//= require navbar
+//= require landing-page
