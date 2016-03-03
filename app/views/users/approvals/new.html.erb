@@ -3,8 +3,7 @@ Enter the email address of a registered user or developer so that you can ask fo
 <br>
 <%= form_for @approval, url: user_approvals_path do |f| %>
   <div class="row">
-    <div class="input-field email">
-    <br>
+    <div class="col s12 input-field email">
       <%= f.email_field :approvable, placeholder: "email@email.com", class: approvals_typeahead(@approval.approvable_type) %>
     </div>
   </div>
