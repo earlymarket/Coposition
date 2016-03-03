@@ -16,4 +16,8 @@ module CheckinsHelper
     map_url.html_safe
   end
 
+  def checkins_visible_time(checkin)
+    checkins_humanize_date(checkin.device.delayed.minutes.from_now(checkin.created_at))
+  end
+
 end
