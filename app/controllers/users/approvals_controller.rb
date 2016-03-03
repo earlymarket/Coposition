@@ -20,7 +20,7 @@ class Users::ApprovalsController < ApplicationController
       end
       redirect_to user_dashboard_path
     else
-      invalid_payload("User/Developer not found", new_user_approval_path)
+      invalid_payload("User/Developer not found", new_user_approval_path(approvable_type: type))
     end
   end
 
