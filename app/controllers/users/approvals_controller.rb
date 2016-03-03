@@ -9,19 +9,19 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def create
-    if params[:invite]
-      invite
+    type = allowed_params[:approvable_type]
+    model = model_find(type)
+    approvable = model.find_by(email: allowed_params[:approvable])
+    if approvable
+      flash[:notice] = "Approval already exists"
+      flash[:notice] = "Request sent" if Approval.link(current_user, approvable, type)
+      if (type == 'Developer') || (current_user.friend_requests.include?(approvable))
+        flash[:notice] = "#{type} added!" if Approval.accept(current_user, approvable, type)
+      end
+      redirect_to user_dashboard_path
     else
-      type = allowed_params[:approvable_type]
-      model = model_find(type)
-      approvable = model.find_by(email: allowed_params[:approvable])
-      if approvable
-        flash[:notice] = "Approval already exists"
-        flash[:notice] = "Request sent" if Approval.link(current_user, approvable, type)
-        if (type == 'Developer') || (current_user.friend_requests.include?(approvable))
-          flash[:notice] = "#{type} added!" if Approval.accept(current_user, approvable, type)
-        end
-        redirect_to user_dashboard_path
+      if params[:invite]
+        invite
       else
         invalid_payload("User/Developer not found", new_user_approval_path)
       end
