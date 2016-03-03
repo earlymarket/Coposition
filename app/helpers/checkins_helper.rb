@@ -17,7 +17,8 @@ module CheckinsHelper
   end
 
   def checkins_visible_time(checkin)
-    checkins_humanize_date(checkin.device.delayed.minutes.from_now(checkin.created_at))
+    "<li>This checkin will be visible to your data consumers from
+    #{checkins_humanize_date(checkin.device.delayed.minutes.from_now(checkin.created_at))}<li>".html_safe if checkin.device.delayed?
   end
 
 end
