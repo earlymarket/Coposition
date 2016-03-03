@@ -1,0 +1,20 @@
+<h1><%= @device.name %></h1>
+
+<div id="map" class="checkin-map center valign-wrapper"></div>
+
+<table id="checkin-table" class="highlight">
+  <thead>
+    <tr>
+      <th>Created</th>
+      <th>Area</th>
+      <th>More Info</th>
+    </tr>
+  </thead>
+  <%= render partial: "checkin_table_row", collection: @checkins, as: :checkin %>
+</table>
+<%= will_paginate @paginated_checkins %>
+
+<script type="text/javascript">
+  var checkins = <%= raw @checkins.to_json %>
+  renderMap();
+</script>

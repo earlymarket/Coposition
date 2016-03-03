@@ -3,17 +3,14 @@
     <div class="card">
       <div class="card-image">
         <img id="mapholder" src="" width="500" height="250">
-        <!-- <span class="card-title">Card Title</span> -->
       </div>
       <div class="card-content">
         <ul>
           <li>Checkin ID: <%= @checkin.id %></li>
           <li>Created on: <%= humanize_date(@checkin.created_at) %></li>
-          <li>Latitude: <%=  @checkin.lat %></li>
-          <li>Longitude <%= @checkin.lng %></li>
-          <li>Address: <%= @checkin.address %></li>
-          <li>Fogging status: <%= fogged_icon(@checkin.fogged) %></li>
-          <%= checkins_fogged_address(@checkin) %>
+          <li>Latitude: <%=  @fogged[:lat] %></li>
+          <li>Longitude <%= @fogged[:lng] %></li>
+          <li>Address: <%= @fogged[:address] %></li>
         </ul>
       </div>
     </div>
@@ -21,6 +18,6 @@
 </div>
 
 <script>
-  var img_url = '<%= checkins_static_map_url(@checkin) %>';
+  var img_url = '<%= checkins_static_map_url_for_friend(@checkin) %>';
   $('#mapholder').attr("src", img_url);
 </script>
