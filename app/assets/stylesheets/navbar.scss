@@ -50,6 +50,17 @@
     #brand-logo{
       width: 184px;
       height: 42px;
+
+      @media screen and (max-width: 600px){
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    @media screen and (max-width: 600px){
+      position: absolute;
+      width: 100%;
+      margin: 0;
     }
   }
 
@@ -63,6 +74,10 @@
 
 
 // Mobile navigation
+.button-collapse{
+  margin-left: 2.5%;
+}
+
 .side-nav{
   .collapsible-header{
     padding: 0px;
