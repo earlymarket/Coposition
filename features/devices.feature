@@ -31,7 +31,7 @@ Feature: Devices
         Then I should see a link that says "cloud_done"
       When I click "Dashboard"
       And I click the link "Devices"
-      And I click the link "Privacy"
+      And I click the link "device settings"
         Then I should see a link that says "cloud_done"
 
     Scenario: User enables timeshift on a device

@@ -11,7 +11,7 @@
     <%= link_to(fogged_icon(device.fogged), user_device_path(current_user.url_id, device.id), { method: :put, id:"fogButton#{device.id}", remote: true, data: { fogged: device.fogged? }  })%>
     <%= link_to(devices_delay_icon(device.delayed), user_device_path(current_user.url_id, device.id, mins: device.delayed.to_i), { method: :put, id:"delayButton#{device.id}", remote: true })%>
     <%= link_to(edit_user_device_path(current_user, device)) do %>
-      <i class='material-icons'>settings</i>
+      <i class='material-icons'>settings</i><p hidden>device settings</p>
     <% end %>
   </div>
 </div>
