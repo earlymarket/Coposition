@@ -97,7 +97,7 @@ class User < ActiveRecord::Base
         @notes << {
           notification: {
               msg: "You have #{pending_approvals.count} pending approvals",
-              link_path: "user_applications_path"
+              link_path: "user_apps_path"
             }
           }
       end

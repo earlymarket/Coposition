@@ -13,7 +13,7 @@
     <% if user_signed_in? %>
       <ul id="dropdown-dashboard" class="dropdown-content">
         <li><a href="<%= user_devices_path(current_user.url_id) %>" role="button">Devices</a></li>
-        <li><a href="<%= user_applications_path(current_user.url_id) %>" role="button">Applications</a></li>
+        <li><a href="<%= user_apps_path(current_user.url_id) %>" role="button">Apps</a></li>
         <li><a href="<%= user_friends_path(current_user.url_id) %>" role="button">Friends</a></li>
       </ul>
 
