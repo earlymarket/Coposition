@@ -13,12 +13,14 @@ class Users::ApprovalsController < ApplicationController
     model = model_find(type)
     approvable = model.find_by(email: allowed_params[:approvable])
     if approvable
-      flash[:notice] = "Approval already exists"
-      flash[:notice] = "Request sent" if Approval.link(current_user, approvable, type)
-      if (type == 'Developer') || (current_user.friend_requests.include?(approvable))
-        flash[:notice] = "#{type} added!" if Approval.accept(current_user, approvable, type)
+      approval = Approval.construct(current_user, approvable, type)
+      if approval.id
+        flash[:notice] = "Approval created"
+        redirect_to user_dashboard_path
+      else
+        flash[:alert] = "Error: #{approval.errors.get(:base).first}"
+        redirect_to new_user_approval_path(approvable_type: type)
       end
-      redirect_to user_dashboard_path
     else
       invalid_payload("User/Developer not found", new_user_approval_path)
     end
