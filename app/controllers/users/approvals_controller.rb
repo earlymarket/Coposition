@@ -10,16 +10,14 @@ class Users::ApprovalsController < ApplicationController
 
   def create
     type = allowed_params[:approvable_type]
-    model = model_find(type)
-    approvable = model.find_by(email: allowed_params[:approvable])
+    approvable = model_find(type).find_by(email: allowed_params[:approvable])
     if approvable
       approval = Approval.construct(current_user, approvable, type)
-      if approval.id
+      if approval.save
         flash[:notice] = "Approval created"
         redirect_to user_dashboard_path
       else
-        flash[:alert] = "Error: #{approval.errors.get(:base).first}"
-        redirect_to new_user_approval_path(approvable_type: type)
+        invalid_payload("Error: #{approval.errors.get(:base).first}", new_user_approval_path(approvable_type: type))
       end
     else
       invalid_payload("User/Developer not found", new_user_approval_path(approvable_type: type))
