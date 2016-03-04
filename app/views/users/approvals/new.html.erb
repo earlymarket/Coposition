@@ -3,11 +3,57 @@ Enter the email address of the <%= @approval.approvable_type %> you would like t
 <br>
 <%= form_for @approval, url: user_approvals_path do |f| %>
   <div class="row">
-    <div class="input-field col s12">
-      <%= f.label :approvable, 'Email', class: "active" %>
-      <%= f.email_field :approvable, placeholder: "email@email.com", class: "validate" %>
+    <div class="col s12 input-field email">
+      <%= f.email_field :approvable, placeholder: "email@email.com", class: approvals_typeahead(@approval.approvable_type) %>
     </div>
   </div>
   <%= f.hidden_field :approvable_type, value: @approval.approvable_type %>
   <%= f.button "Request", class: "waves-effect waves-light btn", type: "submit" %>
 <% end %>
+
+<script>
+  var substringMatcher = function(strs) {
+    return function findMatches(q, cb) {
+      var matches, substringRegex;
+
+      // an array that will be populated with substring matches
+      matches = [];
+
+      // regex used to determine if a string contains the substring `q`
+      substrRegex = new RegExp(q, 'i');
+
+      // iterate through the pool of strings and for any string that
+      // contains the substring `q`, add it to the `matches` array
+      $.each(strs, function(i, str) {
+        if (substrRegex.test(str)) {
+          matches.push(str);
+        }
+      });
+
+      cb(matches);
+    };
+  };
+
+  var devs = <%= raw @developers.to_json %>;
+  var users = <%= raw @users.to_json %>;
+
+  $('.email .devs_typeahead').typeahead({
+    hint: true,
+    highlight: true,
+    minLength: 1
+  },
+  {
+    name: 'devs',
+    source: substringMatcher(devs)
+  });
+
+  $('.email .users_typeahead').typeahead({
+    hint: true,
+    highlight: true,
+    minLength: 1
+  },
+  {
+    name: 'users',
+    source: substringMatcher(users)
+  });
+</script>
