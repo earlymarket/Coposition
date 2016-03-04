@@ -1,7 +1,12 @@
 require "rails_helper"
 
 RSpec.describe CheckinsHelper, :type => :helper do
-  let(:checkin) { FactoryGirl::create(:checkin) }
+  let(:device) { FactoryGirl::create(:device) }
+  let(:checkin) do
+    checkin = FactoryGirl::create(:checkin)
+    checkin.device = device
+    checkin
+  end
   let(:fogged) { FactoryGirl::create(:checkin, fogged: true) }
 
   describe "#checkins_fogged_address" do
@@ -33,6 +38,18 @@ RSpec.describe CheckinsHelper, :type => :helper do
       expect(checkins_static_map_url(fogged)).to match(fogged.lng.to_s)
     end
 
+  end
+
+  describe '#checkins_visible_time' do
+    it "should return nothing if device is not delayed" do
+      expect(helper.checkins_visible_time(checkin)).to eq(nil)
+    end
+
+    it "should return html if device is delayed" do
+      device.update(delayed: 10)
+      expect(helper.checkins_visible_time(checkin).class).to eq(ActiveSupport::SafeBuffer)
+      expect(helper.checkins_visible_time(checkin)).to match('Visible from:')
+    end
   end
 
 end

@@ -18,4 +18,9 @@ module CheckinsHelper
     map_url.html_safe
   end
 
+  def checkins_visible_time(checkin)
+    "<li>Visible from:
+    #{humanize_date(checkin.device.delayed.minutes.from_now(checkin.created_at))}<li>".html_safe if checkin.device.delayed?
+  end
+
 end

@@ -84,7 +84,7 @@ Rails.application.routes.draw do
         get 'show_checkin'
       end
     end
-    get '/applications', to: 'approvals#applications'
+    get '/apps', to: 'approvals#apps'
     get '/friends', to: 'approvals#friends'
   end
 
