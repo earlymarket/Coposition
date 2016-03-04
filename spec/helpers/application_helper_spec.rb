@@ -7,6 +7,17 @@ RSpec.describe ApplicationHelper, :type => :helper do
   let(:developer) { FactoryGirl::create(:developer) }
   let(:checkin) { FactoryGirl::create(:checkin) }
 
+
+  describe "#humanize_date" do
+    it "should accept a date" do
+      expect { helper.humanize_date(Faker::Date.forward(30)) }.not_to raise_error
+    end
+
+    it "should return a string" do
+      expect( helper.humanize_date(Faker::Date.forward(30)).class ).to eq(String)
+    end
+  end
+
   describe "#area_name" do
     it "returns a message if there are no near cities" do
       expect(helper.area_name(checkin)).to match("No nearby cities")

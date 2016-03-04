@@ -1,6 +1,6 @@
 $(document).on('ready page:change', function() {
   // Target only the landing page (assuming at root of "/")
-  if (window.location.pathname == "/") {
+  if ($(".c-welcome.a-index").length > 0) {
     $("main").css('padding-top', '0');
 
     // Click event for the main button on landing page
