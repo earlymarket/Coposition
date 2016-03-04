@@ -1,6 +1,10 @@
 <h1>Dashboard</h1>
-You have <%= pluralize(current_user.devices.count, 'device') %>, <%= pluralize(current_user.developers.count, 'approved application') %> and <%= pluralize(current_user.friends.count, 'friend') %>
+<!--<p class="center">
+  You have <%= pluralize(current_user.devices.count, 'device') %>, <%= pluralize(current_user.developers.count, 'approved application') %> and <%= pluralize(current_user.friends.count, 'friend') %>
+<p>-->
 <hr>
-<%= link_to("Devices", user_devices_path, class: "btn") %>
-<%= link_to("Applications", user_applications_path, class: "btn") %>
-<%= link_to("Friends", user_friends_path, class: "btn") %>
+<div class='center'>
+  <%= link_to("Devices", user_devices_path, class: "btn") %>
+  <%= link_to("Applications", user_applications_path, class: "btn") %>
+  <%= link_to("Friends", user_friends_path, class: "btn") %>
+</div>
