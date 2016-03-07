@@ -7,7 +7,7 @@ class Users::ApprovalsController < ApplicationController
     @approval = Approval.new
     @approval.approvable_type = params[:approvable_type]
     @developers = Developer.all.pluck(:company_name)
-    @users = User.all.pluck(:email)
+    @users = User.all.pluck(:username)
   end
 
   def create
@@ -85,7 +85,7 @@ class Users::ApprovalsController < ApplicationController
       if type == 'Developer'
         Developer.find_by(company_name: allowed_params[:approvable])
       elsif type == 'User'
-        User.find_by(email: allowed_params[:approvable])
+        User.find(allowed_params[:approvable])
       end
     end
 

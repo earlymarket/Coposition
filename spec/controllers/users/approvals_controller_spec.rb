@@ -27,7 +27,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
    user_params.merge(approval: { approvable: developer.company_name, approvable_type: "Developer" })
   end
   let(:friend_approval_create_params) do
-   user_params.merge(approval: { approvable: friend.email, approvable_type: "User" })
+   user_params.merge(approval: { approvable: friend.username, approvable_type: "User" })
   end
   let(:approve_reject_params) {user_params.merge(id: approval.id) }
 
@@ -84,16 +84,16 @@ RSpec.describe Users::ApprovalsController, type: :controller do
       end
     end
 
-    context "when an incorrect email is provided" do
+    context "when an incorrect name is provided" do
       it "should not create or approve an approval if user/dev doesnt exist" do
-        dev_approval_create_params[:approval].merge!(approvable: "does@not.exist")
+        dev_approval_create_params[:approval].merge!(approvable: "does not exist")
         post :create, dev_approval_create_params
         expect(Approval.count).to eq 0
         expect(flash[:alert]).to match "not found"
       end
 
       it "should not create or approve an approval if trying to add self" do
-        friend_approval_create_params[:approval].merge!(approvable: user.email)
+        friend_approval_create_params[:approval].merge!(approvable: user.username)
         post :create, friend_approval_create_params
         expect(flash[:alert]).to match "Adding self"
         expect(Approval.count).to eq 0
