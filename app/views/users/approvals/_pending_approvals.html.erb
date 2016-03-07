@@ -2,12 +2,13 @@
   <h5>Requests</h5>
   <div class='collection'>
     <% current_user.pending_approvals.each do |app| %>
+      <% dev = Developer.find(app.approvable_id) %>
       <div id='<%= "app_#{app.id}" %>' class='collection-item avatar row valign-wrapper'>
         <div class='col s8 valign'>
-          <%= image_tag(Developer.find(app.approvable_id).logo.url(:thumb), alt: "", class: "circle icon") %>
-          <h5><%= Developer.find(app.approvable_id).company_name %></h5>
-          <% if Developer.find(app.approvable_id).tagline %>
-            <p><%= Developer.find(app.approvable_id).tagline %></p>
+          <%= image_tag(dev.logo.url(:thumb), alt: "", class: "circle icon") %>
+          <h5><%= dev.company_name %></h5>
+          <% if dev.tagline %>
+            <p><%= dev.tagline %></p>
           <% end %>
         </div>
         <div class='col s4 valign right-align'>

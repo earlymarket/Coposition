@@ -11,7 +11,7 @@
     </a>
     </div>
     <div class="col s4 valign right-align">
-    <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, Approval.where(user: current_user, approvable: friend, approvable_type: "User").first.id), remote: true, class: "btn-flat", data: { confirm: "Are you sure? This user will no longer have access to any of your data." } %>
+    <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, current_user.approval_for(friend)), remote: true, class: "btn-flat", data: { confirm: "Are you sure? This user will no longer have access to any of your data." } %>
     </div>
   </div>
 <% end %>
