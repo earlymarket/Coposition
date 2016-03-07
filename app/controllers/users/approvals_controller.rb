@@ -6,21 +6,20 @@ class Users::ApprovalsController < ApplicationController
   def new
     @approval = Approval.new
     @approval.approvable_type = params[:approvable_type]
-    @developers = Developer.all.pluck(:email)
-    @users = User.all.pluck(:email)
+    @developers = Developer.all.pluck(:company_name)
+    @users = User.all.pluck(:username)
   end
 
   def create
     type = allowed_params[:approvable_type]
-    model = model_find(type)
-    approvable = model.find_by(email: allowed_params[:approvable])
-    if approvable
-      flash[:notice] = "Approval already exists"
-      flash[:notice] = "Request sent" if Approval.link(current_user, approvable, type)
-      if (type == 'Developer') || (current_user.friend_requests.include?(approvable))
-        flash[:notice] = "#{type} added!" if Approval.accept(current_user, approvable, type)
+    if approvable(type)
+      approval = Approval.construct(current_user, approvable(type), type)
+      if approval.save
+        flash[:notice] = "Approval created"
+        redirect_to user_dashboard_path
+      else
+        invalid_payload("Error: #{approval.errors.get(:base).first}", new_user_approval_path(approvable_type: type))
       end
-      redirect_to user_dashboard_path
     else
       invalid_payload("User/Developer not found", new_user_approval_path(approvable_type: type))
     end
@@ -80,6 +79,14 @@ class Users::ApprovalsController < ApplicationController
 
     def allowed_params
       params.require(:approval).permit(:approvable, :approvable_type)
+    end
+
+    def approvable(type)
+      if type == 'Developer'
+        Developer.find_by(company_name: allowed_params[:approvable])
+      elsif type == 'User'
+        User.find(allowed_params[:approvable])
+      end
     end
 
 end

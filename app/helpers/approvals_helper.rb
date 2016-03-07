@@ -1,10 +1,10 @@
 module ApprovalsHelper
 
-  def approvals_typeahead(type)
-    if type == 'Developer'
-      "validate devs_typeahead"
-    elsif type == 'User'
-      "validate users_typeahead"
+  def approvals_input(type)
+    if type == "Developer"
+      { placeholder: "App name", class: "validate devs_typeahead" }
+    elsif type == "User"
+      { placeholder: "Username", class: "validate users_typeahead" }
     end
   end
 end
