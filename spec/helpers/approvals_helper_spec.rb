@@ -7,9 +7,9 @@ RSpec.describe ApprovalsHelper, :type => :helper do
       expect(helper.approvals_input('User')[:placeholder]).to match 'email'
     end
 
-    it "should set a class key a string" do
-      expect(helper.approvals_input('Developer')[:class]).to match 'devs'
+    it "should assign class key" do
       expect(helper.approvals_input('User')[:class]).to match 'users'
+      expect(helper.approvals_input('Developer')[:class]).to match 'devs'
     end
   end
 end
