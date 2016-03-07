@@ -1,10 +1,10 @@
 <br>
-Enter the email address of the <%= @approval.approvable_type %> you would like to add.
+Enter the <%= @approval.approvable_type %> you would like to add.
 <br>
 <%= form_for @approval, url: user_approvals_path do |f| %>
   <div class="row">
     <div class="col s12 input-field email">
-      <%= f.email_field :approvable, placeholder: "email@email.com", class: approvals_typeahead(@approval.approvable_type) %>
+      <%= f.email_field :approvable, approvals_input(@approval.approvable_type) %>
     </div>
   </div>
   <%= f.hidden_field :approvable_type, value: @approval.approvable_type %>

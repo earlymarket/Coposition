@@ -1,10 +1,15 @@
 require "rails_helper"
 
 RSpec.describe ApprovalsHelper, :type => :helper do
-  describe "#approvals_typeahead" do
-    it "should return a string" do
-      expect(helper.approvals_typeahead('Developer')).to match 'devs'
-      expect(helper.approvals_typeahead('User')).to match 'users'
+  describe "#approvals_input" do
+    it "should assign placeholder key a string" do
+      expect(helper.approvals_input('Developer')[:placeholder]).to match 'name'
+      expect(helper.approvals_input('User')[:placeholder]).to match 'email'
+    end
+
+    it "should set a class key a string" do
+      expect(helper.approvals_input('Developer')[:class]).to match 'devs'
+      expect(helper.approvals_input('User')[:class]).to match 'users'
     end
   end
 end

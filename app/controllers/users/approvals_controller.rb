@@ -6,7 +6,7 @@ class Users::ApprovalsController < ApplicationController
   def new
     @approval = Approval.new
     @approval.approvable_type = params[:approvable_type]
-    @developers = Developer.all.pluck(:email)
+    @developers = Developer.all.pluck(:company_name)
     @users = User.all.pluck(:email)
   end
 
