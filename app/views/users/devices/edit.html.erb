@@ -1,5 +1,5 @@
 <h1><%= @device.name %> settings<h1>
-<h3>Privacy settings</h3>
+<h3>Privacy</h3>
 <div>
   <%= link_to(fogged_icon(@device.fogged), user_device_path(current_user.url_id, @device.id), { method: :put, class: "btn", id:"fogButton#{@device.id}", remote: true, data: { fogged: @device.fogged? }  })%>
   <span style="margin-left: 1em;">
@@ -13,7 +13,7 @@
 
 </div>
 
-<h3>Permission settings</h3>
+<h3>Permissions</h3>
 <ul class="permissions collection" data-device=<%=@device.id%>>
   <% @device.developers.each do |developer| %>
     <% permission =  @device.permissions.where(permissible: developer, permissible_type: "Developer").first %>
