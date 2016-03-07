@@ -1,8 +1,8 @@
 <div id="pendingApprovals">
   <h5>Requests</h5>
   <div class='collection'>
-    <% pending.each do |app| %>
-      <% dev = Developer.find(app.approvable_id) %>
+    <% pending.each do |dev| %>
+      <% app = dev.approvals.find_by(user_id: current_user.id) %>
       <div id='<%= "app_#{app.id}" %>' class='collection-item avatar row valign-wrapper'>
         <div class='col s8 valign'>
           <%= image_tag(dev.logo.url(:thumb), alt: "", class: "circle icon") %>

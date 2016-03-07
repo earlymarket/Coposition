@@ -1,6 +1,6 @@
 <h1>Apps</h1>
   <%= render partial: "approved_developers", locals: {apps: @apps} %>
-  <%= render partial: "pending_approvals", locals: {pending: current_user.pending_approvals} if current_user.pending_approvals.present? %>
+  <%= render partial: "pending_approvals", locals: {pending: @pending} if @pending %>
 <div class='center-align'>
 <%= link_to("Add app", new_user_approval_path(approvable_type: 'Developer'), class: "btn waves-effect waves-light") %>
 </div>
