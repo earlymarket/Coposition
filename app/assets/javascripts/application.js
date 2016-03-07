@@ -16,10 +16,10 @@
 //= require jquery.validate.additional-methods
 //= require turbolinks
 
-
 // -- Libs from gems --
 
 //= require materialize
+//= require twitter/typeahead
 
 // -- Vendor libs --
 
