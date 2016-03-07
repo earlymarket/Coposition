@@ -1,7 +1,7 @@
-<% if current_user.pending_approvals.present? %>
+<div id="pendingApprovals">
   <h5>Requests</h5>
   <div class='collection'>
-    <% current_user.pending_approvals.each do |app| %>
+    <% pending.each do |app| %>
       <% dev = Developer.find(app.approvable_id) %>
       <div id='<%= "app_#{app.id}" %>' class='collection-item avatar row valign-wrapper'>
         <div class='col s8 valign'>
@@ -18,4 +18,4 @@
       </div>
     <% end %>
   </div>
-<% end %>
+</div>
