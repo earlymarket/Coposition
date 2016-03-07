@@ -24,7 +24,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
   end
   let(:user_params) {{ user_id: user.id }}
   let(:dev_approval_create_params) do
-   user_params.merge(approval: { approvable: developer.email, approvable_type: "Developer" })
+   user_params.merge(approval: { approvable: developer.company_name, approvable_type: "Developer" })
   end
   let(:friend_approval_create_params) do
    user_params.merge(approval: { approvable: friend.email, approvable_type: "User" })

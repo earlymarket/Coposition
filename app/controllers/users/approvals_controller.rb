@@ -10,9 +10,8 @@ class Users::ApprovalsController < ApplicationController
 
   def create
     type = allowed_params[:approvable_type]
-    approvable = model_find(type).find_by(email: allowed_params[:approvable])
-    if approvable
-      approval = Approval.construct(current_user, approvable, type)
+    if approvable(type)
+      approval = Approval.construct(current_user, approvable(type), type)
       if approval.save
         flash[:notice] = "Approval created"
         redirect_to user_dashboard_path
@@ -78,6 +77,14 @@ class Users::ApprovalsController < ApplicationController
 
     def allowed_params
       params.require(:approval).permit(:approvable, :approvable_type)
+    end
+
+    def approvable(type)
+      if type == 'Developer'
+        Developer.find_by(company_name: allowed_params[:approvable])
+      elsif type == 'User'
+        User.find_by(email: allowed_params[:approvable])
+      end
     end
 
 end
