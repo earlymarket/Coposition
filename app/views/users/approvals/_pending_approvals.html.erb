@@ -2,7 +2,7 @@
   <h5>Requests</h5>
   <div class='collection'>
     <% pending.each do |dev| %>
-      <% app = dev.approval_for(current_user) %>
+      <% approval = dev.approval_for(current_user) %>
       <div id='<%= "app_#{app.id}" %>' class='collection-item avatar row valign-wrapper'>
         <div class='col s8 valign'>
           <%= image_tag(dev.logo.url(:thumb), alt: "", class: "circle icon") %>
@@ -12,8 +12,8 @@
           <% end %>
         </div>
         <div class='col s4 valign right-align'>
-          <%= button_to "Approve", approve_user_approval_path(current_user.url_id, app.id), remote: true, class: "btn" %>
-          <%= button_to "Reject", reject_user_approval_path(current_user.url_id, app.id), remote: true, class: "btn" %>
+          <%= button_to "Approve", approve_user_approval_path(current_user.url_id, approval.id), remote: true, class: "btn" %>
+          <%= button_to "Reject", reject_user_approval_path(current_user.url_id, approval.id), remote: true, class: "btn" %>
         </div>
       </div>
     <% end %>
