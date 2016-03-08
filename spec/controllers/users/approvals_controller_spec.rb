@@ -116,13 +116,6 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         post :create, invite_params
         expect(ActionMailer::Base.deliveries.count).to be(1)
       end
-
-      it 'should not send an email if no address provided' do
-        invite_params[:approval].merge!(approvable: "")
-        post :create, invite_params
-        expect(ActionMailer::Base.deliveries.count).to be(1)
-        expect(flash[:notice]).to match "enter an email"
-      end
     end
   end
 

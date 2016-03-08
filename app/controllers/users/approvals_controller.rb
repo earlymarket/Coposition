@@ -15,13 +15,13 @@ class Users::ApprovalsController < ApplicationController
     if approvable(type)
       approval = Approval.construct(current_user, approvable(type), type)
       if approval.save
-        flash[:notice] = "Approval created"
-        redirect_to user_dashboard_path
+        redirect_to user_dashboard_path, notice: "Approval created"
       else
         invalid_payload("Error: #{approval.errors.get(:base).first}", new_user_approval_path(approvable_type: type))
       end
     elsif params[:invite]
-      invite
+      UserMailer.invite_email(allowed_params[:approvable]).deliver_now
+      redirect_to user_dashboard_path, notice: "Invite sent!"
     else
       invalid_payload("User/Developer not found", new_user_approval_path(approvable_type: type))
     end
@@ -83,12 +83,6 @@ class Users::ApprovalsController < ApplicationController
 
     def allowed_params
       params.require(:approval).permit(:approvable, :approvable_type)
-    end
-
-    def invite
-      UserMailer.invite_email(allowed_params[:approvable]).deliver_now
-      flash[:notice] = "Invite sent!"
-      redirect_to user_dashboard_path
     end
 
     def approvable(type)
