@@ -1,16 +1,18 @@
-<div class="collection">
-  <% @apps.each do |dev| %>
-    <div class="collection-item avatar row valign-wrapper">
-      <div class="col s8 valign">
-        <%= image_tag(dev.logo.url(:thumb), alt: "", class: "circle icon") %>
-        <h5><%= dev.company_name %></h5>
-        <% if dev.tagline %>
-          <p><%= dev.tagline %></p>
-        <% end %>
+<div id="approvedDevelopers" class="animated">
+  <div class="collection">
+    <% apps.each do |dev| %>
+      <div class="collection-item avatar row valign-wrapper">
+        <div class="col s8 valign">
+          <%= image_tag(dev.logo.url(:thumb), alt: "", class: "circle icon") %>
+          <h5><%= dev.company_name %></h5>
+          <% if dev.tagline %>
+            <p><%= dev.tagline %></p>
+          <% end %>
+        </div>
+        <div class="col s4 valign right-align">
+          <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, current_user.approval_for(dev)), remote: true, class: "btn-flat", data: { confirm: "Are you sure? This app will no longer have access to any of your data."} %>
+        </div>
       </div>
-      <div class="col s4 valign right-align">
-        <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, Approval.where(user: current_user, approvable: dev, approvable_type: "Developer").first.id), remote: true, class: "btn-flat", data: { confirm: "Are you sure? This app will no longer have access to any of your data."} %>
-      </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 </div>

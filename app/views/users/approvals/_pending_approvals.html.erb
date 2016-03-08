@@ -1,20 +1,21 @@
-<% if current_user.pending_approvals.present? %>
+<div id="pendingApprovals">
   <h5>Requests</h5>
   <div class='collection'>
-    <% current_user.pending_approvals.each do |app| %>
-      <div id='<%= "app_#{app.id}" %>' class='collection-item avatar row valign-wrapper'>
+    <% pending.each do |dev| %>
+      <% approval = dev.approval_for(current_user) %>
+      <div id='<%= "app_#{approval.id}" %>' class='collection-item avatar row valign-wrapper'>
         <div class='col s8 valign'>
-          <%= image_tag(Developer.find(app.approvable_id).logo.url(:thumb), alt: "", class: "circle icon") %>
-          <h5><%= Developer.find(app.approvable_id).company_name %></h5>
-          <% if Developer.find(app.approvable_id).tagline %>
-            <p><%= Developer.find(app.approvable_id).tagline %></p>
+          <%= image_tag(dev.logo.url(:thumb), alt: "", class: "circle icon") %>
+          <h5><%= dev.company_name %></h5>
+          <% if dev.tagline %>
+            <p><%= dev.tagline %></p>
           <% end %>
         </div>
         <div class='col s4 valign right-align'>
-          <%= button_to "Approve", approve_user_approval_path(current_user.url_id, app.id), remote: true, class: "btn" %>
-          <%= button_to "Reject", reject_user_approval_path(current_user.url_id, app.id), remote: true, class: "btn" %>
+          <%= button_to "Approve", approve_user_approval_path(current_user.url_id, approval.id), remote: true, class: "btn" %>
+          <%= button_to "Reject", reject_user_approval_path(current_user.url_id, approval.id), remote: true, class: "btn" %>
         </div>
       </div>
     <% end %>
   </div>
-<% end %>
+</div>

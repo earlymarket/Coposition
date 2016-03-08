@@ -6,21 +6,20 @@ class Users::ApprovalsController < ApplicationController
   def new
     @approval = Approval.new
     @approval.approvable_type = params[:approvable_type]
-    @developers = Developer.all.pluck(:email)
-    @users = User.all.pluck(:email)
+    @developers = Developer.all.pluck(:company_name)
+    @users = User.all.pluck(:username)
   end
 
   def create
     type = allowed_params[:approvable_type]
-    model = model_find(type)
-    approvable = model.find_by(email: allowed_params[:approvable])
-    if approvable
-      flash[:notice] = "Approval already exists"
-      flash[:notice] = "Request sent" if Approval.link(current_user, approvable, type)
-      if (type == 'Developer') || (current_user.friend_requests.include?(approvable))
-        flash[:notice] = "#{type} added!" if Approval.accept(current_user, approvable, type)
+    if approvable(type)
+      approval = Approval.construct(current_user, approvable(type), type)
+      if approval.save
+        flash[:notice] = "Approval created"
+        redirect_to user_dashboard_path
+      else
+        invalid_payload("Error: #{approval.errors.get(:base).first}", new_user_approval_path(approvable_type: type))
       end
-      redirect_to user_dashboard_path
     else
       if params[:invite]
         invite
@@ -32,6 +31,7 @@ class Users::ApprovalsController < ApplicationController
 
   def apps
     @apps = current_user.developers
+    @pending = current_user.developer_requests
     # Redirect if foreign app failed to create a pending approval.
     if @apps.length == 0 && current_user.pending_approvals.length == 0 && params[:redirect]
       developer = Developer.find_by(api_key: params[:api_key])
@@ -43,6 +43,7 @@ class Users::ApprovalsController < ApplicationController
 
   def friends
     @friends = current_user.friends
+    @pending = current_user.friend_requests
   end
 
   def approve
@@ -94,6 +95,14 @@ class Users::ApprovalsController < ApplicationController
       else
         flash[:notice] = "You need to enter an email"
         redirect_to new_user_approval_path
+      end
+    end
+
+    def approvable(type)
+      if type == 'Developer'
+        Developer.find_by(company_name: allowed_params[:approvable])
+      elsif type == 'User'
+        User.find_by(username: allowed_params[:approvable])
       end
     end
 
