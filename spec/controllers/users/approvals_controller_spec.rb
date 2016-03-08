@@ -31,7 +31,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
   end
   let(:approve_reject_params) {user_params.merge(id: approval.id) }
   let(:invite_params) do
-    user_params.merge(invite: "", approval: { approvable: 'new@email.com', approvable_type: 'User' })
+    user_params.merge(invite: '', approval: { approvable: 'new@email.com', approvable_type: 'User' })
   end
 
   describe 'GET #new' do
