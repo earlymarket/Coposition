@@ -35,12 +35,12 @@ class Users::DevicesController < ApplicationController
         @device.construct(current_user, allowed_params[:name])
         @device.checkins.create(checkin_params) if params[:create_checkin].present?
         flash[:notice] = "This device has been bound to your account!"
-        redirect_using_param_or_default unless via_app
+        redirect_using_param_or_default
       else
-        invalid_payload('This device has already been assigned to a user', new_user_device_path)
+        redirect_to new_user_device_path, notice: 'This device has already been assigned to a user'
       end
     else
-      invalid_payload('The UUID provided does not match an existing device', new_user_device_path)
+      redirect_to new_user_device_path, notice: 'The UUID provided does not match an existing device'
     end
   end
 
@@ -63,9 +63,6 @@ class Users::DevicesController < ApplicationController
   end
 
   private
-    def via_app
-      render json: @device.to_json if req_from_coposition_app?
-    end
 
     def allowed_params
       params.require(:device).permit(:uuid,:name)
