@@ -86,14 +86,9 @@ class Users::ApprovalsController < ApplicationController
     end
 
     def invite
-      if allowed_params[:approvable].present?
-        UserMailer.invite_email(allowed_params[:approvable]).deliver_now
-        flash[:notice] = "Invite sent!"
-        redirect_to user_dashboard_path
-      else
-        flash[:notice] = "You need to enter an email"
-        redirect_to new_user_approval_path
-      end
+      UserMailer.invite_email(allowed_params[:approvable]).deliver_now
+      flash[:notice] = "Invite sent!"
+      redirect_to user_dashboard_path
     end
 
     def approvable(type)
