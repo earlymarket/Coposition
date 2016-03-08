@@ -3,7 +3,7 @@
   <div class='collection'>
     <% pending.each do |dev| %>
       <% approval = dev.approval_for(current_user) %>
-      <div id='<%= "app_#{app.id}" %>' class='collection-item avatar row valign-wrapper'>
+      <div id='<%= "app_#{approval.id}" %>' class='collection-item avatar row valign-wrapper'>
         <div class='col s8 valign'>
           <%= image_tag(dev.logo.url(:thumb), alt: "", class: "circle icon") %>
           <h5><%= dev.company_name %></h5>
