@@ -27,10 +27,9 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def apps
-    @apps = current_user.developers
-    @pending = Developer.joins(:approvals).where(approvals: {user_id: current_user.id}).where(approvals: {status: "developer-requested"})
+    @pending = current_user.developer_requests
     # Redirect if foreign app failed to create a pending approval.
-    if @apps.length == 0 && current_user.pending_approvals.length == 0 && params[:redirect]
+    if @pending.length == 0 && current_user.pending_approvals.length == 0 && params[:redirect]
       developer = Developer.find_by(api_key: params[:api_key])
       Approval.link(current_user, developer, 'Developer')
     elsif current_user.pending_approvals.length == 0 && params[:redirect]
