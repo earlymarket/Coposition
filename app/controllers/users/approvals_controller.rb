@@ -1,7 +1,6 @@
 class Users::ApprovalsController < ApplicationController
 
   before_action :authenticate_user!
-  before_action :check_user, only: :index
 
   def new
     @approval = Approval.new
@@ -62,13 +61,6 @@ class Users::ApprovalsController < ApplicationController
   end
 
   private
-
-    def check_user
-      unless current_user?(params[:user_id])
-        developer = Developer.find_by(api_key: params[:api_key])
-        redirect_to developer.redirect_url+"?copo_user=#{current_user.username}"
-      end
-    end
 
     def allowed_params
       params.require(:approval).permit(:approvable, :approvable_type)
