@@ -9,7 +9,7 @@ Enter the <%= @approval.approvable_type %> you would like to add.
   </div>
   <%= f.hidden_field :approvable_type, value: @approval.approvable_type %>
   <%= f.button "Request", class: "waves-effect waves-light btn", type: "submit" %>
-  <% unless @approval.approvable_type == 'Developer' %>
+  <% if @approval.approvable_type == 'User' %>
     <%= f.button "Invite", class: "waves-effect waves-light btn", type: "submit", name: "invite" %>
   <% end %>
 <% end %>
