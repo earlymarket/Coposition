@@ -1,4 +1,4 @@
-<h1><%=@friend.email%></h1>
+<h1><%=friends_name(@friend)%></h1>
 <div class="collection">
 <% @devices.each do |device| %>
     <%= link_to show_device_user_friend_path(current_user.url_id, @friend, device_id: device.id), class:"collection-item" do %>
