@@ -27,6 +27,7 @@ class Users::ApprovalsController < ApplicationController
 
   def apps
     @apps = current_user.developers
+    @pending = current_user.developer_requests
     # Redirect if foreign app failed to create a pending approval.
     if @apps.length == 0 && current_user.pending_approvals.length == 0 && params[:redirect]
       developer = Developer.find_by(api_key: params[:api_key])
@@ -38,6 +39,7 @@ class Users::ApprovalsController < ApplicationController
 
   def friends
     @friends = current_user.friends
+    @pending = current_user.friend_requests
   end
 
   def approve
@@ -85,7 +87,7 @@ class Users::ApprovalsController < ApplicationController
       if type == 'Developer'
         Developer.find_by(company_name: allowed_params[:approvable])
       elsif type == 'User'
-        User.find(allowed_params[:approvable])
+        User.find_by(username: allowed_params[:approvable])
       end
     end
 
