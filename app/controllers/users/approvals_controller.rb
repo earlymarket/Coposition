@@ -20,12 +20,10 @@ class Users::ApprovalsController < ApplicationController
       else
         invalid_payload("Error: #{approval.errors.get(:base).first}", new_user_approval_path(approvable_type: type))
       end
+    elsif params[:invite]
+      invite
     else
-      if params[:invite]
-        invite
-      else
-        invalid_payload("User/Developer not found", new_user_approval_path(approvable_type: type))
-      end
+      invalid_payload("User/Developer not found", new_user_approval_path(approvable_type: type))
     end
   end
 
