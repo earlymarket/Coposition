@@ -1,17 +1,19 @@
-<% if current_user.pending_friends.present? %>
-  You have sent <%= pluralize(current_user.pending_friends.count, 'friend request') %>.
-<% end %>
+<div id="friends">
+  <% if current_user.pending_friends.present? %>
+    You have sent <%= pluralize(current_user.pending_friends.count, 'friend request') %>.
+  <% end %>
 
-<% @friends.each do |friend| %>
-  <div class="card row valign-wrapper">
-    <div class="col s8 valign ">
-    <a id="<%= friend.email %>" href="<%= user_friend_path(current_user.url_id, friend) %>">
-      <h5><%= friend.email %></h5>
-      <p>Friends since <%= humanize_date(current_user.approval_for(friend).approval_date) %></p>
-    </a>
+  <% friends.each do |friend| %>
+    <div class="card row valign-wrapper">
+      <div class="col s8 valign ">
+      <a id="<%= friend.email %>" href="<%= user_friend_path(current_user.url_id, friend) %>">
+        <h5><%= friend.email %></h5>
+        <p>Friends since <%= humanize_date(current_user.approval_for(friend).approval_date) %></p>
+      </a>
+      </div>
+      <div class="col s4 valign right-align">
+      <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, current_user.approval_for(friend)), remote: true, class: "btn-flat", data: { confirm: "Are you sure? This user will no longer have access to any of your data." } %>
+      </div>
     </div>
-    <div class="col s4 valign right-align">
-    <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, current_user.approval_for(friend)), remote: true, class: "btn-flat", data: { confirm: "Are you sure? This user will no longer have access to any of your data." } %>
-    </div>
-  </div>
-<% end %>
+  <% end %>
+</div>

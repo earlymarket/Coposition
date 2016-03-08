@@ -1,11 +1,11 @@
-<% if current_user.friend_requests.present? %>
+<div id="friendRequests">
   <h5>Requests</h5>
   <div class='collection'>
-    <% current_user.friend_requests.each do |friend| %>
+    <% pending.each do |friend| %>
       <% app = current_user.approval_for(friend) %>
       <div id='<%= "app_#{app.id}" %>' class='collection-item row valign-wrapper'>
         <div class="col s8 valign">
-          <h5><%= User.find(app.approvable_id).email %></h5>
+          <h5><%= friend.email %></h5>
         </div>
         <div class="col s4 valign right-align">
           <%= button_to "Approve", approve_user_approval_path(current_user.url_id, app.id), remote: true, class: "btn" %>
@@ -14,4 +14,5 @@
       </div>
     <% end %>
   </div>
-<% end %>
+</div>
+
