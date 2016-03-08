@@ -87,7 +87,7 @@ class Users::ApprovalsController < ApplicationController
       if type == 'Developer'
         Developer.find_by(company_name: allowed_params[:approvable])
       elsif type == 'User'
-        User.find(allowed_params[:approvable])
+        User.find_by(username: allowed_params[:approvable])
       end
     end
 
