@@ -2,7 +2,7 @@ if (utility.urlParam("redirect")) {
   window.location.replace(utility.urlParam("redirect"));
 }
 ($("#<%= "app_#{@approval.id}" %>")).remove();
-$('#approvedDevelopers').html("<%= j (render partial: 'approved_developers').delete("\n").html_safe %>")
-$('#friends').html("<%= j (render partial: 'friends').delete("\n").html_safe %>")
-$('#friendRequests').html("<%= j (render partial: 'friend_requests').delete("\n").html_safe %>")
-$('#pendingApprovals').html("<%= j (render partial: 'pending_approvals').delete("\n").html_safe %>")
+$('#approvedDevelopers').html("<%= j (render partial: 'approved_developers', locals: {apps: @apps}).html_safe %>")
+$('#friends').html("<%= j (render partial: 'friends', locals: {friends: @friends}).html_safe %>")
+$('#friendRequests').html("<%= j (render partial: "friend_requests", locals: {pending: @pending}).html_safe if @pending.present? %>")
+$('#pendingApprovals').html("<%= j (render partial: 'pending_approvals', locals: {pending: @pending}).html_safe if @pending.present? %>")

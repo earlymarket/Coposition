@@ -26,10 +26,12 @@ class Users::ApprovalsController < ApplicationController
 
   def apps
     @apps = current_user.developers
+    @pending = current_user.developer_requests
   end
 
   def friends
     @friends = current_user.friends
+    @pending = current_user.friend_requests
   end
 
   def approve
@@ -70,7 +72,7 @@ class Users::ApprovalsController < ApplicationController
       if type == 'Developer'
         Developer.find_by(company_name: allowed_params[:approvable])
       elsif type == 'User'
-        User.find(allowed_params[:approvable])
+        User.find_by(username: allowed_params[:approvable])
       end
     end
 
