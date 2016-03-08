@@ -56,7 +56,7 @@ class Users::Devise::SessionsController < Devise::SessionsController
     end
 
     def after_sign_in_path_for(resource)
-      stored_location_for(resource) || user_dashboard_path(current_user)
+      stored_location_for(resource) || user_dashboard_path(resource)
     end
 
 end
