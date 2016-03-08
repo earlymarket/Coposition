@@ -2,7 +2,6 @@ if (utility.urlParam("redirect")) {
   window.location.replace(utility.urlParam("redirect"));
 }
 ($("#<%= "app_#{@approval.id}" %>")).remove();
-utility.animations.removeEl($("#<%= "app_#{@approval.id}" %>"));
 $('#approvedDevelopers').html("<%= j (render partial: 'approved_developers').delete("\n").html_safe %>")
 $('#friends').html("<%= j (render partial: 'friends').delete("\n").html_safe %>")
 $('#friendRequests').html("<%= j (render partial: 'friend_requests').delete("\n").html_safe %>")
