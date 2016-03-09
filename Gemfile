@@ -48,6 +48,8 @@ gem 'inline_svg'
 
 gem 'twitter-typeahead-rails'
 
+gem 'letter_opener'
+
 # Use Unicorn as the app server
 
 group :production do
@@ -76,7 +78,6 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'bullet'
-  gem 'letter_opener'
   gem 'meta_request'
 
 end
