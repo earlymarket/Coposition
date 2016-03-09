@@ -1,20 +1,22 @@
-<% if @approvals %>
+<p>
+	<% if @approvals %>
 
-  You have <%= @approvals.length %> pending.
+	  You have <%= @approvals.length %> pending.
 
-<% else %>
+	<% else %>
 
-  You've got no approvals pending.
+	  You've got no approvals pending.
 
-<% end %>
-<br>
-<%= link_to("New approval", new_developers_approval_path, class: "btn btn-default") %>
+	<% end %>
+</p>
 
-<h3 class="m-m">Users</h3>
-<div class='list-group'>
+<%= link_to("New approval", new_developers_approval_path, class: "btn") %>
+
+<h3 class="">Users</h3>
+<div class='collection'>
   <% @users.each do |user| %>
-    <div class='list-group-item'>
-      <h6 class='list-group-item-heading'><%= user.email %></h6>
+    <div class='collection-item'>
+      <h6 class='collection-heading'><%= user.email %></h6>
     </div>
   <% end %>
 </div>

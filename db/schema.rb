@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160128172526) do
+ActiveRecord::Schema.define(version: 20160229162703) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,9 @@ ActiveRecord::Schema.define(version: 20160128172526) do
     t.string   "postal_code"
     t.string   "country_code"
     t.boolean  "fogged"
+    t.float    "fogged_lat"
+    t.float    "fogged_lng"
+    t.string   "fogged_area"
   end
 
   add_index "checkins", ["device_id"], name: "index_checkins_on_device_id", using: :btree
@@ -51,6 +54,8 @@ ActiveRecord::Schema.define(version: 20160128172526) do
     t.float  "longitude"
     t.string "country_code"
   end
+
+  add_index "cities", ["latitude", "longitude"], name: "index_cities_on_latitude_and_longitude", using: :btree
 
   create_table "developers", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -107,6 +112,8 @@ ActiveRecord::Schema.define(version: 20160128172526) do
     t.integer "device_id"
     t.integer "privilege"
     t.string  "permissible_type"
+    t.boolean "bypass_fogging",   default: false
+    t.boolean "show_history",     default: false
   end
 
   create_table "requests", force: :cascade do |t|

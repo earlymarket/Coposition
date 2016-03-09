@@ -1,22 +1,31 @@
-.btn {
-  color: $button-raised-color;
+// Positional classes
+.fixed {
+  position: fixed;
 }
 
-// Dan's legacy stuff
+.float-left{
+  float: left;
+}
 
+.float-right{
+  float: right;
+}
+
+.center{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// Effects classes
 .half-opacity {
   opacity: 0.5;
 }
-
-.small-curved-border {
-  border-radius: 4px;
+.quarter-opacity {
+  opacity: 0.25;
 }
 
-.small-height {
-  line-height: 30px;
-  height: 30px;
-}
 
+// Specific target classes
 .round-map {
   border-radius: 300px;
   padding-left: 0;
@@ -25,18 +34,14 @@
   width: 100%;
 }
 
-.bottom {
-  bottom: 1em;
-}
+.btn, .btn-large, .btn-flat, .btn-floating {
+  color: $dark-text-color;
 
-.left {
-  left: 1em;
-}
+  &.disabled{
+    @extend .dark-text.hint;
+  }
 
-.fixed {
-  position: fixed;
-}
-
-.inline {
-  display: inline;
+  i{
+    color: $dark-text-color;
+  }
 }

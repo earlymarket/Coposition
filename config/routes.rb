@@ -8,16 +8,16 @@ Rails.application.routes.draw do
 
   # Devise
 
-  devise_for :users, controllers: { 
+  devise_for :users, controllers: {
     registrations: 'users/devise/registrations',
     sessions: 'users/devise/sessions'
   }
-  devise_for :developers, controllers:
-   { registrations: 'developers/devise/registrations' }
+  devise_for :developers, controllers: {
+    registrations: 'developers/devise/registrations',
+    sessions: 'developers/devise/sessions'
+  }
 
   # API
-
-  resources :api, only: [:index]
 
   namespace :api, path: '', constraints: {subdomain: 'api'}, defaults: {format: 'json'} do
     namespace :v1 do
@@ -28,31 +28,30 @@ Rails.application.routes.draw do
           get :demo_user_approves_demo_dev
         end
       end
-      resources :checkins, only: [:create]
       resources :users do
-        member do
-          get 'last_checkin'
-          get 'all_checkins'
-          get 'requests'
-          get 'last_request'
-        end
         resources :approvals, only: [:create, :index, :update], module: :users do
           collection do
             get :status
           end
         end
-        resources :devices, only: [:index, :show, :update], module: :users do
-          member do
-            post 'switch_privilege'
-          end
+        resources :checkins, only: [:index], module: :users do
           collection do
-            post 'switch_all_privileges'
+            get :last
           end
-          resources :checkins, only: [:index, :create], module: :devices do
+        end
+        resources :requests, only: [:index], module: :users do
+          collection do
+            get :last
+          end
+        end
+        resources :devices, only: [:index, :show, :update], module: :users do
+          resources :checkins, only: [:index, :create] do
             collection do
               get :last
             end
           end
+          resources :permissions, only: [:update]
+          put '/permissions', to: 'permissions#update_all'
         end
       end
       namespace :mobile_app do
@@ -67,26 +66,26 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show], module: :users do
     resource :dashboard, only: [:show]
-    resources :devices, except: [:update, :edit] do
-      member do
-        post 'set_delay'
-        delete 'checkin'
-        post 'switch_privilege'
-        put 'fog'
-      end
-      collection do
-        get 'permissions'
-        post 'switch_all_privileges'
-        get 'add_current'
-      end
-      resources :checkins, only: [:show, :destroy]
+    resources :devices, except: [:edit] do
+      resources :checkins, only: [:show, :create, :new, :update]
+      delete '/checkins/', to: 'checkins#destroy_all'
+      delete '/checkins/:id', to: 'checkins#destroy'
+      resources :permissions, only: [:update]
     end
-    resources :approvals, only: [:index, :new, :create] do
+    resources :approvals, only: [:new, :create] do
       member do
         post 'approve'
         post 'reject'
-      end 
+      end
     end
+    resources :friends, only: [:show] do
+      member do
+        get 'show_device'
+        get 'show_checkin'
+      end
+    end
+    get '/apps', to: 'approvals#apps'
+    get '/friends', to: 'approvals#friends'
   end
 
 

@@ -8,12 +8,12 @@ class User < ActiveRecord::Base
   friendly_id :username, use: [:slugged, :finders]
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, 
+         :recoverable, :rememberable, :trackable, :validatable,
          :authentication_keys => { username: false, email: true }
 
-  validates :username, uniqueness: true, 
-                       allow_blank: true, 
-                       format: { with: /\A[-a-zA-Z_]+\z/, 
+  validates :username, uniqueness: true,
+                       allow_blank: true,
+                       format: { with: /\A[-a-zA-Z_]+\z/,
                          message: "only allows letters, underscores and dashes" }
 
   has_many :devices, dependent: :destroy
@@ -36,8 +36,23 @@ class User < ActiveRecord::Base
 
   ## Approvals
 
-  def approved_developer?(dev)
-    developers.include? dev
+  def approved?(permissible)
+    developers.include?(permissible) || friends.include?(permissible)
+  end
+
+  def has_request_from(approvable)
+    friend_requests.include?(approvable) || developer_requests.include?(approvable)
+  end
+
+  def approval_for(approvable)
+    approvals.find_by(approvable_id: approvable.id, approvable_type: approvable.class.to_s) || NoApproval.new
+  end
+
+  def destroy_permissions_for(approvable)
+    devices.each do |device|
+      permission = device.permission_for(approvable)
+      permission.destroy if permission
+    end
   end
 
   ## Devices
@@ -58,14 +73,21 @@ class User < ActiveRecord::Base
 
   ## Checkins
 
-  def last_checkin
-    checkins.sort_by(&:created_at).last
+  def get_checkins(permissible, device)
+    device ? device.permitted_history_for(permissible) : get_user_checkins(permissible)
+  end
+
+  def get_user_checkins(permissible)
+    checkins_ids = devices.inject([]) do |result, device|
+      result + device.permitted_history_for(permissible).pluck(:id)
+    end
+    Checkin.where(id: checkins_ids)
   end
 
   ##############
 
   def slack_message
-    "A new user has registered, there are now #{User.count} users."
+    "A new user has registered, id: #{self.id}, name: #{self.username}, there are now #{User.count} users."
   end
 
   def notifications
@@ -75,7 +97,15 @@ class User < ActiveRecord::Base
         @notes << {
           notification: {
               msg: "You have #{pending_approvals.count} pending approvals",
-              link_path: "user_approvals_path"
+              link_path: "user_apps_path"
+            }
+          }
+      end
+      if friend_requests.present?
+        @notes << {
+          notification: {
+              msg: "You have #{friend_requests.count} friend requests",
+              link_path: "user_friends_path"
             }
           }
       end

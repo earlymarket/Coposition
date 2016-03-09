@@ -3,7 +3,7 @@ class Users::DevicesController < ApplicationController
   acts_as_token_authentication_handler_for User
   protect_from_forgery with: :null_session
   before_action :authenticate_user!
-  before_action :require_ownership, only: [:show, :destroy, :switch_privilege, :checkin]
+  before_action :require_ownership, only: [:show, :destroy, :update]
 
   def index
     @current_user_id = current_user.id
@@ -15,30 +15,26 @@ class Users::DevicesController < ApplicationController
 
   def show
     @device = Device.find(params[:id])
-    @checkins = @device.checkins.order('created_at DESC').paginate(page: params[:page], per_page: 10)
-    if @device.fogged?
-      @fogmessage = "Currently fogged"
-    else
-      @fogmessage = "Fog"
-    end
+    @checkins = Checkin.includes(:device) \
+      .where(device_id: @device.id) \
+      .order('created_at DESC') \
+      .paginate(page: params[:page], per_page: 50)
   end
 
   def new
     @device = Device.new
     @device.uuid = params[:uuid] if params[:uuid]
-    @adding_current_device = true if params[:curr_device]
     @redirect_target = params[:redirect] if params[:redirect]
   end
 
   def create
-    if allowed_params[:uuid]
-      @device = Device.find_by uuid: allowed_params[:uuid]
-    else
-      @device = Device.create
-    end
+    @device = Device.new
+    @device = Device.find_by uuid: allowed_params[:uuid] if allowed_params[:uuid].present?
     if @device
       if @device.user.nil?
-        create_device
+        @device.construct(current_user, allowed_params[:name])
+        @device.checkins.create(checkin_params) if params[:create_checkin].present?
+        flash[:notice] = "This device has been bound to your account!"
         redirect_using_param_or_default unless via_app
       else
         invalid_payload('This device has already been assigned to a user', new_user_device_path)
@@ -49,68 +45,21 @@ class Users::DevicesController < ApplicationController
   end
 
   def destroy
+    Checkin.where(device: params[:id]).delete_all
     Device.find(params[:id]).destroy
     flash[:notice] = "Device deleted"
     redirect_to user_devices_path
   end
 
-  def checkin
-    @checkin_id = params[:checkin_id]
-    Device.find(params[:id]).checkins.find(@checkin_id).delete
-  end
-
-  def switch_privilege
-    model = model_find(params[:permissible_type])
-    @permissible = model.find(params[:permissible])
+  def update
     @device = Device.find(params[:id])
-    @device.change_privilege_for(@permissible, params[:privilege])
-    @privilege = @device.privilege_for(@permissible)
-    @r_privilege = @device.reverse_privilege_for(@permissible)
-    render nothing: true
-  end
-
-  def switch_all_privileges
-    model = model_find(params[:permissible_type])
-    @devices = current_user.devices
-    @permissible = model.find(params[:permissible])
-    @devices.each do |device|
-      device.change_privilege_for(@permissible, params[:privilege])
-      @privilege = device.privilege_for(@permissible)
-      @r_privilege = device.reverse_privilege_for(@permissible)
-    end
-  end
-
-  def add_current
-    flash[:notice] = "Just enter a friendly name, and this device is good to go."
-    redirect_to new_user_device_path(uuid: Device.create.uuid, curr_device: true)
-  end
-
-  def fog
-    @device = Device.find(params[:id])
-    if @device.switch_fog
-      @message = "has been fogged."
-      @button_text = "Currently Fogged"
+    if params[:mins]
+      @device.set_delay(params[:mins])
+      flash[:notice] = "#{@device.name} timeshifted by #{@device.delayed.to_i} minutes."
     else
-      @message = "is no longer fogged."
-      @button_text = "Fog"
+      @device.switch_fog
+      flash[:notice] = "#{@device.name} fogging has been changed."
     end
-  end
-
-  def set_delay
-    @device = Device.find(params[:id])
-    @device.delayed = params[:mins]
-    @device.save
-  end
-
-  def permissions
-    devices = current_user.devices
-    @permissions = []
-    devices.each do |device|
-      device.permissions.each do |permission|
-        @permissions << permission
-      end
-    end
-    render json: @permissions
   end
 
   private
@@ -122,16 +71,8 @@ class Users::DevicesController < ApplicationController
       params.require(:device).permit(:uuid,:name)
     end
 
-    def create_device
-      @device.user = current_user
-      @device.name = allowed_params[:name]
-      @device.developers << current_user.developers
-      @device.permitted_users << current_user.friends
-      @device.save
-      flash[:notice] = "This device has been bound to your account!"
-
-      @device.create_checkin(lat: params[:location].split(",").first,
-          lng: params[:location].split(",").last) unless params[:location].blank?
+    def checkin_params
+      { lat: params[:location].split(",").first, lng: params[:location].split(",").last }
     end
 
     def redirect_using_param_or_default(default: user_device_path(current_user.url_id, @device.id))

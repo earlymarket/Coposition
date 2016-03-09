@@ -3,15 +3,7 @@ require 'rails_helper'
 RSpec.describe Api::V1::UsersController, type: :controller do
   include ControllerMacros
 
-  let(:device) do
-    devi = FactoryGirl::create :device
-    3.times do
-      checkin = FactoryGirl::build :checkin
-      checkin.uuid = devi.uuid
-      checkin.save
-    end
-    devi
-  end
+  let(:device) { FactoryGirl::create :device }
   let(:dev) { FactoryGirl::create :developer }
   let(:user) do
     us = FactoryGirl::create :user
@@ -57,51 +49,6 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         format: :json
       }
       expect(assigns(:user)).to eq(User.find(user.id))
-    end
-
-    it 'should get users last checkin' do
-      get :last_checkin, {
-        id: user.id,
-        format: :json
-      }
-      expect(res_hash.first['id']).to eq device.id
-      expect(res_hash.last['device_id']).to eq device.id
-      expect(Checkin.find(res_hash.last['id'])).to eq device.checkins.last
-    end
-
-    it 'should get a page of the users checkins' do
-      get :all_checkins, {
-        id: user.id,
-        format: :json
-      }
-      expect(res_hash.length).to eq 3
-      expect(res_hash.first['id']).to eq Checkin.last.id
-    end
-
-    it 'should get a list of requests' do
-      get :requests, {
-        id: user.id,
-        format: :json
-      }
-      expect(res_hash.first.first['action']).to eq "requests"
-      expect(res_hash.first.last).to eq "getting a list of your requests"
-    end
-
-    it 'should get a list of (developer) requests specific to a developer' do
-      get :requests, {
-        id: user.id,
-        developer_id: dev.id,
-        format: :json
-      }
-      expect(res_hash.first.first['developer_id']).to eq dev.id    
-    end
-
-    it 'should get the last request related to this user' do
-      get :last_request, {
-        id: user.id,
-        format: :json
-      }
-      expect(res_hash.first['action']).to eq "last_request"
     end
 
   end

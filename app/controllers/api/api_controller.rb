@@ -1,15 +1,20 @@
 class Api::ApiController < ActionController::Base
+<<<<<<< HEAD
+=======
+  include ApiApplicationMixin
+  rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
+>>>>>>> dev
 
   private
- 
+
   def authenticate
     api_key = request.headers['X-Api-Key']
     @dev = Developer.where(api_key: api_key).first if api_key
-    unless @dev
-      head status: :unauthorized
-      return false
+    if @dev
+      create_request
+    else
+      render status: 401, json: { message: 'No valid API Key' }
     end
-    create_request
   end
 
   def create_request
@@ -28,10 +33,13 @@ class Api::ApiController < ActionController::Base
     response['X-Per-Page'] = resource.per_page.to_json
   end
 
-  def check_user_approved_developer
+  def check_user_approved_approvable
     find_user
-    unless @user.approved_developer?(@dev)
-      render json: { "approval status": @user.approval_status_for(@dev) }
+    find_permissible
+    if !@user.approved?(@dev)
+      render status: 401, json: { "approval status": @user.approval_for(@dev).status }
+    elsif !@user.approved?(@permissible)
+      render status: 401, json: { "approval status": @user.approval_for(@permissible).status }
     end
   end
 
@@ -43,39 +51,27 @@ class Api::ApiController < ActionController::Base
     end
   end
 
-  def find_device
-    @device = Device.find(params[:device_id])
-  end
-
-  def model_find(type)
-    [User, Developer].find { |model| model.name == type.titleize}
-  end
-  
-  def check_privilege
-    unless @device.privilege_for(@dev) == "complete"
-      head status: :unauthorized
-      return false
-    end
-  end
-
   def find_by_id(id)
     @user = User.find_by_username(id)
     @user ||= User.find_by_email(id)
     @user ||= User.find(id)
   end
 
+  def find_device
+    if params[:device_id] then @device = Device.find(params[:device_id]) end
+  end
+
+  def find_permissible
+    if params[:permissible_id]
+      @permissible = User.find(params[:permissible_id])
+    else
+      @permissible = @dev
+    end
+  end
+
   def current_user?(user_id)
     auth_token = User.find(user_id).authentication_token
     request.headers['X-User-Token'] == auth_token
-  end
-
-  def method_missing(method_sym, *arguments, &block)
-    method_string = method_sym.to_s
-    if /(?<resource>[\w]+)_exists\?$/ =~ method_string
-      resource_exists?(resource, arguments[0])
-    else
-      super
-    end
   end
 
   def resource_exists?(resource, arguments)
@@ -84,4 +80,8 @@ class Api::ApiController < ActionController::Base
     arguments
   end
 
+  def record_not_found(exception)
+    render json: {error: exception.message}.to_json, status: 404
+    return
+  end
 end

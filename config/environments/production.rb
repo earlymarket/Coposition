@@ -85,12 +85,12 @@ Rails.application.configure do
   config.action_mailer.default :charset => "utf-8"
 
   config.action_mailer.smtp_settings = {
-    address: "smtp.gmail.com",
-    domain: "gmail.com",
+    address: "smtp.sendgrid.com",
+    domain: "coposition.com",
     port: 587,
     authentication: "plain",
     enable_starttls_auto: true,
-    user_name: ENV['MAIL_ADDRESS'],
-    password: ENV['MAIL_PASSWORD']
+    user_name: ENV['SENDGRID_USERNAME'],
+    password: ENV['SENDGRID_PASSWORD']
   }
 end

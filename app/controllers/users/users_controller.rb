@@ -1,7 +1,7 @@
 class Users::UsersController < ApplicationController
 
   def show
-    @user = User.find(params[:id])
+    redirect_to action: "show", controller: "users/dashboards", user_id: params[:id]
   end
 
 end

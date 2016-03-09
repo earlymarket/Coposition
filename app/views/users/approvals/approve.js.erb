@@ -1,7 +1,8 @@
 if (utility.urlParam("redirect")) {
   window.location.replace(utility.urlParam("redirect"));
 }
-$("#<%= "app_#{@approval.id}" %>").addClass("bg-approved-<%= @approval.status == 'accepted' %>");
-utility.animations.removeEl($("#<%= "app_#{@approval.id}" %>"));
-$('#approvedDevelopers').html("<%= (render partial: 'approved_developers').delete("\n").html_safe %>").addClass("rubberBand")
-$('#friends').html("<%= (render partial: 'friends').delete("\n").html_safe %>").addClass("rubberBand")
+($("#<%= "app_#{@approval.id}" %>")).remove();
+$('#approvedDevelopers').html("<%= j (render partial: 'approved_developers', locals: {apps: @apps}).html_safe %>")
+$('#friends').html("<%= j (render partial: 'friends', locals: {friends: @friends}).html_safe %>")
+$('#friendRequests').html("<%= j (render partial: "friend_requests", locals: {pending: @pending}).html_safe if @pending.present? %>")
+$('#pendingApprovals').html("<%= j (render partial: 'pending_approvals', locals: {pending: @pending}).html_safe if @pending.present? %>")

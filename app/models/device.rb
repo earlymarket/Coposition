@@ -1,6 +1,6 @@
 class Device < ActiveRecord::Base
   include SlackNotifiable
-  include SharedMethods
+  include SwitchFogging
 
   belongs_to :user
   has_many :checkins, dependent: :destroy
@@ -12,43 +12,50 @@ class Device < ActiveRecord::Base
     dev.uuid = SecureRandom.uuid
   end
 
+  def construct(current_user, device_name)
+    update(user: current_user, name: device_name)
+    developers << current_user.developers
+    permitted_users << current_user.friends
+  end
+
   def checkins
-    delayed? ? super.where("created_at < ?", delayed.minutes.ago) : super
+    delayed? ? super.before(delayed.minutes.ago) : super
   end
 
-  def privilege_for(permissible)
-    permissions.find_by(permissible_id: permissible.id, permissible_type: permissible.class.to_s).privilege
-  end
+  def permitted_history_for(permissible)
+    return Checkin.none if permission_for(permissible).privilege == "disallowed"
+    approval_date = user.approval_for(permissible).approval_date
 
-  def reverse_privilege_for(permissible)
-    if privilege_for(permissible) == "complete"
-      "disallowed"
+    if permission_for(permissible).privilege == "last_only"
+      can_show_history?(permissible) ? Checkin.where(id: checkins.last.id) : Checkin.where(id: checkins.since(approval_date).last.id)
     else
-      "complete"
+      can_show_history?(permissible) ? checkins : checkins.since(approval_date)
     end
+
   end
 
-  def create_checkin(lat:, lng:)
-    checkins << Checkin.create(uuid: uuid, lat: lat, lng: lng)
+  def permission_for(permissible)
+    permissions.find_by(permissible_id: permissible.id, permissible_type: permissible.class.to_s)
   end
 
-  def change_privilege_for(permissible, new_privilege)
-    if permissible.respond_to? :id
-      perm = permissible.id
-    end
-    record = permissions.find_by(permissible_id: perm, permissible_type: permissible.class.to_s)
-    record.privilege = new_privilege
-    record.save
+  def can_show_history?(permissible)
+    permission_for(permissible).show_history
   end
 
-  def device_checkin_hash
-    hash = as_json
-    hash[:last_checkin] = checkins.last.get_data if checkins.exists?
-    hash
+  def can_bypass_fogging?(permissible)
+    permission_for(permissible).bypass_fogging
   end
 
   def slack_message
-    "A new device has been created"
+    "A new device has been created, id: #{self.id}, name: #{self.name}, user_id: #{self.user_id}. There are now #{Device.count} devices"
+  end
+
+  def set_delay(mins)
+    if mins.to_i == 0
+      update(delayed: nil)
+    else
+      update(delayed: mins)
+    end
   end
 
 end

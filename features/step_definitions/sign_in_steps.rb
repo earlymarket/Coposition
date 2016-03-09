@@ -16,7 +16,7 @@ Given(/^I am signed in as a user$/) do
       Then I click the link "Sign up!"
     When I fill in the form with my "user" details
       And I click "Sign up"
-    Then I should see "You have signed up successfully."
+    Then I should see "Enter a name for the device"
   }
   @me = User.find_by(email: @me.email)
 end
@@ -28,6 +28,7 @@ When(/^I fill in the form with my "(.*?)" details$/) do |actor|
   fill_in "register_#{actor}_password_confirmation", with: @me.password_confirmation
   if actor == "developer"
     fill_in "register_#{actor}_company_name", with: @me.company_name
+    fill_in "register_#{actor}_redirect_url", with: @me.redirect_url
   elsif actor == "user"
     fill_in "register_#{actor}_username", with: @me.username
   end

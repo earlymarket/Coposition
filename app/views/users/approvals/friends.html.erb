@@ -1,0 +1,6 @@
+<h1>Friends</h1>
+  <%= render partial: "friends", locals: {friends: @friends} %>
+  <%= render partial: "friend_requests", locals: {pending: @pending} if @pending.present? %>
+<div class='center-align'>
+<%= link_to("Add friend", new_user_approval_path(approvable_type: 'User'), class: "btn waves-effect waves-light") %>
+</div>

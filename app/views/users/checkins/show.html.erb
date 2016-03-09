@@ -1,20 +1,27 @@
-<h2><%= "#{@checkin.device.name} checkin" %></h2>
-
-<div class='list-group'>
-  <div class='list-group-item'>
-    <span class='list-group-item-header'><%= "Checkin ID: " %></span>
-    <span class='list-group-item-text'><%= @checkin.id %></span>
-  </div>
-  <div class='list-group-item'>
-    <span class='list-group-item-header'><%= "Created at: " %></span>
-    <span class='list-group-item-text'><%= @checkin.created_at %></span>
-  </div>
-  <div class='list-group-item'>
-    <span class='list-group-item-header'><%= "Coordinates: " %></span>
-    <span class='list-group-item-text'><%= "[#{@checkin.lat}, #{@checkin.lng}]" %></span>
-  </div>
-  <div class='list-group-item'>
-    <span class='list-group-item-header'><%= "Address: " %></span>
-    <span class='list-group-item-text'><%= @checkin.address %></span>
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <div class="card-image">
+        <img id="mapholder" src="" width="500" height="250">
+        <!-- <span class="card-title">Card Title</span> -->
+      </div>
+      <div class="card-content">
+        <ul>
+          <li>Checkin ID: <%= @checkin.id %></li>
+          <%= checkins_visible_time(@checkin) %>
+          <li>Created on: <%= humanize_date(@checkin.created_at) %></li>
+          <li>Latitude: <%=  @checkin.lat %></li>
+          <li>Longitude <%= @checkin.lng %></li>
+          <li>Address: <%= @checkin.address %></li>
+          <li>Fogging status: <%= fogged_icon(@checkin.fogged) %></li>
+          <%= checkins_fogged_address(@checkin) %>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
+
+<script>
+  var img_url = '<%= checkins_static_map_url(@checkin) %>';
+  $('#mapholder').attr("src", img_url);
+</script>

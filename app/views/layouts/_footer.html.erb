@@ -2,23 +2,43 @@
   <div class="container">
     <div class="row">
       <div class="col l6 s12">
-        <h5 class="white-text">CoPosition</h5>
-        <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+        <h5 class="white-text brand">Coposition</h5>
       </div>
-      <div class="col l4 offset-l2 s12">
-        <h5 class="white-text">Links</h5>
+    </div>
+    <div class="row">
+
+      <div class="col m4 s12">
+        <h5>API</h5>
         <ul>
-          <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-          <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-          <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-          <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+          <li><a href="<%= signed_in? ? developers_console_path : new_developer_session_path %>">Developers</a></li>
         </ul>
       </div>
+
+      <!-- <div class="col m4 s12">
+        <h5>Learn More</h5>
+        <ul>
+          <li><a class="" href="#!">Link 1</a></li>
+          <li><a class="" href="#!">Link 2</a></li>
+          <li><a class="" href="#!">Link 3</a></li>
+          <li><a class="" href="#!">Link 4</a></li>
+        </ul>
+      </div>
+      
+      <div class="col m4 s12">
+        <h5>About</h5>
+        <ul>
+          <li><a class="" href="#!">Link 1</a></li>
+          <li><a class="" href="#!">Link 2</a></li>
+          <li><a class="" href="#!">Link 3</a></li>
+          <li><a class="" href="#!">Link 4</a></li>
+        </ul>
+      </div> -->
+
     </div>
   </div>
   <div class="footer-copyright">
     <div class="container">
-    © 2016 CoPosition
+    © 2016 Coposition
     </div>
   </div>
 </footer>
