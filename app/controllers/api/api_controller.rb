@@ -1,9 +1,6 @@
 class Api::ApiController < ActionController::Base
-<<<<<<< HEAD
-=======
   include ApiApplicationMixin
   rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
->>>>>>> dev
 
   private
 
