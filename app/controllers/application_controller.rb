@@ -5,12 +5,8 @@ class ApplicationController < ActionController::Base
   include ApiApplicationMixin
 
   def invalid_payload(msg, redirect_path)
-    if req_from_coposition_app?
-      render status: 400, json: { message: msg }
-    else
-      flash[:alert] = msg
-      redirect_to redirect_path
-    end
+    flash[:alert] = msg
+    redirect_to redirect_path
   end
 
   def current_user?(user_id)

@@ -24,7 +24,6 @@ class Users::DevicesController < ApplicationController
   def new
     @device = Device.new
     @device.uuid = params[:uuid] if params[:uuid]
-    @redirect_target = params[:redirect] if params[:redirect]
   end
 
   def create
@@ -34,8 +33,7 @@ class Users::DevicesController < ApplicationController
       if @device.user.nil?
         @device.construct(current_user, allowed_params[:name])
         @device.checkins.create(checkin_params) if params[:create_checkin].present?
-        flash[:notice] = "This device has been bound to your account!"
-        redirect_using_param_or_default
+        redirect_to user_device_path(id: @device.id), notice: "This device has been bound to your account!"
       else
         redirect_to new_user_device_path, notice: 'This device has already been assigned to a user'
       end
@@ -70,14 +68,6 @@ class Users::DevicesController < ApplicationController
 
     def checkin_params
       { lat: params[:location].split(",").first, lng: params[:location].split(",").last }
-    end
-
-    def redirect_using_param_or_default(default: user_device_path(current_user.url_id, @device.id))
-      if params[:redirect].blank?
-        redirect_to default
-      else
-        redirect_to params[:redirect]
-      end
     end
 
     def require_ownership
