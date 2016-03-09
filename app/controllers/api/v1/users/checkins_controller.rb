@@ -1,7 +1,10 @@
 class Api::V1::Users::CheckinsController < Api::ApiController
   respond_to :json
 
+  acts_as_token_authentication_handler_for User, only: :create
+
   before_action :check_user_approved_approvable, :find_device
+  before_action :check_user, only: :create
 
   def index
     params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 1000
@@ -43,6 +46,12 @@ class Api::V1::Users::CheckinsController < Api::ApiController
 
     def find_device
       if params[:device_id] then @device = Device.find(params[:device_id]) end
+    end
+
+    def check_user
+      unless current_user?(params[:user_id])
+        render status: 403, json: { message: 'User does not own device' }
+      end
     end
 
 end

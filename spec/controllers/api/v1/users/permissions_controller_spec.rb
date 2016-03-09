@@ -40,7 +40,7 @@ RSpec.describe Api::V1::Users::PermissionsController, type: :controller do
       expect(res_hash[:privilege]).to eq 'last_only'
     end
 
-    it 'should fail to update permission if user does not own permission' do
+    it 'should fail to update permission if signed in user does not own permission' do
       request.headers["X-User-Token"] = second_user.authentication_token
       request.headers["X-User-Email"] = second_user.email
       put :update, {
