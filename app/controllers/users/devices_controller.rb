@@ -1,7 +1,5 @@
 class Users::DevicesController < ApplicationController
 
-  acts_as_token_authentication_handler_for User
-  protect_from_forgery with: :null_session
   before_action :authenticate_user!
   before_action :require_ownership, only: [:show, :destroy, :update]
 
