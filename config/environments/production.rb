@@ -86,7 +86,7 @@ Rails.application.configure do
 
   config.action_mailer.smtp_settings = {
     address: "smtp.sendgrid.com",
-    domain: "coposition.com",
+    domain: "coposition-pr-314.herokuapp.com",
     port: 587,
     authentication: "plain",
     enable_starttls_auto: true,
