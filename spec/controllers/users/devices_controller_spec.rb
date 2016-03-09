@@ -52,13 +52,6 @@ RSpec.describe Users::DevicesController, type: :controller do
       get :new, user_param.merge(uuid: '123412341234')
       expect(assigns(:device).uuid).to eq('123412341234')
     end
-
-    it 'should assign :redirect to @redirect_target if exists' do
-      get :new, user_param
-      expect(assigns :redirect_target).to eq(nil)
-      get :new, user_param.merge(redirect: 'http://www.coposition.com/')
-      expect(assigns :redirect_target).to eq('http://www.coposition.com/')
-    end
   end
 
   describe 'POST #create' do
@@ -77,16 +70,6 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(response.code).to eq '302'
       expect(user.devices.count).to be count+1
       expect(user.devices.all.last).to eq empty_device
-    end
-
-    it 'should create a new device and redirect if provided' do
-      count = user.devices.count
-      post :create, user_param.merge({
-        redirect: 'http://www.coposition.com/',
-        device: { name: 'New Device' }
-      })
-      expect(user.devices.count).to be count+1
-      expect(response).to redirect_to('http://www.coposition.com/')
     end
 
     it 'should create a new device and a checkin if location provided' do
@@ -170,38 +153,4 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
   end
 
-  describe 'posting from app', :type => :request do
-
-    it 'should POST to create with a UUID' do
-      count = user.devices.count
-      headers = {
-        "X-Api-Key" => developer.api_key,
-        "X-User-Token" => user.authentication_token,
-        "X-User-Email" => user.email,
-        "X-Secret-App-Key" => Rails.application.secrets.mobile_app_key
-      }
-      post "/users/#{user.username}/devices", {
-        device: { uuid: empty_device.uuid }
-      }, headers
-      expect(user.devices.count).to be(count+1)
-      expect(user.devices.all.last).to eq empty_device
-    end
-
-    it 'should fail to to create a device with an invalid UUID' do
-      count = user.devices.count
-      headers = {
-        "X-Api-Key" => developer.api_key,
-        "X-User-Token" => user.authentication_token,
-        "X-User-Email" => user.email,
-        "X-Secret-App-Key" => Rails.application.secrets.mobile_app_key
-      }
-      post "/users/#{user.username}/devices", {
-        device: { uuid: 123 }
-      }, headers
-
-      expect(response.code).to eq '400'
-      expect(user.devices.count).to be count
-    end
-
-  end
 end
