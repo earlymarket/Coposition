@@ -25,6 +25,14 @@ class Api::ApiController < ActionController::Base
     end
   end
 
+  def find_user
+    if params[:controller] == "api/v1/users"
+      @user = User.find(params[:id])
+    else
+      @user = User.find(params[:user_id])
+    end
+  end
+
   def paginated_response_headers(resource)
     response['X-Current-Page'] = resource.current_page.to_json
     response['X-Next-Page'] = resource.next_page.to_json
@@ -33,31 +41,12 @@ class Api::ApiController < ActionController::Base
   end
 
   def check_user_approved_approvable
-    find_user
     find_permissible
     if !@user.approved?(@dev)
       render status: 401, json: { "approval status": @user.approval_for(@dev).status }
     elsif !@user.approved?(@permissible)
       render status: 401, json: { "approval status": @user.approval_for(@permissible).status }
     end
-  end
-
-  def find_user
-    if params[:controller] == "api/v1/users"
-      find_by_id(params[:id])
-    else
-      find_by_id(params[:user_id])
-    end
-  end
-
-  def find_by_id(id)
-    @user = User.find_by_username(id)
-    @user ||= User.find_by_email(id)
-    @user ||= User.find(id)
-  end
-
-  def find_device
-    if params[:device_id] then @device = Device.find(params[:device_id]) end
   end
 
   def find_permissible

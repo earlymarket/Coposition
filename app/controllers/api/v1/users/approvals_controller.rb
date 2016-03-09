@@ -3,7 +3,6 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
 
   acts_as_token_authentication_handler_for User, only: [:update]
 
-  before_action :find_user
   before_action :check_user, only: :update
 
   def create

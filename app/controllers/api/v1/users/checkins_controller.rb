@@ -41,4 +41,8 @@ class Api::V1::Users::CheckinsController < Api::ApiController
       params.require(:checkin).permit(:lat, :lng)
     end
 
+    def find_device
+      if params[:device_id] then @device = Device.find(params[:device_id]) end
+    end
+
 end
