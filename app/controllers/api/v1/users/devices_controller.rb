@@ -1,7 +1,7 @@
 class Api::V1::Users::DevicesController < Api::ApiController
   respond_to :json
 
-  acts_as_token_authentication_handler_for User, only: :update
+  acts_as_token_authentication_handler_for User, only: [:update, :create]
 
   before_action :authenticate, :check_user_approved_approvable
   before_action :check_user, only: :update
@@ -9,6 +9,21 @@ class Api::V1::Users::DevicesController < Api::ApiController
   def index
     devices = @user.devices
     render json: devices
+  end
+
+  def create
+    device = Device.new
+    device = Device.find_by uuid: device_params[:uuid] if device_params[:uuid].present?
+    if device
+      if device.user.nil?
+        device.construct(@user, device_params[:name])
+        render json: device
+      else
+        render status: 400, json: { message: 'This device has already been assigned to a user' }
+      end
+    else
+      render status: 400, json: { message: 'The UUID provided does not match an existing device' }
+    end
   end
 
   def show
@@ -33,7 +48,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
     end
 
     def device_params
-      params.require(:device).permit(:name, :fogged, :delayed, :alias)
+      params.require(:device).permit(:name, :uuid, :fogged, :delayed, :alias)
     end
 
 end
