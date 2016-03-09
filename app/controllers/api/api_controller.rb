@@ -2,6 +2,8 @@ class Api::ApiController < ActionController::Base
   include ApiApplicationMixin
   rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
 
+  before_action :authenticate
+
   private
 
   def authenticate
