@@ -32,6 +32,11 @@
     // map.addControl(L.mapbox.shareControl());
     map.addControl(L.mapbox.geocoderControl('mapbox.places'));
 
+    function refreshMarkers(){
+      markers.clearLayers();
+      renderMarkers();
+    }
+
     function renderMarkers(){
       markers = new L.MarkerClusterGroup();
         for (var i = 0; i < checkins.length; i++) {
