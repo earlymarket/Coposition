@@ -43,16 +43,8 @@ Rails.application.configure do
 
   config.action_mailer.raise_delivery_errors = true
 
-  config.action_mailer.delivery_method = :smtp
-
-  config.action_mailer.smtp_settings = {
-    :address              => "mail3.gridhost.co.uk",
-    :port                 => 465,
-    :user_name            => ENV['MAIL_PASSWORD'],
-    :password             => ENV['MAIL_ADDRESS'],
-    :authentication       => "plain",
-    :enable_starttls_auto => true
-  }
+  # config.action_mailer.delivery_method = :smtp
+  config.action_mailer.delivery_method = :letter_opener
 
   Paperclip.options[:command_path] = "/usr/bin/"
 end
