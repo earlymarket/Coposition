@@ -1,7 +1,6 @@
 class Users::ApprovalsController < ApplicationController
 
   before_action :authenticate_user!
-  before_action :check_user, only: :index
 
   def new
     @approval = Approval.new
@@ -30,13 +29,6 @@ class Users::ApprovalsController < ApplicationController
   def apps
     @apps = current_user.developers
     @pending = current_user.developer_requests
-    # Redirect if foreign app failed to create a pending approval.
-    if @apps.length == 0 && current_user.pending_approvals.length == 0 && params[:redirect]
-      developer = Developer.find_by(api_key: params[:api_key])
-      Approval.link(current_user, developer, 'Developer')
-    elsif current_user.pending_approvals.length == 0 && params[:redirect]
-      redirect_to params[:redirect]
-    end
   end
 
   def friends
@@ -73,13 +65,6 @@ class Users::ApprovalsController < ApplicationController
   end
 
   private
-
-    def check_user
-      unless current_user?(params[:user_id])
-        developer = Developer.find_by(api_key: params[:api_key])
-        redirect_to developer.redirect_url+"?copo_user=#{current_user.username}"
-      end
-    end
 
     def allowed_params
       params.require(:approval).permit(:approvable, :approvable_type)
