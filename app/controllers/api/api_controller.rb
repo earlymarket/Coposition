@@ -14,7 +14,7 @@ class Api::ApiController < ActionController::Base
     end
   end
 
-  def create_request
+  def create_request(params)
     find_user if (params[:user_id] || params[:id])
     if @user
       @dev.requests.create(user_id: @user.id, action: params[:action], controller: params[:controller])
