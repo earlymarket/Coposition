@@ -9,8 +9,4 @@ class ApplicationController < ActionController::Base
     redirect_to redirect_path
   end
 
-  def current_user?(user_id)
-    current_user == User.find(user_id)
-  end
-
 end
