@@ -62,4 +62,8 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
       model_find(approvable_type).find(allowed_params[:approvable])
     end
 
+    def model_find(type)
+      [User, Developer].find { |model| model.name == type.titleize}
+    end
+
 end
