@@ -58,7 +58,6 @@ end
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-
 group :development do
   gem 'derailed'
   gem 'guard-livereload', '~> 2.4', require: false

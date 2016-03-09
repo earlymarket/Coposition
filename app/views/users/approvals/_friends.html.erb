@@ -3,11 +3,10 @@
     You have sent <%= pluralize(current_user.pending_friends.count, 'friend request') %>.
   <% end %>
 
-
   <% friends.each do |friend| %>
     <div class="card row valign-wrapper">
       <div class="col s8 valign ">
-      <a id="<%= friends_name(friend) %>" href="<%= user_friend_path(current_user.url_id, friend) %>">
+      <a href="<%= user_friend_path(current_user.url_id, friend) %>">
         <h5><%= friends_name(friend) %></h5>
         <p>Friends since <%= humanize_date(current_user.approval_for(friend).approval_date) %></p>
       </a>
