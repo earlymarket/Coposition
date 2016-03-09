@@ -25,9 +25,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
   before do |example|
     create_denhams
-    request.headers["X-Api-Key"] = developer.api_key
-    request.headers["X-User-Token"] = user.authentication_token
-    request.headers["X-User-Email"] = user.email
+    api_request_headers(developer, user)
     unless example.metadata[:skip_before]
       device
       Approval.link(user,second_user,'User')
