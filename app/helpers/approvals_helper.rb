@@ -4,7 +4,7 @@ module ApprovalsHelper
     if type == "Developer"
       { placeholder: "App name", class: "validate devs_typeahead", required: true }
     elsif type == "User"
-      { placeholder: "Username (email if inviting)", class: "validate users_typeahead", required: true }
+      { placeholder: "Email", class: "validate", required: true }
     end
   end
 end

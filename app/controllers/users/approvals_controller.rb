@@ -18,11 +18,11 @@ class Users::ApprovalsController < ApplicationController
       else
         redirect_to new_user_approval_path(approvable_type: type), alert: "Error: #{approval.errors.get(:base).first}"
       end
-    elsif params[:invite]
+    elsif type == 'User'
       UserMailer.invite_email(allowed_params[:approvable]).deliver_now
-      redirect_to user_dashboard_path, notice: "Invite sent!"
+      redirect_to user_dashboard_path, notice: "User not signed up with Coposition, invite email sent!"
     else
-      redirect_to new_user_approval_path(approvable_type: type), alert: "User/Developer not found"
+      redirect_to new_user_approval_path(approvable_type: type), alert: "Developer not found"
     end
   end
 
@@ -74,7 +74,7 @@ class Users::ApprovalsController < ApplicationController
       if type == 'Developer'
         Developer.find_by(company_name: allowed_params[:approvable])
       elsif type == 'User'
-        User.find_by(username: allowed_params[:approvable])
+        User.find_by(email: allowed_params[:approvable])
       end
     end
 
