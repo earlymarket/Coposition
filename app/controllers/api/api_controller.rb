@@ -2,9 +2,17 @@ class Api::ApiController < ActionController::Base
   include ApiApplicationMixin
   rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
 
-  before_action :authenticate
+  before_action :find_user, :authenticate
 
   private
+
+  def find_user
+    if params[:controller] == "api/v1/users"
+      @user = User.find(params[:id])
+    else
+      @user = User.find(params[:user_id])
+    end
+  end
 
   def authenticate
     api_key = request.headers['X-Api-Key']
@@ -17,7 +25,6 @@ class Api::ApiController < ActionController::Base
   end
 
   def create_request
-    find_user if (params[:user_id] || params[:id])
     if @user
       @dev.requests.create(user_id: @user.id, action: params[:action], controller: params[:controller])
     else
@@ -25,23 +32,8 @@ class Api::ApiController < ActionController::Base
     end
   end
 
-  def find_user
-    if params[:controller] == "api/v1/users"
-      @user = User.find(params[:id])
-    else
-      @user = User.find(params[:user_id])
-    end
-  end
-
-  def paginated_response_headers(resource)
-    response['X-Current-Page'] = resource.current_page.to_json
-    response['X-Next-Page'] = resource.next_page.to_json
-    response['X-Total-Entries'] = resource.total_entries.to_json
-    response['X-Per-Page'] = resource.per_page.to_json
-  end
-
   def check_user_approved_approvable
-    find_permissible
+    @permissible = find_permissible
     if !@user.approved?(@dev)
       render status: 401, json: { "approval status": @user.approval_for(@dev).status }
     elsif !@user.approved?(@permissible)
@@ -50,11 +42,14 @@ class Api::ApiController < ActionController::Base
   end
 
   def find_permissible
-    if params[:permissible_id]
-      @permissible = User.find(params[:permissible_id])
-    else
-      @permissible = @dev
-    end
+    params[:permissible_id] ? User.find(params[:permissible_id]) : @dev
+  end
+
+  def paginated_response_headers(resource)
+    response['X-Current-Page'] = resource.current_page.to_json
+    response['X-Next-Page'] = resource.next_page.to_json
+    response['X-Total-Entries'] = resource.total_entries.to_json
+    response['X-Per-Page'] = resource.per_page.to_json
   end
 
   def current_user?(user_id)

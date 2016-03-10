@@ -1,7 +1,8 @@
 class Api::V1::UsersController < Api::ApiController
   respond_to :json
 
-  before_action :check_user_approved_approvable, except: [:index]
+  skip_before_filter :find_user, only: :index
+  before_action :check_user_approved_approvable, only: :show
 
   def index
     respond_with User.all.select(:id, :username)
