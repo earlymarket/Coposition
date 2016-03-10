@@ -16,6 +16,12 @@
 <script>
 $(document).ready(function(){
   $('.modal-trigger').leanModal();
+  $(".privilege").each(function(toggles){
+    if ($(this).children().prop('checked')){
+      var permission = $(this).parents('li.collection-item').data().permission;
+      disable_toggles(permission, true)
+    }
+  })
 });
 
 var current_user_id =  <%= @current_user_id %>;
@@ -35,17 +41,41 @@ function update_permission(permission, device_id, attribute, value){
   });
 }
 
-function select_change(){
+function disable_toggles(permission, state){
+  $("li[data-permission='"+ permission +"']>.disable>label>input").prop("disabled", state)
+}
+
+function disable_access_change(){
   $(".privilege").change(function( event ) {
-    var privilege = $(this).find(':selected').val();
+    var state = $(event.target).prop('checked');
+    if (state == true){
+      var privilege = "disallowed"
+    } else {
+      var privilege = "complete"
+    }
+    var permission = $(event.target).parents('li.collection-item').data().permission;
+    var device_id = $(event.target).parents('ul.collection').data().device;
+    disable_toggles(permission, state);
+    update_permission(permission, device_id, 'privilege', privilege)
+  });
+}
+
+function last_checkin_change(){
+  $(".last_only").change(function( event ) {
+    var state = $(event.target).prop('checked');
+    if (state == true){
+      var privilege = "last_only"
+    } else {
+      var privilege = "complete"
+    }
     var permission = $(event.target).parents('li.collection-item').data().permission;
     var device_id = $(event.target).parents('ul.collection').data().device;
     update_permission(permission, device_id, 'privilege', privilege)
   });
 }
 
-function toggle_change(){
-  $(".switch").change(function( event ) {
+function bypass_change(){
+  $(".bypass").change(function( event ) {
     var state = $(event.target).prop('checked');
     var permission = $(event.target).parents('li.collection-item').data().permission;
     var device_id = $(event.target).parents('ul.collection').data().device;
@@ -54,6 +84,7 @@ function toggle_change(){
   });
 }
 
-select_change();
-toggle_change();
+disable_access_change();
+last_checkin_change();
+bypass_change();
 </script>

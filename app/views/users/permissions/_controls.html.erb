@@ -1,17 +1,28 @@
-<div class="input-field col s3">
-<%= select_tag "privilege", options_for_select({"Complete" => "complete", "Last only" => "last_only", "Disallowed" => "disallowed"}, permission.privilege), class: 'privilege browser-default'%>
+<div class="switch col s4" name='privilege'>
+  <label class="privilege">
+    <%= check_box_tag 'privilege','', permission.privilege == "disallowed" %>
+    <span class="lever"></span>
+    Disable access
+  </label>
 </div>
-<div class="switch col s4" name='bypass_fogging'>
+<div class="switch bypass disable col s4" name='bypass_fogging'>
   <label>
     <%= check_box_tag 'bypass_fogging','', permission.bypass_fogging %>
     <span class="lever"></span>
     Bypass Fogging
   </label>
 </div>
-<div class="switch col s4" name='show_history'>
+<div class="switch bypass disable col s4" name='bypass_delay'>
   <label>
-    <%= check_box_tag 'show_history','', permission.show_history %>
+    <%= check_box_tag 'bypass_delay','', permission.bypass_fogging %>
     <span class="lever"></span>
-    Show History
+    Bypass Delay
+  </label>
+</div>
+<div class="switch disable col s4" name='last_only'>
+  <label class="last_only">
+    <%= check_box_tag 'last_only','', permission.privilege == "last_only" %>
+    <span class="lever"></span>
+    Last Checkin Only
   </label>
 </div>
