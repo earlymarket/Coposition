@@ -10,24 +10,12 @@
   <script>
 
     L.mapbox.accessToken = 'pk.eyJ1IjoiZ2FyeXNpdSIsImEiOiJjaWxjZjN3MTMwMDZhdnNtMnhsYmh4N3lpIn0.RAGGQ0OaM81HVe0OiAKE0w';
-    var map = L.mapbox.map('map', null, {maxZoom: 18} );
-      // .setView([51.50, -0.12], 13);
-    var layers = {
-      Light: L.mapbox.tileLayer('mapbox.light'),
-      Dark: L.mapbox.tileLayer('mapbox.dark'),
-      Streets: L.mapbox.tileLayer('mapbox.streets'),
-      Hybrid: L.mapbox.tileLayer('mapbox.streets-satellite'),
-      Satellite: L.mapbox.tileLayer('mapbox.satellite'),
-      "High contrast": L.mapbox.tileLayer('mapbox.high-contrast'),
-    };
-    layers.Light.addTo(map).on('ready', function() {
-
+    var map = L.mapbox.map('map', 'mapbox.light', {maxZoom: 18} );
+    map.on('ready', function() {
       checkins = <%= raw @checkins.to_json %>
       renderMarkers();
       map.fitBounds(markers.getBounds());
     });
-    // To be re-added later. Remember: layers do NOT persist.
-    // L.control.layers(layers).addTo(map);
     // map.addControl(L.mapbox.shareControl());
     map.addControl(L.mapbox.geocoderControl('mapbox.places'));
     var lc = L.control.locate({
@@ -65,7 +53,7 @@
 
         var $newCheckinLink = $('<%= j link_to("Create checkin here", new_user_device_checkin_path(current_user.url_id, @device.id), method: "post", remote: true) %>');
         $newCheckinLink.attr('href', checkinPath);
-        $('#current-location').replaceWith($newCheckinButton);
+        $('#current-location').replaceWith($newCheckinLink);
       }
     })
 
