@@ -64,7 +64,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     end
 
     context 'when adding a friend' do
-      it 'should create a pending approval and a friend request with a user' do
+      it 'should create a pending approval, friend request and send an email' do
         count = ActionMailer::Base.deliveries.count
         post :create, friend_approval_create_params
         expect(ActionMailer::Base.deliveries.count).to be(count+1)
