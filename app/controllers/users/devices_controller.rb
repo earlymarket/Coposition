@@ -1,7 +1,5 @@
 class Users::DevicesController < ApplicationController
 
-  acts_as_token_authentication_handler_for User
-  protect_from_forgery with: :null_session
   before_action :authenticate_user!
   before_action :require_ownership, only: [:show, :destroy, :update]
 
@@ -15,14 +13,15 @@ class Users::DevicesController < ApplicationController
 
   def show
     @device = Device.find(params[:id])
-    Checkin.includes(:device).where(device_id: @device.id)
-    @checkins = @device.checkins.order('created_at DESC').paginate(page: params[:page], per_page: 50)
+    @checkins = Checkin.includes(:device) \
+      .where(device_id: @device.id) \
+      .order('created_at DESC') \
+      .paginate(page: params[:page], per_page: 50)
   end
 
   def new
     @device = Device.new
     @device.uuid = params[:uuid] if params[:uuid]
-    @redirect_target = params[:redirect] if params[:redirect]
   end
 
   def create
@@ -32,13 +31,12 @@ class Users::DevicesController < ApplicationController
       if @device.user.nil?
         @device.construct(current_user, allowed_params[:name])
         @device.checkins.create(checkin_params) if params[:create_checkin].present?
-        flash[:notice] = "This device has been bound to your account!"
-        redirect_using_param_or_default unless via_app
+        redirect_to user_device_path(id: @device.id), notice: "This device has been bound to your account!"
       else
-        invalid_payload('This device has already been assigned to a user', new_user_device_path)
+        redirect_to new_user_device_path, notice: 'This device has already been assigned to a user'
       end
     else
-      invalid_payload('The UUID provided does not match an existing device', new_user_device_path)
+      redirect_to new_user_device_path, notice: 'The UUID provided does not match an existing device'
     end
   end
 
@@ -61,9 +59,6 @@ class Users::DevicesController < ApplicationController
   end
 
   private
-    def via_app
-      render json: @device.to_json if req_from_coposition_app?
-    end
 
     def allowed_params
       params.require(:device).permit(:uuid,:name)
@@ -71,14 +66,6 @@ class Users::DevicesController < ApplicationController
 
     def checkin_params
       { lat: params[:location].split(",").first, lng: params[:location].split(",").last }
-    end
-
-    def redirect_using_param_or_default(default: user_device_path(current_user.url_id, @device.id))
-      if params[:redirect].blank?
-        redirect_to default
-      else
-        redirect_to params[:redirect]
-      end
     end
 
     def require_ownership

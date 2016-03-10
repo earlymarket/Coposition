@@ -10,7 +10,7 @@ Feature: Approvals
     @javascript
     Scenario: User accepts requests
       When I click "Approve"
-        Then I should have an application
+        Then I should have an app
       And I click "Dashboard"
       And I click "You have 1 friend requests"
       When I click "Approve"
@@ -19,7 +19,7 @@ Feature: Approvals
     @javascript
     Scenario: User rejects requests
       When I click "Reject"
-        Then I should not have any applications
+        Then I should not have any apps
       And I click "Dashboard"
       And I click "You have 1 friend requests"
       When I click "Reject"

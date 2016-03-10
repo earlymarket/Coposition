@@ -4,6 +4,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   include ControllerMacros
 
   let(:device){FactoryGirl::create :device}
+  let(:empty_device) { FactoryGirl::create :device }
   let(:developer) do
     dev = FactoryGirl::create :developer
     Approval.link(user,dev,'Developer')
@@ -22,7 +23,9 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     us.devices << FactoryGirl::create(:device)
     us
   end
-  let(:params) {{ user_id: user.id, id: device.id, format: :json }}
+  let(:params) {{ user_id: user.id, format: :json }}
+  let(:device_params) { params.merge(id: device.id) }
+  let(:create_params) { params.merge(device: { name: "new" }) }
 
   before do
     request.headers["X-Api-Key"] = developer.api_key
@@ -32,21 +35,45 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
 
   describe "GET" do
 
-
     it "should GET a list of devices of a specific user" do
-      get :index, user_id: user.username, format: :json
+      get :index, params
       expect(res_hash.first["id"]).to be device.id
     end
 
     it "should record the request" do
       expect(developer.requests.count).to be 0
-      get :index, user_id: user.username, format: :json
+      get :index, params
       expect(developer.requests.count).to be 1
     end
 
     it "should GET information on a specific device for a specific user" do
-      get :show, params
+      get :show, device_params
       expect(res_hash.first["id"]).to be device.id
+    end
+
+  end
+
+  describe 'POST' do
+
+    it 'should create a device with a UUID provided' do
+      create_params.merge!(device: { uuid: empty_device.uuid })
+      post :create, create_params
+      expect(res_hash[:user_id]).to be user.id
+      expect(res_hash[:uuid]).to eq empty_device.uuid
+    end
+
+    it 'should fail to to create a device with an invalid UUID' do
+      count = user.devices.count
+      create_params.merge!(device: { uuid: 123 })
+      post :create, create_params
+      expect(res_hash[:message]).to match 'does not match'
+      expect(user.devices.count).to be count
+    end
+
+    it 'should fail to to create a device with a taken UUID' do
+      create_params.merge!(device: { uuid: device.uuid })
+      post :create, create_params
+      expect(res_hash[:message]).to match 'already been assigned'
     end
 
   end
@@ -54,15 +81,15 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   describe "PUT" do
 
     it "should update settings" do
-      put :update, params.merge(device: { fogged: true })
+      put :update, device_params.merge(device: { fogged: true })
       expect(res_hash[:fogged]).to eq(true)
-      put :update, params.merge(device: { fogged: false })
+      put :update, device_params.merge(device: { fogged: false })
       device.reload
       expect(res_hash[:fogged]).to eq(false)
     end
 
     it "should reject non-existant device ids" do
-      put :update, params.merge(id: 9999999, device: { fogged: true })
+      put :update, device_params.merge(id: 9999999, device: { fogged: true })
       expect(response.status).to eq(404)
       expect(res_hash[:message]).to eq('Device does not exist')
     end

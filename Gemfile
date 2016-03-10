@@ -46,6 +46,8 @@ gem 'jquery-validation-rails'
 
 gem 'inline_svg'
 
+gem 'twitter-typeahead-rails'
+
 # Use Unicorn as the app server
 
 group :production do
@@ -55,7 +57,6 @@ end
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-
 
 group :development do
   gem 'derailed'
@@ -74,6 +75,7 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'bullet'
+  gem 'letter_opener'
   gem 'meta_request'
 end
 
