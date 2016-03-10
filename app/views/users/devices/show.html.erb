@@ -3,12 +3,10 @@
   <div class="bottom-panel">
     <div class="buttons"><%= link_to("Delete history", user_device_checkins_path(current_user.url_id, @device.id), { method: :delete, class: "btn red white-text", data: { confirm: 'Delete all checkins for this device?' } })%>
       <%= link_to("Delete device", user_device_path(current_user.url_id, @device), { method: :delete, class: "btn red white-text", data: { confirm: 'Are you sure?' } })%>
-      <!-- <%= link_to("Check-in now", new_user_device_checkin_path(current_user.url_id, @device.id), class: "btn green white-text", id: "checkin-button", remote: true) %> -->
     </div>
     <%= will_paginate @checkins %>
   </div>
   <script>
-
     L.mapbox.accessToken = 'pk.eyJ1IjoiZ2FyeXNpdSIsImEiOiJjaWxjZjN3MTMwMDZhdnNtMnhsYmh4N3lpIn0.RAGGQ0OaM81HVe0OiAKE0w';
     var map = L.mapbox.map('map', 'mapbox.light', {maxZoom: 18} );
     map.on('ready', function() {
@@ -16,28 +14,6 @@
       renderMarkers();
       map.fitBounds(markers.getBounds());
     });
-    // map.addControl(L.mapbox.shareControl());
-    map.addControl(L.mapbox.geocoderControl('mapbox.places'));
-    var lc = L.control.locate({
-      follow: false,
-      setView: false,
-      markerClass: L.marker,
-      markerStyle: {
-        icon: L.mapbox.marker.icon({
-          'marker-size': 'large',
-          'marker-symbol': 'star',
-          'marker-color': '#01579B',
-        }),
-        riseOnHover: true,
-      },
-      strings: {
-        title: 'Your current location',
-        popup: 'Your current location within {distance} {unit}.<br><a href="#" id="current-location">Create checkin here</a>',
-      },
-
-    }).addTo(map);
-    lc.stop();
-    lc.start();
 
     map.on('popupopen', function(e){
       var coords = e.popup.getLatLng()
@@ -57,34 +33,7 @@
       }
     })
 
-    function refreshMarkers(){
-      markers.clearLayers();
-      renderMarkers();
-    }
 
-    function renderMarkers(){
-      markers = new L.MarkerClusterGroup();
-        for (var i = 0; i < checkins.length; i++) {
-          var checkin = checkins[i];
-          var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), {
-            icon: L.mapbox.marker.icon({
-              'marker-symbol': 'heliport',
-              'marker-color': '#ff6900',
-            }),
-            title: 'ID: ' + checkin.id,
-            alt: 'ID: ' + checkin.id
-          });
-          marker.bindPopup('<h3>ID: ' + checkin.id + '</h3>' + (checkin.address || checkin.fogged_area))
-
-          marker.on('click', function() {
-            map.panTo(this.getLatLng());
-          });
-
-          markers.addLayer(marker);
-        }
-
-      map.addLayer(markers);
-    }
 
   </script>
 <% end %>
