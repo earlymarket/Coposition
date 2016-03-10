@@ -30,6 +30,7 @@ gem 'materialize-sass'
 gem 'will_paginate-materialize'
 gem 'jquery-validation-rails'
 gem 'inline_svg'
+gem 'gon', '~> 6.0.1'
 
 # Use Unicorn as the app server
 
