@@ -8,7 +8,6 @@ class Api::V1::Users::CheckinsController < Api::ApiController
 
   def index
     params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 1000
-
     checkins = @user.get_checkins(@permissible, @device).order('created_at DESC') \
       .paginate(page: params[:page], per_page: per_page)
     paginated_response_headers(checkins)
@@ -29,8 +28,7 @@ class Api::V1::Users::CheckinsController < Api::ApiController
   end
 
   def create
-    device = Device.find(params[:device_id])
-    checkin = device.checkins.create(allowed_params)
+    checkin = @device.checkins.create(allowed_params)
     if checkin.id
       render json: [checkin]
     else
