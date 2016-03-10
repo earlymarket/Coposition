@@ -30,6 +30,9 @@ RSpec.describe Users::ApprovalsController, type: :controller do
    user_params.merge(approval: { approvable: friend.username, approvable_type: 'User' })
   end
   let(:approve_reject_params) {user_params.merge(id: approval.id) }
+  let(:invite_params) do
+    user_params.merge(invite: '', approval: { approvable: 'new@email.com', approvable_type: 'User' })
+  end
 
   describe 'GET #new' do
     it 'should assign a new approval' do
@@ -105,6 +108,13 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         post :create, friend_approval_create_params
         expect(flash[:alert]).to match 'exists'
         expect(Approval.count).to eq 2
+      end
+    end
+
+    context 'when inviting a user' do
+      it 'should send an email to the address provided' do
+        post :create, invite_params
+        expect(ActionMailer::Base.deliveries.count).to be(1)
       end
     end
   end
