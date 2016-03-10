@@ -34,5 +34,5 @@
 
 // -- Page specific --
 
-//= require checkin-map
+//= require device-show
 //= require landing-page
