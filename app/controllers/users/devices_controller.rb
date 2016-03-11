@@ -17,6 +17,7 @@ class Users::DevicesController < ApplicationController
     @device = Device.find(params[:id])
     # Checkin.includes(:device).where(device_id: @device.id)
     @checkins = Checkin.joins(:device).where(device_id: @device.id).paginate(page: params[:page], per_page: 50).order('created_at DESC')
+    gon.checkins = @checkins
   end
 
   def new

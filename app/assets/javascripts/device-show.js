@@ -19,42 +19,48 @@ $(document).on('ready page:change', function() {
     },
     strings: {
       title: 'Your current location',
-      popup: 'Your current location within {distance} {unit}.<br><a href="#" id="current-location">Create checkin here</a>',
+      popup: 'Your current location within {distance} {unit}.<br><a href="#" id="current-location">Create check-in here</a>',
     },
 
   }).addTo(map);
   lc.stop();
   lc.start();
+
+  Copo.refreshMarkers = function(){
+    Copo.markers.clearLayers();
+    Copo.renderMarkers();
+  }
+
+  Copo.renderMarkers = function(){
+    Copo.markers = new L.MarkerClusterGroup();
+    var checkins = Copo.checkins;
+      for (var i = 0; i < checkins.length; i++) {
+        var checkin = checkins[i];
+        var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), {
+          icon: L.mapbox.marker.icon({
+            'marker-symbol': 'heliport',
+            'marker-color': '#ff6900',
+          }),
+          title: 'ID: ' + checkin.id,
+          alt: 'ID: ' + checkin.id
+        });
+        marker.bindPopup('<h3>ID: ' + checkin.id + '</h3>' + (checkin.address || checkin.fogged_area))
+
+        marker.on('click', function() {
+          map.panTo(this.getLatLng());
+        });
+
+        Copo.markers.addLayer(marker);
+      }
+
+    map.addLayer(Copo.markers);
+  }
+
+  map.on('ready', function() {
+    Copo.renderMarkers();
+    map.fitBounds(Copo.markers.getBounds());
+  });
+
   }
 });
 
-//OH HAI IT'S GLOBAL SCOPE OUT HERE
-
-function refreshMarkers(){
-  markers.clearLayers();
-  renderMarkers();
-}
-
-function renderMarkers(){
-  markers = new L.MarkerClusterGroup();
-    for (var i = 0; i < checkins.length; i++) {
-      var checkin = checkins[i];
-      var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), {
-        icon: L.mapbox.marker.icon({
-          'marker-symbol': 'heliport',
-          'marker-color': '#ff6900',
-        }),
-        title: 'ID: ' + checkin.id,
-        alt: 'ID: ' + checkin.id
-      });
-      marker.bindPopup('<h3>ID: ' + checkin.id + '</h3>' + (checkin.address || checkin.fogged_area))
-
-      marker.on('click', function() {
-        map.panTo(this.getLatLng());
-      });
-
-      markers.addLayer(marker);
-    }
-
-  map.addLayer(markers);
-}
