@@ -5,7 +5,7 @@ class Users::DevicesController < ApplicationController
 
   def index
     @current_user_id = current_user.id
-    @devices = current_user.devices.map do |dev|
+    @devices = current_user.devices.includes(:developers, :permitted_users).map do |dev|
       dev.checkins.last.reverse_geocode! if dev.checkins.exists?
       dev
     end
