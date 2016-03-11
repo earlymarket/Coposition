@@ -44,7 +44,7 @@ Rails.application.routes.draw do
             get :last
           end
         end
-        resources :devices, only: [:index, :show, :update], module: :users do
+        resources :devices, only: [:index, :create, :show, :update], module: :users do
           resources :checkins, only: [:index, :create] do
             collection do
               get :last
@@ -84,7 +84,7 @@ Rails.application.routes.draw do
         get 'show_checkin'
       end
     end
-    get '/applications', to: 'approvals#applications'
+    get '/apps', to: 'approvals#apps'
     get '/friends', to: 'approvals#friends'
   end
 

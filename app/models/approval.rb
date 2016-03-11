@@ -4,11 +4,23 @@ class Approval < ActiveRecord::Base
   belongs_to :approvable, :polymorphic => true
 
   before_create do
-    not_self = true
-    if approvable_type == 'User'
-      not_self = (user != approvable)
+    if approvable_type == 'User' && user == approvable
+      errors.add(:base, "Adding self")
+      false
+    elsif Approval.exists?(user: user, approvable: approvable, approvable_type: approvable_type)
+      errors.add(:base, "Approval/Request exists")
+      false
     end
-    not_self && !Approval.exists?(user: user, approvable: approvable, approvable_type: approvable_type)
+  end
+
+  def self.construct(user, approvable, approvable_type)
+    approval = Approval.link(user, approvable, approvable_type)
+    if (approvable_type == 'Developer') || (user.friend_requests.include?(approvable))
+      approval = Approval.accept(user, approvable, approvable_type)
+    else
+      UserMailer.add_friend_email(user, approvable).deliver_now
+    end
+    approval
   end
 
   def self.link(user, approvable, approvable_type)
@@ -21,16 +33,14 @@ class Approval < ActiveRecord::Base
   end
 
   def self.accept(user, approvable, approvable_type)
-    transaction do
-      accept_one_side(user, approvable, approvable_type)
-      accept_one_side(approvable, user, approvable_type) unless approvable_type == 'Developer'
-    end
+    accept_one_side(approvable, user, approvable_type) unless approvable_type == 'Developer'
+    accept_one_side(user, approvable, approvable_type)
   end
 
   def self.accept_one_side(user, approvable, approvable_type)
-    request = find_by_user_id_and_approvable_id_and_approvable_type(user.id, approvable.id, approvable_type)
-    request.approve!
-    request.save!
+    approval = find_by_user_id_and_approvable_id_and_approvable_type(user.id, approvable.id, approvable_type)
+    approval.approve!
+    approval
   end
 
   def approve!
@@ -39,3 +49,4 @@ class Approval < ActiveRecord::Base
   end
 
 end
+

@@ -175,6 +175,8 @@ GEM
     kgio (2.10.0)
     launchy (2.4.3)
       addressable (~> 2.3)
+    letter_opener (1.4.1)
+      launchy (~> 2.2)
     listen (3.0.6)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9.7)
@@ -327,6 +329,10 @@ GEM
     tilt (2.0.2)
     turbolinks (2.5.3)
       coffee-rails
+    twitter-typeahead-rails (0.11.1)
+      actionpack (>= 3.1)
+      jquery-rails
+      railties (>= 3.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.7.2)
@@ -375,6 +381,7 @@ DEPENDENCIES
   jquery-rails
   jquery-validation-rails
   launchy
+  letter_opener
   materialize-sass
   meta_request
   newrelic_rpm
@@ -397,6 +404,7 @@ DEPENDENCIES
   slack-notifier
   spring
   turbolinks
+  twitter-typeahead-rails
   uglifier (>= 1.3.0)
   unicorn
   web-console (~> 2.0)

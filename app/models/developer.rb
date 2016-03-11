@@ -16,6 +16,7 @@ class Developer < ActiveRecord::Base
   has_many :devices, through: :permissions
 
   has_many :approvals, :as => :approvable, dependent: :destroy
+  has_many :pending_requests, -> { where "status = 'developer-requested'" }, :through => :approvals, source: :user
   has_many :users, -> { where "status = 'accepted'" }, through: :approvals
 
   before_create do |dev|

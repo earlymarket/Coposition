@@ -8,6 +8,7 @@
       <div class="card-content">
         <ul>
           <li>Checkin ID: <%= @checkin.id %></li>
+          <%= checkins_visible_time(@checkin) %>
           <li>Created on: <%= humanize_date(@checkin.created_at) %></li>
           <li>Latitude: <%=  @checkin.lat %></li>
           <li>Longitude <%= @checkin.lng %></li>
