@@ -1,3 +1,4 @@
+<%= Gon::Base.render_data %>
 <h1>Devices</h1>
 <div>
   <% @devices.each do |device| %>
@@ -14,18 +15,13 @@
 </div>
 
 <script>
+
 $(document).ready(function(){
   $('.modal-trigger').leanModal();
-  $(".privilege").each(function(toggles){
-    if ($(this).children().prop('checked')){
-      var permission = switches.get_permission_id(this);
-      switches.disable_toggles(permission, true)
-    }
-  })
-  var current_user_id =  <%= @current_user_id %>;
-
-  switches.disable_access_change(current_user_id);
-  switches.last_checkin_change(current_user_id);
-  switches.bypass_change(current_user_id);
 });
+
+Copo.check_disabled();
+Copo.disable_access_change();
+Copo.last_checkin_change();
+Copo.bypass_change();
 </script>
