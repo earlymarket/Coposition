@@ -5,12 +5,10 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
   let(:developer){FactoryGirl::create :developer}
   let(:user){FactoryGirl::create :user}
-  let(:second_user){FactoryGirl::create :user}
   let(:device){FactoryGirl::create :device, user_id: user.id, delayed: 10}
-  let(:second_device){FactoryGirl::create :device, user_id: user.id}
   let(:checkin){FactoryGirl::create :checkin, device_id: device.id}
   let(:historic_checkin) do
-    ad = user.approval_for(second_user).approval_date
+    ad = user.approval_for(developer).approval_date
     FactoryGirl::create :checkin, device_id: device.id, created_at: ad - 1.day
   end
   let(:params) {{ user_id: user.id, device_id: device.id }}
@@ -18,8 +16,6 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
   before do
     request.headers["X-Api-Key"] = developer.api_key
     device
-    Approval.link(user,second_user,'User')
-    Approval.accept(second_user,user,'User')
     Approval.link(user,developer,'Developer')
     Approval.accept(user,developer,'Developer')
   end
