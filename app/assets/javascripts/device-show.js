@@ -74,7 +74,7 @@ $(document).on('ready page:change', function() {
     template += '<li>Latitude: {lat}</li>'
     template += '<li>Longitude: {lng}</li>'
     template += '<li>Address: ' + (checkin.address || checkin.fogged_area) + '</li>'
-    template += '<li>Fogged status: {fogged}</li>'
+    template += '<li>Fogged status: '+ Copo.Utility.foggedIcon(checkin.fogged) +'</li>'
     if(checkin.fogged){
       template += '<li>Fogged address: {fogged_area}</li>'
     }
