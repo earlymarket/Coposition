@@ -16,16 +16,16 @@
           <ul class="permissions collection" data-device=<%=device.id%>>
 
             <% device.developers.each do |developer| %>
-              <% permission =  device.permissions.where(permissible: developer, permissible_type: "Developer").first %>
-              <li class="collection-item row" data-permission=<%=permission.id%>>
+              <% permission =  device.permission_for(developer) %>
+              <li class="collection-item row">
                 <%= permissible_title(developer) %>
                 <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
               </li>
             <% end %>
 
             <% device.permitted_users.each do |friend| %>
-              <% permission =  device.permissions.where(permissible: friend, permissible_type: "User").first %>
-              <li class="collection-item row" data-permission=<%=permission.id%>>
+              <% permission =  device.permission_for(friend) %>
+              <li class="collection-item row">
                 <%= permissible_title(friend) %>
                 <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
               </li>
@@ -47,8 +47,5 @@
       <%= render partial: "privacy", object: device, as: 'device' %>
       </div>
     </div>
-  </div>
-  <div class="col s1 offset-s3">
-    <%= link_to(devices_published_icon(device), user_device_path(current_user.url_id, device.id, published: device.published), { method: :put, id:"publishedButton#{device.id}", remote: true, data: { published: device.published?, confirm: "This will allow anyone to view your latest location at the url: " } })%>
   </div>
 </div>
