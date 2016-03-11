@@ -6,7 +6,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
   let(:developer){FactoryGirl::create :developer}
   let(:user){FactoryGirl::create :user}
   let(:second_user){FactoryGirl::create :user}
-  let(:device){FactoryGirl::create :device, user_id: user.id}
+  let(:device){FactoryGirl::create :device, user_id: user.id, delayed: 10}
   let(:second_device){FactoryGirl::create :device, user_id: user.id}
   let(:checkin){FactoryGirl::create :checkin, device_id: device.id}
   let(:historic_checkin) do
@@ -32,7 +32,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
         checkin
       end
 
-      context "with privilege set to disallowed and can_show_history set to false" do
+      context "with privilege set to disallowed and bypass_delay set to false" do
         it "should return 0 checkins" do
           device.permission_for(developer).update! privilege: 0
           get :last, params
@@ -40,63 +40,63 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
         end
       end
 
-      context "with privilege set to disallowed and can_show_history set to true" do
+      context "with privilege set to disallowed and bypass_delay set to true" do
         it "should return 0 checkins" do
           device.permission_for(developer).update! privilege: 0
-          device.permission_for(developer).update! show_history: true
+          device.permission_for(developer).update! bypass_delay: true
           get :last, params
           expect(res_hash.size).to be(0)
         end
       end
 
-      context "with privilege set to last_only and can_show_history set to true" do
+      context "with privilege set to last_only and bypass_delay set to true" do
         it "should return 1 new checkin" do
           device.permission_for(developer).update! privilege: 1
-          device.permission_for(developer).update! show_history: true
+          device.permission_for(developer).update! bypass_delay: true
           get :last, params
           expect(res_hash.size).to be(1)
           expect(res_hash.first['id']).to be(checkin.id)
         end
       end
 
-      context "with privilege set to last_only and can_show_history set to false" do
-        it "should return 1 new checkin" do
+      context "with privilege set to last_only and bypass_delay set to false" do
+        it "should return 1 old checkin" do
           device.permission_for(developer).update! privilege: 1
-          device.permission_for(developer).update! show_history: false
+          device.permission_for(developer).update! bypass_delay: false
+          get :last, params
+          expect(res_hash.size).to be(1)
+          expect(res_hash.first['id']).to be(historic_checkin.id)
+        end
+      end
+
+      context "with privilege set to complete and bypass_delay set to true" do
+        it "should return 1 new checkin" do
+          device.permission_for(developer).update! privilege: 2
+          device.permission_for(developer).update! bypass_delay: true
           get :last, params
           expect(res_hash.size).to be(1)
           expect(res_hash.first['id']).to be(checkin.id)
         end
       end
 
-      context "with privilege set to complete and can_show_history set to true" do
-        it "should return 1 new checkin" do
+      context "with privilege set to complete and bypass_delay set to false" do
+        it "should return 1 old checkin" do
           device.permission_for(developer).update! privilege: 2
-          device.permission_for(developer).update! show_history: true
+          device.permission_for(developer).update! bypass_delay: false
           get :last, params
           expect(res_hash.size).to be(1)
-          expect(res_hash.first['id']).to be(checkin.id)
-        end
-      end
-
-      context "with privilege set to complete and can_show_history set to false" do
-        it "should return 1 new checkin" do
-          device.permission_for(developer).update! privilege: 2
-          device.permission_for(developer).update! show_history: false
-          get :last, params
-          expect(res_hash.size).to be(1)
-          expect(res_hash.first['id']).to be(checkin.id)
+          expect(res_hash.first['id']).to be(historic_checkin.id)
         end
       end
     end
 
-    context 'with 1 historic checkin' do
+    context 'with 1 new checkin' do
 
       before do
-        historic_checkin
+        checkin
       end
 
-      context "with privilege set to disallowed and can_show_history set to false" do
+      context "with privilege set to disallowed and bypass_delay set to false" do
         it "should return 0 checkins" do
           device.permission_for(developer).update! privilege: 0
           get :last, params
@@ -104,26 +104,26 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
         end
       end
 
-      context "with privilege set to disallowed and can_show_history set to true" do
+      context "with privilege set to disallowed and bypass_delay set to true" do
         it "should return 0 checkins" do
           device.permission_for(developer).update! privilege: 0
-          device.permission_for(developer).update! show_history: true
+          device.permission_for(developer).update! bypass_delay: true
           get :last, params
           expect(res_hash.size).to be(0)
         end
       end
 
-      context "with privilege set to last_only and can_show_history set to true" do
-        it "should return 1 historic checkin" do
+      context "with privilege set to last_only and bypass_delay set to true" do
+        it "should return 1 new checkin" do
           device.permission_for(developer).update! privilege: 1
-          device.permission_for(developer).update! show_history: true
+          device.permission_for(developer).update! bypass_delay: true
           get :last, params
           expect(res_hash.size).to be(1)
-          expect(res_hash.first['id']).to be(historic_checkin.id)
+          expect(res_hash.first['id']).to be(checkin.id)
         end
       end
 
-      context "with privilege set to last_only and can_show_history set to false" do
+      context "with privilege set to last_only and bypass_delay set to false" do
         it "should return 0 checkins" do
           device.permission_for(developer).update! privilege: 0
           get :last, params
@@ -131,18 +131,18 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
         end
       end
 
-      context "with privilege set to complete and can_show_history set to true" do
+      context "with privilege set to complete and bypass_delay set to true" do
         it "should return 1 historic checkin" do
           device.permission_for(developer).update! privilege: 2
-          device.permission_for(developer).update! show_history: true
+          device.permission_for(developer).update! bypass_delay: true
           get :last, params
           expect(res_hash.size).to be(1)
-          expect(res_hash.first['id']).to be(historic_checkin.id)
+          expect(res_hash.first['id']).to be(checkin.id)
         end
       end
 
-      context "with privilege set to complete and can_show_history set to false" do
-        it "should return 0 checkins" do
+      context "with privilege set to complete and bypass_delay set to false" do
+        it "should return 1 historic checkin" do
           device.permission_for(developer).update! privilege: 0
           get :last, params
           expect(res_hash.size).to be(0)
@@ -161,7 +161,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
         checkin
       end
 
-      context "with privilege set to disallowed and can_show_history set to false" do
+      context "with privilege set to disallowed and bypass_delay set to false" do
         it "should return 0 checkins" do
           device.permission_for(developer).update! privilege: 0
           get :index, params
@@ -169,51 +169,51 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
         end
       end
 
-      context "with privilege set to disallowed and can_show_history set to true" do
+      context "with privilege set to disallowed and bypass_delay set to true" do
         it "should return 0 checkins" do
           device.permission_for(developer).update! privilege: 0
-          device.permission_for(developer).update! show_history: true
+          device.permission_for(developer).update! bypass_delay: true
           get :index, params
           expect(res_hash.size).to be(0)
         end
       end
 
-      context "with privilege set to last_only and can_show_history set to true" do
+      context "with privilege set to last_only and bypass_delay set to true" do
         it "should return 1 new checkin" do
           device.permission_for(developer).update! privilege: 1
-          device.permission_for(developer).update! show_history: true
+          device.permission_for(developer).update! bypass_delay: true
           get :index, params
           expect(res_hash.size).to be(1)
           expect(res_hash.first['id']).to be(checkin.id)
         end
       end
 
-      context "with privilege set to last_only and can_show_history set to false" do
-        it "should return 1 new checkin" do
+      context "with privilege set to last_only and bypass_delay set to false" do
+        it "should return 1 old checkin" do
           device.permission_for(developer).update! privilege: 1
-          device.permission_for(developer).update! show_history: false
+          device.permission_for(developer).update! bypass_delay: false
           get :index, params
           expect(res_hash.size).to be(1)
-          expect(res_hash.first['id']).to be(checkin.id)
+          expect(res_hash.first['id']).to be(historic_checkin.id)
         end
       end
 
-      context "with privilege set to complete and can_show_history set to true" do
+      context "with privilege set to complete and bypass_delay set to true" do
         it "should return 2 checkins" do
           device.permission_for(developer).update! privilege: 2
-          device.permission_for(developer).update! show_history: true
+          device.permission_for(developer).update! bypass_delay: true
           get :index, params
           expect(res_hash.size).to be(2)
         end
       end
 
-      context "with privilege set to complete and can_show_history set to false" do
-        it "should return 1 new checkin" do
+      context "with privilege set to complete and bypass_delay set to false" do
+        it "should return 1 old checkin" do
           device.permission_for(developer).update! privilege: 2
-          device.permission_for(developer).update! show_history: false
+          device.permission_for(developer).update! bypass_delay: false
           get :index, params
           expect(res_hash.size).to be(1)
-          expect(res_hash.first['id']).to be(checkin.id)
+          expect(res_hash.first['id']).to be(historic_checkin.id)
         end
       end
     end

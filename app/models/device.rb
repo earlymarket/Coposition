@@ -18,10 +18,6 @@ class Device < ActiveRecord::Base
     permitted_users << current_user.friends
   end
 
-  #def checkins
-  #  delayed? ? super.before(delayed.minutes.ago) : super
-  #end
-
   def permitted_history_for(permissible)
     return Checkin.none if permission_for(permissible).privilege == "disallowed"
     #approval_date = user.approval_for(permissible).approval_date
@@ -40,9 +36,9 @@ class Device < ActiveRecord::Base
     permissions.find_by(permissible_id: permissible.id, permissible_type: permissible.class.to_s)
   end
 
-  def can_show_history?(permissible)
-    permission_for(permissible).show_history
-  end
+  #def can_show_history?(permissible)
+  #  permission_for(permissible).show_history
+  #end
 
   def can_bypass_fogging?(permissible)
     permission_for(permissible).bypass_fogging

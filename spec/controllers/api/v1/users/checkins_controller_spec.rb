@@ -133,24 +133,6 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
         expect(response.body).to eq "[]"
       end
 
-      it "should not fetch checkins from before date of approval creation" do
-        approval_date = user.approval_for(developer).approval_date
-        checkin = FactoryGirl::create :checkin
-        checkin.update(created_at: (approval_date - 1.day))
-        device.checkins << checkin
-        get :index,  params.merge(page: 2)
-        expect(res_hash.last['id']).to_not be device.checkins.last.id
-      end
-
-      it "should fetch checkins from before date of approval creation if show_history is true" do
-        approval_date = user.approval_for(developer).approval_date
-        checkin = FactoryGirl::create :checkin
-        checkin.update(created_at: (approval_date - 1.day))
-        device.checkins << checkin
-        Permission.last.update(show_history: true)
-        get :index,  params.merge(page: 2)
-        expect(res_hash.last['id']).to be device.checkins.last.id
-      end
     end
 
     context "on a user" do
