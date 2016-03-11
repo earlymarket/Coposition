@@ -28,9 +28,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   let(:create_params) { params.merge(device: { name: "new" }) }
 
   before do
-    request.headers["X-Api-Key"] = developer.api_key
-    request.headers["X-User-Token"] = user.authentication_token
-    request.headers["X-User-Email"] = user.email
+    api_request_headers(developer, user)
   end
 
   describe "GET" do

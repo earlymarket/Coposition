@@ -1,50 +1,38 @@
-<h1><%= @device.name %></h1>
+<% content_for :outside_container do %>
+<%= Gon::Base.render_data %>
 
-<div id="map" class="checkin-map center valign-wrapper"></div>
-<br>
-<%= link_to("Delete history", user_device_checkins_path(current_user.url_id, @device.id), { method: :delete, class: "btn red white-text", data: { confirm: 'Delete all checkins for this device?' } })%>
-<%= link_to("Delete device", user_device_path(current_user.url_id, @device), { method: :delete, class: "btn red white-text", data: { confirm: 'Are you sure?' } })%>
-<%= link_to("Check-in now", new_user_device_checkin_path(current_user.url_id, @device.id), class: "btn green white-text", id: "checkin-button", remote: true) %>
-<br>
-<hr>
-<%= render partial: "privacy", object: @device, as: 'device' %>
-<hr>
-<table id="checkin-table" class="highlight checkin-table">
-  <thead>
-    <tr>
-      <th>Created</th><th>Area</th><th>Fogged</th><th>More Info</th>
-    </tr>
-  </thead>
-  <%= render partial: "checkin_table_row", collection: @checkins, as: :checkin %>
-</table>
-<div class="center"><%= will_paginate @checkins %></div>
+  <div id='map'></div>
+  <div class="bottom-panel">
+    <div class="buttons"><%= link_to("Delete history", user_device_checkins_path(current_user.url_id, @device.id), { method: :delete, class: "btn red white-text", data: { confirm: 'Delete all checkins for this device?' } })%>
+      <%= link_to("Delete device", user_device_path(current_user.url_id, @device), { method: :delete, class: "btn red white-text", data: { confirm: 'Are you sure?' } })%>
+    </div>
+    <%= will_paginate @checkins %>
+  </div>
+  <script>
+    window.Copo = window.Copo || {};
 
-<script type="text/javascript">
-  var $newCheckinButton = $('<%= j link_to("Check-in", new_user_device_checkin_path(current_user.url_id,
-    @device.id), class: "btn green white-text", method: "post", id: "checkin-button", remote: true) %>');
-  var $moreOptionsLink = $('<%=  j link_to(" ...more options", new_user_device_checkin_path(current_user.url_id, @device.id) ) %>')
+    L.mapbox.accessToken = 'pk.eyJ1IjoiZ2FyeXNpdSIsImEiOiJjaWxjZjN3MTMwMDZhdnNtMnhsYmh4N3lpIn0.RAGGQ0OaM81HVe0OiAKE0w';
+    var map = L.mapbox.map('map', 'mapbox.light', {maxZoom: 18} );
 
-  var checkinPath = '<%= j user_device_checkins_path(current_user.url_id, @device.id) %>';
+    Copo.checkins = gon.checkins
 
-  $('#checkin-button')
-    .toggleClass('green disabled')
-    .html('Getting position')
-    .after($moreOptionsLink);
+    map.on('popupopen', function(e){
+      var coords = e.popup.getLatLng()
+      if($('#current-location').length){
 
-  navigator.geolocation.getCurrentPosition(function(position){
+        var checkinPath = '<%= j user_device_checkins_path(current_user.url_id, @device.id) %>';
+        var checkin = {
+          'checkin[lat]': coords.lat.toFixed(6),
+          'checkin[lng]': coords.lng.toFixed(6)
+        }
+        checkinPath += '?'
+        checkinPath += $.param(checkin)
 
-    var checkin = {
-      'checkin[lat]': position.coords.latitude.toFixed(6),
-      'checkin[lng]': position.coords.longitude.toFixed(6)
-    }
+        var $createCheckinLink = $('<%= j link_to("Create checkin here", new_user_device_checkin_path(current_user.url_id, @device.id), method: "post", remote: true) %>');
+        $createCheckinLink.attr('href', checkinPath);
+        $('#current-location').replaceWith($createCheckinLink);
+      }
+    })
 
-    checkinPath += '?'
-    checkinPath += $.param(checkin)
-
-    $newCheckinButton.attr('href', checkinPath);
-    $('#checkin-button').replaceWith($newCheckinButton);
-  })
-
-  var checkins = <%= raw @checkins.to_json %>
-  renderMap();
-</script>
+  </script>
+<% end %>

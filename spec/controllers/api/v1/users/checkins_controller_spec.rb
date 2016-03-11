@@ -11,6 +11,11 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
     user.devices << device
     device
   end
+  let(:second_device) do
+    device = FactoryGirl::create :device
+    second_user.devices << device
+    device
+  end
   let(:checkin) do
     checkin = FactoryGirl::create :checkin
     device.checkins << checkin
@@ -20,7 +25,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
 
   before do |example|
     create_denhams
-    request.headers["X-Api-Key"] = developer.api_key
+    api_request_headers(developer, user)
     unless example.metadata[:skip_before]
       device
       Approval.link(user,second_user,'User')
@@ -164,6 +169,21 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
         })
       expect(response.status).to eq(400)
       expect(res_hash[:message]).to eq('You must provide a lat and lng')
+    end
+
+    it "should not create a checkin if signed in user does not own device" do
+      Approval.link(second_user,developer,'Developer')
+      Approval.accept(second_user,developer,'Developer')
+      post :create, {
+        user_id: second_user.id,
+        device_id: second_device.id,
+        checkin: {
+          lat: Faker::Address.latitude,
+          lng: Faker::Address.longitude
+        }
+      }
+      expect(response.status).to eq(403)
+      expect(res_hash[:message]).to eq('User does not own device')
     end
   end
 

@@ -35,5 +35,10 @@
 @import 'placeholder.scss';
 @import 'user.scss';
 @import 'maitre.scss';
+<<<<<<< HEAD
 @import 'device-show.scss';
+=======
+@import 'checkin-map.scss';
+@import 'checkin-table.scss';
 @import 'twitter-typeahead.scss';
+>>>>>>> dev

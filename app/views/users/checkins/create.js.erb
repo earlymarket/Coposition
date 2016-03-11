@@ -1,4 +1,3 @@
 <%= render("/shared/notifications") %>
-$('#checkin-table').prepend('<%= j render("users/devices/checkin_table_row", checkin: @checkin) %>');
 checkins.push(<%= raw @checkin.to_json %>)
-renderMap();
+Copo.refreshMarkers();
