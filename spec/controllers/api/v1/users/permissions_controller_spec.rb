@@ -27,16 +27,20 @@ RSpec.describe Api::V1::Users::PermissionsController, type: :controller do
   end
 
   describe 'update' do
-    it 'should update the privilege level, bypass_fogging and show_history attributes' do
+    it 'should update the privilege level, bypass_fogging and bypass_delay attributes' do
        put :update, {
         id: permission.id,
         device_id: device.id,
         user_id: user.id,
         permission: {
           privilege: 'last_only',
+          bypass_fogging: true,
+          bypass_delay: true
         },
       }
       expect(res_hash[:privilege]).to eq 'last_only'
+      expect(res_hash[:bypass_fogging]).to eq true
+      expect(res_hash[:bypass_delay]).to eq true
     end
 
     it 'should fail to update permission if user does not own permission' do
