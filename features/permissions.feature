@@ -15,7 +15,7 @@ Feature: Permissions
         And I enter UUID "123456789123" and a friendly name "G-RALA"
       When I click "Add"
       Then I should see "This device has been bound to your account!"
-        And I should see "G-RALA"
+        # And I should see "G-RALA"
       When I click "Dashboard"
         And I click the link "Devices"
       When I click the link "Permissions"

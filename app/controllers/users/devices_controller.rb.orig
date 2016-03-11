@@ -13,11 +13,16 @@ class Users::DevicesController < ApplicationController
 
   def show
     @device = Device.find(params[:id])
+<<<<<<< HEAD
+    # Checkin.includes(:device).where(device_id: @device.id)
+    @checkins = Checkin.joins(:device).where(device_id: @device.id).paginate(page: params[:page], per_page: 50).order('created_at DESC')
+    gon.checkins = @checkins
+=======
     @checkins = Checkin.includes(:device) \
       .where(device_id: @device.id) \
       .order('created_at DESC') \
       .paginate(page: params[:page], per_page: 50)
-    gon.checkins = @checkins
+>>>>>>> dev
   end
 
   def new

@@ -12,9 +12,6 @@ module ApiApplicationMixin
   end
 
   def actor_owns_resource?(actor, resource, id)
-    # Called from method_missing
-    # Usage: user_owns_device?
-    # Checks whether resource belongs to actor
     model = resource.titleize.constantize
     resource = model.find(id)
     if (model == Checkin || model == Permission && actor == 'user')
@@ -26,10 +23,7 @@ module ApiApplicationMixin
   end
 
   def req_from_coposition_app?
-    @from_copo_app ||= request.headers["X-Secret-App-Key"] == Rails.application.secrets.mobile_app_key
+    request.headers["X-Secret-App-Key"] == Rails.application.secrets.mobile_app_key
   end
 
-  def model_find(type)
-    [User, Developer].find { |model| model.name == type.titleize}
-  end
 end

@@ -1,7 +1,7 @@
 class Api::V1::Users::RequestsController < Api::ApiController
   respond_to :json
 
-  before_action :authenticate, :check_user_approved_approvable
+  before_action :check_user_approved_approvable
 
   def index
     if params[:developer_id]

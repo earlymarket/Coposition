@@ -8,10 +8,7 @@ Enter the <%= @approval.approvable_type %> you would like to add.
     </div>
   </div>
   <%= f.hidden_field :approvable_type, value: @approval.approvable_type %>
-  <%= f.button "Request", class: "waves-effect waves-light btn", type: "submit" %>
-  <% if @approval.approvable_type == 'User' %>
-    <%= f.button "Invite", class: "waves-effect waves-light btn", type: "submit", name: "invite" %>
-  <% end %>
+  <%= f.button "Add", class: "waves-effect waves-light btn", type: "submit" %>
 <% end %>
 
 <script>
@@ -38,7 +35,6 @@ Enter the <%= @approval.approvable_type %> you would like to add.
   };
 
   var devs = <%= raw @developers.to_json %>;
-  var users = <%= raw @users.to_json %>;
 
   $('.search .devs_typeahead').typeahead({
     hint: true,
@@ -48,15 +44,5 @@ Enter the <%= @approval.approvable_type %> you would like to add.
   {
     name: 'devs',
     source: substringMatcher(devs)
-  });
-
-  $('.search .users_typeahead').typeahead({
-    hint: true,
-    highlight: true,
-    minLength: 1
-  },
-  {
-    name: 'users',
-    source: substringMatcher(users)
   });
 </script>

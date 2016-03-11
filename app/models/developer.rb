@@ -27,8 +27,4 @@ class Developer < ActiveRecord::Base
     "A new developer has registered, id: #{self.id}, company_name: #{self.company_name}, there are now #{Developer.count} developers."
   end
 
-  def approval_for(user)
-    approvals.find_by(user_id: user.id) || NoApproval.new
-  end
-
 end
