@@ -67,6 +67,7 @@ Rails.application.routes.draw do
   resources :users, only: [:show], module: :users do
     resource :dashboard, only: [:show]
     resources :devices, except: [:edit] do
+      member { get :publish }
       resources :checkins, only: [:show, :create, :new, :update]
       delete '/checkins/', to: 'checkins#destroy_all'
       delete '/checkins/:id', to: 'checkins#destroy'

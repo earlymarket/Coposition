@@ -1,6 +1,7 @@
 class Users::DevicesController < ApplicationController
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: :publish
+  #before_action :published?, only: :publish
   before_action :require_ownership, only: [:show, :destroy, :update]
 
   def index
@@ -22,6 +23,11 @@ class Users::DevicesController < ApplicationController
   def new
     @device = Device.new
     @device.uuid = params[:uuid] if params[:uuid]
+  end
+
+  def publish
+    @device = Device.find(params[:id])
+    @checkin = @device.checkins.last
   end
 
   def create
@@ -72,6 +78,12 @@ class Users::DevicesController < ApplicationController
       unless user_owns_device?
         flash[:notice] = "You do not own that device"
         redirect_to root_path
+      end
+    end
+
+    def published?
+      unless Device.find(params[:id]).published?
+        redirect_to root_path, notice: "Device is not published"
       end
     end
 
