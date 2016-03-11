@@ -4,27 +4,8 @@ $(document).on('ready page:change', function() {
   } else {
   //page specific code
 
-  map.addControl(L.mapbox.geocoderControl('mapbox.places'));
-  var lc = L.control.locate({
-    follow: false,
-    setView: false,
-    markerClass: L.marker,
-    markerStyle: {
-      icon: L.mapbox.marker.icon({
-        'marker-size': 'large',
-        'marker-symbol': 'star',
-        'marker-color': '#01579B',
-      }),
-      riseOnHover: true,
-    },
-    strings: {
-      title: 'Your current location',
-      popup: 'Your current location within {distance} {unit}.<br><a href="#" id="current-location">Create check-in here</a>',
-    },
-
-  }).addTo(map);
-  lc.stop();
-  lc.start();
+  window.Copo = window.Copo || {};
+  window.Copo.Maps = window.Copo.Maps || {};
 
   Copo.Maps.refreshMarkers = function(){
     Copo.Maps.markers.clearLayers();
@@ -45,19 +26,7 @@ $(document).on('ready page:change', function() {
           alt: 'ID: ' + checkin.id
         });
 
-        var checkinDate = new Date(checkin.created_at).toUTCString()
-
-        template = '<h3>ID: {id}</h3>'
-        template += '<ul>'
-        template += '<li>Created on: '+ checkinDate + '</li>'
-        template += '<li>Latitude: {lat}</li>'
-        template += '<li>Longitude: {lng}</li>'
-        template += '<li>Address: ' + (checkin.address || checkin.fogged_area) + '</li>'
-        template += '<li>Fogged status: {fogged}</li>'
-        if(checkin.fogged){
-          template += '<li>Fogged address: {fogged_area}</li>'
-        }
-        template += '</ul>'
+        template = Copo.Maps.buildMarkerPopup(checkin)
 
         marker.bindPopup(L.Util.template(template, checkin))
 
@@ -71,9 +40,53 @@ $(document).on('ready page:change', function() {
     map.addLayer(Copo.Maps.markers);
   }
 
+  Copo.Maps.initControls = function(){
+    map.addControl(L.mapbox.geocoderControl('mapbox.places'));
+
+    var lc = L.control.locate({
+      follow: false,
+      setView: false,
+      markerClass: L.marker,
+      markerStyle: {
+        icon: L.mapbox.marker.icon({
+          'marker-size': 'large',
+          'marker-symbol': 'star',
+          'marker-color': '#01579B',
+        }),
+        riseOnHover: true,
+      },
+      strings: {
+        title: 'Your current location',
+        popup: 'Your current location within {distance} {unit}.<br><a href="#" id="current-location">Create check-in here</a>',
+      },
+
+    }).addTo(map);
+    lc.stop();
+    lc.start();
+  }
+
+  Copo.Maps.buildMarkerPopup = function(checkin){
+    var checkinDate = new Date(checkin.created_at).toUTCString()
+
+    template = '<h3>ID: {id}</h3>'
+    template += '<ul>'
+    template += '<li>Created on: '+ checkinDate + '</li>'
+    template += '<li>Latitude: {lat}</li>'
+    template += '<li>Longitude: {lng}</li>'
+    template += '<li>Address: ' + (checkin.address || checkin.fogged_area) + '</li>'
+    template += '<li>Fogged status: {fogged}</li>'
+    if(checkin.fogged){
+      template += '<li>Fogged address: {fogged_area}</li>'
+    }
+    template += '</ul>';
+
+    return template;
+  }
+
   map.on('ready', function() {
     Copo.Maps.renderMarkers();
     map.fitBounds(Copo.Maps.markers.getBounds());
+    Copo.Maps.initControls();
   });
 
   }
