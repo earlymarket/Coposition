@@ -1,7 +1,7 @@
 class Users::DevicesController < ApplicationController
 
   before_action :authenticate_user!, except: :publish
-  #before_action :published?, only: :publish
+  before_action :published?, only: :publish
   before_action :require_ownership, only: [:show, :destroy, :update]
 
   def index
@@ -58,6 +58,9 @@ class Users::DevicesController < ApplicationController
     if params[:mins]
       @device.set_delay(params[:mins])
       flash[:notice] = "#{@device.name} timeshifted by #{@device.delayed.to_i} minutes."
+    elsif params[:published]
+      @device.update(published: !@device.published)
+      flash[:notice] = "#{@device.name} published has been changed."
     else
       @device.switch_fog
       flash[:notice] = "#{@device.name} fogging has been changed."

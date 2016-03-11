@@ -16,4 +16,13 @@ module DevicesHelper
     end
     value.html_safe
   end
+
+  def devices_published_icon(device)
+    if device.published?
+      icon = '<i class="material-icons">public</i>'
+    else
+      icon = '<i class="material-icons">location_off</i>'
+    end
+    icon.html_safe
+  end
 end

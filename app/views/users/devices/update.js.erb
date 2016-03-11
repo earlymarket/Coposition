@@ -2,4 +2,5 @@
 var fog = $('#fogButton<%=@device.id%>');
 fog.html("<%=j fogged_icon(@device.fogged) %>");
 $('#mins').val('<%= @device.delayed %>');
-
+var publish = $('#publishedButton<%=@device.id%>');
+publish.html("<%=j devices_published_icon(@device) %>");
