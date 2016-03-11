@@ -51,7 +51,7 @@ Copo.check_disabled = function(){
 
 var switches_private = {
   set_privilege: function(state, priv){
-    if(state == true){ return priv };
+    if(state === true){ return priv }
     return "complete";
   },
 
@@ -76,9 +76,9 @@ var switches_private = {
   },
 
   set_data: function(attribute, value){
-    if (attribute == 'privilege'){
+    if (attribute === 'privilege'){
       return { privilege: value };
-    } else if (attribute == 'bypass_fogging'){
+    } else if (attribute === 'bypass_fogging'){
       return { bypass_fogging: value };
     } else {
       return { bypass_delay: value };
