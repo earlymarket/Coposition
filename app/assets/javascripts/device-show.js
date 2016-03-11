@@ -26,14 +26,14 @@ $(document).on('ready page:change', function() {
   lc.stop();
   lc.start();
 
-  Copo.refreshMarkers = function(){
-    Copo.markers.clearLayers();
-    Copo.renderMarkers();
+  Copo.Maps.refreshMarkers = function(){
+    Copo.Maps.markers.clearLayers();
+    Copo.Maps.renderMarkers();
   }
 
-  Copo.renderMarkers = function(){
-    Copo.markers = new L.MarkerClusterGroup();
-    var checkins = Copo.checkins;
+  Copo.Maps.renderMarkers = function(){
+    Copo.Maps.markers = new L.MarkerClusterGroup();
+    var checkins = Copo.Maps.checkins;
       for (var i = 0; i < checkins.length; i++) {
         var checkin = checkins[i];
         var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), {
@@ -65,15 +65,15 @@ $(document).on('ready page:change', function() {
           map.panTo(this.getLatLng());
         });
 
-        Copo.markers.addLayer(marker);
+        Copo.Maps.markers.addLayer(marker);
       }
 
-    map.addLayer(Copo.markers);
+    map.addLayer(Copo.Maps.markers);
   }
 
   map.on('ready', function() {
-    Copo.renderMarkers();
-    map.fitBounds(Copo.markers.getBounds());
+    Copo.Maps.renderMarkers();
+    map.fitBounds(Copo.Maps.markers.getBounds());
   });
 
   }
