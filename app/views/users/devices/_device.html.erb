@@ -25,7 +25,7 @@
 
             <% device.permitted_users.each do |friend| %>
               <% permission =  device.permission_for(friend) %>
-              <li class="collection-item row" data-permission=<%=permission.id%>>
+              <li class="collection-item row">
                 <%= permissible_title(friend) %>
                 <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
               </li>
