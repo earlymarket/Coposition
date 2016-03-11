@@ -24,7 +24,6 @@
 // -- Vendor libs --
 
 //= require animateCSS.min.js
-//= require markerclusterer
 
 // -- Run every page
 
