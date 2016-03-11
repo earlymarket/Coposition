@@ -1,5 +1,7 @@
 window.Copo = window.Copo || {};
-Copo.update_permission = function(permission, device_id, attribute, value){
+window.Copo.Permissions = window.Copo.Permissions || {};
+
+Copo.Permissions.update_permission = function(permission, device_id, attribute, value){
   var data = switches_private.set_data(attribute, value);
   $.ajax({
     url: "/users/"+gon.current_user_id+"/devices/"+device_id+"/permissions/"+permission+"",
@@ -8,7 +10,7 @@ Copo.update_permission = function(permission, device_id, attribute, value){
   });
 }
 
-Copo.disable_access_change = function(){
+Copo.Permissions.disable_access_change = function(){
   $(".privilege").change(function( event ) {
     var state = switches_private.get_toggle_state(event.target);
     var permission = switches_private.get_permission_id(event.target);
@@ -16,31 +18,31 @@ Copo.disable_access_change = function(){
     var privilege = switches_private.set_privilege(state, "disallowed");
     switches_private.switch_last_only(permission);
     switches_private.disable_toggles(permission, state);
-    Copo.update_permission(permission, device_id, 'privilege', privilege);
+    Copo.Permissions.update_permission(permission, device_id, 'privilege', privilege);
   });
 }
 
-Copo.last_checkin_change = function(){
+Copo.Permissions.last_checkin_change = function(){
   $(".last_only").change(function( event ) {
     var state = switches_private.get_toggle_state(event.target);
     var permission = switches_private.get_permission_id(event.target);
     var device_id = switches_private.get_device_id(event.target);
     var privilege = switches_private.set_privilege(state, "last_only");
-    Copo.update_permission(permission, device_id, 'privilege', privilege);
+    Copo.Permissions.update_permission(permission, device_id, 'privilege', privilege);
   });
 }
 
-Copo.bypass_change = function(){
+Copo.Permissions.bypass_change = function(){
   $(".bypass").change(function( event ) {
     var state = switches_private.get_toggle_state(event.target);
     var permission = switches_private.get_permission_id(event.target);
     var device_id = switches_private.get_device_id(event.target);
     var attribute = $(this).attr('name');
-    Copo.update_permission(permission, device_id, attribute, state);
+    Copo.Permissions.update_permission(permission, device_id, attribute, state);
   });
 }
 
-Copo.check_disabled = function(){
+Copo.Permissions.check_disabled = function(){
   $(".privilege").each(function(){
     if ($(this).children().prop('checked')){
       var permission = switches_private.get_permission_id(this);
