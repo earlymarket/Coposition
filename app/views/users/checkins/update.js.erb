@@ -1,5 +1,2 @@
 <%= render("/shared/notifications") %>
 $('#fog<%= @checkin_id %>').html("<%=j fogged_icon(@checkin.fogged)%>");
-$('#fogstatus<%= @checkin_id %>').html("Fogging status: <%=j fogged_icon(@checkin.fogged)%>");
-var img_url = '<%= checkins_static_map_url(@checkin) %>';
-$('#mapholder<%=@checkin.id%>').attr("src", img_url);

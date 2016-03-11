@@ -15,5 +15,11 @@ Copo.Utility = {
     } else {
       return '<i class="material-icons">cloud_off</i>'
     }
-  }
+  },
+
+  ujsLink: function(verb, text, path){
+    var output =  $('<a data-remote="true" data-method="' + verb +'" href="' + path +'">' + text +'</a>')
+    if(verb === 'delete') output.attr('rel', 'nofollow');
+    return output
+  },
 };
