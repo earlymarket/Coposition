@@ -44,7 +44,22 @@ $(document).on('ready page:change', function() {
           title: 'ID: ' + checkin.id,
           alt: 'ID: ' + checkin.id
         });
-        marker.bindPopup('<h3>ID: ' + checkin.id + '</h3>' + (checkin.address || checkin.fogged_area))
+
+        var checkinDate = new Date(checkin.created_at).toUTCString()
+
+        template = '<h3>ID: {id}</h3>'
+        template += '<ul>'
+        template += '<li>Created on: '+ checkinDate + '</li>'
+        template += '<li>Latitude: {lat}</li>'
+        template += '<li>Longitude: {lng}</li>'
+        template += '<li>Address: ' + (checkin.address || checkin.fogged_area) + '</li>'
+        template += '<li>Fogged status: {fogged}</li>'
+        if(checkin.fogged){
+          template += '<li>Fogged address: {fogged_area}</li>'
+        }
+        template += '</ul>'
+
+        marker.bindPopup(L.Util.template(template, checkin))
 
         marker.on('click', function() {
           map.panTo(this.getLatLng());

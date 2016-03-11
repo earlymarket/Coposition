@@ -28,9 +28,9 @@
         checkinPath += '?'
         checkinPath += $.param(checkin)
 
-        var $newCheckinLink = $('<%= j link_to("Create checkin here", new_user_device_checkin_path(current_user.url_id, @device.id), method: "post", remote: true) %>');
-        $newCheckinLink.attr('href', checkinPath);
-        $('#current-location').replaceWith($newCheckinLink);
+        var $createCheckinLink = $('<%= j link_to("Create checkin here", new_user_device_checkin_path(current_user.url_id, @device.id), method: "post", remote: true) %>');
+        $createCheckinLink.attr('href', checkinPath);
+        $('#current-location').replaceWith($createCheckinLink);
       }
     })
 
