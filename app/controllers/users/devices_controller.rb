@@ -17,6 +17,7 @@ class Users::DevicesController < ApplicationController
       .where(device_id: @device.id) \
       .order('created_at DESC') \
       .paginate(page: params[:page], per_page: 50)
+    gon.checkins = @checkins
   end
 
   def new

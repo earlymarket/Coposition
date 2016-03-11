@@ -24,7 +24,6 @@
 // -- Vendor libs --
 
 //= require animateCSS.min.js
-//= require markerclusterer
 
 // -- Run every page
 
@@ -34,5 +33,5 @@
 
 // -- Page specific --
 
-//= require checkin-map
+//= require device-show
 //= require landing-page
