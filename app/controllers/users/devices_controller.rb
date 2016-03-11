@@ -4,8 +4,8 @@ class Users::DevicesController < ApplicationController
   before_action :require_ownership, only: [:show, :destroy, :update]
 
   def index
-    @current_user_id = current_user.id
-    @devices = current_user.devices.map do |dev|
+    gon.current_user_id = current_user.id
+    @devices = current_user.devices.includes(:developers, :permitted_users).map do |dev|
       dev.checkins.last.reverse_geocode! if dev.checkins.exists?
       dev
     end

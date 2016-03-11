@@ -16,16 +16,16 @@
           <ul class="permissions collection" data-device=<%=device.id%>>
 
             <% device.developers.each do |developer| %>
-              <% permission =  device.permissions.where(permissible: developer, permissible_type: "Developer").first %>
-              <li class="collection-item row" data-permission=<%=permission.id%>>
+              <% permission =  device.permission_for(developer) %>
+              <li class="collection-item row">
                 <%= permissible_title(developer) %>
                 <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
               </li>
             <% end %>
 
             <% device.permitted_users.each do |friend| %>
-              <% permission =  device.permissions.where(permissible: friend, permissible_type: "User").first %>
-              <li class="collection-item row" data-permission=<%=permission.id%>>
+              <% permission =  device.permission_for(friend) %>
+              <li class="collection-item row">
                 <%= permissible_title(friend) %>
                 <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
               </li>

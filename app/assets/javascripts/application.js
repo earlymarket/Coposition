@@ -35,3 +35,4 @@
 
 //= require device-show
 //= require landing-page
+//= require permissions
