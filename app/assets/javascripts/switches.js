@@ -44,9 +44,9 @@ Copo.check_disabled = function(){
   $(".privilege").each(function(){
     if ($(this).children().prop('checked')){
       var permission = switches_private.get_permission_id(this);
-      switches_private.disable_toggles(permission, true)
+      switches_private.disable_toggles(permission, true);
     }
-  })
+  });
 }
 
 var switches_private = {
@@ -77,11 +77,11 @@ var switches_private = {
 
   set_data: function(attribute, value){
     if (attribute == 'privilege'){
-      return { privilege: value }
+      return { privilege: value };
     } else if (attribute == 'bypass_fogging'){
-      return { bypass_fogging: value }
+      return { bypass_fogging: value };
     } else {
-      return { bypass_delay: value }
+      return { bypass_delay: value };
     }
   }
 };
