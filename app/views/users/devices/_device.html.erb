@@ -49,6 +49,6 @@
     </div>
   </div>
   <div class="col s1 offset-s3">
-    <%= link_to(devices_published_icon(device), user_device_path(current_user.url_id, device.id, published: device.published), { method: :put, id:"publishedButton#{device.id}", remote: true, data: { published: device.published? } })%>
+    <%= link_to(devices_published_icon(device), user_device_path(current_user.url_id, device.id, published: device.published), { method: :put, id:"publishedButton#{device.id}", remote: true, data: { published: device.published?, confirm: "This will allow anyone to view your latest location at the url: " } })%>
   </div>
 </div>
