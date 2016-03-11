@@ -36,3 +36,4 @@
 
 //= require checkin-map
 //= require landing-page
+//= require switches

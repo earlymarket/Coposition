@@ -18,91 +18,14 @@ $(document).ready(function(){
   $('.modal-trigger').leanModal();
   $(".privilege").each(function(toggles){
     if ($(this).children().prop('checked')){
-      var permission = get_permission_id(this);
-      disable_toggles(permission, true)
+      var permission = switches.get_permission_id(this);
+      switches.disable_toggles(permission, true)
     }
   })
+  var current_user_id =  <%= @current_user_id %>;
+
+  switches.disable_access_change(current_user_id);
+  switches.last_checkin_change(current_user_id);
+  switches.bypass_change(current_user_id);
 });
-
-var current_user_id =  <%= @current_user_id %>;
-
-function update_permission(permission, device_id, attribute, value){
-  var data = set_data(attribute, value);
-  $.ajax({
-    url: "/users/"+current_user_id+"/devices/"+device_id+"/permissions/"+permission+"",
-    type: 'PUT',
-    data: { permission : data }
-  });
-}
-
-function disable_access_change(){
-  $(".privilege").change(function( event ) {
-    var state = get_toggle_state(event.target);
-    var permission = get_permission_id(event.target);
-    var device_id = get_device_id(event.target);
-    var privilege = set_privilege(state, "disallowed")
-    switch_last_only(permission);
-    disable_toggles(permission, state);
-    update_permission(permission, device_id, 'privilege', privilege)
-  });
-}
-
-function last_checkin_change(){
-  $(".last_only").change(function( event ) {
-    var state = get_toggle_state(event.target);
-    var permission = get_permission_id(event.target);
-    var device_id = get_device_id(event.target);
-    var privilege = set_privilege(state, "last_only")
-    update_permission(permission, device_id, 'privilege', privilege)
-  });
-}
-
-function bypass_change(){
-  $(".bypass").change(function( event ) {
-    var state = get_toggle_state(event.target);
-    var permission = get_permission_id(event.target);
-    var device_id = get_device_id(event.target);
-    var attribute = $(this).attr('name');
-    update_permission(permission, device_id, attribute, state)
-  });
-}
-
-function set_privilege(state, priv){
-  if(state == true){ return priv };
-  return "complete"
-}
-
-function disable_toggles(permission, state){
-  $("div[data-permission='"+ permission +"']>.disable>label>input").prop("disabled", state)
-}
-
-function switch_last_only(permission){
-  $("div[data-permission='"+ permission +"']>.last_only>label>input").prop("checked", false)
-}
-
-function get_permission_id(element){
-  return $(element).parents('div.col').data().permission;
-}
-
-function get_device_id(element){
-  return $(element).parents('ul.collection').data().device;
-}
-
-function get_toggle_state(element){
-  return $(element).prop('checked');
-}
-
-function set_data(attribute, value){
-  if (attribute == 'privilege'){
-    return { privilege: value }
-  } else if (attribute == 'bypass_fogging'){
-    return { bypass_fogging: value }
-  } else {
-    return { bypass_delay: value }
-  }
-}
-
-disable_access_change();
-last_checkin_change();
-bypass_change();
 </script>
