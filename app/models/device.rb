@@ -28,10 +28,10 @@ class Device < ActiveRecord::Base
 
     if permission_for(permissible).privilege == "last_only"
       #can_show_history?(permissible) ? Checkin.where(id: checkins.last.id) : Checkin.where(id: checkins.since(approval_date).last.id)
-      can_bypass_delay?(permissible) ? Checkin.where(id: checkins.last.id) : Checkin.where(id: checkins.before(delayed.minutes.ago).last.id)
+      can_bypass_delay?(permissible) ? Checkin.where(id: checkins.last.id) : Checkin.where(id: checkins.before(delayed.to_i.minutes.ago).last.id)
     else
       #can_show_history?(permissible) ? checkins : checkins.since(approval_date)
-      can_bypass_delay?(permissible) ? checkins : checkins.before(delayed.minutes.ago)
+      can_bypass_delay?(permissible) ? checkins : checkins.before(delayed.to_i.minutes.ago)
     end
 
   end
