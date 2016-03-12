@@ -1,7 +1,7 @@
 <nav class="nav-wrapper transparent-nav" role="navigation" data-turbolinks-permanent>
   <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
 
-  <a href="/" class="valign-wrapper left"><%= inline_svg('bordered-logo.svg', id: "brand-logo", class: "valign") %></a>
+  <a href="/" class="valign-wrapper left"><%= inline_svg('bordered-logo.svg', id: "brand-logo") %></a>
 
   <ul class="right hide-on-small-only">
     <li><a href="#">About</a></li>
@@ -19,19 +19,19 @@
       </li>
 
       <li>
-        <%= link_to("Log out", destroy_user_session_path, method: :delete, class: "login-btn btn") %>
+        <%= link_to inline_svg('log-out.svg'), destroy_user_session_path, method: :delete, id: "logout", class: "btn" %>
       </li>
 
     <% elsif developer_signed_in? %>
       <li>
-        <%= link_to("Developer log out", destroy_user_session_path, method: :delete, class: "login-btn btn") %>
+        <%= link_to inline_svg('log-out.svg'), destroy_user_session_path, method: :delete, id: "logout", class: "btn" %>
       </li>
       <li>
-        <%= link_to("User log in", new_user_session_path, class: "login-btn btn") %>
+        <%= link_to inline_svg('log-in.svg'), new_user_session_path, id: "login", class: "btn" %>
       </li>
     <% else %>
       <li>
-        <%= link_to("User log in", new_user_session_path, class: "login-btn btn") %>
+        <%= link_to inline_svg('log-in.svg'), new_user_session_path, id: "login", class: "btn" %>
       </li>
     <% end %>
   </ul>

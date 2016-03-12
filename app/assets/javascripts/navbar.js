@@ -7,13 +7,13 @@ $(document).on('ready page:change', function() {
     $(document).scroll(function(e) {
       if($(window).scrollTop() > 10){
         $("nav").removeClass('transparent-nav');
-        $("svg path").attr({
+        $("nav svg path").attr({
           fill: '#FFFFFF',
           'fill-opacity': '1'
         });
       }else if($(window).scrollTop() <= 10){
         $("nav").addClass('transparent-nav');
-        $("svg path").attr({
+        $("nav svg path").attr({
           fill: '#000000',
           'fill-opacity': '0.8'
         });
@@ -23,7 +23,7 @@ $(document).on('ready page:change', function() {
     // Normailze if pages is not landing page (root)
     $(document).unbind('scroll');
     $("nav").css('transition', 'none').removeClass('transparent-nav');
-    $("svg path").attr({
+    $("nav svg path").attr({
       fill: '#FFFFFF',
       'fill-opacity': '1'
     });
