@@ -75,11 +75,11 @@
     }
 
     .active{
-      @extend .primary-color.lighten;
+      @extend .primary-color;
       transition: all 0.2s ease;
 
       h4, i{
-        color: darken($primary-color-darker, 10%);
+        color: darken($primary-color-darker, 30%);
       }
     }
   }
