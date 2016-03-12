@@ -1,0 +1,30 @@
+.c-devices.a-show {
+  footer {
+    display: none;
+  }
+
+  #map {
+    width:100%;
+    position:absolute !important;
+    top: 64px;
+    bottom: 100px;
+  }
+
+  .bottom-panel {
+    position: absolute;
+    bottom: 0px;
+    display: block;
+    height: 100px;
+    width: 100%;
+    text-align: center;
+    background: white;
+  }
+
+  .bottom-panel * {
+    margin: 0;
+  }
+
+  .buttons {
+    margin: 10px;
+  }
+}

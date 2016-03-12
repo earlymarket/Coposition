@@ -3,7 +3,6 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
 
   acts_as_token_authentication_handler_for User, only: [:update]
 
-  before_action :authenticate, :find_user
   before_action :check_user, only: :update
 
   def create
@@ -60,6 +59,10 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
 
     def approvable
       model_find(approvable_type).find(allowed_params[:approvable])
+    end
+
+    def model_find(type)
+      [User, Developer].find { |model| model.name == type.titleize}
     end
 
 end

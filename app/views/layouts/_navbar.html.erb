@@ -8,9 +8,9 @@
     <li><%= link_to("API", api_path) %></li>
 
     <% if user_signed_in? %>
-      <li><a href="<%= user_friends_path(current_user.url_id) %>" role="button">Friends</a></li>
       <li><a href="<%= user_devices_path(current_user.url_id) %>" role="button">Devices</a></li>
-      <li><a href="<%= user_applications_path(current_user.url_id) %>" role="button">Applications</a></li>
+        <li><a href="<%= user_apps_path(current_user.url_id) %>" role="button">Apps</a></li>
+        <li><a href="<%= user_friends_path(current_user.url_id) %>" role="button">Friends</a></li>
 
       <li>
         <%= link_to(edit_user_registration_path, class: 'settings-icon valign-wrapper') do %>

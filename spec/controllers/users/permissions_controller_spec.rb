@@ -17,7 +17,7 @@ RSpec.describe Users::PermissionsController, type: :controller do
   end
 
   describe 'update' do
-    it 'should update the privilege level, bypass_fogging and show_history attributes' do
+    it 'should update the privilege level, bypass_fogging and bypass_delay attributes' do
        put :update, {
         user_id: user.id,
         device_id: device.id,
@@ -25,12 +25,12 @@ RSpec.describe Users::PermissionsController, type: :controller do
         permission: {
           privilege: 'disallowed',
           bypass_fogging: true,
-          show_history: true
+          bypass_delay: true
         },
       }
       expect(Permission.last.privilege).to eq 'disallowed'
       expect(Permission.last.bypass_fogging).to eq true
-      expect(Permission.last.show_history).to eq true
+      expect(Permission.last.bypass_delay).to eq true
     end
 
     it 'should fail to update permission user does not control' do

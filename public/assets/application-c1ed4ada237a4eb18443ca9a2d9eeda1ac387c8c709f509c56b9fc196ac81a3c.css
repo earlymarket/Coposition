@@ -5994,15 +5994,15 @@ Copyright (c) 2015 Daniel Eden
 }
 
 /* line 12, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_color.scss */
-.dark-text, .primary-color.lighten, .landing-section.splash .parallax-container .parallax .lighten.overlay, .landing-section.promotion .active, .landing-section.full-width#start, .secondary-color, h2, h3, h4, h5, .nav-wrapper.transparent-nav a, .nav-wrapper.transparent-nav .btn, .nav-wrapper.transparent-nav .btn-large, .nav-wrapper .btn:hover, .nav-wrapper .btn-large:hover, .checkin-table a {
+.dark-text, .primary-color.lighten, .landing-section.splash .parallax-container .parallax .lighten.overlay, .landing-section.promotion .active, .landing-section.full-width#start, .secondary-color, h2, h3, h4, h5, .nav-wrapper.transparent-nav a, .nav-wrapper.transparent-nav .btn, .nav-wrapper.transparent-nav .btn-large, .nav-wrapper .btn:hover, .nav-wrapper .btn-large:hover {
   color: rgba(0, 0, 0, 0.8);
 }
 /* line 15, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_color.scss */
-.dark-text.secondary, .secondary.primary-color.lighten, .landing-section.splash .parallax-container .parallax .secondary.lighten.overlay, .landing-section.promotion .secondary.active, .secondary.landing-section.full-width#start, .secondary.secondary-color, h2.secondary, h3.secondary, h4.secondary, h5.secondary, p, .nav-wrapper.transparent-nav a.secondary, .nav-wrapper.transparent-nav .secondary.btn, .nav-wrapper.transparent-nav .secondary.btn-large, .nav-wrapper .secondary.btn:hover, .nav-wrapper .secondary.btn-large:hover, .checkin-table a.secondary {
+.dark-text.secondary, .secondary.primary-color.lighten, .landing-section.splash .parallax-container .parallax .secondary.lighten.overlay, .landing-section.promotion .secondary.active, .secondary.landing-section.full-width#start, .secondary.secondary-color, h2.secondary, h3.secondary, h4.secondary, h5.secondary, p, .nav-wrapper.transparent-nav a.secondary, .nav-wrapper.transparent-nav .secondary.btn, .nav-wrapper.transparent-nav .secondary.btn-large, .nav-wrapper .secondary.btn:hover, .nav-wrapper .secondary.btn-large:hover {
   color: rgba(0, 0, 0, 0.7);
 }
 /* line 18, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/custom_color.scss */
-.dark-text.hint, .hint.primary-color.lighten, .landing-section.splash .parallax-container .parallax .hint.lighten.overlay, .landing-section.promotion .hint.active, .hint.landing-section.full-width#start, .hint.secondary-color, .btn.disabled, .disabled.btn-large, .btn-flat.disabled, .btn-floating.disabled, h2.hint, h3.hint, h4.hint, h5.hint, .nav-wrapper.transparent-nav a.hint, .nav-wrapper.transparent-nav .hint.btn, .nav-wrapper.transparent-nav .hint.btn-large, .nav-wrapper .hint.btn:hover, .nav-wrapper .hint.btn-large:hover, .landing-section.full-width#start form input[type="text"]::-webkit-input-placeholder, .checkin-table a.hint {
+.dark-text.hint, .hint.primary-color.lighten, .landing-section.splash .parallax-container .parallax .hint.lighten.overlay, .landing-section.promotion .hint.active, .hint.landing-section.full-width#start, .hint.secondary-color, .btn.disabled, .disabled.btn-large, .btn-flat.disabled, .btn-floating.disabled, h2.hint, h3.hint, h4.hint, h5.hint, .nav-wrapper.transparent-nav a.hint, .nav-wrapper.transparent-nav .hint.btn, .nav-wrapper.transparent-nav .hint.btn-large, .nav-wrapper .hint.btn:hover, .nav-wrapper .hint.btn-large:hover, .landing-section.full-width#start form input[type="text"]::-webkit-input-placeholder {
   color: rgba(0, 0, 0, 0.38);
 }
 
@@ -19251,6 +19251,7 @@ main {
 /* line 13, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/layout.scss */
 footer.page-footer {
   margin-top: 0;
+  z-index: 10;
 }
 
 /* line 1, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/landing-page.scss */
@@ -19648,10 +19649,55 @@ footer.page-footer {
   text-align: center;
 }
 
-/* line 1, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/checkin-map.scss */
-.checkin-map {
-  height: 300px;
-  width: 600px;
-  border-radius: 10px;
-  background-color: #e5e3df;
+/* line 2, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/device-show.scss */
+.c-devices.a-show footer {
+  display: none;
+}
+/* line 6, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/device-show.scss */
+.c-devices.a-show #map {
+  width: 100%;
+  position: absolute !important;
+  top: 64px;
+  bottom: 100px;
+}
+/* line 13, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/device-show.scss */
+.c-devices.a-show .bottom-panel {
+  position: absolute;
+  bottom: 0px;
+  display: block;
+  height: 100px;
+  width: 100%;
+  text-align: center;
+  background: white;
+}
+/* line 23, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/device-show.scss */
+.c-devices.a-show .bottom-panel * {
+  margin: 0;
+}
+/* line 27, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/device-show.scss */
+.c-devices.a-show .buttons {
+  margin: 10px;
+}
+
+/* line 2, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/twitter-typeahead.scss */
+.twitter-typeahead .tt-input,
+.twitter-typeahead .tt-hint {
+  width: 396px;
+}
+/* line 7, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/twitter-typeahead.scss */
+.twitter-typeahead .tt-menu {
+  width: 422px;
+  margin-top: 12px;
+  padding: 8px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+/* line 18, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/twitter-typeahead.scss */
+.twitter-typeahead .tt-suggestion {
+  padding: 3px 20px;
+  font-size: 18px;
+  line-height: 24px;
 }
