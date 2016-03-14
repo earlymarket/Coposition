@@ -33,6 +33,7 @@ $(document).on('ready page:change', function() {
     window.COPO.maps = {
 
       refreshMarkers: function(){
+        console.log('Markers refreshed')
         COPO.maps.markers.clearLayers();
         COPO.maps.renderMarkers();
       },
