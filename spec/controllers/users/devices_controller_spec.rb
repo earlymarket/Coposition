@@ -4,7 +4,11 @@ RSpec.describe Users::DevicesController, type: :controller do
   include ControllerMacros
 
   let(:empty_device) { FactoryGirl::create :device }
-  let(:device) { FactoryGirl::create :device }
+  let(:device) do
+    dev = FactoryGirl::create :device
+    dev.checkins << FactoryGirl::create(:checkin)
+    dev
+  end
   let(:developer) { FactoryGirl::create :developer }
   let(:user) do
     user = create_user
@@ -135,7 +139,6 @@ RSpec.describe Users::DevicesController, type: :controller do
 
     it 'should switch published status' do
       expect(device.published?).to be false
-      device.checkins << FactoryGirl::create(:checkin)
       request.accept = 'text/javascript'
       put :update, params.merge(published: true)
 
