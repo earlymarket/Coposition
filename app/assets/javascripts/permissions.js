@@ -14,7 +14,7 @@ Copo.permissions.disable_access_change = function(){
   $(".privilege").change(function( event ) {
     var permission = switches_private.get_permission_id(event.target);
     var device_id = switches_private.get_device_id(event.target);
-    var current_state = switches_private.get_permission_state(permission, device_id, "privilege", "disallowed");
+    var current_state = switches_private.get_attribute_state(permission, device_id, "privilege", "disallowed");
     var new_privilege = switches_private.new_privilege(current_state, "disallowed");
     switches_private.switch_last_only(permission);
     switches_private.disable_toggles(permission, current_state);
@@ -26,7 +26,7 @@ Copo.permissions.last_checkin_change = function(){
   $(".last_only").change(function( event ) {
     var permission = switches_private.get_permission_id(event.target);
     var device_id = switches_private.get_device_id(event.target);
-    var current_state = switches_private.get_permission_state(permission, device_id, "privilege", "last_only");
+    var current_state = switches_private.get_attribute_state(permission, device_id, "privilege", "last_only");
     var new_privilege = switches_private.new_privilege(current_state, "last_only");
     Copo.permissions.update_permission(permission, device_id, 'privilege', new_privilege);
   });
@@ -37,7 +37,7 @@ Copo.permissions.bypass_change = function(){
     var permission = switches_private.get_permission_id(event.target);
     var device_id = switches_private.get_device_id(event.target);
     var attribute = $(this).attr('name');
-    var current_state = switches_private.get_permission_state(permission, device_id, attribute);
+    var current_state = switches_private.get_attribute_state(permission, device_id, attribute);
     var new_state = !current_state
     Copo.permissions.update_permission(permission, device_id, attribute, new_state);
   });
@@ -87,7 +87,7 @@ var switches_private = {
     }
   },
 
-  get_permission_state: function(permission, device_id, attribute, button){
+  get_attribute_state: function(permission, device_id, attribute, button){
     var current_state = null;
     gon.permissions.forEach(function(perm){
       if (perm.id === permission){
