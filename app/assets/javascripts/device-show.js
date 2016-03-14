@@ -36,6 +36,12 @@ $(document).on('page:change', function() {
     window.COPO = window.COPO || {};
     window.COPO.maps = {
 
+      queueRefresh: function(){
+        map.once('popupclose', function(e){
+          COPO.maps.refreshMarkers();
+        })
+      },
+
       refreshMarkers: function(){
         COPO.maps.markers.clearLayers();
         COPO.maps.renderMarkers();

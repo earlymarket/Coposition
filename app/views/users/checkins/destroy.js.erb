@@ -1,6 +1,4 @@
 <%= render("/shared/notifications") %>
-// $('#checkin<%= @checkin_id %>').remove();
-// renderMap(<%= @checkin_id %>);
 
 for(i = 0; i < gon.checkins.length; i++) {
   if(gon.checkins[i].id === <%= @checkin_id %>){

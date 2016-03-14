@@ -19,7 +19,4 @@ if(<%= @checkin.fogged %>){
 }
 
 //refresh the state of all markers
-
-map.once('popupclose', function(e){
-  COPO.maps.refreshMarkers();
-})
+COPO.maps.queueRefresh();
