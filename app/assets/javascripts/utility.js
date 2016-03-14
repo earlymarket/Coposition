@@ -21,4 +21,18 @@ COPO.utility = {
     var output =  $('<a data-remote="true" rel="nofollow" data-method="' + verb +'" href="' + path +'">' + text +'</a>')
     return output
   },
+
+  fadeUp: function(target){
+    $(target).velocity({
+      opacity: 0,
+      marginTop: '-40px'
+    }, {
+      duration: 375,
+      easing: 'easeOutExpo',
+      queue: false,
+      complete: function(){
+        $(target).remove();
+      }
+    });
+  }
 };

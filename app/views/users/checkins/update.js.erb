@@ -10,10 +10,10 @@ gon.checkins.forEach(function(checkin){
 if(<%= @checkin.fogged %>){
   $('.disabled-icon').attr('class', 'fogged enabled-icon')
     .parent().prepend('<li class="foggedAddress">Fogged address: <%= @checkin.fogged_area %></li>');
-  $('.foggedAddress').hide().slideDown();
+  $('.foggedAddress').hide().slideDown('fast');
 } else {
   $('.fogged.enabled-icon').attr('class', 'disabled-icon');
-  $('.foggedAddress').slideUp('slow', function(){
+  $('.foggedAddress').slideUp('fast', function(){
     $(this).remove();
   });
 }
