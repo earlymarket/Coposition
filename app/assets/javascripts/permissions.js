@@ -38,7 +38,7 @@ Copo.permissions.bypass_change = function(){
     var device_id = switches_private.get_device_id(event.target);
     var attribute = $(this).attr('name');
     var state = switches_private.get_permission_state(permission, device_id, attribute);
-    Copo.permissions.update_permission(permission, device_id, 'privilege', privilege);
+    Copo.permissions.update_permission(permission, device_id, attribute, state);
   });
 }
 
