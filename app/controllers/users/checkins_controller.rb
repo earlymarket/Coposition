@@ -28,7 +28,6 @@ class Users::CheckinsController < ApplicationController
     @checkin = Checkin.find(params[:id])
     @checkin.switch_fog
     flash[:notice] = "Check-in fogging changed."
-    @checkin_id = params[:id]
   end
 
   def destroy

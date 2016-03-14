@@ -1,2 +1,8 @@
 <%= render("/shared/notifications") %>
-$('#fog<%= @checkin_id %>').html("<%=j fogged_icon(@checkin.fogged)%>");
+$('#fog<%= @checkin.id %>').html("<%=j fogged_icon(@checkin.fogged)%>");
+gon.checkins.forEach(function(checkin){
+  if(checkin.id === <%= @checkin.id %>){
+    checkin.fogged = <%= @checkin.fogged %>
+  }
+});
+COPO.maps.renderMarkers();

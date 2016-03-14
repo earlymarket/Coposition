@@ -97,7 +97,10 @@ $(document).on('ready page:change', function() {
         template += '<li>Latitude: {lat}</li>'
         template += '<li>Longitude: {lng}</li>'
         template += '<li>Address: ' + (checkin.address || checkin.fogged_area) + '</li>'
-        template += '<li>Fogged status: '+ COPO.utility.ujsLink('put', COPO.utility.foggedIcon(checkin.fogged) , window.location.pathname + '/checkins/' + checkin.id ).attr('id', 'fog' + checkin.id).prop('outerHTML') +'</li>'
+        template += '<li>'+ COPO.utility.ujsLink('put', COPO.utility.foggedIcon(checkin.fogged) , window.location.pathname + '/checkins/' + checkin.id )
+          .attr('id', 'fog' + checkin.id)
+          .attr('class', 'btn-floating waves-effect waves-light light-blue')
+          .prop('outerHTML') +'</li>'
 
         if(checkin.fogged){
           template += '<li>Fogged address: {fogged_area}</li>'
