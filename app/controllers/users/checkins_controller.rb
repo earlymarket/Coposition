@@ -43,7 +43,6 @@ class Users::CheckinsController < ApplicationController
 
   def destroy_all
     Checkin.where(device: params[:device_id]).delete_all
-    Device.find_by(id: params[:device_id]).update(published: false)
     flash[:notice] = "History deleted."
     redirect_to user_device_path(current_user.url_id, params[:device_id])
   end
