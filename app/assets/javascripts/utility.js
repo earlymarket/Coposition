@@ -18,8 +18,7 @@ COPO.utility = {
   },
 
   ujsLink: function(verb, text, path){
-    var output =  $('<a data-remote="true" data-method="' + verb +'" href="' + path +'">' + text +'</a>')
-    if(verb === 'delete') output.attr('rel', 'nofollow');
+    var output =  $('<a data-remote="true" rel="nofollow" data-method="' + verb +'" href="' + path +'">' + text +'</a>')
     return output
   },
 };

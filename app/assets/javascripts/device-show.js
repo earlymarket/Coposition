@@ -4,17 +4,32 @@ $(document).on('ready page:change', function() {
   } else {
     //page specific code
 
+    //event listeners
     map.on('ready', function() {
       COPO.maps.renderMarkers();
       map.fitBounds(COPO.maps.markers.getBounds());
       COPO.maps.initControls();
     });
 
+    map.on('popupopen', function(e){
+      var coords = e.popup.getLatLng()
+      if($('#current-location').length){
 
-    window.COPO = window.COPO || {};
+        var checkin = {
+          'checkin[lat]': coords.lat.toFixed(6),
+          'checkin[lng]': coords.lng.toFixed(6)
+        }
+        var checkinPath = location.pathname + '/checkins';
+        checkinPath += '?'
+        checkinPath += $.param(checkin)
+
+        $createCheckinLink = COPO.utility.ujsLink('post', 'Create checkin here', checkinPath);
+        $('#current-location').replaceWith($createCheckinLink);
+      }
+    })
 
     //map related functions
-
+    window.COPO = window.COPO || {};
     window.COPO.maps = {
 
       refreshMarkers: function(){
@@ -70,7 +85,6 @@ $(document).on('ready page:change', function() {
           },
 
         }).addTo(map);
-        lc.stop();
         lc.start();
       },
 
