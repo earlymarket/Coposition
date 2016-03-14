@@ -61,10 +61,10 @@ class Users::DevicesController < ApplicationController
       flash[:notice] = "#{@device.name} timeshifted by #{@device.delayed.to_i} minutes."
     elsif params[:published]
       @device.update(published: !@device.published)
-      flash[:notice] = "#{@device.name} published has been changed."
+      flash[:notice] = "Location publishing is #{boolean_to_state(@device.published)}."
     else
       @device.switch_fog
-      flash[:notice] = "#{@device.name} fogging has been changed."
+      flash[:notice] = "Location fogging is #{boolean_to_state(@device.fogged)}."
     end
   end
 
@@ -89,6 +89,10 @@ class Users::DevicesController < ApplicationController
       unless Device.find(params[:id]).published?
         redirect_to root_path, notice: "Device is not published"
       end
+    end
+
+    def boolean_to_state(boolean)
+      boolean ? "on" : "off"
     end
 
 end
