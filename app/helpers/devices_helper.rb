@@ -25,4 +25,13 @@ module DevicesHelper
     end
     icon.html_safe
   end
+
+  def devices_published_link(device)
+    if device.published?
+      url = url_for(action: 'publish', controller: 'devices', id: device, only_path: false)
+      "<a href='#{url}''>View published link</a>".html_safe
+    else
+      "".html_safe
+    end
+  end
 end
