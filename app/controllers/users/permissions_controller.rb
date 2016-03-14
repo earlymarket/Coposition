@@ -8,12 +8,6 @@ class Users::PermissionsController < ApplicationController
     render nothing: true
   end
 
-  def show
-    permission = Permission.find(params[:id])
-    permission = permission[params[:attribute]] if params[:attribute]
-    render json: permission
-  end
-
   private
     def allowed_params
       params.require(:permission).permit(:privilege, :bypass_fogging, :bypass_delay)
