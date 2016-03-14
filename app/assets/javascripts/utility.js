@@ -1,8 +1,8 @@
 /* exported utility */
 
-window.Copo = window.Copo || {};
+window.COPO = window.COPO || {};
 
-Copo.Utility = {
+COPO.utility = {
   urlParam: function(name){
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     if (!results) return null;

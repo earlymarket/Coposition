@@ -9,13 +9,11 @@
     <%= will_paginate @checkins %>
   </div>
   <script>
-    window.Copo = window.Copo || {};
-    window.Copo.Maps = window.Copo.Maps || {};
+    window.COPO = window.COPO || {};
+    window.COPO.maps = window.COPO.maps || {};
 
     L.mapbox.accessToken = 'pk.eyJ1IjoiZ2FyeXNpdSIsImEiOiJjaWxjZjN3MTMwMDZhdnNtMnhsYmh4N3lpIn0.RAGGQ0OaM81HVe0OiAKE0w';
     var map = L.mapbox.map('map', 'mapbox.light', {maxZoom: 18} );
-
-    Copo.Maps.checkins = gon.checkins;
 
     map.on('popupopen', function(e){
       var coords = e.popup.getLatLng()
