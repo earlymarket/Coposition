@@ -27,4 +27,16 @@
   .buttons {
     margin: 10px;
   }
+
+  .disabled-icon {
+    color: rgba(0,0,0,0.12);
+  }
+
+  .enabled-icon {
+    // opacity: 0.26;
+  }
+
+  .fogged {
+    color: #2196f3;
+  }
 }

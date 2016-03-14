@@ -1,8 +1,19 @@
 <%= render("/shared/notifications") %>
-$('#fog<%= @checkin.id %>').html("<%=j fogged_icon(@checkin.fogged)%>");
 gon.checkins.forEach(function(checkin){
   if(checkin.id === <%= @checkin.id %>){
     checkin.fogged = <%= @checkin.fogged %>
   }
 });
+
+//change open popups
+
+if(<%= @checkin.fogged %>){
+  $('.disabled-icon').attr('class', 'fogged enabled-icon')
+    .parent().prepend('<li class="foggedAddress">Fogged address: <%= @checkin.fogged_area %></li>');
+} else {
+  $('.fogged.enabled-icon').attr('class', 'disabled-icon');
+  $('.foggedAddress').remove();
+}
+
+//refresh the state of all markers
 COPO.maps.renderMarkers();

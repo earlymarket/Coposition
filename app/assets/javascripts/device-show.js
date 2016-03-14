@@ -90,6 +90,8 @@ $(document).on('ready page:change', function() {
 
       buildMarkerPopup: function(checkin){
         var checkinDate = new Date(checkin.created_at).toUTCString()
+        var foggedClass;
+        checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
 
         template = '<h3>ID: {id}</h3>'
         template += '<ul>'
@@ -97,14 +99,13 @@ $(document).on('ready page:change', function() {
         template += '<li>Latitude: {lat}</li>'
         template += '<li>Longitude: {lng}</li>'
         template += '<li>Address: ' + (checkin.address || checkin.fogged_area) + '</li>'
-        template += '<li>'+ COPO.utility.ujsLink('put', COPO.utility.foggedIcon(checkin.fogged) , window.location.pathname + '/checkins/' + checkin.id )
-          .attr('id', 'fog' + checkin.id)
-          .attr('class', 'btn-floating waves-effect waves-light light-blue')
-          .prop('outerHTML') +'</li>'
-
         if(checkin.fogged){
-          template += '<li>Fogged address: {fogged_area}</li>'
+          template += '<li class="foggedAddress">Fogged address: {fogged_area}</li>'
         }
+        template += '<li>'+ COPO.utility.ujsLink('put', '<i class="material-icons">cloud</i>' , window.location.pathname + '/checkins/' + checkin.id )
+          .attr('id', 'fog' + checkin.id)
+          .attr('class', foggedClass)
+          .prop('outerHTML') +'</li>'
         template += '</ul>';
 
         return template;
