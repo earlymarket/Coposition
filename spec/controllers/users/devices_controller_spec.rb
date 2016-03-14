@@ -54,6 +54,21 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
   end
 
+  describe 'GET #publish' do
+    it 'should deny access if device not published' do
+      get :publish, params
+      expect(response).to redirect_to(root_path)
+      expect(flash[:notice]).to match('not published')
+    end
+
+    it 'should assign device and last checkin if device published' do
+      device.update(published: true)
+      get :publish, params
+      expect(assigns :device).to eq(device)
+      expect(assigns :checkin).to eq(device.checkins.last)
+    end
+  end
+
   describe 'POST #create' do
 
     it 'should create a new device' do
@@ -116,6 +131,16 @@ RSpec.describe Users::DevicesController, type: :controller do
 
       device.reload
       expect(device.fogged?).to be false
+    end
+
+    it 'should switch published status' do
+      expect(device.published?).to be false
+      device.checkins << FactoryGirl::create(:checkin)
+      request.accept = 'text/javascript'
+      put :update, params.merge(published: true)
+
+      device.reload
+      expect(device.published?).to be true
     end
 
     it 'should set a delay' do

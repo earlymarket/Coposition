@@ -19,17 +19,17 @@ module DevicesHelper
 
   def devices_published_icon(device)
     if device.published?
-      icon = '<i class="material-icons">public</i>'
+      icon = '<i class="material-icons">visibility</i>'
     else
-      icon = '<i class="material-icons">location_off</i>'
+      icon = '<i class="material-icons">visibility_off</i>'
     end
     icon.html_safe
   end
 
   def devices_published_link(device)
     if device.published?
-      url = url_for(action: 'publish', controller: 'devices', id: device, only_path: false)
-      "<a href='#{url}''>View published link</a>".html_safe
+      url = url_for(action: 'publish', controller: 'users/devices', id: device, user_id: device.user_id, only_path: false)
+      "<a href='#{url}''>Share published link</a>".html_safe
     else
       "".html_safe
     end
