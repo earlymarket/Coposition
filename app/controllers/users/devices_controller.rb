@@ -60,7 +60,7 @@ class Users::DevicesController < ApplicationController
       @device.set_delay(params[:mins])
       flash[:notice] = "#{@device.name} timeshifted by #{@device.delayed.to_i} minutes."
     elsif params[:published]
-      @device.update(published: !@device.published) if @device.checkins.present?
+      @device.update(published: !@device.published) unless @device.checkins.empty?
       flash[:notice] = "Location publishing is #{boolean_to_state(@device.published)}."
     else
       @device.switch_fog
