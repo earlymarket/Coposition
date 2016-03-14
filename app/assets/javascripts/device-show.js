@@ -1,8 +1,12 @@
-$(document).on('ready page:change', function() {
+$(document).on('page:change', function() {
   if ($(".c-devices.a-show").length === 0) {
     return;
   } else {
     //page specific code
+
+    //init map
+    L.mapbox.accessToken = 'pk.eyJ1IjoiZ2FyeXNpdSIsImEiOiJjaWxjZjN3MTMwMDZhdnNtMnhsYmh4N3lpIn0.RAGGQ0OaM81HVe0OiAKE0w';
+    var map = L.mapbox.map('map', 'mapbox.light', {maxZoom: 18} );
 
     //event listeners
     map.on('ready', function() {
@@ -33,7 +37,6 @@ $(document).on('ready page:change', function() {
     window.COPO.maps = {
 
       refreshMarkers: function(){
-        console.log('Markers refreshed')
         COPO.maps.markers.clearLayers();
         COPO.maps.renderMarkers();
       },
@@ -106,7 +109,8 @@ $(document).on('ready page:change', function() {
         template += '<li>'+ COPO.utility.ujsLink('put', '<i class="material-icons">cloud</i>' , window.location.pathname + '/checkins/' + checkin.id )
           .attr('id', 'fog' + checkin.id)
           .attr('class', foggedClass)
-          .prop('outerHTML') +'</li>'
+          .prop('outerHTML')  // +'</li>'
+        template += COPO.utility.ujsLink('delete', '<i class="material-icons red-text right">delete_forever</i>' , window.location.pathname + '/checkins/' + checkin.id ).prop('outerHTML') + '</li>'
         template += '</ul>';
 
         return template;
