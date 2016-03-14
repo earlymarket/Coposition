@@ -1,29 +1,26 @@
 module DevicesHelper
   def devices_last_checkin(device)
     if device.checkins.exists?
-      message = "<p>Last reported in #{device.checkins.last.address}</p>"
+      "<p>Last reported in #{device.checkins.last.address}</p>".html_safe
     else
-      message = "<p>No Checkins found</p>"
+      "<p>No Checkins found</p>".html_safe
     end
-    message.html_safe
   end
 
   def devices_delay_icon(value)
     if value
-      value = '<i class="material-icons">hourglass_full</i>'
+      '<i class="material-icons">hourglass_full</i>'.html_safe
     else
-      value = '<i class="material-icons">hourglass_empty</i>'
+      '<i class="material-icons">hourglass_empty</i>'.html_safe
     end
-    value.html_safe
   end
 
   def devices_published_icon(device)
     if device.published?
-      icon = '<i class="material-icons">visibility</i>'
+      '<i class="material-icons">visibility</i>'.html_safe
     else
-      icon = '<i class="material-icons">visibility_off</i>'
+      '<i class="material-icons">visibility_off</i>'.html_safe
     end
-    icon.html_safe
   end
 
   def devices_published_link(device)
