@@ -4,8 +4,8 @@ window.Copo.permissions = window.Copo.permissions || {};
 Copo.permissions.disable_access_change = function(){
   $(".privilege").change(function( event ) {
     var permission_id = switches_private.get_permission_id(event.target);
-    var device_id = switches_private.get_device_id(event.target);
-    var current_state = switches_private.get_attribute_state(permission_id, device_id, "privilege", "disallowed");
+    var device_id = switches_private.get_device_id(permission_id);
+    var current_state = switches_private.get_attribute_state(permission_id, "privilege", "disallowed");
     var new_privilege = switches_private.new_privilege(current_state, "disallowed");
     switches_private.switch_last_only_off(permission_id);
     switches_private.disable_toggles(permission_id);
@@ -16,8 +16,8 @@ Copo.permissions.disable_access_change = function(){
 Copo.permissions.last_checkin_change = function(){
   $(".last_only").change(function( event ) {
     var permission_id = switches_private.get_permission_id(event.target);
-    var device_id = switches_private.get_device_id(event.target);
-    var current_state = switches_private.get_attribute_state(permission_id, device_id, "privilege", "last_only");
+    var device_id = switches_private.get_device_id(permission_id);
+    var current_state = switches_private.get_attribute_state(permission_id, "privilege", "last_only");
     var new_privilege = switches_private.new_privilege(current_state, "last_only");
     switches_private.update_permission(permission_id, device_id, 'privilege', new_privilege);
   });
@@ -26,9 +26,9 @@ Copo.permissions.last_checkin_change = function(){
 Copo.permissions.bypass_change = function(){
   $(".bypass").change(function( event ) {
     var permission_id = switches_private.get_permission_id(event.target);
-    var device_id = switches_private.get_device_id(event.target);
+    var device_id = switches_private.get_device_id(permission_id);
     var attribute = $(this).attr('name');
-    var current_state = switches_private.get_attribute_state(permission_id, device_id, attribute);
+    var current_state = switches_private.get_attribute_state(permission_id, attribute);
     var new_state = !current_state
     switches_private.update_permission(permission_id, device_id, attribute, new_state);
   });
@@ -78,8 +78,10 @@ var switches_private = {
     return $(element).parents('div.col').data().permission;
   },
 
-  get_device_id: function(element){
-    return $(element).parents('ul.collection').data().device;
+  get_device_id: function(permission_id){
+    gon.permissions.forEach(function(perm){
+      if (perm.id === permission_id){ return perm.device_id; }
+    });
   },
 
   set_data: function(attribute, value){
@@ -92,7 +94,7 @@ var switches_private = {
     }
   },
 
-  get_attribute_state: function(permission_id, device_id, attribute, button){
+  get_attribute_state: function(permission_id, attribute, button){
     var current_state = null;
     gon.permissions.forEach(function(perm){
       if (perm.id === permission_id){
