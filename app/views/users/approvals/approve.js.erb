@@ -6,3 +6,8 @@ $('#approvedDevelopers').html("<%= j (render partial: 'approved_developers', loc
 $('#friends').html("<%= j (render partial: 'friends', locals: {friends: @friends, devices: @devices}).html_safe %>")
 $('#friendRequests').html("<%= j (render partial: "friend_requests", locals: {pending: @pending}).html_safe if @pending.present? %>")
 $('#pendingApprovals').html("<%= j (render partial: 'pending_approvals', locals: {pending: @pending}).html_safe if @pending.present? %>")
+$('.modal-trigger').leanModal();
+COPO.permissions.check_disabled();
+COPO.permissions.disable_access_change();
+COPO.permissions.last_checkin_change();
+COPO.permissions.bypass_change();
