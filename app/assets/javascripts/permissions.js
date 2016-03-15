@@ -1,51 +1,49 @@
 window.COPO = window.COPO || {};
-window.COPO.permissions = window.COPO.permissions || {};
+window.COPO.permissions = {
+  disable_access_change: function(){
+    $(".privilege").change(function( event ) {
+      var permission_id = COPO.permissions.get_permission_id(event.target);
+      var device_id = COPO.permissions.get_device_id(permission_id);
+      var current_state = COPO.permissions.get_attribute_state(permission_id, "privilege", "disallowed");
+      var new_privilege = COPO.permissions.new_privilege(current_state, "disallowed");
+      COPO.permissions.switch_last_only_off(permission_id);
+      COPO.permissions.disable_toggles(permission_id);
+      COPO.permissions.update_permission(permission_id, device_id, 'privilege', new_privilege);
+    });
+  },
 
-COPO.permissions.disable_access_change = function(){
-  $(".privilege").change(function( event ) {
-    var permission_id = switches_private.get_permission_id(event.target);
-    var device_id = switches_private.get_device_id(permission_id);
-    var current_state = switches_private.get_attribute_state(permission_id, "privilege", "disallowed");
-    var new_privilege = switches_private.new_privilege(current_state, "disallowed");
-    switches_private.switch_last_only_off(permission_id);
-    switches_private.disable_toggles(permission_id);
-    switches_private.update_permission(permission_id, device_id, 'privilege', new_privilege);
-  });
-}
+  last_checkin_change: function(){
+    $(".last_only").change(function( event ) {
+      var permission_id = COPO.permissions.get_permission_id(event.target);
+      var device_id = COPO.permissions.get_device_id(permission_id);
+      var current_state = COPO.permissions.get_attribute_state(permission_id, "privilege", "last_only");
+      var new_privilege = COPO.permissions.new_privilege(current_state, "last_only");
+      COPO.permissions.update_permission(permission_id, device_id, 'privilege', new_privilege);
+    });
+  },
 
-COPO.permissions.last_checkin_change = function(){
-  $(".last_only").change(function( event ) {
-    var permission_id = switches_private.get_permission_id(event.target);
-    var device_id = switches_private.get_device_id(permission_id);
-    var current_state = switches_private.get_attribute_state(permission_id, "privilege", "last_only");
-    var new_privilege = switches_private.new_privilege(current_state, "last_only");
-    switches_private.update_permission(permission_id, device_id, 'privilege', new_privilege);
-  });
-}
+  bypass_change: function(){
+    $(".bypass").change(function( event ) {
+      var permission_id = COPO.permissions.get_permission_id(event.target);
+      var device_id = COPO.permissions.get_device_id(permission_id);
+      var attribute = $(this).attr('name');
+      var current_state = COPO.permissions.get_attribute_state(permission_id, attribute);
+      var new_state = !current_state
+      COPO.permissions.update_permission(permission_id, device_id, attribute, new_state);
+    });
+  },
 
-COPO.permissions.bypass_change = function(){
-  $(".bypass").change(function( event ) {
-    var permission_id = switches_private.get_permission_id(event.target);
-    var device_id = switches_private.get_device_id(permission_id);
-    var attribute = $(this).attr('name');
-    var current_state = switches_private.get_attribute_state(permission_id, attribute);
-    var new_state = !current_state
-    switches_private.update_permission(permission_id, device_id, attribute, new_state);
-  });
-}
+  check_disabled: function(){
+    $(".privilege").each(function(){
+      if ($(this).children().prop('checked')){
+        var permission_id = COPO.permissions.get_permission_id(this);
+        COPO.permissions.disable_toggles(permission_id, true);
+      }
+    });
+  },
 
-COPO.permissions.check_disabled = function(){
-  $(".privilege").each(function(){
-    if ($(this).children().prop('checked')){
-      var permission_id = switches_private.get_permission_id(this);
-      switches_private.disable_toggles(permission_id, true);
-    }
-  });
-}
-
-var switches_private = {
   update_permission: function(permission_id, device_id, attribute, value){
-    var data = switches_private.set_data(attribute, value);
+    var data = COPO.permissions.set_data(attribute, value);
     $.ajax({
       url: "/users/"+gon.current_user_id+"/devices/"+device_id+"/permissions/"+permission_id+"",
       type: 'PUT',
@@ -99,7 +97,7 @@ var switches_private = {
     gon.permissions.forEach(function(perm){
       if (perm.id === permission_id){
         current_state = perm[attribute];
-        perm[attribute] = switches_private.reassign_permission(perm[attribute], attribute, button);
+        perm[attribute] = COPO.permissions.reassign_permission(perm[attribute], attribute, button);
       }
     });
     return current_state;
@@ -107,7 +105,7 @@ var switches_private = {
 
   reassign_permission: function(state, attribute, button){
     if(attribute === 'privilege'){
-      return switches_private.new_privilege(state, button);
+      return COPO.permissions.new_privilege(state, button);
     } else {
       return !state;
     }
