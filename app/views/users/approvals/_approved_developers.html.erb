@@ -1,16 +1,38 @@
 <div id="approvedDevelopers" class="animated">
   <div class="collection">
     <% apps.each do |dev| %>
-      <div class="collection-item avatar row valign-wrapper">
-        <div class="col s8 valign">
+      <div class="collection-item avatar row">
+
+        <div class="col s8">
           <%= image_tag(dev.logo.url(:thumb), alt: "", class: "circle icon") %>
           <h5><%= dev.company_name %></h5>
           <% if dev.tagline %>
             <p><%= dev.tagline %></p>
           <% end %>
         </div>
-        <div class="col s4 valign right-align">
-          <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, current_user.approval_for(dev)), remote: true, class: "btn-flat", data: { confirm: "Are you sure? This app will no longer have access to any of your data."} %>
+
+        <div class="col s4">
+          <a class="waves-effect waves-light btn-flat modal-trigger right" href="#perm<%=dev.id%>"><i class="material-icons right">lock</i>Permissions</a>
+          <div id="perm<%=dev.id%>" class="modal">
+            <div class="modal-content">
+              <h4 class="modal-content">Permissions Controls</h4>
+              <ul class="permissions collection" data-dev=<%=dev.id%>>
+
+                <% @devices.each do |device| %>
+                  <% permission =  device.permission_for(dev) %>
+                  <li class="collection-item row valign-wrapper">
+                    <h5 class="valign col s8"><%= device.name %></h5>
+                    <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
+                  </li>
+                <% end %>
+
+             </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col s4">
+          <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, current_user.approval_for(dev)), remote: true, class: "btn right", data: { confirm: "Are you sure? This app will no longer have access to any of your data." } %>
         </div>
       </div>
     <% end %>
