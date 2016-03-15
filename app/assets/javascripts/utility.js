@@ -9,14 +9,6 @@ COPO.utility = {
     return results[1] || 0;
   },
 
-  foggedIcon: function(boolean){
-    if(boolean){
-      return '<i class="material-icons">cloud_done</i>'
-    } else {
-      return '<i class="material-icons">cloud_off</i>'
-    }
-  },
-
   ujsLink: function(verb, text, path){
     var output =  $('<a data-remote="true" rel="nofollow" data-method="' + verb +'" href="' + path +'">' + text +'</a>')
     return output
