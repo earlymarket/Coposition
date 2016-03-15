@@ -31,7 +31,8 @@ class Users::ApprovalsController < ApplicationController
     @pending = current_user.developer_requests
     @devices = current_user.devices.includes(:permissions)
     gon.current_user_id = current_user.id
-    gon.permissions = @devices.map { |device| device.permissions }
+    gon.permissions = []
+    @devices.each { |device| gon.permissions += device.permissions }
   end
 
   def friends
@@ -39,7 +40,8 @@ class Users::ApprovalsController < ApplicationController
     @pending = current_user.friend_requests
     @devices = current_user.devices.includes(:permissions)
     gon.current_user_id = current_user.id
-    gon.permissions = @devices.map { |device| device.permissions }
+    gon.permissions = []
+    @devices.each { |device| gon.permissions += device.permissions }
   end
 
   def approve
@@ -50,7 +52,8 @@ class Users::ApprovalsController < ApplicationController
     @friends = current_user.friends
     @devices = current_user.devices.includes(:permissions)
     gon.current_user_id = current_user.id
-    gon.permissions = @devices.map { |device| device.permissions }
+    gon.permissions = []
+    @devices.each { |device| gon.permissions += device.permissions }
     respond_to do |format|
       format.html { redirect_to user_approvals_path }
       format.js
@@ -69,7 +72,8 @@ class Users::ApprovalsController < ApplicationController
     @friends = current_user.friends
     @devices = current_user.devices.includes(:permissions)
     gon.current_user_id = current_user.id
-    gon.permissions = @devices.map { |device| device.permissions }
+    gon.permissions = []
+    @devices.each { |device| gon.permissions += device.permissions }
     respond_to do |format|
       format.html { redirect_to user_approvals_path }
       format.js { render "approve" }
