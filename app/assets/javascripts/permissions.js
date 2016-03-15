@@ -77,9 +77,11 @@ window.COPO.permissions = {
   },
 
   get_device_id: function(permission_id){
+    var device_id = null
     gon.permissions.forEach(function(perm){
-      if (perm.id === permission_id){ return perm.device_id; }
+      if (perm.id === permission_id){ device_id = perm.device_id; }
     });
+    return device_id
   },
 
   set_data: function(attribute, value){
