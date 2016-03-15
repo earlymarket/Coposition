@@ -1,7 +1,7 @@
-window.Copo = window.Copo || {};
-window.Copo.permissions = window.Copo.permissions || {};
+window.COPO = window.COPO || {};
+window.COPO.permissions = window.COPO.permissions || {};
 
-Copo.permissions.disable_access_change = function(){
+COPO.permissions.disable_access_change = function(){
   $(".privilege").change(function( event ) {
     var permission_id = switches_private.get_permission_id(event.target);
     var device_id = switches_private.get_device_id(permission_id);
@@ -13,7 +13,7 @@ Copo.permissions.disable_access_change = function(){
   });
 }
 
-Copo.permissions.last_checkin_change = function(){
+COPO.permissions.last_checkin_change = function(){
   $(".last_only").change(function( event ) {
     var permission_id = switches_private.get_permission_id(event.target);
     var device_id = switches_private.get_device_id(permission_id);
@@ -23,7 +23,7 @@ Copo.permissions.last_checkin_change = function(){
   });
 }
 
-Copo.permissions.bypass_change = function(){
+COPO.permissions.bypass_change = function(){
   $(".bypass").change(function( event ) {
     var permission_id = switches_private.get_permission_id(event.target);
     var device_id = switches_private.get_device_id(permission_id);
@@ -34,7 +34,7 @@ Copo.permissions.bypass_change = function(){
   });
 }
 
-Copo.permissions.check_disabled = function(){
+COPO.permissions.check_disabled = function(){
   $(".privilege").each(function(){
     if ($(this).children().prop('checked')){
       var permission_id = switches_private.get_permission_id(this);
