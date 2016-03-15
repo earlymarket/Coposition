@@ -20,7 +20,7 @@
             <h4 class="modal-content">Permissions Controls</h4>
             <ul class="permissions collection" data-friend=<%=friend.id%>>
 
-              <% @devices.each do |device| %>
+              <% devices.each do |device| %>
                 <% permission =  device.permission_for(friend) %>
                 <li class="collection-item row valign-wrapper">
                   <h5 class="valign col s8"><%= device.name %></h5>

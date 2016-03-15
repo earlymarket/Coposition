@@ -48,6 +48,7 @@ class Users::ApprovalsController < ApplicationController
     Approval.accept(current_user, @approval.approvable, @approval.approvable_type)
     @apps = current_user.developers
     @friends = current_user.friends
+    @devices = current_user.devices.includes(:permissions)
     respond_to do |format|
       format.html { redirect_to user_approvals_path }
       format.js
@@ -64,6 +65,7 @@ class Users::ApprovalsController < ApplicationController
     @approval.destroy
     @apps = current_user.developers
     @friends = current_user.friends
+    @devices = current_user.devices.includes(:permissions)
     respond_to do |format|
       format.html { redirect_to user_approvals_path }
       format.js { render "approve" }
