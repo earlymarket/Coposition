@@ -43,7 +43,7 @@ $(document).on('page:change', function() {
       },
 
       refreshMarkers: function(){
-        COPO.maps.markers.clearLayers();
+        map.removeLayer(COPO.maps.markers);
         COPO.maps.renderMarkers();
       },
 
@@ -116,7 +116,9 @@ $(document).on('page:change', function() {
           .attr('id', 'fog' + checkin.id)
           .attr('class', foggedClass)
           .prop('outerHTML')  // +'</li>'
-        template += COPO.utility.ujsLink('delete', '<i class="material-icons red-text right">delete_forever</i>' , window.location.pathname + '/checkins/' + checkin.id ).prop('outerHTML') + '</li>'
+        template += COPO.utility.ujsLink('delete', '<i class="material-icons red-text right">delete_forever</i>' , window.location.pathname + '/checkins/' + checkin.id )
+          .attr('data-confirm', 'Are you sure?')
+          .prop('outerHTML') + '</li>';
         template += '</ul>';
 
         return template;
