@@ -27,4 +27,17 @@
   .buttons {
     margin: 10px;
   }
+
+  .disabled-icon {
+    color: rgba(0,0,0,0.12);
+  }
+
+  .enabled-icon {
+    // Material Design specs suggest opacity: 0.25; but I don't think
+    // it'd give enough countrast
+  }
+
+  .fogged {
+    color: #2196f3;
+  }
 }

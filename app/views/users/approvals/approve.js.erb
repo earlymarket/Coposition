@@ -1,5 +1,5 @@
-if (utility.urlParam("redirect")) {
-  window.location.replace(utility.urlParam("redirect"));
+if (Copo.Utility.urlParam("redirect")) {
+  window.location.replace(Copo.Utility.urlParam("redirect"));
 }
 ($("#<%= "app_#{@approval.id}" %>")).remove();
 $('#approvedDevelopers').html("<%= j (render partial: 'approved_developers', locals: {apps: @apps}).html_safe %>")

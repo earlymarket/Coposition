@@ -27,9 +27,9 @@
 
 // -- Run every page
 
-//= require init
 //= require utility
 //= require navbar
+//= require init
 
 // -- Page specific --
 
