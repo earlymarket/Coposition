@@ -3,7 +3,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
 
   acts_as_token_authentication_handler_for User, only: [:update, :create]
 
-  before_action :authenticate, :check_user_approved_approvable
+  before_action :check_user_approved_approvable
   before_action :check_user, only: :update
 
   def index

@@ -1,11 +1,14 @@
 class Users::DevicesController < ApplicationController
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: :publish
+  before_action :published?, only: :publish
   before_action :require_ownership, only: [:show, :destroy, :update]
 
   def index
-    @current_user_id = current_user.id
-    @devices = current_user.devices.map do |dev|
+    gon.current_user_id = current_user.id
+    gon.permissions = []
+    @devices = current_user.devices.includes(:developers, :permitted_users, :permissions).map do |dev|
+      gon.permissions += dev.permissions
       dev.checkins.last.reverse_geocode! if dev.checkins.exists?
       dev
     end
@@ -17,11 +20,17 @@ class Users::DevicesController < ApplicationController
       .where(device_id: @device.id) \
       .order('created_at DESC') \
       .paginate(page: params[:page], per_page: 50)
+    gon.checkins = @checkins
   end
 
   def new
     @device = Device.new
     @device.uuid = params[:uuid] if params[:uuid]
+  end
+
+  def publish
+    @device = Device.find(params[:id])
+    @checkin = @device.checkins.last
   end
 
   def create
@@ -52,9 +61,12 @@ class Users::DevicesController < ApplicationController
     if params[:mins]
       @device.set_delay(params[:mins])
       flash[:notice] = "#{@device.name} timeshifted by #{@device.delayed.to_i} minutes."
+    elsif params[:published]
+      @device.update(published: !@device.published) unless @device.checkins.empty?
+      flash[:notice] = "Location publishing is #{boolean_to_state(@device.published)}."
     else
       @device.switch_fog
-      flash[:notice] = "#{@device.name} fogging has been changed."
+      flash[:notice] = "Location fogging is #{boolean_to_state(@device.fogged)}."
     end
   end
 
@@ -73,6 +85,16 @@ class Users::DevicesController < ApplicationController
         flash[:notice] = "You do not own that device"
         redirect_to root_path
       end
+    end
+
+    def published?
+      unless Device.find(params[:id]).published?
+        redirect_to root_path, notice: "Device is not published"
+      end
+    end
+
+    def boolean_to_state(boolean)
+      boolean ? "on" : "off"
     end
 
 end

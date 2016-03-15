@@ -24,15 +24,15 @@
 // -- Vendor libs --
 
 //= require animateCSS.min.js
-//= require markerclusterer
 
 // -- Run every page
 
-//= require init
 //= require utility
 //= require navbar
+//= require init
 
 // -- Page specific --
 
-//= require checkin-map
+//= require device-show
 //= require landing-page
+//= require permissions

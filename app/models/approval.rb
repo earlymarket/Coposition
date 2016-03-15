@@ -8,7 +8,7 @@ class Approval < ActiveRecord::Base
       errors.add(:base, "Adding self")
       false
     elsif Approval.exists?(user: user, approvable: approvable, approvable_type: approvable_type)
-      errors.add(:base, "Approval exists")
+      errors.add(:base, "Approval/Request exists")
       false
     end
   end
@@ -17,6 +17,8 @@ class Approval < ActiveRecord::Base
     approval = Approval.link(user, approvable, approvable_type)
     if (approvable_type == 'Developer') || (user.friend_requests.include?(approvable))
       approval = Approval.accept(user, approvable, approvable_type)
+    else
+      UserMailer.add_friend_email(user, approvable).deliver_now
     end
     approval
   end

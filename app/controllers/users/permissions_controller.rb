@@ -10,7 +10,7 @@ class Users::PermissionsController < ApplicationController
 
   private
     def allowed_params
-      params.require(:permission).permit(:privilege, :bypass_fogging, :show_history)
+      params.require(:permission).permit(:privilege, :bypass_fogging, :bypass_delay)
     end
 
     def require_ownership
