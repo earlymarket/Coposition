@@ -11,7 +11,13 @@ $(document).on('page:change', function() {
     //event listeners
     map.on('ready', function() {
       COPO.maps.renderMarkers();
-      map.fitBounds(COPO.maps.markers.getBounds());
+      if(COPO.maps.markers.getLayers().length){
+        map.fitBounds(COPO.maps.markers.getBounds())
+      } else {
+        map.once('locationfound', function(e) {
+          map.panTo(e.latlng);
+        })
+      }
       COPO.maps.initControls();
     });
 
