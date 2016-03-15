@@ -6,11 +6,10 @@ module ApplicationHelper
 
   def fogged_icon(value)
     if value
-      value = '<i class="material-icons">cloud_done</i>'
+      '<i class="material-icons">cloud_done</i>'.html_safe
     else
-      value = '<i class="material-icons">cloud_off</i>'
+      '<i class="material-icons">cloud_off</i>'.html_safe
     end
-    value.html_safe
   end
 
   def humanize_date(date)
