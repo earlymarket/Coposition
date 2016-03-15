@@ -19678,6 +19678,14 @@ footer.page-footer {
 .c-devices.a-show .buttons {
   margin: 10px;
 }
+/* line 31, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/device-show.scss */
+.c-devices.a-show .disabled-icon {
+  color: rgba(0, 0, 0, 0.12);
+}
+/* line 40, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/device-show.scss */
+.c-devices.a-show .fogged {
+  color: #2196f3;
+}
 
 /* line 2, /Users/Gary/Documents/earlymarket/CoPosition/app/assets/stylesheets/twitter-typeahead.scss */
 .twitter-typeahead .tt-input,
