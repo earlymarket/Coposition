@@ -34,6 +34,9 @@ class Users::ApprovalsController < ApplicationController
   def friends
     @friends = current_user.friends
     @pending = current_user.friend_requests
+    @devices = current_user.devices.includes(:permissions)
+    gon.current_user_id = current_user.id
+    gon.permissions = @devices.map { |device| device.permissions }
   end
 
   def approve
