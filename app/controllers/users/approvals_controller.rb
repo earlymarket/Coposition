@@ -51,7 +51,6 @@ class Users::ApprovalsController < ApplicationController
     @apps = current_user.developers
     @friends = current_user.friends
     @devices = current_user.devices.includes(:permissions)
-    gon.current_user_id = current_user.id
     gon.permissions = []
     @devices.each { |device| gon.permissions += device.permissions }
     respond_to do |format|
@@ -71,7 +70,6 @@ class Users::ApprovalsController < ApplicationController
     @apps = current_user.developers
     @friends = current_user.friends
     @devices = current_user.devices.includes(:permissions)
-    gon.current_user_id = current_user.id
     gon.permissions = []
     @devices.each { |device| gon.permissions += device.permissions }
     respond_to do |format|
