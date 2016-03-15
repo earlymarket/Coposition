@@ -4,7 +4,11 @@ RSpec.describe Users::DevicesController, type: :controller do
   include ControllerMacros
 
   let(:empty_device) { FactoryGirl::create :device }
-  let(:device) { FactoryGirl::create :device }
+  let(:device) do
+    dev = FactoryGirl::create :device
+    dev.checkins << FactoryGirl::create(:checkin)
+    dev
+  end
   let(:developer) { FactoryGirl::create :developer }
   let(:user) do
     user = create_user
@@ -51,6 +55,21 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(assigns(:device).uuid).to eq(nil)
       get :new, user_param.merge(uuid: '123412341234')
       expect(assigns(:device).uuid).to eq('123412341234')
+    end
+  end
+
+  describe 'GET #publish' do
+    it 'should deny access if device not published' do
+      get :publish, params
+      expect(response).to redirect_to(root_path)
+      expect(flash[:notice]).to match('not published')
+    end
+
+    it 'should assign device and last checkin if device published' do
+      device.update(published: true)
+      get :publish, params
+      expect(assigns :device).to eq(device)
+      expect(assigns :checkin).to eq(device.checkins.last)
     end
   end
 
@@ -116,6 +135,15 @@ RSpec.describe Users::DevicesController, type: :controller do
 
       device.reload
       expect(device.fogged?).to be false
+    end
+
+    it 'should switch published status' do
+      expect(device.published?).to be false
+      request.accept = 'text/javascript'
+      put :update, params.merge(published: true)
+
+      device.reload
+      expect(device.published?).to be true
     end
 
     it 'should set a delay' do

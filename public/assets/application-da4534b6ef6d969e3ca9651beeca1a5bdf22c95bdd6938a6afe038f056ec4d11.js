@@ -23931,6 +23931,68 @@ Picker.extend( 'pickadate', DatePicker )
 });
 
 (function(){"use strict";var a;a=jQuery,a.fn.extend({animateCSS:function(b,c){var d,e,f,g,h,i,j,k,l,m;return k={effect:b,delay:0,animationClass:"animated",infinite:!1,callback:c,duration:1e3,debug:!1},l="webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend",k=a.extend(k,c),h=function(a){return e(a)},e=function(a){return k.infinite===!0&&(k.animationClass+=" infinite"),setTimeout(function(){return j(a),m(a),d(a),g(a)},k.delay)},d=function(a){return a.addClass(k.effect+" "+k.animationClass+" ")},m=function(a){return"hidden"===a.css("visibility")&&a.css("visibility","visible"),a.is(":hidden")?a.show():void 0},i=function(a){return a.removeClass(k.effect+" "+k.animationClass)},j=function(a){return a.css({"-webkit-animation-duration":k.duration+"ms","-moz-animation-duration":k.duration+"ms","-o-animation-duration":k.duration+"ms","animation-duration":k.duration+"ms"})},f=function(a){return k.infinite===!1&&i(a),"function"==typeof k.callback?k.callback.call(a):void 0},g=function(a){return a.one(l,function(){return f(a)})},this.each(function(){return h(a(this))})}})}).call(this);
+/* exported utility */
+
+
+window.COPO = window.COPO || {};
+
+COPO.utility = {
+  urlParam: function(name){
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (!results) return null;
+    return results[1] || 0;
+  },
+
+  ujsLink: function(verb, text, path){
+    var output =  $('<a data-remote="true" rel="nofollow" data-method="' + verb +'" href="' + path +'">' + text +'</a>')
+    return output
+  },
+
+  fadeUp: function(target){
+    $(target).velocity({
+      opacity: 0,
+      marginTop: '-40px'
+    }, {
+      duration: 375,
+      easing: 'easeOutExpo',
+      queue: false,
+      complete: function(){
+        $(target).remove();
+      }
+    });
+  }
+};
+$(document).on('ready page:change', function() {
+  // sidebar menu collapses to a button on mobile
+  $(".button-collapse").sideNav();
+
+  // Transparent navbar for landing page
+  if(window.location.pathname == "/"){
+    $(document).scroll(function(e) {
+      if($(window).scrollTop() > 10){
+        $("nav").removeClass('transparent-nav');
+        $("svg path").attr({
+          fill: '#FFFFFF',
+          'fill-opacity': '1'
+        });
+      }else if($(window).scrollTop() <= 10){
+        $("nav").addClass('transparent-nav');
+        $("svg path").attr({
+          fill: '#000000',
+          'fill-opacity': '0.8'
+        });
+      }
+    });
+  }else{
+    // Normailze if pages is not landing page (root)
+    $(document).unbind('scroll');
+    $("nav").css('transition', 'none').removeClass('transparent-nav');
+    $("svg path").attr({
+      fill: '#FFFFFF',
+      'fill-opacity': '1'
+    });
+  }
+});
 $(document).on('ready page:change', function() {
   // Materialize initialization
   // materialize dropdown menu init
@@ -23965,17 +24027,7 @@ $(document).on('ready page:change', function() {
 
   // allow materialize toast to be dismissed on click instead of just the default swipe
   $(document).on('click', '#toast-container .toast', function() {
-    $(this).velocity({
-      opacity: 0,
-      marginTop: '-40px'
-    }, {
-      duration: 375,
-      easing: 'easeOutExpo',
-      queue: false,
-      complete: function(){
-        $(this).remove();
-      }
-    });
+    COPO.utility.fadeUp(this)
   });
 
   // Event listeners
@@ -24027,140 +24079,138 @@ function responsiveVideo(){
   }
 }
 ;
-/* exported utility */
-
-var utility = {
-  urlParam: function(name){
-    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-    if (!results) return null;
-    return results[1] || 0;
-  }
-};
-$(document).on('ready page:change', function() {
-  // sidebar menu collapses to a button on mobile
-  $(".button-collapse").sideNav();
-
-  // Transparent navbar for landing page
-  if(window.location.pathname == "/"){
-    $(document).scroll(function(e) {
-      if($(window).scrollTop() > 10){
-        $("nav").removeClass('transparent-nav');
-        $("svg path").attr({
-          fill: '#FFFFFF',
-          'fill-opacity': '1'
-        });
-      }else if($(window).scrollTop() <= 10){
-        $("nav").addClass('transparent-nav');
-        $("svg path").attr({
-          fill: '#000000',
-          'fill-opacity': '0.8'
-        });
-      }
-    });
-  }else{
-    // Normailze if pages is not landing page (root)
-    $(document).unbind('scroll');
-    $("nav").css('transition', 'none').removeClass('transparent-nav');
-    $("svg path").attr({
-      fill: '#FFFFFF',
-      'fill-opacity': '1'
-    });
-  }
-});
-$(document).on('ready page:change', function() {
+$(document).on('page:change', function() {
   if ($(".c-devices.a-show").length === 0) {
     return;
   } else {
-  //page specific code
+    //page specific code
 
-  window.Copo = window.Copo || {};
-  window.Copo.Maps = window.Copo.Maps || {};
+    //init map
+    L.mapbox.accessToken = 'pk.eyJ1IjoiZ2FyeXNpdSIsImEiOiJjaWxjZjN3MTMwMDZhdnNtMnhsYmh4N3lpIn0.RAGGQ0OaM81HVe0OiAKE0w';
+    var map = L.mapbox.map('map', 'mapbox.light', {maxZoom: 18} );
 
-  Copo.Maps.refreshMarkers = function(){
-    Copo.Maps.markers.clearLayers();
-    Copo.Maps.renderMarkers();
-  }
+    //event listeners
+    map.on('ready', function() {
+      COPO.maps.renderMarkers();
+      map.fitBounds(COPO.maps.markers.getBounds());
+      COPO.maps.initControls();
+    });
 
-  Copo.Maps.renderMarkers = function(){
-    Copo.Maps.markers = new L.MarkerClusterGroup();
-    var checkins = Copo.Maps.checkins;
-      for (var i = 0; i < checkins.length; i++) {
-        var checkin = checkins[i];
-        var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), {
-          icon: L.mapbox.marker.icon({
-            'marker-symbol': 'heliport',
-            'marker-color': '#ff6900',
-          }),
-          title: 'ID: ' + checkin.id,
-          alt: 'ID: ' + checkin.id
-        });
+    map.on('popupopen', function(e){
+      var coords = e.popup.getLatLng()
+      if($('#current-location').length){
 
-        template = Copo.Maps.buildMarkerPopup(checkin)
+        var checkin = {
+          'checkin[lat]': coords.lat.toFixed(6),
+          'checkin[lng]': coords.lng.toFixed(6)
+        }
+        var checkinPath = location.pathname + '/checkins';
+        checkinPath += '?'
+        checkinPath += $.param(checkin)
 
-        marker.bindPopup(L.Util.template(template, checkin))
-
-        marker.on('click', function() {
-          map.panTo(this.getLatLng());
-        });
-
-        Copo.Maps.markers.addLayer(marker);
+        $createCheckinLink = COPO.utility.ujsLink('post', 'Create checkin here', checkinPath);
+        $('#current-location').replaceWith($createCheckinLink);
       }
+    })
 
-    map.addLayer(Copo.Maps.markers);
-  }
+    //map related functions
+    window.COPO = window.COPO || {};
+    window.COPO.maps = {
 
-  Copo.Maps.initControls = function(){
-    map.addControl(L.mapbox.geocoderControl('mapbox.places'));
-
-    var lc = L.control.locate({
-      follow: false,
-      setView: false,
-      markerClass: L.marker,
-      markerStyle: {
-        icon: L.mapbox.marker.icon({
-          'marker-size': 'large',
-          'marker-symbol': 'star',
-          'marker-color': '#01579B',
-        }),
-        riseOnHover: true,
-      },
-      strings: {
-        title: 'Your current location',
-        popup: 'Your current location within {distance} {unit}.<br><a href="#" id="current-location">Create check-in here</a>',
+      queueRefresh: function(){
+        map.once('popupclose', function(e){
+          COPO.maps.refreshMarkers();
+        })
       },
 
-    }).addTo(map);
-    lc.stop();
-    lc.start();
-  }
+      refreshMarkers: function(){
+        map.removeLayer(COPO.maps.markers);
+        COPO.maps.renderMarkers();
+      },
 
-  Copo.Maps.buildMarkerPopup = function(checkin){
-    var checkinDate = new Date(checkin.created_at).toUTCString()
+      renderMarkers: function(){
+        COPO.maps.markers = new L.MarkerClusterGroup();
+        var checkins = gon.checkins;;
+          for (var i = 0; i < checkins.length; i++) {
+            var checkin = checkins[i];
+            var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), {
+              icon: L.mapbox.marker.icon({
+                'marker-symbol': 'heliport',
+                'marker-color': '#ff6900',
+              }),
+              title: 'ID: ' + checkin.id,
+              alt: 'ID: ' + checkin.id
+            });
 
-    template = '<h3>ID: {id}</h3>'
-    template += '<ul>'
-    template += '<li>Created on: '+ checkinDate + '</li>'
-    template += '<li>Latitude: {lat}</li>'
-    template += '<li>Longitude: {lng}</li>'
-    template += '<li>Address: ' + (checkin.address || checkin.fogged_area) + '</li>'
-    template += '<li>Fogged status: {fogged}</li>'
-    if(checkin.fogged){
-      template += '<li>Fogged address: {fogged_area}</li>'
+            template = COPO.maps.buildMarkerPopup(checkin)
+            marker.bindPopup(L.Util.template(template, checkin))
+
+            marker.on('click', function() {
+              map.panTo(this.getLatLng());
+            });
+
+            COPO.maps.markers.addLayer(marker);
+          }
+
+        map.addLayer(COPO.maps.markers);
+      },
+
+      initControls: function(){
+        map.addControl(L.mapbox.geocoderControl('mapbox.places'));
+
+        var lc = L.control.locate({
+          follow: false,
+          setView: false,
+          markerClass: L.marker,
+          markerStyle: {
+            icon: L.mapbox.marker.icon({
+              'marker-size': 'large',
+              'marker-symbol': 'star',
+              'marker-color': '#01579B',
+            }),
+            riseOnHover: true,
+          },
+          strings: {
+            title: 'Your current location',
+            popup: 'Your current location within {distance} {unit}.<br><a href="#" id="current-location">Create check-in here</a>',
+          },
+
+        }).addTo(map);
+        lc.start();
+      },
+
+      buildMarkerPopup: function(checkin){
+        var checkinDate = new Date(checkin.created_at).toUTCString()
+        var foggedClass;
+        checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
+
+        template = '<h3>ID: {id}</h3>'
+        template += '<ul>'
+        template += '<li>Created on: '+ checkinDate + '</li>'
+        template += '<li>Latitude: {lat}</li>'
+        template += '<li>Longitude: {lng}</li>'
+        template += '<li>Address: ' + (checkin.address || checkin.fogged_area) + '</li>'
+        if(checkin.fogged){
+          template += '<li class="foggedAddress">Fogged address: {fogged_area}</li>'
+        }
+        template += '<li>'+ COPO.utility.ujsLink('put', '<i class="material-icons">cloud</i>' , window.location.pathname + '/checkins/' + checkin.id )
+          .attr('id', 'fog' + checkin.id)
+          .attr('class', foggedClass)
+          .prop('outerHTML')  // +'</li>'
+        template += COPO.utility.ujsLink('delete', '<i class="material-icons red-text right">delete_forever</i>' , window.location.pathname + '/checkins/' + checkin.id )
+          .attr('data-confirm', 'Are you sure?')
+          .prop('outerHTML') + '</li>';
+        template += '</ul>';
+
+        return template;
+      },
+
     }
-    template += '</ul>';
-
-    return template;
-  }
-
-  map.on('ready', function() {
-    Copo.Maps.renderMarkers();
-    map.fitBounds(Copo.Maps.markers.getBounds());
-    Copo.Maps.initControls();
-  });
 
   }
-});
+})
 
+;
 $(document).on('ready page:change', function() {
   // Target only the landing page (assuming at root of "/")
   if ($(".c-welcome.a-index").length > 0) {
@@ -24201,6 +24251,120 @@ $(document).on('ready page:change', function() {
     $("main").css('padding-top', '64px');
   }
 });
+window.COPO = window.COPO || {};
+window.COPO.permissions = {
+  disable_access_change: function(){
+    $(".privilege").change(function( event ) {
+      var permission_id = COPO.permissions.get_permission_id(event.target);
+      var device_id = COPO.permissions.get_device_id(permission_id);
+      var current_state = COPO.permissions.get_attribute_state(permission_id, "privilege", "disallowed");
+      var new_privilege = COPO.permissions.new_privilege(current_state, "disallowed");
+      COPO.permissions.switch_last_only_off(permission_id);
+      COPO.permissions.disable_toggles(permission_id);
+      COPO.permissions.update_permission(permission_id, device_id, 'privilege', new_privilege);
+    });
+  },
+
+  last_checkin_change: function(){
+    $(".last_only").change(function( event ) {
+      var permission_id = COPO.permissions.get_permission_id(event.target);
+      var device_id = COPO.permissions.get_device_id(permission_id);
+      var current_state = COPO.permissions.get_attribute_state(permission_id, "privilege", "last_only");
+      var new_privilege = COPO.permissions.new_privilege(current_state, "last_only");
+      COPO.permissions.update_permission(permission_id, device_id, 'privilege', new_privilege);
+    });
+  },
+
+  bypass_change: function(){
+    $(".bypass").change(function( event ) {
+      var permission_id = COPO.permissions.get_permission_id(event.target);
+      var device_id = COPO.permissions.get_device_id(permission_id);
+      var attribute = $(this).attr('name');
+      var current_state = COPO.permissions.get_attribute_state(permission_id, attribute);
+      var new_state = !current_state
+      COPO.permissions.update_permission(permission_id, device_id, attribute, new_state);
+    });
+  },
+
+  check_disabled: function(){
+    $(".privilege").each(function(){
+      if ($(this).children().prop('checked')){
+        var permission_id = COPO.permissions.get_permission_id(this);
+        COPO.permissions.disable_toggles(permission_id, true);
+      }
+    });
+  },
+
+  update_permission: function(permission_id, device_id, attribute, value){
+    var data = COPO.permissions.set_data(attribute, value);
+    $.ajax({
+      url: "/users/"+gon.current_user_id+"/devices/"+device_id+"/permissions/"+permission_id+"",
+      type: 'PUT',
+      data: { permission : data }
+    });
+  },
+
+  new_privilege: function(current_state, button){
+    if(current_state === "disallowed"){
+      return "complete"
+    } else if(button === "disallowed"){
+      return "disallowed"
+    } else if(current_state === "complete"){
+      return "last_only"
+    } else {
+      return "complete"
+    }
+  },
+
+  disable_toggles: function(permission_id){
+    element = $("div[data-permission='"+ permission_id +"']>.disable>label>input")
+    element.prop("disabled", !element.prop("disabled"));
+  },
+
+  switch_last_only_off: function(permission_id){
+    $("div[data-permission='"+ permission_id +"']>div>.last_only>input").prop("checked", false);
+  },
+
+  get_permission_id: function(element){
+    return $(element).parents('div.col').data().permission;
+  },
+
+  get_device_id: function(permission_id){
+    gon.permissions.forEach(function(perm){
+      if (perm.id === permission_id){ return perm.device_id; }
+    });
+  },
+
+  set_data: function(attribute, value){
+    if (attribute === 'privilege'){
+      return { privilege: value };
+    } else if (attribute === 'bypass_fogging'){
+      return { bypass_fogging: value };
+    } else {
+      return { bypass_delay: value };
+    }
+  },
+
+  get_attribute_state: function(permission_id, attribute, button){
+    var current_state = null;
+    gon.permissions.forEach(function(perm){
+      if (perm.id === permission_id){
+        current_state = perm[attribute];
+        perm[attribute] = COPO.permissions.reassign_permission(perm[attribute], attribute, button);
+      }
+    });
+    return current_state;
+  },
+
+  reassign_permission: function(state, attribute, button){
+    if(attribute === 'privilege'){
+      return COPO.permissions.new_privilege(state, button);
+    } else {
+      return !state;
+    }
+  }
+};
+
 // This is a manifest file that'll be compiled into application.js, which will include all the files
 // listed below.
 //
@@ -24235,6 +24399,7 @@ $(document).on('ready page:change', function() {
 
 
 // -- Page specific --
+
 
 
 
