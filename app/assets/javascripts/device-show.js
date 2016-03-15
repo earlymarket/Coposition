@@ -11,7 +11,13 @@ $(document).on('page:change', function() {
     //event listeners
     map.on('ready', function() {
       COPO.maps.renderMarkers();
-      map.fitBounds(COPO.maps.markers.getBounds());
+      if(COPO.maps.markers.getLayers().length){
+        map.fitBounds(COPO.maps.markers.getBounds())
+      } else {
+        map.once('locationfound', function(e) {
+          map.panTo(e.latlng);
+        })
+      }
       COPO.maps.initControls();
     });
 
@@ -49,7 +55,7 @@ $(document).on('page:change', function() {
 
       renderMarkers: function(){
         COPO.maps.markers = new L.MarkerClusterGroup();
-        var checkins = gon.checkins;;
+        var checkins = gon.checkins;
           for (var i = 0; i < checkins.length; i++) {
             var checkin = checkins[i];
             var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), {
