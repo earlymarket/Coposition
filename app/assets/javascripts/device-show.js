@@ -49,7 +49,7 @@ $(document).on('page:change', function() {
 
       renderMarkers: function(){
         COPO.maps.markers = new L.MarkerClusterGroup();
-        var checkins = gon.checkins;;
+        var checkins = gon.checkins;
           for (var i = 0; i < checkins.length; i++) {
             var checkin = checkins[i];
             var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), {
