@@ -7,7 +7,6 @@ $(document).on('page:change', function() {
     COPO.maps.initMarkers();
     COPO.maps.initControls();
     COPO.maps.popUpOpenListener();
-    COPO.maps.queueRefresh();
   }
 });
 
