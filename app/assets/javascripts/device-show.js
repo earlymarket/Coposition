@@ -119,6 +119,7 @@ $(document).on('page:change', function() {
         template += '<li>Latitude: {lat}</li>'
         template += '<li>Longitude: {lng}</li>'
         template += '<li>Address: ' + (checkin.address || checkin.fogged_area) + '</li>'
+
         if ($(".c-friends.a-show_device").length === 0) {
           if(checkin.fogged){
             template += '<li class="foggedAddress">Fogged address: {fogged_area}</li>'
