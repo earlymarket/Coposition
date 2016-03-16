@@ -1,11 +1,21 @@
 window.COPO = window.COPO || {};
 window.COPO.permissions = {
+  check_disabled: function(){
+    $('[name=disallowed]').each(function(){
+      if ($(this).children().prop('checked')){
+        var permission_id = $(this).parents('div.permission').data().permission;
+        element = $("div[data-permission='"+ permission_id +"']>.disable>label>input")
+        element.prop("disabled", !element.prop("disabled"));
+      }
+    });
+  },
+
   switch_change:function(){
     $(".switch").change(function( event ) {
       var permission_id = $(event.target).parents('div.permission').data().permission;
       var device_id = null;
       gon.permissions.forEach(function(perm){
-        if (perm.id === permission_id){ device_id =  perm.device_id; }
+        if (perm.id === permission_id){ device_id = perm.device_id; }
       });
       var attribute = $(this).children().attr('class');
       var button = $(this).children().attr('name');
@@ -18,16 +28,6 @@ window.COPO.permissions = {
       }
       COPO.permissions.update_permission(permission_id, device_id, attribute, new_state);
     })
-  },
-
-  check_disabled: function(){
-    $('[name=disallowed]').each(function(){
-      if ($(this).children().prop('checked')){
-        var permission_id = $(this).parents('div.permission').data().permission;
-        element = $("div[data-permission='"+ permission_id +"']>.disable>label>input")
-        element.prop("disabled", !element.prop("disabled"));
-      }
-    });
   },
 
   update_permission: function(permission_id, device_id, attribute, value){
@@ -82,4 +82,3 @@ window.COPO.permissions = {
     }
   }
 };
-
