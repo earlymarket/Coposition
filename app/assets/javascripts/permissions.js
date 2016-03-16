@@ -16,12 +16,8 @@ window.COPO.permissions = {
       var attribute = $(this).children().attr('class');
       var switch_type = $(this).children().attr('name');
 
-      var new_state = null;
-      gon.permissions.forEach(function(perm){
-        if (perm.id === permission_id){
-          new_state = perm[attribute] = COPO.permissions.new_state(perm[attribute], switch_type);
-        }
-      });
+      var permission = $.grep(gon.permissions, function(perm){ return perm.id == permission_id; });
+      var new_state = permission[0][attribute] = COPO.permissions.new_state(permission[0][attribute], switch_type);
 
       if (switch_type === "disallowed") {
         $("div[data-permission='"+ permission_id +"']>.disable>.privilege>input").prop("checked", false);
@@ -29,10 +25,9 @@ window.COPO.permissions = {
         element.prop("disabled", !element.prop("disabled"));
       }
 
-      var device_id = null;
-      gon.permissions.forEach(function(perm){
-        if (perm.id === permission_id){ device_id = perm.device_id; }
-      });
+      var permission = $.grep(gon.permissions, function(perm){ return perm.id == permission_id; });
+      var device_id = permission[0].device_id;
+
       var data = COPO.permissions.set_data(attribute, new_state);
       $.ajax({
         url: "/users/"+gon.current_user_id+"/devices/"+device_id+"/permissions/"+permission_id+"",
