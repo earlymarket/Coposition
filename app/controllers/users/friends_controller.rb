@@ -18,12 +18,6 @@ class Users::FriendsController < ApplicationController
     gon.checkins = @paginated_checkins
   end
 
-  def show_checkin
-    friend = User.find(params[:id])
-    @checkin = friend.checkins.find(params[:checkin_id])
-    @fogged = @checkin.resolve_address(current_user, 'address')
-  end
-
   private
     def friends?
       friend = User.find(params[:id])
