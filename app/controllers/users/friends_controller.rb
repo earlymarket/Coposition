@@ -15,6 +15,7 @@ class Users::FriendsController < ApplicationController
     @checkins = @checkins.map do |checkin|
       checkin.get_data
     end unless @device.can_bypass_fogging?(current_user)
+    gon.checkins = @paginated_checkins
   end
 
   def show_checkin

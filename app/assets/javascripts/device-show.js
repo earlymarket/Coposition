@@ -1,5 +1,5 @@
 $(document).on('page:change', function() {
-  if ($(".c-devices.a-show").length === 0) {
+  if (($(".c-devices.a-show").length === 0) && ($(".c-friends.a-show_device").length === 0)) {
     return;
   } else {
     //page specific code
@@ -18,25 +18,29 @@ $(document).on('page:change', function() {
           map.panTo(e.latlng);
         })
       }
-      COPO.maps.initControls();
+      if ($(".c-friends.a-show_device").length === 0) {
+        COPO.maps.initControls();
+      }
     });
 
-    map.on('popupopen', function(e){
-      var coords = e.popup.getLatLng()
-      if($('#current-location').length){
+    if ($(".c-friends.a-show_device").length === 0) {
+      map.on('popupopen', function(e){
+        var coords = e.popup.getLatLng()
+        if($('#current-location').length){
 
-        var checkin = {
-          'checkin[lat]': coords.lat.toFixed(6),
-          'checkin[lng]': coords.lng.toFixed(6)
+          var checkin = {
+            'checkin[lat]': coords.lat.toFixed(6),
+            'checkin[lng]': coords.lng.toFixed(6)
+          }
+          var checkinPath = location.pathname + '/checkins';
+          checkinPath += '?'
+          checkinPath += $.param(checkin)
+
+          $createCheckinLink = COPO.utility.ujsLink('post', 'Create checkin here', checkinPath);
+          $('#current-location').replaceWith($createCheckinLink);
         }
-        var checkinPath = location.pathname + '/checkins';
-        checkinPath += '?'
-        checkinPath += $.param(checkin)
-
-        $createCheckinLink = COPO.utility.ujsLink('post', 'Create checkin here', checkinPath);
-        $('#current-location').replaceWith($createCheckinLink);
-      }
-    })
+      })
+    }
 
     //map related functions
     window.COPO = window.COPO || {};
