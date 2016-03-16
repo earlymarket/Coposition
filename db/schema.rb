@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160311170051) do
+ActiveRecord::Schema.define(version: 20160316121833) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,22 @@ ActiveRecord::Schema.define(version: 20160311170051) do
 
   add_index "approvals", ["approvable_id"], name: "index_approvals_on_approvable_id", using: :btree
   add_index "approvals", ["user_id"], name: "index_approvals_on_user_id", using: :btree
+
+  create_table "attachinary_files", force: :cascade do |t|
+    t.integer  "attachinariable_id"
+    t.string   "attachinariable_type"
+    t.string   "scope"
+    t.string   "public_id"
+    t.string   "version"
+    t.integer  "width"
+    t.integer  "height"
+    t.string   "format"
+    t.string   "resource_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "attachinary_files", ["attachinariable_type", "attachinariable_id", "scope"], name: "by_scoped_parent", using: :btree
 
   create_table "checkins", force: :cascade do |t|
     t.float    "lat"
@@ -72,12 +88,9 @@ ActiveRecord::Schema.define(version: 20160311170051) do
     t.datetime "updated_at",                          null: false
     t.string   "api_key"
     t.string   "company_name",                        null: false
-    t.string   "logo_file_name"
-    t.string   "logo_content_type"
-    t.integer  "logo_file_size"
-    t.datetime "logo_updated_at"
     t.string   "tagline"
     t.string   "redirect_url"
+    t.string   "avatar"
   end
 
   add_index "developers", ["email"], name: "index_developers_on_email", unique: true, using: :btree
@@ -143,6 +156,7 @@ ActiveRecord::Schema.define(version: 20160311170051) do
     t.string   "username",                            null: false
     t.string   "slug"
     t.string   "authentication_token"
+    t.string   "avatar"
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
