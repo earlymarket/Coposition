@@ -2,8 +2,8 @@
 <% @devices.each do |device| %>
     <div class = "card">
       <%= link_to show_device_user_friend_path(current_user.url_id, @friend, device_id: device.id) do %>
-        <h4><%= device.name %></h4>
+        <h5><%= device.name %></h5>
       <% end %>
-      <p>This device has <%= pluralize(device.checkins.count, 'checkin') %></p>
+      <p>This should say something interesting</p>
     </div>
 <% end %>
