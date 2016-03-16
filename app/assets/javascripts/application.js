@@ -24,6 +24,11 @@
 // -- Vendor libs --
 
 //= require animateCSS.min.js
+//= require jquery.ui.widget
+//= require jquery.iframe-transport
+//= require jquery.fileupload
+//= require cloudinary/jquery.cloudinary
+//= require attachinary
 
 // -- Run every page
 
