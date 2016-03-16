@@ -42,15 +42,7 @@
               <%= f.text_field :tagline, id: "register_#{resource.class.to_s.downcase}_tagline" %>
             </div>
           </div>
-            <div class="file-field input-field">
-              <div class="btn">
-                <span>Logo</span>
-                <%= f.file_field :logo, id: "register_#{resource.class.to_s.downcase}_logo" %>
-              </div>
-              <div class="file-path-wrapper">
-                <input class="file-path validate" type="text" placeholder="&lt; 1mb, square format, jpeg/png">
-              </div>
-            </div>
+            <%= f.attachinary_file_field :avatar %>
         <% end %>
         <% if resource.respond_to? :username %>
           <div class="row">
