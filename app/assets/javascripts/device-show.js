@@ -119,16 +119,18 @@ $(document).on('page:change', function() {
         template += '<li>Latitude: {lat}</li>'
         template += '<li>Longitude: {lng}</li>'
         template += '<li>Address: ' + (checkin.address || checkin.fogged_area) + '</li>'
-        if(checkin.fogged){
-          template += '<li class="foggedAddress">Fogged address: {fogged_area}</li>'
+        if ($(".c-friends.a-show_device").length === 0) {
+          if(checkin.fogged){
+            template += '<li class="foggedAddress">Fogged address: {fogged_area}</li>'
+          }
+          template += '<li>'+ COPO.utility.ujsLink('put', '<i class="material-icons">cloud</i>' , window.location.pathname + '/checkins/' + checkin.id )
+            .attr('id', 'fog' + checkin.id)
+            .attr('class', foggedClass)
+            .prop('outerHTML')  // +'</li>'
+          template += COPO.utility.ujsLink('delete', '<i class="material-icons red-text right">delete_forever</i>' , window.location.pathname + '/checkins/' + checkin.id )
+            .attr('data-confirm', 'Are you sure?')
+            .prop('outerHTML') + '</li>';
         }
-        template += '<li>'+ COPO.utility.ujsLink('put', '<i class="material-icons">cloud</i>' , window.location.pathname + '/checkins/' + checkin.id )
-          .attr('id', 'fog' + checkin.id)
-          .attr('class', foggedClass)
-          .prop('outerHTML')  // +'</li>'
-        template += COPO.utility.ujsLink('delete', '<i class="material-icons red-text right">delete_forever</i>' , window.location.pathname + '/checkins/' + checkin.id )
-          .attr('data-confirm', 'Are you sure?')
-          .prop('outerHTML') + '</li>';
         template += '</ul>';
 
         return template;
