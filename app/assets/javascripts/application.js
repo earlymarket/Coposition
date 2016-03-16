@@ -35,5 +35,6 @@
 
 //= require map
 //= require device-show
+//= require friend-device-show
 //= require landing-page
 //= require permissions
