@@ -94,14 +94,14 @@ window.COPO.maps = {
         icon: L.mapbox.marker.icon({
           'marker-size': 'large',
           'marker-symbol': 'star',
-          'marker-color': '#01579B',
+          'marker-color': '#01579B'
         }),
-        riseOnHover: true,
+        riseOnHover: true
       },
       strings: {
         title: 'Your current location',
-        popup: 'Your current location within {distance} {unit}.<br><a href="#" id="current-location">Create check-in here</a>',
-      },
+        popup: 'Your current location within {distance} {unit}.<br><a href="#" id="current-location">Create check-in here</a>'
+      }
 
     }).addTo(map);
     lc.start();
