@@ -12,12 +12,6 @@ module CheckinsHelper
     map_url.html_safe
   end
 
-  def checkins_static_map_url_for_friend(checkin)
-    checkin.get_data
-    map_url = "http://maps.googleapis.com/maps/api/staticmap?size=500x250&markers=|'+'#{checkin.lat},#{checkin.lng}'+'|"
-    map_url.html_safe
-  end
-
   def checkins_visible_time(checkin)
     "<li>Visible from:
     #{humanize_date(checkin.device.delayed.minutes.from_now(checkin.created_at))}<li>".html_safe if checkin.device.delayed?
