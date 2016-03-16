@@ -21,7 +21,7 @@ window.COPO.permissions = {
       var device_id = permission[0]['device_id'];
 
       if (switch_type === "disallowed") {
-        $("div[data-permission='"+ permission_id +"']>.disable>.privilege>input").prop("checked", false);
+        $("div[data-permission='"+ permission_id +"']>.disable>.privilege>#last_only").prop("checked", false);
         element = $("div[data-permission='"+ permission_id +"']>.disable>label>input")
         element.prop("disabled", !element.prop("disabled"));
       }
