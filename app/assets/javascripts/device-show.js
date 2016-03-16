@@ -3,10 +3,11 @@ $(document).on('page:change', function() {
     L.mapbox.accessToken = 'pk.eyJ1IjoiZ2FyeXNpdSIsImEiOiJjaWxjZjN3MTMwMDZhdnNtMnhsYmh4N3lpIn0.RAGGQ0OaM81HVe0OiAKE0w';
     var map = L.mapbox.map('map', 'mapbox.light', {maxZoom: 18} );
 
-    COPO.maps.initMarkers(map);
-    COPO.maps.initControls(map);
-    COPO.maps.popUpOpenListener(map);
-    COPO.maps.queueRefresh(map);
+    COPO.maps.initMap(map);
+    COPO.maps.initMarkers();
+    COPO.maps.initControls();
+    COPO.maps.popUpOpenListener();
+    COPO.maps.queueRefresh();
   }
 });
 

@@ -1,10 +1,14 @@
-//map related functions
 window.COPO = window.COPO || {};
 window.COPO.maps = {
+  map: null,
 
-  initMarkers: function(map){
-    map.on('ready', function() {
-      COPO.maps.renderMarkers(map);
+  initMap: function(new_map){
+    map = new_map;
+  },
+
+  initMarkers: function(){
+    map.once('ready', function() {
+      COPO.maps.renderMarkers();
       if(COPO.maps.markers.getLayers().length){
         map.fitBounds(COPO.maps.markers.getBounds())
       } else {
@@ -15,18 +19,18 @@ window.COPO.maps = {
     });
   },
 
-  queueRefresh: function(map){
+  queueRefresh: function(){
     map.once('popupclose', function(e){
-      COPO.maps.refreshMarkers(map);
+      COPO.maps.refreshMarkers();
     })
   },
 
-  refreshMarkers: function(map){
+  refreshMarkers: function(){
     map.removeLayer(COPO.maps.markers);
-    COPO.maps.renderMarkers(map);
+    COPO.maps.renderMarkers();
   },
 
-  renderMarkers: function(map){
+  renderMarkers: function(){
     COPO.maps.markers = new L.MarkerClusterGroup();
     var checkins = gon.checkins;
       for (var i = 0; i < checkins.length; i++) {
@@ -79,7 +83,7 @@ window.COPO.maps = {
     return template;
   },
 
-  initControls: function(map){
+  initControls: function(){
     map.addControl(L.mapbox.geocoderControl('mapbox.places'));
 
     var lc = L.control.locate({
@@ -103,7 +107,7 @@ window.COPO.maps = {
     lc.start();
   },
 
-  popUpOpenListener: function(map){
+  popUpOpenListener: function(){
     map.on('popupopen', function(e){
       var coords = e.popup.getLatLng()
       if($('#current-location').length){
