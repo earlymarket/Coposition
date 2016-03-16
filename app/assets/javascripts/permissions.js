@@ -18,15 +18,13 @@ window.COPO.permissions = {
 
       var permission = $.grep(gon.permissions, function(perm){ return perm.id == permission_id; });
       var new_state = permission[0][attribute] = COPO.permissions.new_state(permission[0][attribute], switch_type);
+      var device_id = permission[0]['device_id'];
 
       if (switch_type === "disallowed") {
         $("div[data-permission='"+ permission_id +"']>.disable>.privilege>input").prop("checked", false);
         element = $("div[data-permission='"+ permission_id +"']>.disable>label>input")
         element.prop("disabled", !element.prop("disabled"));
       }
-
-      var permission = $.grep(gon.permissions, function(perm){ return perm.id == permission_id; });
-      var device_id = permission[0].device_id;
 
       var data = COPO.permissions.set_data(attribute, new_state);
       $.ajax({
