@@ -8,6 +8,4 @@ $('#friendRequests').html("<%= j (render partial: "friend_requests", locals: {pe
 $('#pendingApprovals').html("<%= j (render partial: 'pending_approvals', locals: {pending: @pending}).html_safe if @pending.present? %>")
 $('.modal-trigger').leanModal();
 COPO.permissions.check_disabled();
-COPO.permissions.disable_access_change();
-COPO.permissions.last_checkin_change();
-COPO.permissions.bypass_change();
+COPO.permissions.switch_change();
