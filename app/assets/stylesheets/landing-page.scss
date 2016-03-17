@@ -48,18 +48,6 @@
       
       .parallax{
         opacity: 0.8;
-
-        .overlay{
-          @extend .primary-color, .quarter-opacity;
-          position: absolute;
-          width: 100%;
-          height: 100%;
-        }
-        video{
-          position: absolute;
-          width: auto;
-          height: 100%;
-        }
       }
     }
   }
@@ -120,5 +108,25 @@
     .app{
       height: 300px;
     }
+  }
+}
+
+#promo{
+  .overlay{
+    @extend .primary-color, .quarter-opacity;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -10;
+  }
+  video{
+    left: 0;
+    top: 0;
+    position: absolute;
+    width: auto;
+    height: 100%;
+    z-index: -10;
   }
 }
