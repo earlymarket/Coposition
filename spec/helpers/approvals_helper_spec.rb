@@ -5,7 +5,7 @@ RSpec.describe ApprovalsHelper, :type => :helper do
     user = FactoryGirl::create(:user)
     user.pending_friends << [FactoryGirl::create(:user), FactoryGirl::create(:user)]
     user
- end
+  end
 
   describe '#approvals_input' do
     it 'should assign placeholder key a string' do
