@@ -3,7 +3,7 @@
     <% apps.each do |dev| %>
       <div class="collection-item avatar row valign-wrapper">
         <div class="col s8 valign">
-          <%= image_tag(dev.logo.url(:thumb), alt: "", class: "circle icon") %>
+            <%= avatar_for(dev, { size: '60x60', crop: :thumb, gravity: :face, radius: :max }) %>
           <h5><%= dev.company_name %></h5>
           <% if dev.tagline %>
             <p><%= dev.tagline %></p>

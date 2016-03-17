@@ -24,6 +24,8 @@
 // -- Vendor libs --
 
 //= require animateCSS.min.js
+//= require cloudinary
+//= require attachinary
 
 // -- Run every page
 
