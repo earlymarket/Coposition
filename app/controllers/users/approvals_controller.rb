@@ -29,11 +29,17 @@ class Users::ApprovalsController < ApplicationController
   def apps
     @apps = current_user.developers
     @pending = current_user.developer_requests
+    @devices = current_user.devices.includes(:permissions)
+    gon.current_user_id = current_user.id
+    gon.permissions = @devices.map(&:permissions).inject(:+)
   end
 
   def friends
     @friends = current_user.friends
     @pending = current_user.friend_requests
+    @devices = current_user.devices.includes(:permissions)
+    gon.current_user_id = current_user.id
+    gon.permissions = @devices.map(&:permissions).inject(:+)
   end
 
   def approve
@@ -42,6 +48,8 @@ class Users::ApprovalsController < ApplicationController
     Approval.accept(current_user, @approval.approvable, @approval.approvable_type)
     @apps = current_user.developers
     @friends = current_user.friends
+    @devices = current_user.devices.includes(:permissions)
+    gon.permissions = @devices.map(&:permissions).inject(:+)
     respond_to do |format|
       format.html { redirect_to user_approvals_path }
       format.js
@@ -58,6 +66,8 @@ class Users::ApprovalsController < ApplicationController
     @approval.destroy
     @apps = current_user.developers
     @friends = current_user.friends
+    @devices = current_user.devices.includes(:permissions)
+    gon.permissions = @devices.map(&:permissions).inject(:+)
     respond_to do |format|
       format.html { redirect_to user_approvals_path }
       format.js { render "approve" }
@@ -77,5 +87,6 @@ class Users::ApprovalsController < ApplicationController
         User.find_by(email: allowed_params[:approvable])
       end
     end
+
 
 end

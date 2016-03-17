@@ -4,19 +4,43 @@
   <% end %>
 
   <% friends.each do |friend| %>
+
     <div class="card-panel">
-      <div class="row valign-wrapper">
-        <a href="<%= user_friend_path(current_user.url_id, friend) %>" class="black-text col s8 valign">
+      <div class="row">
+
+        <a href="<%= user_friend_path(current_user.url_id, friend) %>" class="black-text col s8">
           <%= avatar_for(friend, { size: '60x60', crop: :thumb, gravity: :face, radius: :max }) %>
           <div class="ib">
             <h5><%= friends_name(friend) %></h5>
             Friends since <%= humanize_date(current_user.approval_for(friend).approval_date) %>
           </div>
         </a>
-        <div class="col s4 right-align valign">
-          <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, current_user.approval_for(friend)), remote: true, class: "btn-flat", data: { confirm: "Are you sure? This user will no longer have access to any of your data." } %>
+
+        <div class="col s4">
+          <a class="waves-effect waves-light btn-flat modal-trigger right" href="#perm<%=friend.id%>"><i class="material-icons right">lock</i>Permissions</a>
+          <div id="perm<%=friend.id%>" class="modal">
+            <div class="modal-content">
+              <h4 class="modal-content">Permissions Controls</h4>
+              <ul class="permissions collection" data-friend=<%=friend.id%>>
+
+                <% devices.each do |device| %>
+                  <% permission =  device.permission_for(friend) %>
+                  <li class="collection-item row valign-wrapper">
+                    <h5 class="valign col s8"><%= device.name %></h5>
+                    <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
+                  </li>
+                <% end %>
+
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col s4">
+          <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, current_user.approval_for(friend)), remote: true, class: "btn-flat right", data: { confirm: "Are you sure? This user will no longer have access to any of your data." } %>
         </div>
       </div>
+
     </div>
   <% end %>
 </div>
