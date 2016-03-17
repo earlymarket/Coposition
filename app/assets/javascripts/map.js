@@ -2,8 +2,9 @@ window.COPO = window.COPO || {};
 window.COPO.maps = {
   map: null,
 
-  initMap: function(new_map){
-    map = new_map;
+  initMap: function(){
+    L.mapbox.accessToken = 'pk.eyJ1IjoiZ2FyeXNpdSIsImEiOiJjaWxjZjN3MTMwMDZhdnNtMnhsYmh4N3lpIn0.RAGGQ0OaM81HVe0OiAKE0w';
+    map = L.mapbox.map('map', 'mapbox.light', {maxZoom: 18} );
   },
 
   initMarkers: function(){
