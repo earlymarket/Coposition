@@ -42,8 +42,8 @@
               <%= f.text_field :tagline, id: "register_#{resource.class.to_s.downcase}_tagline" %>
             </div>
           </div>
-            <%= f.attachinary_file_field :avatar %>
         <% end %>
+          <%= f.attachinary_file_field :avatar %>
         <% if resource.respond_to? :username %>
           <div class="row">
             <div class="input-field col s12">

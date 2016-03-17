@@ -8,6 +8,7 @@
       <div class="col s8 valign ">
       <a href="<%= user_friend_path(current_user.url_id, friend) %>">
         <h5><%= friends_name(friend) %></h5>
+        <%= avatar_for(friend, { size: '60x60', crop: :thumb, gravity: :face, radius: :max }) %>
         <p>Friends since <%= humanize_date(current_user.approval_for(friend).approval_date) %></p>
       </a>
       </div>
