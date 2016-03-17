@@ -16,4 +16,8 @@ module ApplicationHelper
     date.strftime("%a #{date.day.ordinalize} %b %T")
   end
 
+  def avatar_for(resource, options = {})
+    resource.avatar? ? cl_image_tag(resource.avatar.path, options) : cl_image_tag("placeholder_wzhvlw.png", options)
+  end
+
 end

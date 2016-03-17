@@ -24,6 +24,8 @@
 // -- Vendor libs --
 
 //= require animateCSS.min.js
+//= require cloudinary
+//= require attachinary
 
 // -- Run every page
 
@@ -33,6 +35,8 @@
 
 // -- Page specific --
 
+//= require map
 //= require device-show
+//= require friend-device-show
 //= require landing-page
 //= require permissions

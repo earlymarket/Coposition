@@ -41,6 +41,8 @@ $(document).on('ready page:change', function() {
     COPO.utility.fadeUp(this)
   });
 
+  // Attachinary init
+  $('.attachinary-input').attachinary()
   // Event listeners
   setup();
 });

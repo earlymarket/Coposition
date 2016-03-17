@@ -18,16 +18,20 @@
             <% device.developers.each do |developer| %>
               <% permission =  device.permission_for(developer) %>
               <li class="collection-item row">
-                <%= permissible_title(developer) %>
-                <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
+                <div class='valign-wrapper col s8'>
+                  <%= permissible_title(developer) %>
+                  <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
+                </div>
               </li>
             <% end %>
 
             <% device.permitted_users.each do |friend| %>
               <% permission =  device.permission_for(friend) %>
               <li class="collection-item row">
-                <%= permissible_title(friend) %>
-                <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
+                <div class='valign-wrapper col s8'>
+                  <%= permissible_title(friend) %>
+                  <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
+                </div>
               </li>
             <% end %>
 

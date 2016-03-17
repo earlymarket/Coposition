@@ -17,6 +17,9 @@ Rails.application.routes.draw do
     sessions: 'developers/devise/sessions'
   }
 
+  # Attachinary
+  mount Attachinary::Engine => "/attachinary"
+
   # API
 
   namespace :api, path: '', constraints: {subdomain: 'api'}, defaults: {format: 'json'} do
