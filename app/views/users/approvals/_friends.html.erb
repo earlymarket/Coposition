@@ -4,16 +4,18 @@
   <% end %>
 
   <% friends.each do |friend| %>
-    <div class="card row valign-wrapper">
-      <div class="col s8 valign ">
-      <a href="<%= user_friend_path(current_user.url_id, friend) %>">
-        <h5><%= friends_name(friend) %></h5>
-        <%= avatar_for(friend, { size: '60x60', crop: :thumb, gravity: :face, radius: :max }) %>
-        <p>Friends since <%= humanize_date(current_user.approval_for(friend).approval_date) %></p>
-      </a>
-      </div>
-      <div class="col s4 valign right-align">
-      <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, current_user.approval_for(friend)), remote: true, class: "btn-flat", data: { confirm: "Are you sure? This user will no longer have access to any of your data." } %>
+    <div class="card-panel">
+      <div class="row valign-wrapper">
+        <a href="<%= user_friend_path(current_user.url_id, friend) %>" class="black-text col s8 valign">
+          <%= avatar_for(friend, { size: '60x60', crop: :thumb, gravity: :face, radius: :max }) %>
+          <div class="ib">
+            <h5><%= friends_name(friend) %></h5>
+            Friends since <%= humanize_date(current_user.approval_for(friend).approval_date) %>
+          </div>
+        </a>
+        <div class="col s4 right-align valign">
+          <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, current_user.approval_for(friend)), remote: true, class: "btn-flat", data: { confirm: "Are you sure? This user will no longer have access to any of your data." } %>
+        </div>
       </div>
     </div>
   <% end %>
