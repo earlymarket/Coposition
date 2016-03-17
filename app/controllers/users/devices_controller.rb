@@ -16,10 +16,19 @@ class Users::DevicesController < ApplicationController
 
   def show
     @device = Device.find(params[:id])
-    @checkins = Checkin.includes(:device) \
+    if (params[:device].present?)
+      @checkins = Checkin.includes(:device).where(device_id: @device.id).order('created_at DESC').map do |checkin|
+        checkin if checkin.created_at.to_date == Date.parse(params[:device][:alias])
+      end
+      @checkins.compact!
+      @checkins = @checkins.paginate(page: params[:page], per_page: 1000)
+    else
+      @checkins = Checkin.includes(:device) \
       .where(device_id: @device.id) \
       .order('created_at DESC') \
       .paginate(page: params[:page], per_page: 50)
+    end
+
     gon.checkins = @checkins
   end
 
@@ -73,7 +82,7 @@ class Users::DevicesController < ApplicationController
   private
 
     def allowed_params
-      params.require(:device).permit(:uuid,:name)
+      params.require(:device).permit(:uuid,:name,:alias)
     end
 
     def checkin_params

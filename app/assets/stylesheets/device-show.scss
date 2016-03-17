@@ -3,6 +3,17 @@
     display: none;
   }
 
+  .ui-select {
+    background:#fff;
+    position:absolute;
+    width: 25%;
+    top:70px;
+    right:10px;
+    z-index:100;
+    padding:10px;
+    border-radius:3px;
+  }
+
   #map {
     width:100%;
     position:absolute !important;
