@@ -21,7 +21,7 @@ $(document).on('ready page:change', function() {
   // materialize datepicker init
   $('.datepicker').pickadate({
     selectMonths: true,
-    selectYears: 15
+    selectYears: 5
   });
 
   // materialize scrollfire
