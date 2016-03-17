@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
   has_many :permissions, :as => :permissible, dependent: :destroy
   has_many :permitted_devices, through: :permissions, source: :permissible, :source_type => "Device"
 
+  has_attachment :avatar
   ## Pathing
 
   def url_id

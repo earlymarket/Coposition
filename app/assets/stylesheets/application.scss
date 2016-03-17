@@ -26,14 +26,15 @@
 // Leave them in seperate statements. It makes it easier to debug/reorder'
 // Especially in merge conflicts
 
-@import 'fonts.scss';
-@import 'navbar.scss';
-@import 'layout.scss';
+@import 'fonts';
+@import 'navbar';
+@import 'layout';
 
 // Page/feature specific
-@import 'landing-page.scss';
-@import 'placeholder.scss';
-@import 'user.scss';
-@import 'maitre.scss';
-@import 'device-show.scss';
-@import 'twitter-typeahead.scss';
+@import 'landing-page';
+@import 'placeholder';
+@import 'user';
+@import 'maitre';
+@import 'device-show';
+@import 'twitter-typeahead';
+@import 'approvals-friends'

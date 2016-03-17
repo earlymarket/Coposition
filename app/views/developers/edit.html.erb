@@ -13,9 +13,7 @@
   </div>
   <br>
   <div class="field">
-    <%= image_tag @developer.logo.url(:thumb), class: "small-curved-border" %><br>
-    <%= f.label :logo %>
-    <%= f.file_field :logo %>
+    <%= f.attachinary_file_field :avatar %>
   </div>
   <br>
   <%= f.submit "Update", class: "btn btn-success m-m"  %>

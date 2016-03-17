@@ -12,7 +12,7 @@ class DevelopersController < ApplicationController
   end
 
   def allowed_params
-    params.require(:developer).permit([:company_name, :logo, :redirect_url, :tagline])
+    params.require(:developer).permit([:company_name, :avatar, :redirect_url, :tagline])
   end
 
 end
