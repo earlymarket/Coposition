@@ -18,6 +18,12 @@ $(document).on('ready page:change', function() {
   // materialize selectbox init
   $('select').material_select();
 
+  // materialize datepicker init
+  $('.datepicker').pickadate({
+    selectMonths: true,
+    selectYears: 15
+  });
+
   // materialize scrollfire
   var options = [
     // Landing-page fade in image

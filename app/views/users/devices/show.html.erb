@@ -1,15 +1,22 @@
 <% content_for :outside_container do %>
-<%= Gon::Base.render_data %>
-<div id='filters' class='ui-select'>
-  <div>
-    <%= form_for @device, url: user_device_path(current_user.url_id, @device), class: "form-group", method: :get do |f| %>
-      <%= f.label 'Select a date to view' %>
-      <%= f.text_field :alias, class: "datepicker" %>
-      <%= f.submit("Submit", class: "form-control btn btn-default") %>
-      <%= link_to("Back to all", user_device_path(current_user.url_id, @device) , { method: :get, class: "btn-flat" })%>
-    <% end %>
+  <%= Gon::Base.render_data %>
+
+  <ul id='filters' class='date-select collapsible'>
+    <li>
+      <div class='collapsible-header'>Select a date range</div>
+      <div class='collapsible-body'>
+        <%= form_for @device, url: user_device_path(current_user.url_id, @device), class: "form-group", method: :get do |f| %>
+          <%= f.label 'From' %>
+          <%= text_field_tag(:from, nil, class: "datepicker", required: true) %>
+          <%= f.label 'to' %>
+          <%= text_field_tag(:to, nil, class: "datepicker", required: true) %>
+          <%= f.submit("Submit", class: "form-control btn btn-default") %>
+          <%= link_to("Reset", user_device_path(current_user.url_id, @device) , { method: :get, class: "btn-flat right" })%>
+        <% end %>
+      </div>
+    </li>
   </div>
-</div>
+
   <div id='map'></div>
   <div class="bottom-panel">
     <div class="buttons">
@@ -20,9 +27,3 @@
   </div>
 
 <% end %>
-<script>
-$('.datepicker').pickadate({
-  selectMonths: true,
-  selectYears: 15
-});
-</script>

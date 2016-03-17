@@ -16,19 +16,18 @@ class Users::DevicesController < ApplicationController
 
   def show
     @device = Device.find(params[:id])
-    if (params[:device].present?)
-      @checkins = Checkin.includes(:device).where(device_id: @device.id).order('created_at DESC').map do |checkin|
-        checkin if checkin.created_at.to_date == Date.parse(params[:device][:alias])
-      end
-      @checkins.compact!
-      @checkins = @checkins.paginate(page: params[:page], per_page: 1000)
+    if (params[:from].present?)
+      @checkins = Checkin.includes(:device) \
+        .where(device_id: @device.id, \
+          created_at: (Date.parse(params[:from])).beginning_of_day..(Date.parse(params[:to])).end_of_day) \
+        .order('created_at DESC') \
+        .paginate(page: params[:page], per_page: 1000)
     else
       @checkins = Checkin.includes(:device) \
       .where(device_id: @device.id) \
       .order('created_at DESC') \
-      .paginate(page: params[:page], per_page: 50)
+      .paginate(page: params[:page], per_page: 1000)
     end
-
     gon.checkins = @checkins
   end
 
