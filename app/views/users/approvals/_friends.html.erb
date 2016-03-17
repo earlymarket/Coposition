@@ -1,6 +1,6 @@
 <div id="friends">
   <% if current_user.pending_friends.present? %>
-    You have sent <%= pluralize(current_user.pending_friends.count, 'friend request') %>.
+    You have sent <%= pluralize(current_user.pending_friends.count, 'friend request') %> to <%= approvals_pending_friends(current_user) %>.
   <% end %>
 
   <% friends.each do |friend| %>
