@@ -49,7 +49,7 @@ class Users::ApprovalsController < ApplicationController
     @apps = current_user.developers
     @friends = current_user.friends
     @devices = current_user.devices.includes(:permissions)
-   gon.permissions = @devices.inject([]) { |result, device| result.concat(device.permissions) }
+    gon.permissions = @devices.inject([]) { |result, device| result.concat(device.permissions) }
     respond_to do |format|
       format.html { redirect_to user_approvals_path }
       format.js
