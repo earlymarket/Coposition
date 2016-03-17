@@ -15,6 +15,6 @@ module ApprovalsHelper
       string += ', ' if index < user.pending_friends.length - 2
       string += ' and ' if index == user.pending_friends.length - 2
     end
-    return string
+    string
   end
 end

@@ -24,8 +24,14 @@ RSpec.describe ApprovalsHelper, :type => :helper do
       expect(helper.approvals_pending_friends(user)).to be_kind_of(String)
       expect(helper.approvals_pending_friends(user)).to_not match ','
       expect(helper.approvals_pending_friends(user)).to match 'and'
-      user.pending_friends << FactoryGirl::create(:user)
+    end
+
+    it 'should use commas if the user has more than 2 pending friends' do
+      friend = FactoryGirl::create(:user)
+      user.pending_friends << friend
       expect(helper.approvals_pending_friends(user)).to match ','
+      expect(helper.approvals_pending_friends(user)).to match 'and'
+      expect(helper.approvals_pending_friends(user)).to match friend.email
     end
   end
 end
