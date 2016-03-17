@@ -8,7 +8,7 @@ class Users::DevicesController < ApplicationController
     gon.current_user_id = current_user.id
     gon.permissions = []
     @devices = current_user.devices.includes(:developers, :permitted_users, :permissions).map do |dev|
-      gon.permissions += dev.permissions
+      gon.permissions.concat(dev.permissions)
       dev.checkins.last.reverse_geocode! if dev.checkins.exists?
       dev
     end
