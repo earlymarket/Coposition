@@ -16,7 +16,7 @@ window.COPO.permissions = {
       var attribute = $(this).children().attr('class');
       var switch_type = $(this).children().attr('name');
 
-      var permission = $.grep(gon.permissions, function(perm){ return perm.id == permission_id; });
+      var permission = $.grep(gon.permissions, function(perm){ return perm.id === permission_id; });
       var new_state = permission[0][attribute] = COPO.permissions.new_state(permission[0][attribute], switch_type);
       var device_id = permission[0]['device_id'];
 
@@ -57,5 +57,5 @@ window.COPO.permissions = {
     } else {
       return { bypass_delay: value };
     }
-  },
+  }
 };
