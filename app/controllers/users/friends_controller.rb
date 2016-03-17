@@ -15,12 +15,7 @@ class Users::FriendsController < ApplicationController
     @checkins = @checkins.map do |checkin|
       checkin.get_data
     end unless @device.can_bypass_fogging?(current_user)
-  end
-
-  def show_checkin
-    friend = User.find(params[:id])
-    @checkin = friend.checkins.find(params[:checkin_id])
-    @fogged = @checkin.resolve_address(current_user, 'address')
+    gon.checkins = @paginated_checkins
   end
 
   private

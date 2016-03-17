@@ -41,15 +41,4 @@ RSpec.describe Users::FriendsController, type: :controller do
       expect(assigns :checkins).to eq(device.checkins)
     end
   end
-
-  describe "GET #show_checkin" do
-    it 'should assign checkin and fogged checkin' do
-      approval
-      get :show_checkin, params
-      expect(assigns :checkin).to eq(device.checkins.first)
-      expect(assigns :fogged).to eq(device.checkins.first.resolve_address(user, 'address'))
-    end
-
-  end
-
 end
