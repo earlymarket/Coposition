@@ -73,7 +73,7 @@ class Users::DevicesController < ApplicationController
   private
 
     def allowed_params
-      params.require(:device).permit(:uuid,:name,:alias)
+      params.require(:device).permit(:uuid,:name)
     end
 
     def checkin_params
