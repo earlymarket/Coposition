@@ -20,9 +20,8 @@ class Users::DevicesController < ApplicationController
       @checkins = @checkins.where(created_at: (Date.parse(params[:from])).beginning_of_day..(Date.parse(params[:to])).end_of_day)
     end
     @checkins = @checkins.order('created_at DESC').paginate(page: params[:page], per_page: 1000)
-    from, to = @checkins.last.created_at, @checkins.first.created_at
     gon.checkins = @checkins
-    gon.chart_checkins = @checkins.group_by_month(:created_at, format: "%B %Y", range: from..to).count.to_a
+    gon.chart_checkins = @checkins.group_for_chart(@checkins.last.created_at, @checkins.first.created_at)
   end
 
   def new
