@@ -27,15 +27,16 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def apps
-    @apps = current_user.developers
+    @approved = current_user.developers
     @pending = current_user.developer_requests
     @devices = current_user.devices.includes(:permissions)
     gon.current_user_id = current_user.id
     gon.permissions = @devices.map(&:permissions).inject(:+)
+    render "friends"
   end
 
   def friends
-    @friends = current_user.friends
+    @approved = current_user.friends
     @pending = current_user.friend_requests
     @devices = current_user.devices.includes(:permissions)
     gon.current_user_id = current_user.id

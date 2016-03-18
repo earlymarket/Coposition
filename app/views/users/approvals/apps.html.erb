@@ -1,6 +1,6 @@
 <%= Gon::Base.render_data %>
 <h1>Apps</h1>
-  <%= render partial: "approved_developers", locals: {apps: @apps, devices: @devices} %>
+  <%= render partial: "friends", locals: {friends: @approved, devices: @devices} %>
   <%= render partial: "friend_requests", locals: {pending: @pending} if @pending.present? %>
 <div class='center-align'>
 <%= link_to("Add app", new_user_approval_path(approvable_type: 'Developer'), class: "btn waves-effect waves-light") %>
