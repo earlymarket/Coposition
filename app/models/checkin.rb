@@ -81,7 +81,7 @@ class Checkin < ActiveRecord::Base
     if to - from < Date.today.midnight - 1.month.ago
       group_by_day(:created_at, format: "%e/%m", range: from..to).count.to_a
     elsif to - from < Date.today.midnight - 6.months.ago
-      cgroup_by_week(:created_at, range: from..to).count.to_a
+      group_by_week(:created_at, format: "%e/%m/%Y", range: from..to).count.to_a
     else
       group_by_month(:created_at, format: "%b %y", range: from..to).count.to_a
     end

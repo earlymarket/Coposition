@@ -17,6 +17,18 @@
     </li>
   </div>
 
+<div class='container'>
+  <table id="checkin-table" class="highlight checkin-table">
+    <thead>
+      <tr>
+        <th>Created</th><th>Area</th><th>Fogged</th><th>More Info</th>
+      </tr>
+    </thead>
+    <%= render partial: "checkin_table_row", collection: @checkins, as: :checkin %>
+  </table>
+  <div class="center"><%= will_paginate @checkins %></div>
+</div>
+
 <!--  <div id='map'></div>
   <div class="bottom-panel">
     <div class="buttons">
