@@ -1,11 +1,29 @@
 <% content_for :outside_container do %>
-<%= Gon::Base.render_data %>
+  <%= Gon::Base.render_data %>
+
+  <ul id='filters' class='date-select collapsible'>
+    <li>
+      <div class='collapsible-header'>Select a date range</div>
+      <div class='collapsible-body'>
+        <%= form_for @device, url: user_device_path(current_user.url_id, @device), class: "form-group", method: :get do |f| %>
+          <%= f.label 'From' %>
+          <%= text_field_tag(:from, nil, class: "datepicker", required: true) %>
+          <%= f.label 'to' %>
+          <%= text_field_tag(:to, nil, class: "datepicker", required: true) %>
+          <%= f.submit("Filter", class: "form-control btn btn-default") %>
+          <%= link_to("Reset", user_device_path(current_user.url_id, @device) , { method: :get, class: "btn-flat right" })%>
+        <% end %>
+      </div>
+    </li>
+  </div>
 
   <div id='map'></div>
   <div class="bottom-panel">
-    <div class="buttons"><%= link_to("Delete history", user_device_checkins_path(current_user.url_id, @device.id), { method: :delete, class: "btn red white-text", data: { confirm: 'Delete all checkins for this device?' } })%>
+    <div class="buttons">
+      <%= link_to("Delete history", user_device_checkins_path(current_user.url_id, @device.id), { method: :delete, class: "btn red white-text", data: { confirm: 'Delete all checkins for this device?' } })%>
       <%= link_to("Delete device", user_device_path(current_user.url_id, @device), { method: :delete, class: "btn red white-text", data: { confirm: 'Are you sure?' } })%>
     </div>
     <%= will_paginate @checkins %>
   </div>
+
 <% end %>

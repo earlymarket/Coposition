@@ -15,10 +15,11 @@ class Users::DevicesController < ApplicationController
 
   def show
     @device = Device.find(params[:id])
-    @checkins = Checkin.includes(:device) \
-      .where(device_id: @device.id) \
-      .order('created_at DESC') \
-      .paginate(page: params[:page], per_page: 50)
+    @checkins = Checkin.includes(:device).where(device_id: @device.id)
+    if (params[:from].present?)
+      @checkins = @checkins.where(created_at: (Date.parse(params[:from])).beginning_of_day..(Date.parse(params[:to])).end_of_day)
+    end
+    @checkins = @checkins.order('created_at DESC').paginate(page: params[:page], per_page: 1000)
     gon.checkins = @checkins
   end
 
