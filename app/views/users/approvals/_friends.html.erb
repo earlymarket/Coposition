@@ -1,4 +1,4 @@
-<div id="friends">
+<div id="approved">
   <% if current_user.pending_friends.present? %>
     You have sent <%= pluralize(current_user.pending_friends.count, 'friend request') %> to <%= approvals_pending_friends(current_user) %>.
   <% end %>
@@ -9,10 +9,10 @@
       <div class="row">
 
         <a href="<%= user_friend_path(current_user.url_id, approvable) %>" class="black-text col s8">
-          <%= avatar_for(approvable, { size: '60x60', crop: :thumb, gravity: :face, radius: :max }) %>
+          <%= avatar_for(approvable, { size: '60x60', crop: :thumb, gravity: :face, radius: :max, class: 'avatar' }) %>
           <div class="ib">
-            <h5><%= friend_or_app_name(approvable) %></h5>
-            Approved since <%= humanize_date(current_user.approval_for(approvable).approval_date) %>
+            <h5 class="ib"><%= approvable_name(approvable) %></h5><span class="tagline"><%= tagline_text(approvable) %></span>
+            <div>Approved since <%= humanize_date(current_user.approval_for(approvable).approval_date) %></div>
           </div>
         </a>
 
@@ -37,7 +37,7 @@
         </div>
 
         <div class="col s4">
-          <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, current_user.approval_for(approvable)), remote: true, class: "btn-flat right", data: { confirm: "Are you sure? This user will no longer have access to any of your data." } %>
+          <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, current_user.approval_for(approvable)), remote: true, class: "btn-flat right", data: { confirm: "Are you sure? They will no longer have access to any of your data." } %>
         </div>
       </div>
 

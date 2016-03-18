@@ -27,6 +27,7 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def apps
+    @approval_type = 'Developer'
     @approved = current_user.developers
     @pending = current_user.developer_requests
     @devices = current_user.devices.includes(:permissions)
@@ -36,6 +37,7 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def friends
+    @approval_type = 'User'
     @approved = current_user.friends
     @pending = current_user.friend_requests
     @devices = current_user.devices.includes(:permissions)
@@ -44,11 +46,11 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def approve
-    @approval = Approval.where(id: params[:id],
-      user: current_user).first
+    @approval = Approval.find_by(id: params[:id],
+      user: current_user)
     Approval.accept(current_user, @approval.approvable, @approval.approvable_type)
-    @apps = current_user.developers
-    @friends = current_user.friends
+    @approved = approved_for(@approval, current_user)
+    @pending = pending_for(@approval, current_user)
     @devices = current_user.devices.includes(:permissions)
     gon.permissions = @devices.map(&:permissions).inject(:+)
     respond_to do |format|
@@ -58,15 +60,14 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def reject
-    @approval = Approval.where(id: params[:id],
-      user: current_user).first
+    @approval = Approval.find_by(id: params[:id],
+      user: current_user)
     current_user.destroy_permissions_for(@approval.approvable)
     if @approval.approvable_type == 'User'
-      Approval.where(user: @approval.approvable, approvable: @approval.user, approvable_type: 'User').first.destroy
+      Approval.find_by(user: @approval.approvable, approvable: @approval.user, approvable_type: 'User').destroy
     end
     @approval.destroy
-    @apps = current_user.developers
-    @friends = current_user.friends
+    @approved = approved_for(@approval, current_user)
     @devices = current_user.devices.includes(:permissions)
     gon.permissions = @devices.map(&:permissions).inject(:+)
     respond_to do |format|
@@ -89,5 +90,24 @@ class Users::ApprovalsController < ApplicationController
       end
     end
 
+    def approved_for(approval, user)
+      if approval.approvable_type == 'User'
+        user.friends
+      elsif approval.approvable_type == 'Developer'
+        user.developers
+      else
+        raise "Unhandled approval type"
+      end
+    end
+
+    def pending_for(approval, user)
+      if approval.approvable_type == 'User'
+        user.friend_requests
+      elsif approval.approvable_type == 'Developer'
+        user.developer_requests
+      else
+        raise "Unhandled approval type"
+      end
+    end
 
 end

@@ -8,19 +8,19 @@ module ApprovalsHelper
     end
   end
 
-  def friend_or_app_name(entity)
-    if entity.respond_to? :username
-      friend = entity
+  def approvable_name(approvable)
+    if approvable.respond_to? :username
+      friend = approvable
       friend.username.present? ? friend.username : friend.email.split("@").first
     else
-      dev = entity
+      dev = approvable
       dev.company_name
     end
   end
 
-  def tagline_text(entity)
-    if entity.respond_to? :tagline
-      if entity.tagline then "<div>#{entity.tagline}</div>".html_safe end
+  def tagline_text(approvable)
+    if approvable.respond_to? :tagline
+      if approvable.tagline then approvable.tagline end
     end
   end
 

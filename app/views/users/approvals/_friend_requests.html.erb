@@ -1,14 +1,14 @@
-<div id="friendRequests">
-  <h5>Requests</h5>
+<div id="pending">
+  <h5>Pending Requests</h5>
   <div class='collection'>
-    <% pending.each do |friend| %>
-      <% approval = current_user.approval_for(friend) %>
+    <% pending.each do |approvable| %>
+      <% approval = current_user.approval_for(approvable) %>
       <div id='<%= "app_#{approval.id}" %>' class='collection-item row valign-wrapper'>
         <div class="col s8 valign-wrapper">
-          <%= avatar_for(friend, { size: '60x60', crop: :thumb, gravity: :face, radius: :max }) %>
+          <%= avatar_for(approvable, { size: '60x60', crop: :thumb, gravity: :face, radius: :max, class: 'avatar' }) %>
           <div class="valign">
-            <h5 class="ib"><%= friend_or_app_name(friend) %></h5>
-            <%= tagline_text(friend) %>
+            <h5 class="ib"><%= approvable_name(approvable) %></h5>
+            <div><%= tagline_text(approvable) %></div>
           </div>
         </div>
         <div class="col s4 valign right-align">
