@@ -35,6 +35,7 @@
 
 // -- Page specific --
 
+//= require google-charts.js
 //= require map
 //= require device-show
 //= require friend-device-show

@@ -1,6 +1,6 @@
 <% content_for :outside_container do %>
   <%= Gon::Base.render_data %>
-
+  <div id='myPieChart'></div>
   <ul id='filters' class='date-select collapsible'>
     <li>
       <div class='collapsible-header'>Select a date range</div>
@@ -17,7 +17,7 @@
     </li>
   </div>
 
-  <div id='map'></div>
+<!--  <div id='map'></div>
   <div class="bottom-panel">
     <div class="buttons">
       <%= link_to("Delete history", user_device_checkins_path(current_user.url_id, @device.id), { method: :delete, class: "btn red white-text", data: { confirm: 'Delete all checkins for this device?' } })%>
@@ -25,5 +25,5 @@
     </div>
     <%= will_paginate @checkins %>
   </div>
-
+-->
 <% end %>
