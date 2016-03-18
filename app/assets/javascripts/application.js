@@ -24,6 +24,8 @@
 // -- Vendor libs --
 
 //= require animateCSS.min.js
+//= require d3.min.js
+//= require c3.min.js
 
 // -- Run every page
 
@@ -33,6 +35,7 @@
 
 // -- Page specific --
 
+//= require dashboard
 //= require device-show
 //= require landing-page
 //= require permissions

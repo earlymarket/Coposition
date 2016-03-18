@@ -1,4 +1,16 @@
 <h1>Dashboard</h1>
+
+<section id="dashboard-charts" class="row">
+  <article class="chart col s12 m6" id="daily-checkins">
+    <h5>Daily check-ins</h5>
+    <div></div>
+  </article>
+  <article class="chart col s12 m6" id="checkin-ratio">
+    <h5>Check-in ratio</h5>
+    <div></div>
+  </article>
+</section>
+
 <p class ='center'>
 You have <%= pluralize(current_user.devices.count, 'device') %>, <%= pluralize(current_user.developers.count, 'approved app') %> and <%= pluralize(current_user.friends.count, 'friend') %>
 </p>

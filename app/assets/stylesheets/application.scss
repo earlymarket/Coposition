@@ -21,7 +21,6 @@
 @import 'materialize';
 // css selectors/classes needs to be overriden after
 @import 'custom_class';
-// @import './*;
 
 // Leave them in seperate statements. It makes it easier to debug/reorder'
 // Especially in merge conflicts
@@ -32,6 +31,7 @@
 
 // Page/feature specific
 @import 'landing-page.scss';
+@import 'user-dashboard.scss';
 @import 'placeholder.scss';
 @import 'user.scss';
 @import 'maitre.scss';
