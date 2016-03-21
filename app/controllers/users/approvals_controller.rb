@@ -71,7 +71,7 @@ class Users::ApprovalsController < ApplicationController
     @approval.destroy
     @approved = current_user.approved_for(@approval)
     @pending = current_user.pending_for(@approval)
-    @devices = current_user.devices.includes(:permissions)
+    @devices = current_user.devices.includes([:permissions])
     gon.permissions = @devices.map(&:permissions).inject(:+)
     respond_to do |format|
       format.html { redirect_to user_approvals_path }
