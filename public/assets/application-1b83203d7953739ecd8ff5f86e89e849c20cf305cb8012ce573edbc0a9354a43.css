@@ -5994,41 +5994,41 @@ Copyright (c) 2015 Daniel Eden
 }
 
 /* line 12, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/custom_color.scss */
-.dark-text, .primary-color.lighten, .landing-section.splash .parallax-container .parallax .lighten.overlay, .landing-section.promotion .active, .landing-section.full-width#start, .secondary-color, h2, h3, h4, h5, .nav-wrapper.transparent-nav a, .nav-wrapper.transparent-nav .btn, .nav-wrapper.transparent-nav .btn-large, .nav-wrapper .btn:hover, .nav-wrapper .btn-large:hover {
+.dark-text, .primary-color.lighten, .landing-section.promotion .lighten.active, .landing-section.full-width#start, #promo .lighten.overlay, .secondary-color, h2, h3, h4, h5, .nav-wrapper.transparent-nav a {
   color: rgba(0, 0, 0, 0.8);
 }
 /* line 15, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/custom_color.scss */
-.dark-text.secondary, .secondary.primary-color.lighten, .landing-section.splash .parallax-container .parallax .secondary.lighten.overlay, .landing-section.promotion .secondary.active, .secondary.landing-section.full-width#start, .secondary.secondary-color, h2.secondary, h3.secondary, h4.secondary, h5.secondary, p, .nav-wrapper.transparent-nav a.secondary, .nav-wrapper.transparent-nav .secondary.btn, .nav-wrapper.transparent-nav .secondary.btn-large, .nav-wrapper .secondary.btn:hover, .nav-wrapper .secondary.btn-large:hover {
+.dark-text.secondary, .secondary.primary-color.lighten, .landing-section.promotion .secondary.lighten.active, .secondary.landing-section.full-width#start, #promo .secondary.lighten.overlay, .secondary.secondary-color, h2.secondary, h3.secondary, h4.secondary, h5.secondary, p, .nav-wrapper.transparent-nav a.secondary {
   color: rgba(0, 0, 0, 0.7);
 }
 /* line 18, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/custom_color.scss */
-.dark-text.hint, .hint.primary-color.lighten, .landing-section.splash .parallax-container .parallax .hint.lighten.overlay, .landing-section.promotion .hint.active, .hint.landing-section.full-width#start, .hint.secondary-color, .btn.disabled, .disabled.btn-large, .btn-flat.disabled, .btn-floating.disabled, h2.hint, h3.hint, h4.hint, h5.hint, .nav-wrapper.transparent-nav a.hint, .nav-wrapper.transparent-nav .hint.btn, .nav-wrapper.transparent-nav .hint.btn-large, .nav-wrapper .hint.btn:hover, .nav-wrapper .hint.btn-large:hover, .landing-section.full-width#start form input[type="text"]::-webkit-input-placeholder {
+.dark-text.hint, .hint.primary-color.lighten, .landing-section.promotion .hint.lighten.active, .hint.landing-section.full-width#start, #promo .hint.lighten.overlay, .hint.secondary-color, .btn.disabled, .disabled.btn-large, .btn-flat.disabled, .btn-floating.disabled, h2.hint, h3.hint, h4.hint, h5.hint, .nav-wrapper.transparent-nav a.hint, .landing-section.full-width#start form input[type="text"]::-webkit-input-placeholder {
   color: rgba(0, 0, 0, 0.38);
 }
 
 /* line 23, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/custom_color.scss */
-.light-text, .primary-color.darken, .landing-section.splash .parallax-container .parallax .darken.overlay, footer a, footer div, .nav-wrapper.transparent-nav .btn:hover, .nav-wrapper.transparent-nav .btn-large:hover, .nav-wrapper .btn, .nav-wrapper .btn-large {
+.light-text, .primary-color.darken, .landing-section.promotion .darken.active, #promo .darken.overlay, footer a, footer div {
   color: white;
 }
 /* line 27, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/custom_color.scss */
-.light-text.secondary, .secondary.primary-color.darken, .landing-section.splash .parallax-container .parallax .secondary.darken.overlay, footer a.secondary, footer div.secondary, .nav-wrapper.transparent-nav .secondary.btn:hover, .nav-wrapper.transparent-nav .secondary.btn-large:hover, .nav-wrapper .secondary.btn, .nav-wrapper .secondary.btn-large {
+.light-text.secondary, .secondary.primary-color.darken, .landing-section.promotion .secondary.darken.active, #promo .secondary.darken.overlay, footer a.secondary, footer div.secondary {
   color: rgba(255, 255, 255, 0.7);
 }
 /* line 30, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/custom_color.scss */
-.light-text.hint, .hint.primary-color.darken, .landing-section.splash .parallax-container .parallax .hint.darken.overlay, footer a.hint, footer div.hint, .nav-wrapper.transparent-nav .hint.btn:hover, .nav-wrapper.transparent-nav .hint.btn-large:hover, .nav-wrapper .hint.btn, .nav-wrapper .hint.btn-large {
+.light-text.hint, .hint.primary-color.darken, .landing-section.promotion .hint.darken.active, #promo .hint.darken.overlay, footer a.hint, footer div.hint {
   color: rgba(255, 255, 255, 0.3);
 }
 
 /* line 35, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/custom_color.scss */
-.primary-color, .landing-section.splash .parallax-container .parallax .overlay {
+.primary-color, .landing-section.promotion .active, #promo .overlay {
   background-color: #47b8e0;
 }
 /* line 38, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/custom_color.scss */
-.primary-color.lighten, .landing-section.splash .parallax-container .parallax .lighten.overlay, .landing-section.promotion .active, .landing-section.full-width#start {
+.primary-color.lighten, .landing-section.promotion .lighten.active, .landing-section.full-width#start, #promo .lighten.overlay {
   background-color: #88d1eb;
 }
 /* line 43, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/custom_color.scss */
-.primary-color.darken, .landing-section.splash .parallax-container .parallax .darken.overlay {
+.primary-color.darken, .landing-section.promotion .darken.active, #promo .darken.overlay {
   background-color: #2092bb;
 }
 
@@ -19092,7 +19092,7 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
 }
 
 /* line 23, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/custom_class.scss */
-.quarter-opacity, .landing-section.splash .parallax-container .parallax .overlay {
+.quarter-opacity, #promo .overlay {
   opacity: 0.25;
 }
 
@@ -19135,28 +19135,34 @@ html {
 h1 {
   text-align: center;
 }
+@media screen and (max-width: 600px) {
+  /* line 20, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/fonts.scss */
+  h1 {
+    font-size: 2.5rem;
+  }
+}
 
-/* line 23, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 27, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/fonts.scss */
 h2 {
   font-weight: 700;
 }
 
-/* line 27, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 31, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/fonts.scss */
 h3 {
   font-weight: 700;
 }
 
-/* line 31, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 35, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/fonts.scss */
 h4 {
   font-weight: 700;
 }
 
-/* line 35, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 39, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/fonts.scss */
 h5 {
   font-weight: 700;
 }
 
-/* line 43, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 47, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/fonts.scss */
 p {
   line-height: 1.7rem;
   font-size: 1.2rem;
@@ -19164,18 +19170,18 @@ p {
   text-align: left;
 }
 
-/* line 55, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 59, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/fonts.scss */
 pre {
   padding: 2rem;
   padding-left: 4rem;
 }
 
-/* line 61, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 65, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/fonts.scss */
 table {
   font-size: 1.5rem;
 }
 
-/* line 66, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 70, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/fonts.scss */
 footer h5 {
   color: #ffc952;
   font-weight: 400;
@@ -19196,61 +19202,60 @@ footer h5 {
 .nav-wrapper.transparent-nav .dropdown-content {
   background-color: rgba(255, 255, 255, 0.9);
 }
-/* line 20, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/navbar.scss */
-.nav-wrapper.transparent-nav .btn, .nav-wrapper.transparent-nav .btn-large {
-  border: solid 1px rgba(0, 0, 0, 0.8);
-}
-/* line 24, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/navbar.scss */
-.nav-wrapper.transparent-nav .btn:hover, .nav-wrapper.transparent-nav .btn-large:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-}
-/* line 32, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/navbar.scss */
+/* line 22, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/navbar.scss */
 .nav-wrapper .btn, .nav-wrapper .btn-large {
-  border: solid 1px white;
+  padding: 0;
   background-color: transparent;
   box-shadow: none;
+  height: 42px;
+  width: 150px;
 }
-/* line 38, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/navbar.scss */
-.nav-wrapper .btn:hover, .nav-wrapper .btn-large:hover {
-  background-color: white;
+/* line 29, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/navbar.scss */
+.nav-wrapper .btn svg, .nav-wrapper .btn-large svg {
+  height: 100%;
+  width: 100%;
 }
-/* line 45, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/navbar.scss */
+/* line 36, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/navbar.scss */
 .nav-wrapper .left {
   height: 100%;
   width: auto;
-  margin-left: 2.5%;
+  margin-left: 2.5rem;
 }
-/* line 50, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/navbar.scss */
+/* line 41, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/navbar.scss */
 .nav-wrapper .left #brand-logo {
   width: 184px;
   height: 42px;
 }
-@media screen and (max-width: 600px) {
-  /* line 50, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/navbar.scss */
+@media screen and (max-width: 992px) {
+  /* line 41, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/navbar.scss */
   .nav-wrapper .left #brand-logo {
     margin-left: auto;
     margin-right: auto;
   }
 }
-@media screen and (max-width: 600px) {
-  /* line 45, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/navbar.scss */
+@media screen and (max-width: 992px) {
+  /* line 36, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/navbar.scss */
   .nav-wrapper .left {
     position: absolute;
     width: 100%;
     margin: 0;
   }
 }
-/* line 69, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/navbar.scss */
+/* line 59, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/navbar.scss */
+.nav-wrapper .right {
+  margin-right: 1.5rem;
+}
+/* line 62, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/navbar.scss */
 .nav-wrapper .right .settings-icon {
   height: 64px;
 }
 
-/* line 77, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/navbar.scss */
+/* line 70, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/navbar.scss */
 .button-collapse {
   margin-left: 2.5%;
 }
 
-/* line 82, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/navbar.scss */
+/* line 75, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/navbar.scss */
 .side-nav .collapsible-header {
   padding: 0px;
   width: 100%;
@@ -19315,86 +19320,102 @@ footer.page-footer {
 }
 /* line 38, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
 .landing-section.splash .valign .start-btn {
-  font-size: 1.5rem;
   margin-top: 1rem;
-  background-color: transparent;
-  box-shadow: none;
-  border-style: solid;
-  border-width: 2px;
+  height: 50px;
+  width: auto;
+  cursor: pointer;
 }
 /* line 46, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section.splash .valign .start-btn:hover {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: rgba(255, 255, 255, 0.5);
-}
-/* line 53, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
 .landing-section.splash .parallax-container {
   height: 100vh;
 }
-/* line 56, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
+/* line 49, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
 .landing-section.splash .parallax-container .parallax {
   opacity: 0.8;
 }
-/* line 59, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section.splash .parallax-container .parallax .overlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-/* line 65, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section.splash .parallax-container .parallax video {
-  position: absolute;
-  width: auto;
-  height: 100%;
-}
-/* line 75, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
+/* line 56, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
 .landing-section.promotion {
   padding-top: 2.5rem;
   padding-bottom: 4rem;
 }
-/* line 79, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
+/* line 60, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
 .landing-section.promotion .card {
   padding: 2rem;
   cursor: pointer;
 }
-/* line 84, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
+/* line 65, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
 .landing-section.promotion .active {
   transition: all 0.2s ease;
 }
-/* line 88, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
+/* line 69, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
 .landing-section.promotion .active h4, .landing-section.promotion .active i {
-  color: #18708f;
+  color: #092c38;
 }
-/* line 95, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
+/* line 76, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
 .landing-section.full-width {
   padding: 2rem;
   padding-top: 3rem;
   padding-bottom: 4rem;
 }
-/* line 100, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
+/* line 81, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
 .landing-section.full-width#start {
   padding-bottom: 0;
 }
-/* line 104, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
+/* line 85, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
 .landing-section.full-width#start article.row {
   margin-bottom: 0;
 }
-/* line 108, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
+/* line 89, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
 .landing-section.full-width#start form {
   padding: 0;
 }
-/* line 116, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
+/* line 97, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
 .landing-section.full-width#start #get-started {
   font-size: 1.3rem;
 }
-/* line 123, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
+/* line 104, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
 .landing-section.already-using {
   padding-top: 2.5rem;
   padding-bottom: 4rem;
 }
-/* line 127, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
+/* line 108, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
 .landing-section.already-using .app {
   height: 300px;
+}
+
+/* line 115, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
+#promo .overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -10;
+}
+/* line 124, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/landing-page.scss */
+#promo video {
+  left: 0;
+  top: 0;
+  position: absolute;
+  width: auto;
+  height: 100%;
+  z-index: -10;
+}
+
+/* line 3, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/user-dashboard.scss */
+.dashboard #most-checkins {
+  margin-top: 1em;
+}
+/* line 6, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/user-dashboard.scss */
+.dashboard #most-checkins .collection-header {
+  background-color: white;
+  padding: 10px 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* line 14, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/user-dashboard.scss */
+#dashboard-quicklinks {
+  margin-bottom: 3em;
 }
 
 /* line 2, /Users/kennethlim/Sites/CoPosition/app/assets/stylesheets/placeholder.scss */
