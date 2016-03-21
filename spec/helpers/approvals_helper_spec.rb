@@ -52,12 +52,12 @@ RSpec.describe ApprovalsHelper, :type => :helper do
     it 'should add a link if approvable_type is User' do
       allow(helper).to receive(:current_user) { user }
       expect(helper.approvals_friends_device_link('User', user) { 'blah' }).to match '<a href'
-      expect(helper.approvals_friends_device_link('developer', user) { 'blah' }).to match 'blah'
+      expect(helper.approvals_friends_device_link('User', user) { 'blah' }).to match 'blah'
     end
 
     it 'should not add a link if approvable_type is Developer' do
-      expect(helper.approvals_friends_device_link('developer', user) { 'blah' }).to_not match '<a href'
-      expect(helper.approvals_friends_device_link('developer', user) { 'blah' }).to match 'blah'
+      expect(helper.approvals_friends_device_link('Developer', user) { 'blah' }).to_not match '<a href'
+      expect(helper.approvals_friends_device_link('Developer', user) { 'blah' }).to match 'blah'
     end
   end
 
