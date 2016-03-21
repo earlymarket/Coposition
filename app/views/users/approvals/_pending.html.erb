@@ -8,7 +8,7 @@
           <%= avatar_for(approvable, { size: '60x60', crop: :thumb, gravity: :face, radius: :max, class: 'avatar' }) %>
           <div class="valign">
             <h5 class="ib"><%= approvals_approvable_name(approvable) %></h5>
-            <div><%= approvable.try(tagline)%></div>
+            <div><%= approvable.try(:tagline)%></div>
           </div>
         </div>
         <div class="col s4 valign right-align">
