@@ -10,11 +10,9 @@ module ApprovalsHelper
 
   def approvals_approvable_name(approvable)
     if approvable.respond_to? :username
-      friend = approvable
-      friend.username.present? ? friend.username : friend.email.split("@").first
+      approvable.username.present? ? approvable.username : approvable.email.split("@").first
     else
-      dev = approvable
-      dev.company_name
+      approvable.company_name
     end
   end
 
