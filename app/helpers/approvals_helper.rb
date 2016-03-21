@@ -8,7 +8,7 @@ module ApprovalsHelper
     end
   end
 
-  def approvable_name(approvable)
+  def approvals_approvable_name(approvable)
     if approvable.respond_to? :username
       friend = approvable
       friend.username.present? ? friend.username : friend.email.split("@").first
@@ -18,10 +18,20 @@ module ApprovalsHelper
     end
   end
 
-  def tagline_text(approvable)
+  def approvals_tagline_text(approvable)
     if approvable.respond_to? :tagline
       if approvable.tagline then approvable.tagline end
     end
+  end
+
+  def approvals_friends_device_link(approval_type, approvable, &block)
+    return capture(&block) unless approval_type == 'User'
+    str = '<a href="'
+    str << user_friend_path(current_user.url_id, approvable)
+    str << '" class="black-text">'
+    str << capture(&block)
+    str << "</a>"
+    raw str
   end
 
   def approvals_pending_friends(user)

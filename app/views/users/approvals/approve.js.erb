@@ -1,9 +1,11 @@
 if (COPO.utility.urlParam("redirect")) {
   window.location.replace(COPO.utility.urlParam("redirect"));
 }
-$('#approved').html("<%= j (render partial: 'friends', locals: {approved: @approved, devices: @devices}).html_safe %>")
+$('#approved').html("<%= j (render partial: 'approved', locals: {approved: @approved, devices: @devices}) %>")
 <% if @pending.present? %>
-  $('#pending').html("<%= j (render partial: 'friend_requests', locals: {pending: @pending}) %>")
+  $('#pending').html("<%= j (render partial: 'pending', locals: {pending: @pending}) %>")
+<% else %>
+  $('#pending').remove();
 <% end %>
 $('.modal-trigger').leanModal();
 COPO.permissions.check_disabled();

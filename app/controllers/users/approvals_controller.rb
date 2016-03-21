@@ -31,9 +31,9 @@ class Users::ApprovalsController < ApplicationController
     @approved = current_user.developers
     @pending = current_user.developer_requests
     @devices = current_user.devices.includes(:permissions)
-    gon.current_user_id = current_user.id
     gon.permissions = @devices.map(&:permissions).inject(:+)
-    render "friends"
+    gon.current_user_id = current_user.id
+    render "approvals"
   end
 
   def friends
@@ -41,13 +41,15 @@ class Users::ApprovalsController < ApplicationController
     @approved = current_user.friends
     @pending = current_user.friend_requests
     @devices = current_user.devices.includes(:permissions)
-    gon.current_user_id = current_user.id
     gon.permissions = @devices.map(&:permissions).inject(:+)
+    gon.current_user_id = current_user.id
+    render "approvals"
   end
 
   def approve
     @approval = Approval.find_by(id: params[:id],
       user: current_user)
+    @approval_type = @approval.approval_type
     Approval.accept(current_user, @approval.approvable, @approval.approvable_type)
     @approved = approved_for(@approval, current_user)
     @pending = pending_for(@approval, current_user)
@@ -68,6 +70,7 @@ class Users::ApprovalsController < ApplicationController
     end
     @approval.destroy
     @approved = approved_for(@approval, current_user)
+    @pending = pending_for(@approval, current_user)
     @devices = current_user.devices.includes(:permissions)
     gon.permissions = @devices.map(&:permissions).inject(:+)
     respond_to do |format|

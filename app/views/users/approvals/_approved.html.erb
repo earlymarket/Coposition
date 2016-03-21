@@ -8,13 +8,15 @@
     <div class="card-panel">
       <div class="row">
 
-        <a href="<%= user_friend_path(current_user.url_id, approvable) %>" class="black-text col s8">
-          <%= avatar_for(approvable, { size: '60x60', crop: :thumb, gravity: :face, radius: :max, class: 'avatar' }) %>
-          <div class="ib">
-            <h5 class="ib"><%= approvable_name(approvable) %></h5><span class="tagline"><%= tagline_text(approvable) %></span>
-            <div>Approved since <%= humanize_date(current_user.approval_for(approvable).approval_date) %></div>
-          </div>
-        </a>
+        <div class="col s8">
+          <%= approvals_friends_device_link(@approval_type, approvable) do %>
+            <%= avatar_for(approvable, { size: '60x60', crop: :thumb, gravity: :face, radius: :max, class: 'avatar' }) %>
+            <div class="ib">
+              <h5 class="ib"><%= approvals_approvable_name(approvable) %></h5><span class="tagline"><%= approvals_tagline_text(approvable) %></span>
+              <div>Approved since <%= humanize_date(current_user.approval_for(approvable).approval_date) %></div>
+            </div>
+          <% end %>
+        </div>
 
         <div class="col s4">
           <a class="waves-effect waves-light btn-flat modal-trigger right" href="#perm<%=approvable.id%>"><i class="material-icons right">lock</i>Permissions</a>
