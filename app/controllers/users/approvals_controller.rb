@@ -51,8 +51,8 @@ class Users::ApprovalsController < ApplicationController
       user: current_user)
     @approvable_type = @approval.approvable_type
     Approval.accept(current_user, @approval.approvable, @approval.approvable_type)
-    @approved = approved_for(@approval, current_user)
-    @pending = pending_for(@approval, current_user)
+    @approved = current_user.approved_for(@approval)
+    @pending = current_user.pending_for(@approval)
     @devices = current_user.devices.includes(:permissions)
     gon.permissions = @devices.map(&:permissions).inject(:+)
     respond_to do |format|
@@ -69,8 +69,8 @@ class Users::ApprovalsController < ApplicationController
       Approval.find_by(user: @approval.approvable, approvable: @approval.user, approvable_type: 'User').destroy
     end
     @approval.destroy
-    @approved = approved_for(@approval, current_user)
-    @pending = pending_for(@approval, current_user)
+    @approved = current_user.approved_for(@approval)
+    @pending = current_user.pending_for(@approval)
     @devices = current_user.devices.includes(:permissions)
     gon.permissions = @devices.map(&:permissions).inject(:+)
     respond_to do |format|
@@ -90,26 +90,6 @@ class Users::ApprovalsController < ApplicationController
         Developer.find_by(company_name: allowed_params[:approvable])
       elsif type == 'User'
         User.find_by(email: allowed_params[:approvable])
-      end
-    end
-
-    def approved_for(approval, user)
-      if approval.approvable_type == 'User'
-        user.friends
-      elsif approval.approvable_type == 'Developer'
-        user.developers
-      else
-        raise "Unhandled approval type"
-      end
-    end
-
-    def pending_for(approval, user)
-      if approval.approvable_type == 'User'
-        user.friend_requests
-      elsif approval.approvable_type == 'Developer'
-        user.developer_requests
-      else
-        raise "Unhandled approval type"
       end
     end
 
