@@ -20,6 +20,8 @@ class Users::DevicesController < ApplicationController
       @checkins = @checkins.where(created_at: (Date.parse(params[:from])).beginning_of_day..(Date.parse(params[:to])).end_of_day)
     end
     @checkins = @checkins.order('created_at DESC').paginate(page: params[:page], per_page: 1000)
+    gon.current_user_id = current_user.id
+    gon.device_id = params[:id]
     gon.checkins = @checkins
     gon.chart_checkins = @checkins.group_for_chart(@checkins.last.created_at, @checkins.first.created_at)
   end

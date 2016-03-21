@@ -35,7 +35,8 @@
 
 // -- Page specific --
 
-//= require google-charts.js
+//= require column-chart.js
+//= require table-chart.js
 //= require map
 //= require device-show
 //= require friend-device-show
