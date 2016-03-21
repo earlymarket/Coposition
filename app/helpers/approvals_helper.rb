@@ -24,8 +24,8 @@ module ApprovalsHelper
     end
   end
 
-  def approvals_friends_device_link(approval_type, approvable, &block)
-    return capture(&block) unless approval_type == 'User'
+  def approvals_friends_device_link(approvable_type, approvable, &block)
+    return capture(&block) unless approvable_type == 'User'
     str = '<a href="'
     str << user_friend_path(current_user.url_id, approvable)
     str << '" class="black-text">'

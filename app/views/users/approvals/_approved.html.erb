@@ -9,7 +9,7 @@
       <div class="row">
 
         <div class="col s8">
-          <%= approvals_friends_device_link(@approval_type, approvable) do %>
+          <%= approvals_friends_device_link(@approvable_type, approvable) do %>
             <%= avatar_for(approvable, { size: '60x60', crop: :thumb, gravity: :face, radius: :max, class: 'avatar' }) %>
             <div class="ib">
               <h5 class="ib"><%= approvals_approvable_name(approvable) %></h5><span class="tagline"><%= approvals_tagline_text(approvable) %></span>

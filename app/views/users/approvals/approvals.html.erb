@@ -3,7 +3,7 @@
   <%= render partial: "approved", locals: {approved: @approved, devices: @devices} %>
   <%= render partial: "pending", locals: {pending: @pending} if @pending.present? %>
 <div class='center-align'>
-<%= link_to("Add #{action_name.singularize}", new_user_approval_path(approvable_type: @approval_type), class: "btn waves-effect waves-light") %>
+<%= link_to("Add #{action_name.singularize}", new_user_approval_path(approvable_type: @approvable_type), class: "btn waves-effect waves-light") %>
 </div>
 
 <script>

@@ -27,7 +27,7 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def apps
-    @approval_type = 'Developer'
+    @approvable_type = 'Developer'
     @approved = current_user.developers
     @pending = current_user.developer_requests
     @devices = current_user.devices.includes(:permissions)
@@ -37,7 +37,7 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def friends
-    @approval_type = 'User'
+    @approvable_type = 'User'
     @approved = current_user.friends
     @pending = current_user.friend_requests
     @devices = current_user.devices.includes(:permissions)
@@ -49,7 +49,7 @@ class Users::ApprovalsController < ApplicationController
   def approve
     @approval = Approval.find_by(id: params[:id],
       user: current_user)
-    @approval_type = @approval.approval_type
+    @approvable_type = @approval.approvable_type
     Approval.accept(current_user, @approval.approvable, @approval.approvable_type)
     @approved = approved_for(@approval, current_user)
     @pending = pending_for(@approval, current_user)
