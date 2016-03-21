@@ -18,12 +18,6 @@ module ApprovalsHelper
     end
   end
 
-  def approvals_tagline_text(approvable)
-    if approvable.respond_to? :tagline
-      if approvable.tagline then approvable.tagline end
-    end
-  end
-
   def approvals_friends_device_link(approvable_type, approvable, &block)
     return capture(&block) unless approvable_type == 'User'
     str = '<a href="'
