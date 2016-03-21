@@ -4,9 +4,10 @@ RSpec.describe Users::DevicesController, type: :controller do
   include ControllerMacros
 
   let(:empty_device) { FactoryGirl::create :device }
+  let(:checkin) { FactoryGirl::create(:checkin, created_at: Date.yesterday) }
   let(:device) do
     dev = FactoryGirl::create :device
-    dev.checkins << FactoryGirl::create(:checkin)
+    dev.checkins << [checkin, FactoryGirl::create(:checkin)]
     dev
   end
   let(:developer) { FactoryGirl::create :developer }
@@ -23,6 +24,7 @@ RSpec.describe Users::DevicesController, type: :controller do
   let(:approval) { create_approval(user, new_user) }
   let(:user_param) {{ user_id: user.username }}
   let(:params) { user_param.merge(id: device.id) }
+  let(:date_params) { params.merge(from: Date.yesterday, to: Date.yesterday) }
 
   it 'should have a current_user' do
     user
@@ -40,6 +42,11 @@ RSpec.describe Users::DevicesController, type: :controller do
     it 'should assign :id.device to @device if user owns device' do
       get :show, params
       expect(assigns :device).to eq(Device.find(device.id))
+    end
+
+    it 'should assign :id.device to @device if user owns device' do
+      get :show, date_params
+      expect(assigns :checkins).to eq([checkin])
     end
 
     it 'should not assign to @device if user does not own device' do

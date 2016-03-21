@@ -4,6 +4,18 @@
     display: none;
   }
 
+  .date-select {
+    background: #fff;
+    position: absolute;
+    width: 25%;
+    top: 64px;
+    right: 10px;
+    z-index: 9;
+    margin-top: 6px;
+    padding: 10px;
+    border-radius: 3px;
+  }
+
   #map {
     width:100%;
     position:absolute !important;
