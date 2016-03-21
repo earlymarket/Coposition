@@ -80,11 +80,13 @@ class User < ActiveRecord::Base
 
   def approve_devices(permissible)
     if permissible.class.to_s == 'Developer'
-      devices.each do |device|
+      dev_devices = devices.includes(:developers)
+      dev_devices.each do |device|
         device.developers << permissible unless device.developers.include? permissible
       end
     else
-      devices.each do |device|
+      usr_devices = devices.includes(:permitted_users)
+      usr_devices.each do |device|
         device.permitted_users << permissible unless device.permitted_users.include? permissible
       end
     end
