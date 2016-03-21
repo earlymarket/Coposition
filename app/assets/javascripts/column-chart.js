@@ -69,7 +69,7 @@ window.COPO.charts = {
 
     // Instantiate and draw the chart.
     var table = new google.visualization.Table(document.getElementById('table-chart'));
-    var options = { width: '100%', height: '300px', allowHtml: true }
+    var options = { width: '100%', height: '250px', allowHtml: true }
     table.draw(data, options);
   }
 }

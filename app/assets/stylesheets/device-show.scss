@@ -11,15 +11,20 @@
     top: 64px;
     right: 10px;
     z-index: 9;
-    margin-top: 6px;
+    margin-top: 54px;
     padding: 10px;
     border-radius: 3px;
+  }
+
+  .tabs {
+    overflow: hidden;
   }
 
   #map {
     width:100%;
     position:absolute !important;
     top: 64px;
+    margin-top: 48px;
     bottom: 100px;
   }
 

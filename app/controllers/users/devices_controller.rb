@@ -25,6 +25,7 @@ class Users::DevicesController < ApplicationController
     gon.checkins = @checkins
     gon.table_checkins = @checkins
     gon.chart_checkins = @checkins.group_for_chart(@checkins.last.created_at, @checkins.first.created_at)
+    @partial = params[:view] || "map"
   end
 
   def new
