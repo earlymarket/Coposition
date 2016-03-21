@@ -56,6 +56,26 @@ class User < ActiveRecord::Base
     end
   end
 
+  def approved_for(approval)
+    if approval.approvable_type == 'User'
+      self.friends
+    elsif approval.approvable_type == 'Developer'
+      self.developers
+    else
+      raise "Unhandled approval type"
+    end
+  end
+
+  def pending_for(approval)
+    if approval.approvable_type == 'User'
+      self.friend_requests
+    elsif approval.approvable_type == 'Developer'
+      self.developer_requests
+    else
+      raise "Unhandled approval type"
+    end
+  end
+
   ## Devices
 
   def approve_devices(permissible)

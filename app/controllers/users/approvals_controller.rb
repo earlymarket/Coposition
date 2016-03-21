@@ -27,27 +27,32 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def apps
-    @apps = current_user.developers
+    @approvable_type = 'Developer'
+    @approved = current_user.developers
     @pending = current_user.developer_requests
     @devices = current_user.devices.includes(:permissions)
-    gon.current_user_id = current_user.id
     gon.permissions = @devices.map(&:permissions).inject(:+)
+    gon.current_user_id = current_user.id
+    render "approvals"
   end
 
   def friends
-    @friends = current_user.friends
+    @approvable_type = 'User'
+    @approved = current_user.friends
     @pending = current_user.friend_requests
     @devices = current_user.devices.includes(:permissions)
-    gon.current_user_id = current_user.id
     gon.permissions = @devices.map(&:permissions).inject(:+)
+    gon.current_user_id = current_user.id
+    render "approvals"
   end
 
   def approve
-    @approval = Approval.where(id: params[:id],
-      user: current_user).first
+    @approval = Approval.find_by(id: params[:id],
+      user: current_user)
+    @approvable_type = @approval.approvable_type
     Approval.accept(current_user, @approval.approvable, @approval.approvable_type)
-    @apps = current_user.developers
-    @friends = current_user.friends
+    @approved = current_user.approved_for(@approval)
+    @pending = current_user.pending_for(@approval)
     @devices = current_user.devices.includes(:permissions)
     gon.permissions = @devices.map(&:permissions).inject(:+)
     respond_to do |format|
@@ -57,15 +62,15 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def reject
-    @approval = Approval.where(id: params[:id],
-      user: current_user).first
+    @approval = Approval.find_by(id: params[:id],
+      user: current_user)
     current_user.destroy_permissions_for(@approval.approvable)
     if @approval.approvable_type == 'User'
-      Approval.where(user: @approval.approvable, approvable: @approval.user, approvable_type: 'User').first.destroy
+      Approval.find_by(user: @approval.approvable, approvable: @approval.user, approvable_type: 'User').destroy
     end
     @approval.destroy
-    @apps = current_user.developers
-    @friends = current_user.friends
+    @approved = current_user.approved_for(@approval)
+    @pending = current_user.pending_for(@approval)
     @devices = current_user.devices.includes(:permissions)
     gon.permissions = @devices.map(&:permissions).inject(:+)
     respond_to do |format|
@@ -87,6 +92,5 @@ class Users::ApprovalsController < ApplicationController
         User.find_by(email: allowed_params[:approvable])
       end
     end
-
 
 end
