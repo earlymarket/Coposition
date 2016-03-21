@@ -1,6 +1,5 @@
 <% content_for :outside_container do %>
   <%= Gon::Base.render_data %>
-  <div id='line-chart'></div>
   <ul id='filters' class='date-select collapsible'>
     <li>
       <div class='collapsible-header'>Select a date range</div>
@@ -15,26 +14,17 @@
         <% end %>
       </div>
     </li>
-  </div>
+  </ul>
 
-<div class='container'>
-  <div id="table-chart"></div>
-  <!--
-  <table id="table" class="highlight checkin-table">
-    <thead>
-      <tr>
-        <th>Created</th><th>Area</th><th>Fogged</th><th>More Info</th>
-      </tr>
-    </thead>
-    <tbody id='checkin-table-body'>
-      <%= render partial: "checkin_table_row", collection: @checkins, as: :checkin %>
-    </tbody>
-  </table>
-  <div class="center"><%= will_paginate @checkins %></div>
-  -->
+<div class='charts'></div>
+  <div id='line-chart'></div>
+  <div class='container'>
+    <div id="table-chart"></div>
+  </div>
 </div>
 
-<!--  <div id='map'></div>
+<div id='map'></div>
+
   <div class="bottom-panel">
     <div class="buttons">
       <%= link_to("Delete history", user_device_checkins_path(current_user.url_id, @device.id), { method: :delete, class: "btn red white-text", data: { confirm: 'Delete all checkins for this device?' } })%>
@@ -42,5 +32,4 @@
     </div>
     <%= will_paginate @checkins %>
   </div>
--->
 <% end %>
