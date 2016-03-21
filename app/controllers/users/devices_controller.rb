@@ -20,7 +20,6 @@ class Users::DevicesController < ApplicationController
       @checkins = @checkins.where(created_at: (Date.parse(params[:from])).beginning_of_day..(Date.parse(params[:to])).end_of_day)
     end
     @checkins = @checkins.order('created_at DESC').paginate(page: params[:page], per_page: 1000)
-      .paginate(page: params[:page], per_page: 50)
     gon.checkins = @checkins
   end
 
