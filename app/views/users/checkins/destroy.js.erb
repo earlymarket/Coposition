@@ -3,8 +3,11 @@
 for(i = 0; i < gon.checkins.length; i++) {
   if(gon.checkins[i].id === <%= @checkin_id %>){
     gon.checkins.splice(i, 1);
+    gon.table_checkins.splice(i, 1);
   }
 }
 
+
+COPO.charts.drawTable();
 COPO.maps.refreshMarkers();
 

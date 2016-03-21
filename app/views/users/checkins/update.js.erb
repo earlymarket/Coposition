@@ -8,11 +8,11 @@ gon.checkins.forEach(function(checkin){
 //change open popups
 
 if(<%= @checkin.fogged %>){
-  $('.disabled-icon').attr('class', 'fogged enabled-icon')
+  $('#fog<%=@checkin.id%>').attr('class', 'fogged enabled-icon')
     .parent().prepend('<li class="foggedAddress">Fogged address: <%= @checkin.fogged_area %></li>');
   $('.foggedAddress').hide().slideDown('fast');
 } else {
-  $('.fogged.enabled-icon').attr('class', 'disabled-icon');
+  $('#fog<%=@checkin.id%>').attr('class', 'disabled-icon');
   $('.foggedAddress').slideUp('fast', function(){
     $(this).remove();
   });

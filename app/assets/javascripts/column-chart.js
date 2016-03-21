@@ -53,15 +53,18 @@ window.COPO.charts = {
     // Define the chart to be drawn.
     var tableData = [];
     gon.table_checkins.forEach(function(checkin){
-      var humanizedDate = new Date(checkin.created_at).toLocaleDateString('en-GB')
-      var fogging = COPO.utility.ujsLink('put', '<i class="material-icons">cloud</i>' , window.location.pathname + '/checkins/' + checkin.id )[0];
-      tableData.push([humanizedDate, checkin.fogged_area, fogging.outerHTML]);
+      var humanizedDate = new Date(checkin.created_at).toLocaleDateString('en-GB');
+      var foggedClass;
+      checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
+      var delete_button = COPO.utility.ujsLink('delete', '<i class="material-icons red-text right">delete_forever</i>' , window.location.pathname + '/checkins/' + checkin.id ).attr('data-confirm', 'Are you sure?').prop('outerHTML')
+      var fogging_button = COPO.utility.ujsLink('put', '<i class="material-icons">cloud</i>' , window.location.pathname + '/checkins/' + checkin.id ).attr('id', 'fog' + checkin.id).attr('class', foggedClass).prop('outerHTML')
+      tableData.push([humanizedDate, checkin.fogged_area, fogging_button, delete_button]);
     })
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Created');
     data.addColumn('string', 'Area');
     data.addColumn('string', 'Fogging');
-    data.setColumnProperty(2, {allowHtml: true})
+    data.addColumn('string', '');
     data.addRows(tableData);
 
     // Instantiate and draw the chart.
