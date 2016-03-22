@@ -18,6 +18,9 @@ $(document).on('ready page:change', function() {
   // materialize selectbox init
   $('select').material_select();
 
+  // materialize tooltip init
+  $('.tooltipped').tooltip({delay: 50});
+
   // materialize datepicker init
   $('.datepicker').pickadate({
     selectMonths: true,

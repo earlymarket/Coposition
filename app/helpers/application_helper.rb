@@ -1,7 +1,7 @@
 module ApplicationHelper
 
   def area_name(checkin)
-    checkin.fogged_area || checkin.nearest_city.name
+    truncate(checkin.fogged_area || checkin.nearest_city.name)
   end
 
   def fogged_icon(value)
