@@ -38,7 +38,7 @@ window.COPO.charts = {
             gon.checkins.forEach(function(checkin){
               var month = new Date(checkin.created_at).getMonth();
               var year = new Date(checkin.created_at).getFullYear().toString();
-              if (month == splitColumnDate[0]-1 && year.substr(year.length-2) == splitColumnDate[1]){
+              if (month === splitColumnDate[0]-1 && year.substr(year.length-2) === splitColumnDate[1]){
                 gon.table_checkins.push(checkin);
               }
             })

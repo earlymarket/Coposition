@@ -11,10 +11,9 @@ $(document).on('page:change', function() {
       var tab = event.target.innerText
       setTimeout(function(event) {
         if (tab ==='CHART'){
-          COPO.charts.drawChart();
-          COPO.charts.drawTable();
+          COPO.charts.drawChart(); //makes chart fit page
         } else {
-          map.invalidateSize();
+          map.invalidateSize(); // makes map fit page
         }
       }, 100);
     });

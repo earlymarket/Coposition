@@ -78,7 +78,7 @@ class Checkin < ActiveRecord::Base
   end
 
   def self.group_for_chart(from, to)
-    if to - from < Date.today.midnight - 3.month.ago
+    if to - from < 3.months
       group_by_day(:created_at, format: "%e/%m/%Y", range: from..to).count.to_a
     else
       group_by_month(:created_at, format: "%m/%y", range: from..to).count.to_a
