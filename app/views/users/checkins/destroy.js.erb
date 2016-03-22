@@ -2,11 +2,18 @@
 
 for(i = 0; i < gon.checkins.length; i++) {
   if(gon.checkins[i].id === <%= @checkin_id %>){
+    date = new Date(gon.checkins[i].created_at);
+    dateString = date.toLocaleDateString('en-GB');
     gon.checkins.splice(i, 1);
     gon.table_checkins.splice(i, 1);
+    for(x = 0; x < gon.chart_checkins.length; x++) {
+      if(gon.chart_checkins[x][0]===dateString){
+        gon.chart_checkins[x][1]--
+      }
+    }
   }
 }
-
+COPO.charts.drawChart();
 COPO.charts.drawTable();
 COPO.maps.refreshMarkers();
 
