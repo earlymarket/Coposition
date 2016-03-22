@@ -28,8 +28,20 @@
     bottom: 100px;
   }
 
-  #line-chart {
-    height: 500px;
+  #chart {
+    bottom: 100px;
+    width: 100%;
+  }
+
+  #bar-chart {
+    margin-top: 20px;
+    margin-left: 20px;
+    width: 100%;
+    height: 400px;
+  }
+
+  #table-chart {
+    width: 100%;
   }
 
   .bottom-panel {

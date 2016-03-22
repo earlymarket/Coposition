@@ -10,43 +10,47 @@ window.COPO.charts = {
     var options = {
       hAxis: { title: 'Date',  showTextEvery: gap },
       vAxis: { title: 'Checkins' },
+      colors: ['#47b8e0']
     };
 
     // Instantiate and draw the chart.
-    var chart = new google.visualization.ColumnChart(document.getElementById('line-chart'));
+    var chart = new google.charts.Bar(document.getElementById('bar-chart'));
 
     function selectHandler() {
-      var selectedItem = chart.getSelection()[0];
-      if (selectedItem) {
-        var splitColumnDate = gon.chart_checkins[selectedItem.row][0].split("/");
-        gon.table_checkins = [];
+      if (chart.getSelection().length === 0){
+        gon.table_checkins = gon.checkins;
+      } else {
+        var selectedItem = chart.getSelection()[0];
+        if (selectedItem) {
+          var splitColumnDate = gon.chart_checkins[selectedItem.row][0].split("/");
+          gon.table_checkins = [];
 
-        if (splitColumnDate.length === 3){
-          var columnDate = new Date(splitColumnDate[2], splitColumnDate[1]-1, splitColumnDate[0]);
-          gon.checkins.forEach(function(checkin){
-            date = new Date(new Date(checkin.created_at).setHours(0,0,0,0));
-            if (date.toString() === columnDate.toString()){
-              gon.table_checkins.push(checkin);
-            }
-          })
-        } else if (splitColumnDate.length ===2) {
-          gon.checkins.forEach(function(checkin){
-            var month = new Date(checkin.created_at).getMonth();
-            var year = new Date(checkin.created_at).getFullYear().toString();
-            if (month == splitColumnDate[0]-1 && year.substr(year.length-2) == splitColumnDate[1]){
-              gon.table_checkins.push(checkin);
-            }
-          })
+          if (splitColumnDate.length === 3){
+            var columnDate = new Date(splitColumnDate[2], splitColumnDate[1]-1, splitColumnDate[0]);
+            gon.checkins.forEach(function(checkin){
+              date = new Date(new Date(checkin.created_at).setHours(0,0,0,0));
+              if (date.toString() === columnDate.toString()){
+                gon.table_checkins.push(checkin);
+              }
+            })
+          } else if (splitColumnDate.length ===2) {
+            gon.checkins.forEach(function(checkin){
+              var month = new Date(checkin.created_at).getMonth();
+              var year = new Date(checkin.created_at).getFullYear().toString();
+              if (month == splitColumnDate[0]-1 && year.substr(year.length-2) == splitColumnDate[1]){
+                gon.table_checkins.push(checkin);
+              }
+            })
+          }
         }
-
-        COPO.charts.drawTable();
       }
+      COPO.charts.drawTable();
     }
 
     // Listen for the 'select' event, and call my function selectHandler() when
     // the user selects something on the chart.
     google.visualization.events.addListener(chart, 'select', selectHandler);
-    chart.draw(data, options);
+    chart.draw(data, google.charts.Bar.convertOptions(options));
   },
 
   drawTable: function() {

@@ -41,6 +41,8 @@ $(document).on('ready page:change', function() {
     COPO.utility.fadeUp(this)
   });
 
+  // materialize tabs
+  $('ul.tabs').tabs();
 
   // Attachinary init
   $('.attachinary-input').attachinary()
