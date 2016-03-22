@@ -26,6 +26,7 @@
 //= require animateCSS.min.js
 //= require cloudinary
 //= require attachinary
+//= require control.w3w
 
 // -- Run every page
 
