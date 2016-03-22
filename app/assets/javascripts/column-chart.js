@@ -62,7 +62,7 @@ window.COPO.charts = {
       var foggedClass;
       checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
       var delete_button = COPO.utility.ujsLink('delete', '<i class="material-icons red-text right">delete_forever</i>' , window.location.pathname + '/checkins/' + checkin.id ).attr('data-confirm', 'Are you sure?').prop('outerHTML')
-      var fogging_button = COPO.utility.ujsLink('put', '<i class="material-icons">cloud</i>' , window.location.pathname + '/checkins/' + checkin.id ).attr('id', 'fog' + checkin.id).attr('class', foggedClass).prop('outerHTML')
+      var fogging_button = COPO.utility.ujsLink('put', '<i class="material-icons">cloud</i>' , window.location.pathname + '/checkins/' + checkin.id ).attr('id', 'tableFog' + checkin.id).attr('class', foggedClass).prop('outerHTML')
       tableData.push([humanizedDate, checkin.fogged_area, fogging_button, delete_button]);
     })
     var data = new google.visualization.DataTable();
