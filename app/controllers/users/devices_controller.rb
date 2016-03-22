@@ -15,21 +15,14 @@ class Users::DevicesController < ApplicationController
 
   def show
     @device = Device.find(params[:id])
-    if (params[:from].present?)
-      @from, @to = Date.parse(params[:from]).beginning_of_day, Date.parse(params[:to]).end_of_day
-    else
-      @from, @to = 1.month.ago.beginning_of_day, Date.today.end_of_day
-    end
+    @from, @to = date_range
     @checkins = Checkin.where(device_id: @device.id, created_at: @from..@to)
     if @checkins.empty?
       flash[:notice] = "No checkins found for those dates, showing last month's checkins"
       @checkins = Checkin.where(device_id: @device.id, created_at: 1.month.ago.beginning_of_day..Date.today.end_of_day)
     end
     @checkins = @checkins.order('created_at DESC').paginate(page: params[:page], per_page: 1000)
-    gon.current_user_id = current_user.id
-    gon.device_id = params[:id]
-    gon.checkins = @checkins
-    gon.table_checkins = @checkins
+    gon.checkins = gon.table_checkins = @checkins
     gon.chart_checkins = @checkins.group_for_chart(@checkins.last.created_at, @checkins.first.created_at)
   end
 
@@ -94,6 +87,14 @@ class Users::DevicesController < ApplicationController
       unless user_owns_device?
         flash[:notice] = "You do not own that device"
         redirect_to root_path
+      end
+    end
+
+    def date_range
+      if (params[:from].present?)
+        return Date.parse(params[:from]).beginning_of_day, Date.parse(params[:to]).end_of_day
+      else
+        return 1.month.ago.beginning_of_day, Date.today.end_of_day
       end
     end
 
