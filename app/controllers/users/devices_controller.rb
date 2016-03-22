@@ -17,15 +17,17 @@ class Users::DevicesController < ApplicationController
     @device = Device.find(params[:id])
     @checkins = Checkin.includes(:device).where(device_id: @device.id)
     if (params[:from].present?)
-      @checkins = @checkins.where(created_at: (Date.parse(params[:from])).beginning_of_day..(Date.parse(params[:to])).end_of_day)
+      range = Date.parse(params[:from]).beginning_of_day..Date.parse(params[:to]).end_of_day
+    else
+      range = 1.month.ago.beginning_of_day..Date.today.end_of_day
     end
+    @checkins = @checkins.where(created_at: range)
     @checkins = @checkins.order('created_at DESC').paginate(page: params[:page], per_page: 1000)
     gon.current_user_id = current_user.id
     gon.device_id = params[:id]
     gon.checkins = @checkins
     gon.table_checkins = @checkins
     gon.chart_checkins = @checkins.group_for_chart(@checkins.last.created_at, @checkins.first.created_at)
-    @partial = params[:view] || "map"
   end
 
   def new

@@ -7,16 +7,23 @@ $(document).on('page:change', function() {
     google.charts.setOnLoadCallback(COPO.charts.drawChart);
     google.charts.setOnLoadCallback(COPO.charts.drawTable);
 
+    var timesClicked = 0;
     $('li.tab.map').on('click', function() {
-      setTimeout(function() {
-        map.invalidateSize();
+      var tab = event.target.innerText
+      timesClicked++;
+      if (timesClicked>0) {
+        $('li.tab').unbind('click');
+      }
+      setTimeout(function(event) {
+        if (tab ==='CHART'){
+          COPO.charts.drawChart();
+        } else {
+          map.invalidateSize();
+        }
       }, 100);
-    })
-    $('li.tab.chart').on('click', function() {
-      setTimeout(function() {
-        COPO.charts.drawChart();
-      }, 100);
-    })
+    });
+
+
   }
 });
 

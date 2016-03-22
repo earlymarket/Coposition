@@ -2,7 +2,7 @@
   <%= Gon::Base.render_data %>
   <ul class="tabs row">
     <li class="tab chart col s6"><a href="#chart">Chart</a></li>
-    <li class="tab map col s6"><a href="#map" class="active">Map</a></li>
+    <li class="tab map col s6"><a href="#map">Map</a></li>
   </ul>
 
   <ul id='filters' class='date-select collapsible'>
@@ -23,7 +23,9 @@
 
   <div id='chart'>
     <div id='bar-chart'></div>
-    <div id="table-chart"></div>
+    <div class='container'>
+      <div id="table-chart"></div>
+    </div>
   </div>
 
   <div id='map'></div>

@@ -10,7 +10,8 @@ window.COPO.charts = {
     var options = {
       hAxis: { title: 'Date',  showTextEvery: gap },
       vAxis: { title: 'Checkins' },
-      colors: ['#47b8e0']
+      colors: ['#47b8e0'],
+      legend: {position: 'none'}
     };
 
     // Instantiate and draw the chart.
