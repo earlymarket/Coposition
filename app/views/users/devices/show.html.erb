@@ -1,8 +1,8 @@
 <% content_for :outside_container do %>
   <%= Gon::Base.render_data %>
   <ul class="tabs row">
-    <li class="tab chart col s6"><a href="#chart">Chart</a></li>
     <li class="tab map col s6"><a href="#map">Map</a></li>
+    <li class="tab chart col s6"><a href="#chart">Chart</a></li>
   </ul>
 
   <ul id='filters' class='date-select collapsible'>
@@ -11,9 +11,9 @@
       <div class='collapsible-body'>
         <%= form_for @device, url: user_device_path(current_user.url_id, @device), class: "form-group", method: :get do |f| %>
           <%= f.label 'From' %>
-          <%= text_field_tag(:from, nil, class: "datepicker", required: true) %>
+          <%= text_field_tag(:from, humanize_date(@from), class: "datepicker", required: true) %>
           <%= f.label 'to' %>
-          <%= text_field_tag(:to, nil, class: "datepicker", required: true) %>
+          <%= text_field_tag(:to, humanize_date(@to), class: "datepicker", required: true) %>
           <%= f.submit("Filter", class: "form-control btn btn-default") %>
           <%= link_to("Reset", user_device_path(current_user.url_id, @device) , { method: :get, class: "btn-flat right" })%>
         <% end %>

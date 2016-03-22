@@ -15,13 +15,16 @@ class Users::DevicesController < ApplicationController
 
   def show
     @device = Device.find(params[:id])
-    @checkins = Checkin.includes(:device).where(device_id: @device.id)
     if (params[:from].present?)
-      range = Date.parse(params[:from]).beginning_of_day..Date.parse(params[:to]).end_of_day
+      @from, @to = Date.parse(params[:from]).beginning_of_day, Date.parse(params[:to]).end_of_day
     else
-      range = 1.month.ago.beginning_of_day..Date.today.end_of_day
+      @from, @to = 1.month.ago.beginning_of_day, Date.today.end_of_day
     end
-    @checkins = @checkins.where(created_at: range)
+    @checkins = Checkin.where(device_id: @device.id, created_at: @from..@to)
+    if @checkins.empty?
+      flash[:notice] = "No checkins found for those dates, showing last month's checkins"
+      @checkins = Checkin.where(device_id: @device.id, created_at: 1.month.ago.beginning_of_day..Date.today.end_of_day)
+    end
     @checkins = @checkins.order('created_at DESC').paginate(page: params[:page], per_page: 1000)
     gon.current_user_id = current_user.id
     gon.device_id = params[:id]
