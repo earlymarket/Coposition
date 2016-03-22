@@ -3,6 +3,7 @@ $(document).on('page:change', function() {
     COPO.maps.initMap();
     COPO.maps.initMarkers();
     COPO.maps.initControls();
+    COPO.maps.lc.start();
     COPO.maps.popUpOpenListener();
   }
 });

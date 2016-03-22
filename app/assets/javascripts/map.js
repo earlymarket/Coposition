@@ -48,8 +48,9 @@ window.COPO.maps = {
         template = COPO.maps.buildMarkerPopup(checkin)
         marker.bindPopup(L.Util.template(template, checkin))
 
-        marker.on('click', function() {
+        marker.on('click', function(e) {
           map.panTo(this.getLatLng());
+          COPO.maps.w3w.setCoordinates(e);
         });
 
         COPO.maps.markers.addLayer(marker);
@@ -85,9 +86,18 @@ window.COPO.maps = {
   },
 
   initControls: function(){
-    map.addControl(L.mapbox.geocoderControl('mapbox.places'));
 
-    var lc = L.control.locate({
+
+    map.addControl(L.mapbox.geocoderControl('mapbox.places',
+      { position: 'topright',
+        keepOpen: true
+      }
+    ));
+
+    COPO.maps.w3w = new L.Control.w3w({apikey: '4AQOB5CT', position: 'topright'});
+    COPO.maps.w3w.addTo(map);
+
+    COPO.maps.lc = L.control.locate({
       follow: false,
       setView: false,
       markerClass: L.marker,
@@ -105,7 +115,7 @@ window.COPO.maps = {
       }
 
     }).addTo(map);
-    lc.start();
+
   },
 
   popUpOpenListener: function(){
