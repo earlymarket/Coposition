@@ -27,8 +27,6 @@ module DevicesHelper
     if device.published?
       url = url_for(action: 'publish', controller: 'users/devices', id: device, user_id: device.user_id, only_path: false)
       "<a href='#{url}''>Share published link</a>".html_safe
-    else
-      "".html_safe
     end
   end
 end
