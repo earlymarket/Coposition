@@ -24,6 +24,6 @@ module DevicesHelper
   end
 
   def devices_published_link(device)
-    link_to('Share published link', publish_user_device_path(id: device.id)) if device.published?
+    link_to('Share published link', publish_user_device_path(id: device.id, user_id: params['user_id'] || device.user_id)) if device.published?
   end
 end
