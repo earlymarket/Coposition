@@ -36,16 +36,14 @@
               <%= f.text_field :company_name, id: "register_#{resource.class.to_s.downcase}_company_name" %>
             </div>
           </div>
-            <div class="file-field input-field">
-              <div class="btn">
-                <span>Logo</span>
-                <%= f.file_field :logo, id: "register_#{resource.class.to_s.downcase}_logo" %>
-              </div>
-              <div class="file-path-wrapper">
-                <input class="file-path validate" type="text" placeholder="&lt; 1mb, square format, jpeg/png">
-              </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <%= f.label :tagline, "Company tagline" %>
+              <%= f.text_field :tagline, id: "register_#{resource.class.to_s.downcase}_tagline" %>
             </div>
+          </div>
         <% end %>
+          <%= f.attachinary_file_field :avatar %>
         <% if resource.respond_to? :username %>
           <div class="row">
             <div class="input-field col s12">

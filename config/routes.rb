@@ -17,6 +17,9 @@ Rails.application.routes.draw do
     sessions: 'developers/devise/sessions'
   }
 
+  # Attachinary
+  mount Attachinary::Engine => "/attachinary"
+
   # API
 
   namespace :api, path: '', constraints: {subdomain: 'api'}, defaults: {format: 'json'} do
@@ -44,7 +47,7 @@ Rails.application.routes.draw do
             get :last
           end
         end
-        resources :devices, only: [:index, :show, :update], module: :users do
+        resources :devices, only: [:index, :create, :show, :update], module: :users do
           resources :checkins, only: [:index, :create] do
             collection do
               get :last
@@ -67,6 +70,7 @@ Rails.application.routes.draw do
   resources :users, only: [:show], module: :users do
     resource :dashboard, only: [:show]
     resources :devices, except: [:edit] do
+      member { get :publish }
       resources :checkins, only: [:show, :create, :new, :update]
       delete '/checkins/', to: 'checkins#destroy_all'
       delete '/checkins/:id', to: 'checkins#destroy'
@@ -78,7 +82,13 @@ Rails.application.routes.draw do
         post 'reject'
       end
     end
-    get '/applications', to: 'approvals#applications'
+    resources :friends, only: [:show] do
+      member do
+        get 'show_device'
+        get 'show_checkin'
+      end
+    end
+    get '/apps', to: 'approvals#apps'
     get '/friends', to: 'approvals#friends'
   end
 

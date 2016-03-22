@@ -41,18 +41,30 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 
-  config.action_mailer.raise_delivery_errors = true
+  # config.action_mailer.raise_delivery_errors = true
 
-  config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.delivery_method = :smtp
+  config.action_mailer.delivery_method = :letter_opener
+
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.default :charset => "utf-8"
 
   config.action_mailer.smtp_settings = {
-    :address              => "mail3.gridhost.co.uk",
-    :port                 => 465,
-    :user_name            => ENV['MAIL_PASSWORD'],
-    :password             => ENV['MAIL_ADDRESS'],
-    :authentication       => "plain",
-    :enable_starttls_auto => true
+    address: "smtp.sendgrid.net",
+    domain: "localhost:3000",
+    port: 587,
+    authentication: "plain",
+    enable_starttls_auto: true,
+    user_name:  "",
+    password: ""
   }
 
-  Paperclip.options[:command_path] = "/usr/bin/"
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.console = true
+    Bullet.rails_logger = true
+    Bullet.bullet_logger = true
+    Bullet.alert = true
+  end
 end

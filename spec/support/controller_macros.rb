@@ -25,4 +25,10 @@ module ControllerMacros
     end
   end
 
+  def api_request_headers(developer, user)
+    request.headers["X-Api-Key"] = developer.api_key
+    request.headers["X-User-Token"] = user.authentication_token
+    request.headers["X-User-Email"] = user.email
+  end
+
 end

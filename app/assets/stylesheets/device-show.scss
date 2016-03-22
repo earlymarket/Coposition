@@ -1,0 +1,57 @@
+.c-devices.a-show,
+.c-friends.a-show_device {
+  footer {
+    display: none;
+  }
+
+  .date-select {
+    background: #fff;
+    position: absolute;
+    width: 25%;
+    top: 64px;
+    right: 10px;
+    z-index: 9;
+    margin-top: 6px;
+    padding: 10px;
+    border-radius: 3px;
+  }
+
+  #map {
+    width:100%;
+    position:absolute !important;
+    top: 64px;
+    bottom: 100px;
+  }
+
+  .bottom-panel {
+    position: absolute;
+    bottom: 0px;
+    display: block;
+    height: 100px;
+    width: 100%;
+    text-align: center;
+    background: white;
+  }
+
+  .bottom-panel * {
+    margin: 0;
+  }
+
+  .buttons {
+    margin: 10px;
+  }
+
+  .disabled-icon {
+    color: rgba(0,0,0,0.12);
+  }
+
+  .enabled-icon {
+    // Material Design specs suggest opacity: 0.25; but I don't think
+    // it'd give enough countrast
+  }
+
+  .fogged {
+    color: #2196f3;
+  }
+}
+

@@ -4,14 +4,16 @@
     <%= f.text_field :company_name %>
   </div>
   <div class="field">
+    <%= f.label :tagline  %><br />
+    <%= f.text_field :tagline %>
+  </div>
+  <div class="field">
     <%= f.label :redirect_url  %><br />
     <%= f.text_field :redirect_url %>
   </div>
   <br>
   <div class="field">
-    <%= image_tag @developer.logo.url(:thumb), class: "small-curved-border" %><br>
-    <%= f.label :logo %>
-    <%= f.file_field :logo %>
+    <%= f.attachinary_file_field :avatar %>
   </div>
   <br>
   <%= f.submit "Update", class: "btn btn-success m-m"  %>

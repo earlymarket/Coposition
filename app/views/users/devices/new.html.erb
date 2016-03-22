@@ -9,7 +9,6 @@
   <%= f.label "create_checkin", for:"create_checkin", id:"create_checkin" %>
   </br></br>
   <%= f.submit("Add", class: "form-control btn btn-default") %>
-  <%= hidden_field_tag('redirect', @redirect_target) %>
   <%= hidden_field_tag('location', nil) %>
 <% end %>
 
