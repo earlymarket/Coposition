@@ -29,8 +29,8 @@ class Users::DevicesController < ApplicationController
   end
 
   def publish
-    @device = Device.find(params[:id])
-    @checkin = @device.checkins.last
+    device = Device.find(params[:id])
+    gon.checkin = device.checkins.last
   end
 
   def create
