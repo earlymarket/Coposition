@@ -4,22 +4,21 @@ $(document).on('page:change', function() {
     COPO.maps.initMarkers();
     COPO.maps.initControls();
     COPO.maps.popUpOpenListener();
-    google.charts.setOnLoadCallback(COPO.charts.drawChart);
-    google.charts.setOnLoadCallback(COPO.charts.drawTable);
+    //google.charts.setOnLoadCallback(COPO.charts.drawChart);
+    //google.charts.setOnLoadCallback(COPO.charts.drawTable);
 
     $('li.tab').on('click', function() {
       var tab = event.target.innerText
       setTimeout(function(event) {
         if (tab ==='CHART'){
-          COPO.charts.drawChart(); //makes chart fit page
+          COPO.charts.drawChart();
+          COPO.charts.drawTable();
         } else {
-          map.invalidateSize(); // makes map fit page
+          map.invalidateSize();
         }
-      }, 100);
+      });
     });
 
 
   }
 });
-
-
