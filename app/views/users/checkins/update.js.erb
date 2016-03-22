@@ -12,13 +12,13 @@ if(<%= @checkin.fogged %>){
   $('#fog<%=@checkin.id%>').attr('class', 'fogged enabled-icon')
   $('#tableFog<%=@checkin.id%>').attr('class', 'fogged enabled-icon')
 //    .parent().prepend('<li class="foggedAddress">Fogged address: <%= @checkin.fogged_area %></li>');
-  $('.foggedAddress').hide().slideDown('fast');
+//  $('.foggedAddress').hide().slideDown('fast');
 } else {
   $('#fog<%=@checkin.id%>').attr('class', 'disabled-icon');
   $('#tableFog<%=@checkin.id%>').attr('class', 'disabled-icon');
-  $('.foggedAddress').slideUp('fast', function(){
-    $(this).remove();
-  });
+//  $('.foggedAddress').slideUp('fast', function(){
+//    $(this).remove();
+//  });
 }
 
 //refresh the state of all markers
