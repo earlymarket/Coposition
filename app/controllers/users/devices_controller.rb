@@ -29,8 +29,11 @@ class Users::DevicesController < ApplicationController
   end
 
   def shared
-    @device = Device.find(params[:id])
-    gon.checkin = @device.checkins.last.reverse_geocode!
+    device = Device.find(params[:id])
+    checkin = device.checkins.last
+    gon.device = device
+    gon.user = device.user.as_json
+    gon.checkin = checkin.reverse_geocode! if checkin
   end
 
   def create

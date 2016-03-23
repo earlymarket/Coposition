@@ -27,10 +27,17 @@
       white-space: pre;
     }
 
+    .leaflet-popup-content img {
+      margin-top: -10px;
+    }
   </style>
-
-  <script id="popupTemplate" type="x-tmpl-mustache">
-    <h3 class="center"><%= friends_name(@device.user) %>'s last reported location</h3>
+  <script id="nullPopupTemplate" type="x-tmpl-mustache">
+    {{ &avatar }}
+    <div>{{ name }} has no visible location yet</div>
+  </script>
+  <script id="fullPopupTemplate" type="x-tmpl-mustache">
+    {{ &avatar }}
+    <h3>{{ friend }}'s last reported location</h3>
     <div class="center">
       <div class="popup-column">
         <div class="popup-label">Device:</div>
@@ -40,7 +47,7 @@
         <div class="popup-label">Address:</div>
       </div>
       <div class="popup-column">
-        <div class="popup-value"><%= @device.name %></div>
+        <div class="popup-value">{{ device.name }}</div>
         <div class="popup-value">{{ created_at }}</div>
         <div class="popup-value">{{ lat }}</div>
         <div class="popup-value">{{ lng }}</div>
@@ -51,13 +58,34 @@
 
   <script>
     COPO.maps.initMap()
+    COPO.maps.initControls();
     var checkin = gon.checkin
 
-    if(checkin) {
+    if(!checkin) {
+      var friend = {
+        name: COPO.utility.friendsName(gon.user),
+        avatar: $.cloudinary.image(gon.user.avatar.public_id, {width: 60, height: 60, crop: 'fill', radius: 'max', gravity: 'face', class: 'left'}).prop('outerHTML')
+       }
+      var template = $('#nullPopupTemplate').html();
+      var rendered = Mustache.render(template, friend);
 
-      checkin.created_at = new Date(checkin.created_at).toUTCString()
-      checkin.address = checkin.address.replace(/, /g, '\n')
-      var template = $('#popupTemplate').html();
+
+      var popup = L.popup()
+        .setLatLng(new L.latLng([51.5073509, -0.1277583])) //hardcoded latlng for London
+        .setContent(rendered)
+        .openOn(map);
+      map.on('ready', function(){
+        map.panTo(popup.getLatLng());
+      })
+    } else {
+
+      checkin.avatar = $.cloudinary.image(gon.user.avatar.public_id, {width: 60, height: 60, crop: 'fill', radius: 'max', gravity: 'face', class: 'left'}).prop('outerHTML')
+      checkin.created_at = new Date(checkin.created_at).toUTCString();
+      checkin.address = checkin.address.replace(/, /g, '\n');
+      checkin.device = gon.device;
+      checkin.friend = COPO.utility.friendsName(gon.user);
+
+      var template = $('#fullPopupTemplate').html();
       var rendered = Mustache.render(template, checkin);
 
       map.setView([checkin.lat, checkin.lng], 12)
@@ -68,7 +96,7 @@
           'marker-color': '#ff6900',
         })
       })
-      .bindPopup(rendered, {})
+      .bindPopup(rendered)
       .addTo(map);
 
       marker.openPopup();
@@ -76,7 +104,6 @@
       coords = {
         latlng: new L.latLng([checkin.lat, checkin.lng])
       }
-      COPO.maps.initControls();
       COPO.maps.w3w.setCoordinates(coords);
     }
 

@@ -14,6 +14,10 @@ COPO.utility = {
     return output
   },
 
+  friendsName: function(friend){
+    return friend.username ? friend.username : friend.email.split('@')[0]
+  },
+
   fadeUp: function(target){
     $(target).velocity({
       opacity: 0,
