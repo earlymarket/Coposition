@@ -193,6 +193,8 @@ GEM
     listen (3.0.6)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9.7)
+    lodash-rails (4.6.1)
+      railties (>= 3.1)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     lumberjack (1.0.10)
@@ -406,6 +408,7 @@ DEPENDENCIES
   jquery-validation-rails
   launchy
   letter_opener
+  lodash-rails
   materialize-sass
   meta_request
   newrelic_rpm

@@ -20,6 +20,7 @@
 
 //= require materialize
 //= require twitter/typeahead
+//= require lodash
 
 // -- Vendor libs --
 

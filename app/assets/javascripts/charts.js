@@ -1,14 +1,16 @@
 window.COPO = window.COPO || {};
 window.COPO.charts = {
+  data: null,
+
   drawBarChart: function() {
     // Define the data for the chart.
     var chart = new google.charts.Bar(document.getElementById('bar-chart'));
-    var data = new google.visualization.DataTable();
+    data = new google.visualization.DataTable();
     data.addColumn('string', 'created_at');
     data.addColumn('number', 'Checkins');
-    if (gon.chart_checkins){
-      data.addRows(gon.chart_checkins);
-      var gap = Math.round(gon.chart_checkins.length/10)
+    if (gon.checkins){
+      data.addRows(countCheckinsByDate());
+      var gap = Math.round(countCheckinsByDate().length/10)
     }
     var options = {
       hAxis: { title: 'Date',  showTextEvery: gap },
@@ -17,16 +19,39 @@ window.COPO.charts = {
       legend: {position: 'none'}
     };
 
+    // Listen for the 'select' event, and call my function selectHandler() when
+    // the user selects something on the chart.
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+    google.visualization.events.addListener(chart, 'select', selectHandler);
+
+    function countCheckinsByDate() {
+      var createdAt = _.map(gon.checkins, 'created_at');
+
+      var createdAtArr = [];
+      var range = Date.parse(gon.checkins[0].created_at) - Date.parse(gon.checkins[gon.checkins.length-1].created_at)
+      if (range > 7889238000){
+        _(createdAt).each(function(checkin){
+          createdAtArr.push(checkin.substring(0,7)); // by month
+        })
+      } else{
+        _(createdAt).each(function(checkin){
+          createdAtArr.push(checkin.substring(0,10)); // by day
+        })
+      }
+
+      return _.toPairs(_.countBy(createdAtArr)).reverse();
+    }
+
     function selectHandler() {
       if (chart.getSelection().length === 0){
         var table_checkins = gon.checkins;
       } else {
         var selectedItem = chart.getSelection()[0];
         if (selectedItem) {
-          var splitColumnDate = gon.chart_checkins[selectedItem.row][0].split("/");
+          var splitColumnDate = data.getValue(selectedItem.row, 0).split("-");
           if (splitColumnDate.length === 3){
             var table_checkins = day_table_checkins(splitColumnDate);
-          } else if (splitColumnDate.length ===2) {
+          } else if (splitColumnDate.length === 2) {
             var table_checkins = month_table_checkins(splitColumnDate);
           }
         }
@@ -36,7 +61,7 @@ window.COPO.charts = {
 
     function day_table_checkins(splitColumnDate) {
       var table_checkins = [];
-      var columnDate = new Date(splitColumnDate[2], splitColumnDate[1]-1, splitColumnDate[0]);
+      var columnDate = new Date(splitColumnDate[0], splitColumnDate[1]-1, splitColumnDate[2]);
       gon.checkins.forEach(function(checkin){
         date = new Date(new Date(checkin.created_at).setHours(0,0,0,0));
         if (date.toString() === columnDate.toString()){
@@ -51,17 +76,12 @@ window.COPO.charts = {
       gon.checkins.forEach(function(checkin){
         var month = new Date(checkin.created_at).getMonth();
         var year = new Date(checkin.created_at).getFullYear().toString();
-        if (month === splitColumnDate[0]-1 && year === splitColumnDate[1]){
+        if (month === splitColumnDate[1]-1 && year === splitColumnDate[0]){
           table_checkins.push(checkin);
         }
       })
       return table_checkins;
     }
-
-    // Listen for the 'select' event, and call my function selectHandler() when
-    // the user selects something on the chart.
-    google.visualization.events.addListener(chart, 'select', selectHandler);
-    chart.draw(data, google.charts.Bar.convertOptions(options));
   },
 
   drawTable: function(checkins) {
@@ -102,5 +122,3 @@ window.COPO.charts = {
     table.draw(data, options);
   }
 }
-
-

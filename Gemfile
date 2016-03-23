@@ -35,6 +35,7 @@ gem 'twitter-typeahead-rails'
 gem 'cloudinary', '~> 1.1.3'
 gem 'attachinary', '~> 1.3.1'
 gem 'groupdate'
+gem 'lodash-rails'
 
 # Use Unicorn as the app server
 
