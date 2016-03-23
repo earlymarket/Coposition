@@ -6,8 +6,10 @@ window.COPO.charts = {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'created_at');
     data.addColumn('number', 'Checkins');
-    data.addRows(gon.chart_checkins);
-    var gap = Math.round(gon.chart_checkins.length/10)
+    if (gon.chart_checkins){
+      data.addRows(gon.chart_checkins);
+      var gap = Math.round(gon.chart_checkins.length/10)
+    }
     var options = {
       hAxis: { title: 'Date',  showTextEvery: gap },
       vAxis: { title: 'Checkins' },
