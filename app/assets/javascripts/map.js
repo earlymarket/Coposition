@@ -111,7 +111,7 @@ window.COPO.maps = {
       },
       strings: {
         title: 'Your current location',
-        popup: 'Your current location within {distance} {unit}.<br><a href="#" id="current-location">Create check-in here</a>'
+        popup: 'Your current location within {distance} {unit}.<br><a href="#" id="current-location"></a>'
       }
 
     }).addTo(map);
