@@ -32,11 +32,11 @@
 //= require utility
 //= require navbar
 //= require init
+//= require charts
+//= require map
 
 // -- Page specific --
 
-//= require charts
-//= require map
 //= require device-show
 //= require friend-device-show
 //= require landing-page
