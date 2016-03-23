@@ -74,7 +74,10 @@ window.COPO.charts = {
 
     // Instantiate and draw the chart.
     var table = new google.visualization.Table(document.getElementById('table-chart'));
-    var options = { width: '100%', allowHtml: true }
+    var cssClassNames = {
+      'headerRow' : 'primary-color',
+    }
+    var options = { width: '100%', allowHtml: true, cssClassNames: cssClassNames }
     table.draw(data, options);
   }
 }
