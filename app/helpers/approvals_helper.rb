@@ -8,6 +8,24 @@ module ApprovalsHelper
     end
   end
 
+  def approvals_approvable_name(approvable)
+    if approvable.respond_to? :username
+      approvable.username.present? ? approvable.username : approvable.email.split("@").first
+    else
+      approvable.company_name
+    end
+  end
+
+  def approvals_friends_device_link(approvable_type, approvable, &block)
+    return capture(&block) unless approvable_type == 'User'
+    str = '<a href="'
+    str << user_friend_path(current_user.url_id, approvable)
+    str << '" class="black-text">'
+    str << capture(&block)
+    str << "</a>"
+    raw str
+  end
+
   def approvals_pending_friends(user)
     string = ''
     user.pending_friends.each_with_index do |friend, index|
