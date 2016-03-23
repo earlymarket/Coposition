@@ -64,33 +64,34 @@ window.COPO.charts = {
   drawTable: function() {
     // Define the data for table to be drawn.
     var tableData = [];
-    gon.table_checkins.forEach(function(checkin){
-      var humanizedDate = new Date(checkin.created_at).toLocaleDateString('en-GB');
-      var foggedClass;
-      checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
-      var delete_button = COPO.utility.ujsLink('delete',
-        '<i class="material-icons center red-text">delete_forever</i>' ,
-        window.location.pathname + '/checkins/' + checkin.id )
-        .attr('data-confirm', 'Are you sure?')
-        .prop('outerHTML')
-      var fogging_button = COPO.utility.ujsLink('put',
-        '<i class="material-icons center">cloud</i>' ,
-        window.location.pathname + '/checkins/' + checkin.id )
-        .attr('id', 'tableFog' + checkin.id).attr('class', foggedClass)
-        .prop('outerHTML')
-      tableData.push([humanizedDate, checkin.fogged_area, fogging_button, delete_button]);
-    })
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Created');
     data.addColumn('string', 'Area');
     data.addColumn('string', 'Fogging');
     data.addColumn('string');
-    data.addRows(tableData);
-    data.setProperty(0, 0, 'style', 'width:20%');
-    data.setProperty(0, 1, 'style', 'width:60%');
-    data.setProperty(0, 2, 'style', 'width:10%');
-    data.setProperty(0, 3, 'style', 'width:10%');
-
+    if(gon.table_checkins.length > 0){
+      gon.table_checkins.forEach(function(checkin){
+        var humanizedDate = new Date(checkin.created_at).toLocaleDateString('en-GB');
+        var foggedClass;
+        checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
+        var delete_button = COPO.utility.ujsLink('delete',
+          '<i class="material-icons center red-text">delete_forever</i>' ,
+          window.location.pathname + '/checkins/' + checkin.id )
+          .attr('data-confirm', 'Are you sure?')
+          .prop('outerHTML')
+        var fogging_button = COPO.utility.ujsLink('put',
+          '<i class="material-icons center">cloud</i>' ,
+          window.location.pathname + '/checkins/' + checkin.id )
+          .attr('id', 'tableFog' + checkin.id).attr('class', foggedClass)
+          .prop('outerHTML')
+        tableData.push([humanizedDate, checkin.fogged_area, fogging_button, delete_button]);
+      })
+      data.addRows(tableData);
+      data.setProperty(0, 0, 'style', 'width:20%');
+      data.setProperty(0, 1, 'style', 'width:60%');
+      data.setProperty(0, 2, 'style', 'width:10%');
+      data.setProperty(0, 3, 'style', 'width:10%');
+    }
     // Instantiate and draw the chart.
     var table = new google.visualization.Table(document.getElementById('table-chart'));
     var cssClassNames = { 'headerRow' : 'primary-color' }
