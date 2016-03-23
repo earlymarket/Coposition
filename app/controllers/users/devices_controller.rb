@@ -18,7 +18,7 @@ class Users::DevicesController < ApplicationController
     @from, @to = date_range
     @checkins = Checkin.where(device_id: @device.id, created_at: @from..@to)
     if @checkins.empty?
-      flash[:notice] = "No checkins found for those dates, showing last month's checkins if available"
+      flash[:notice] = "Showing last month's checkins if available"
       @checkins = Checkin.where(device_id: @device.id, created_at: 1.month.ago.beginning_of_day..Date.today.end_of_day)
     end
     @checkins = @checkins.order('created_at DESC').paginate(page: params[:page], per_page: 1000)
