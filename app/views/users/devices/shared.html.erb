@@ -1,0 +1,84 @@
+<% content_for :outside_container do %>
+<%= Gon::Base.render_data %>
+  <div id="map"></div>
+  <style>
+    #map {
+      position:absolute;
+      top:64px;
+      bottom:0px;
+      width:100%;
+    }
+
+    .popup-label {
+      text-align: right;
+      font-weight: bold;
+    }
+
+    .popup-value {
+      text-align: left;
+    }
+
+    .popup-column {
+      vertical-align: top;
+      display: inline-block;
+    }
+
+    .address {
+      white-space: pre;
+    }
+
+  </style>
+
+  <script id="popupTemplate" type="x-tmpl-mustache">
+    <h3 class="center"><%= friends_name(@device.user) %>'s last reported location</h3>
+    <div class="center">
+      <div class="popup-column">
+        <div class="popup-label">Device:</div>
+        <div class="popup-label">Created on:</div>
+        <div class="popup-label">Latitude:</div>
+        <div class="popup-label">Longitude:</div>
+        <div class="popup-label">Address:</div>
+      </div>
+      <div class="popup-column">
+        <div class="popup-value"><%= @device.name %></div>
+        <div class="popup-value">{{ created_at }}</div>
+        <div class="popup-value">{{ lat }}</div>
+        <div class="popup-value">{{ lng }}</div>
+        <div class="popup-value address">{{ address }}</div>
+      </div>
+    </div>
+  </script>
+
+  <script>
+    COPO.maps.initMap()
+    var checkin = gon.checkin
+
+    if(checkin) {
+
+      checkin.created_at = new Date(checkin.created_at).toUTCString()
+      checkin.address = checkin.address.replace(/, /g, '\n')
+      var template = $('#popupTemplate').html();
+      var rendered = Mustache.render(template, checkin);
+
+      map.setView([checkin.lat, checkin.lng], 12)
+      marker = L.marker([checkin.lat, checkin.lng], {
+        icon: L.mapbox.marker.icon({
+          'marker-size': 'large',
+          'marker-symbol': 'heliport',
+          'marker-color': '#ff6900',
+        })
+      })
+      .bindPopup(rendered, {})
+      .addTo(map);
+
+      marker.openPopup();
+
+      coords = {
+        latlng: new L.latLng([checkin.lat, checkin.lng])
+      }
+      COPO.maps.initControls();
+      COPO.maps.w3w.setCoordinates(coords);
+    }
+
+  </script>
+<% end %>

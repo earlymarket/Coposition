@@ -28,9 +28,9 @@ class Users::DevicesController < ApplicationController
     @device.uuid = params[:uuid] if params[:uuid]
   end
 
-  def publish
-    device = Device.find(params[:id])
-    gon.checkin = device.checkins.last
+  def shared
+    @device = Device.find(params[:id])
+    gon.checkin = @device.checkins.last.reverse_geocode!
   end
 
   def create
