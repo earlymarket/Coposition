@@ -2,7 +2,6 @@
 for(i = 0; i < gon.checkins.length; i++) {
   if(gon.checkins[i].id === <%= @checkin.id %>){
     gon.checkins[i].fogged = <%= @checkin.fogged %>
-    gon.table_checkins[i].fogged  = <%= @checkin.fogged %>
   }
 }
 

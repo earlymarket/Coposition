@@ -19,40 +19,43 @@ window.COPO.charts = {
 
     function selectHandler() {
       if (chart.getSelection().length === 0){
-        gon.table_checkins = gon.checkins;
+        var table_checkins = gon.checkins;
       } else {
         var selectedItem = chart.getSelection()[0];
         if (selectedItem) {
           var splitColumnDate = gon.chart_checkins[selectedItem.row][0].split("/");
-          gon.table_checkins = [];
           if (splitColumnDate.length === 3){
-            day_table_checkins(splitColumnDate);
+            var table_checkins = day_table_checkins(splitColumnDate);
           } else if (splitColumnDate.length ===2) {
-            month_table_checkins(splitColumnDate);
+            var table_checkins = month_table_checkins(splitColumnDate);
           }
         }
       }
-      COPO.charts.drawTable();
+      COPO.charts.drawTable(table_checkins);
     }
 
     function day_table_checkins(splitColumnDate) {
+      var table_checkins = [];
       var columnDate = new Date(splitColumnDate[2], splitColumnDate[1]-1, splitColumnDate[0]);
       gon.checkins.forEach(function(checkin){
         date = new Date(new Date(checkin.created_at).setHours(0,0,0,0));
         if (date.toString() === columnDate.toString()){
-          gon.table_checkins.push(checkin);
+          table_checkins.push(checkin);
         }
       })
+      return table_checkins;
     }
 
     function month_table_checkins(splitColumnDate) {
+      var table_checkins = [];
       gon.checkins.forEach(function(checkin){
         var month = new Date(checkin.created_at).getMonth();
         var year = new Date(checkin.created_at).getFullYear().toString();
         if (month === splitColumnDate[0]-1 && year.substr(year.length-2) === splitColumnDate[1]){
-          gon.table_checkins.push(checkin);
+          table_checkins.push(checkin);
         }
       })
+      return table_checkins;
     }
 
     // Listen for the 'select' event, and call my function selectHandler() when
@@ -61,7 +64,7 @@ window.COPO.charts = {
     chart.draw(data, google.charts.Bar.convertOptions(options));
   },
 
-  drawTable: function() {
+  drawTable: function(checkins) {
     // Define the data for table to be drawn.
     var tableData = [];
     var data = new google.visualization.DataTable();
@@ -69,8 +72,8 @@ window.COPO.charts = {
     data.addColumn('string', 'Area');
     data.addColumn('string', 'Fogging');
     data.addColumn('string');
-    if(gon.table_checkins.length > 0){
-      gon.table_checkins.forEach(function(checkin){
+    if(checkins.length > 0){
+      checkins.forEach(function(checkin){
         var humanizedDate = new Date(checkin.created_at).toLocaleDateString('en-GB');
         var foggedClass;
         checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';

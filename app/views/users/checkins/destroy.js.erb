@@ -12,13 +12,7 @@ for(i = 0; i < gon.checkins.length; i++) {
   }
 }
 
-for(i = 0; i < gon.table_checkins.length; i++) {
-  if(gon.table_checkins[i].id === <%= @checkin.id %>){
-    gon.table_checkins.splice(i, 1);
-  }
-}
-
 COPO.charts.drawBarChart();
-COPO.charts.drawTable();
+COPO.charts.drawTable(gon.checkins);
 COPO.maps.refreshMarkers();
 

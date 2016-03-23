@@ -12,7 +12,7 @@ $(document).on('page:change', function() {
       setTimeout(function(event) {
         if (tab ==='CHART'){
           COPO.charts.drawBarChart();
-          COPO.charts.drawTable();
+          COPO.charts.drawTable(gon.checkins);
         } else {
           map.invalidateSize();
         }
@@ -21,7 +21,7 @@ $(document).on('page:change', function() {
 
     $(window).resize(function(){
       COPO.charts.drawBarChart();
-      COPO.charts.drawTable();
+      COPO.charts.drawTable(gon.checkins);
      });
 
   }
