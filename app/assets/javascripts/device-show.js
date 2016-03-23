@@ -19,6 +19,11 @@ $(document).on('page:change', function() {
       });
     });
 
+    $(window).resize(function(){
+      COPO.charts.drawChart();
+      COPO.charts.drawTable();
+     });
+
 
   }
 });
