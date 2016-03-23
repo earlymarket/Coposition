@@ -2,19 +2,18 @@
 gon.checkins.push(<%= raw @checkin.to_json %>)
 gon.table_checkins.unshift(<%= raw @checkin.to_json %>)
 
-date = new Date(gon.checkins[gon.checkins.length-1].created_at)
-dateString = date.toLocaleDateString('en-GB')
-var exists = false;
+dateString = (new Date(gon.checkins[gon.checkins.length-1].created_at)).toLocaleDateString('en-GB')
+var columnExists = false;
 gon.chart_checkins.forEach(function(checkin){
   if(checkin[0]===dateString){
-    exists = true;
+    columnExists = true;
     checkin[1]++;
   }
 })
-if(exists===false){
+if(columnExists===false){
   gon.chart_checkins.push([dateString, 1]);
 }
 
 COPO.maps.refreshMarkers();
 COPO.charts.drawTable();
-COPO.charts.drawChart();
+COPO.charts.drawBarChart();

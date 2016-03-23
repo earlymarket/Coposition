@@ -4,14 +4,14 @@ $(document).on('page:change', function() {
     COPO.maps.initMarkers();
     COPO.maps.initControls();
     COPO.maps.popUpOpenListener();
-    //google.charts.setOnLoadCallback(COPO.charts.drawChart);
+    //google.charts.setOnLoadCallback(COPO.charts.drawBarChart);
     //google.charts.setOnLoadCallback(COPO.charts.drawTable);
 
     $('li.tab').on('click', function() {
       var tab = event.target.innerText
       setTimeout(function(event) {
         if (tab ==='CHART'){
-          COPO.charts.drawChart();
+          COPO.charts.drawBarChart();
           COPO.charts.drawTable();
         } else {
           map.invalidateSize();
@@ -20,10 +20,9 @@ $(document).on('page:change', function() {
     });
 
     $(window).resize(function(){
-      COPO.charts.drawChart();
+      COPO.charts.drawBarChart();
       COPO.charts.drawTable();
      });
-
 
   }
 });

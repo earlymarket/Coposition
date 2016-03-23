@@ -1,7 +1,8 @@
 window.COPO = window.COPO || {};
 window.COPO.charts = {
-  drawChart: function() {
-    // Define the chart to be drawn.
+  drawBarChart: function() {
+    // Define the data for the chart.
+    var chart = new google.charts.Bar(document.getElementById('bar-chart'));
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'created_at');
     data.addColumn('number', 'Checkins');
@@ -14,8 +15,6 @@ window.COPO.charts = {
       legend: {position: 'none'}
     };
 
-    // Instantiate and draw the chart.
-    var chart = new google.charts.Bar(document.getElementById('bar-chart'));
 
     function selectHandler() {
       if (chart.getSelection().length === 0){
@@ -25,7 +24,6 @@ window.COPO.charts = {
         if (selectedItem) {
           var splitColumnDate = gon.chart_checkins[selectedItem.row][0].split("/");
           gon.table_checkins = [];
-
           if (splitColumnDate.length === 3){
             var columnDate = new Date(splitColumnDate[2], splitColumnDate[1]-1, splitColumnDate[0]);
             gon.checkins.forEach(function(checkin){
@@ -55,7 +53,7 @@ window.COPO.charts = {
   },
 
   drawTable: function() {
-    // Define the chart to be drawn.
+    // Define the data for table to be drawn.
     var tableData = [];
     gon.table_checkins.forEach(function(checkin){
       var humanizedDate = new Date(checkin.created_at).toLocaleDateString('en-GB');
@@ -74,9 +72,7 @@ window.COPO.charts = {
 
     // Instantiate and draw the chart.
     var table = new google.visualization.Table(document.getElementById('table-chart'));
-    var cssClassNames = {
-      'headerRow' : 'primary-color',
-    }
+    var cssClassNames = { 'headerRow' : 'primary-color' }
     var options = { width: '100%', allowHtml: true, cssClassNames: cssClassNames }
     table.draw(data, options);
   }

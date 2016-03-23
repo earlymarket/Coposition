@@ -1,7 +1,7 @@
 <%= render("/shared/notifications") %>
 
 for(i = 0; i < gon.checkins.length; i++) {
-  if(gon.checkins[i].id === <%= @checkin_id %>){
+  if(gon.checkins[i].id === <%= @checkin.id %>){
     dateString = (new Date(gon.checkins[i].created_at)).toLocaleDateString('en-GB');
     gon.checkins.splice(i, 1);
     gon.table_checkins.splice(i, 1);
@@ -12,7 +12,7 @@ for(i = 0; i < gon.checkins.length; i++) {
     })
   }
 }
-COPO.charts.drawChart();
+COPO.charts.drawBarChart();
 COPO.charts.drawTable();
 COPO.maps.refreshMarkers();
 
