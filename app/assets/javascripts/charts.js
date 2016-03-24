@@ -1,16 +1,16 @@
 window.COPO = window.COPO || {};
 window.COPO.charts = {
-  data: null,
+  barChartData: null,
 
   drawBarChart: function(checkins) {
     // Define the data for the chart.
     var chart = new google.charts.Bar(document.getElementById('bar-chart'));
-    data = new google.visualization.DataTable();
-    data.addColumn('string', 'created_at');
-    data.addColumn('number', 'Checkins');
+    barChartData = new google.visualization.DataTable();
+    barChartData.addColumn('string', 'created_at');
+    barChartData.addColumn('number', 'Checkins');
     if (checkins){
       var rowData = countCheckinsByDate();
-      data.addRows(rowData);
+      barChartData.addRows(rowData);
       var gap = Math.round(rowData.length/10);
     }
     var options = {
@@ -22,7 +22,7 @@ window.COPO.charts = {
 
     // Listen for the 'select' event, and call my function selectHandler() when
     // the user selects something on the chart.
-    chart.draw(data, google.charts.Bar.convertOptions(options));
+    chart.draw(barChartData, google.charts.Bar.convertOptions(options));
     google.visualization.events.addListener(chart, 'select', selectHandler);
 
     function countCheckinsByDate() {
@@ -30,11 +30,12 @@ window.COPO.charts = {
       var firstDate = moment(checkins[checkins.length-1].created_at);
       var daysDiff = moment(checkins[0].created_at).diff(firstDate, 'days');
       var monthsDiff = moment(checkins[0].created_at).diff(firstDate, 'months');
+      var createdAtArr = []
       if (monthsDiff > 2){ // by month
-        var createdAtArr = createdAtArray({diff: monthsDiff,firstDate: firstDate, format: 'YYYY-MM',
+        createdAtArr = createdAtArray({diff: monthsDiff,firstDate: firstDate, format: 'YYYY-MM',
                                            increment: 'months', createdAt: createdAt})
       } else{ // by day
-        var createdAtArr = createdAtArray({diff: daysDiff,firstDate: firstDate, format: 'YYYY-MM-DD',
+        createdAtArr = createdAtArray({diff: daysDiff,firstDate: firstDate, format: 'YYYY-MM-DD',
                                            increment: 'days', createdAt: createdAt})
       }
       var countedDates = _.toPairs(_.countBy(createdAtArr));
@@ -60,11 +61,12 @@ window.COPO.charts = {
       } else {
         var selectedItem = chart.getSelection()[0];
         if (selectedItem) {
-          var columnDate = data.getValue(selectedItem.row, 0);
+          var columnDate = barChartData.getValue(selectedItem.row, 0);
+          var table_checkins = [];
           if (columnDate.length === 10){
-            var table_checkins = checkins_for_table(columnDate, 'YYYY-MM-DD');
+            table_checkins = checkins_for_table(columnDate, 'YYYY-MM-DD');
           } else if (columnDate.length === 7) {
-            var table_checkins = checkins_for_table(columnDate, 'YYYY-MM');
+            table_checkins = checkins_for_table(columnDate, 'YYYY-MM');
           }
         }
       }
@@ -119,5 +121,10 @@ window.COPO.charts = {
     var cssClassNames = { 'headerRow' : 'primary-color' }
     var options = { width: '100%', allowHtml: true, cssClassNames: cssClassNames }
     table.draw(data, options);
+  },
+
+  refreshCharts: function(checkins){
+    COPO.charts.drawBarChart(checkins);
+    COPO.charts.drawTable(checkins);
   }
 }
