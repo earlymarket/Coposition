@@ -1,0 +1,35 @@
+.c-devices.a-shared {
+  #map {
+    position:absolute;
+    top:64px;
+    bottom:0px;
+    width:100%;
+  }
+
+  .popup-topbox {
+    margin-bottom: 1.8rem;
+  }
+
+  .popup-label {
+    text-align: right;
+    font-weight: bold;
+  }
+
+  .popup-value {
+    text-align: left;
+    margin-left: 0.5rem;
+  }
+
+  .popup-column {
+    vertical-align: top;
+    display: inline-block;
+  }
+
+  .address {
+    white-space: pre;
+  }
+
+  .leaflet-popup-content img {
+    margin-top: -10px;
+  }
+}

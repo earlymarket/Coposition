@@ -7,5 +7,3 @@ $(document).on('page:change', function() {
     COPO.maps.popUpOpenListener();
   }
 });
-
-

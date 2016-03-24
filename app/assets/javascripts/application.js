@@ -37,7 +37,8 @@
 // -- Page specific --
 
 //= require map
-//= require device-show
-//= require friend-device-show
+//= require devices-show
+//= require devices-shared
+//= require friends-device-show
 //= require landing-page
 //= require permissions
