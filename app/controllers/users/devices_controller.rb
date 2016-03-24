@@ -32,7 +32,9 @@ class Users::DevicesController < ApplicationController
     device = Device.find(params[:id])
     checkin = device.checkins.last
     gon.device = device
-    gon.user = device.user.as_json
+    user = device.user.as_json
+    user['avatar'] = device.user.avatar.as_json({})
+    gon.user = user
     gon.checkin = checkin.reverse_geocode! if checkin
   end
 
