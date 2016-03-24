@@ -49,6 +49,7 @@ $(document).on('page:change', function() {
           'marker-size': 'large',
           'marker-symbol': 'heliport',
           'marker-color': '#ff6900',
+          'closeButton': false
         })
       })
       .bindPopup(rendered)
