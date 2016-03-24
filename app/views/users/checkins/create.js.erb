@@ -1,18 +1,6 @@
 <%= render("/shared/notifications") %>
 gon.checkins.unshift(<%= raw @checkin.to_json %>)
 
-var dateString = (new Date(gon.checkins[0].created_at)).toLocaleDateString('en-GB')
-var columnExists = false;
-gon.chart_checkins.forEach(function(checkin){
-  if(checkin[0]===dateString){
-    columnExists = true;
-    checkin[1]++;
-  }
-})
-if(!columnExists){
-  gon.chart_checkins.push([dateString, 1]);
-}
-
 COPO.maps.refreshMarkers();
 COPO.charts.drawTable(gon.checkins);
 COPO.charts.drawBarChart();

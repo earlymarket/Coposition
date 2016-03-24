@@ -2,13 +2,7 @@
 
 for(i = 0; i < gon.checkins.length; i++) {
   if(gon.checkins[i].id === <%= @checkin.id %>){
-    dateString = (new Date(gon.checkins[i].created_at)).toLocaleDateString('en-GB');
     gon.checkins.splice(i, 1);
-    gon.chart_checkins.forEach(function(checkin){
-      if(checkin[0]===dateString){
-        checkin[1]--;
-      }
-    })
   }
 }
 

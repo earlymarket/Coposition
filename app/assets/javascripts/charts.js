@@ -28,30 +28,29 @@ window.COPO.charts = {
     function countCheckinsByDate() {
       var createdAt = _.map(gon.checkins, 'created_at');
       var createdAtArr = [];
-      var firstDate = moment(gon.checkins[gon.checkins.length-1].created_at)
-      var lastDate = moment(gon.checkins[0].created_at)
-      var daysDiff = lastDate.diff(firstDate, 'days')
-      var monthsDiff = lastDate.diff(firstDate, 'months')
+      var firstDate = moment(gon.checkins[gon.checkins.length-1].created_at);
+      var lastDate = moment(gon.checkins[0].created_at);
+      var daysDiff = lastDate.diff(firstDate, 'days');
+      var monthsDiff = lastDate.diff(firstDate, 'months');
       if (monthsDiff > 2){
-        for(i = 0; i <= monthsDiff; i++){
-          createdAtArr.push(firstDate.format('YYYY-MM'))
-          firstDate = firstDate.add(1, 'months')
-        }
+        _.times(monthsDiff+1, function(){
+          createdAtArr.push(firstDate.format('YYYY-MM'));
+          firstDate = firstDate.add(1, 'months');
+        });
         _(createdAt).each(function(checkin){
-          createdAtArr.push(checkin.substring(0,7)); // by month
-        })
+          createdAtArr.push(moment(checkin).format('YYYY-MM')); // by month
+        });
       } else{
-        for(i = 0; i <= daysDiff; i++){
-          createdAtArr.push(firstDate.format('YYYY-MM-DD'))
-          firstDate = firstDate.add(1, 'days')
-        }
+        _.times(daysDiff+1, function(){
+          createdAtArr.push(firstDate.format('YYYY-MM-DD'));
+          firstDate = firstDate.add(1, 'days');
+        });
         _(createdAt).each(function(checkin){
-          createdAtArr.push(checkin.substring(0,10)); // by day
-        })
+          createdAtArr.push(moment(checkin).format('YYYY-MM-DD')); // by day
+        });
       }
       var countedDates = _.toPairs(_.countBy(createdAtArr));
-      var dates = []
-      countedDates.forEach(function(date){ dates.push([date[0], _.subtract(date[1],1)]) })
+      var dates = _.map(countedDates, function(n){ return [n[0], _.subtract(n[1],1)] });
       return dates;
     }
 
