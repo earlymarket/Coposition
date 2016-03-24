@@ -15,21 +15,26 @@
     font-weight: bold;
   }
 
-  .popup-value {
-    text-align: left;
-    margin-left: 0.5rem;
-  }
-
-  .popup-column {
-    vertical-align: top;
-    display: inline-block;
-  }
-
   .address {
     white-space: pre;
   }
 
-  .leaflet-popup-content img {
-    margin-top: -10px;
+  .leaflet-popup-content {
+  }
+
+  table {
+    font-size: 1rem;
+
+    .title {
+      font-size: 1.4rem;
+      font-weight: bold;
+      vertical-align: middle;
+      white-space: normal;
+    }
+    td {
+      padding: 0.1rem 0.5rem;
+      vertical-align: top;
+      white-space: nowrap;
+    }
   }
 }

@@ -6,26 +6,13 @@
     <div>{{ name }}'s device "{{ device.name }}" has no visible location yet</div>
   </script>
   <script id="fullPopupTemplate" type="x-tmpl-mustache">
-
-    <div class="popup-topbox">
-      {{ &avatar }}
-      <h3>{{ friend }}'s last reported location</h3>
-    </div>
-    <div class="center">
-      <div class="popup-column">
-        <div class="popup-label">Device:</div>
-        <div class="popup-label">Created on:</div>
-        <div class="popup-label">Latitude:</div>
-        <div class="popup-label">Longitude:</div>
-        <div class="popup-label">Address:</div>
-      </div>
-      <div class="popup-column">
-        <div class="popup-value">{{ device.name }}</div>
-        <div class="popup-value">{{ created_at }}</div>
-        <div class="popup-value">{{ lat }}</div>
-        <div class="popup-value">{{ lng }}</div>
-        <div class="popup-value address">{{ address }}</div>
-      </div>
-    </div>
+    <table>
+      <tr><td class="popup-label">{{ &avatar }}</td><td class="title">{{ friend }}'s last reported location</td></tr>
+      <tr><td class="popup-label">Device:</td><td>{{ device.name }}</td></tr>
+      <tr><td class="popup-label">Created on:</td><td>{{ created_at }}</td></tr>
+      <tr><td class="popup-label">Latitude:</td><td>{{ lat }}</td></tr>
+      <tr><td class="popup-label">Longitude:</td><td>{{ lng }}</td></tr>
+      <tr><td class="popup-label">Address:</td><td class="address">{{ address }}</td></tr>
+    </table>
   </script>
 <% end %>

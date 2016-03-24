@@ -9,8 +9,7 @@ $(document).on('page:change', function() {
       height: 60,
       crop: 'fill',
       radius: 'max',
-      gravity: 'face:center',
-      class: 'left'
+      gravity: 'face:center'
     }
 
     var avatar = COPO.utility.avatar(gon.user.avatar.public_id, avatarOptions);
@@ -51,7 +50,7 @@ $(document).on('page:change', function() {
           'marker-color': '#ff6900'
         })
       })
-      .bindPopup(rendered)
+      .bindPopup(rendered, {maxWidth: 600})
       .addTo(map);
 
       marker.openPopup();
