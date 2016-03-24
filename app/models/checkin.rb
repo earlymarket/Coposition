@@ -76,12 +76,4 @@ class Checkin < ActiveRecord::Base
       self.slice(:id, :uuid, :lat, :lng, :created_at, :updated_at, :fogged)
     end
   end
-
-  def self.group_for_chart(from, to)
-    if to - from < 3.months
-      group_by_day(:created_at, format: "%e/%m/%Y", range: from..to).count.to_a
-    else
-      group_by_month(:created_at, format: "%m/%Y", range: from..to).count.to_a
-    end
-  end
 end

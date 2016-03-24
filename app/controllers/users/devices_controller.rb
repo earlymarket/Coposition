@@ -23,8 +23,6 @@ class Users::DevicesController < ApplicationController
     end
     @checkins = @checkins.order('created_at DESC').paginate(page: params[:page], per_page: 1000)
     gon.checkins = @checkins
-    gon.chart_checkins = [];
-    gon.chart_checkins = @checkins.group_for_chart(@checkins.last.created_at, @checkins.first.created_at) unless @checkins.empty?
   end
 
   def new
