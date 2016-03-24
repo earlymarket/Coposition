@@ -56,13 +56,13 @@ window.COPO.charts = {
     }
 
     function selectHandler() {
+      var table_checkins = [];
       if (chart.getSelection().length === 0){
-        var table_checkins = checkins;
+        table_checkins = checkins;
       } else {
         var selectedItem = chart.getSelection()[0];
         if (selectedItem) {
           var columnDate = barChartData.getValue(selectedItem.row, 0);
-          var table_checkins = [];
           if (columnDate.length === 10){
             table_checkins = checkins_for_table(columnDate, 'YYYY-MM-DD');
           } else if (columnDate.length === 7) {
