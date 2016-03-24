@@ -9,8 +9,9 @@ window.COPO.charts = {
     data.addColumn('string', 'created_at');
     data.addColumn('number', 'Checkins');
     if (gon.checkins){
-      data.addRows(countCheckinsByDate());
-      var gap = Math.round(countCheckinsByDate().length/10)
+      var rowData = countCheckinsByDate()
+      data.addRows(rowData);
+      var gap = Math.round(rowData.length/10)
     }
     var options = {
       hAxis: { title: 'Date',  showTextEvery: gap },
@@ -26,20 +27,32 @@ window.COPO.charts = {
 
     function countCheckinsByDate() {
       var createdAt = _.map(gon.checkins, 'created_at');
-
       var createdAtArr = [];
-      var range = Date.parse(gon.checkins[0].created_at) - Date.parse(gon.checkins[gon.checkins.length-1].created_at)
-      if (range > 7889238000){
+      var firstDate = moment(gon.checkins[gon.checkins.length-1].created_at)
+      var lastDate = moment(gon.checkins[0].created_at)
+      var daysDiff = lastDate.diff(firstDate, 'days')
+      var monthsDiff = lastDate.diff(firstDate, 'months')
+      if (monthsDiff > 2){
+        for(i = 0; i <= monthsDiff; i++){
+          createdAtArr.push(firstDate.format('YYYY-MM'))
+          firstDate = firstDate.add(1, 'months')
+        }
         _(createdAt).each(function(checkin){
           createdAtArr.push(checkin.substring(0,7)); // by month
         })
       } else{
+        for(i = 0; i <= daysDiff; i++){
+          createdAtArr.push(firstDate.format('YYYY-MM-DD'))
+          firstDate = firstDate.add(1, 'days')
+        }
         _(createdAt).each(function(checkin){
           createdAtArr.push(checkin.substring(0,10)); // by day
         })
       }
-
-      return _.toPairs(_.countBy(createdAtArr)).reverse();
+      var countedDates = _.toPairs(_.countBy(createdAtArr));
+      var dates = []
+      countedDates.forEach(function(date){ dates.push([date[0], _.subtract(date[1],1)]) })
+      return dates;
     }
 
     function selectHandler() {

@@ -212,6 +212,8 @@ GEM
     mimemagic (0.3.0)
     mini_portile2 (2.0.0)
     minitest (5.8.4)
+    momentjs-rails (2.11.0)
+      railties (>= 3.1)
     multi_json (1.11.2)
     multi_test (0.1.2)
     nenv (0.3.0)
@@ -411,6 +413,7 @@ DEPENDENCIES
   lodash-rails
   materialize-sass
   meta_request
+  momentjs-rails
   newrelic_rpm
   paperclip (~> 4.3)
   pg

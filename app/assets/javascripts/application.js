@@ -21,6 +21,7 @@
 //= require materialize
 //= require twitter/typeahead
 //= require lodash
+//= require moment
 
 // -- Vendor libs --
 
