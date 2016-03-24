@@ -29,24 +29,23 @@ window.COPO.charts = {
       var createdAt = _.map(checkins, 'created_at');
       var createdAtArr = [];
       var firstDate = moment(checkins[checkins.length-1].created_at);
-      var lastDate = moment(checkins[0].created_at);
-      var daysDiff = lastDate.diff(firstDate, 'days');
-      var monthsDiff = lastDate.diff(firstDate, 'months');
-      if (monthsDiff > 2){
-        _.times(monthsDiff+1, function(){
+      var daysDiff = moment(checkins[0].created_at).diff(firstDate, 'days');
+      var monthsDiff = moment(checkins[0].created_at).diff(firstDate, 'months');
+      if (monthsDiff > 2){ // by month
+        _.times(monthsDiff+2, function(){
           createdAtArr.push(firstDate.format('YYYY-MM'));
           firstDate = firstDate.add(1, 'months');
         });
         _(createdAt).each(function(checkin){
-          createdAtArr.push(moment(checkin).format('YYYY-MM')); // by month
+          createdAtArr.push(moment(checkin).format('YYYY-MM'));
         });
-      } else{
-        _.times(daysDiff+1, function(){
+      } else{ // by day
+        _.times(daysDiff+2, function(){
           createdAtArr.push(firstDate.format('YYYY-MM-DD'));
           firstDate = firstDate.add(1, 'days');
         });
         _(createdAt).each(function(checkin){
-          createdAtArr.push(moment(checkin).format('YYYY-MM-DD')); // by day
+          createdAtArr.push(moment(checkin).format('YYYY-MM-DD'));
         });
       }
       var countedDates = _.toPairs(_.countBy(createdAtArr));
@@ -60,35 +59,22 @@ window.COPO.charts = {
       } else {
         var selectedItem = chart.getSelection()[0];
         if (selectedItem) {
-          var splitColumnDate = data.getValue(selectedItem.row, 0).split("-");
-          if (splitColumnDate.length === 3){
-            var table_checkins = day_table_checkins(splitColumnDate);
-          } else if (splitColumnDate.length === 2) {
-            var table_checkins = month_table_checkins(splitColumnDate);
+          var columnDate = data.getValue(selectedItem.row, 0);
+          if (columnDate.length === 10){
+            var table_checkins = table_checkins(columnDate, 'YYYY-MM-DD');
+          } else if (columnDate.length === 7) {
+            var table_checkins = table_checkins(columnDate, 'YYYY-MM');
           }
         }
       }
       COPO.charts.drawTable(table_checkins);
     }
 
-    function day_table_checkins(splitColumnDate) {
-      var table_checkins = [];
-      var columnDate = new Date(splitColumnDate[0], splitColumnDate[1]-1, splitColumnDate[2]);
-      checkins.forEach(function(checkin){
-        date = new Date(new Date(checkin.created_at).setHours(0,0,0,0));
-        if (date.toString() === columnDate.toString()){
-          table_checkins.push(checkin);
-        }
-      })
-      return table_checkins;
-    }
-
-    function month_table_checkins(splitColumnDate) {
+    function table_checkins(columnDate, format) {
       var table_checkins = [];
       checkins.forEach(function(checkin){
-        var month = new Date(checkin.created_at).getMonth();
-        var year = new Date(checkin.created_at).getFullYear().toString();
-        if (month === splitColumnDate[1]-1 && year === splitColumnDate[0]){
+        var date = moment(checkin.created_at).format(format);
+        if (date === columnDate){
           table_checkins.push(checkin);
         }
       })
@@ -106,7 +92,7 @@ window.COPO.charts = {
     data.addColumn('string');
     if(checkins.length > 0){
       checkins.forEach(function(checkin){
-        var humanizedDate = new Date(checkin.created_at).toLocaleDateString('en-GB');
+        var humanizedDate = moment(checkin.created_at).format('YYYY-MM-DD');
         var foggedClass;
         checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
         var delete_button = COPO.utility.ujsLink('delete',
