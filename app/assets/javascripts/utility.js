@@ -14,17 +14,17 @@ COPO.utility = {
     return output
   },
 
-  deleteCheckinLink: function(checkin){
-    COPO.utility.ujsLink('delete',
-      '<i class="material-icons center red-text">delete_forever</i>' ,
+  deleteCheckinLink: function(checkin, position){
+    return COPO.utility.ujsLink('delete',
+      '<i class="material-icons '+position+' red-text">delete_forever</i>' ,
       window.location.pathname + '/checkins/' + checkin.id )
       .attr('data-confirm', 'Are you sure?')
       .prop('outerHTML')
   },
 
   fogCheckinLink: function(checkin, foggedClass){
-    COPO.utility.ujsLink('put',
-      '<i class="material-icons center">cloud</i>' ,
+    return COPO.utility.ujsLink('put',
+      '<i class="material-icons">cloud</i>' ,
       window.location.pathname + '/checkins/' + checkin.id )
       .attr('id', 'tableFog' + checkin.id).attr('class', foggedClass)
       .prop('outerHTML')
