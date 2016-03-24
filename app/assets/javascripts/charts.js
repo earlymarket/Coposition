@@ -27,30 +27,31 @@ window.COPO.charts = {
 
     function countCheckinsByDate() {
       var createdAt = _.map(checkins, 'created_at');
-      var createdAtArr = [];
       var firstDate = moment(checkins[checkins.length-1].created_at);
       var daysDiff = moment(checkins[0].created_at).diff(firstDate, 'days');
       var monthsDiff = moment(checkins[0].created_at).diff(firstDate, 'months');
       if (monthsDiff > 2){ // by month
-        _.times(monthsDiff+2, function(){
-          createdAtArr.push(firstDate.format('YYYY-MM'));
-          firstDate = firstDate.add(1, 'months');
-        });
-        _(createdAt).each(function(checkin){
-          createdAtArr.push(moment(checkin).format('YYYY-MM'));
-        });
+        var createdAtArr = createdAtArray({diff: monthsDiff,firstDate: firstDate, format: 'YYYY-MM',
+                                           increment: 'months', createdAt: createdAt})
       } else{ // by day
-        _.times(daysDiff+2, function(){
-          createdAtArr.push(firstDate.format('YYYY-MM-DD'));
-          firstDate = firstDate.add(1, 'days');
-        });
-        _(createdAt).each(function(checkin){
-          createdAtArr.push(moment(checkin).format('YYYY-MM-DD'));
-        });
+        var createdAtArr = createdAtArray({diff: daysDiff,firstDate: firstDate, format: 'YYYY-MM-DD',
+                                           increment: 'days', createdAt: createdAt})
       }
       var countedDates = _.toPairs(_.countBy(createdAtArr));
       var dates = _.map(countedDates, function(n){ return [n[0], _.subtract(n[1],1)] });
       return dates;
+    }
+
+    function createdAtArray(args) {
+      createdAtArr = [];
+      _.times(args.diff+2, function(){
+        createdAtArr.push(args.firstDate.format(args.format));
+        args.firstDate = args.firstDate.add(1, args.increment);
+      });
+      _(args.createdAt).each(function(checkin){
+        createdAtArr.push(moment(checkin).format(args.format));
+      });
+      return createdAtArr;
     }
 
     function selectHandler() {
@@ -61,16 +62,16 @@ window.COPO.charts = {
         if (selectedItem) {
           var columnDate = data.getValue(selectedItem.row, 0);
           if (columnDate.length === 10){
-            var table_checkins = table_checkins(columnDate, 'YYYY-MM-DD');
+            var table_checkins = get_table_checkins(columnDate, 'YYYY-MM-DD');
           } else if (columnDate.length === 7) {
-            var table_checkins = table_checkins(columnDate, 'YYYY-MM');
+            var table_checkins = get_table_checkins(columnDate, 'YYYY-MM');
           }
         }
       }
       COPO.charts.drawTable(table_checkins);
     }
 
-    function table_checkins(columnDate, format) {
+    function get_table_checkins(columnDate, format) {
       var table_checkins = [];
       checkins.forEach(function(checkin){
         var date = moment(checkin.created_at).format(format);
