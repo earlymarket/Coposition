@@ -27,18 +27,8 @@ window.COPO.maps = {
   },
 
   refreshMarkers: function(){
-    try {
-      map.removeLayer(COPO.maps.markers);
-      COPO.maps.renderMarkers();
-    }
-    catch (e) {
-      console.log(e);
-      map.remove();
-      COPO.maps.initMap();
-      COPO.maps.initMarkers();
-      COPO.maps.initControls();
-      COPO.maps.popUpOpenListener();
-    }
+    map.removeLayer(COPO.maps.markers);
+    COPO.maps.renderMarkers();
   },
 
   renderMarkers: function(){
