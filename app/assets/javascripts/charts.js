@@ -27,9 +27,9 @@ window.COPO.charts = {
 
     function countCheckinsByDate() {
       var createdAt = _.map(checkins, 'created_at');
-      var firstDate = moment(checkins[checkins.length-1].created_at);
-      var daysDiff = moment(checkins[0].created_at).diff(firstDate, 'days');
-      var monthsDiff = moment(checkins[0].created_at).diff(firstDate, 'months');
+      var firstDate = moment(checkins[checkins.length-1].created_at).startOf('day');
+      var daysDiff = moment(checkins[0].created_at).endOf('day').diff(firstDate, 'days');
+      var monthsDiff = moment(checkins[0].created_at).endOf('day').diff(firstDate, 'months');
       var createdAtArr = []
       if (monthsDiff > 2){ // by month
         createdAtArr = createdAtArray({diff: monthsDiff,firstDate: firstDate, format: 'YYYY-MM',
