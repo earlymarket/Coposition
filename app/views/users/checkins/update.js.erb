@@ -1,9 +1,6 @@
 <%= render("/shared/notifications") %>
-for(i = 0; i < gon.checkins.length; i++) {
-  if(gon.checkins[i].id === <%= @checkin.id %>){
-    gon.checkins[i].fogged = <%= @checkin.fogged %>
-  }
-}
+var checkin = _.find(gon.checkins, _.matchesProperty('id',<%= @checkin.id %>))
+checkin.fogged = <%= @checkin.fogged %>
 
 //change open popups
 

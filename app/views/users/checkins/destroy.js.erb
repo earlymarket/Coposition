@@ -1,10 +1,6 @@
 <%= render("/shared/notifications") %>
-
-for(i = 0; i < gon.checkins.length; i++) {
-  if(gon.checkins[i].id === <%= @checkin.id %>){
-    gon.checkins.splice(i, 1);
-  }
-}
+var checkin = _.find(gon.checkins, _.matchesProperty('id',<%= @checkin.id %>))
+_.remove(gon.checkins, checkin)
 
 COPO.charts.drawBarChart(gon.checkins);
 COPO.charts.drawTable(gon.checkins);
