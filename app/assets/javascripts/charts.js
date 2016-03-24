@@ -45,7 +45,7 @@ window.COPO.charts = {
 
     function createdAtArray(args) {
       createdAtArr = [];
-      _.times(args.diff+2, function(){
+      _.times(args.diff+1, function(){
         createdAtArr.push(args.firstDate.format(args.format));
         args.firstDate = args.firstDate.add(1, args.increment);
       });
