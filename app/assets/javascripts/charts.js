@@ -2,16 +2,16 @@ window.COPO = window.COPO || {};
 window.COPO.charts = {
   data: null,
 
-  drawBarChart: function() {
+  drawBarChart: function(checkins) {
     // Define the data for the chart.
     var chart = new google.charts.Bar(document.getElementById('bar-chart'));
     data = new google.visualization.DataTable();
     data.addColumn('string', 'created_at');
     data.addColumn('number', 'Checkins');
-    if (gon.checkins){
-      var rowData = countCheckinsByDate()
+    if (checkins){
+      var rowData = countCheckinsByDate();
       data.addRows(rowData);
-      var gap = Math.round(rowData.length/10)
+      var gap = Math.round(rowData.length/10);
     }
     var options = {
       hAxis: { title: 'Date',  showTextEvery: gap },
@@ -26,10 +26,10 @@ window.COPO.charts = {
     google.visualization.events.addListener(chart, 'select', selectHandler);
 
     function countCheckinsByDate() {
-      var createdAt = _.map(gon.checkins, 'created_at');
+      var createdAt = _.map(checkins, 'created_at');
       var createdAtArr = [];
-      var firstDate = moment(gon.checkins[gon.checkins.length-1].created_at);
-      var lastDate = moment(gon.checkins[0].created_at);
+      var firstDate = moment(checkins[checkins.length-1].created_at);
+      var lastDate = moment(checkins[0].created_at);
       var daysDiff = lastDate.diff(firstDate, 'days');
       var monthsDiff = lastDate.diff(firstDate, 'months');
       if (monthsDiff > 2){
@@ -56,7 +56,7 @@ window.COPO.charts = {
 
     function selectHandler() {
       if (chart.getSelection().length === 0){
-        var table_checkins = gon.checkins;
+        var table_checkins = checkins;
       } else {
         var selectedItem = chart.getSelection()[0];
         if (selectedItem) {
@@ -74,7 +74,7 @@ window.COPO.charts = {
     function day_table_checkins(splitColumnDate) {
       var table_checkins = [];
       var columnDate = new Date(splitColumnDate[0], splitColumnDate[1]-1, splitColumnDate[2]);
-      gon.checkins.forEach(function(checkin){
+      checkins.forEach(function(checkin){
         date = new Date(new Date(checkin.created_at).setHours(0,0,0,0));
         if (date.toString() === columnDate.toString()){
           table_checkins.push(checkin);
@@ -85,7 +85,7 @@ window.COPO.charts = {
 
     function month_table_checkins(splitColumnDate) {
       var table_checkins = [];
-      gon.checkins.forEach(function(checkin){
+      checkins.forEach(function(checkin){
         var month = new Date(checkin.created_at).getMonth();
         var year = new Date(checkin.created_at).getFullYear().toString();
         if (month === splitColumnDate[1]-1 && year === splitColumnDate[0]){

@@ -11,7 +11,7 @@ $(document).on('page:change', function() {
       var tab = event.target.innerText
       setTimeout(function(event) {
         if (tab ==='CHART'){
-          COPO.charts.drawBarChart();
+          COPO.charts.drawBarChart(gon.checkins);
           COPO.charts.drawTable(gon.checkins);
         } else {
           map.invalidateSize();
@@ -20,7 +20,7 @@ $(document).on('page:change', function() {
     });
 
     $(window).resize(function(){
-      COPO.charts.drawBarChart();
+      COPO.charts.drawBarChart(gon.checkins);
       COPO.charts.drawTable(gon.checkins);
      });
 

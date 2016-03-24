@@ -3,4 +3,4 @@ gon.checkins.unshift(<%= raw @checkin.to_json %>)
 
 COPO.maps.refreshMarkers();
 COPO.charts.drawTable(gon.checkins);
-COPO.charts.drawBarChart();
+COPO.charts.drawBarChart(gon.checkins);
