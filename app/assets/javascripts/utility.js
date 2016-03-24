@@ -22,11 +22,11 @@ COPO.utility = {
       .prop('outerHTML')
   },
 
-  fogCheckinLink: function(checkin, foggedClass){
+  fogCheckinLink: function(checkin, foggedClass, fogId){
     return COPO.utility.ujsLink('put',
       '<i class="material-icons">cloud</i>' ,
       window.location.pathname + '/checkins/' + checkin.id )
-      .attr('id', 'tableFog' + checkin.id).attr('class', foggedClass)
+      .attr('id', ''+fogId+ checkin.id).attr('class', foggedClass)
       .prop('outerHTML')
   },
 

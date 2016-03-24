@@ -27,8 +27,18 @@ window.COPO.maps = {
   },
 
   refreshMarkers: function(){
-    map.removeLayer(COPO.maps.markers);
-    COPO.maps.renderMarkers();
+    try {
+      map.removeLayer(COPO.maps.markers);
+      COPO.maps.renderMarkers();
+    }
+    catch (e) {
+      console.log(e);
+      map.remove();
+      COPO.maps.initMap();
+      COPO.maps.initMarkers();
+      COPO.maps.initControls();
+      COPO.maps.popUpOpenListener();
+    }
   },
 
   renderMarkers: function(){
@@ -71,7 +81,7 @@ window.COPO.maps = {
     template += '<li>Address: ' + (checkin.address || checkin.fogged_area) + '</li>'
 
     if ($(".c-devices.a-show").length === 1){
-      template += '<li>'+ COPO.utility.fogCheckinLink(checkin, foggedClass)
+      template += '<li>'+ COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog')
       template += COPO.utility.deleteCheckinLink(checkin, 'right') + '</li>';
       template += '</ul>';
     }
