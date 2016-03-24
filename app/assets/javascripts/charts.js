@@ -62,16 +62,16 @@ window.COPO.charts = {
         if (selectedItem) {
           var columnDate = data.getValue(selectedItem.row, 0);
           if (columnDate.length === 10){
-            var table_checkins = get_table_checkins(columnDate, 'YYYY-MM-DD');
+            var table_checkins = checkins_for_table(columnDate, 'YYYY-MM-DD');
           } else if (columnDate.length === 7) {
-            var table_checkins = get_table_checkins(columnDate, 'YYYY-MM');
+            var table_checkins = checkins_for_table(columnDate, 'YYYY-MM');
           }
         }
       }
       COPO.charts.drawTable(table_checkins);
     }
 
-    function get_table_checkins(columnDate, format) {
+    function checkins_for_table(columnDate, format) {
       var table_checkins = [];
       checkins.forEach(function(checkin){
         var date = moment(checkin.created_at).format(format);
