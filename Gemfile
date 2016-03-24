@@ -34,7 +34,6 @@ gem 'gon', '~> 6.0.1'
 gem 'twitter-typeahead-rails'
 gem 'cloudinary', '~> 1.1.3'
 gem 'attachinary', '~> 1.3.1'
-gem 'groupdate'
 gem 'lodash-rails'
 gem 'momentjs-rails'
 
