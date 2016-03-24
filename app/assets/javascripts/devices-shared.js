@@ -13,11 +13,19 @@ $(document).on('page:change', function() {
       class: 'left'
     }
 
+    var avatar = function(){
+      if(gon.user.avatar) {
+        return $.cloudinary.image(gon.user.avatar.public_id, avatarOptions).prop('outerHTML')
+      } else {
+        return $.cloudinary.image("placeholder_wzhvlw.png", avatarOptions).prop('outerHTML')
+      }
+    }
+
     if(!checkin) {
       var friend = {
         name: COPO.utility.friendsName(gon.user),
         device: gon.device,
-        avatar: $.cloudinary.image(gon.user.avatar.public_id, avatarOptions).prop('outerHTML')
+        avatar: avatar
        }
       var template = $('#nullPopupTemplate').html();
       var rendered = Mustache.render(template, friend);
@@ -31,7 +39,7 @@ $(document).on('page:change', function() {
       })
     } else {
       $.extend(checkin, {
-        avatar: $.cloudinary.image(gon.user.avatar.public_id, avatarOptions).prop('outerHTML'),
+        avatar: avatar,
         created_at: new Date(checkin.created_at).toUTCString(),
         address: checkin.address.replace(/, /g, '\n'),
         device: gon.device,
