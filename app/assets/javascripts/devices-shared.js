@@ -24,7 +24,7 @@ $(document).on('page:change', function() {
       var template = $('#nullPopupTemplate').html();
       var rendered = Mustache.render(template, friend);
 
-      var popup = L.popup()
+      var popup = L.popup({'closeButton': false, 'closeOnClick': false})
         .setLatLng(new L.latLng([51.5073509, -0.1277583])) //hardcoded latlng for London
         .setContent(rendered)
         .openOn(map);
@@ -48,8 +48,7 @@ $(document).on('page:change', function() {
         icon: L.mapbox.marker.icon({
           'marker-size': 'large',
           'marker-symbol': 'heliport',
-          'marker-color': '#ff6900',
-          'closeButton': false
+          'marker-color': '#ff6900'
         })
       })
       .bindPopup(rendered)
