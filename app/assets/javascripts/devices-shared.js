@@ -13,13 +13,7 @@ $(document).on('page:change', function() {
       class: 'left'
     }
 
-    var avatar = function(){
-      if(gon.user.avatar) {
-        return $.cloudinary.image(gon.user.avatar.public_id, avatarOptions).prop('outerHTML')
-      } else {
-        return $.cloudinary.image("placeholder_wzhvlw.png", avatarOptions).prop('outerHTML')
-      }
-    }
+    var avatar = COPO.utility.avatar(gon.user.avatar.public_id, avatarOptions);
 
     if(!checkin) {
       var friend = {

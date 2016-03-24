@@ -30,5 +30,14 @@ COPO.utility = {
         $(target).remove();
       }
     });
-  }
+  },
+
+  avatar: function(public_id, options){
+      options = options || {}
+        if(public_id) {
+          return $.cloudinary.image(public_id, options).prop('outerHTML')
+        } else {
+          return $.cloudinary.image("placeholder_wzhvlw.png", options).prop('outerHTML')
+        }
+      }
 };
