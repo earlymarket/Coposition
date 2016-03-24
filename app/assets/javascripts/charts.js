@@ -98,16 +98,8 @@ window.COPO.charts = {
         var humanizedDate = moment(checkin.created_at).format('YYYY-MM-DD');
         var foggedClass;
         checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
-        var delete_button = COPO.utility.ujsLink('delete',
-          '<i class="material-icons center red-text">delete_forever</i>' ,
-          window.location.pathname + '/checkins/' + checkin.id )
-          .attr('data-confirm', 'Are you sure?')
-          .prop('outerHTML')
-        var fogging_button = COPO.utility.ujsLink('put',
-          '<i class="material-icons center">cloud</i>' ,
-          window.location.pathname + '/checkins/' + checkin.id )
-          .attr('id', 'tableFog' + checkin.id).attr('class', foggedClass)
-          .prop('outerHTML')
+        var delete_button = COPO.utility.deleteCheckinLink(checkin);
+        var fogging_button = COPO.utility.fogCheckinLink(checkin, foggedClass);
         tableData.push([humanizedDate, checkin.fogged_area, fogging_button, delete_button]);
       })
       data.addRows(tableData);
