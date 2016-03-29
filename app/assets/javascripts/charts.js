@@ -11,10 +11,9 @@ window.COPO.charts = {
     if (checkins.length > 0){
       var rowData = countCheckinsByDate();
       barChartData.addRows(rowData);
-      var gap = Math.round(rowData.length/10);
     }
     var options = {
-      hAxis: { title: 'Date',  showTextEvery: gap },
+      hAxis: { title: 'Date' },
       vAxis: { title: 'Checkins' },
       colors: '#47b8e0',
       legend: {position: 'none'}
