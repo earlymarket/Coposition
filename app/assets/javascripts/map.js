@@ -26,7 +26,6 @@ window.COPO.maps = {
       COPO.maps.refreshMarkers();
     })
     map.once('popupclose', function(e){
-      map.removeEventListener('zoomstart')
       COPO.maps.refreshMarkers();
     })
   },
