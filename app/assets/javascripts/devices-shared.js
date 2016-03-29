@@ -14,7 +14,7 @@ $(document).on('page:change', function() {
 
     if(!checkin) {
       $.extend(avatarOptions, {class: 'left'})
-      var avatar = COPO.utility.avatar(gon.user.avatar.public_id, avatarOptions);
+      var avatar = COPO.utility.avatar(gon.user.avatar, avatarOptions);
       var friend = {
         name: COPO.utility.friendsName(gon.user),
         device: gon.device,
@@ -31,7 +31,7 @@ $(document).on('page:change', function() {
         map.panTo(popup.getLatLng());
       })
     } else {
-      var avatar = COPO.utility.avatar(gon.user.avatar.public_id, avatarOptions);
+      var avatar = COPO.utility.avatar(gon.user.avatar, avatarOptions);
       $.extend(checkin, {
         avatar: avatar,
         created_at: new Date(checkin.created_at).toUTCString(),

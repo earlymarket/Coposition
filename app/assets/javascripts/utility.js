@@ -32,10 +32,10 @@ COPO.utility = {
     });
   },
 
-  avatar: function(public_id, options){
+  avatar: function(avatar, options){
       options = options || {}
-        if(public_id) {
-          return $.cloudinary.image(public_id, options).prop('outerHTML')
+        if(avatar && avatar.hasOwnProperty('public_id')) {
+          return $.cloudinary.image(avatar.public_id, options).prop('outerHTML')
         } else {
           return $.cloudinary.image("placeholder_wzhvlw.png", options).prop('outerHTML')
         }
