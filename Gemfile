@@ -21,7 +21,6 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'factory_girl_rails'
 gem 'faker'
 gem 'geocoder'
-gem "paperclip", "~> 4.3"
 gem 'colorize'
 gem 'simple_token_authentication'
 gem 'newrelic_rpm'
