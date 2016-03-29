@@ -19,15 +19,13 @@ COPO.utility = {
       '<i class="material-icons right red-text">delete_forever</i>' ,
       window.location.pathname + '/checkins/' + checkin.id )
       .attr('data-confirm', 'Are you sure?')
-      .prop('outerHTML')
   },
 
   fogCheckinLink: function(checkin, foggedClass, fogId){
     return COPO.utility.ujsLink('put',
       '<i class="material-icons">cloud</i>' ,
       window.location.pathname + '/checkins/' + checkin.id )
-      .attr('id', ''+fogId+ checkin.id).attr('class', foggedClass)
-      .prop('outerHTML')
+      .attr('id', fogId + checkin.id).attr('class', foggedClass)
   },
 
   fadeUp: function(target){

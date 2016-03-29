@@ -97,8 +97,8 @@ window.COPO.charts = {
         var humanizedDate = moment(checkin.created_at).format('YYYY-MM-DD');
         var foggedClass;
         checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
-        var delete_button = COPO.utility.deleteCheckinLink(checkin);
-        var fogging_button = COPO.utility.fogCheckinLink(checkin, foggedClass, 'tableFog');
+        var delete_button = COPO.utility.deleteCheckinLink(checkin).prop('outerHTML');
+        var fogging_button = COPO.utility.fogCheckinLink(checkin, foggedClass, 'tableFog').prop('outerHTML');
         tableData.push([humanizedDate, checkin.fogged_area, fogging_button+delete_button]);
       })
       data.addRows(tableData);
