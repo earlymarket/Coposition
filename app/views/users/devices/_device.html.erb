@@ -16,21 +16,11 @@
           <h4 class="modal-content">Permissions Controls</h4>
           <ul class="permissions collection" data-device=<%=device.id%>>
 
-            <% device.developers.each do |developer| %>
-              <% permission =  device.permission_for(developer) %>
+            <% devices_permitted_actors_for(device).each do |permitted| %>
+              <% permission =  device.permission_for(permitted) %>
               <li class="collection-item row valign-wrapper">
                 <div class='valign col s8'>
-                  <%= permissible_title(developer) %>
-                </div>
-                  <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
-              </li>
-            <% end %>
-
-            <% device.permitted_users.each do |friend| %>
-              <% permission =  device.permission_for(friend) %>
-              <li class="collection-item row valign-wrapper">
-                <div class='valign col s8'>
-                  <%= permissible_title(friend) %>
+                  <%= permissible_title(permitted) %>
                 </div>
                   <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
               </li>

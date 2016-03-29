@@ -1,4 +1,9 @@
 module DevicesHelper
+
+  def devices_permitted_actors_for(device)
+    device.developers + device.permitted_users
+  end
+
   def devices_last_checkin(device)
     if device.checkins.exists?
       "<p>Last reported in #{device.checkins.last.address}</p>".html_safe
