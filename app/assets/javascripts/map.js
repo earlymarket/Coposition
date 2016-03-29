@@ -21,15 +21,12 @@ window.COPO.maps = {
   },
 
   queueRefresh: function(){
-    map.once('zoomend', function(e){
+    map.once('zoomstart', function(e){
       map.removeEventListener('popupclose');
       COPO.maps.refreshMarkers();
     })
     map.once('popupclose', function(e){
-      map.removeEventListener('zoomend', function(e){
-        map.removeEventListener('popupclose');
-        COPO.maps.refreshMarkers();
-      })
+      map.removeEventListener('zoomstart')
       COPO.maps.refreshMarkers();
     })
   },
