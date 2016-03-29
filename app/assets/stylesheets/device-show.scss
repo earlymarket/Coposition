@@ -1,6 +1,19 @@
-.c-devices.a-show {
+.c-devices.a-show,
+.c-friends.a-show_device {
   footer {
     display: none;
+  }
+
+  .date-select {
+    background: #fff;
+    position: absolute;
+    width: 25%;
+    top: 64px;
+    right: 10px;
+    z-index: 9;
+    margin-top: 6px;
+    padding: 10px;
+    border-radius: 3px;
   }
 
   #map {
@@ -27,4 +40,18 @@
   .buttons {
     margin: 10px;
   }
+
+  .disabled-icon {
+    color: rgba(0,0,0,0.12);
+  }
+
+  .enabled-icon {
+    // Material Design specs suggest opacity: 0.25; but I don't think
+    // it'd give enough countrast
+  }
+
+  .fogged {
+    color: #2196f3;
+  }
 }
+

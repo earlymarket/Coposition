@@ -26,16 +26,19 @@
 //= require animateCSS.min.js
 //= require d3.min.js
 //= require c3.min.js
+//= require cloudinary
+//= require attachinary
 
 // -- Run every page
 
-//= require init
 //= require utility
 //= require navbar
+//= require init
 
 // -- Page specific --
-
 //= require dashboard
+//= require map
 //= require device-show
+//= require friend-device-show
 //= require landing-page
 //= require permissions

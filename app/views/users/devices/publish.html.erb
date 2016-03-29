@@ -6,11 +6,12 @@
       </div>
       <div class="card-content">
         <ul>
-          <li>Checkin ID: <%= @checkin.id %></li>
+          <li>User: <%= friends_name(@device.user) %></li>
+          <li>Device: <%= @device.name %></li>
           <li>Created on: <%= humanize_date(@checkin.created_at) %></li>
-          <li>Latitude: <%=  @fogged[:lat] %></li>
-          <li>Longitude <%= @fogged[:lng] %></li>
-          <li>Address: <%= @fogged[:address] %></li>
+          <li>Latitude: <%=  @checkin.lat %></li>
+          <li>Longitude <%= @checkin.lng %></li>
+          <li>Address: <%= @checkin.address %></li>
         </ul>
       </div>
     </div>

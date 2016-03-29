@@ -2,11 +2,7 @@ class Developer < ActiveRecord::Base
   include ApprovalMethods
   include SlackNotifiable
 
-  has_attached_file :logo,
-    styles: { medium: "300x300>", thumb: "60x60>" }, default_url: "missing.png"
-  validates_attachment :logo,
-    content_type: { content_type: ["image/jpeg", "image/png"] },
-    size: { in: 0..1.megabytes }
+  has_attachment :avatar
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable

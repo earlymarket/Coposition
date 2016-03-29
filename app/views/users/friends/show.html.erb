@@ -1,8 +1,9 @@
 <h1><%=friends_name(@friend)%></h1>
-<div class="collection">
 <% @devices.each do |device| %>
-    <%= link_to show_device_user_friend_path(current_user.url_id, @friend, device_id: device.id), class:"collection-item" do %>
-      <h4><%= device.name %></h4>
-    <% end %>
+    <div class="card row">
+      <%= link_to show_device_user_friend_path(current_user.url_id, @friend, device_id: device.id), class:"col s12" do %>
+        <h5><%= device.name %></h5>
+        <%= friends_last_checkin(@friend.get_checkins(current_user, device)) %>
+      <% end %>
+    </div>
 <% end %>
-</div>

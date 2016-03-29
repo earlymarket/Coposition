@@ -60,5 +60,11 @@ Rails.application.configure do
     password: ""
   }
 
-  Paperclip.options[:command_path] = "/usr/bin/"
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.console = true
+    Bullet.rails_logger = true
+    Bullet.bullet_logger = true
+    Bullet.alert = true
+  end
 end

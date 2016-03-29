@@ -1,39 +1,29 @@
 <% content_for :outside_container do %>
-<%= Gon::Base.render_data %>
+  <%= Gon::Base.render_data %>
+
+  <ul id='filters' class='date-select collapsible'>
+    <li>
+      <div class='collapsible-header'>Select a date range</div>
+      <div class='collapsible-body'>
+        <%= form_for @device, url: user_device_path(current_user.url_id, @device), class: "form-group", method: :get do |f| %>
+          <%= f.label 'From' %>
+          <%= text_field_tag(:from, nil, class: "datepicker", required: true) %>
+          <%= f.label 'to' %>
+          <%= text_field_tag(:to, nil, class: "datepicker", required: true) %>
+          <%= f.submit("Filter", class: "form-control btn btn-default") %>
+          <%= link_to("Reset", user_device_path(current_user.url_id, @device) , { method: :get, class: "btn-flat right" })%>
+        <% end %>
+      </div>
+    </li>
+  </div>
 
   <div id='map'></div>
   <div class="bottom-panel">
-    <div class="buttons"><%= link_to("Delete history", user_device_checkins_path(current_user.url_id, @device.id), { method: :delete, class: "btn red white-text", data: { confirm: 'Delete all checkins for this device?' } })%>
+    <div class="buttons">
+      <%= link_to("Delete history", user_device_checkins_path(current_user.url_id, @device.id), { method: :delete, class: "btn red white-text", data: { confirm: 'Delete all checkins for this device?' } })%>
       <%= link_to("Delete device", user_device_path(current_user.url_id, @device), { method: :delete, class: "btn red white-text", data: { confirm: 'Are you sure?' } })%>
     </div>
     <%= will_paginate @checkins %>
   </div>
-  <script>
-    window.Copo = window.Copo || {};
-    window.Copo.Maps = window.Copo.Maps || {};
 
-    L.mapbox.accessToken = 'pk.eyJ1IjoiZ2FyeXNpdSIsImEiOiJjaWxjZjN3MTMwMDZhdnNtMnhsYmh4N3lpIn0.RAGGQ0OaM81HVe0OiAKE0w';
-    var map = L.mapbox.map('map', 'mapbox.light', {maxZoom: 18} );
-
-    Copo.Maps.checkins = gon.checkins;
-
-    map.on('popupopen', function(e){
-      var coords = e.popup.getLatLng()
-      if($('#current-location').length){
-
-        var checkinPath = '<%= j user_device_checkins_path(current_user.url_id, @device.id) %>';
-        var checkin = {
-          'checkin[lat]': coords.lat.toFixed(6),
-          'checkin[lng]': coords.lng.toFixed(6)
-        }
-        checkinPath += '?'
-        checkinPath += $.param(checkin)
-
-        var $createCheckinLink = $('<%= j link_to("Create checkin here", new_user_device_checkin_path(current_user.url_id, @device.id), method: "post", remote: true) %>');
-        $createCheckinLink.attr('href', checkinPath);
-        $('#current-location').replaceWith($createCheckinLink);
-      }
-    })
-
-  </script>
 <% end %>

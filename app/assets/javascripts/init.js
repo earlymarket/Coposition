@@ -18,6 +18,12 @@ $(document).on('ready page:change', function() {
   // materialize selectbox init
   $('select').material_select();
 
+  // materialize datepicker init
+  $('.datepicker').pickadate({
+    selectMonths: true,
+    selectYears: 5
+  });
+
   // materialize scrollfire
   var options = [
     // Landing-page fade in image
@@ -32,19 +38,11 @@ $(document).on('ready page:change', function() {
 
   // allow materialize toast to be dismissed on click instead of just the default swipe
   $(document).on('click', '#toast-container .toast', function() {
-    $(this).velocity({
-      opacity: 0,
-      marginTop: '-40px'
-    }, {
-      duration: 375,
-      easing: 'easeOutExpo',
-      queue: false,
-      complete: function(){
-        $(this).remove();
-      }
-    });
+    COPO.utility.fadeUp(this)
   });
 
+  // Attachinary init
+  $('.attachinary-input').attachinary()
   // Event listeners
   setup();
 });

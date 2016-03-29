@@ -1,27 +1,27 @@
-<div class="col s4 " data-permission=<%=permission.id%>>
-  <div class="switch" name='privilege'>
-    <label class="privilege">
+<div class="col s4 permission" data-permission=<%=permission.id%>>
+  <div class="switch">
+    <label class="privilege" name="disallowed">
       <%= check_box_tag 'privilege','', permission.privilege == "disallowed" %>
       <span class="lever"></span>
       Disable access
     </label>
   </div>
-  <div class="switch bypass fog disable" name='bypass_fogging'>
-    <label>
+  <div class="switch disable">
+    <label class="bypass_fogging" name='bypass_fogging'>
       <%= check_box_tag 'bypass_fogging','', permission.bypass_fogging %>
       <span class="lever"></span>
       Bypass Fogging
     </label>
   </div>
-  <div class="switch bypass delay disable" name='bypass_delay'>
-    <label>
+  <div class="switch disable">
+    <label class="bypass_delay"  name='bypass_delay'>
       <%= check_box_tag 'bypass_delay','', permission.bypass_delay %>
       <span class="lever"></span>
       Bypass Delay
     </label>
   </div>
-  <div class="switch last_only disable" name='last_only'>
-    <label class="last_only">
+  <div class="switch disable">
+    <label class="privilege" name="last_only">
       <%= check_box_tag 'last_only','', permission.privilege == "last_only" %>
       <span class="lever"></span>
       Last Checkin Only

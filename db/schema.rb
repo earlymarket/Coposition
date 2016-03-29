@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160311130047) do
+ActiveRecord::Schema.define(version: 20160316121833) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,22 @@ ActiveRecord::Schema.define(version: 20160311130047) do
 
   add_index "approvals", ["approvable_id"], name: "index_approvals_on_approvable_id", using: :btree
   add_index "approvals", ["user_id"], name: "index_approvals_on_user_id", using: :btree
+
+  create_table "attachinary_files", force: :cascade do |t|
+    t.integer  "attachinariable_id"
+    t.string   "attachinariable_type"
+    t.string   "scope"
+    t.string   "public_id"
+    t.string   "version"
+    t.integer  "width"
+    t.integer  "height"
+    t.string   "format"
+    t.string   "resource_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "attachinary_files", ["attachinariable_type", "attachinariable_id", "scope"], name: "by_scoped_parent", using: :btree
 
   create_table "checkins", force: :cascade do |t|
     t.float    "lat"
@@ -87,9 +103,10 @@ ActiveRecord::Schema.define(version: 20160311130047) do
     t.string  "uuid"
     t.integer "user_id"
     t.string  "name"
-    t.boolean "fogged",  default: false
+    t.boolean "fogged",    default: false
     t.integer "delayed"
     t.string  "alias"
+    t.boolean "published", default: false
   end
 
   add_index "devices", ["uuid"], name: "index_devices_on_uuid", using: :btree
