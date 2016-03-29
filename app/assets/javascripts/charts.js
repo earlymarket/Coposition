@@ -13,7 +13,7 @@ window.COPO.charts = {
       barChartData.addRows(rowData);
     }
     var options = {
-      hAxis: { title: 'Date' },
+      hAxis: { title: '' },
       vAxis: { title: 'Checkins' },
       colors: '#47b8e0',
       legend: {position: 'none'}
