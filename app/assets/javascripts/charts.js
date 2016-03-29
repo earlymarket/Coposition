@@ -8,7 +8,7 @@ window.COPO.charts = {
     barChartData = new google.visualization.DataTable();
     barChartData.addColumn('string', 'created_at');
     barChartData.addColumn('number', 'Checkins');
-    if (checkins){
+    if (checkins.length > 0){
       var rowData = countCheckinsByDate();
       barChartData.addRows(rowData);
       var gap = Math.round(rowData.length/10);
@@ -32,10 +32,10 @@ window.COPO.charts = {
       var monthsDiff = moment(checkins[0].created_at).endOf('day').diff(firstDate, 'months');
       var createdAtArr = []
       if (monthsDiff > 2){ // by month
-        createdAtArr = createdAtArray({diff: monthsDiff,firstDate: firstDate, format: 'YYYY-MM',
+        createdAtArr = createdAtArray({diff: monthsDiff, firstDate: firstDate, format: 'YYYY-MM',
                                            increment: 'months', createdAt: createdAt})
       } else{ // by day
-        createdAtArr = createdAtArray({diff: daysDiff,firstDate: firstDate, format: 'YYYY-MM-DD',
+        createdAtArr = createdAtArray({diff: daysDiff, firstDate: firstDate, format: 'YYYY-MM-DD',
                                            increment: 'days', createdAt: createdAt})
       }
       var countedDates = _.toPairs(_.countBy(createdAtArr));
@@ -91,7 +91,6 @@ window.COPO.charts = {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Created');
     data.addColumn('string', 'Area');
-    data.addColumn('string', 'Fogging');
     data.addColumn('string');
     if(checkins.length > 0){
       checkins.forEach(function(checkin){
@@ -100,13 +99,12 @@ window.COPO.charts = {
         checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
         var delete_button = COPO.utility.deleteCheckinLink(checkin);
         var fogging_button = COPO.utility.fogCheckinLink(checkin, foggedClass, 'tableFog');
-        tableData.push([humanizedDate, checkin.fogged_area, fogging_button, delete_button]);
+        tableData.push([humanizedDate, checkin.fogged_area, fogging_button+delete_button]);
       })
       data.addRows(tableData);
       data.setProperty(0, 0, 'style', 'width:20%');
       data.setProperty(0, 1, 'style', 'width:60%');
       data.setProperty(0, 2, 'style', 'width:10%');
-      data.setProperty(0, 3, 'style', 'width:10%');
     }
     // Instantiate and draw the chart.
     var table = new google.visualization.Table(document.getElementById('table-chart'));

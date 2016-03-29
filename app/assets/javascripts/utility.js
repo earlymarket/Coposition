@@ -14,9 +14,9 @@ COPO.utility = {
     return output
   },
 
-  deleteCheckinLink: function(checkin, position){
+  deleteCheckinLink: function(checkin){
     return COPO.utility.ujsLink('delete',
-      '<i class="material-icons '+position+' red-text">delete_forever</i>' ,
+      '<i class="material-icons right red-text">delete_forever</i>' ,
       window.location.pathname + '/checkins/' + checkin.id )
       .attr('data-confirm', 'Are you sure?')
       .prop('outerHTML')

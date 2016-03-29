@@ -72,7 +72,7 @@ window.COPO.maps = {
 
     if ($(".c-devices.a-show").length === 1){
       template += '<li>'+ COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog')
-      template += COPO.utility.deleteCheckinLink(checkin, 'right') + '</li>';
+      template += COPO.utility.deleteCheckinLink(checkin) + '</li>';
       template += '</ul>';
     }
 
