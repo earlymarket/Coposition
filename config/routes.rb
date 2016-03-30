@@ -17,6 +17,9 @@ Rails.application.routes.draw do
     sessions: 'developers/devise/sessions'
   }
 
+  # Attachinary
+  mount Attachinary::Engine => "/attachinary"
+
   # API
 
   namespace :api, path: '', constraints: {subdomain: 'api'}, defaults: {format: 'json'} do
@@ -67,7 +70,7 @@ Rails.application.routes.draw do
   resources :users, only: [:show], module: :users do
     resource :dashboard, only: [:show]
     resources :devices, except: [:edit] do
-      member { get :publish }
+      member { get :shared }
       resources :checkins, only: [:show, :create, :new, :update]
       delete '/checkins/', to: 'checkins#destroy_all'
       delete '/checkins/:id', to: 'checkins#destroy'

@@ -18,6 +18,17 @@ $(document).on('ready page:change', function() {
   // materialize selectbox init
   $('select').material_select();
 
+  // materialize datepicker init
+  $('.datepicker').pickadate({
+    selectMonths: true,
+    selectYears: 15,
+    onSet: function( arg ){
+        if ( 'select' in arg ){ //prevent closing on selecting month/year
+            this.close();
+        }
+    }
+  });
+
   // materialize scrollfire
   var options = [
     // Landing-page fade in image
@@ -35,6 +46,11 @@ $(document).on('ready page:change', function() {
     COPO.utility.fadeUp(this)
   });
 
+  // materialize tabs
+  $('ul.tabs').tabs();
+
+  // Attachinary init
+  $('.attachinary-input').attachinary()
   // Event listeners
   setup();
 });
@@ -71,13 +87,13 @@ function responsiveVideo(){
 
   if(rRatio < ratio){
     // Aspect ratio is lower than 16:9
-    $(".parallax-container #promo video").css({
+    $("#promo video").css({
       width: 'auto',
       height: '100%'
     });
   }else{
     // Aspect ration is higher than 16:9
-    $(".parallax-container #promo video").css({
+    $("#promo video").css({
       width: '100%',
       height: 'auto'
     });

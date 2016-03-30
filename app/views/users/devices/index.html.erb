@@ -9,15 +9,13 @@
 <div class="row">
 
   <div class="center">
-    <%= link_to("Add new device", new_user_device_path, class: "btn btn-primary btn-lg") %>
+    <%= link_to("Add new device", new_user_device_path, class: "btn") %>
   </div>
 
 </div>
 
 <script>
 $('.modal-trigger').leanModal();
+COPO.permissions.switch_change();
 COPO.permissions.check_disabled();
-COPO.permissions.disable_access_change();
-COPO.permissions.last_checkin_change();
-COPO.permissions.bypass_change();
 </script>

@@ -1,14 +1,15 @@
 module PermissionsHelper
 
   def permissible_title(permissible)
+    avatar_options = { size: '60x60', crop: :thumb, gravity: 'face:center', radius: :max }
+    title_start = "<div class=\"valign-wrapper\">#{avatar_for(permissible, avatar_options)}"
+    title_end = '</div>'
     if permissible.class.to_s == 'Developer'
-      "<div class='valign-wrapper col s8'>
-      #{h image_tag(permissible.logo.url(:thumb), alt: '', class: 'circle icon')}
-      #{h permissible.company_name}
-      </div>".html_safe
+      title = title_start + "#{h permissible.company_name}" + title_end
     else
-      "<div class='valign-wrapper col s8'>#{h permissible.email}</div>".html_safe
+      title = title_start + "#{h permissible.email}" + title_end
     end
+    title.html_safe
   end
 
 end

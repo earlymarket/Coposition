@@ -3,7 +3,6 @@ Feature: Devices
 
   Background: There are some devices
     Given I am signed in as a user
-      And I click "Dashboard"
       And I click the link "Devices"
       And there's a device in the database with the UUID "123456789123"
 
@@ -13,7 +12,6 @@ Feature: Devices
       When I click "Add"
       Then I should see "This device has been bound to your account!"
         # And I should see "G-RALA"
-        Then I click "Dashboard"
         And I click the link "Devices"
       Then I should see "Denham"
         When I click "Denham"

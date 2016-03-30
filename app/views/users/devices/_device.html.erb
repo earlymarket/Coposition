@@ -10,24 +10,19 @@
   <div class="col s4">
     <% if device.developers.exists? || device.permitted_users.exists? %>
       <a class="waves-effect waves-light btn-flat modal-trigger right" href="#perm<%=device.id%>"><i class="material-icons left">lock</i>Permissions</a>
+
       <div id="perm<%=device.id%>" class="modal">
         <div class="modal-content">
           <h4 class="modal-content">Permissions Controls</h4>
           <ul class="permissions collection" data-device=<%=device.id%>>
 
-            <% device.developers.each do |developer| %>
-              <% permission =  device.permission_for(developer) %>
-              <li class="collection-item row">
-                <%= permissible_title(developer) %>
-                <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
-              </li>
-            <% end %>
-
-            <% device.permitted_users.each do |friend| %>
-              <% permission =  device.permission_for(friend) %>
-              <li class="collection-item row">
-                <%= permissible_title(friend) %>
-                <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
+            <% devices_permitted_actors_for(device).each do |permitted| %>
+              <% permission =  device.permission_for(permitted) %>
+              <li class="collection-item row valign-wrapper">
+                <div class='valign col s8'>
+                  <%= permissible_title(permitted) %>
+                </div>
+                  <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
               </li>
             <% end %>
 

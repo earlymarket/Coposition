@@ -4,9 +4,10 @@ RSpec.describe Users::DevicesController, type: :controller do
   include ControllerMacros
 
   let(:empty_device) { FactoryGirl::create :device }
+  let(:checkin) { FactoryGirl::create(:checkin, created_at: Date.yesterday) }
   let(:device) do
     dev = FactoryGirl::create :device
-    dev.checkins << FactoryGirl::create(:checkin)
+    dev.checkins << [checkin, FactoryGirl::create(:checkin)]
     dev
   end
   let(:developer) { FactoryGirl::create :developer }
@@ -23,6 +24,7 @@ RSpec.describe Users::DevicesController, type: :controller do
   let(:approval) { create_approval(user, new_user) }
   let(:user_param) {{ user_id: user.username }}
   let(:params) { user_param.merge(id: device.id) }
+  let(:date_params) { params.merge(from: Date.yesterday, to: Date.yesterday) }
 
   it 'should have a current_user' do
     user
@@ -42,6 +44,11 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(assigns :device).to eq(Device.find(device.id))
     end
 
+    it 'should assign :id.device to @device if user owns device' do
+      get :show, date_params
+      expect(assigns :checkins).to eq([checkin])
+    end
+
     it 'should not assign to @device if user does not own device' do
       get :show, params.merge(user_id: new_user.username)
       expect(response).to redirect_to(root_path)
@@ -58,18 +65,11 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
   end
 
-  describe 'GET #publish' do
+  describe 'GET #shared' do
     it 'should deny access if device not published' do
-      get :publish, params
+      get :shared, params
       expect(response).to redirect_to(root_path)
       expect(flash[:notice]).to match('not published')
-    end
-
-    it 'should assign device and last checkin if device published' do
-      device.update(published: true)
-      get :publish, params
-      expect(assigns :device).to eq(device)
-      expect(assigns :checkin).to eq(device.checkins.last)
     end
   end
 

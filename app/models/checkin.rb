@@ -76,5 +76,4 @@ class Checkin < ActiveRecord::Base
       self.slice(:id, :uuid, :lat, :lng, :created_at, :updated_at, :fogged)
     end
   end
-
 end

@@ -10,17 +10,12 @@ class Users::FriendsController < ApplicationController
     @friend = User.find(params[:id])
     @device = @friend.devices.find(params[:device_id])
     @paginated_checkins = @friend.get_checkins(current_user, @device).order('created_at DESC') \
-      .paginate(page: params[:page], per_page: 50)
+      .paginate(page: params[:page], per_page: 1000)
     @checkins = @paginated_checkins
     @checkins = @checkins.map do |checkin|
       checkin.get_data
     end unless @device.can_bypass_fogging?(current_user)
-  end
-
-  def show_checkin
-    friend = User.find(params[:id])
-    @checkin = friend.checkins.find(params[:checkin_id])
-    @fogged = @checkin.resolve_address(current_user, 'address')
+    gon.checkins = @paginated_checkins
   end
 
   private

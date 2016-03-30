@@ -3,7 +3,8 @@
 <head>
   <title>Coposition</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">google.charts.load('current', {packages: ['bar', 'table']});</script>
   <script src='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.js'></script>
   <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
   <link href='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.css' rel='stylesheet' />
@@ -16,6 +17,9 @@
     <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.ie.css' rel='stylesheet' />
   <![endif]-->
   <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/css/font-awesome.min.css' rel='stylesheet' />
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js'></script>
+  <%= cloudinary_js_config %>
   <%= csrf_meta_tags %>
   <link href='https://fonts.googleapis.com/css?family=Noto+Sans:400,700' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Fira+Sans:400,300,700' rel='stylesheet' type='text/css'>
@@ -27,7 +31,7 @@
 </head>
 <body class="c-<%= controller_name %> a-<%= action_name %>">
 
-  <%= render partial: "layouts/navbar" %>
+  <%= render partial: "navbar" %>
   <main>
   <%= javascript_tag( render(partial: '/shared/notifications', formats: [:js]) ) %>
     <div class="outside-container">
@@ -37,6 +41,6 @@
       <%= yield %>
     </div>
   </main>
-  <%= render partial: "layouts/footer" %>
+  <%= render partial: "footer" %>
 </body>
 </html>

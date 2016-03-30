@@ -21,7 +21,6 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'factory_girl_rails'
 gem 'faker'
 gem 'geocoder'
-gem "paperclip", "~> 4.3"
 gem 'colorize'
 gem 'simple_token_authentication'
 gem 'newrelic_rpm'
@@ -31,8 +30,11 @@ gem 'will_paginate-materialize'
 gem 'jquery-validation-rails'
 gem 'inline_svg'
 gem 'gon', '~> 6.0.1'
-
 gem 'twitter-typeahead-rails'
+gem 'cloudinary', '~> 1.1.3'
+gem 'attachinary', '~> 1.3.1'
+gem 'lodash-rails'
+gem 'momentjs-rails'
 
 # Use Unicorn as the app server
 

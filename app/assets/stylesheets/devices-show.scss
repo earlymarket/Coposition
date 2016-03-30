@@ -1,13 +1,44 @@
-.c-devices.a-show {
-  footer {
-    display: none;
+.c-devices.a-show,
+.c-friends.a-show_device {
+  .date-select {
+    background: #fff;
+    position: absolute;
+    width: 25%;
+    top: 64px;
+    right: 10px;
+    z-index: 9;
+    margin-top: 54px;
+    padding: 10px;
+    border-radius: 3px;
+  }
+
+  .tabs {
+    overflow: hidden;
   }
 
   #map {
     width:100%;
     position:absolute !important;
     top: 64px;
+    margin-top: 48px;
     bottom: 100px;
+  }
+
+  #chart {
+    height: 70vh;
+    width: 100%;
+  }
+
+  #bar-chart {
+    margin-top: 20px;
+    margin-left: 20px;
+    width: 90%;
+    height: 40vh;
+  }
+
+  #table-chart {
+    height: 30vh;
+    margin-top: 10px;
   }
 
   .bottom-panel {
@@ -41,3 +72,4 @@
     color: #2196f3;
   }
 }
+

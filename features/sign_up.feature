@@ -12,7 +12,7 @@ Feature: Sign up and log in
 @javascript
   Scenario: User login
     Given I am on the homepage
-      And I click "User log in"
+      And I click the link "login"
       Then I click the link "Sign up!"
     When I fill in the form with my "user" details
       And I click "Sign up"

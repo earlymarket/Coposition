@@ -21,19 +21,23 @@
 @import 'materialize';
 // css selectors/classes needs to be overriden after
 @import 'custom_class';
-// @import './*;
 
 // Leave them in seperate statements. It makes it easier to debug/reorder'
 // Especially in merge conflicts
+@import 'fonts';
+@import 'navbar';
+@import 'layout';
 
-@import 'fonts.scss';
-@import 'navbar.scss';
-@import 'layout.scss';
+// Vendor
+@import 'maitre';
+@import 'twitter-typeahead';
+@import 'control.w3w.css';
 
 // Page/feature specific
-@import 'landing-page.scss';
-@import 'placeholder.scss';
-@import 'user.scss';
-@import 'maitre.scss';
-@import 'device-show.scss';
-@import 'twitter-typeahead.scss';
+@import 'landing-page';
+@import 'user-dashboard';
+@import 'placeholder';
+@import 'user';
+@import 'devices-show';
+@import 'devices-shared';
+@import 'approvals';
