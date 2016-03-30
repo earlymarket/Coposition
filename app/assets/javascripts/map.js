@@ -44,22 +44,22 @@ window.COPO.maps = {
         var checkin = checkins[i];
         var symbol = 'heliport'
         var color = '#ff6900'
-        var last = ''
+        var status = ''
         if (i === 0) {
           symbol = 'star'
           color = '#47b8e0'
-          last = ' - Most recent'
+          status = ' - Most recent'
         }
         var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), {
           icon: L.mapbox.marker.icon({
             'marker-symbol': symbol,
             'marker-color': color,
           }),
-          title: 'ID: ' + checkin.id + last,
-          alt: 'ID: ' + checkin.id
+          title: 'ID: ' + checkin.id + status,
+          alt: 'ID: ' + checkin.id + status
         });
 
-        template = COPO.maps.buildMarkerPopup(checkin, last)
+        template = COPO.maps.buildMarkerPopup(checkin, status)
         marker.bindPopup(L.Util.template(template, checkin))
 
         marker.on('click', function(e) {
@@ -77,12 +77,12 @@ window.COPO.maps = {
     map.addLayer(COPO.maps.markers);
   },
 
-  buildMarkerPopup: function(checkin, last){
+  buildMarkerPopup: function(checkin, status){
     var checkinDate = new Date(checkin.created_at).toUTCString()
     var foggedClass;
     checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
 
-    template = '<h3>ID: {id}' +last + '</h3>'
+    template = '<h3>ID: {id}' + status + '</h3>'
     template += '<ul>'
     template += '<li>Created on: '+ checkinDate + '</li>'
     template += '<li>Latitude: {lat}</li>'
