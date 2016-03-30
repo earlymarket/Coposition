@@ -5,5 +5,22 @@ $(document).on('page:change', function() {
     COPO.maps.initControls();
     COPO.maps.lc.start();
     COPO.maps.popUpOpenListener();
+    //google.charts.setOnLoadCallback(COPO.charts.refreshCharts(gon.checkins));
+
+    $('li.tab').on('click', function() {
+      var tab = event.target.innerText
+      setTimeout(function(event) {
+        if (tab ==='CHART'){
+          COPO.charts.refreshCharts(gon.checkins);
+        } else {
+          map.invalidateSize();
+        }
+      });
+    });
+
+    $(window).resize(function(){
+      COPO.charts.refreshCharts(gon.checkins);
+     });
+
   }
 });

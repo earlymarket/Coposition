@@ -21,6 +21,10 @@ window.COPO.maps = {
   },
 
   queueRefresh: function(){
+    map.once('zoomstart', function(e){
+      map.removeEventListener('popupclose');
+      COPO.maps.refreshMarkers();
+    })
     map.once('popupclose', function(e){
       COPO.maps.refreshMarkers();
     })
@@ -72,13 +76,8 @@ window.COPO.maps = {
     template += '<li>Address: ' + (checkin.address || checkin.fogged_area) + '</li>'
 
     if ($(".c-devices.a-show").length === 1){
-      template += '<li>'+ COPO.utility.ujsLink('put', '<i class="material-icons">cloud</i>' , window.location.pathname + '/checkins/' + checkin.id )
-        .attr('id', 'fog' + checkin.id)
-        .attr('class', foggedClass)
-        .prop('outerHTML')
-      template += COPO.utility.ujsLink('delete', '<i class="material-icons red-text right">delete_forever</i>' , window.location.pathname + '/checkins/' + checkin.id )
-        .attr('data-confirm', 'Are you sure?')
-        .prop('outerHTML') + '</li>';
+      template += '<li>'+ COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog')
+      template += COPO.utility.deleteCheckinLink(checkin) + '</li>';
       template += '</ul>';
     }
 
