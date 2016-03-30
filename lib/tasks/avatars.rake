@@ -1,51 +1,37 @@
 namespace :avatars do
 require 'pp'
 
-  desc "Adds a random avatar to a user (set id to 'all' to give avatars to everyone who doesn't have them)."
+  desc "Adds a random avatar to a user."
   task :user, [:id]  => :environment do |t, args|
-
     validate_id(args)
+    user = User.find_by(id: args[:id])
+    set_avatar(user)
+  end
 
-    if args[:id].downcase != 'all'
-      user = User.find_by(id: args[:id])
-      set_avatar(user)
-      abort('Done')
-    end
-
+  desc "Adds a random avatar to all users without an avatar."
+  task :'users:all' => :environment do
     users = User.all
     count_and_confirm(users)
-
     users.each do |user|
       set_avatar(user)
     end
-
-    puts 'Done'
-
   end
 
-  desc "Adds a random avatar to a developer/app (set id to 'all' to give avatars to everyone who doesn't have them)."
+  desc "Adds a random avatar to an app/developer."
   task :app, [:id]  => :environment do |t, args|
-
     validate_id(args)
+    app = Developer.find_by(id: args[:id])
+    set_avatar(app)
+  end
 
-    if args[:id].downcase != 'all'
-      app = Developer.find_by(id: args[:id])
-      set_avatar(app)
-      abort('Done')
-    end
-
+  desc "Adds a random avatar to all apps/developers without an avatar."
+  task :'apps:all' => :environment do
     apps = Developer.all
     count_and_confirm(apps)
-
     apps.each do |app|
       set_avatar(app)
     end
-
-    puts 'Done'
-
   end
-
-end
 
 def count_and_confirm(resource)
   count = resource.count
@@ -79,6 +65,5 @@ end
 
 def validate_id(args)
   is_valid = true if Float(args[:id]) rescue false
-  is_valid = true if args[:id].downcase == 'all'
-  abort("Bad param. Specify an ID or 'all'") unless is_valid
+  abort("Bad param. Specify an ID.") unless is_valid
 end
