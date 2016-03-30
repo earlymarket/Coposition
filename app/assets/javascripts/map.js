@@ -42,7 +42,7 @@ window.COPO.maps = {
         var checkin = checkins[i];
         var symbol = 'heliport'
         var color = '#ff6900'
-        if (i === checkins.length-1) {
+        if (i === 0) {
           symbol = 'star'
           color = '#47b8e0'
         }

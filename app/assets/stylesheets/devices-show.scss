@@ -9,10 +9,6 @@
     padding-left: 5px;
   }
 
-  .date-picker {
-    left: 10px;
-  }
-
   /* Header - Day of the week */
   .picker__weekday-display { background-color: $primary-color-darker; }
   /* Body - Today info */
@@ -69,7 +65,7 @@
   #bar-chart {
     margin-top: 20px;
     margin-left: 20px;
-    width: 90%;
+    width: 95%;
     height: 40vh;
   }
 
