@@ -32,7 +32,7 @@ class Users::DevicesController < ApplicationController
 
   def shared
     device = Device.find(params[:id])
-    checkin = device.checkins.last
+    checkin = device.checkins.order('created_at DESC').first
     gon.device = device
     user = device.user.as_json
     user['avatar'] = device.user.avatar.as_json({})
