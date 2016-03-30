@@ -43,8 +43,7 @@ def count_and_confirm(resource)
 
   abort('Everyone already has an avatar!') if count == 0
 
-  puts "There are #{resource.count} #{resource.name}s. #{count} without avatars. Continue? (y/n)"
-  confirm = STDIN.gets.chomp
+  confirm = ''
 
   until confirm.downcase == 'y' || confirm.downcase == 'n' do
     puts "There are #{resource.count} #{resource.name}s. #{count} without avatars. Continue? (y/n)"
