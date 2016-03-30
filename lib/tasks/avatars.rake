@@ -33,6 +33,8 @@ require 'pp'
     end
   end
 
+end
+
 def count_and_confirm(resource)
   count = resource.count
   resource.each do |entity|
