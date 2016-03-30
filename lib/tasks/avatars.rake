@@ -1,6 +1,5 @@
-require 'pp'
-
 namespace :avatars do
+require 'pp'
 
   desc "Adds a random avatar to a user (set id to 'all' to give avatars to everyone who doesn't have them)."
   task :user, [:id]  => :environment do |t, args|
@@ -69,9 +68,8 @@ end
 
 def set_avatar(resource)
   uri = URI('http://uifaces.com/api/v1/random')
-  pp resource.as_json
-  puts "Avatar set: #{resource.avatar?}"
   unless resource.avatar?
+  pp resource.as_json
     uiface = Net::HTTP.get(uri)
     uiface = JSON.parse(uiface)
     resource.avatar_url = uiface['image_urls']['epic']
