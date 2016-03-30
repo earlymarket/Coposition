@@ -40,10 +40,16 @@ window.COPO.maps = {
     var checkins = gon.checkins;
       for (var i = 0; i < checkins.length; i++) {
         var checkin = checkins[i];
+        var symbol = 'heliport'
+        var color = '#ff6900'
+        if (i === checkins.length-1) {
+          symbol = 'star'
+          color = '#47b8e0'
+        }
         var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), {
           icon: L.mapbox.marker.icon({
-            'marker-symbol': 'heliport',
-            'marker-color': '#ff6900',
+            'marker-symbol': symbol,
+            'marker-color': color,
           }),
           title: 'ID: ' + checkin.id,
           alt: 'ID: ' + checkin.id
