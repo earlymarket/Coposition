@@ -38,8 +38,8 @@ window.COPO.charts = {
                                            increment: 'days', createdAt: createdAt})
       }
       var countedDates = _.toPairs(_.countBy(createdAtArr));
-      var dates = _.map(countedDates, function(n){ return [n[0], _.subtract(n[1],1)] });
-      return dates;
+      countedDates = _.map(countedDates, function(n){ return [n[0], _.subtract(n[1],1)] });
+      return countedDates;
     }
 
     function createdAtArray(args) {
@@ -60,13 +60,11 @@ window.COPO.charts = {
         table_checkins = checkins;
       } else {
         var selectedItem = chart.getSelection()[0];
-        if (selectedItem) {
-          var columnDate = barChartData.getValue(selectedItem.row, 0);
-          if (columnDate.length === 10){
-            table_checkins = checkins_for_table(columnDate, 'YYYY-MM-DD');
-          } else if (columnDate.length === 7) {
-            table_checkins = checkins_for_table(columnDate, 'YYYY-MM');
-          }
+        var columnDate = barChartData.getValue(selectedItem.row, 0);
+        if (columnDate.length === 10){
+          table_checkins = checkins_for_table(columnDate, 'YYYY-MM-DD');
+        } else if (columnDate.length === 7) {
+          table_checkins = checkins_for_table(columnDate, 'YYYY-MM');
         }
       }
       COPO.charts.drawTable(table_checkins);
@@ -93,11 +91,11 @@ window.COPO.charts = {
     data.addColumn('string');
     if(checkins.length > 0){
       checkins.forEach(function(checkin){
-        var humanizedDate = moment(checkin.created_at).format('YYYY-MM-DD');
+        var humanizedDate = moment(checkin.created_at).format('LLL');
         var foggedClass;
         checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
-        var delete_button = COPO.utility.deleteCheckinLink(checkin).prop('outerHTML');
-        var fogging_button = COPO.utility.fogCheckinLink(checkin, foggedClass, 'tableFog').prop('outerHTML');
+        var delete_button = COPO.utility.deleteCheckinLink(checkin);
+        var fogging_button = COPO.utility.fogCheckinLink(checkin, foggedClass, 'tableFog');
         tableData.push([humanizedDate, checkin.fogged_area, fogging_button+delete_button]);
       })
       data.addRows(tableData);

@@ -75,8 +75,8 @@ window.COPO.maps = {
     template += '<li>Address: ' + (checkin.address || checkin.fogged_area) + '</li>'
 
     if ($(".c-devices.a-show").length === 1){
-      template += '<li>'+ COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog').prop('outerHTML')
-      template += COPO.utility.deleteCheckinLink(checkin).prop('outerHTML') + '</li>';
+      template += '<li>'+ COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog')
+      template += COPO.utility.deleteCheckinLink(checkin) + '</li>';
       template += '</ul>';
     }
 
