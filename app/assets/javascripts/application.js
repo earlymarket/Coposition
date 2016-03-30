@@ -20,6 +20,8 @@
 
 //= require materialize
 //= require twitter/typeahead
+//= require lodash
+//= require moment
 
 // -- Vendor libs --
 
@@ -32,10 +34,11 @@
 //= require utility
 //= require navbar
 //= require init
+//= require charts
+//= require map
 
 // -- Page specific --
 
-//= require map
 //= require device-show
 //= require friend-device-show
 //= require landing-page

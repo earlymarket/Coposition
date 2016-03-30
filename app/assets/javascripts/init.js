@@ -21,7 +21,12 @@ $(document).on('ready page:change', function() {
   // materialize datepicker init
   $('.datepicker').pickadate({
     selectMonths: true,
-    selectYears: 5
+    selectYears: 15,
+    onSet: function( arg ){
+        if ( 'select' in arg ){ //prevent closing on selecting month/year
+            this.close();
+        }
+    }
   });
 
   // materialize scrollfire
@@ -40,6 +45,9 @@ $(document).on('ready page:change', function() {
   $(document).on('click', '#toast-container .toast', function() {
     COPO.utility.fadeUp(this)
   });
+
+  // materialize tabs
+  $('ul.tabs').tabs();
 
   // Attachinary init
   $('.attachinary-input').attachinary()

@@ -1,3 +1,5 @@
 <%= render("/shared/notifications") %>
-gon.checkins.push(<%= raw @checkin.to_json %>)
+gon.checkins.unshift(<%= raw @checkin.to_json %>);
+
 COPO.maps.refreshMarkers();
+COPO.charts.refreshCharts(gon.checkins);

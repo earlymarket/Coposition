@@ -1,10 +1,7 @@
 <%= render("/shared/notifications") %>
+var checkin = _.find(gon.checkins, _.matchesProperty('id',<%= @checkin.id %>));
+_.remove(gon.checkins, checkin);
 
-for(i = 0; i < gon.checkins.length; i++) {
-  if(gon.checkins[i].id === <%= @checkin_id %>){
-    gon.checkins.splice(i, 1);
-  }
-}
-
+COPO.charts.refreshCharts(gon.checkins);
 COPO.maps.refreshMarkers();
 
