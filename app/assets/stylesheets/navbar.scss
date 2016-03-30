@@ -16,6 +16,11 @@
     .dropdown-content{
       background-color: rgba(255,255,255,0.9);
     }
+
+    span.badge.new {
+      background: black;
+      color: rgba(255,255,255,0.9);
+    }
   }
 
   // Normalize button appearance
@@ -62,6 +67,11 @@
     .settings-icon {
       height: 64px;
     }
+  }
+
+  span.badge.new {
+    background: white;
+    color: #47b8e0;
   }
 }
 
