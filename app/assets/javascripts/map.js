@@ -32,11 +32,13 @@ window.COPO.maps = {
 
   refreshMarkers: function(){
     map.removeLayer(COPO.maps.markers);
+    map.removeLayer(COPO.maps.last);
     COPO.maps.renderMarkers();
   },
 
   renderMarkers: function(){
     COPO.maps.markers = new L.MarkerClusterGroup();
+    COPO.maps.last = new L.MarkerClusterGroup();
     var checkins = gon.checkins;
       for (var i = 0; i < checkins.length; i++) {
         var checkin = checkins[i];
@@ -62,8 +64,12 @@ window.COPO.maps = {
           map.panTo(this.getLatLng());
           COPO.maps.w3w.setCoordinates(e);
         });
-
-        COPO.maps.markers.addLayer(marker);
+        if (i === 0) {
+          COPO.maps.last.addLayer(marker);
+          map.addLayer(COPO.maps.last);
+        } else {
+          COPO.maps.markers.addLayer(marker);
+        }
       }
 
     map.addLayer(COPO.maps.markers);
