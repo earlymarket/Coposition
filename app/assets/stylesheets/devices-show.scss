@@ -3,13 +3,14 @@
   .date-select {
     background: #fff;
     position: absolute;
-    width: 25%;
-    top: 64px;
-    right: 10px;
+    width: 20%;
+    top: 150px;
+    right: 20px;
     z-index: 9;
-    margin-top: 54px;
-    padding: 10px;
-    border-radius: 3px;
+  }
+
+  .date-picker {
+    left: 10px;
   }
 
   .tabs {
