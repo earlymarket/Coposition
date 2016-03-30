@@ -28,6 +28,7 @@
 //= require animateCSS.min.js
 //= require cloudinary
 //= require attachinary
+//= require control.w3w
 
 // -- Run every page
 
@@ -39,7 +40,8 @@
 
 // -- Page specific --
 
-//= require device-show
-//= require friend-device-show
+//= require devices-show
+//= require devices-shared
+//= require friends-device-show
 //= require landing-page
 //= require permissions

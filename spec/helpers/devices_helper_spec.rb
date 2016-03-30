@@ -35,13 +35,13 @@ RSpec.describe DevicesHelper, :type => :helper do
     end
   end
 
-  describe "#devices_published_link" do
+  describe "#devices_shared_link" do
     it "return nothing if not published" do
-      expect(helper.devices_published_link(device)).to match('')
+      expect(helper.devices_shared_link(device)).to be(nil)
     end
     it "return a link if device is published" do
-      expect(helper.devices_published_link(other)).to be_kind_of(String)
-      expect(helper.devices_published_link(other)).to match("publish")
+      expect(helper.devices_shared_link(other)).to be_kind_of(String)
+      expect(helper.devices_shared_link(other)).to match("Link to your last location")
     end
   end
 

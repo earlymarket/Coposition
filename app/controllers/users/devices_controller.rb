@@ -1,7 +1,7 @@
 class Users::DevicesController < ApplicationController
 
-  before_action :authenticate_user!, except: :publish
-  before_action :published?, only: :publish
+  before_action :authenticate_user!, except: :shared
+  before_action :published?, only: :shared
   before_action :require_ownership, only: [:show, :destroy, :update]
 
   def index
@@ -30,9 +30,14 @@ class Users::DevicesController < ApplicationController
     @device.uuid = params[:uuid] if params[:uuid]
   end
 
-  def publish
-    @device = Device.find(params[:id])
-    @checkin = @device.checkins.last
+  def shared
+    device = Device.find(params[:id])
+    checkin = device.checkins.last
+    gon.device = device
+    user = device.user.as_json
+    user['avatar'] = device.user.avatar.as_json({})
+    gon.user = user
+    gon.checkin = checkin.reverse_geocode! if checkin
   end
 
   def create
@@ -64,7 +69,7 @@ class Users::DevicesController < ApplicationController
       @device.set_delay(params[:mins])
       flash[:notice] = "#{@device.name} timeshifted by #{@device.delayed.to_i} minutes."
     elsif params[:published]
-      @device.update(published: !@device.published) unless @device.checkins.empty?
+      @device.update(published: !@device.published)
       flash[:notice] = "Location publishing is #{boolean_to_state(@device.published)}."
     else
       @device.switch_fog
