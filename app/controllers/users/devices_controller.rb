@@ -1,7 +1,7 @@
 class Users::DevicesController < ApplicationController
 
-  before_action :authenticate_user!, except: :publish
-  before_action :published?, only: :publish
+  before_action :authenticate_user!, except: :shared
+  before_action :published?, only: :shared
   before_action :require_ownership, only: [:show, :destroy, :update]
 
   def index
@@ -15,9 +15,11 @@ class Users::DevicesController < ApplicationController
 
   def show
     @device = Device.find(params[:id])
-    @checkins = Checkin.where(device_id: @device.id)
-    if (params[:from].present?)
-      @checkins = @checkins.where(created_at: (Date.parse(params[:from])).beginning_of_day..(Date.parse(params[:to])).end_of_day)
+    @from, @to = date_range
+    @checkins = Checkin.where(device_id: @device.id, created_at: @from..@to)
+    if @checkins.empty?
+      flash[:notice] = "Showing last month's checkins if available"
+      @checkins = Checkin.where(device_id: @device.id, created_at: 1.month.ago.beginning_of_day..Date.today.end_of_day)
     end
     @checkins = @checkins.order('created_at DESC').paginate(page: params[:page], per_page: 1000)
     gon.checkins = @checkins
@@ -28,9 +30,14 @@ class Users::DevicesController < ApplicationController
     @device.uuid = params[:uuid] if params[:uuid]
   end
 
-  def publish
-    @device = Device.find(params[:id])
-    @checkin = @device.checkins.last
+  def shared
+    device = Device.find(params[:id])
+    checkin = device.checkins.last
+    gon.device = device
+    user = device.user.as_json
+    user['avatar'] = device.user.avatar.as_json({})
+    gon.user = user
+    gon.checkin = checkin.reverse_geocode! if checkin
   end
 
   def create
@@ -62,7 +69,7 @@ class Users::DevicesController < ApplicationController
       @device.set_delay(params[:mins])
       flash[:notice] = "#{@device.name} timeshifted by #{@device.delayed.to_i} minutes."
     elsif params[:published]
-      @device.update(published: !@device.published) unless @device.checkins.empty?
+      @device.update(published: !@device.published)
       flash[:notice] = "Location publishing is #{boolean_to_state(@device.published)}."
     else
       @device.switch_fog
@@ -84,6 +91,14 @@ class Users::DevicesController < ApplicationController
       unless user_owns_device?
         flash[:notice] = "You do not own that device"
         redirect_to root_path
+      end
+    end
+
+    def date_range
+      if (params[:from].present?)
+        return Date.parse(params[:from]).beginning_of_day, Date.parse(params[:to]).end_of_day
+      else
+        return 1.month.ago.beginning_of_day, Date.today.end_of_day
       end
     end
 

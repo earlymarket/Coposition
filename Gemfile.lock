@@ -187,6 +187,8 @@ GEM
     listen (3.0.6)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9.7)
+    lodash-rails (4.6.1)
+      railties (>= 3.1)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     lumberjack (1.0.10)
@@ -203,6 +205,8 @@ GEM
     mime-types (2.99.1)
     mini_portile2 (2.0.0)
     minitest (5.8.4)
+    momentjs-rails (2.11.0)
+      railties (>= 3.1)
     multi_json (1.11.2)
     multi_test (0.1.2)
     nenv (0.3.0)
@@ -392,8 +396,10 @@ DEPENDENCIES
   jquery-validation-rails
   launchy
   letter_opener
+  lodash-rails
   materialize-sass
   meta_request
+  momentjs-rails
   newrelic_rpm
   pg
   pry

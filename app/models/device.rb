@@ -12,10 +12,6 @@ class Device < ActiveRecord::Base
     dev.uuid = SecureRandom.uuid
   end
 
-  after_find do |dev|
-    dev.update(published: false) if checkins.empty?
-  end
-
   def construct(current_user, device_name)
     update(user: current_user, name: device_name)
     developers << current_user.developers

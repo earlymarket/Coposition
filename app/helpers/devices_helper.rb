@@ -1,4 +1,9 @@
 module DevicesHelper
+
+  def devices_permitted_actors_for(device)
+    device.developers + device.permitted_users
+  end
+
   def devices_last_checkin(device)
     if device.checkins.exists?
       "<p>Last reported in #{device.checkins.last.address}</p>".html_safe
@@ -23,12 +28,7 @@ module DevicesHelper
     end
   end
 
-  def devices_published_link(device)
-    if device.published?
-      url = url_for(action: 'publish', controller: 'users/devices', id: device, user_id: device.user_id, only_path: false)
-      "<a href='#{url}''>Share published link</a>".html_safe
-    else
-      "".html_safe
-    end
+  def devices_shared_link(device)
+    link_to('Link to your last location', shared_user_device_path(id: device.id, user_id: params['user_id'] || device.user_id)) if device.published?
   end
 end

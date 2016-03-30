@@ -24,17 +24,20 @@
 
 // Leave them in seperate statements. It makes it easier to debug/reorder'
 // Especially in merge conflicts
-
 @import 'fonts';
 @import 'navbar';
 @import 'layout';
+
+// Vendor
+@import 'maitre';
+@import 'twitter-typeahead';
+@import 'control.w3w.css';
 
 // Page/feature specific
 @import 'landing-page';
 @import 'user-dashboard';
 @import 'placeholder';
 @import 'user';
-@import 'maitre';
-@import 'device-show';
-@import 'twitter-typeahead';
-@import 'approvals'
+@import 'devices-show';
+@import 'devices-shared';
+@import 'approvals';

@@ -20,6 +20,8 @@
 
 //= require materialize
 //= require twitter/typeahead
+//= require lodash
+//= require moment
 
 // -- Vendor libs --
 
@@ -28,17 +30,20 @@
 //= require c3.min.js
 //= require cloudinary
 //= require attachinary
+//= require control.w3w
 
 // -- Run every page
 
 //= require utility
 //= require navbar
 //= require init
+//= require charts
+//= require map
 
 // -- Page specific --
 //= require dashboard
-//= require map
-//= require device-show
-//= require friend-device-show
+//= require devices-show
+//= require devices-shared
+//= require friends-device-show
 //= require landing-page
 //= require permissions

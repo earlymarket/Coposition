@@ -21,6 +21,10 @@ window.COPO.maps = {
   },
 
   queueRefresh: function(){
+    map.once('zoomstart', function(e){
+      map.removeEventListener('popupclose');
+      COPO.maps.refreshMarkers();
+    })
     map.once('popupclose', function(e){
       COPO.maps.refreshMarkers();
     })
@@ -48,8 +52,9 @@ window.COPO.maps = {
         template = COPO.maps.buildMarkerPopup(checkin)
         marker.bindPopup(L.Util.template(template, checkin))
 
-        marker.on('click', function() {
+        marker.on('click', function(e) {
           map.panTo(this.getLatLng());
+          COPO.maps.w3w.setCoordinates(e);
         });
 
         COPO.maps.markers.addLayer(marker);
@@ -71,13 +76,8 @@ window.COPO.maps = {
     template += '<li>Address: ' + (checkin.address || checkin.fogged_area) + '</li>'
 
     if ($(".c-devices.a-show").length === 1){
-      template += '<li>'+ COPO.utility.ujsLink('put', '<i class="material-icons">cloud</i>' , window.location.pathname + '/checkins/' + checkin.id )
-        .attr('id', 'fog' + checkin.id)
-        .attr('class', foggedClass)
-        .prop('outerHTML')
-      template += COPO.utility.ujsLink('delete', '<i class="material-icons red-text right">delete_forever</i>' , window.location.pathname + '/checkins/' + checkin.id )
-        .attr('data-confirm', 'Are you sure?')
-        .prop('outerHTML') + '</li>';
+      template += '<li>'+ COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog')
+      template += COPO.utility.deleteCheckinLink(checkin) + '</li>';
       template += '</ul>';
     }
 
@@ -85,9 +85,18 @@ window.COPO.maps = {
   },
 
   initControls: function(){
-    map.addControl(L.mapbox.geocoderControl('mapbox.places'));
 
-    var lc = L.control.locate({
+
+    map.addControl(L.mapbox.geocoderControl('mapbox.places',
+      { position: 'topright',
+        keepOpen: true
+      }
+    ));
+
+    COPO.maps.w3w = new L.Control.w3w({apikey: '4AQOB5CT', position: 'topright'});
+    COPO.maps.w3w.addTo(map);
+
+    COPO.maps.lc = L.control.locate({
       follow: false,
       setView: false,
       markerClass: L.marker,
@@ -101,11 +110,11 @@ window.COPO.maps = {
       },
       strings: {
         title: 'Your current location',
-        popup: 'Your current location within {distance} {unit}.<br><a href="#" id="current-location">Create check-in here</a>'
+        popup: 'Your current location within {distance} {unit}.<br><a href="#" id="current-location"></a>'
       }
 
     }).addTo(map);
-    lc.start();
+
   },
 
   popUpOpenListener: function(){
