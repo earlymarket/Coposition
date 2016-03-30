@@ -16,28 +16,19 @@
     .dropdown-content{
       background-color: rgba(255,255,255,0.9);
     }
-
-    .btn{
-      @extend .dark-text;
-      border: solid 1px rgba(0, 0, 0, 0.8);
-
-      &:hover{
-        @extend .light-text;
-        background-color: rgba(0, 0, 0, 0.8);
-      }
-    }
   }
 
   // Normalize button appearance
   .btn{
-    @extend .light-text;
-    border: solid 1px white;
+    padding: 0;
     background-color: rgba(0,0,0,0);
     box-shadow: none;
+    height: 42px;
+    width: 150px;
 
-    &:hover{
-      @extend .dark-text;
-      background-color: white;
+    svg{
+      height: 100%;
+      width: 100%;
     }
   }
 
@@ -45,16 +36,29 @@
   .left{
     height: 100%;
     width: auto;
-    margin-left: 2.5%;
+    margin-left: 2.5rem;
 
     #brand-logo{
       width: 184px;
       height: 42px;
+
+      @media screen and (max-width: 992px){
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    @media screen and (max-width: 992px){
+      position: absolute;
+      width: 100%;
+      margin: 0;
     }
   }
 
   // Customised right align menu items
   .right{
+    margin-right: 1.5rem;
+
     .settings-icon {
       height: 64px;
     }
@@ -63,6 +67,10 @@
 
 
 // Mobile navigation
+.button-collapse{
+  margin-left: 2.5%;
+}
+
 .side-nav{
   .collapsible-header{
     padding: 0px;

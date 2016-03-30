@@ -2,10 +2,11 @@
 <section class="landing-section splash">
   <div class="valign-wrapper parallax-container">
     <div class="valign center">
-      <%= image_tag("coposition.png") %>
+      <%= inline_svg('coposition.svg') %>
       <h1>CONTROL YOUR LOCATION DATA</h1>
       <h5>Worry free location data management</h5>
-      <a class="start-btn btn-large wave-light">What is Coposition?</a>
+      <!-- <a class="start-btn btn-large">What is Coposition?</a> -->
+      <%= inline_svg('what-is.svg', class: "start-btn") %>
     </div>
     <div class="parallax" id="promo">
       <video autoplay="autoplay" loop="loop" poster="/videos/background.png">

@@ -87,13 +87,13 @@ function responsiveVideo(){
 
   if(rRatio < ratio){
     // Aspect ratio is lower than 16:9
-    $(".parallax-container #promo video").css({
+    $("#promo video").css({
       width: 'auto',
       height: '100%'
     });
   }else{
     // Aspect ration is higher than 16:9
-    $(".parallax-container #promo video").css({
+    $("#promo video").css({
       width: '100%',
       height: 'auto'
     });

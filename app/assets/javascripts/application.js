@@ -26,6 +26,8 @@
 // -- Vendor libs --
 
 //= require animateCSS.min.js
+//= require d3.min.js
+//= require c3.min.js
 //= require cloudinary
 //= require attachinary
 //= require control.w3w
@@ -39,7 +41,7 @@
 //= require map
 
 // -- Page specific --
-
+//= require dashboard
 //= require devices-show
 //= require devices-shared
 //= require friends-device-show

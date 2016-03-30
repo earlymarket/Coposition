@@ -36,17 +36,10 @@
   &.splash{
     .valign{
       .start-btn{
-        font-size: 1.5rem;
         margin-top: 1rem;
-        background-color: rgba(0,0,0,0);
-        box-shadow: none;
-        border-style: solid;
-        border-width: 2px;
-
-        &:hover{
-          background-color: rgba(0,0,0,0.5);
-          color: rgba(255,255,255,0.5);
-        }
+        height: 50px;
+        width: auto;
+        cursor: pointer;
       }
     }
 
@@ -55,18 +48,6 @@
       
       .parallax{
         opacity: 0.8;
-
-        .overlay{
-          @extend .primary-color, .quarter-opacity;
-          position: absolute;
-          width: 100%;
-          height: 100%;
-        }
-        video{
-          position: absolute;
-          width: auto;
-          height: 100%;
-        }
       }
     }
   }
@@ -82,11 +63,11 @@
     }
 
     .active{
-      @extend .primary-color.lighten;
+      @extend .primary-color;
       transition: all 0.2s ease;
 
       h4, i{
-        color: darken($primary-color-darker, 10%);
+        color: darken($primary-color-darker, 30%);
       }
     }
   }
@@ -127,5 +108,32 @@
     .app{
       height: 300px;
     }
+  }
+}
+
+#promo{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -10;
+  overflow: hidden;
+  .overlay{
+    @extend .primary-color, .quarter-opacity;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -5;
+  }
+  video{
+    left: 0;
+    top: 0;
+    position: absolute;
+    width: auto;
+    height: 100%;
+    z-index: -10;
   }
 }
