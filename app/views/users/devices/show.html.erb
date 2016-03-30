@@ -15,7 +15,7 @@
             <%= f.label 'to' %>
             <%= text_field_tag(:to, humanize_date(@to), class: "datepicker", id: "input_to", required: true) %>
             <%= f.submit("Filter", class: "form-control btn btn-default") %>
-            <%= link_to("Reset", user_device_path(current_user.url_id, @device) , { method: :get, class: "btn-flat right" })%>
+            <%= link_to("Reset", user_device_path(current_user.url_id, @device) , { method: :get, class: "btn-flat" })%>
         <% end %>
       </div>
     </li>
