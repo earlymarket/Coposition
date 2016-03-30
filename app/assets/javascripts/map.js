@@ -48,14 +48,14 @@ window.COPO.maps = {
         if (i === 0) {
           symbol = 'star'
           color = '#47b8e0'
-          last = '- Most recent'
+          last = ' - Most recent'
         }
         var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), {
           icon: L.mapbox.marker.icon({
             'marker-symbol': symbol,
             'marker-color': color,
           }),
-          title: 'ID: ' + checkin.id,
+          title: 'ID: ' + checkin.id + last,
           alt: 'ID: ' + checkin.id
         });
 
@@ -82,7 +82,7 @@ window.COPO.maps = {
     var foggedClass;
     checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
 
-    template = '<h3>ID: {id} ' +last + '</h3>'
+    template = '<h3>ID: {id}' +last + '</h3>'
     template += '<ul>'
     template += '<li>Created on: '+ checkinDate + '</li>'
     template += '<li>Latitude: {lat}</li>'
