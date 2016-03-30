@@ -1,3 +1,5 @@
+require 'pp'
+
 namespace :avatars do
 
   desc "Adds a random avatar to a user (set id to 'all' to give avatars to everyone who doesn't have them)."
