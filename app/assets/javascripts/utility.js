@@ -46,8 +46,18 @@ COPO.utility = {
     });
   },
 
-  avatar: function(avatar, options){
-    options = options || {}
+  avatar: function(avatar, customOptions){
+
+    var defaultOptions = {
+      width: 60,
+      height: 60,
+      crop: 'fill',
+      radius: 'max',
+      gravity: 'face:center'
+    }
+
+    var options = $.extend(defaultOptions, customOptions)
+
     if(avatar && avatar.hasOwnProperty('public_id')) {
       return $.cloudinary.image(avatar.public_id, options).prop('outerHTML')
     } else {
