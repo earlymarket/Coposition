@@ -84,7 +84,7 @@ window.COPO.maps = {
   markerClickListener: function(marker) {
     marker.on('click', function(e) {
       checkin = this.options.checkin;
-      if (gon.current_user_id) {
+      if ($(".c-devices.a-show").length === 1){
         $.get({
           url: "/users/"+gon.current_user_id+"/devices/"+checkin.device_id+"/checkins/"+checkin.id,
           dataType: "json"
@@ -93,12 +93,10 @@ window.COPO.maps = {
           marker.bindPopup(L.Util.template(template, data));
           marker.openPopup();
         })
-      } else {
-        if(!marker._popup){;
-          template = COPO.maps.buildMarkerPopup(checkin);
-          marker.bindPopup(L.Util.template(template, checkin));
-          marker.openPopup();
-        }
+      } else if(!marker._popup){
+        template = COPO.maps.buildMarkerPopup(checkin);
+        marker.bindPopup(L.Util.template(template, checkin));
+        marker.openPopup();
       }
       map.panTo(this.getLatLng());
       COPO.maps.w3w.setCoordinates(e);
