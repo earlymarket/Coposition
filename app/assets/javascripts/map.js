@@ -84,14 +84,22 @@ window.COPO.maps = {
   markerClickListener: function(marker) {
     marker.on('click', function(e) {
       checkin = this.options.checkin;
-      $.get({
-        url: "/users/"+gon.current_user_id+"/devices/"+checkin.device_id+"/checkins/"+checkin.id,
-        dataType: "json"
-      }).done(function(data) {
-        template = COPO.maps.buildMarkerPopup(data);
-        marker.bindPopup(L.Util.template(template, data));
-        marker.openPopup();
-      })
+      if (gon.current_user_id) {
+        $.get({
+          url: "/users/"+gon.current_user_id+"/devices/"+checkin.device_id+"/checkins/"+checkin.id,
+          dataType: "json"
+        }).done(function(data) {
+          template = COPO.maps.buildMarkerPopup(data);
+          marker.bindPopup(L.Util.template(template, data));
+          marker.openPopup();
+        })
+      } else {
+        if(!marker._popup){;
+          template = COPO.maps.buildMarkerPopup(checkin);
+          marker.bindPopup(L.Util.template(template, checkin));
+          marker.openPopup();
+        }
+      }
       map.panTo(this.getLatLng());
       COPO.maps.w3w.setCoordinates(e);
     });
@@ -108,11 +116,10 @@ window.COPO.maps = {
     template += '<li>Latitude: {lat}</li>'
     template += '<li>Longitude: {lng}</li>'
     template += '<li>Address: ' + (checkin.address || checkin.fogged_area) + '</li>'
-    if (checkin.fogged){
-      template += '<li class="foggedAddress">Fogged address: ' + checkin.fogged_area + '</li>'
-    }
-
     if ($(".c-devices.a-show").length === 1){
+      if (checkin.fogged){
+        template += '<li class="foggedAddress">Fogged address: ' + checkin.fogged_area + '</li>'
+      }
       template += '<li>'+ COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog')
       template += COPO.utility.deleteCheckinLink(checkin) + '</li>';
       template += '</ul>';
