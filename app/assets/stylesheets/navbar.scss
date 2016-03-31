@@ -2,12 +2,22 @@
 .nav-wrapper{
   @extend .fixed;
   z-index: 10;
-  transition: all 0.5s ease;
+  // transition: all 0.5s ease;
+
+  svg {
+    fill: white;
+  }
+
+  .svg-btn {
+    height: 42px;
+    width: 150px;
+  }
 
   // Transparent navbar for landing page
   &.transparent-nav{
     background-color: rgba(0,0,0,0);
     box-shadow: none;
+    transition: all 0.5s ease;
 
     a{
       @extend .dark-text;
@@ -16,19 +26,9 @@
     .dropdown-content{
       background-color: rgba(255,255,255,0.9);
     }
-  }
 
-  // Normalize button appearance
-  .btn{
-    padding: 0;
-    background-color: rgba(0,0,0,0);
-    box-shadow: none;
-    height: 42px;
-    width: 150px;
-
-    svg{
-      height: 100%;
-      width: 100%;
+    svg {
+      fill: $dark-text-color;
     }
   }
 
@@ -59,8 +59,8 @@
   .right{
     margin-right: 1.5rem;
 
-    .settings-icon {
-      height: 64px;
+    li a {
+      height: 64px
     }
   }
 
