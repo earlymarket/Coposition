@@ -68,8 +68,8 @@ window.COPO.maps = {
           COPO.maps.markers.addLayer(marker);
         }
       }
-    map.addLayer(COPO.maps.last);
     map.addLayer(COPO.maps.markers);
+    map.addLayer(COPO.maps.last);
   },
 
   bindMarkerListeners: function(){
