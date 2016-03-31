@@ -59,17 +59,16 @@ window.COPO.maps = {
           }),
           title: 'ID: ' + checkin.id + status,
           alt: 'ID: ' + checkin.id + status,
-          id: checkin.id
+          checkin: checkin
         });
 
         if (i === 0) {
           COPO.maps.last.addLayer(marker);
-          map.addLayer(COPO.maps.last);
         } else {
           COPO.maps.markers.addLayer(marker);
         }
       }
-
+    map.addLayer(COPO.maps.last);
     map.addLayer(COPO.maps.markers);
   },
 
@@ -84,7 +83,7 @@ window.COPO.maps = {
 
   markerClickListener: function(marker) {
     marker.on('click', function(e) {
-      checkin = _.find(gon.checkins, _.matchesProperty('id', this.options.id));
+      checkin = this.options.checkin;
       $.get({
         url: "/users/"+gon.current_user_id+"/devices/"+checkin.device_id+"/checkins/"+checkin.id,
         dataType: "json"
@@ -123,8 +122,6 @@ window.COPO.maps = {
   },
 
   initControls: function(){
-
-
     map.addControl(L.mapbox.geocoderControl('mapbox.places',
       { position: 'topright',
         keepOpen: true
@@ -170,16 +167,6 @@ window.COPO.maps = {
 
         $createCheckinLink = COPO.utility.ujsLink('post', 'Create checkin here', checkinPath);
         $('#current-location').replaceWith($createCheckinLink);
-      } else {
-        //var popupId = e.popup._leaflet_id
-        //console.log('popup: '+popupId)
-        //COPO.maps.markers.eachLayer(function(layer){
-
-          //if (layer._leaflet_id == popupId) {
-          //  var marker = layer._leaflet_id;
-           // debugger;
-          //}
-        //})
       }
     })
   }
