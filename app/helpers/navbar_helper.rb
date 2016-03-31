@@ -1,7 +1,7 @@
 module NavbarHelper
 
-  def navbar_badge(text, count)
-    count > 0 ? text.html_safe + " <span class=\"badge\">#{count}</span>".html_safe : text
+  def navbar_indicator(text, count)
+    count > 0 ? text.html_safe + ' <div class="indicator"></div>'.html_safe : text
   end
 
 end
