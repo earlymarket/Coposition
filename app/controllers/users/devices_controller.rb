@@ -23,6 +23,7 @@ class Users::DevicesController < ApplicationController
     end
     @checkins = @checkins.order('created_at DESC').paginate(page: params[:page], per_page: 1000)
     gon.checkins = @checkins
+    gon.current_user_id = current_user.id
   end
 
   def new
