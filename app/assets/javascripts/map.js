@@ -89,11 +89,10 @@ window.COPO.maps = {
           url: "/users/"+gon.current_user_id+"/devices/"+checkin.device_id+"/checkins/"+checkin.id,
           dataType: "json"
         }).done(function(data) {
-          template = COPO.maps.buildMarkerPopup(data);
-          marker.bindPopup(L.Util.template(template, data));
-          marker.openPopup();
+          checkin = data;
         })
-      } else if(!marker._popup){
+      }
+      if(!marker._popup){
         template = COPO.maps.buildMarkerPopup(checkin);
         marker.bindPopup(L.Util.template(template, checkin));
         marker.openPopup();
