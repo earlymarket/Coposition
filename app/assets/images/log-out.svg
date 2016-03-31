@@ -3,6 +3,7 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="415.062px" height="144px" viewBox="0 0 415.062 144" enable-background="new 0 0 415.062 144" xml:space="preserve">
+	<title>Log Out</title>
 <path d="M410.062,0H5C2.239,0,0,2.239,0,5v134c0,2.762,2.239,5,5,5h405.062c2.762,0,5-2.238,5-5V5
 	C415.062,2.239,412.824,0,410.062,0z M409.896,134.062c0,2.762-2.238,5-5,5h-395c-2.761,0-5-2.238-5-5V9.562c0-2.761,2.239-5,5-5
 	h395c2.762,0,5,2.239,5,5V134.062z"/>
