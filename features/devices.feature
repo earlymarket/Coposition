@@ -32,3 +32,6 @@ Feature: Devices
           And I fill in "mins" with "10"
         When I click "Update"
          Then I should be timeshifted by "10" mins
+        When I click the link "visibility_off"
+          Then I should see a link that says "last location"
+          And I should see a link that says "visibility"
