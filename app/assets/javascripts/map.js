@@ -55,7 +55,7 @@ window.COPO.maps = {
         var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), {
           icon: L.mapbox.marker.icon({
             'marker-symbol': symbol,
-            'marker-color': color,
+            'marker-color': color
           }),
           title: 'ID: ' + checkin.id + status,
           alt: 'ID: ' + checkin.id + status,
