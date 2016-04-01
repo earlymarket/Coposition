@@ -4,33 +4,37 @@ window.COPO.permissions = {
     $('[data-switch=disallowed]').each(function(){
       if ($(this).children().children().prop('checked')){
         var permission_id =  $(this).data().permission;
-        element = $("div[data-permission='"+ permission_id +"'].disable>label>input")
-        element.prop("disabled", !element.prop("disabled"));
+        COPO.permissions.toggle_switches_disabled(permission_id);
       }
     });
   },
 
   switch_change:function(){
     $(".switch").change(function( event ) {
-      var permission_id =  $(this).data().permission;
       var attribute = $(this).data().attribute;
       var switch_type = $(this).data().switch;
+
+      var permission_id =  $(this).data().permission;
       var permission = _.find(gon.permissions, _.matchesProperty('id', permission_id));
       var new_state = permission[attribute] = COPO.permissions.new_state(permission[attribute], switch_type);
       var device_id = permission['device_id'];
 
       if (switch_type === "disallowed") {
-        $("div[data-permission='"+ permission_id +"'].disable>.privilege>#last_only").prop("checked", false);
-        element = $("div[data-permission='"+ permission_id +"'].disable>label>input")
-        element.prop("disabled", !element.prop("disabled"));
+        $("div[data-permission='"+permission_id+"'][data-switch=last_only]>label>input").prop("checked", false);
+        COPO.permissions.toggle_switches_disabled(permission_id);
       }
-      var data = {[attribute]: new_state};
+
       $.ajax({
         url: "/users/"+gon.current_user_id+"/devices/"+device_id+"/permissions/"+permission_id+"",
         type: 'PUT',
         data: { permission : {[attribute]: new_state} }
       });
     })
+  },
+
+  toggle_switches_disabled: function(permission_id){
+    element = $("div[data-permission='"+ permission_id +"'].disable>label>input");
+    element.prop("disabled", !element.prop("disabled"));
   },
 
   new_state: function(current_state, switch_type){
