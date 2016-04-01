@@ -7,7 +7,7 @@ class Users::DevicesController < ApplicationController
   def index
     gon.current_user_id = current_user.id
     @devices = current_user.devices.includes(:developers, :permitted_users, :permissions).map do |dev|
-      dev.checkins.last.reverse_geocode! if dev.checkins.exists?
+      dev.checkins.order('created_at DESC').first.reverse_geocode! if dev.checkins.exists?
       dev
     end
     gon.permissions = @devices.map(&:permissions).inject(:+)
@@ -23,6 +23,7 @@ class Users::DevicesController < ApplicationController
     end
     @checkins = @checkins.order('created_at DESC').paginate(page: params[:page], per_page: 1000)
     gon.checkins = @checkins
+    gon.current_user_id = current_user.id
   end
 
   def new
