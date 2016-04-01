@@ -5,9 +5,9 @@ class Api::V1::Users::RequestsController < Api::ApiController
 
   def index
     if params[:developer_id]
-      requests = @user.requests.where(developer_id: params[:developer_id]).order('created_at DESC').paginate(page: params[:page])
+      requests = @user.requests.where(developer_id: params[:developer_id]).order(created_at: :desc).paginate(page: params[:page])
     else
-      requests = @user.requests.order('created_at DESC').paginate(page: params[:page])
+      requests = @user.requests.order(created_at: :desc).paginate(page: params[:page])
     end
     paginated_response_headers(requests)
     render json: requests

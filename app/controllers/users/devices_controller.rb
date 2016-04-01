@@ -7,7 +7,7 @@ class Users::DevicesController < ApplicationController
   def index
     gon.current_user_id = current_user.id
     @devices = current_user.devices.includes(:developers, :permitted_users, :permissions).map do |dev|
-      dev.checkins.order('created_at DESC').first.reverse_geocode! if dev.checkins.exists?
+      dev.checkins.order(created_at: :desc).first.reverse_geocode! if dev.checkins.exists?
       dev
     end
     gon.permissions = @devices.map(&:permissions).inject(:+)
@@ -21,7 +21,7 @@ class Users::DevicesController < ApplicationController
       flash[:notice] = "Showing last month's checkins if available"
       @checkins = Checkin.where(device_id: @device.id, created_at: 1.month.ago.beginning_of_day..Date.today.end_of_day)
     end
-    @checkins = @checkins.order('created_at DESC').paginate(page: params[:page], per_page: 1000)
+    @checkins = @checkins.order(created_at: :desc).paginate(page: params[:page], per_page: 1000)
     gon.checkins = @checkins
     gon.current_user_id = current_user.id
   end
@@ -33,7 +33,7 @@ class Users::DevicesController < ApplicationController
 
   def shared
     device = Device.find(params[:id])
-    checkin = device.checkins.order('created_at DESC').first
+    checkin = device.checkins.order(created_at: :desc).first
     gon.device = device
     user = device.user.as_json
     user['avatar'] = device.user.avatar.as_json({})
