@@ -63,6 +63,3 @@ end
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
 Capybara.default_max_wait_time = 5
-Capybara.current_driver = :selenium
-window = Capybara.current_session.driver.browser.manage.window
-window.resize_to(1200, 800)

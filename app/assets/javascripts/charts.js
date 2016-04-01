@@ -87,7 +87,7 @@ window.COPO.charts = {
     var tableData = [];
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Created');
-    data.addColumn('string', 'Area');
+    data.addColumn('string', 'Address');
     data.addColumn('string');
     if(checkins.length > 0){
       checkins.forEach(function(checkin){
@@ -96,7 +96,7 @@ window.COPO.charts = {
         checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
         var delete_button = COPO.utility.deleteCheckinLink(checkin);
         var fogging_button = COPO.utility.fogCheckinLink(checkin, foggedClass, 'tableFog');
-        tableData.push([humanizedDate, checkin.fogged_area, fogging_button+delete_button]);
+        tableData.push([humanizedDate, (checkin.address || checkin.fogged_area), fogging_button+delete_button]);
       })
       data.addRows(tableData);
       data.setProperty(0, 0, 'style', 'width:20%');

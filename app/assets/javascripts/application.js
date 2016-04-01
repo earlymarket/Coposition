@@ -40,6 +40,7 @@
 //= require charts
 //= require map
 //= require permissions
+//= require date-picker
 
 // -- Page specific --
 //= require dashboard
