@@ -39,6 +39,7 @@
 //= require init
 //= require charts
 //= require map
+//= require permissions
 
 // -- Page specific --
 //= require dashboard
@@ -47,4 +48,3 @@
 //= require devices/devices-shared
 //= require friends-device-show
 //= require landing-page
-//= require permissions
