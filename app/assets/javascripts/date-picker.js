@@ -21,29 +21,31 @@ $(document).on('ready page:change', function() {
 
     // Check if there’s a “from” or “to” date to start with.
     if ( from_picker.get('value') ) {
-      date = new Date(moment(from_picker.get('value')).startOf('day'))
-      to_picker.set('min', date)
+      to_picker.set('min', new Date(moment(from_picker.get('value')).startOf('day')))
     }
     if ( to_picker.get('value') ) {
-      date = new Date(moment(to_picker.get('value')).endOf('day'))
-      from_picker.set('max', date)
+      from_picker.set('max', new Date(moment(to_picker.get('value')).endOf('day')))
     }
 
     // When something is selected, update the “from” and “to” limits.
     from_picker.on('set', function(event){
-      setLimits(event, to_picker, from_picker, 'min')
+      COPO.datePicker.setLimits(event, to_picker, from_picker, 'min')
     })
     to_picker.on('set', function(event){
-      setLimits(event, from_picker, to_picker, 'max')
+      COPO.datePicker.setLimits(event, from_picker, to_picker, 'max')
     })
-
-    function setLimits(event, beingSet, setter, limit){
-      if ( event.select ) {
-        beingSet.set(limit, setter.get('select'))
-      }
-      else if ( 'clear' in event ) {
-        beingSet.set(limit, false)
-      }
-    }
   }
 })
+
+window.COPO = window.COPO || {};
+window.COPO.datePicker = {
+
+  setLimits: function(event, beingSet, setter, limit){
+    if ( event.select ) {
+      beingSet.set(limit, setter.get('select'))
+    }
+    else if ( 'clear' in event ) {
+      beingSet.set(limit, false)
+    }
+  }
+}
