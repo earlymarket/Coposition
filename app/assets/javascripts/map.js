@@ -43,24 +43,18 @@ window.COPO.maps = {
     COPO.maps.last = new L.MarkerClusterGroup();
     var checkins = gon.checkins;
       for (var i = 0; i < checkins.length; i++) {
-        var checkin = checkins[i];
-        var symbol = 'heliport'
-        var color = '#ff6900'
-        var status = ''
-        if (i === 0) {
-          symbol = 'star'
-          color = '#47b8e0'
-          status = ' - Most recent'
-        }
-        var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), {
-          icon: L.mapbox.marker.icon({
-            'marker-symbol': symbol,
-            'marker-color': color
-          }),
-          title: 'ID: ' + checkin.id + status,
-          alt: 'ID: ' + checkin.id + status,
+        var checkin = checkins[i]
+        var markerObject = {
+          icon: L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#ff6900' }),
+          title: 'ID: ' + checkin.id,
+          alt: 'ID: ' + checkin.id,
           checkin: checkin
-        });
+        }
+        if (i === 0) {
+          markerObject.icon = L.mapbox.marker.icon({ 'marker-symbol' : 'star', 'marker-color' : '#47b8e0' })
+          markerObject.title = 'ID: ' + checkin.id + ' - Most recent'
+        }
+        var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), markerObject);
 
         if (i === 0) {
           COPO.maps.last.addLayer(marker);
