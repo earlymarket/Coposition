@@ -20,12 +20,8 @@ $(document).on('ready page:change', function() {
 
 
     // Check if there’s a “from” or “to” date to start with.
-    if ( from_picker.get('value') ) {
-      to_picker.set('min', new Date(moment(from_picker.get('value')).startOf('day')))
-    }
-    if ( to_picker.get('value') ) {
-      from_picker.set('max', new Date(moment(to_picker.get('value')).endOf('day')))
-    }
+    COPO.datePicker.checkPickers(to_picker, from_picker, 'min')
+    COPO.datePicker.checkPickers(from_picker, to_picker, 'max')
 
     // When something is selected, update the “from” and “to” limits.
     from_picker.on('set', function(event){
@@ -46,6 +42,12 @@ window.COPO.datePicker = {
     }
     else if ( 'clear' in event ) {
       beingSet.set(limit, false)
+    }
+  },
+
+  checkPickers: function(beingSet, setter, limit){
+    if (setter.get('value')) {
+      beingSet.set(limit, new Date(moment(setter.get('value'))))
     }
   }
 }
