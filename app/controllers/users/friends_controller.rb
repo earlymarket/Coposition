@@ -9,7 +9,7 @@ class Users::FriendsController < ApplicationController
   def show_device
     @friend = User.find(params[:id])
     @device = @friend.devices.find(params[:device_id])
-    @paginated_checkins = @friend.get_checkins(current_user, @device).order('created_at DESC') \
+    @paginated_checkins = @friend.get_checkins(current_user, @device).order(created_at: :desc) \
       .paginate(page: params[:page], per_page: 1000)
     @checkins = @paginated_checkins
     @checkins = @checkins.map do |checkin|
