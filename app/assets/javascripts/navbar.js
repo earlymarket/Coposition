@@ -4,9 +4,6 @@ $(document).on('page:change', function() {
   $(document).unbind('scroll');
 
   if ($(".c-welcome.a-index").length === 1) {
-
-    $("nav").addClass('transparent-nav');
-
     $(document).scroll(function(e) {
       if($(window).scrollTop() > 10){
         $("nav").removeClass('transparent-nav');
