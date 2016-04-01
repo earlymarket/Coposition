@@ -2,7 +2,7 @@ window.COPO = window.COPO || {};
 window.COPO.permissions = {
   check_disabled: function(){
     $('[data-switch=disallowed]').each(function(){
-      if ($(this).children().children().prop('checked')){
+      if ($(this).find('input').prop('checked')){
         var permission_id =  $(this).data().permission;
         COPO.permissions.toggle_switches_disabled(permission_id);
       }
@@ -20,7 +20,7 @@ window.COPO.permissions = {
       var device_id = permission['device_id'];
 
       if (switch_type === "disallowed") {
-        $("div[data-permission='"+permission_id+"'][data-switch=last_only]>label>input").prop("checked", false);
+        $("div[data-permission='"+permission_id+"'][data-switch=last_only]").find('input').prop("checked", false);
         COPO.permissions.toggle_switches_disabled(permission_id);
       }
 
@@ -33,7 +33,7 @@ window.COPO.permissions = {
   },
 
   toggle_switches_disabled: function(permission_id){
-    element = $("div[data-permission='"+ permission_id +"'].disable>label>input");
+    element = $("div[data-permission='"+ permission_id +"'].disable").find('input');
     element.prop("disabled", !element.prop("disabled"));
   },
 
