@@ -11,7 +11,8 @@ Feature: Sign up and log in
 
 @javascript
   Scenario: User login
-    Given I am on the homepage
+    Given I am using a large screen
+    And I am on the homepage
       And I click the link "login"
       Then I click the link "Sign up!"
     When I fill in the form with my "user" details
