@@ -21,28 +21,29 @@ $(document).on('ready page:change', function() {
 
     // Check if there’s a “from” or “to” date to start with.
     if ( from_picker.get('value') ) {
-      to_picker.set('min', from_picker.get('select'))
+      date = new Date(moment(from_picker.get('value')).startOf('day'))
+      to_picker.set('min', date)
     }
     if ( to_picker.get('value') ) {
-      from_picker.set('max', to_picker.get('select'))
+      date = new Date(moment(to_picker.get('value')).endOf('day'))
+      from_picker.set('max', date)
     }
 
     // When something is selected, update the “from” and “to” limits.
-    from_picker.on('set', function(event) {
+    from_picker.on('set', function(event){
+      setLimits(event, to_picker, from_picker, 'min')
+    })
+    to_picker.on('set', function(event){
+      setLimits(event, from_picker, to_picker, 'max')
+    })
+
+    function setLimits(event, beingSet, setter, limit){
       if ( event.select ) {
-        to_picker.set('min', from_picker.get('select'))
+        beingSet.set(limit, setter.get('select'))
       }
       else if ( 'clear' in event ) {
-        to_picker.set('min', false)
+        beingSet.set(limit, false)
       }
-    })
-    to_picker.on('set', function(event) {
-      if ( event.select ) {
-        from_picker.set('max', to_picker.get('select'))
-      }
-      else if ( 'clear' in event ) {
-        from_picker.set('max', false)
-      }
-    })
+    }
   }
 })
