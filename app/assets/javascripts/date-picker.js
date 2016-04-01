@@ -1,4 +1,4 @@
-$(document).on('ready page:change', function() {
+$(document).on('page:change', function() {
   if ($(".c-devices.a-show").length === 1) {
 
     // materialize datepicker init
@@ -6,30 +6,27 @@ $(document).on('ready page:change', function() {
       selectMonths: true,
       selectYears: 15,
       onSet: function( arg ){
+        var from_picker = $('#input_from').pickadate().pickadate('picker')
+        var to_picker = $('#input_to').pickadate().pickadate('picker')
+        beingSet = this.component.$node[0].name;
+        if ( beingSet === 'from'){
+          COPO.datePicker.setLimits(arg, to_picker, from_picker, 'min')
+        } else if ( beingSet === 'to'){
+          COPO.datePicker.setLimits(arg, from_picker, to_picker, 'max')
+        }
         if ( 'select' in arg ){ //prevent closing on selecting month/year
           this.close();
         }
       }
     });
 
-    var from_$input = $('#input_from').pickadate(),
-        from_picker = from_$input.pickadate('picker')
-
-    var to_$input = $('#input_to').pickadate(),
-        to_picker = to_$input.pickadate('picker')
-
+    var from_picker = $('#input_from').pickadate().pickadate('picker')
+    var to_picker = $('#input_to').pickadate().pickadate('picker')
 
     // Check if there’s a “from” or “to” date to start with.
     COPO.datePicker.checkPickers(to_picker, from_picker, 'min')
     COPO.datePicker.checkPickers(from_picker, to_picker, 'max')
 
-    // When something is selected, update the “from” and “to” limits.
-    from_picker.on('set', function(event){
-      COPO.datePicker.setLimits(event, to_picker, from_picker, 'min')
-    })
-    to_picker.on('set', function(event){
-      COPO.datePicker.setLimits(event, from_picker, to_picker, 'max')
-    })
   }
 })
 
