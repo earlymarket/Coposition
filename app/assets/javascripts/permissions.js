@@ -49,5 +49,5 @@ window.COPO.permissions = {
     } else {
       return !current_state
     }
-  },
+  }
 };
