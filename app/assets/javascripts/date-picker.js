@@ -8,10 +8,10 @@ $(document).on('page:change', function() {
       onSet: function( arg ){
         var from_picker = $('#input_from').pickadate().pickadate('picker')
         var to_picker = $('#input_to').pickadate().pickadate('picker')
-        beingSet = this.component.$node[0].name;
-        if ( beingSet === 'from'){
+        var selectedPicker = this.component.$node[0].name;
+        if ( selectedPicker === 'from' ){
           COPO.datePicker.setLimits(arg, to_picker, from_picker, 'min')
-        } else if ( beingSet === 'to'){
+        } else if ( selectedPicker === 'to' ){
           COPO.datePicker.setLimits(arg, from_picker, to_picker, 'max')
         }
         if ( 'select' in arg ){ //prevent closing on selecting month/year
