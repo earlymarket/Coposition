@@ -114,26 +114,26 @@ class User < ActiveRecord::Base
   end
 
   def notifications
-    @notes ||= begin
-      @notes = []
-      if pending_approvals.present?
-        @notes << {
-          notification: {
-              msg: "You have #{pending_approvals.count} pending approvals",
-              link_path: "user_apps_path"
-            }
-          }
-      end
-      if friend_requests.present?
-        @notes << {
-          notification: {
-              msg: "You have #{friend_requests.count} friend requests",
-              link_path: "user_friends_path"
-            }
-          }
-      end
-      @notes
-    end
+    # @notes ||= begin
+    #   @notes = []
+    #   if pending_approvals.present?
+    #     @notes << {
+    #       notification: {
+    #           msg: "You have #{pending_approvals.count} pending approvals",
+    #           link_path: "user_apps_path"
+    #         }
+    #       }
+    #   end
+    #   if friend_requests.present?
+    #     @notes << {
+    #       notification: {
+    #           msg: "You have #{friend_requests.count} friend requests",
+    #           link_path: "user_friends_path"
+    #         }
+    #       }
+    #   end
+    #   @notes
+    # end
   end
 
 end

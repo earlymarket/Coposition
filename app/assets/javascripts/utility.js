@@ -46,12 +46,50 @@ COPO.utility = {
     });
   },
 
-  avatar: function(avatar, options){
-    options = options || {}
+  avatar: function(avatar, customOptions){
+
+    var defaultOptions = {
+      width: 60,
+      height: 60,
+      crop: 'fill',
+      radius: 'max',
+      gravity: 'face:center'
+    }
+
+    var options = $.extend(defaultOptions, customOptions)
+
     if(avatar && avatar.hasOwnProperty('public_id')) {
       return $.cloudinary.image(avatar.public_id, options).prop('outerHTML')
     } else {
       return $.cloudinary.image("placeholder_wzhvlw.png", options).prop('outerHTML')
     }
+  },
+
+  initClipboard: function(selector, callback){
+
+    selector = selector || '.clip_button';
+    var client = new ZeroClipboard( $(selector) );
+
+    client.on( 'ready', function(event) {
+      // console.log( 'movie is loaded' );
+
+      client.on( 'copy', function(event) {
+        event.clipboardData.setData('text/plain', event.target.value);
+      });
+
+      callback = callback || function(event){
+        $('.material-tooltip').children('span').text('Copied');
+      }
+
+      client.on( 'aftercopy', function(event) {
+        callback(event);
+      });
+
+    });
+
+    client.on( 'error', function(event) {
+     console.log( 'ZeroClipboard error of type "' + event.name + '": ' + event.message );
+     ZeroClipboard.destroy();
+    });
   }
 };

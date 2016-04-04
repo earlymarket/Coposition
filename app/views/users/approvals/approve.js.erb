@@ -1,6 +1,7 @@
 if (COPO.utility.urlParam("redirect")) {
   window.location.replace(COPO.utility.urlParam("redirect"));
 }
+$('nav').replaceWith("<%= j (render partial: 'navbar') %>");
 $('#approved').html("<%= j (render partial: 'approved', locals: {approved: @approved, devices: @devices}) %>")
 <% if @pending.present? %>
   $('#pending').html("<%= j (render partial: 'pending', locals: {pending: @pending}) %>")

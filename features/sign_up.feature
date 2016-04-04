@@ -13,7 +13,7 @@ Feature: Sign up and log in
   Scenario: User login
     Given I am using a large screen
     And I am on the homepage
-      And I click the link "login"
+      And I click the link "User Log In"
       Then I click the link "Sign up!"
     When I fill in the form with my "user" details
       And I click "Sign up"
