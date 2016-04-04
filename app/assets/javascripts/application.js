@@ -40,13 +40,13 @@
 //= require init
 //= require charts
 //= require map
+//= require permissions
 //= require date-picker
 
 // -- Page specific --
 //= require dashboard
-//= require devices-show
-//= require devices-index
-//= require devices-shared
+//= require devices/devices-index
+//= require devices/devices-show
+//= require devices/devices-shared
 //= require friends-device-show
 //= require landing-page
-//= require permissions
