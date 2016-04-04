@@ -154,16 +154,7 @@ window.COPO.maps = {
     map.on('popupopen', function(e){
       var coords = e.popup.getLatLng()
       if($('#current-location').length){
-
-        var checkin = {
-          'checkin[lat]': coords.lat.toFixed(6),
-          'checkin[lng]': coords.lng.toFixed(6)
-        }
-        var checkinPath = location.pathname + '/checkins';
-        checkinPath += '?'
-        checkinPath += $.param(checkin)
-
-        $createCheckinLink = COPO.utility.ujsLink('post', 'Create checkin here', checkinPath);
+        $createCheckinLink = COPO.maps.createCheckinLink(coords);
         $('#current-location').replaceWith($createCheckinLink);
       }
     })
@@ -172,22 +163,27 @@ window.COPO.maps = {
   rightClickListener: function(){
     map.on('contextmenu', function(e){
       var coords = e.latlng
-      var checkin = {
-          'checkin[lat]': coords.lat.toFixed(6),
-          'checkin[lng]': coords.lng.toFixed(6)
-        }
-      var checkinPath = location.pathname + '/checkins';
-        checkinPath += '?'
-        checkinPath += $.param(checkin)
-      $createCheckinLink = COPO.utility.ujsLink('post', 'Create checkin here', checkinPath);
+      $createCheckinLink = COPO.maps.createCheckinLink(coords);
       var content = '<ul>'
       content += '<li>Latitude: ' + coords.lat.toFixed(6) + '</li>';
       content += '<li>Longitude: ' + coords.lng.toFixed(6) + '</li>';
-      content += '<li><a href="#" id="current-location"></a></li>'
+      content += '<li><a href="#" id="current-location"></a></li></ul>'
       var popup = L.popup().setLatLng(e.latlng).setContent(content);
       popup.openOn(map);
       $('#current-location').replaceWith($createCheckinLink);
     })
+  },
+
+  createCheckinLink: function(coords){
+    var checkin = {
+      'checkin[lat]': coords.lat.toFixed(6),
+      'checkin[lng]': coords.lng.toFixed(6)
+    }
+    var checkinPath = location.pathname + '/checkins';
+    checkinPath += '?'
+    checkinPath += $.param(checkin)
+
+    return COPO.utility.ujsLink('post', 'Create checkin here', checkinPath);
   }
 
 }
