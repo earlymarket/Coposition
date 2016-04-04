@@ -167,6 +167,27 @@ window.COPO.maps = {
         $('#current-location').replaceWith($createCheckinLink);
       }
     })
+  },
+
+  rightClickListener: function(){
+    map.on('contextmenu', function(e){
+      var coords = e.latlng
+      var checkin = {
+          'checkin[lat]': coords.lat.toFixed(6),
+          'checkin[lng]': coords.lng.toFixed(6)
+        }
+      var checkinPath = location.pathname + '/checkins';
+        checkinPath += '?'
+        checkinPath += $.param(checkin)
+      $createCheckinLink = COPO.utility.ujsLink('post', 'Create checkin here', checkinPath);
+      var content = '<ul>'
+      content += '<li>Latitude: ' + coords.lat.toFixed(6) + '</li>';
+      content += '<li>Longitude: ' + coords.lng.toFixed(6) + '</li>';
+      content += '<li><a href="#" id="current-location"></a></li>'
+      var popup = L.popup().setLatLng(e.latlng).setContent(content);
+      popup.openOn(map);
+      $('#current-location').replaceWith($createCheckinLink);
+    })
   }
 
 }

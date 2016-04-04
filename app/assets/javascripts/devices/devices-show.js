@@ -5,6 +5,7 @@ $(document).on('page:change', function() {
     COPO.maps.initControls();
     COPO.maps.lc.start();
     COPO.maps.popUpOpenListener();
+    COPO.maps.rightClickListener();
     //google.charts.setOnLoadCallback(COPO.charts.refreshCharts(gon.checkins));
 
     $('li.tab').on('click', function() {
