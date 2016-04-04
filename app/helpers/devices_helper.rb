@@ -40,7 +40,7 @@ module DevicesHelper
     output << content_tag(:i, 'assignment',
       { class: 'material-icons tooltipped clip_button',
         data:
-        {'clipboard-target': 'linkbox' << device.id.to_s,
+        {'clipboard-target': ('linkbox' << device.id.to_s),
          tooltip: 'Click to copy',
          position: 'right'
         }

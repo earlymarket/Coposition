@@ -1,7 +1,7 @@
 namespace :approvals do
 
   desc "Makes everyone that's not already a friend request the specified user"
-  task :friends, [:id]  => :environment do |t, args|
+  task :friends, [:id]  => :environment do |_t, args|
     user = User.find_by(id: args[:id])
     non_friends = User.where.not(id: user.friends.select(:id)) \
       .where.not(id: user.friend_requests.select(:id)) \
@@ -13,11 +13,10 @@ namespace :approvals do
   end
 
   desc "Makes every developer/app that's not already approved request the specified user"
-  task :apps, [:id]  => :environment do |t, args|
+  task :apps, [:id]  => :environment do |_t, args|
     user = User.find_by(id: args[:id])
     unknown_apps = Developer.where.not(id: user.developers.select(:id)) \
       .where.not(id: user.developer_requests.select(:id))
-
     unknown_apps.each do |approvable|
       Approval.link(user, approvable, 'Developer')
       puts "#{approvable.company_name || 'App #' + approvable.id} sent an approval request"
