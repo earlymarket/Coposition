@@ -70,10 +70,7 @@ window.COPO.maps = {
   },
 
   bindMarkerListeners: function(){
-    COPO.maps.markers.eachLayer(function(marker) {
-      COPO.maps.markerClickListener(marker);
-    })
-    COPO.maps.last.eachLayer(function(marker) {
+    COPO.maps.allMarkers.eachLayer(function(marker) {
       COPO.maps.markerClickListener(marker);
     })
   },
