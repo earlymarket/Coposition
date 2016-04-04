@@ -13,15 +13,16 @@ window.COPO.permissions = {
     $(".switch").change(function( event ) {
       var attribute = $(this).data().attribute;
       var switch_type = $(this).data().switch;
-
       var permission_id =  $(this).data().permission;
       var permission = _.find(gon.permissions, _.matchesProperty('id', permission_id));
       var device_id = permission['device_id'];
+
       if (permission[attribute].constructor === Boolean){
         permission[attribute] = !permission[attribute]
       } else {
         permission[attribute] = COPO.permissions.new_privilege(permission[attribute], switch_type);
       }
+
       if (switch_type === "disallowed") {
         $("div[data-permission='"+permission_id+"'][data-switch=last_only]").find('input').prop("checked", false);
         COPO.permissions.toggle_switches_disabled(permission_id);
