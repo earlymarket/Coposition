@@ -41,7 +41,7 @@ module DevicesHelper
         data:
         {'clipboard-target': 'linkbox' << device.id.to_s,
          tooltip: 'Click to copy',
-         position: 'top'
+         position: 'right'
         }
       })
     output

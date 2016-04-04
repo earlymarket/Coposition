@@ -63,5 +63,33 @@ COPO.utility = {
     } else {
       return $.cloudinary.image("placeholder_wzhvlw.png", options).prop('outerHTML')
     }
+  },
+
+  initClipboard: function(selector, callback){
+
+    selector = selector || '.clip_button';
+    var client = new ZeroClipboard( $(selector) );
+
+    client.on( 'ready', function(event) {
+      // console.log( 'movie is loaded' );
+
+      client.on( 'copy', function(event) {
+        event.clipboardData.setData('text/plain', event.target.value);
+      });
+
+      callback = callback || function(event){
+        Materialize.toast('Copied', 2000);
+      }
+
+      client.on( 'aftercopy', function(event) {
+        callback(event);
+      });
+
+    });
+
+    client.on( 'error', function(event) {
+     console.log( 'ZeroClipboard error of type "' + event.name + '": ' + event.message );
+     ZeroClipboard.destroy();
+    });
   }
 };
