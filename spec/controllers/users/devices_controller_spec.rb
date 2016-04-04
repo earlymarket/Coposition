@@ -71,6 +71,12 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(response).to redirect_to(root_path)
       expect(flash[:notice]).to match('not shared')
     end
+
+    it 'should render page if published' do
+      device.published = true
+      get :shared, params
+      expect(response).to render_template('shared')
+    end
   end
 
   describe 'POST #create' do
