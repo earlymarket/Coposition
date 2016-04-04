@@ -31,6 +31,7 @@
 //= require cloudinary
 //= require attachinary
 //= require control.w3w
+//= require zeroclipboard
 
 // -- Run every page
 
@@ -39,12 +40,13 @@
 //= require init
 //= require charts
 //= require map
+//= require permissions
 //= require date-picker
 
 // -- Page specific --
 //= require dashboard
-//= require devices-show
-//= require devices-shared
+//= require devices/devices-index
+//= require devices/devices-show
+//= require devices/devices-shared
 //= require friends-device-show
 //= require landing-page
-//= require permissions

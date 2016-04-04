@@ -10,7 +10,7 @@
 
         <div class="col s8">
           <%= approvals_friends_device_link(@approvable_type, approvable) do %>
-            <%= avatar_for(approvable, { size: '60x60', crop: :thumb, gravity: :face, radius: :max, class: 'avatar' }) %>
+            <%= avatar_for(approvable) %>
             <div class="ib">
               <h5 class="ib"><%= approvals_approvable_name(approvable) %></h5><span class="tagline"><%= approvable.try(:tagline) %></span>
               <div>Approved since <%= humanize_date(current_user.approval_for(approvable).approval_date) %></div>

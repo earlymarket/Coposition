@@ -4,17 +4,9 @@ $(document).on('page:change', function() {
     COPO.maps.initMap()
     COPO.maps.initControls();
     var checkin = gon.checkin;
-    var avatarOptions = {
-      width: 60,
-      height: 60,
-      crop: 'fill',
-      radius: 'max',
-      gravity: 'face:center'
-    }
 
     if(!checkin) {
-      $.extend(avatarOptions, {class: 'left'})
-      var avatar = COPO.utility.avatar(gon.user.avatar, avatarOptions);
+      var avatar = COPO.utility.avatar(gon.user.avatar, {class: 'left'});
       var friend = {
         name: COPO.utility.friendsName(gon.user),
         device: gon.device,
@@ -31,7 +23,7 @@ $(document).on('page:change', function() {
         map.panTo(popup.getLatLng());
       })
     } else {
-      var avatar = COPO.utility.avatar(gon.user.avatar, avatarOptions);
+      var avatar = COPO.utility.avatar(gon.user.avatar);
       $.extend(checkin, {
         avatar: avatar,
         created_at: new Date(checkin.created_at).toUTCString(),
