@@ -6,8 +6,7 @@ module DevicesHelper
 
   def devices_last_checkin(device)
     if device.checkins.exists?
-      checkins = device.checkins.order('created_at DESC')
-      "<p>Last reported in #{checkins.first.address}</p>".html_safe
+      "<p>Last reported in #{device.checkins.first.address}</p>".html_safe
     else
       "<p>No Checkins found</p>".html_safe
     end

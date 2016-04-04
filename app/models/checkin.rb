@@ -7,6 +7,7 @@ class Checkin < ActiveRecord::Base
 
   delegate :user, to: :device
 
+  default_scope { order(created_at: :desc) }
   scope :since, -> (date) { where("created_at > ?", date)}
   scope :before, -> (date) { where("created_at < ?", date)}
 
