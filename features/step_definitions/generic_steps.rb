@@ -1,3 +1,7 @@
+Given(/^I am using a large screen$/) do
+  Capybara.current_session.driver.browser.manage.window.resize_to(1200, 800)
+end
+
 Given(/^I am on the homepage$/) do
   visit "/"
 end

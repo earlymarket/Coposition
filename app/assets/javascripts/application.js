@@ -40,6 +40,7 @@
 //= require init
 //= require charts
 //= require map
+//= require date-picker
 
 // -- Page specific --
 //= require dashboard

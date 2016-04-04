@@ -22,6 +22,10 @@ class Users::CheckinsController < ApplicationController
     checkin = Checkin.find(params[:id])
     checkin.reverse_geocode!
     @checkin = checkin
+    respond_to do |format|
+      format.html
+      format.json { render json: checkin.as_json }
+    end
   end
 
   def update

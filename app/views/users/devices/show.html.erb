@@ -11,11 +11,11 @@
       <div class='collapsible-body'>
         <%= form_for @device, url: user_device_path(current_user.url_id, @device), class: "form-group", method: :get do |f| %>
           <%= f.label 'From' %>
-          <%= text_field_tag(:from, humanize_date(@from), class: "datepicker", required: true) %>
+          <%= text_field_tag(:from, @from, class: "datepicker", id: "input_from", required: true) %>
           <%= f.label 'to' %>
-          <%= text_field_tag(:to, humanize_date(@to), class: "datepicker", required: true) %>
+          <%= text_field_tag(:to, @to, class: "datepicker", id: "input_to", required: true) %>
           <%= f.submit("Filter", class: "form-control btn btn-default") %>
-          <%= link_to("Reset", user_device_path(current_user.url_id, @device) , { method: :get, class: "btn-flat right" })%>
+          <%= link_to("Reset", user_device_path(current_user.url_id, @device) , { method: :get, class: "btn-flat" })%>
         <% end %>
       </div>
     </li>
@@ -35,6 +35,7 @@
       <%= link_to("Delete history", user_device_checkins_path(current_user.url_id, @device.id), { method: :delete, class: "btn red white-text", data: { confirm: 'Delete all checkins for this device?' } })%>
       <%= link_to("Delete device", user_device_path(current_user.url_id, @device), { method: :delete, class: "btn red white-text", data: { confirm: 'Are you sure?' } })%>
     </div>
+
     <%= will_paginate @checkins %>
   </div>
 

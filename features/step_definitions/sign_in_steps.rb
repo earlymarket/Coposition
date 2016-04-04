@@ -11,7 +11,8 @@ end
 
 Given(/^I am signed in as a user$/) do
   steps %Q{
-    Given I am on the homepage
+    Given I am using a large screen
+    And I am on the homepage
       And I click the link "User Log In"
       Then I click the link "Sign up!"
     When I fill in the form with my "user" details
