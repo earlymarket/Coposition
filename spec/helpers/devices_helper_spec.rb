@@ -27,11 +27,11 @@ RSpec.describe DevicesHelper, :type => :helper do
     end
   end
 
-  describe "#devices_published_icon" do
+  describe "#devices_shared_icon" do
     it "returns different icons on a devices published state" do
-      expect(helper.devices_published_icon(device)).not_to eq(helper.devices_published_icon(other))
-      expect(helper.devices_published_icon(device)).to match('icon')
-      expect(helper.devices_published_icon(other)).to match('icon')
+      expect(helper.devices_shared_icon(device)).not_to eq(helper.devices_shared_icon(other))
+      expect(helper.devices_shared_icon(device)).to match('icon')
+      expect(helper.devices_shared_icon(other)).to match('icon')
     end
   end
 
@@ -39,9 +39,10 @@ RSpec.describe DevicesHelper, :type => :helper do
     it "return nothing if not published" do
       expect(helper.devices_shared_link(device)).to be(nil)
     end
-    it "return a link if device is published" do
+    it "return the path to the shared device if device is published" do
       expect(helper.devices_shared_link(other)).to be_kind_of(String)
-      expect(helper.devices_shared_link(other)).to match("Link to your last location")
+      # http://test.host/users/1/devices/5/shared
+      expect(helper.devices_shared_link(other)).to match(/http:\/\/.+\/users\/#{device.user_id}\/devices\/#{device.id}\/shared.+/)
     end
   end
 

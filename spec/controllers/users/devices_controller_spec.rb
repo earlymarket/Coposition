@@ -69,7 +69,7 @@ RSpec.describe Users::DevicesController, type: :controller do
     it 'should deny access if device not published' do
       get :shared, params
       expect(response).to redirect_to(root_path)
-      expect(flash[:notice]).to match('not published')
+      expect(flash[:notice]).to match('not shared')
     end
   end
 
