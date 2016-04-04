@@ -78,7 +78,7 @@ COPO.utility = {
       });
 
       callback = callback || function(event){
-        Materialize.toast('Copied', 2000);
+        $('.material-tooltip').children('span').text('Copied');
       }
 
       client.on( 'aftercopy', function(event) {
