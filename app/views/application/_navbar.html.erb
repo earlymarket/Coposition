@@ -1,4 +1,4 @@
-<nav class="nav-wrapper" role="navigation" data-turbolinks-permanent>
+<nav class="nav-wrapper<%= if controller_name == 'welcome' && action_name == 'index' then ' transparent-nav' end %>" role="navigation" data-turbolinks-permanent>
   <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
 
   <%= link_to(inline_svg('bordered-logo.svg', id: "brand-logo"), root_path, class: "valign-wrapper left") %>
