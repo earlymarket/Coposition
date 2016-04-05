@@ -10,7 +10,7 @@ Feature: Approvals
     Scenario: User accepts requests
       When I click "Approve"
         Then I should have an app
-      And I click "Friends"
+      And I click the link "Friends"
       When I click "Approve"
         Then I should have a friend
 

@@ -70,7 +70,7 @@ end
 
 group :test do
   gem 'codeclimate-test-reporter', require: nil
-  gem 'selenium-webdriver', '2.47.1'
+  gem 'selenium-webdriver', '~> 2.53'
   gem 'cucumber-rails', :require => false
   gem 'launchy'
   gem 'database_cleaner'
