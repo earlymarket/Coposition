@@ -104,15 +104,11 @@ window.COPO.maps = {
     checkin.address = checkin.address || checkin.fogged_area;
     checkin.foggedAddress = function(){
       if(checkin.fogged){
-        return '<li>'+ COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog')
+        return '<li>'+ COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog') + '</li>'
       }
-    }
-    checkin.foggle = function(){
-      return '<li>'+ COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog')
-    }
-    checkin.deletebutton = function(){
-      return COPO.utility.deleteCheckinLink(checkin) + '</li>';
-    }
+     }
+    checkin.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
+    checkin.deletebutton = COPO.utility.deleteCheckinLink(checkin);
     template = $('#markerPopupTmpl').html();
     template = Mustache.render(template, checkin);
     return template;
