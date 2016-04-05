@@ -36,7 +36,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
       }
       expect(assigns :device).to eq(Device.find(device.id))
       expect(device.checkins.count).to eq count + 1
-      expect(assigns :checkin).to eq(Checkin.last)
+      expect(assigns :checkin).to eq(device.checkins.first)
     end
   end
 

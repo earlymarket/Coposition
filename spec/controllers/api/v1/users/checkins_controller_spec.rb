@@ -115,7 +115,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
     context 'with no page param given' do
       it "should fetch the most recent checkins (up to 30 checkins)" do
         get :index, params
-        expect(res_hash.first['id']).to be device.checkins.last.id
+        expect(res_hash.first['id']).to be device.checkins.first.id
         expect(response.header['X-Next-Page']).to eq "2"
         expect(response.header['X-Current-Page']).to eq "1"
         expect(response.header['X-Total-Entries']).to eq "#{device.checkins.count}"
@@ -128,7 +128,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
       it "should fetch the checkins on that page if they exist" do
         page = 2
         get :index, params.merge(page: page)
-        expect(res_hash.first['id']).to be device.checkins.first.id
+        expect(res_hash.first['id']).to be device.checkins.last.id
         expect(response.header['X-Current-Page']).to eq "#{page}"
         expect(response.header['X-Next-Page']).to eq "null"
       end
@@ -143,7 +143,7 @@ RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
     context "on a user" do
       it "should fetch the most recent checkins (up to 30 checkins)" do
         get :index, { user_id: user.id }
-        expect(res_hash.first['id']).to be device.checkins.last.id
+        expect(res_hash.first['id']).to be device.checkins.first.id
       end
     end
   end
