@@ -96,25 +96,25 @@ window.COPO.maps = {
   },
 
   buildMarkerPopup: function(checkin){
-    var checkinDate = new Date(checkin.created_at).toUTCString()
     var foggedClass;
     checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
-
-    template = '<h3>ID: {id}</h3>'
-    template += '<ul>'
-    template += '<li>Created on: '+ checkinDate + '</li>'
-    template += '<li>Latitude: {lat}</li>'
-    template += '<li>Longitude: {lng}</li>'
-    template += '<li class="address">Address: ' + (checkin.address || checkin.fogged_area) + '</li>'
-    if ($(".c-devices.a-show").length === 1){
-      if (checkin.fogged){
-        template += '<li class="foggedAddress">Fogged address: ' + checkin.fogged_area + '</li>'
+    checkin.lat = checkin.lat.toFixed(6);
+    checkin.lng = checkin.lng.toFixed(6);
+    checkin.created_at = new Date(checkin.created_at).toUTCString();
+    checkin.address = checkin.address || checkin.fogged_area;
+    checkin.foggedAddress = function(){
+      if(checkin.fogged){
+        return '<li>'+ COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog')
       }
-      template += '<li>'+ COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog')
-      template += COPO.utility.deleteCheckinLink(checkin) + '</li>';
-      template += '</ul>';
     }
-
+    checkin.foggle = function(){
+      return '<li>'+ COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog')
+    }
+    checkin.deletebutton = function(){
+      return COPO.utility.deleteCheckinLink(checkin) + '</li>';
+    }
+    template = $('#markerPopupTmpl').html();
+    template = Mustache.render(template, checkin);
     return template;
   },
 
