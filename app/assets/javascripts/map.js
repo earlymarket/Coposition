@@ -96,13 +96,13 @@ window.COPO.maps = {
   },
 
   buildMarkerPopup: function(checkin){
-    var foggedClass;
-    checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
     checkin.lat = checkin.lat.toFixed(6);
     checkin.lng = checkin.lng.toFixed(6);
     checkin.created_at = new Date(checkin.created_at).toUTCString();
     checkin.address = checkin.address || checkin.fogged_area;
     checkin.foggedAddress = function(){
+    var foggedClass;
+    checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
       if(checkin.fogged){
         return '<li>'+ COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog') + '</li>'
       }
