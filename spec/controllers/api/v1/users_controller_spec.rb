@@ -38,7 +38,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       count = dev.requests.count
       get :index, format: :json
       expect(dev.requests.count).to eq count + 1
-      expect(dev.requests.last.paid).to eq false
+      expect(dev.requests.first.paid).to eq false
     end
 
     it 'should assign User.id(:id) to @user if the developer is approved' do
