@@ -56,13 +56,11 @@ window.COPO.maps = {
           markerObject.title = 'ID: ' + checkin.id + ' - Most recent'
         }
         var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), markerObject);
-
+        COPO.maps.allMarkers.addLayer(marker);
         if (i === 0) {
           COPO.maps.last.addLayer(marker);
-          COPO.maps.allMarkers.addLayer(marker);
         } else {
           COPO.maps.markers.addLayer(marker);
-          COPO.maps.allMarkers.addLayer(marker);
         }
       }
     map.addLayer(COPO.maps.markers);
