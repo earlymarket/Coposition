@@ -19197,29 +19197,29 @@ footer h5 {
 /* line 2, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/navbar.scss */
 .nav-wrapper {
   z-index: 10;
-  transition: all 0.5s ease;
 }
-/* line 8, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/navbar.scss */
-.nav-wrapper.transparent-nav {
-  background-color: transparent;
-  box-shadow: none;
+/* line 7, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/navbar.scss */
+.nav-wrapper svg {
+  fill: white;
 }
-/* line 16, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/navbar.scss */
-.nav-wrapper.transparent-nav .dropdown-content {
-  background-color: rgba(255, 255, 255, 0.9);
-}
-/* line 22, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/navbar.scss */
-.nav-wrapper .btn, .nav-wrapper .btn-large {
-  padding: 0;
-  background-color: transparent;
-  box-shadow: none;
+/* line 11, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/navbar.scss */
+.nav-wrapper .svg-btn {
   height: 42px;
   width: 150px;
 }
-/* line 29, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/navbar.scss */
-.nav-wrapper .btn svg, .nav-wrapper .btn-large svg {
-  height: 100%;
-  width: 100%;
+/* line 17, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/navbar.scss */
+.nav-wrapper.transparent-nav {
+  background-color: transparent;
+  box-shadow: none;
+  transition: all 0.5s ease;
+}
+/* line 26, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/navbar.scss */
+.nav-wrapper.transparent-nav .dropdown-content {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+/* line 30, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/navbar.scss */
+.nav-wrapper.transparent-nav svg {
+  fill: rgba(0, 0, 0, 0.8);
 }
 /* line 36, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/navbar.scss */
 .nav-wrapper .left {
@@ -19252,16 +19252,26 @@ footer h5 {
   margin-right: 1.5rem;
 }
 /* line 62, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/navbar.scss */
-.nav-wrapper .right .settings-icon {
+.nav-wrapper .right li a {
   height: 64px;
 }
+/* line 67, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/navbar.scss */
+.nav-wrapper .indicator {
+  background: #ffc952;
+  border-radius: 50%;
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  margin: 1px 0 7px 0;
+}
 
-/* line 70, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/navbar.scss */
+/* line 80, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/navbar.scss */
 .button-collapse {
   margin-left: 2.5%;
 }
 
-/* line 75, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/navbar.scss */
+/* line 85, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/navbar.scss */
 .side-nav .collapsible-header {
   padding: 0px;
   width: 100%;
@@ -19729,56 +19739,122 @@ footer.page-footer {
   margin-bottom: 1rem;
 }
 
-/* line 3, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .date-select,
-.c-friends.a-show_device .date-select {
+/* line 2, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
+.c-devices.a-index .linkbox {
+  width: 200px;
+  height: inherit;
+  border: 1px solid darkgrey;
+  border-radius: 2px;
+  font-size: 12px;
+  margin: 2px;
+}
+
+/* line 1, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show {
+  /* Header - Day of the week */
+  /* Body - Today info */
+  /* Buttons of actions */
+  /* Select months of the year */
+  /* Every month of the year except: today */
+  /* Today */
+}
+/* line 2, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .date-select {
   background: #fff;
   position: absolute;
-  width: 25%;
-  top: 64px;
-  right: 10px;
+  width: 220px;
+  top: 115px;
+  left: 90px;
   z-index: 9;
-  margin-top: 54px;
-  padding: 10px;
-  border-radius: 3px;
+  padding-left: 5px;
+}
+/* line 13, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .picker__weekday-display {
+  background-color: #2092bb;
 }
 /* line 15, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .tabs,
-.c-friends.a-show_device .tabs {
-  overflow: hidden;
+.c-devices.a-show .picker__date-display {
+  background-color: #47b8e0;
+}
+/* line 17, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .picker__nav--prev:hover, .c-devices.a-show .picker__nav--next:hover {
+  background-color: #88d1eb;
+}
+/* line 18, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .picker__nav--prev:before {
+  border-right: 0.75em solid #47b8e0;
 }
 /* line 19, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show #map,
-.c-friends.a-show_device #map {
+.c-devices.a-show .picker__nav--next:before {
+  border-left: 0.75em solid #47b8e0;
+}
+/* line 20, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .picker__today, .c-devices.a-show .picker__close {
+  color: #47b8e0;
+}
+/* line 21, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .btn-flat.picker__today:active, .c-devices.a-show .btn-flat.picker__close:active, .c-devices.a-show .btn-flat.picker__clear:active {
+  background-color: #47b8e0;
+}
+/* line 23, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .picker__select--month.browser-default {
+  display: inline;
+  background-color: #FFFFFF;
+  width: 34%;
+  border: none;
+  outline: none;
+}
+/* line 31, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .picker__day--infocus:hover {
+  color: #47b8e0;
+}
+/* line 32, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .picker__day--selected, .c-devices.a-show .picker__day--selected:hover, .c-devices.a-show .picker--focused .picker__day--selected {
+  color: #2092bb;
+}
+/* line 33, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .picker__day.picker__day--infocus.picker__day--selected.picker__day--highlighted {
+  background-color: #88d1eb;
+}
+/* line 35, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .picker__day.picker__day--infocus.picker__day--today.picker__day--selected.picker__day--highlighted {
+  background-color: #88d1eb;
+}
+/* line 36, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .picker__day.picker__day--today {
+  color: #2092bb;
+}
+/* line 38, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .tabs {
+  overflow: hidden;
+}
+/* line 42, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show #map {
   width: 100%;
   position: absolute !important;
   top: 64px;
   margin-top: 48px;
   bottom: 100px;
 }
-/* line 27, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show #chart,
-.c-friends.a-show_device #chart {
+/* line 50, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show #chart {
   height: 70vh;
   width: 100%;
 }
-/* line 32, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show #bar-chart,
-.c-friends.a-show_device #bar-chart {
+/* line 55, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show #bar-chart {
   margin-top: 20px;
-  margin-left: 20px;
-  width: 90%;
+  margin-left: 40px;
+  margin-right: 40px;
   height: 40vh;
 }
-/* line 39, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show #table-chart,
-.c-friends.a-show_device #table-chart {
+/* line 62, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show #table-chart {
   height: 30vh;
   margin-top: 10px;
 }
-/* line 44, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .bottom-panel,
-.c-friends.a-show_device .bottom-panel {
+/* line 67, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .bottom-panel {
   position: absolute;
   bottom: 0px;
   display: block;
@@ -19787,24 +19863,20 @@ footer.page-footer {
   text-align: center;
   background: white;
 }
-/* line 54, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .bottom-panel *,
-.c-friends.a-show_device .bottom-panel * {
+/* line 77, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .bottom-panel * {
   margin: 0;
 }
-/* line 58, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .buttons,
-.c-friends.a-show_device .buttons {
+/* line 81, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .buttons {
   margin: 10px;
 }
-/* line 62, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .disabled-icon,
-.c-friends.a-show_device .disabled-icon {
+/* line 85, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .disabled-icon {
   color: rgba(0, 0, 0, 0.12);
 }
-/* line 71, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .fogged,
-.c-friends.a-show_device .fogged {
+/* line 94, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .fogged {
   color: #2196f3;
 }
 
@@ -19848,6 +19920,14 @@ footer.page-footer {
   padding: 0.1rem 0.5rem;
   vertical-align: top;
   white-space: nowrap;
+}
+
+/* line 2, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/friends-device-show.scss */
+.c-friends.a-show_device #map {
+  width: 100%;
+  position: absolute !important;
+  top: 64px;
+  bottom: 0px;
 }
 
 /* line 3, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
