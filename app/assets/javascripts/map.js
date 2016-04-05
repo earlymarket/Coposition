@@ -78,20 +78,19 @@ window.COPO.maps = {
   markerClickListener: function(marker) {
     marker.on('click', function(e) {
       checkin = this.options.checkin;
+      if(!marker._popup){
+        template = COPO.maps.buildMarkerPopup(checkin);
+        marker.bindPopup(L.Util.template(template, checkin));
+        marker.openPopup();
+      }
       if ($(".c-devices.a-show").length === 1){
         $.get({
           url: "/users/"+gon.current_user_id+"/devices/"+checkin.device_id+"/checkins/"+checkin.id,
           dataType: "json"
         }).done(function(data) {
-          checkin = data;
-          $geocodedAddress = '<li class="address">Address: ' + checkin.address + '</li>'
+          $geocodedAddress = '<li class="address">Address: ' + data.address + '</li>'
           $('.address').replaceWith($geocodedAddress);
         })
-      }
-      if(!marker._popup){
-        template = COPO.maps.buildMarkerPopup(checkin);
-        marker.bindPopup(L.Util.template(template, checkin));
-        marker.openPopup();
       }
       map.panTo(this.getLatLng());
       COPO.maps.w3w.setCoordinates(e);
