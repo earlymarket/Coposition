@@ -84,6 +84,8 @@ window.COPO.maps = {
           dataType: "json"
         }).done(function(data) {
           checkin = data;
+          $geocodedAddress = '<li class="address">Address: ' + checkin.address + '</li>'
+          $('.address').replaceWith($geocodedAddress);
         })
       }
       if(!marker._popup){
@@ -106,7 +108,7 @@ window.COPO.maps = {
     template += '<li>Created on: '+ checkinDate + '</li>'
     template += '<li>Latitude: {lat}</li>'
     template += '<li>Longitude: {lng}</li>'
-    template += '<li>Address: ' + (checkin.address || checkin.fogged_area) + '</li>'
+    template += '<li class="address">Address: ' + (checkin.address || checkin.fogged_area) + '</li>'
     if ($(".c-devices.a-show").length === 1){
       if (checkin.fogged){
         template += '<li class="foggedAddress">Fogged address: ' + checkin.fogged_area + '</li>'
