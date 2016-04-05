@@ -178,10 +178,7 @@ window.COPO.maps = {
       'checkin[lat]': coords.lat.toFixed(6),
       'checkin[lng]': coords.lng.toFixed(6)
     }
-    var checkinPath = location.pathname + '/checkins';
-    checkinPath += '?'
-    checkinPath += $.param(checkin)
-
+    var checkinPath = location.pathname + '/checkins?' + $.param(checkin);
     return COPO.utility.ujsLink('post', 'Create checkin here', checkinPath);
   }
 
