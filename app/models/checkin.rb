@@ -45,6 +45,7 @@ class Checkin < ActiveRecord::Base
   def reverse_geocode!
     unless reverse_geocoded?
       reverse_geocode
+      update(address: 'No address available') if address == nil
       save
     end
     self
