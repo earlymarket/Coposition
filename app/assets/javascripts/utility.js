@@ -28,6 +28,15 @@ COPO.utility = {
       .attr('id', fogId + checkin.id).attr('class', foggedClass).prop('outerHTML')
   },
 
+  createCheckinLink: function(coords){
+    var checkin = {
+      'checkin[lat]': coords.lat.toFixed(6),
+      'checkin[lng]': coords.lng.toFixed(6)
+    }
+    var checkinPath = location.pathname + '/checkins?' + $.param(checkin);
+    return COPO.utility.ujsLink('post', 'Create checkin here', checkinPath).prop('outerHTML');
+  },
+
   friendsName: function(friend){
     return friend.username ? friend.username : friend.email.split('@')[0]
   },
