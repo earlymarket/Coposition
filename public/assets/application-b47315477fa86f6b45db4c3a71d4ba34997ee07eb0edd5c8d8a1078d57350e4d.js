@@ -51867,7 +51867,7 @@ window.COPO.permissions = {
       var switch_type = $(this).data().switch;
 
       var permission = $.grep(gon.permissions, function(perm){ return perm.id === permission_id; });
-      permission = permission[0]
+      permission = permission[0];
       permission[attribute] = COPO.permissions.new_state(permission[attribute], switch_type);
       var device_id = permission['device_id'];
 
@@ -51876,10 +51876,11 @@ window.COPO.permissions = {
         COPO.permissions.toggle_switches_disabled(permission_id);
       }
 
+      var data = COPO.permissions.set_data(attribute, permission[attribute]);
       $.ajax({
         url: "/users/"+gon.current_user_id+"/devices/"+device_id+"/permissions/"+permission_id+"",
         type: 'PUT',
-        data: { permission }
+        data: { permission : data }
       });
     })
   },
@@ -51901,6 +51902,16 @@ window.COPO.permissions = {
   toggle_switches_disabled: function(permission_id){
     element = $("div[data-permission='"+ permission_id +"'].disable").find('input');
     element.prop("disabled", !element.prop("disabled"));
+  },
+
+  set_data: function(attribute, value){
+    if (attribute === 'privilege'){
+      return { privilege: value };
+    } else if (attribute === 'bypass_fogging'){
+      return { bypass_fogging: value };
+    } else {
+      return { bypass_delay: value };
+    }
   }
 };
 
