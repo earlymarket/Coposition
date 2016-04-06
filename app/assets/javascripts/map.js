@@ -96,21 +96,22 @@ window.COPO.maps = {
   },
 
   buildMarkerPopup: function(checkin){
-    checkin.lat = checkin.lat.toFixed(6);
-    checkin.lng = checkin.lng.toFixed(6);
-    checkin.created_at = new Date(checkin.created_at).toUTCString();
-    checkin.address = checkin.address || checkin.fogged_area;
-    checkin.foggedAddress = function(){
+    var checkinTemp = {};
+    checkinTemp.lat = checkin.lat.toFixed(6);
+    checkinTemp.lng = checkin.lng.toFixed(6);
+    checkinTemp.created_at = new Date(checkin.created_at).toUTCString();
+    checkinTemp.address = checkin.address || checkin.fogged_area;
     var foggedClass;
     checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
+    checkinTemp.foggedAddress = function(){
       if(checkin.fogged){
-        return '<li>'+ COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog') + '</li>'
+        return '<li class="foggedAddress">Fogged address: ' + checkin.fogged_area + '</li>'
       }
-     }
-    checkin.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
-    checkin.deletebutton = COPO.utility.deleteCheckinLink(checkin);
+    }
+    checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
+    checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
     template = $('#markerPopupTmpl').html();
-    template = Mustache.render(template, checkin);
+    template = Mustache.render(template, checkinTemp);
     return template;
   },
 
@@ -144,39 +145,5 @@ window.COPO.maps = {
     }).addTo(map);
 
   },
-
-  popUpOpenListener: function(){
-    map.on('popupopen', function(e){
-      var coords = e.popup.getLatLng()
-      if($('#current-location').length){
-        $createCheckinLink = COPO.maps.createCheckinLink(coords);
-        $('#current-location').replaceWith($createCheckinLink);
-      }
-    })
-  },
-
-  rightClickListener: function(){
-    map.on('contextmenu', function(e){
-      var coords = e.latlng
-      $createCheckinLink = COPO.maps.createCheckinLink(coords);
-      var content = '<ul>'
-      content += '<li>Latitude: ' + coords.lat.toFixed(6) + '</li>';
-      content += '<li>Longitude: ' + coords.lng.toFixed(6) + '</li>';
-      content += '<li><a href="#" id="current-location"></a></li></ul>'
-      var popup = L.popup().setLatLng(e.latlng).setContent(content);
-      popup.openOn(map);
-      $('#current-location').replaceWith($createCheckinLink);
-    })
-  },
-
-  createCheckinLink: function(coords){
-    var checkin = {
-      'checkin[lat]': coords.lat.toFixed(6),
-      'checkin[lng]': coords.lng.toFixed(6)
-    }
-    var checkinPath = location.pathname + '/checkins?' + $.param(checkin);
-    return COPO.utility.ujsLink('post', 'Create checkin here', checkinPath);
-  }
-
 }
 

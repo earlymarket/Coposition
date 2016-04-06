@@ -38,16 +38,24 @@
   </div>
 
 <!-- templates -->
-<script type="x-tmpl-mustache" id="markerPopupTmpl">
-  <h3>ID: {{ id }}</h3>
-  <ul>
-    <li>Created on: {{ created_at }}</li>
-    <li>Latitude: {{ lat }}</li>
-    <li>Longitude {{ lng }}</li>
-    <li class="address">Address: {{ address }}</li>
-    {{ &foggedAddress }}
-    <li>{{ &foggle }} {{ &deletebutton }}</li>
-  </ul>
-</script>
+  <script type="x-tmpl-mustache" id="markerPopupTmpl">
+    <h3>ID: {{ id }}</h3>
+    <ul>
+      <li>Created on: {{ created_at }}</li>
+      <li>Latitude: {{ lat }}</li>
+      <li>Longitude {{ lng }}</li>
+      <li class="address">Address: {{ address }}</li>
+      {{ &foggedAddress }}
+      <li>{{ &foggle }} {{ &deletebutton }}</li>
+    </ul>
+  </script>
+
+  <script id="createCheckinTmp" type="x-tmpl-mustache">
+    <ul>
+      <li>Latitude: {{ lat }}</li>
+      <li>Longitude {{ lng }}</li>
+      <li>{{ &checkinLink }}</li>
+    </ul>
+  </script>
 
   <% end %>
