@@ -12,8 +12,10 @@ class Checkin < ActiveRecord::Base
   scope :before, -> (date) { where("created_at < ?", date)}
 
   reverse_geocoded_by :lat, :lng do |obj,results|
-    results.first.methods.each do |m|
-      obj.send("#{m}=", results.first.send(m)) if column_names.include? m.to_s
+    if results.present?
+      results.first.methods.each do |m|
+        obj.send("#{m}=", results.first.send(m)) if column_names.include? m.to_s
+      end
     end
   end
 
@@ -45,7 +47,6 @@ class Checkin < ActiveRecord::Base
   def reverse_geocode!
     unless reverse_geocoded?
       reverse_geocode
-      update(address: 'No address available') if address == nil
       save
     end
     self

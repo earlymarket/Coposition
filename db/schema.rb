@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160316121833) do
+ActiveRecord::Schema.define(version: 20160406153256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 20160316121833) do
     t.datetime "updated_at"
     t.string   "uuid"
     t.integer  "device_id"
-    t.string   "address"
+    t.string   "address",      default: "No address available"
     t.string   "city"
     t.string   "postal_code"
     t.string   "country_code"
