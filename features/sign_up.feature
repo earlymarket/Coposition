@@ -2,6 +2,7 @@ Feature: Sign up and log in
 
 @javascript
   Scenario: Developer login
+  Given I am using a large screen
     Given I am on the homepage
       And I click "Developers"
       Then I click the link "Sign up!"
