@@ -51812,7 +51812,7 @@ window.COPO.maps = {
     }
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
-    var template = $('.markerPopupTmpl').html();
+    var template = $('#markerPopupTmpl').html();
     return Mustache.render(template, checkinTemp);
   },
 
@@ -51852,10 +51852,10 @@ window.COPO.maps = {
 window.COPO = window.COPO || {};
 window.COPO.permissions = {
   check_disabled: function(){
-    $('[name=disallowed]').each(function(){
-      if ($(this).children().prop('checked')){
-        var permission_id = $(this).parents('div.permission').data().permission;
-        element = $("div[data-permission='"+ permission_id +"']>.disable>label>input")
+    $('[data-switch=disallowed]').each(function(){
+      if ($(this).children().children().prop('checked')){
+        var permission_id =  $(this).data().permission;
+        element = $("div[data-permission='"+ permission_id +"'].disable>label>input")
         element.prop("disabled", !element.prop("disabled"));
       }
     });
@@ -51863,17 +51863,17 @@ window.COPO.permissions = {
 
   switch_change:function(){
     $(".switch").change(function( event ) {
-      var permission_id = $(event.target).parents('div.permission').data().permission;
-      var attribute = $(this).children().attr('class');
-      var switch_type = $(this).children().attr('name');
+      var permission_id = $(this).data().permission;
+      var attribute = $(this).data().attribute;
+      var switch_type = $(this).data().switch;
 
       var permission = $.grep(gon.permissions, function(perm){ return perm.id === permission_id; });
       var new_state = permission[0][attribute] = COPO.permissions.new_state(permission[0][attribute], switch_type);
       var device_id = permission[0]['device_id'];
 
       if (switch_type === "disallowed") {
-        $("div[data-permission='"+ permission_id +"']>.disable>.privilege>#last_only").prop("checked", false);
-        element = $("div[data-permission='"+ permission_id +"']>.disable>label>input")
+        $("div[data-permission='"+permission_id+"'][data-switch=last_only]").find('input').prop("checked", false);
+        element = $("div[data-permission='"+ permission_id +"'].disable>label>input")
         element.prop("disabled", !element.prop("disabled"));
       }
 
@@ -51910,6 +51910,7 @@ window.COPO.permissions = {
     }
   }
 };
+
 $(document).on('page:change', function() {
   if ($(".c-devices.a-show").length === 1) {
 
