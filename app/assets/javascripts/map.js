@@ -111,7 +111,7 @@ window.COPO.maps = {
     }
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
-    var template = $('.markerPopupTmpl').html();
+    var template = $('#markerPopupTmpl').html();
     return Mustache.render(template, checkinTemp);
   },
 
