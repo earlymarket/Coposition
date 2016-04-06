@@ -56,7 +56,7 @@ L.Control.w3w = L.Control.extend({
 			  xhr.send();
 			};
 
-			getJSON('https://api.what3words.com/position?key='+this.options.apikey+'&position='+obj.lat+','+obj.lng, function(data) {
+			getJSON('//api.what3words.com/position?key='+this.options.apikey+'&position='+obj.lat+','+obj.lng, function(data) {
 			  locText.innerHTML = '<strong>w3w:</strong> ' + data.words[0] + " " + data.words[1] + " " + data.words[2];
 			  locText.dataset.words =("data-",  data.words[0] + " " + data.words[1] + " " + data.words[2]);
 
