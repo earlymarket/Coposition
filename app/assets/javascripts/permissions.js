@@ -29,7 +29,7 @@ window.COPO.permissions = {
       $.ajax({
         url: "/users/"+gon.current_user_id+"/devices/"+device_id+"/permissions/"+permission_id+"",
         type: 'PUT',
-        data: { permission : data }
+        data: { permission }
       });
     })
   },
