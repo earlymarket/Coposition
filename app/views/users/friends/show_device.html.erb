@@ -1,4 +1,13 @@
 <% content_for :outside_container do %>
   <%= Gon::Base.render_data %>
   <div id='map'></div>
+  <script type="x-tmpl-mustache" id="friendMarkerPopupTmpl">
+    <h3>ID: {{ id }}</h3>
+    <ul>
+      <li>Created on: {{ created_at }}</li>
+      <li>Latitude: {{ lat }}</li>
+      <li>Longitude {{ lng }}</li>
+      <li class="address">Address: {{ address }}</li>
+    </ul>
+  </script>
 <% end %>
