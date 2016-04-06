@@ -51770,7 +51770,7 @@ window.COPO.charts = {
         checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
         var delete_button = COPO.utility.deleteCheckinLink(checkin);
         var fogging_button = COPO.utility.fogCheckinLink(checkin, foggedClass, 'tableFog');
-        tableData.push([humanizedDate, (checkin.address || checkin.fogged_area), fogging_button+delete_button]);
+        tableData.push([humanizedDate, checkin.address, fogging_button+delete_button]);
       })
       data.addRows(tableData);
       data.setProperty(0, 0, 'style', 'width:20%');
@@ -51893,7 +51893,7 @@ window.COPO.maps = {
     checkinTemp.lat = checkin.lat.toFixed(6);
     checkinTemp.lng = checkin.lng.toFixed(6);
     checkinTemp.created_at = new Date(checkin.created_at).toUTCString();
-    checkinTemp.address = checkin.address || checkin.fogged_area;
+    checkinTemp.address = checkin.address;
     var foggedClass;
     checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
     checkinTemp.foggedAddress = function(){
