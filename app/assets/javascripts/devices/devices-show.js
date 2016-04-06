@@ -25,7 +25,7 @@ $(document).on('page:change', function() {
       coords.lat = e.latlng.lat.toFixed(6);
       coords.lng = e.latlng.lng.toFixed(6);
       coords.checkinLink = COPO.utility.createCheckinLink(e.latlng);
-      template = $('#createCheckinTmp').html();
+      template = $('#createCheckinTmpl').html();
       template = Mustache.render(template, coords);
       var popup = L.popup().setLatLng(e.latlng).setContent(template);
       popup.openOn(map);
