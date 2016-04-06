@@ -86,8 +86,10 @@ window.COPO.maps = {
           url: "/users/"+gon.current_user_id+"/devices/"+checkin.device_id+"/checkins/"+checkin.id,
           dataType: "json"
         }).done(function(data) {
-          $geocodedAddress = '<li class="address">Address: ' + data.address + '</li>'
-          $('.address').replaceWith($geocodedAddress);
+          if (data.address != null){
+            $geocodedAddress = '<li class="address">Address: ' + data.address + '</li>'
+            $('.address').replaceWith($geocodedAddress);
+          }
         })
       }
       map.panTo(this.getLatLng());
