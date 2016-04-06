@@ -1,17 +1,17 @@
-<nav class="nav-wrapper transparent-nav" role="navigation" data-turbolinks-permanent>
+<nav class="nav-wrapper<%= if controller_name == 'welcome' && action_name == 'index' then ' transparent-nav' end %>" role="navigation" data-turbolinks-permanent>
   <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
 
-  <a href="/" class="valign-wrapper left"><%= inline_svg('bordered-logo.svg', id: "brand-logo") %></a>
+  <%= link_to(inline_svg('bordered-logo.svg', id: "brand-logo"), root_path, class: "valign-wrapper left") %>
 
   <ul class="right hide-on-med-and-down">
     <li><a href="#">About</a></li>
     <li><%= link_to("API", api_path) %></li>
 
     <% if user_signed_in? %>
-      <li><a href="<%= user_dashboard_path(current_user.url_id) %>">Dashboard</a></li>
-      <li><a href="<%= user_devices_path(current_user.url_id) %>" role="button">Devices</a></li>
-      <li><a href="<%= user_apps_path(current_user.url_id) %>" role="button">Apps</a></li>
-      <li><a href="<%= user_friends_path(current_user.url_id) %>" role="button">Friends</a></li>
+      <li><%= link_to("Dashboard", user_dashboard_path(current_user.url_id)) %></li>
+      <li><%= link_to("Devices", user_devices_path(current_user.url_id)) %></li>
+      <li><%= link_to(navbar_indicator('Apps', current_user.developer_requests.count), user_apps_path(current_user.url_id)) %></li>
+      <li><%= link_to(navbar_indicator('Friends', current_user.friend_requests.count), user_friends_path(current_user.url_id)) %></li>
 
       <li>
         <%= link_to(edit_user_registration_path, class: 'settings-icon valign-wrapper') do %>
@@ -20,63 +20,20 @@
       </li>
 
       <li>
-        <%= link_to inline_svg('log-out.svg'), destroy_user_session_path, method: :delete, id: "logout", class: "btn" %>
+        <%= link_to(inline_svg('log-out.svg', class: 'svg-btn valign'), destroy_user_session_path, method: :delete, class: 'valign-wrapper', title: 'Log Out') %>
       </li>
 
     <% elsif developer_signed_in? %>
       <li>
-        <%= link_to inline_svg('log-out.svg'), destroy_user_session_path, method: :delete, id: "logout", class: "btn" %>
+        <%= link_to(inline_svg('log-out.svg', class: 'svg-btn valign'), destroy_user_session_path, method: :delete, class: 'valign-wrapper', title: 'Log Out') %>
       </li>
       <li>
-        <%= link_to inline_svg('log-in.svg'), new_user_session_path, id: "login", class: "btn" %>
+        <%= link_to(inline_svg('log-in.svg', class: 'svg-btn valign'), new_user_session_path, class: 'valign-wrapper', title: 'User Log In') %>
       </li>
     <% else %>
       <li>
-        <%= link_to inline_svg('log-in.svg'), new_user_session_path, id: "login", class: "btn" %>
+        <%= link_to(inline_svg('log-in.svg', class: 'svg-btn valign'), new_user_session_path, class: 'valign-wrapper', title: 'User Log In') %>
       </li>
     <% end %>
   </ul>
 </nav>
-
-
-<!-- mobile navigation sidebar -->
-<ul class="side-nav" id="mobile-nav">
-  <li><a href="<%= signed_in? ? developers_console_path : new_developer_session_path %>">Developers</a></li>
-
-  <li>
-    <ul class="collapsible">
-      <li>
-        <div class="collapsible-header"><a class="" href="#!">About<i class="material-icons right">arrow_drop_down</i></a></div>
-        <div class="collapsible-body">
-          <ul>
-            <li><a href="#">Security</a></li>
-            <li><a href="#">Enrolled companies</a></li>
-            <li><a href="#">Why use Coposition</a></li>
-            <li><%= link_to("API", api_path) %></li>
-          </ul>
-        </div>
-      </li>
-    </ul>
-  </li>
-
-  <% if user_signed_in? %>
-    <li>
-      <a href="<%= user_dashboard_path(current_user) %>">Dashboard</a>
-    </li>
-    <li>
-      <%= link_to("Log out", destroy_user_session_path, method: :delete) %>
-    </li>
-
-  <% elsif developer_signed_in? %>
-    <li>
-      <%= link_to("Developer log out", destroy_user_session_path, method: :delete) %>
-    </li>
-    <li>
-      <%= link_to("User log in", new_user_session_path) %>
-    </li>
-  <% else %>
-    <li>
-      <%= link_to("User log in", new_user_session_path) %>
-    </li>
-  <% end %>
-</ul>

@@ -44,11 +44,6 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(assigns :device).to eq(Device.find(device.id))
     end
 
-    it 'should assign :id.device to @device if user owns device' do
-      get :show, date_params
-      expect(assigns :checkins).to eq([checkin])
-    end
-
     it 'should not assign to @device if user does not own device' do
       get :show, params.merge(user_id: new_user.username)
       expect(response).to redirect_to(root_path)
@@ -69,7 +64,13 @@ RSpec.describe Users::DevicesController, type: :controller do
     it 'should deny access if device not published' do
       get :shared, params
       expect(response).to redirect_to(root_path)
-      expect(flash[:notice]).to match('not published')
+      expect(flash[:notice]).to match('not shared')
+    end
+
+    it 'should render page if published' do
+      device.published = true
+      get :shared, params
+      expect(response).to render_template('shared')
     end
   end
 

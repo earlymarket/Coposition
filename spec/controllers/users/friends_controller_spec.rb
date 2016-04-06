@@ -38,7 +38,6 @@ RSpec.describe Users::FriendsController, type: :controller do
       get :show_device, params
       expect(assigns :friend).to eq(second_user)
       expect(assigns :device).to eq(device)
-      expect(assigns :checkins).to eq(device.checkins)
     end
   end
 end

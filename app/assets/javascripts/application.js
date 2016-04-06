@@ -23,13 +23,20 @@
 //= require lodash
 //= require moment
 
-// -- Vendor libs --
+// -- Misc vendor libs --
 
+//= require mustache.min
 //= require animateCSS.min.js
 //= require d3.min.js
 //= require c3.min.js
 //= require cloudinary
 //= require attachinary
+//= require zeroclipboard
+
+// -- Mapbox stuff --
+//= require mapbox
+//= require leaflet.markercluster
+//= require L.Control.Locate.min
 //= require control.w3w
 
 // -- Run every page
@@ -39,11 +46,8 @@
 //= require init
 //= require charts
 //= require map
-
-// -- Page specific --
-//= require dashboard
-//= require devices-show
-//= require devices-shared
-//= require friends-device-show
-//= require landing-page
 //= require permissions
+//= require date-picker
+
+// I've put require_tree back in. Any js where the load order isn't important doesn't need to be specified.
+//= require_tree .

@@ -2,8 +2,11 @@ require 'rails_helper'
 
 RSpec.describe FriendsHelper, :type => :helper do
   let(:friend) { FactoryGirl::create :user }
-  let(:device) { FactoryGirl::create(:device, user_id: friend.id) }
-  let(:checkins) { [FactoryGirl::create(:checkin), FactoryGirl::create(:checkin)] }
+  let(:device) do
+    device = FactoryGirl::create(:device, user_id: friend.id)
+    device.checkins << [FactoryGirl::create(:checkin), FactoryGirl::create(:checkin)]
+    device
+  end
 
   describe '#friends_name' do
     it "should return the start of the users email if no username" do
@@ -22,8 +25,8 @@ RSpec.describe FriendsHelper, :type => :helper do
     end
 
     it "returns the last checkin address if it exists" do
-      expect(helper.friends_last_checkin(checkins)).to match('Last available')
-      expect(helper.friends_last_checkin(checkins)).to match(checkins.last.fogged_area.to_s)
+      expect(helper.friends_last_checkin(device.checkins)).to match('Last available')
+      expect(helper.friends_last_checkin(device.checkins)).to match(device.checkins.first.fogged_area.to_s)
     end
   end
 end
