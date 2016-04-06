@@ -2,10 +2,9 @@ window.COPO = window.COPO || {};
 window.COPO.permissions = {
   check_disabled: function(){
     $('[data-switch=disallowed]').each(function(){
-      if ($(this).children().children().prop('checked')){
+      if ($(this).find('input').prop('checked')){
         var permission_id =  $(this).data().permission;
-        element = $("div[data-permission='"+ permission_id +"'].disable>label>input")
-        element.prop("disabled", !element.prop("disabled"));
+        COPO.permissions.toggle_switches_disabled(permission_id);
       }
     });
   },
@@ -22,8 +21,7 @@ window.COPO.permissions = {
 
       if (switch_type === "disallowed") {
         $("div[data-permission='"+permission_id+"'][data-switch=last_only]").find('input').prop("checked", false);
-        element = $("div[data-permission='"+ permission_id +"'].disable>label>input")
-        element.prop("disabled", !element.prop("disabled"));
+        COPO.permissions.toggle_switches_disabled(permission_id);
       }
 
       var data = COPO.permissions.set_data(attribute, new_state);
@@ -47,6 +45,11 @@ window.COPO.permissions = {
     } else {
       return !current_state
     }
+  },
+
+  toggle_switches_disabled: function(permission_id){
+    element = $("div[data-permission='"+ permission_id +"'].disable").find('input');
+    element.prop("disabled", !element.prop("disabled"));
   },
 
   set_data: function(attribute, value){
