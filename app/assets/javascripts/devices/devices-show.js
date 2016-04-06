@@ -4,8 +4,6 @@ $(document).on('page:change', function() {
     COPO.maps.initMarkers();
     COPO.maps.initControls();
     COPO.maps.lc.start();
-    COPO.maps.popUpOpenListener();
-    //google.charts.setOnLoadCallback(COPO.charts.refreshCharts(gon.checkins));
 
     $('li.tab').on('click', function() {
       var tab = event.target.innerText
@@ -22,5 +20,23 @@ $(document).on('page:change', function() {
       COPO.charts.refreshCharts(gon.checkins);
      });
 
+    map.on('contextmenu', function(e){
+      var coords = {};
+      coords.lat = e.latlng.lat.toFixed(6);
+      coords.lng = e.latlng.lng.toFixed(6);
+      coords.checkinLink = COPO.utility.createCheckinLink(e.latlng);
+      template = $('#createCheckinTmp').html();
+      template = Mustache.render(template, coords);
+      var popup = L.popup().setLatLng(e.latlng).setContent(template);
+      popup.openOn(map);
+    })
+
+    map.on('popupopen', function(e){
+      var coords = e.popup.getLatLng()
+      if($('#current-location').length){
+        $createCheckinLink = COPO.utility.createCheckinLink(coords);
+        $('#current-location').replaceWith($createCheckinLink);
+      }
+    })
   }
 });

@@ -5995,41 +5995,41 @@ Copyright (c) 2015 Daniel Eden
 }
 
 /* line 12, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_color.scss */
-.dark-text, .primary-color.lighten, .landing-section.promotion .lighten.active, .landing-section.full-width#start, #promo .lighten.overlay, .secondary-color, h2, h3, h4, h5, .nav-wrapper.transparent-nav a {
+.dark-text, .primary-color.lighten, .promo .lighten.overlay, .c-welcome.a-index .landing-section.promotion .lighten.active, .c-welcome.a-index .landing-section.full-width#start, .secondary-color, h2, h3, h4, h5, .nav-wrapper.transparent-nav a {
   color: rgba(0, 0, 0, 0.8);
 }
 /* line 15, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_color.scss */
-.dark-text.secondary, .secondary.primary-color.lighten, .landing-section.promotion .secondary.lighten.active, .secondary.landing-section.full-width#start, #promo .secondary.lighten.overlay, .secondary.secondary-color, h2.secondary, h3.secondary, h4.secondary, h5.secondary, p, .nav-wrapper.transparent-nav a.secondary {
+.dark-text.secondary, .secondary.primary-color.lighten, .promo .secondary.lighten.overlay, .c-welcome.a-index .landing-section.promotion .secondary.lighten.active, .c-welcome.a-index .secondary.landing-section.full-width#start, .secondary.secondary-color, h2.secondary, h3.secondary, h4.secondary, h5.secondary, p, .nav-wrapper.transparent-nav a.secondary {
   color: rgba(0, 0, 0, 0.7);
 }
 /* line 18, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_color.scss */
-.dark-text.hint, .hint.primary-color.lighten, .landing-section.promotion .hint.lighten.active, .hint.landing-section.full-width#start, #promo .hint.lighten.overlay, .hint.secondary-color, .btn.disabled, .disabled.btn-large, .btn-flat.disabled, .btn-floating.disabled, h2.hint, h3.hint, h4.hint, h5.hint, .nav-wrapper.transparent-nav a.hint, .landing-section.full-width#start form input[type="text"]::-webkit-input-placeholder {
+.dark-text.hint, .hint.primary-color.lighten, .promo .hint.lighten.overlay, .c-welcome.a-index .landing-section.promotion .hint.lighten.active, .c-welcome.a-index .hint.landing-section.full-width#start, .hint.secondary-color, .btn.disabled, .disabled.btn-large, .btn-flat.disabled, .btn-floating.disabled, h2.hint, h3.hint, h4.hint, h5.hint, .nav-wrapper.transparent-nav a.hint, .c-welcome.a-index .landing-section.full-width#start form input[type="text"]::-webkit-input-placeholder {
   color: rgba(0, 0, 0, 0.38);
 }
 
 /* line 23, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_color.scss */
-.light-text, .primary-color.darken, .landing-section.promotion .darken.active, #promo .darken.overlay, footer a, footer div {
+.light-text, .primary-color.darken, .promo .darken.overlay, .c-welcome.a-index .landing-section.promotion .darken.active, footer a, footer div {
   color: white;
 }
 /* line 27, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_color.scss */
-.light-text.secondary, .secondary.primary-color.darken, .landing-section.promotion .secondary.darken.active, #promo .secondary.darken.overlay, footer a.secondary, footer div.secondary {
+.light-text.secondary, .secondary.primary-color.darken, .promo .secondary.darken.overlay, .c-welcome.a-index .landing-section.promotion .secondary.darken.active, footer a.secondary, footer div.secondary {
   color: rgba(255, 255, 255, 0.7);
 }
 /* line 30, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_color.scss */
-.light-text.hint, .hint.primary-color.darken, .landing-section.promotion .hint.darken.active, #promo .hint.darken.overlay, footer a.hint, footer div.hint {
+.light-text.hint, .hint.primary-color.darken, .promo .hint.darken.overlay, .c-welcome.a-index .landing-section.promotion .hint.darken.active, footer a.hint, footer div.hint {
   color: rgba(255, 255, 255, 0.3);
 }
 
 /* line 35, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_color.scss */
-.primary-color, .landing-section.promotion .active, #promo .overlay {
+.primary-color, .promo .overlay, .c-welcome.a-index .landing-section.promotion .active {
   background-color: #47b8e0;
 }
 /* line 38, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_color.scss */
-.primary-color.lighten, .landing-section.promotion .lighten.active, .landing-section.full-width#start, #promo .lighten.overlay {
+.primary-color.lighten, .promo .lighten.overlay, .c-welcome.a-index .landing-section.promotion .lighten.active, .c-welcome.a-index .landing-section.full-width#start {
   background-color: #88d1eb;
 }
 /* line 43, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_color.scss */
-.primary-color.darken, .landing-section.promotion .darken.active, #promo .darken.overlay {
+.primary-color.darken, .promo .darken.overlay, .c-welcome.a-index .landing-section.promotion .darken.active {
   background-color: #2092bb;
 }
 
@@ -19098,7 +19098,7 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
 }
 
 /* line 29, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
-.quarter-opacity, #promo .overlay {
+.quarter-opacity, .promo .overlay {
   opacity: 0.25;
 }
 
@@ -19118,6 +19118,35 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
 /* line 50, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
 .btn i, .btn-large i, .btn-large i, .btn-flat i, .btn-floating i {
   color: rgba(0, 0, 0, 0.8);
+}
+
+/* line 55, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
+.promo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -10;
+  overflow: hidden;
+}
+/* line 63, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
+.promo .overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -5;
+}
+/* line 72, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
+.promo video {
+  left: 0;
+  top: 0;
+  position: absolute;
+  width: auto;
+  height: 100%;
+  z-index: -10;
 }
 
 /* line 4, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
@@ -19291,7 +19320,6 @@ main {
 
 /* line 13, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/layout.scss */
 footer.page-footer {
-  margin-top: 0;
   z-index: 10;
 }
 
@@ -19569,137 +19597,124 @@ footer.page-footer {
   line-height: 24px;
 }
 
-/* line 1, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section {
+/* line 2, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/placeholder.scss */
+.placeholder .bg-wrapper {
+  height: 100%;
+  background-image: url(/assets/background-6b6064092c33add904861a1a72a61fabbd1fd64e7a8d6950a2f3c109c3bc6ab8.jpg);
+  background-size: cover;
+}
+/* line 8, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/placeholder.scss */
+.placeholder .bg-ribbon {
+  background-color: rgba(255, 255, 255, 0.5);
   width: 100%;
 }
-/* line 5, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section .row {
+
+/* line 2, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section {
+  width: 100%;
+}
+/* line 6, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section .row {
   margin-left: auto;
   margin-right: auto;
 }
-/* line 9, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section .row .col {
+/* line 10, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section .row .col {
   padding-top: 2rem;
   padding-bottom: 2rem;
 }
-/* line 14, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section .parallax-container {
+/* line 15, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section .parallax-container {
   height: 500px;
 }
-/* line 17, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section .image-container {
+/* line 18, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section .image-container {
   opacity: 0;
 }
-/* line 20, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section .image-container.iphone-map {
+/* line 21, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section .image-container.iphone-map {
   height: 700px;
   overflow: hidden;
 }
-/* line 23, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section .image-container.iphone-map img {
+/* line 24, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section .image-container.iphone-map img {
   height: 130%;
 }
-/* line 27, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section .image-container.cloud-cp {
+/* line 28, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section .image-container.cloud-cp {
   height: auto;
 }
-/* line 29, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section .image-container.cloud-cp img {
+/* line 30, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section .image-container.cloud-cp img {
   width: 100%;
 }
-/* line 38, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section.splash .valign .start-btn {
+/* line 39, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section.splash .valign .start-btn {
   margin-top: 1rem;
   height: 50px;
   width: auto;
   cursor: pointer;
 }
-/* line 46, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section.splash .parallax-container {
+/* line 47, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section.splash .parallax-container {
   height: 100vh;
 }
-/* line 49, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section.splash .parallax-container .parallax {
+/* line 50, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section.splash .parallax-container .parallax {
   opacity: 0.8;
 }
-/* line 56, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section.promotion {
+/* line 57, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section.promotion {
   padding-top: 2.5rem;
   padding-bottom: 4rem;
 }
-/* line 60, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section.promotion .card {
+/* line 61, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section.promotion .card {
   padding: 2rem;
   cursor: pointer;
 }
-/* line 65, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section.promotion .active {
+/* line 66, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section.promotion .active {
   transition: all 0.2s ease;
 }
-/* line 69, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section.promotion .active h4, .landing-section.promotion .active i {
+/* line 70, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section.promotion .active h4, .c-welcome.a-index .landing-section.promotion .active i {
   color: #092c38;
 }
-/* line 76, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section.full-width {
+/* line 77, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section.full-width {
   padding: 2rem;
   padding-top: 3rem;
   padding-bottom: 4rem;
 }
-/* line 81, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section.full-width#start {
+/* line 82, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section.full-width#start {
   padding-bottom: 0;
 }
-/* line 85, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section.full-width#start article.row {
+/* line 86, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section.full-width#start article.row {
   margin-bottom: 0;
 }
-/* line 89, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section.full-width#start form {
+/* line 90, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section.full-width#start form {
   padding: 0;
 }
-/* line 97, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section.full-width#start #get-started {
+/* line 98, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section.full-width#start #get-started {
   font-size: 1.3rem;
 }
-/* line 104, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section.already-using {
+/* line 105, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section.already-using {
   padding-top: 2.5rem;
   padding-bottom: 4rem;
 }
-/* line 108, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-.landing-section.already-using .app {
+/* line 109, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index .landing-section.already-using .app {
   height: 300px;
 }
-
-/* line 114, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-#promo {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -10;
-  overflow: hidden;
-}
-/* line 122, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-#promo .overlay {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -5;
-}
-/* line 131, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/landing-page.scss */
-#promo video {
-  left: 0;
-  top: 0;
-  position: absolute;
-  width: auto;
-  height: 100%;
-  z-index: -10;
+/* line 115, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-index.scss */
+.c-welcome.a-index footer.page-footer {
+  margin-top: 0;
 }
 
 /* line 3, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
@@ -19716,27 +19731,6 @@ footer.page-footer {
 /* line 14, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
 #dashboard-quicklinks {
   margin-bottom: 3em;
-}
-
-/* line 2, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/placeholder.scss */
-.placeholder .bg-wrapper {
-  height: 100%;
-  background-image: url(/assets/background-6b6064092c33add904861a1a72a61fabbd1fd64e7a8d6950a2f3c109c3bc6ab8.jpg);
-  background-size: cover;
-}
-/* line 8, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/placeholder.scss */
-.placeholder .bg-ribbon {
-  background-color: rgba(255, 255, 255, 0.5);
-  width: 100%;
-}
-
-/* line 1, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user.scss */
-.icon {
-  width: 4rem;
-  height: 4rem;
-  margin-right: 1rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
 }
 
 /* line 2, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */

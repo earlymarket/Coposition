@@ -51401,6 +51401,15 @@ COPO.utility = {
       .attr('id', fogId + checkin.id).attr('class', foggedClass).prop('outerHTML')
   },
 
+  createCheckinLink: function(coords){
+    var checkin = {
+      'checkin[lat]': coords.lat.toFixed(6),
+      'checkin[lng]': coords.lng.toFixed(6)
+    }
+    var checkinPath = location.pathname + '/checkins?' + $.param(checkin);
+    return COPO.utility.ujsLink('post', 'Create checkin here', checkinPath).prop('outerHTML');
+  },
+
   friendsName: function(friend){
     return friend.username ? friend.username : friend.email.split('@')[0]
   },
@@ -51553,19 +51562,19 @@ function addWindowResizeListeners(){
 
 function responsiveVideo(){
   var ratio = 1920/1080;
-  var $h = $("#promo").height();
-  var $w = $("#promo").width();
+  var $h = $(".promo").height();
+  var $w = $(".promo").width();
   var rRatio = $w/$h;
 
   if(rRatio < ratio){
     // Aspect ratio is lower than 16:9
-    $("#promo video").css({
+    $(".promo video").css({
       width: 'auto',
       height: '100%'
     });
   }else{
     // Aspect ration is higher than 16:9
-    $("#promo video").css({
+    $(".promo video").css({
       width: '100%',
       height: 'auto'
     });
@@ -51703,8 +51712,8 @@ window.COPO.maps = {
     map.once('ready', function() {
       COPO.maps.renderMarkers();
       COPO.maps.bindMarkerListeners();
-      if(COPO.maps.markers.getLayers().length){
-        map.fitBounds(COPO.maps.markers.getBounds())
+      if(COPO.maps.allMarkers.getLayers().length){
+        map.fitBounds(COPO.maps.allMarkers.getBounds())
       } else {
         map.once('locationfound', function(e) {
           map.panTo(e.latlng);
@@ -51731,6 +51740,7 @@ window.COPO.maps = {
   },
 
   renderMarkers: function(){
+    COPO.maps.allMarkers = new L.MarkerClusterGroup();
     COPO.maps.markers = new L.MarkerClusterGroup();
     COPO.maps.last = new L.MarkerClusterGroup();
     var checkins = gon.checkins;
@@ -51747,7 +51757,7 @@ window.COPO.maps = {
           markerObject.title = 'ID: ' + checkin.id + ' - Most recent'
         }
         var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), markerObject);
-
+        COPO.maps.allMarkers.addLayer(marker);
         if (i === 0) {
           COPO.maps.last.addLayer(marker);
         } else {
@@ -51759,10 +51769,7 @@ window.COPO.maps = {
   },
 
   bindMarkerListeners: function(){
-    COPO.maps.markers.eachLayer(function(marker) {
-      COPO.maps.markerClickListener(marker);
-    })
-    COPO.maps.last.eachLayer(function(marker) {
+    COPO.maps.allMarkers.eachLayer(function(marker) {
       COPO.maps.markerClickListener(marker);
     })
   },
@@ -51770,18 +51777,19 @@ window.COPO.maps = {
   markerClickListener: function(marker) {
     marker.on('click', function(e) {
       checkin = this.options.checkin;
+      if(!marker._popup){
+        template = COPO.maps.buildMarkerPopup(checkin);
+        marker.bindPopup(L.Util.template(template, checkin));
+        marker.openPopup();
+      }
       if ($(".c-devices.a-show").length === 1){
         $.get({
           url: "/users/"+gon.current_user_id+"/devices/"+checkin.device_id+"/checkins/"+checkin.id,
           dataType: "json"
         }).done(function(data) {
-          checkin = data;
+          $geocodedAddress = '<li class="address">Address: ' + data.address + '</li>'
+          $('.address').replaceWith($geocodedAddress);
         })
-      }
-      if(!marker._popup){
-        template = COPO.maps.buildMarkerPopup(checkin);
-        marker.bindPopup(L.Util.template(template, checkin));
-        marker.openPopup();
       }
       map.panTo(this.getLatLng());
       COPO.maps.w3w.setCoordinates(e);
@@ -51789,26 +51797,23 @@ window.COPO.maps = {
   },
 
   buildMarkerPopup: function(checkin){
-    var checkinDate = new Date(checkin.created_at).toUTCString()
+    var checkinTemp = {};
+    checkinTemp.id = checkin.id
+    checkinTemp.lat = checkin.lat.toFixed(6);
+    checkinTemp.lng = checkin.lng.toFixed(6);
+    checkinTemp.created_at = new Date(checkin.created_at).toUTCString();
+    checkinTemp.address = checkin.address || checkin.fogged_area;
     var foggedClass;
     checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
-
-    template = '<h3>ID: {id}</h3>'
-    template += '<ul>'
-    template += '<li>Created on: '+ checkinDate + '</li>'
-    template += '<li>Latitude: {lat}</li>'
-    template += '<li>Longitude: {lng}</li>'
-    template += '<li>Address: ' + (checkin.address || checkin.fogged_area) + '</li>'
-    if ($(".c-devices.a-show").length === 1){
-      if (checkin.fogged){
-        template += '<li class="foggedAddress">Fogged address: ' + checkin.fogged_area + '</li>'
+    checkinTemp.foggedAddress = function(){
+      if(checkin.fogged){
+        return '<li class="foggedAddress">Fogged address: ' + checkin.fogged_area + '</li>'
       }
-      template += '<li>'+ COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog')
-      template += COPO.utility.deleteCheckinLink(checkin) + '</li>';
-      template += '</ul>';
     }
-
-    return template;
+    checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
+    checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
+    var template = $('.markerPopupTmpl').html();
+    return Mustache.render(template, checkinTemp);
   },
 
   initControls: function(){
@@ -51841,26 +51846,6 @@ window.COPO.maps = {
     }).addTo(map);
 
   },
-
-  popUpOpenListener: function(){
-    map.on('popupopen', function(e){
-      var coords = e.popup.getLatLng()
-      if($('#current-location').length){
-
-        var checkin = {
-          'checkin[lat]': coords.lat.toFixed(6),
-          'checkin[lng]': coords.lng.toFixed(6)
-        }
-        var checkinPath = location.pathname + '/checkins';
-        checkinPath += '?'
-        checkinPath += $.param(checkin)
-
-        $createCheckinLink = COPO.utility.ujsLink('post', 'Create checkin here', checkinPath);
-        $('#current-location').replaceWith($createCheckinLink);
-      }
-    })
-  }
-
 }
 
 ;
@@ -52065,8 +52050,6 @@ $(document).on('page:change', function() {
     COPO.maps.initMarkers();
     COPO.maps.initControls();
     COPO.maps.lc.start();
-    COPO.maps.popUpOpenListener();
-    //google.charts.setOnLoadCallback(COPO.charts.refreshCharts(gon.checkins));
 
     $('li.tab').on('click', function() {
       var tab = event.target.innerText
@@ -52083,6 +52066,24 @@ $(document).on('page:change', function() {
       COPO.charts.refreshCharts(gon.checkins);
      });
 
+    map.on('contextmenu', function(e){
+      var coords = {};
+      coords.lat = e.latlng.lat.toFixed(6);
+      coords.lng = e.latlng.lng.toFixed(6);
+      coords.checkinLink = COPO.utility.createCheckinLink(e.latlng);
+      template = $('#createCheckinTmp').html();
+      template = Mustache.render(template, coords);
+      var popup = L.popup().setLatLng(e.latlng).setContent(template);
+      popup.openOn(map);
+    })
+
+    map.on('popupopen', function(e){
+      var coords = e.popup.getLatLng()
+      if($('#current-location').length){
+        $createCheckinLink = COPO.utility.createCheckinLink(coords);
+        $('#current-location').replaceWith($createCheckinLink);
+      }
+    })
   }
 });
 $(document).on('page:change', function() {
