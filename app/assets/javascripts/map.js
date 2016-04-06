@@ -97,7 +97,6 @@ window.COPO.maps = {
 
   buildMarkerPopup: function(checkin){
     var checkinTemp = {};
-    var template;
     checkinTemp.id = checkin.id
     checkinTemp.lat = checkin.lat.toFixed(6);
     checkinTemp.lng = checkin.lng.toFixed(6);
@@ -112,11 +111,7 @@ window.COPO.maps = {
     }
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
-    if ($(".c-devices.a-show").length === 1){
-      template = $('#markerPopupTmpl').html();
-    } else if ($(".c-friends.a-show_device").length === 1){
-      template = $('#friendMarkerPopupTmpl').html();
-    }
+    var template = $('#markerPopupTmpl').html();
     template = Mustache.render(template, checkinTemp);
     return template;
   },
