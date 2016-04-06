@@ -51862,24 +51862,22 @@ window.COPO.permissions = {
 
   switch_change:function(){
     $(".switch").change(function( event ) {
-      var permission_id = $(this).data().permission;
       var attribute = $(this).data().attribute;
       var switch_type = $(this).data().switch;
-
-      var permission = $.grep(gon.permissions, function(perm){ return perm.id === permission_id; });
-      var new_state = permission[0][attribute] = COPO.permissions.new_state(permission[0][attribute], switch_type);
-      var device_id = permission[0]['device_id'];
+      var permission_id =  $(this).data().permission;
+      var permission = _.find(gon.permissions, _.matchesProperty('id', permission_id));
+      var device_id = permission['device_id'];
+      permission[attribute] = COPO.permissions.new_privilege(permission[attribute], switch_type);
 
       if (switch_type === "disallowed") {
         $("div[data-permission='"+permission_id+"'][data-switch=last_only]").find('input').prop("checked", false);
         COPO.permissions.toggle_switches_disabled(permission_id);
       }
 
-      var data = COPO.permissions.set_data(attribute, new_state);
       $.ajax({
         url: "/users/"+gon.current_user_id+"/devices/"+device_id+"/permissions/"+permission_id+"",
         type: 'PUT',
-        data: { permission : data }
+        data: { permission }
       });
     })
   },
@@ -51901,16 +51899,6 @@ window.COPO.permissions = {
   toggle_switches_disabled: function(permission_id){
     element = $("div[data-permission='"+ permission_id +"'].disable").find('input');
     element.prop("disabled", !element.prop("disabled"));
-  },
-
-  set_data: function(attribute, value){
-    if (attribute === 'privilege'){
-      return { privilege: value };
-    } else if (attribute === 'bypass_fogging'){
-      return { bypass_fogging: value };
-    } else {
-      return { bypass_delay: value };
-    }
   }
 };
 
