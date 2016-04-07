@@ -40,7 +40,7 @@
         <div class="row">
           <div class="input-field col s12">
           <%= f.label :current_password, "Current password (we need your current password to confirm your changes)" %>
-          <%= f.password_field :current_password, autocomplete: "off" %>
+          <%= f.password_field :current_password, autocomplete: "off", required: true %>
           </div>
         </div>
         <%= f.button "Update", class: "btn waves-effect waves-light" %>
@@ -55,7 +55,7 @@
         <div class="row">
           <div class="input-field col s12">
           <%= f.label :password, "Current Password" %>
-          <%= f.password_field :password, autocomplete: "off" %>
+          <%= f.password_field :password, autocomplete: "off", required: true %>
           </div>
         </div>
         <%= f.button "Cancel my account", class: "btn red white-text", data: { confirm: "Are you sure?" }%>
