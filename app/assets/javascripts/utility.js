@@ -97,8 +97,11 @@ COPO.utility = {
     });
 
     client.on( 'error', function(event) {
-     console.log( 'ZeroClipboard error of type "' + event.name + '": ' + event.message );
-     ZeroClipboard.destroy();
+      if(event.name === 'flash-disabled') {
+        $('.clip_button').remove();
+      }
+      console.log( 'ZeroClipboard error of type "' + event.name + '": ' + event.message );
+      ZeroClipboard.destroy();
     });
   }
 };
