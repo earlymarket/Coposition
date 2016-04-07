@@ -60,14 +60,19 @@
             </div>
           </div>
         <% end %>
-        <%= f.button "Sign up", class: "waves-effect waves-light btn" %></div>
+        <div class="row">
+          <div class="col s12">
+            <%= f.button "Sign up", class: "waves-effect waves-light btn" %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12">
+            Already registered as a <%= "#{resource.class.to_s.downcase}" %>? <%= link_to "Log in!", new_session_path(resource_name) %>
+          </div>
+        </div>
+      </div>
     </fieldset>
     <% end %>
-    <div class="row">
-      <div class="col s12 light-text">
-        Already registered as a <%= "#{resource.class.to_s.downcase}" %>? <%= link_to "Log in!", new_session_path(resource_name) %>
-      </div>
-    </div>
   </section>
 </div>
 <div class="promo">
