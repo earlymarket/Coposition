@@ -1,3 +1,4 @@
+@javascript
 Feature: Approvals
 
   Background: A user gets sent approval requests
@@ -6,7 +7,7 @@ Feature: Approvals
       And A user sends me a friend request
       And I click "Apps"
 
-    @javascript
+    #@javascript
     Scenario: User accepts requests
       When I click "Approve"
         Then I should have an app
@@ -14,7 +15,7 @@ Feature: Approvals
       When I click "Approve"
         Then I should have a friend
 
-    @javascript
+    #@javascript
     Scenario: User rejects requests
       When I click "Reject"
         Then I should not have any apps
