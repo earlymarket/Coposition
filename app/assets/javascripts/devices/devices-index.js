@@ -7,9 +7,12 @@ $(document).on('page:change', function() {
       COPO.utility.initClipboard();
       $('.tooltipped').tooltip('remove');
       $('.tooltipped').tooltip({delay: 50});
-      $('.linkbox').off();
-      $('.linkbox').on('click', function(e){
+      $('.linkbox').off('touchstart click');
+      $('.linkbox').on('touchstart click', function(e){
         this.select()
+      })
+      $('.linkbox').each(function(i,linkbox){
+        $(linkbox).attr('size', $(linkbox).val().length)
       })
     }
     initPage();
