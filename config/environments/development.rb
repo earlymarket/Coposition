@@ -60,11 +60,11 @@ Rails.application.configure do
     password: ""
   }
 
-  # config.after_initialize do
-  #   Bullet.enable = true
-  #   Bullet.console = true
-  #   Bullet.rails_logger = true
-  #   Bullet.bullet_logger = true
-  #   Bullet.alert = true
-  # end
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.console = true
+    Bullet.rails_logger = true
+    Bullet.bullet_logger = true
+    Bullet.alert = true
+  end
 end
