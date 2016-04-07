@@ -2,6 +2,7 @@
 Feature: Approvals
 
   Background: A user gets sent approval requests
+    Given I am using a large screen
     Given I am signed in as a user
       And A developer sends me an approval request
       And A user sends me a friend request
