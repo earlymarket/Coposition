@@ -28,7 +28,7 @@
                 <% devices.each do |device| %>
                   <% permission =  device.permission_for(approvable) %>
                   <li class="collection-item row valign-wrapper">
-                    <h5 class="valign col s8"><%= device.name %></h5>
+                    <h5 class="valign col s7"><%= device.name %></h5>
                     <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
                   </li>
                 <% end %>
