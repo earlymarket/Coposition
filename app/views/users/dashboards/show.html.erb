@@ -1,9 +1,11 @@
 <section class="dashboard row">
   <h4>Hello <%= current_user.username %></h4>
   <p>
-    You checked-in 10 times this week.
-    <br />
-    That is an increase of 50% from last week.
+    You checked-in <%= @week_checkins_count %> times this week.
+    <% if @percent_change.present? %>
+      <br />
+      That is an <%= @percent_change > 0 ? 'increase' : 'decrease' %> of <%= @percent_change %>% from last week.
+    <% end %>
   </p>
   <p>
     Your most used device is <%= @most_used_device.name %>.

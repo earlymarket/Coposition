@@ -77,4 +77,11 @@ class Checkin < ActiveRecord::Base
       self.slice(:id, :uuid, :lat, :lng, :created_at, :updated_at, :fogged)
     end
   end
+
+  def self.hash_group_and_count_by(attribute)
+    select(&attribute).group_by(&attribute).inject({}) do |hash, (key,count)|
+      hash[key] = count.length
+      hash
+    end.sort_by{ |_, v| -v}
+  end
 end
