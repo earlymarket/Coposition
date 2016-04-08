@@ -6,7 +6,7 @@ window.COPO.charts = {
     // Define the data for the chart.
     var chart_div = document.getElementById('bar-chart');
     if (chart_div){
-      var chart = new google.charts.Bar(document.getElementById('bar-chart'));
+      var chart = new google.charts.Bar(chart_div);
       barChartData = new google.visualization.DataTable();
       barChartData.addColumn('string', 'created_at');
       barChartData.addColumn('number', 'Checkins');

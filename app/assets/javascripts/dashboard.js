@@ -1,5 +1,9 @@
 $(document).on('page:change', function() {
   if ($(".c-dashboards.a-show").length === 1) {
+    COPO.charts.drawBarChart(gon.checkins);
+    $(window).resize(function(){
+      COPO.charts.drawBarChart(gon.checkins);
+     });
     var checkinData =  {
       x: 'x',
       columns: [

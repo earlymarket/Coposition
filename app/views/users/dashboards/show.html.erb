@@ -1,3 +1,4 @@
+<%= Gon::Base.render_data %>
 <section class="dashboard row">
   <h4>Hello <%= current_user.username %></h4>
   <p>
@@ -19,10 +20,9 @@
 <div class="divider"></div>
 
 <section id="dashboard-charts" class="dashboard row">
-  <article class="chart col s12 l6" id="daily-checkins">
-    <h5>Daily check-ins</h5>
-    <div></div>
-    <a class="right" href="#">view all</a>
+  <article class="chart col s12 l6" id='weeks-checkins'>
+    <h5>This weeks check-ins</h5>
+    <div id='bar-chart'></div>
   </article>
   <article class="col s12 l6" id="most-checkins">
     <ul class="collection">
