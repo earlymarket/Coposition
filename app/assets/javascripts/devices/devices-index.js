@@ -7,9 +7,20 @@ $(document).on('page:change', function() {
       COPO.utility.initClipboard();
       $('.tooltipped').tooltip('remove');
       $('.tooltipped').tooltip({delay: 50});
-      $('.linkbox').off();
+      $('.linkbox').off('touchstart click');
+
       $('.linkbox').on('click', function(e){
         this.select()
+      })
+
+      //backup for iOS
+      $('.linkbox').on('touchstart', function(){
+        this.focus();
+        this.setSelectionRange(0, $(this).val().length);
+      })
+
+      $('.linkbox').each(function(i,linkbox){
+        $(linkbox).attr('size', $(linkbox).val().length)
       })
     }
     initPage();
