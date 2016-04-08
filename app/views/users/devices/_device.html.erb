@@ -23,7 +23,7 @@
             <% devices_permitted_actors_for(device).each do |permitted| %>
               <% permission =  device.permission_for(permitted) %>
               <li class="collection-item row valign-wrapper">
-                <div class='valign col s8'>
+                <div class='valign col s7'>
                   <%= permissible_title(permitted) %>
                 </div>
                   <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
