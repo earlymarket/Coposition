@@ -86,4 +86,12 @@ class Checkin < ActiveRecord::Base
       hash
     end.sort_by{ |_, v| -v}
   end
+
+  def self.percentage_increase(time_range)
+    recent_checkins_count = where(created_at: 1.send(time_range).ago..Time.now).count
+    older_checkins_count = where(created_at: 2.send(time_range).ago..1.send(time_range).ago).count
+    if recent_checkins_count > 0 && older_checkins_count > 0
+      (((recent_checkins_count.to_f/older_checkins_count.to_f)-1)*100).round(2)
+    end
+  end
 end

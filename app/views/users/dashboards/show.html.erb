@@ -29,9 +29,9 @@
   <article class="col s12 l6" id="most-checkins">
     <ul class="collection">
       <li class="collection-header"><h5>Most frequent check-in location</h5></li>
-      <% @most_frequent.each do |area_count| %>
+      <% @most_frequent_areas.each do |area_count| %>
         <li class="collection-item"><div><%= area_count[0] %><span class="badge"><%= area_count[1] %> check-ins</span></div></li>
-      <% end if @most_frequent.present? %>
+      <% end if @most_frequent_areas.present? %>
     </ul>
   </article>
 </section>
