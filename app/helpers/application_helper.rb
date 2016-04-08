@@ -28,4 +28,27 @@ module ApplicationHelper
     resource.avatar? ? cl_image_tag(resource.avatar.path, options) : cl_image_tag("placeholder_wzhvlw.png", options)
   end
 
+  def toast_flash
+    output = ''
+
+    if alert
+      output << "Materialize.toast('#{j alert}', 3000);\n"
+      flash.discard(:alert)
+    end
+
+    if notice
+      output << "Materialize.toast('#{j notice}', 3000);\n"
+      flash.discard(:notice)
+    end
+
+    if flash[:errors]
+      flash['errors'].each do |error|
+        output << "Materialize.toast('#{j error}', 5000, 'red');\n"
+      end
+      flash.discard(:errors)
+    end
+
+    output
+  end
+
 end
