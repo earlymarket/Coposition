@@ -6,7 +6,7 @@
     That is an increase of 50% from last week.
   </p>
   <p>
-    Your most used device is devicename.
+    Your most used device is <%= @most_used_device.name %>.
   </p>
 
   <%= link_to(edit_user_registration_path, class: 'btn') do %>
@@ -25,10 +25,9 @@
   <article class="col s12 l6" id="most-checkins">
     <ul class="collection">
       <li class="collection-header"><h5>Most frequent check-in location</h5></li>
-      <li class="collection-item"><div>Tower Bridge<span class="badge">10 check-ins</span></div></li>
-      <li class="collection-item"><div>London Bridge<span class="badge">5 check-ins</span></div></li>
-      <li class="collection-item"><div>Trafalgar Square<span class="badge">5 check-ins</span></div></li>
-      <li class="collection-item"><div>Old Street<span class="badge">3 check-ins</span></div></li>
+      <% @most_frequent.each do |area_count| %>
+        <li class="collection-item"><div><%= area_count[0] %><span class="badge"><%= area_count[1] %> check-ins</span></div></li>
+      <% end %>
     </ul>
   </article>
 </section>
