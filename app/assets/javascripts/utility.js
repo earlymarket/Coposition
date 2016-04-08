@@ -81,6 +81,7 @@ COPO.utility = {
 
     client.on( 'ready', function(event) {
       // console.log( 'movie is loaded' );
+      $('.clip_button').removeClass('hide');
 
       client.on( 'copy', function(event) {
         event.clipboardData.setData('text/plain', event.target.value);
@@ -97,9 +98,6 @@ COPO.utility = {
     });
 
     client.on( 'error', function(event) {
-      if(event.name === 'flash-disabled') {
-        $('.clip_button').remove();
-      }
       console.log( 'ZeroClipboard error of type "' + event.name + '": ' + event.message );
       ZeroClipboard.destroy();
     });
