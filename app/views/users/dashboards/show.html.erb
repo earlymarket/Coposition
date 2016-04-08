@@ -2,15 +2,17 @@
 <section class="dashboard row">
   <h4>Hello <%= current_user.username %></h4>
   <p>
-    You checked-in <%= @week_checkins_count %> times this week.
+    You checked-in <%= @week_checkins_count || 0 %> times this week.
     <% if @percent_change.present? %>
       <br />
       That is an <%= @percent_change > 0 ? 'increase' : 'decrease' %> of <%= @percent_change %>% from last week.
     <% end %>
   </p>
-  <p>
-    Your most used device is <%= @most_used_device.name %>.
-  </p>
+   <% if @most_used_device.present? %>
+    <p>
+      Your most used device is <%= @most_used_device.name %>.
+    </p>
+  <% end %>
 
   <%= link_to(edit_user_registration_path, class: 'btn') do %>
     Edit your profile
@@ -29,7 +31,7 @@
       <li class="collection-header"><h5>Most frequent check-in location</h5></li>
       <% @most_frequent.each do |area_count| %>
         <li class="collection-item"><div><%= area_count[0] %><span class="badge"><%= area_count[1] %> check-ins</span></div></li>
-      <% end %>
+      <% end if @most_frequent.present? %>
     </ul>
   </article>
 </section>
