@@ -1,20 +1,29 @@
-<%= form_for @developer, url: {action: "update"}, html: {class: "nifty_form", multipart: true} do |f| %>
-  <div class="field">
-    <%= f.label :company_name  %><br />
-    <%= f.text_field :company_name %>
+<%= form_for @developer, url: {action: "update"}, html: {class: "card col s12 m10 offset-m1", multipart: true} do |f| %>
+  <div class="card-content">
+    <legend class="card-title">Edit account</legend>
+    <div class="row">
+      <div class="input-field col s12">
+        <%= f.label :company_name  %><br />
+        <%= f.text_field :company_name %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <%= f.label :tagline  %><br />
+        <%= f.text_field :tagline %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <%= f.label :redirect_url  %><br />
+        <%= f.text_field :redirect_url %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <%= f.attachinary_file_field :avatar %>
+      </div>
+    </div>
+    <%= f.submit "Update", class: "btn btn-success m-m"  %>
   </div>
-  <div class="field">
-    <%= f.label :tagline  %><br />
-    <%= f.text_field :tagline %>
-  </div>
-  <div class="field">
-    <%= f.label :redirect_url  %><br />
-    <%= f.text_field :redirect_url %>
-  </div>
-  <br>
-  <div class="field">
-    <%= f.attachinary_file_field :avatar %>
-  </div>
-  <br>
-  <%= f.submit "Update", class: "btn btn-success m-m"  %>
 <% end %>

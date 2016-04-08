@@ -6,7 +6,8 @@ module DevicesHelper
 
   def devices_last_checkin(device)
     if device.checkins.exists?
-      "<p>Last reported in #{device.checkins.first.address}</p>".html_safe
+      last_checkin = device.checkins.first
+      "<p>Last reported in #{last_checkin.address} on #{humanize_date(last_checkin.created_at)}</p>".html_safe
     else
       "<p>No Checkins found</p>".html_safe
     end
@@ -37,7 +38,7 @@ module DevicesHelper
     })
 
     output << content_tag(:i, 'assignment',
-      { class: 'material-icons tooltipped clip_button',
+      { class: 'material-icons tooltipped clip_button hide',
         data:
         {'clipboard-target': ('linkbox' << device.id.to_s),
          tooltip: 'Click to copy',

@@ -52,7 +52,7 @@ window.COPO.maps = {
           checkin: checkin
         }
         if (i === 0) {
-          markerObject.icon = L.mapbox.marker.icon({ 'marker-symbol' : 'star', 'marker-color' : '#47b8e0' })
+          markerObject.icon = L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#47b8e0' })
           markerObject.title = 'ID: ' + checkin.id + ' - Most recent'
         }
         var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), markerObject);
@@ -101,7 +101,7 @@ window.COPO.maps = {
     checkinTemp.lat = checkin.lat.toFixed(6);
     checkinTemp.lng = checkin.lng.toFixed(6);
     checkinTemp.created_at = new Date(checkin.created_at).toUTCString();
-    checkinTemp.address = checkin.address || checkin.fogged_area;
+    checkinTemp.address = checkin.address;
     var foggedClass;
     checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
     checkinTemp.foggedAddress = function(){
