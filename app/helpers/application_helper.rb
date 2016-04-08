@@ -28,7 +28,7 @@ module ApplicationHelper
     resource.avatar? ? cl_image_tag(resource.avatar.path, options) : cl_image_tag("placeholder_wzhvlw.png", options)
   end
 
-  def toast_flash
+  def render_flash
     output = ''
 
     if alert
