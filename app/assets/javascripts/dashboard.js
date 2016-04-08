@@ -1,8 +1,8 @@
 $(document).on('page:change', function() {
   if ($(".c-dashboards.a-show").length === 1) {
-    COPO.charts.drawBarChart(gon.checkins);
+    COPO.charts.drawBarChart(gon.checkins, '270');
     $(window).resize(function(){
-      COPO.charts.drawBarChart(gon.checkins);
+      COPO.charts.drawBarChart(gon.checkins, '270');
      });
     var checkinData =  {
       x: 'x',

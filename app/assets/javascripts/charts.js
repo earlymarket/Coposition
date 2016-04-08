@@ -2,7 +2,7 @@ window.COPO = window.COPO || {};
 window.COPO.charts = {
   barChartData: null,
 
-  drawBarChart: function(checkins) {
+  drawBarChart: function(checkins, height) {
     // Define the data for the chart.
     var chart_div = document.getElementById('bar-chart');
     if (chart_div){
@@ -18,7 +18,8 @@ window.COPO.charts = {
         hAxis: { title: '' },
         vAxis: { title: 'Checkins' },
         colors: '#47b8e0',
-        legend: {position: 'none'}
+        legend: {position: 'none'},
+        height: height
       };
 
       // Listen for the 'select' event, and call my function selectHandler() when
