@@ -102,11 +102,7 @@ class User < ActiveRecord::Base
 
   def get_user_checkins(permissible)
     checkins_ids = devices.inject([]) do |result, device|
-      if permissible
-        result + device.permitted_history_for(permissible).pluck(:id)
-      else
-        result + device.checkins.pluck(:id)
-      end
+      result + (permissible ? device.permitted_history_for(permissible).pluck(:id) : device.checkins.pluck(:id))
     end
     Checkin.where(id: checkins_ids)
   end
