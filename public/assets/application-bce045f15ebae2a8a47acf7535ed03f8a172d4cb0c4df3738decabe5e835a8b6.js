@@ -51545,6 +51545,7 @@ COPO.utility = {
 
     client.on( 'ready', function(event) {
       // console.log( 'movie is loaded' );
+      $('.clip_button').removeClass('hide');
 
       client.on( 'copy', function(event) {
         event.clipboardData.setData('text/plain', event.target.value);
@@ -51561,8 +51562,8 @@ COPO.utility = {
     });
 
     client.on( 'error', function(event) {
-     console.log( 'ZeroClipboard error of type "' + event.name + '": ' + event.message );
-     ZeroClipboard.destroy();
+      console.log( 'ZeroClipboard error of type "' + event.name + '": ' + event.message );
+      ZeroClipboard.destroy();
     });
   }
 };
@@ -52120,9 +52121,20 @@ $(document).on('page:change', function() {
       COPO.utility.initClipboard();
       $('.tooltipped').tooltip('remove');
       $('.tooltipped').tooltip({delay: 50});
-      $('.linkbox').off();
+      $('.linkbox').off('touchstart click');
+
       $('.linkbox').on('click', function(e){
         this.select()
+      })
+
+      //backup for iOS
+      $('.linkbox').on('touchstart', function(){
+        this.focus();
+        this.setSelectionRange(0, $(this).val().length);
+      })
+
+      $('.linkbox').each(function(i,linkbox){
+        $(linkbox).attr('size', $(linkbox).val().length)
       })
     }
     initPage();
