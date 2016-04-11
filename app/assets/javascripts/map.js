@@ -88,6 +88,7 @@ window.COPO.maps = {
         }).done(function(data) {
           $geocodedAddress = '<li class="address">Address: ' + data.address + '</li>'
           $('.address').replaceWith($geocodedAddress);
+          gon.checkins[_.indexOf(gon.checkins, checkin)] = data;
         })
       }
       map.panTo(this.getLatLng());
