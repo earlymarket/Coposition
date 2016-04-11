@@ -201,7 +201,7 @@
   box-shadow: none;
   background-color: #26A69A;
   border: none;
-  left: -5px;
+  left: -7px;
   top: -6px;
   transition: width .2s cubic-bezier(0.215, 0.610, 0.355, 1.000),
               height .2s cubic-bezier(0.215, 0.610, 0.355, 1.000),

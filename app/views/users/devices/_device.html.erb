@@ -1,17 +1,55 @@
 <div class="card row">
 
-  <div class="col s8">
+  <div class="col s12">
+
     <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>">
       <h4><%= device.name %></h4>
       <%= devices_last_checkin(device) %>
     </a>
+
+    <% if device.developers.exists? || device.permitted_users.exists? %>
+      <a class="modal-trigger left" href="#perm<%=device.id%>"><i class="material-icons">lock</i></a>
+
+      <div id="perm<%=device.id%>" class="modal">
+        <div class="modal-content">
+          <h4>Permissions Controls</h4>
+          <ul class="permissions collection" data-device=<%=device.id%>>
+
+            <% devices_permitted_actors_for(device).each do |permitted| %>
+              <% permission =  device.permission_for(permitted) %>
+              <li class="collection-item row valign-wrapper">
+                <div class='valign col s7'>
+                  <%= permissible_title(permitted) %>
+                </div>
+                  <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
+              </li>
+            <% end %>
+
+          </ul>
+        </div>
+      </div>
+    <% end %>
+
+    <a class="modal-trigger left" href="#delay<%=device.id%>"><i class="material-icons">hourglass_empty</i></a>
+    <div id="delay<%=device.id%>" class="modal delay-modal">
+      <div class="modal-content">
+        <h4>Delay Controls</h4>
+        <label>Set when new checkins will become visible to your data consumers</label>
+        <div class='delay-slider' data-device=<%=device.id%>>
+        </div>
+        <div class='delay-slider-step-value'>
+        </div>
+      </div>
+    </div>
+
     <%= link_to(fogged_icon(device.fogged), user_device_path(current_user.url_id, device.id), { method: :put, id:"fogButton#{device.id}", remote: true, class: 'left', data: { fogged: device.fogged? } })%>
+
     <%= link_to(devices_shared_icon(device), user_device_path(current_user.url_id, device.id, published: device.published), { method: :put, id:"publishedButton#{device.id}", remote: true, class: 'left', data: { published: device.published? } })%>
     <div class="valign-wrapper" id="sharedLink<%= device.id %>">
       <%= devices_shared_link(device) if device.published %>
     </div>
   </div>
-
+<!--
   <div class="col s4 permissions-col">
     <% if device.developers.exists? || device.permitted_users.exists? %>
       <a class="waves-effect waves-light btn-flat modal-trigger right" href="#perm<%=device.id%>">Permissions<i class="material-icons right">lock</i></a>
@@ -36,9 +74,18 @@
       </div>
     <% end %>
   </div>
+
   <div class="col s12">
-    <label>Delay when new checkins will become visible to your data consumers (minutes)</label>
-    <div class='delay-slider' data-device=<%=device.id%>></div>
-    <div class='delay-slider-step-value'></div></br></br>
+    <a class="modal-trigger" href="#delay<%=device.id%>"><%=devices_delay_icon(device.delayed)%></a>
+    <div id="delay<%=device.id%>" class="modal delay-modal">
+      <div class="modal-content">
+        <label>Delay when new checkins will become visible to your data consumers</label>
+        <div class='delay-slider' data-device=<%=device.id%>>
+        </div>
+        <div class='delay-slider-step-value'>
+        </div>
+      </div>
+    </div>
   </div>
+  -->
 </div>
