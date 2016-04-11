@@ -1,5 +1,21 @@
 <%= render("/shared/notifications") %>
-$('#fog<%= @checkin_id %>').html("<%=j fogged_icon(@checkin.fogged)%>");
-$('#fogstatus<%= @checkin_id %>').html("Fogging status: <%=j fogged_icon(@checkin.fogged)%>");
-var img_url = '<%= checkins_static_map_url(@checkin) %>';
-$('#mapholder<%=@checkin.id%>').attr("src", img_url);
+var checkin = _.find(gon.checkins, _.matchesProperty('id',<%= @checkin.id %>));
+checkin.fogged = <%= @checkin.fogged %>
+
+//change open popups
+
+if(<%= @checkin.fogged %>){
+  $('#fog<%=@checkin.id%>').attr('class', 'fogged enabled-icon')
+    .parent().prepend('<li class="foggedAddress">Fogged address: <%= @checkin.fogged_area %></li>');
+  $('.foggedAddress').hide().slideDown('fast');
+  $('#tableFog<%=@checkin.id%>').attr('class', 'fogged enabled-icon')
+} else {
+  $('#fog<%=@checkin.id%>').attr('class', 'disabled-icon');
+  $('.foggedAddress').slideUp('fast', function(){
+    $(this).remove();
+  });
+  $('#tableFog<%=@checkin.id%>').attr('class', 'disabled-icon');
+}
+
+//refresh the state of all markers
+COPO.maps.queueRefresh();

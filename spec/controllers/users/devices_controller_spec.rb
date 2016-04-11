@@ -4,7 +4,12 @@ RSpec.describe Users::DevicesController, type: :controller do
   include ControllerMacros
 
   let(:empty_device) { FactoryGirl::create :device }
-  let(:device) { FactoryGirl::create :device }
+  let(:checkin) { FactoryGirl::create(:checkin, created_at: Date.yesterday) }
+  let(:device) do
+    dev = FactoryGirl::create :device
+    dev.checkins << [checkin, FactoryGirl::create(:checkin)]
+    dev
+  end
   let(:developer) { FactoryGirl::create :developer }
   let(:user) do
     user = create_user
@@ -19,6 +24,7 @@ RSpec.describe Users::DevicesController, type: :controller do
   let(:approval) { create_approval(user, new_user) }
   let(:user_param) {{ user_id: user.username }}
   let(:params) { user_param.merge(id: device.id) }
+  let(:date_params) { params.merge(from: Date.yesterday, to: Date.yesterday) }
 
   it 'should have a current_user' do
     user
@@ -52,12 +58,19 @@ RSpec.describe Users::DevicesController, type: :controller do
       get :new, user_param.merge(uuid: '123412341234')
       expect(assigns(:device).uuid).to eq('123412341234')
     end
+  end
 
-    it 'should assign :redirect to @redirect_target if exists' do
-      get :new, user_param
-      expect(assigns :redirect_target).to eq(nil)
-      get :new, user_param.merge(redirect: 'http://www.coposition.com/')
-      expect(assigns :redirect_target).to eq('http://www.coposition.com/')
+  describe 'GET #shared' do
+    it 'should deny access if device not published' do
+      get :shared, params
+      expect(response).to redirect_to(root_path)
+      expect(flash[:notice]).to match('not shared')
+    end
+
+    it 'should render page if published' do
+      device.published = true
+      get :shared, params
+      expect(response).to render_template('shared')
     end
   end
 
@@ -77,16 +90,6 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(response.code).to eq '302'
       expect(user.devices.count).to be count+1
       expect(user.devices.all.last).to eq empty_device
-    end
-
-    it 'should create a new device and redirect if provided' do
-      count = user.devices.count
-      post :create, user_param.merge({
-        redirect: 'http://www.coposition.com/',
-        device: { name: 'New Device' }
-      })
-      expect(user.devices.count).to be count+1
-      expect(response).to redirect_to('http://www.coposition.com/')
     end
 
     it 'should create a new device and a checkin if location provided' do
@@ -135,6 +138,15 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(device.fogged?).to be false
     end
 
+    it 'should switch published status' do
+      expect(device.published?).to be false
+      request.accept = 'text/javascript'
+      put :update, params.merge(published: true)
+
+      device.reload
+      expect(device.published?).to be true
+    end
+
     it 'should set a delay' do
       request.accept = 'text/javascript'
       put :update, params.merge(mins:13)
@@ -170,38 +182,4 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
   end
 
-  describe 'posting from app', :type => :request do
-
-    it 'should POST to create with a UUID' do
-      count = user.devices.count
-      headers = {
-        "X-Api-Key" => developer.api_key,
-        "X-User-Token" => user.authentication_token,
-        "X-User-Email" => user.email,
-        "X-Secret-App-Key" => Rails.application.secrets.mobile_app_key
-      }
-      post "/users/#{user.username}/devices", {
-        device: { uuid: empty_device.uuid }
-      }, headers
-      expect(user.devices.count).to be(count+1)
-      expect(user.devices.all.last).to eq empty_device
-    end
-
-    it 'should fail to to create a device with an invalid UUID' do
-      count = user.devices.count
-      headers = {
-        "X-Api-Key" => developer.api_key,
-        "X-User-Token" => user.authentication_token,
-        "X-User-Email" => user.email,
-        "X-Secret-App-Key" => Rails.application.secrets.mobile_app_key
-      }
-      post "/users/#{user.username}/devices", {
-        device: { uuid: 123 }
-      }, headers
-
-      expect(response.code).to eq '400'
-      expect(user.devices.count).to be count
-    end
-
-  end
 end

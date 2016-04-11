@@ -1,4 +1,5 @@
-<h1>Devices</h1>
+<%= Gon::Base.render_data %>
+<h1>Your devices</h1>
 <div>
   <% @devices.each do |device| %>
     <%= render device %>
@@ -8,52 +9,10 @@
 <div class="row">
 
   <div class="center">
-    <%= link_to("Add new device", new_user_device_path, class: "btn btn-primary btn-lg") %>
+    <%= link_to("Add new device", new_user_device_path, class: "btn") %>
   </div>
 
 </div>
-
 <script>
-$(document).ready(function(){
   $('.modal-trigger').leanModal();
-});
-
-var current_user_id =  <%= @current_user_id %>;
-
-function update_permission(permission, device_id, attribute, value){
-  if (attribute == 'privilege'){
-    var data = { privilege: value }
-  } else if (attribute == 'bypass_fogging'){
-    var data = { bypass_fogging: value }
-  } else {
-    var data = { show_history: value }
-  }
-  $.ajax({
-    url: "/users/"+current_user_id+"/devices/"+device_id+"/permissions/"+permission+"",
-    type: 'PUT',
-    data: { permission : data }
-  });
-}
-
-function select_change(){
-  $(".privilege").change(function( event ) {
-    var privilege = $(this).find(':selected').val();
-    var permission = $(event.target).parents('li.collection-item').data().permission;
-    var device_id = $(event.target).parents('ul.collection').data().device;
-    update_permission(permission, device_id, 'privilege', privilege)
-  });
-}
-
-function toggle_change(){
-  $(".switch").change(function( event ) {
-    var state = $(event.target).prop('checked');
-    var permission = $(event.target).parents('li.collection-item').data().permission;
-    var device_id = $(event.target).parents('ul.collection').data().device;
-    var attribute = $(this).attr('name');
-    update_permission(permission, device_id, attribute, state)
-  });
-}
-
-select_change();
-toggle_change();
 </script>

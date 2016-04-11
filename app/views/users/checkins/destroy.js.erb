@@ -1,3 +1,7 @@
 <%= render("/shared/notifications") %>
-$('#checkin<%= @checkin_id %>').remove();
-renderMap(<%= @checkin_id %>);
+var checkin = _.find(gon.checkins, _.matchesProperty('id',<%= @checkin.id %>));
+_.remove(gon.checkins, checkin);
+
+COPO.charts.refreshCharts(gon.checkins);
+COPO.maps.refreshMarkers();
+

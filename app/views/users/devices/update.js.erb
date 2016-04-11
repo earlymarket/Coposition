@@ -1,5 +1,9 @@
 <%= render("/shared/notifications") %>
 var fog = $('#fogButton<%=@device.id%>');
-fog.html("<%=j fogged_icon(@device.fogged) %>");
+fog.html("<%=j fogged_icon(@device.fogged)%>");
 $('#mins').val('<%= @device.delayed %>');
-
+var publish = $('#publishedButton<%=@device.id%>');
+publish.html("<%=j devices_shared_icon(@device)%>");
+var link = $('#sharedLink<%=@device.id%>');
+link.html("<%=j devices_shared_link(@device)%>");
+initPage();

@@ -2,12 +2,22 @@
 .nav-wrapper{
   @extend .fixed;
   z-index: 10;
-  transition: all 0.5s ease;
+  // transition: all 0.5s ease;
+
+  svg {
+    fill: white;
+  }
+
+  .svg-btn {
+    height: 42px;
+    width: 150px;
+  }
 
   // Transparent navbar for landing page
   &.transparent-nav{
-    background-color: rgba(0,0,0,0);
+    background-color: transparent;
     box-shadow: none;
+    transition: all 0.5s ease;
 
     a{
       @extend .dark-text;
@@ -17,27 +27,8 @@
       background-color: rgba(255,255,255,0.9);
     }
 
-    .btn{
-      @extend .dark-text;
-      border: solid 1px rgba(0, 0, 0, 0.8);
-
-      &:hover{
-        @extend .light-text;
-        background-color: rgba(0, 0, 0, 0.8);
-      }
-    }
-  }
-
-  // Normalize button appearance
-  .btn{
-    @extend .light-text;
-    border: solid 1px white;
-    background-color: rgba(0,0,0,0);
-    box-shadow: none;
-
-    &:hover{
-      @extend .dark-text;
-      background-color: white;
+    svg {
+      fill: $dark-text-color;
     }
   }
 
@@ -45,24 +36,51 @@
   .left{
     height: 100%;
     width: auto;
-    margin-left: 2.5%;
+    margin-left: 2.5rem;
 
     #brand-logo{
       width: 184px;
       height: 42px;
+
+      @media screen and (max-width: 992px){
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    @media screen and (max-width: 992px){
+      position: absolute;
+      width: 100%;
+      margin: 0;
     }
   }
 
   // Customised right align menu items
   .right{
-    .settings-icon {
-      height: 64px;
+    margin-right: 1.5rem;
+
+    li a {
+      height: 64px
     }
+  }
+
+  .indicator {
+    background: $secondary-color;
+    border-radius: 50%;
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    padding: 0;
+    margin: 1px 0 7px 0;
   }
 }
 
 
 // Mobile navigation
+.button-collapse{
+  margin-left: 2.5%;
+}
+
 .side-nav{
   .collapsible-header{
     padding: 0px;

@@ -32,19 +32,14 @@ $(document).on('ready page:change', function() {
 
   // allow materialize toast to be dismissed on click instead of just the default swipe
   $(document).on('click', '#toast-container .toast', function() {
-    $(this).velocity({
-      opacity: 0,
-      marginTop: '-40px'
-    }, {
-      duration: 375,
-      easing: 'easeOutExpo',
-      queue: false,
-      complete: function(){
-        $(this).remove();
-      }
-    });
+    COPO.utility.fadeUp(this)
   });
 
+  // materialize tabs
+  $('ul.tabs').tabs();
+
+  // Attachinary init
+  $('.attachinary-input').attachinary()
   // Event listeners
   setup();
 });
@@ -75,19 +70,19 @@ function addWindowResizeListeners(){
 
 function responsiveVideo(){
   var ratio = 1920/1080;
-  var $h = $("#promo").height();
-  var $w = $("#promo").width();
+  var $h = $(".promo").height();
+  var $w = $(".promo").width();
   var rRatio = $w/$h;
 
   if(rRatio < ratio){
     // Aspect ratio is lower than 16:9
-    $(".parallax-container #promo video").css({
+    $(".promo video").css({
       width: 'auto',
       height: '100%'
     });
   }else{
     // Aspect ration is higher than 16:9
-    $(".parallax-container #promo video").css({
+    $(".promo video").css({
       width: '100%',
       height: 'auto'
     });

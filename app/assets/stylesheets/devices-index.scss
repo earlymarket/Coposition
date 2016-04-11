@@ -1,0 +1,15 @@
+.c-devices.a-index {
+  .linkbox {
+    width: auto;
+    height: inherit;
+    border: 1px solid darkgrey;
+    border-radius: 2px;
+    font-size: 12px;
+    margin: 2px;
+
+    &:focus {
+      @extend .linkbox;
+      box-shadow: inherit;
+    }
+  }
+}

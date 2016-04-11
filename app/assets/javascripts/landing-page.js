@@ -1,14 +1,18 @@
 $(document).on('ready page:change', function() {
   // Target only the landing page (assuming at root of "/")
-  if (window.location.pathname == "/") {
+  if ($(".c-welcome.a-index").length > 0) {
     $("main").css('padding-top', '0');
 
-    // Click event for the main button on landing page
+    // Click and hover event for the main button on landing page
     $(".landing-section .start-btn").unbind('click').click(function(e) {
       var offset = $(".landing-section.splash").height() - 64;
       $("body").animate({
         scrollTop: offset
       });
+    }).unbind('mouseenter mouseleave').hover(function() {
+      $(".landing-section .start-btn").find('path, polygon').attr('fill-opacity', '1');
+    }, function() {
+      $(".landing-section .start-btn").find('path, polygon').attr('fill-opacity', '0.8');
     });
 
     $(document).scroll(function(e) {

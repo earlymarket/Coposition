@@ -19,6 +19,10 @@ html {
 
 h1 {
   text-align: center;
+
+  @media screen and (max-width: 600px){
+    font-size: 2.5rem;
+  }
 }
 h2 {
   @extend .dark-text, .brand;

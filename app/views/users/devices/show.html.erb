@@ -1,50 +1,61 @@
-<h1><%= @device.name %></h1>
+<% content_for :outside_container do %>
+  <%= Gon::Base.render_data %>
+  <ul class="tabs row">
+    <li class="tab map col s6"><a href="#map">Map</a></li>
+    <li class="tab chart col s6"><a href="#chart">Chart</a></li>
+  </ul>
 
-<div id="map" class="checkin-map center valign-wrapper"></div>
-<br>
-<%= link_to("Delete history", user_device_checkins_path(current_user.url_id, @device.id), { method: :delete, class: "btn red white-text", data: { confirm: 'Delete all checkins for this device?' } })%>
-<%= link_to("Delete device", user_device_path(current_user.url_id, @device), { method: :delete, class: "btn red white-text", data: { confirm: 'Are you sure?' } })%>
-<%= link_to("Check-in now", new_user_device_checkin_path(current_user.url_id, @device.id), class: "btn green white-text", id: "checkin-button", remote: true) %>
-<br>
-<hr>
-<%= render partial: "privacy", object: @device, as: 'device' %>
-<hr>
-<table id="checkin-table" class="highlight checkin-table">
-  <thead>
-    <tr>
-      <th>Created</th><th>Area</th><th>Fogged</th><th>More Info</th>
-    </tr>
-  </thead>
-  <%= render partial: "checkin_table_row", collection: @checkins, as: :checkin %>
-</table>
-<div class="center"><%= will_paginate @checkins %></div>
+  <ul id='filters' class='date-select collapsible'>
+    <li>
+      <div class='collapsible-header'>Select a date range</div>
+      <div class='collapsible-body'>
+        <%= form_for @device, url: user_device_path(current_user.url_id, @device), class: "form-group", method: :get do |f| %>
+          <%= f.label 'From' %>
+          <%= text_field_tag(:from, @from, class: "datepicker", id: "input_from", required: true) %>
+          <%= f.label 'to' %>
+          <%= text_field_tag(:to, @to, class: "datepicker", id: "input_to", required: true) %>
+          <%= f.submit("Filter", class: "form-control btn btn-default") %>
+          <%= link_to("Reset", user_device_path(current_user.url_id, @device) , { method: :get, class: "btn-flat" })%>
+        <% end %>
+      </div>
+    </li>
+  </ul>
 
-<script type="text/javascript">
-  var $newCheckinButton = $('<%= j link_to("Check-in", new_user_device_checkin_path(current_user.url_id,
-    @device.id), class: "btn green white-text", method: "post", id: "checkin-button", remote: true) %>');
-  var $moreOptionsLink = $('<%=  j link_to(" ...more options", new_user_device_checkin_path(current_user.url_id, @device.id) ) %>')
+  <div id='chart'>
+    <div id='bar-chart'></div>
+    <div class='container'>
+      <div id="table-chart"></div>
+    </div>
+  </div>
 
-  var checkinPath = '<%= j user_device_checkins_path(current_user.url_id, @device.id) %>';
+  <div id='map'></div>
 
-  $('#checkin-button')
-    .toggleClass('green disabled')
-    .html('Getting position')
-    .after($moreOptionsLink);
+  <div class="bottom-panel">
+    <div class="buttons">
+      <%= link_to("Delete history", user_device_checkins_path(current_user.url_id, @device.id), { method: :delete, class: "btn red white-text", data: { confirm: 'Delete all checkins for this device?' } })%>
+      <%= link_to("Delete device", user_device_path(current_user.url_id, @device), { method: :delete, class: "btn red white-text", data: { confirm: 'Are you sure?' } })%>
+    </div>
+  </div>
 
-  navigator.geolocation.getCurrentPosition(function(position){
+<!-- templates -->
+  <script type="x-tmpl-mustache" id="markerPopupTmpl">
+    <h3>ID: {{ id }}</h3>
+    <ul>
+      <li>Created on: {{ created_at }}</li>
+      <li>Latitude: {{ lat }}</li>
+      <li>Longitude {{ lng }}</li>
+      <li class="address">Address: {{ address }}</li>
+      {{ &foggedAddress }}
+      <li>{{ &foggle }} {{ &deletebutton }}</li>
+    </ul>
+  </script>
 
-    var checkin = {
-      'checkin[lat]': position.coords.latitude.toFixed(6),
-      'checkin[lng]': position.coords.longitude.toFixed(6)
-    }
+  <script type="x-tmpl-mustache" id="createCheckinTmpl">
+    <ul>
+      <li>Latitude: {{ lat }}</li>
+      <li>Longitude {{ lng }}</li>
+      <li>{{ &checkinLink }}</li>
+    </ul>
+  </script>
 
-    checkinPath += '?'
-    checkinPath += $.param(checkin)
-
-    $newCheckinButton.attr('href', checkinPath);
-    $('#checkin-button').replaceWith($newCheckinButton);
-  })
-
-  var checkins = <%= raw @checkins.to_json %>
-  renderMap();
-</script>
+  <% end %>

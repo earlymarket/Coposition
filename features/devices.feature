@@ -3,7 +3,6 @@ Feature: Devices
 
   Background: There are some devices
     Given I am signed in as a user
-      And I click "Dashboard"
       And I click the link "Devices"
       And there's a device in the database with the UUID "123456789123"
 
@@ -12,8 +11,7 @@ Feature: Devices
         And I enter UUID "123456789123" and a friendly name "G-RALA"
       When I click "Add"
       Then I should see "This device has been bound to your account!"
-        And I should see "G-RALA"
-        Then I click "Dashboard"
+        # And I should see "G-RALA"
         And I click the link "Devices"
       Then I should see "Denham"
         When I click "Denham"
@@ -22,6 +20,7 @@ Feature: Devices
       Then I should see "Device deleted"
         And I should not have a device
 
+<<<<<<< HEAD
     Scenario: User enables fogging on a device
       Given I click "Add new device"
         When I enter UUID "123456789123" and a friendly name "G-RALA"
@@ -37,7 +36,19 @@ Feature: Devices
     Scenario: User enables timeshift on a device
       Given I click "Add new device"
         When I enter UUID "123456789123" and a friendly name "G-RALA"
+=======
+     Scenario: User changes privacy settings on a device
+        Given I click "Add new device"
+          When I enter UUID "123456789123" and a friendly name "G-RALA"
+>>>>>>> dev
         And I click "Add"
-        And I fill in "mins" with "10"
-      When I click "Update"
-        Then I should be timeshifted by "10" mins
+        And I click the link "Devices"
+        When I click the link "visibility_off"
+          Then I should see a link that says "visibility"
+        When I click the link "Privacy"
+          Then I should see a link that says "cloud_off"
+        When I click the link "cloud_off"
+          Then I should see a link that says "cloud_done"
+          And I fill in "mins" with "10"
+        When I click "Update"
+         Then I should be timeshifted by "10" mins

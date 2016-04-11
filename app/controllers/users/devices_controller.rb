@@ -1,28 +1,39 @@
 class Users::DevicesController < ApplicationController
 
-  acts_as_token_authentication_handler_for User
-  protect_from_forgery with: :null_session
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: :shared
+  before_action :published?, only: :shared
   before_action :require_ownership, only: [:show, :destroy, :update]
 
   def index
-    @current_user_id = current_user.id
-    @devices = current_user.devices.map do |dev|
-      dev.checkins.last.reverse_geocode! if dev.checkins.exists?
+    gon.current_user_id = current_user.id
+    @devices = current_user.devices.includes(:developers, :permitted_users, :permissions).map do |dev|
+      dev.checkins.first.reverse_geocode! if dev.checkins.exists?
       dev
     end
+    gon.permissions = @devices.map(&:permissions).inject(:+)
   end
 
   def show
     @device = Device.find(params[:id])
-    Checkin.includes(:device).where(device_id: @device.id)
-    @checkins = @device.checkins.order('created_at DESC').paginate(page: params[:page], per_page: 50)
+    @from, @to = date_range
+    gon.checkins = @device.checkins.where(created_at: @from..@to).paginate(page: params[:page], per_page: 1000)
+    flash[:notice] = "No checkins available" if gon.checkins.empty?
+    gon.current_user_id = current_user.id
   end
 
   def new
     @device = Device.new
     @device.uuid = params[:uuid] if params[:uuid]
-    @redirect_target = params[:redirect] if params[:redirect]
+  end
+
+  def shared
+    device = Device.find(params[:id])
+    checkin = device.checkins.first
+    gon.device = device
+    user = device.user.as_json
+    user['avatar'] = device.user.avatar.as_json({})
+    gon.user = user
+    gon.checkin = checkin.reverse_geocode! if checkin
   end
 
   def create
@@ -31,14 +42,13 @@ class Users::DevicesController < ApplicationController
     if @device
       if @device.user.nil?
         @device.construct(current_user, allowed_params[:name])
-        @device.checkins.create(checkin_params) if params[:create_checkin].present?
-        flash[:notice] = "This device has been bound to your account!"
-        redirect_using_param_or_default unless via_app
+        gon.checkins = @device.checkins.create(checkin_params) if params[:create_checkin].present?
+        redirect_to user_device_path(id: @device.id), notice: "This device has been bound to your account!"
       else
-        invalid_payload('This device has already been assigned to a user', new_user_device_path)
+        redirect_to new_user_device_path, notice: 'This device has already been assigned to a user'
       end
     else
-      invalid_payload('The UUID provided does not match an existing device', new_user_device_path)
+      redirect_to new_user_device_path, notice: 'The UUID provided does not match an existing device'
     end
   end
 
@@ -58,16 +68,16 @@ class Users::DevicesController < ApplicationController
     if params[:mins]
       @device.set_delay(params[:mins])
       flash[:notice] = "#{@device.name} timeshifted by #{@device.delayed.to_i} minutes."
+    elsif params[:published]
+      @device.update(published: !@device.published)
+      flash[:notice] = "Location sharing is #{boolean_to_state(@device.published)}."
     else
       @device.switch_fog
-      flash[:notice] = "#{@device.name} fogging has been changed."
+      flash[:notice] = "Location fogging is #{boolean_to_state(@device.fogged)}."
     end
   end
 
   private
-    def via_app
-      render json: @device.to_json if req_from_coposition_app?
-    end
 
     def allowed_params
       params.require(:device).permit(:uuid,:name)
@@ -77,19 +87,31 @@ class Users::DevicesController < ApplicationController
       { lat: params[:location].split(",").first, lng: params[:location].split(",").last }
     end
 
-    def redirect_using_param_or_default(default: user_device_path(current_user.url_id, @device.id))
-      if params[:redirect].blank?
-        redirect_to default
-      else
-        redirect_to params[:redirect]
-      end
-    end
-
     def require_ownership
       unless user_owns_device?
         flash[:notice] = "You do not own that device"
         redirect_to root_path
       end
+    end
+
+    def date_range
+      if (params[:from].present?)
+        return Date.parse(params[:from]).beginning_of_day, Date.parse(params[:to]).end_of_day
+      elsif @device.checkins.present?
+        most_recent = Date.parse(@device.checkins.first.created_at.to_s)
+        return  (most_recent << 1).beginning_of_day, most_recent.end_of_day
+      else return nil, nil
+      end
+    end
+
+    def published?
+      unless Device.find(params[:id]).published?
+        redirect_to root_path, notice: "Device is not shared"
+      end
+    end
+
+    def boolean_to_state(boolean)
+      boolean ? "on" : "off"
     end
 
 end

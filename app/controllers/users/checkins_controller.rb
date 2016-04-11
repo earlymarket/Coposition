@@ -22,19 +22,21 @@ class Users::CheckinsController < ApplicationController
     checkin = Checkin.find(params[:id])
     checkin.reverse_geocode!
     @checkin = checkin
+    respond_to do |format|
+      format.html
+      format.json { render json: checkin.as_json }
+    end
   end
 
   def update
     @checkin = Checkin.find(params[:id])
     @checkin.switch_fog
     flash[:notice] = "Check-in fogging changed."
-    @checkin_id = params[:id]
   end
 
   def destroy
     respond_to do |format|
-      @checkin_id = params[:id]
-      Checkin.find_by(id: @checkin_id).delete
+      @checkin = Checkin.find_by(id: params[:id]).delete
       flash[:notice] = "Check-in deleted."
       format.js
       format.html {redirect_to user_device_path(current_user.url_id, params[:device_id])}

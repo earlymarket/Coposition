@@ -15,8 +15,39 @@
 //= require jquery.validate
 //= require jquery.validate.additional-methods
 //= require turbolinks
-//= require utility
+
+// -- Libs from gems --
+
 //= require materialize
-//= require markerclusterer
-//= require checkin-map
+//= require twitter/typeahead
+//= require lodash
+//= require moment
+
+// -- Misc vendor libs --
+
+//= require mustache.min
+//= require animateCSS.min.js
+//= require d3.min.js
+//= require c3.min.js
+//= require cloudinary
+//= require attachinary
+//= require zeroclipboard
+
+// -- Mapbox stuff --
+//= require mapbox
+//= require leaflet.markercluster
+//= require L.Control.Locate.min
+//= require control.w3w
+
+// -- Run every page
+
+//= require utility
+//= require navbar
+//= require init
+//= require charts
+//= require map
+//= require permissions
+//= require date-picker
+
+// I've put require_tree back in. Any js where the load order isn't important doesn't need to be specified.
 //= require_tree .

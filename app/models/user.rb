@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
   has_many :permissions, :as => :permissible, dependent: :destroy
   has_many :permitted_devices, through: :permissions, source: :permissible, :source_type => "Device"
 
+  has_attachment :avatar
   ## Pathing
 
   def url_id
@@ -55,15 +56,37 @@ class User < ActiveRecord::Base
     end
   end
 
+  def approved_for(approval)
+    if approval.approvable_type == 'User'
+      self.friends
+    elsif approval.approvable_type == 'Developer'
+      self.developers
+    else
+      raise "Unhandled approval type"
+    end
+  end
+
+  def pending_for(approval)
+    if approval.approvable_type == 'User'
+      self.friend_requests
+    elsif approval.approvable_type == 'Developer'
+      self.developer_requests
+    else
+      raise "Unhandled approval type"
+    end
+  end
+
   ## Devices
 
   def approve_devices(permissible)
     if permissible.class.to_s == 'Developer'
-      devices.each do |device|
+      dev_devices = devices.includes(:developers)
+      dev_devices.each do |device|
         device.developers << permissible unless device.developers.include? permissible
       end
     else
-      devices.each do |device|
+      usr_devices = devices.includes(:permitted_users)
+      usr_devices.each do |device|
         device.permitted_users << permissible unless device.permitted_users.include? permissible
       end
     end
@@ -91,26 +114,26 @@ class User < ActiveRecord::Base
   end
 
   def notifications
-    @notes ||= begin
-      @notes = []
-      if pending_approvals.present?
-        @notes << {
-          notification: {
-              msg: "You have #{pending_approvals.count} pending approvals",
-              link_path: "user_applications_path"
-            }
-          }
-      end
-      if friend_requests.present?
-        @notes << {
-          notification: {
-              msg: "You have #{friend_requests.count} friend requests",
-              link_path: "user_friends_path"
-            }
-          }
-      end
-      @notes
-    end
+    # @notes ||= begin
+    #   @notes = []
+    #   if pending_approvals.present?
+    #     @notes << {
+    #       notification: {
+    #           msg: "You have #{pending_approvals.count} pending approvals",
+    #           link_path: "user_apps_path"
+    #         }
+    #       }
+    #   end
+    #   if friend_requests.present?
+    #     @notes << {
+    #       notification: {
+    #           msg: "You have #{friend_requests.count} friend requests",
+    #           link_path: "user_friends_path"
+    #         }
+    #       }
+    #   end
+    #   @notes
+    # end
   end
 
 end

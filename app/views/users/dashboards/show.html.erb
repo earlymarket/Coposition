@@ -1,6 +1,51 @@
-<h1>Dashboard</h1>
-You have <%= pluralize(current_user.devices.count, 'device') %>, <%= pluralize(current_user.developers.count, 'approved application') %> and <%= pluralize(current_user.friends.count, 'friend') %>
-<hr>
-<%= link_to("Devices", user_devices_path, class: "btn") %>
-<%= link_to("Applications", user_applications_path, class: "btn") %>
-<%= link_to("Friends", user_friends_path, class: "btn") %>
+<section class="dashboard row">
+  <h4>Hello <%= :username %></h4>
+  <p>
+    You checked-in 10 times this week.
+    <br />
+    That is an increase of 50% from last week.
+  </p>
+  <p>
+    Your most used device is devicename.
+  </p>
+
+  <%= link_to(edit_user_registration_path, class: 'btn') do %>
+    Edit your profile
+  <% end %>
+</section>
+
+<div class="divider"></div>
+
+<section id="dashboard-charts" class="dashboard row">
+  <article class="chart col s12 l6" id="daily-checkins">
+    <h5>Daily check-ins</h5>
+    <div></div>
+    <a class="right" href="#">view all</a>
+  </article>
+  <article class="chart col s12 l6" id="checkin-ratio">
+    <h5>Check-in ratio</h5>
+    <div></div>
+  </article>
+</section>
+
+<div class="divider"></div>
+
+<section class="dashboard row">
+  <article class="col s12 l6" id="most-checkins">
+    <ul class="collection">
+      <li class="collection-header"><h5>Most frequent check-in location</h5></li>
+      <li class="collection-item"><div>Tower Bridge<span class="badge">10 check-ins</span></div></li>
+      <li class="collection-item"><div>London Bridge<span class="badge">5 check-ins</span></div></li>
+      <li class="collection-item"><div>Trafalgar Square<span class="badge">5 check-ins</span></div></li>
+      <li class="collection-item"><div>Old Street<span class="badge">3 check-ins</span></div></li>
+    </ul>
+  </article>
+</section>
+
+<div class="divider"></div>
+
+<section id="dashboard-quicklinks">
+  <p class ='center'>
+  You have <%= pluralize(current_user.devices.count, 'device') %>, <%= pluralize(current_user.developers.count, 'approved app') %> and <%= pluralize(current_user.friends.count, 'friend') %>
+  </p>
+</section>

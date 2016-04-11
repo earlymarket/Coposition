@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160229162703) do
+ActiveRecord::Schema.define(version: 20160406153256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,22 @@ ActiveRecord::Schema.define(version: 20160229162703) do
   add_index "approvals", ["approvable_id"], name: "index_approvals_on_approvable_id", using: :btree
   add_index "approvals", ["user_id"], name: "index_approvals_on_user_id", using: :btree
 
+  create_table "attachinary_files", force: :cascade do |t|
+    t.integer  "attachinariable_id"
+    t.string   "attachinariable_type"
+    t.string   "scope"
+    t.string   "public_id"
+    t.string   "version"
+    t.integer  "width"
+    t.integer  "height"
+    t.string   "format"
+    t.string   "resource_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "attachinary_files", ["attachinariable_type", "attachinariable_id", "scope"], name: "by_scoped_parent", using: :btree
+
   create_table "checkins", force: :cascade do |t|
     t.float    "lat"
     t.float    "lng"
@@ -36,7 +52,7 @@ ActiveRecord::Schema.define(version: 20160229162703) do
     t.datetime "updated_at"
     t.string   "uuid"
     t.integer  "device_id"
-    t.string   "address"
+    t.string   "address",      default: "No address available"
     t.string   "city"
     t.string   "postal_code"
     t.string   "country_code"
@@ -72,10 +88,6 @@ ActiveRecord::Schema.define(version: 20160229162703) do
     t.datetime "updated_at",                          null: false
     t.string   "api_key"
     t.string   "company_name",                        null: false
-    t.string   "logo_file_name"
-    t.string   "logo_content_type"
-    t.integer  "logo_file_size"
-    t.datetime "logo_updated_at"
     t.string   "tagline"
     t.string   "redirect_url"
   end
@@ -87,9 +99,10 @@ ActiveRecord::Schema.define(version: 20160229162703) do
     t.string  "uuid"
     t.integer "user_id"
     t.string  "name"
-    t.boolean "fogged",  default: false
+    t.boolean "fogged",    default: false
     t.integer "delayed"
     t.string  "alias"
+    t.boolean "published", default: false
   end
 
   add_index "devices", ["uuid"], name: "index_devices_on_uuid", using: :btree
@@ -113,7 +126,7 @@ ActiveRecord::Schema.define(version: 20160229162703) do
     t.integer "privilege"
     t.string  "permissible_type"
     t.boolean "bypass_fogging",   default: false
-    t.boolean "show_history",     default: false
+    t.boolean "bypass_delay",     default: false
   end
 
   create_table "requests", force: :cascade do |t|
