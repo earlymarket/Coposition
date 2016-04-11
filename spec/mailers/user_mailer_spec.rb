@@ -16,8 +16,8 @@ RSpec.describe UserMailer, type: :mailer do
       expect(mail.from).to eql([ApplicationMailer.default[:from]])
     end
 
-    it 'renders sign up url' do
-      expect(mail.body.encoded).to match('/users/sign_up')
+    it 'renders sign up url with email in url' do
+      expect(mail.body.encoded).to include("users/sign_up?email=email@email.com")
     end
   end
 
