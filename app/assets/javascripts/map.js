@@ -52,7 +52,7 @@ window.COPO.maps = {
           checkin: checkin
         }
         if (i === 0) {
-          markerObject.icon = L.mapbox.marker.icon({ 'marker-symbol' : 'star', 'marker-color' : '#47b8e0' })
+          markerObject.icon = L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#47b8e0' })
           markerObject.title = 'ID: ' + checkin.id + ' - Most recent'
         }
         var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), markerObject);

@@ -19843,13 +19843,17 @@ footer.page-footer {
 }
 
 /* line 2, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-index.scss */
-.c-devices.a-index .linkbox {
-  width: 200px;
+.c-devices.a-index .linkbox, .c-devices.a-index .linkbox:focus {
+  width: auto;
   height: inherit;
   border: 1px solid darkgrey;
   border-radius: 2px;
   font-size: 12px;
   margin: 2px;
+}
+/* line 10, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-index.scss */
+.c-devices.a-index .linkbox:focus {
+  box-shadow: inherit;
 }
 
 /* line 1, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss */
