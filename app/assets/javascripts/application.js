@@ -27,8 +27,6 @@
 
 //= require mustache.min
 //= require animateCSS.min.js
-//= require d3.min.js
-//= require c3.min.js
 //= require cloudinary
 //= require attachinary
 //= require zeroclipboard
