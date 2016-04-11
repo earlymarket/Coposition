@@ -27,7 +27,7 @@
   <%= render partial: "navbar" %>
   <%= render partial: "mobilenav" %>
   <main>
-  <%= javascript_tag( render(partial: '/shared/notifications', formats: [:js]) ) %>
+  <%= javascript_tag( raw render_flash ) %>
     <div class="outside-container">
       <%= yield :outside_container %>
     </div>

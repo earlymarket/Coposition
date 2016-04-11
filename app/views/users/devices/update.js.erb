@@ -1,4 +1,4 @@
-<%= render("/shared/notifications") %>
+<%= raw render_flash %>
 var fog = $('#fogButton<%=@device.id%>');
 fog.html("<%=j fogged_icon(@device.fogged)%>");
 $('#mins').val('<%= @device.delayed %>');
