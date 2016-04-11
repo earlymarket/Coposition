@@ -13,6 +13,11 @@ window.COPO.maps = {
     var options = $.extend(defaultOptions, customOptions);
 
     map = L.mapbox.map('map', 'mapbox.light', options );
+
+    $(document).on('page:before-unload', function(){
+      map.stopLocate();
+    })
+
   },
 
   initMarkers: function(){
