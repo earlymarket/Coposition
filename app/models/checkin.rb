@@ -84,7 +84,7 @@ class Checkin < ActiveRecord::Base
     select(&attribute).group_by(&attribute).inject({}) do |hash, (key,checkins)|
       hash[key] = checkins.length
       hash
-    end.sort_by{ |_, count| -count}
+    end.sort_by{ |_, count| count }.reverse!
   end
 
   def self.percentage_increase(time_range)
