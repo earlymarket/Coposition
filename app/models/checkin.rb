@@ -53,7 +53,7 @@ class Checkin < ActiveRecord::Base
   end
 
   def reverse_geocoded?
-    address != 'No address available'
+    address != 'No address available' && nil
   end
 
   def nearest_city
