@@ -1,13 +1,18 @@
+<%= Gon::Base.render_data %>
 <section class="dashboard row">
-  <h4>Hello <%= :username %></h4>
+  <h4>Hello <%= current_user.username %></h4>
   <p>
-    You checked-in 10 times this week.
-    <br />
-    That is an increase of 50% from last week.
+    You checked-in <%= @week_checkins_count || 0 %> times this week.
+    <% if @percent_change.present? %>
+      <br />
+      That is an <%= @percent_change > 0 ? 'increase' : 'decrease' %> of <%= @percent_change %>% from last week.
+    <% end %>
   </p>
-  <p>
-    Your most used device is devicename.
-  </p>
+   <% if @most_used_device.present? %>
+    <p>
+      Your most used device is <%= @most_used_device.name %>.
+    </p>
+  <% end %>
 
   <%= link_to(edit_user_registration_path, class: 'btn') do %>
     Edit your profile
@@ -17,27 +22,16 @@
 <div class="divider"></div>
 
 <section id="dashboard-charts" class="dashboard row">
-  <article class="chart col s12 l6" id="daily-checkins">
-    <h5>Daily check-ins</h5>
-    <div></div>
-    <a class="right" href="#">view all</a>
+  <article class="chart col s12 l6" id='weeks-checkins'>
+    <h5>This weeks check-ins</h5>
+    <div id='bar-chart'></div>
   </article>
-  <article class="chart col s12 l6" id="checkin-ratio">
-    <h5>Check-in ratio</h5>
-    <div></div>
-  </article>
-</section>
-
-<div class="divider"></div>
-
-<section class="dashboard row">
   <article class="col s12 l6" id="most-checkins">
     <ul class="collection">
       <li class="collection-header"><h5>Most frequent check-in location</h5></li>
-      <li class="collection-item"><div>Tower Bridge<span class="badge">10 check-ins</span></div></li>
-      <li class="collection-item"><div>London Bridge<span class="badge">5 check-ins</span></div></li>
-      <li class="collection-item"><div>Trafalgar Square<span class="badge">5 check-ins</span></div></li>
-      <li class="collection-item"><div>Old Street<span class="badge">3 check-ins</span></div></li>
+      <% @most_frequent_areas.each do |area_count| %>
+        <li class="collection-item"><div><%= area_count[0] %><span class="badge"><%= area_count[1] %> check-ins</span></div></li>
+      <% end if @most_frequent_areas.present? %>
     </ul>
   </article>
 </section>
