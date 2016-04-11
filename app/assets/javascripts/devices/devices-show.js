@@ -39,4 +39,9 @@ $(document).on('page:change', function() {
       }
     })
   }
+
+  $(document).on('page:before-unload', function(){
+    map.stopLocate();
+  })
+
 });
