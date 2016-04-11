@@ -5,18 +5,12 @@
       <h4><%= device.name %></h4>
       <%= devices_last_checkin(device) %>
     </a>
-    <span>
-      <%= link_to(fogged_icon(device.fogged), user_device_path(current_user.url_id, device.id), { method: :put, id:"fogButton#{device.id}", remote: true, data: { fogged: device.fogged? } ,  class: 'left' })%>
-   <!--   <%= link_to(devices_delay_icon(device.delayed), user_device_path(current_user.url_id, device.id, mins: device.delayed.to_i), { method: :put, id:"delayButton#{device.id}", remote: true, class: 'left' })%> -->
-      <%= link_to(devices_shared_icon(device), user_device_path(current_user.url_id, device.id, published: device.published), { method: :put, id:"publishedButton#{device.id}", remote: true, class: 'left', data: { published: device.published? } })%>
-      <div class="valign-wrapper" id="sharedLink<%= device.id %>">
-        <%= devices_shared_link(device) if device.published %>
-      </div>
-      <input type="range" id="test5" min="0" max="100" />
-      <div id='slider-non-linear'></div>
-    </span>
+    <%= link_to(fogged_icon(device.fogged), user_device_path(current_user.url_id, device.id), { method: :put, id:"fogButton#{device.id}", remote: true, class: 'left', data: { fogged: device.fogged? } })%>
+    <%= link_to(devices_shared_icon(device), user_device_path(current_user.url_id, device.id, published: device.published), { method: :put, id:"publishedButton#{device.id}", remote: true, class: 'left', data: { published: device.published? } })%>
+    <div class="valign-wrapper" id="sharedLink<%= device.id %>">
+      <%= devices_shared_link(device) if device.published %>
+    </div>
   </div>
-
 
   <div class="col s4">
     <% if device.developers.exists? || device.permitted_users.exists? %>
@@ -42,7 +36,12 @@
       </div>
     <% end %>
   </div>
-
+  <div class="col s12">
+    <label>Delay when new checkins will become visible to your data consumers (minutes)</label>
+    <div class='delay-slider' data-device=<%=device.id%>></div>
+    <div class='delay-slider-step-value'></div></br></br>
+  </div>
+<!--
   <div class="col s4">
     <a class="waves-effect waves-light btn-flat modal-trigger right" href="#priv<%=device.id%>">
       Privacy<i class="material-icons right">security</i>
@@ -54,18 +53,5 @@
       </div>
     </div>
   </div>
+  -->
 </div>
-
-<script>
-  var nonLinearSlider = document.getElementById('slider-non-linear');
-
-  noUiSlider.create(nonLinearSlider, {
-    start: [ 4000 ],
-    range: {
-      'min': [  2000 ],
-      '30%': [  4000 ],
-      '70%': [  8000 ],
-      'max': [ 10000 ]
-    }
-  });
-</script>

@@ -10,6 +10,7 @@ class Users::DevicesController < ApplicationController
       dev.checkins.first.reverse_geocode! if dev.checkins.exists?
       dev
     end
+    gon.devices = @devices
     gon.permissions = @devices.map(&:permissions).inject(:+)
   end
 
@@ -65,8 +66,8 @@ class Users::DevicesController < ApplicationController
 
   def update
     @device = Device.find(params[:id])
-    if params[:mins]
-      @device.set_delay(params[:mins])
+    if params[:delayed]
+      @device.set_delay(params[:delayed])
       flash[:notice] = "#{@device.name} timeshifted by #{@device.delayed.to_i} minutes."
     elsif params[:published]
       @device.update(published: !@device.published)
@@ -80,7 +81,7 @@ class Users::DevicesController < ApplicationController
   private
 
     def allowed_params
-      params.require(:device).permit(:uuid,:name)
+      params.require(:device).permit(:uuid,:name,:delayed)
     end
 
     def checkin_params
