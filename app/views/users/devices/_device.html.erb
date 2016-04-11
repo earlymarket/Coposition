@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  <div class="col s4">
+  <div class="col s4 permissions-col">
     <% if device.developers.exists? || device.permitted_users.exists? %>
       <a class="waves-effect waves-light btn-flat modal-trigger right" href="#perm<%=device.id%>">Permissions<i class="material-icons right">lock</i></a>
 

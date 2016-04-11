@@ -6,7 +6,7 @@ class Users::DevicesController < ApplicationController
 
   def index
     gon.current_user_id = current_user.id
-    @devices = current_user.devices.includes(:developers, :permitted_users, :permissions).map do |dev|
+    @devices = current_user.devices.order(:id).includes(:developers, :permitted_users, :permissions).map do |dev|
       dev.checkins.first.reverse_geocode! if dev.checkins.exists?
       dev
     end
