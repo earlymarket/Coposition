@@ -30,14 +30,19 @@
             <% devices_permitted_actors_for(device).each do |permitted| %>
               <% permission =  device.permission_for(permitted) %>
               <li class="collection-item row valign-wrapper">
-                <div class='valign col s7'>
+                <div class='valign col s5'>
+                  <%= permissible_title(permitted) %>
+                </div>
+                <div class='col s2'>
                   <span id='fogIcon<%=permission.id%>' class='fogIcon<%=device.id%> tooltipped' data-tooltip="Consumer can only see fogged data">
                     <%= fogged_icon(device.fogged) if device.fogged %>
                   </span>
                   <span id='delayIcon<%=permission.id%>' class='delayIcon<%=device.id%> tooltipped' data-tooltip="Consumer can only see your data after a delay">
                     <%= devices_delay_icon(device.delayed) if device.delayed %>
                   </span>
-                  <%= permissible_title(permitted) %>
+                  <span id='accessIcon<%=permission.id%>' class='tooltipped' data-tooltip="Consumer can't see any data from this device">
+                    <%= devices_access_icon  %>
+                  </span>
                 </div>
                 <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
               </li>

@@ -5,6 +5,9 @@ window.COPO.permissions = {
       if ($(this).find('input').prop('checked')){
         var permission_id =  $(this).data().permission;
         COPO.permissions.toggle_switches_disabled(permission_id);
+      } else {
+        var permission_id =  $(this).data().permission;
+        COPO.permissions.icon_toggle('disallowed', permission_id);
       }
     });
   },
@@ -53,7 +56,7 @@ window.COPO.permissions = {
       var attribute = $(this).data().attribute;
       var switch_type = $(this).data().switch;
       var permission_id =  $(this).data().permission;
-      COPO.permissions.icon_toggle(attribute, permission_id);
+      COPO.permissions.icon_toggle(switch_type, permission_id);
       var permission = _.find(gon.permissions, _.matchesProperty('id', permission_id));
       var device_id = permission['device_id'];
 
@@ -76,11 +79,13 @@ window.COPO.permissions = {
     })
   },
 
-  icon_toggle: function(attribute, permission_id){
-    if (attribute === 'bypass_fogging'){
+  icon_toggle: function(switch_type, permission_id){
+    if (switch_type === 'bypass_fogging'){
       $('#fogIcon'+permission_id).toggle();
-    } else if (attribute === 'bypass_delay'){
+    } else if (switch_type === 'bypass_delay'){
       $('#delayIcon'+permission_id).toggle();
+    } else if (switch_type === 'disallowed'){
+      $('#accessIcon'+permission_id).toggle();
     }
   },
 

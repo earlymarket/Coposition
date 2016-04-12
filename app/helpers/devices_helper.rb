@@ -29,6 +29,10 @@ module DevicesHelper
     end
   end
 
+  def devices_access_icon
+    '<i class="material-icons">not_interested</i>'.html_safe
+  end
+
   def devices_shared_link(device)
     return nil unless device.published?
     link = shared_user_device_url(id: device.id, user_id: params['user_id'] || device.user_id)
