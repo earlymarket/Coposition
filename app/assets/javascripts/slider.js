@@ -4,7 +4,7 @@ window.COPO.slider = {
   initSliders: function(){
     $('.delay-slider').each(function(){
       var delaySlider = this;
-      var device_id =  parseInt(delaySlider.dataset.device);
+      var device_id =  parseInt(delaySlider.dataset.device, 10);
       var device = _.find(gon.devices, _.matchesProperty('id', device_id));
 
       noUiSlider.create(delaySlider, {
@@ -38,18 +38,18 @@ window.COPO.slider = {
 
     $('.noUi-value.noUi-value-horizontal.noUi-value-large').each(function(){
       var val = $(this).html();
-      val = COPO.slider.recountVal(parseInt(val));
+      val = COPO.slider.recountVal(val);
       $(this).html(val);
     });
   },
 
   recountVal: function(val){
     switch(val){
-      case 0: return 'Off';
-      case 5: return '5 min';
-      case 1440: return '1 day';
+      case '0': return 'Off';
+      case '5': return '5 min';
+      case '1440': return '1 day';
       default :return 'error';
-      }
+    }
   }
 
 
