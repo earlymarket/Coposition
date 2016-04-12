@@ -10,6 +10,7 @@ class Users::DevicesController < ApplicationController
       dev.checkins.first.reverse_geocode! if dev.checkins.exists?
       dev
     end
+    gon.devices = @devices
     gon.permissions = @devices.map(&:permissions).inject(:+)
   end
 

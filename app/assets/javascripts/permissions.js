@@ -9,8 +9,33 @@ window.COPO.permissions = {
     });
   },
 
+  set_globals: function(){
+    gon.devices.forEach(function(device){
+      var permissions = _.filter(gon.permissions, _.matchesProperty('device_id', device.id))
+      $("div[data-device='"+device.id+"']").each(function(){
+        var all_status = [];
+        var switch_type = $(this).data().switch;
+        permissions.forEach(function(permission){
+          all_status.push($("div[data-permission='"+permission.id+"'][data-switch='"+switch_type+"']").find('input').prop("checked"))
+        })
+        if (_.every(all_status)){
+          $(this).find('input').prop('checked', true);
+        } else {
+          $(this).find('input').prop('checked', false);
+        }
+        if (switch_type === "disallowed") {
+          var state = $(this).find('input').prop("checked");
+          $("div[data-device='"+device.id+"'][data-switch=last_only]").find('input').prop("checked", false);
+          element = $("div[data-device='"+ device.id +"'].disable").find('input');
+          element.prop("disabled", state);
+        }
+      })
+    })
+  },
+
   switch_change:function(){
-    $(".switch").change(function( event ) {
+    $(".permission-switch").change(function( event ) {
+      COPO.permissions.set_globals();
       var attribute = $(this).data().attribute;
       var switch_type = $(this).data().switch;
       var permission_id =  $(this).data().permission;
@@ -33,6 +58,24 @@ window.COPO.permissions = {
         type: 'PUT',
         data: { permission: permission }
       });
+    })
+  },
+
+  global_change:function(){
+    $(".global").change(function( event ) {
+      var global_status = $(this).find('input').prop("checked");
+      var attribute = $(this).data().attribute;
+      var switch_type = $(this).data().switch;
+      var device_id = $(this).data().device;
+      var permissions = _.filter(gon.permissions, _.matchesProperty('device_id', device_id));
+
+      permissions.forEach(function(permission){
+        current_status = $("div[data-permission='"+permission.id+"'][data-switch='"+switch_type+"']").find('input').prop("checked")
+        if (global_status != current_status) {
+          $("div[data-permission='"+permission.id+"'][data-switch='"+switch_type+"']").find('input').prop("checked", global_status);
+          $("div[data-permission='"+permission.id+"'][data-switch='"+switch_type+"']").trigger("change");
+        }
+      })
     })
   },
 

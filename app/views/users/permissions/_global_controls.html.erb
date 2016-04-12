@@ -1,0 +1,30 @@
+<div class="col s5 permission">
+  <div class="global switch" data-device=<%=device.id%> data-attribute="privilege" data-switch="disallowed">
+    <label>
+      <%= check_box_tag 'privilege','' %>
+      <span class="lever"></span>
+      Disable access
+    </label>
+  </div>
+  <div class="global switch disable" data-device=<%=device.id%> data-attribute="bypass_fogging" data-switch="bypass_fogging">
+    <label>
+      <%= check_box_tag 'bypass_fogging','' %>
+      <span class="lever"></span>
+      Bypass Fogging
+    </label>
+  </div>
+  <div class="global switch disable" data-device=<%=device.id%> data-attribute="bypass_delay" data-switch="bypass_delay">
+    <label>
+      <%= check_box_tag 'bypass_delay','' %>
+      <span class="lever"></span>
+      Bypass Delay
+    </label>
+  </div>
+  <div class="global switch disable" data-device=<%=device.id%> data-attribute="privilege" data-switch="last_only">
+    <label>
+      <%= check_box_tag 'last_only','' %>
+      <span class="lever"></span>
+      All checkins/Last only
+    </label>
+  </div>
+</div>
