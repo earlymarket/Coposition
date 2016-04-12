@@ -39,19 +39,15 @@ class Users::DevicesController < ApplicationController
   def create
     @device = Device.new
     @device = Device.find_by uuid: allowed_params[:uuid] if allowed_params[:uuid].present?
-    if @device
-      if @device.user.nil?
-        if @device.construct(current_user, allowed_params[:name])
-          gon.checkins = @device.checkins.create(checkin_params) if params[:create_checkin].present?
-          redirect_to user_device_path(id: @device.id), notice: "This device has been bound to your account!"
-        else
-          redirect_to new_user_device_path, notice: "You already have a device with the name #{allowed_params[:name]}"
-        end
+    if @device && @device.user.nil?
+      if @device.construct(current_user, allowed_params[:name])
+        gon.checkins = @device.checkins.create(checkin_params) if params[:create_checkin].present?
+        redirect_to user_device_path(id: @device.id), notice: "This device has been bound to your account!"
       else
-        redirect_to new_user_device_path, notice: 'This device has already been assigned to a user'
+        redirect_to new_user_device_path, notice: "You already have a device with the name #{allowed_params[:name]}"
       end
     else
-      redirect_to new_user_device_path, notice: 'The UUID provided does not match an existing device'
+      redirect_to new_user_device_path, notice: 'Invalid UUID provided'
     end
   end
 
