@@ -8,14 +8,17 @@ class Device < ActiveRecord::Base
   has_many :developers, through: :permissions, source: :permissible, :source_type => "Developer"
   has_many :permitted_users, through: :permissions, source: :permissible, :source_type => "User"
 
+  validates :name, uniqueness: { scope: :user_id }
+
   before_create do |dev|
     dev.uuid = SecureRandom.uuid
   end
 
   def construct(current_user, device_name)
-    update(user: current_user, name: device_name)
-    developers << current_user.developers
-    permitted_users << current_user.friends
+    if update(user: current_user, name: device_name)
+      developers << current_user.developers
+      permitted_users << current_user.friends
+    end
   end
 
   def permitted_history_for(permissible)
