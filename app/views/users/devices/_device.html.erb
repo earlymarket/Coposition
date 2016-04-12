@@ -21,9 +21,9 @@
           <ul class="permissions collection" data-device=<%=device.id%>>
             <li class="collection-item row valign-wrapper">
                 <div class='valign col s7'>
-                  <h5>Global Settings</h5>
+                  <h5>Global device permissions</h5>
                   This device is <%= device.fogged ? 'fogged' : 'not fogged' %> and
-                  <%= device.delayed ? 'timeshifted' : 'not timeshifted' %>.
+                  <%= device.delayed ? 'delayed' : 'not delayed' %>.
                 </div>
                   <%= render partial: "users/permissions/global_controls", object: device, as: 'device' %>
               </li>
