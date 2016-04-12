@@ -52062,23 +52062,20 @@ window.COPO.slider = {
   initSliders: function(){
     $('.delay-slider').each(function(){
       var delaySlider = this;
-      var device_id =  parseInt(delaySlider.dataset.device);
+      var device_id =  parseInt(delaySlider.dataset.device, 10);
       var device = _.find(gon.devices, _.matchesProperty('id', device_id));
 
       noUiSlider.create(delaySlider, {
         start: [ device.delayed || 0 ],
         range: {
-          'min': [ 0, 1 ],
-          '25%': [ 10, 5 ],
-          '50%': [ 60, 30 ],
-          '75%': [ 360, 60 ],
-          '90%': [ 720, 120 ],
+          'min': [ 0, 5 ],
+          '50%': [ 5, 1435 ],
           'max': [ 1440 ]
         },
         pips: {
           mode: 'values',
-          values: [0,5,10,30,60,360,720,1440],
-          density: 2,
+          values: [0,5,1440],
+          density: 100,
           stepped:true
         },
         format: wNumb({
@@ -52094,17 +52091,24 @@ window.COPO.slider = {
           type: 'PUT',
           data: { delayed: delayed }
         });
-     });
+      });
+    });
 
+    $('.noUi-value.noUi-value-horizontal.noUi-value-large').each(function(){
+      var val = $(this).html();
+      val = COPO.slider.recountVal(val);
+      $(this).html(val);
     });
   },
 
-
- //  var delaySliderValueElement = document.getElementById('delay-slider-step-value')
- //  delaySlider.noUiSlider.on('update', function( values, handle ) {
- //    delaySliderValueElement.innerHTML = values[handle];
- //  })
-
+  recountVal: function(val){
+    switch(val){
+      case '0': return 'Off';
+      case '5': return '5 min';
+      case '1440': return '1 day';
+      default: return val;
+    }
+  }
 }
 ;
 $(document).on('page:change', function() {

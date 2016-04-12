@@ -19962,7 +19962,7 @@ footer.page-footer {
   box-shadow: none;
   background-color: #26A69A;
   border: none;
-  left: -5px;
+  left: -7px;
   top: -6px;
   transition: width 0.2s cubic-bezier(0.215, 0.61, 0.355, 1), height 0.2s cubic-bezier(0.215, 0.61, 0.355, 1), left 0.2s cubic-bezier(0.215, 0.61, 0.355, 1), top 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
@@ -20304,6 +20304,11 @@ footer.page-footer {
 /* line 20, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index .permissions-col {
   margin-top: 15px;
+}
+/* line 24, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
+.c-devices.a-index .delay-modal {
+  height: 200px;
+  width: 300px;
 }
 
 /* line 1, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
