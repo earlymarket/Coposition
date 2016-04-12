@@ -31,10 +31,10 @@
               <% permission =  device.permission_for(permitted) %>
               <li class="collection-item row valign-wrapper">
                 <div class='valign col s7'>
-                  <span id='fogIcon<%=permission.id%>' class='tooltipped' data-tooltip="Consumer can only see fogged data">
+                  <span id='fogIcon<%=permission.id%>' class='fogIcon<%=device.id%> tooltipped' data-tooltip="Consumer can only see fogged data">
                     <%= fogged_icon(device.fogged) if device.fogged %>
                   </span>
-                  <span id='delayIcon<%=permission.id%>' class='tooltipped' data-tooltip="Consumer can only see your data after a delay">
+                  <span id='delayIcon<%=permission.id%>' class='delayIcon<%=device.id%> tooltipped' data-tooltip="Consumer can only see your data after a delay">
                     <%= devices_delay_icon(device.delayed) if device.delayed %>
                   </span>
                   <%= permissible_title(permitted) %>

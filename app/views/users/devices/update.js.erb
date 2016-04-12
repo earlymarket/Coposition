@@ -6,4 +6,10 @@ var publish = $('#publishedButton<%=@device.id%>');
 publish.html("<%=j devices_shared_icon(@device)%>");
 var link = $('#sharedLink<%=@device.id%>');
 link.html("<%=j devices_shared_link(@device)%>");
+var fogIcon = $('.fogIcon<%=@device.id%>');
+fogIcon.html("<%=j fogged_icon(@device.fogged) if @device.fogged %>");
+var delayIcon = $('.delayIcon<%=@device.id%>');
+delayIcon.html("<%=j devices_delay_icon(@device.delayed) if @device.delayed %>");
 initPage();
+
+
