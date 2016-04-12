@@ -4,6 +4,7 @@ $(document).on('page:change', function() {
     COPO.permissions.global_change();
     COPO.permissions.switch_change();
     COPO.permissions.check_disabled();
+    COPO.permissions.check_bypass();
     window.initPage = function(){
       $('.clip_button').off();
       COPO.utility.initClipboard();

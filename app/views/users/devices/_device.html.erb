@@ -22,6 +22,8 @@
             <li class="collection-item row valign-wrapper">
                 <div class='valign col s7'>
                   <h5>Global Settings</h5>
+                  This device is <%= device.fogged ? 'fogged' : 'not fogged' %> and
+                  <%= device.delayed ? 'timeshifted' : 'not timeshifted' %>.
                 </div>
                   <%= render partial: "users/permissions/global_controls", object: device, as: 'device' %>
               </li>
@@ -29,6 +31,12 @@
               <% permission =  device.permission_for(permitted) %>
               <li class="collection-item row valign-wrapper">
                 <div class='valign col s7'>
+                  <span id='fogIcon<%=permission.id%>' class='tooltipped' data-tooltip="If device is fogged, this consumer ">
+                    <%= fogged_icon(device.fogged) %>
+                  </span>
+                  <span id='delayIcon<%=permission.id%>'>
+                    <%= devices_delay_icon(device.fogged) %>
+                  </span>
                   <%= permissible_title(permitted) %>
                 </div>
                   <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>

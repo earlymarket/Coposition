@@ -6,7 +6,7 @@ module ApplicationHelper
 
   def fogged_icon(value)
     if value
-      '<i class="material-icons">cloud_done</i>'.html_safe
+      '<i class="material-icons fogged_icon">cloud_done</i>'.html_safe
     else
       '<i class="material-icons">cloud_off</i>'.html_safe
     end
