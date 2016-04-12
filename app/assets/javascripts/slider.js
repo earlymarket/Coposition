@@ -48,14 +48,7 @@ window.COPO.slider = {
       case '0': return 'Off';
       case '5': return '5 min';
       case '1440': return '1 day';
-      default :return 'error';
+      default: return val;
     }
   }
-
-
- //  var delaySliderValueElement = document.getElementById('delay-slider-step-value')
- //  delaySlider.noUiSlider.on('update', function( values, handle ) {
- //    delaySliderValueElement.innerHTML = values[handle];
- //  })
-
 }
