@@ -31,13 +31,13 @@
                   <%= permissible_title(permitted) %>
                 </div>
                 <div class='col s2'>
-                  <span id='fogIcon<%=permission.id%>' class='fogIcon<%=device.id%> tooltipped' data-tooltip="Consumer can only see fogged data">
+                  <span id='fogIcon<%=permission.id%>' class='fogIcon<%=device.id%> tooltipped' data-tooltip="<%=approvals_approvable_name(permitted)%> can only see fogged data for this device">
                     <%= fogged_icon(device.fogged) if device.fogged %>
                   </span>
-                  <span id='delayIcon<%=permission.id%>' class='delayIcon<%=device.id%> tooltipped' data-tooltip="Consumer can only see your data after a delay">
+                  <span id='delayIcon<%=permission.id%>' class='delayIcon<%=device.id%> tooltipped' data-tooltip="<%=approvals_approvable_name(permitted)%> can only see your data after a delay for this device">
                     <%= devices_delay_icon(device.delayed) if device.delayed %>
                   </span>
-                  <span id='accessIcon<%=permission.id%>' class='tooltipped' data-tooltip="Consumer can't see any data from this device">
+                  <span id='accessIcon<%=permission.id%>' class='tooltipped' data-tooltip="<%=approvals_approvable_name(permitted)%> can't see any data from this device">
                     <%= devices_access_icon  %>
                   </span>
                 </div>
