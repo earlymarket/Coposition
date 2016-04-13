@@ -22,7 +22,7 @@ window.COPO.permissions = {
     })
   },
 
-  set_globals: function(){
+  set_masters: function(){
     if (gon.devices) {
       gon.devices.forEach(function(device){
         var permissions = _.filter(gon.permissions, _.matchesProperty('device_id', device.id))
@@ -33,8 +33,8 @@ window.COPO.permissions = {
             var $switch = $("div[data-permission='"+permission.id+"'][data-switch='"+switch_type+"']")
             switches_statuses.push($switch.find('input').prop("checked"))
           })
-          var new_global_state = _.every(switches_statuses)
-          $(this).find('input').prop('checked', new_global_state);
+          var new_master_state = _.every(switches_statuses)
+          $(this).find('input').prop('checked', new_master_state);
           if (switch_type === "disallowed") {
             var disallowed_state = $(this).find('input').prop("checked");
             $("div[data-device='"+device.id+"'][data-switch=last_only]").find('input').prop("checked", false);
@@ -65,7 +65,7 @@ window.COPO.permissions = {
         $("div[data-permission='"+permission_id+"'][data-switch=last_only]").find('input').prop("checked", false);
         COPO.permissions.toggle_switches_disabled(permission_id);
       }
-      COPO.permissions.set_globals();
+      COPO.permissions.set_masters();
 
       $.ajax({
         url: "/users/"+gon.current_user_id+"/devices/"+device_id+"/permissions/"+permission_id+"",
@@ -85,12 +85,12 @@ window.COPO.permissions = {
     }
   },
 
-  global_change:function(){
-    $(".global").change(function( event ) {
-      var $global = $(this)
-      var global_status = $global.find('input').prop("checked");
-      var switch_type = $global.data().switch;
-      var device_id = $global.data().device;
+  master_change:function(){
+    $(".master").change(function( event ) {
+      var $master = $(this)
+      var master_status = $master.find('input').prop("checked");
+      var switch_type = $master.data().switch;
+      var device_id = $master.data().device;
       var permissions = _.filter(gon.permissions, _.matchesProperty('device_id', device_id));
 
       permissions.forEach(function(permission){
@@ -99,9 +99,9 @@ window.COPO.permissions = {
         var current_status = $switch.find('input').prop("checked")
         var disabled = $switch.find('input').prop("disabled")
         if ((disabled && type === 'last_only')){
-          $global.find('input').prop("checked", false)
-        } else if (global_status !== current_status) {
-          $switch.find('input').prop("checked", global_status);
+          $master.find('input').prop("checked", false)
+        } else if (master_status !== current_status) {
+          $switch.find('input').prop("checked", master_status);
           $switch.trigger("change");
         }
       })

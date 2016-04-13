@@ -20,7 +20,7 @@
                 This device is <%= device.fogged ? 'fogged' : 'not fogged' %> and is
                 <%= device.delayed ? "delayed by #{device.delayed} minutes" : 'not delayed' %>.
               </div>
-              <%= render partial: "users/permissions/global_controls", object: device, as: 'device' %>
+              <%= render partial: "users/permissions/master_controls", object: device, as: 'device' %>
             </li>
 
             <% devices_permitted_actors_for(device).each do |permitted| %>
