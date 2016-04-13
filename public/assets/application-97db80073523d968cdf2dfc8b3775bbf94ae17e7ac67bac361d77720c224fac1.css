@@ -20312,12 +20312,12 @@ footer.page-footer {
 }
 /* line 29, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index .master-permissions {
-  border: 2px solid darkgrey;
+  border: 2px solid lightgrey;
   margin-right: 0;
   margin-left: 0;
 }
 /* line 35, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
-.c-devices.a-index .global label {
+.c-devices.a-index .master label {
   color: black;
 }
 
