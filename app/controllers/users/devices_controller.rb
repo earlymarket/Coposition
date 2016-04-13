@@ -6,7 +6,7 @@ class Users::DevicesController < ApplicationController
 
   def index
     @devices = current_user.devices.order(:id).includes(:developers, :permitted_users, :permissions)
-    @devices.each { |dev| dev.checkins.first.reverse_geocode! if dev.checkins.exists? }
+    @devices.each { |device| device.checkins.first.reverse_geocode! if device.checkins.exists? }
     gon.current_user_id = current_user.id
     gon.devices = @devices
     gon.permissions = @devices.map(&:permissions).inject(:+)
