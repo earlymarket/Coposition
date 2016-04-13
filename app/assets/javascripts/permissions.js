@@ -27,19 +27,19 @@ window.COPO.permissions = {
       gon.devices.forEach(function(device){
         var permissions = _.filter(gon.permissions, _.matchesProperty('device_id', device.id))
         $("div[data-device='"+device.id+"']").each(function(){
-          var switches_statuses = [];
+          var switches_checked = [];
           var switch_type = $(this).data().switch;
           permissions.forEach(function(permission){
             var $switch = $("div[data-permission='"+permission.id+"'][data-switch='"+switch_type+"']")
-            switches_statuses.push($switch.find('input').prop("checked"))
+            switches_checked.push($switch.find('input').prop("checked"))
           })
-          var new_master_state = _.every(switches_statuses)
-          $(this).find('input').prop('checked', new_master_state);
+          var new_master_checked_state = _.every(switches_checked)
+          $(this).find('input').prop('checked', new_master_checked_state);
           if (switch_type === "disallowed") {
-            var disallowed_state = $(this).find('input').prop("checked");
+            var disallowed_checked = $(this).find('input').prop("checked");
             $("div[data-device='"+device.id+"'][data-switch=last_only]").find('input').prop("checked", false);
             element = $("div[data-device='"+ device.id +"'].disable").find('input');
-            element.prop("disabled", disallowed_state);
+            element.prop("disabled", disallowed_checked);
           }
         })
       })
@@ -88,20 +88,20 @@ window.COPO.permissions = {
   master_change:function(){
     $(".master").change(function( event ) {
       var $master = $(this)
-      var master_status = $master.find('input').prop("checked");
-      var switch_type = $master.data().switch;
+      var master_checked = $master.find('input').prop("checked");
+      var master_type = $master.data().switch;
       var device_id = $master.data().device;
       var permissions = _.filter(gon.permissions, _.matchesProperty('device_id', device_id));
 
       permissions.forEach(function(permission){
-        var $switch = $("div[data-permission='"+permission.id+"'][data-switch='"+switch_type+"']")
-        var type = $switch.data().switch;
-        var current_status = $switch.find('input').prop("checked")
+        var $switch = $("div[data-permission='"+permission.id+"'][data-switch='"+master_type+"']")
+        var switch_type = $switch.data().switch;
+        var checked = $switch.find('input').prop("checked")
         var disabled = $switch.find('input').prop("disabled")
-        if ((disabled && type === 'last_only')){
+        if ((disabled && switch_type === 'last_only')){
           $master.find('input').prop("checked", false)
-        } else if (master_status !== current_status) {
-          $switch.find('input').prop("checked", master_status);
+        } else if (master_checked !== checked) {
+          $switch.find('input').prop("checked", master_checked);
           $switch.trigger("change");
         }
       })
