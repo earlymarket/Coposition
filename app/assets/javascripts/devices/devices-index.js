@@ -5,6 +5,7 @@ $(document).on('page:change', function() {
     COPO.permissions.switch_change();
     COPO.permissions.check_disabled();
     COPO.permissions.check_bypass();
+    COPO.slider.initSliders();
     window.initPage = function(){
       $('.clip_button').off();
       COPO.utility.initClipboard();
@@ -27,5 +28,6 @@ $(document).on('page:change', function() {
       })
     }
     initPage();
+
   }
 })

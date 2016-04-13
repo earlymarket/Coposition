@@ -149,7 +149,7 @@ RSpec.describe Users::DevicesController, type: :controller do
 
     it 'should set a delay' do
       request.accept = 'text/javascript'
-      put :update, params.merge(mins:13)
+      put :update, params.merge(delayed:13)
 
       device.reload
       expect(device.delayed).to be 13
@@ -157,7 +157,7 @@ RSpec.describe Users::DevicesController, type: :controller do
 
     it 'should set a delay of 0 as nil' do
       request.accept = 'text/javascript'
-      put :update, params.merge(mins:0)
+      put :update, params.merge(delayed:0)
 
       device.reload
       expect(device.delayed).to be nil

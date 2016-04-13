@@ -51,5 +51,4 @@ module DevicesHelper
       })
     output
   end
-
 end

@@ -14,7 +14,6 @@ Feature: Permissions
         And I enter UUID "123456789123" and a friendly name "G-RALA"
       When I click "Add"
       Then I should see "This device has been bound to your account!"
-        # And I should see "G-RALA"
       When I click the link "Devices"
-        And I click the link "Permissions"
+        And I click the link "lock"
         Then I should see "Wherefore Art Thou"

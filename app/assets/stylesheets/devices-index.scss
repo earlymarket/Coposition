@@ -12,4 +12,28 @@
       box-shadow: inherit;
     }
   }
+
+  .delay-slider {
+    width: 98%;
+  }
+
+  .permissions-col {
+    margin-top: 15px;
+  }
+
+  .delay-modal {
+    height: 200px;
+    width: 300px;
+  }
+
+  .master-permissions {
+    border: 2px solid darkgrey;
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .global label {
+    color: black;
+
+  }
 }
