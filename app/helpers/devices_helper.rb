@@ -15,7 +15,7 @@ module DevicesHelper
 
   def devices_delay_icon(value)
     if value
-      '<i class="material-icons delayed_icon">hourglass_full</i>'.html_safe
+      '<i class="material-icons">hourglass_full</i>'.html_safe
     else
       '<i class="material-icons">hourglass_empty</i>'.html_safe
     end
