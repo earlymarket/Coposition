@@ -2,11 +2,10 @@ window.COPO = window.COPO || {};
 window.COPO.permissions = {
   check_disabled: function(){
     $('[data-switch=disallowed]').each(function(){
+      var permission_id =  $(this).data().permission;
       if ($(this).find('input').prop('checked')){
-        var permission_id =  $(this).data().permission;
         COPO.permissions.toggle_switches_disabled(permission_id);
       } else {
-        var permission_id =  $(this).data().permission;
         COPO.permissions.icon_toggle('disallowed', permission_id);
       }
     });
