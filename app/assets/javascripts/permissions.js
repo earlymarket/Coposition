@@ -91,7 +91,6 @@ window.COPO.permissions = {
   global_change:function(){
     $(".global").change(function( event ) {
       var global_status = $(this).find('input').prop("checked");
-      var attribute = $(this).data().attribute;
       var switch_type = $(this).data().switch;
       var device_id = $(this).data().device;
       var permissions = _.filter(gon.permissions, _.matchesProperty('device_id', device_id));
