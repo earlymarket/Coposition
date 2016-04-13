@@ -1,11 +1,13 @@
 <%= Gon::Base.render_data %>
 <h1><%= action_name.titleize %></h1>
+<div class='center-align'>
+  <%= link_to(new_user_approval_path(approvable_type: @approvable_type), class: "btn-floating btn-large waves-effect waves-light primary-color") do %>
+      <i class="material-icons">add</i>
+  <% end %>
+</div>
+</br>
   <%= render partial: "approved", locals: {approved: @approved, devices: @devices} %>
   <%= render partial: "pending", locals: {pending: @pending} if @pending.present? %>
-<div class='center-align'>
-<%= link_to("Add #{action_name.singularize}", new_user_approval_path(approvable_type: @approvable_type), class: "btn waves-effect waves-light") %>
-</div>
-
 <script>
   $('.modal-trigger').leanModal();
   COPO.permissions.check_disabled();
