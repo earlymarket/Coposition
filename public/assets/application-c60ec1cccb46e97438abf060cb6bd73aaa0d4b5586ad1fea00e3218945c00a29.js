@@ -51957,15 +51957,58 @@ window.COPO.permissions = {
       if ($(this).find('input').prop('checked')){
         var permission_id =  $(this).data().permission;
         COPO.permissions.toggle_switches_disabled(permission_id);
+      } else {
+        var permission_id =  $(this).data().permission;
+        COPO.permissions.icon_toggle('disallowed', permission_id);
       }
     });
   },
 
+  check_bypass: function(){
+    ['bypass_fogging', 'bypass_delay'].forEach(function(attribute){
+      $("[data-switch='"+attribute+"']").each(function(){
+        if ($(this).find('input').prop('checked')){
+          var permission_id =  $(this).data().permission;
+          COPO.permissions.icon_toggle(attribute, permission_id);
+        }
+      });
+    })
+  },
+
+  set_globals: function(){
+    if (gon.devices) {
+      gon.devices.forEach(function(device){
+        var permissions = _.filter(gon.permissions, _.matchesProperty('device_id', device.id))
+        $("div[data-device='"+device.id+"']").each(function(){
+          var switches_statuses = [];
+          var switch_type = $(this).data().switch;
+          permissions.forEach(function(permission){
+            var $switch = $("div[data-permission='"+permission.id+"'][data-switch='"+switch_type+"']")
+            switches_statuses.push($switch.find('input').prop("checked"))
+          })
+          if (_.every(switches_statuses)){
+            $(this).find('input').prop('checked', true);
+          } else {
+            $(this).find('input').prop('checked', false);
+          }
+          if (switch_type === "disallowed") {
+            var state = $(this).find('input').prop("checked");
+            $("div[data-device='"+device.id+"'][data-switch=last_only]").find('input').prop("checked", false);
+            element = $("div[data-device='"+ device.id +"'].disable").find('input');
+            element.prop("disabled", state);
+          }
+        })
+      })
+    }
+  },
+
   switch_change:function(){
-    $(".switch").change(function( event ) {
+    $(".permission-switch").change(function( event ) {
+      COPO.permissions.set_globals();
       var attribute = $(this).data().attribute;
       var switch_type = $(this).data().switch;
       var permission_id =  $(this).data().permission;
+      COPO.permissions.icon_toggle(switch_type, permission_id);
       var permission = _.find(gon.permissions, _.matchesProperty('id', permission_id));
       var device_id = permission['device_id'];
 
@@ -51985,6 +52028,35 @@ window.COPO.permissions = {
         type: 'PUT',
         data: { permission: permission }
       });
+    })
+  },
+
+  icon_toggle: function(switch_type, permission_id){
+    if (switch_type === 'bypass_fogging'){
+      $('#fogIcon'+permission_id).toggle();
+    } else if (switch_type === 'bypass_delay'){
+      $('#delayIcon'+permission_id).toggle();
+    } else if (switch_type === 'disallowed'){
+      $('#accessIcon'+permission_id).toggle();
+    }
+  },
+
+  global_change:function(){
+    $(".global").change(function( event ) {
+      var global_status = $(this).find('input').prop("checked");
+      var attribute = $(this).data().attribute;
+      var switch_type = $(this).data().switch;
+      var device_id = $(this).data().device;
+      var permissions = _.filter(gon.permissions, _.matchesProperty('device_id', device_id));
+
+      permissions.forEach(function(permission){
+        var $switch = $("div[data-permission='"+permission.id+"'][data-switch='"+switch_type+"']")
+        var current_status = $switch.find('input').prop("checked")
+        if (global_status !== current_status) {
+          $switch.find('input').prop("checked", global_status);
+          $switch.trigger("change");
+        }
+      })
     })
   },
 
@@ -52112,6 +52184,12 @@ window.COPO.slider = {
 }
 ;
 $(document).on('page:change', function() {
+  if ($(".c-approvals").length === 1) {
+    $('.tooltipped').tooltip({delay: 50});
+  }
+})
+;
+$(document).on('page:change', function() {
   if ($(".c-dashboards.a-show").length === 1) {
     google.charts.setOnLoadCallback(function() {
        COPO.charts.drawBarChart(gon.weeks_checkins, '270');
@@ -52123,8 +52201,11 @@ $(document).on('page:change', function() {
 });
 $(document).on('page:change', function() {
   if ($(".c-devices.a-index").length === 1) {
+    COPO.permissions.set_globals();
+    COPO.permissions.global_change();
     COPO.permissions.switch_change();
     COPO.permissions.check_disabled();
+    COPO.permissions.check_bypass();
     COPO.slider.initSliders();
     window.initPage = function(){
       $('.clip_button').off();

@@ -20310,6 +20310,16 @@ footer.page-footer {
   height: 200px;
   width: 300px;
 }
+/* line 29, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
+.c-devices.a-index .master-permissions {
+  border: 2px solid darkgrey;
+  margin-right: 0;
+  margin-left: 0;
+}
+/* line 35, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
+.c-devices.a-index .global label {
+  color: black;
+}
 
 /* line 1, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
 .c-devices.a-show {
