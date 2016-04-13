@@ -10,6 +10,8 @@ var fogIcon = $('.fogIcon<%=@device.id%>');
 fogIcon.html("<%=j fogged_icon(@device.fogged) if @device.fogged %>");
 var delayIcon = $('.delayIcon<%=@device.id%>');
 delayIcon.html("<%=j devices_delay_icon(@device.delayed) if @device.delayed %>");
+var deviceStatus = $('#<%=@device.id%>-status');
+deviceStatus.html('<h5>Master permissions <%= fogged_icon(@device.fogged) %> <%= devices_delay_icon(@device.delayed) %></h5>This device is <%= @device.fogged ? "fogged" : "not fogged" %> and is <%= @device.delayed ? "delayed by #{@device.delayed} minutes" : "not delayed" %>.')
 initPage();
 
 

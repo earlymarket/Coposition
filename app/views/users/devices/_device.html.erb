@@ -17,19 +17,21 @@
 
       <div id="perm<%=device.id%>" class="modal">
         <div class="modal-content">
-          <h4 class="modal-header">Permissions Controls</h4>
+          <h4 class="modal-header">Permissions Controls for <%=device.name%></h4>
           <ul class="permissions collection" data-device=<%=device.id%>>
-            <li class="collection-item row valign-wrapper">
-                <div class='valign col s7'>
-                  <h5>Global device permissions</h5>
-                  This device is <%= device.fogged ? 'fogged' : 'not fogged' %> and
-                  <%= device.delayed ? 'delayed' : 'not delayed' %>.
-                </div>
-                  <%= render partial: "users/permissions/global_controls", object: device, as: 'device' %>
-              </li>
+            <li class="card row valign-wrapper">
+              <div class='valign col s7' id="<%=device.id%>-status">
+                <h5>Master permissions <%= fogged_icon(device.fogged) %> <%= devices_delay_icon(device.delayed) %></h5>
+                This device is <%= device.fogged ? 'fogged' : 'not fogged' %> and is
+                <%= device.delayed ? "delayed by #{device.delayed} minutes" : 'not delayed' %>.
+              </div>
+              <%= render partial: "users/permissions/global_controls", object: device, as: 'device' %>
+            </li>
+
             <% devices_permitted_actors_for(device).each do |permitted| %>
               <% permission =  device.permission_for(permitted) %>
               <li class="collection-item row valign-wrapper">
+
                 <div class='valign col s5'>
                   <%= permissible_title(permitted) %>
                 </div>
@@ -45,6 +47,7 @@
                   </span>
                 </div>
                 <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
+
               </li>
             <% end %>
 
