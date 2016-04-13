@@ -17,9 +17,9 @@
 
       <div id="perm<%=device.id%>" class="modal">
         <div class="modal-content">
-          <h4 class="modal-header">Permissions Controls for <%=device.name%></h4>
+          <h4 class="modal-header">Permission control for <%=device.name%></h4>
           <ul class="permissions collection" data-device=<%=device.id%>>
-            <li class="card row valign-wrapper">
+            <li class="collection-item row valign-wrapper">
               <div class='valign col s7' id="<%=device.id%>-status">
                 <h5>Master permissions <%= fogged_icon(device.fogged) %> <%= devices_delay_icon(device.delayed) %></h5>
                 This device is <%= device.fogged ? 'fogged' : 'not fogged' %> and is
