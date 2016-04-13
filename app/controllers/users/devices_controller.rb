@@ -5,10 +5,8 @@ class Users::DevicesController < ApplicationController
   before_action :require_ownership, only: [:show, :destroy, :update]
 
   def index
-    @devices = current_user.devices.order(:id).includes(:developers, :permitted_users, :permissions).map do |dev|
-      dev.checkins.first.reverse_geocode! if dev.checkins.exists?
-      dev
-    end
+    @devices = current_user.devices.order(:id).includes(:developers, :permitted_users, :permissions)
+    @devices.each { |dev| dev.checkins.first.reverse_geocode! if dev.checkins.exists? }
     gon.current_user_id = current_user.id
     gon.devices = @devices
     gon.permissions = @devices.map(&:permissions).inject(:+)
