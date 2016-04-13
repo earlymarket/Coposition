@@ -6,8 +6,9 @@
   <% end %>
 </div>
 </br>
-  <%= render partial: "approved", locals: {approved: @approved, devices: @devices} %>
-  <%= render partial: "pending", locals: {pending: @pending} if @pending.present? %>
+<%= render partial: "approved", locals: {approved: @approved, devices: @devices} %>
+<%= render partial: "pending", locals: {pending: @pending} if @pending.present? %>
+
 <script>
   $('.modal-trigger').leanModal();
   COPO.permissions.check_disabled();
