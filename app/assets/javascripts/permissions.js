@@ -87,15 +87,20 @@ window.COPO.permissions = {
 
   global_change:function(){
     $(".global").change(function( event ) {
-      var global_status = $(this).find('input').prop("checked");
-      var switch_type = $(this).data().switch;
-      var device_id = $(this).data().device;
+      var $global = $(this)
+      var global_status = $global.find('input').prop("checked");
+      var switch_type = $global.data().switch;
+      var device_id = $global.data().device;
       var permissions = _.filter(gon.permissions, _.matchesProperty('device_id', device_id));
 
       permissions.forEach(function(permission){
         var $switch = $("div[data-permission='"+permission.id+"'][data-switch='"+switch_type+"']")
+        var type = $switch.data().switch;
         var current_status = $switch.find('input').prop("checked")
-        if (global_status !== current_status) {
+        var disabled = $switch.find('input').prop("disabled")
+        if ((disabled && type === 'last_only')){
+          $global.find('input').prop("checked", false)
+        } else if (global_status !== current_status) {
           $switch.find('input').prop("checked", global_status);
           $switch.trigger("change");
         }
