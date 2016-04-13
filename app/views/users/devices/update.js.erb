@@ -1,6 +1,8 @@
 <%= raw render_flash %>
 var fog = $('#fogButton<%=@device.id%>');
 fog.html("<%=j fogged_icon(@device.fogged)%>");
+var delay = $('#delayButton<%=@device.id%>');
+delay.html("<%=j devices_delay_icon(@device.delayed)%>");
 $('#mins').val('<%= @device.delayed %>');
 var publish = $('#publishedButton<%=@device.id%>');
 publish.html("<%=j devices_shared_icon(@device)%>");
