@@ -1,13 +1,18 @@
+$('.approvalsGon').html("<%= j Gon::Base.render_data %>")
+
 if (COPO.utility.urlParam("redirect")) {
   window.location.replace(COPO.utility.urlParam("redirect"));
 }
 $('nav').replaceWith("<%= j (render partial: 'navbar') %>");
-$('#approved').html("<%= j (render partial: 'approved', locals: {approved: @approved, devices: @devices}) %>")
-<% if @pending.present? %>
-  $('#pending').html("<%= j (render partial: 'pending', locals: {pending: @pending}) %>")
+$('#approved').html("<%= j (render partial: 'approved', locals: {approved: @presenter.approved, devices: @presenter.devices, approvable_type: @presenter.approvable_type}) %>")
+<% if @presenter.pending.present? %>
+  $('#pending').html("<%= j (render partial: 'pending', locals: {pending: @presenter.pending}) %>")
 <% else %>
   $('#pending').remove();
 <% end %>
 $('.modal-trigger').leanModal();
+COPO.permissions.set_masters('approved');
+COPO.permissions.master_change('approved');
+COPO.permissions.switch_change('approved');
 COPO.permissions.check_disabled();
-COPO.permissions.switch_change();
+COPO.permissions.check_bypass();

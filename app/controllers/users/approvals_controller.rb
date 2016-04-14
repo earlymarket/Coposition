@@ -39,14 +39,12 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def approve
-    @approval = Approval.find_by(id: params[:id],
-      user: current_user)
-    @approvable_type = @approval.approvable_type
-    Approval.accept(current_user, @approval.approvable, @approval.approvable_type)
-    @approved = current_user.approved_for(@approval)
-    @pending = current_user.pending_for(@approval)
-    @devices = current_user.devices.includes(:permissions)
-    gon.permissions = @devices.map{ |device| device.permissions.where(permissible_type: @approvable_type)}.inject(:+)
+    @approval = Approval.find_by(id: params[:id], user: current_user)
+    approvable_type = @approval.approvable_type
+    Approval.accept(current_user, @approval.approvable, approvable_type)
+    @presenter = ::Users::ApprovalsPresenter.new(current_user, approvable_type)
+    gon.clear
+    gon.push(@presenter.gon)
     respond_to do |format|
       format.html { redirect_to user_approvals_path }
       format.js
@@ -54,17 +52,16 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def reject
-    @approval = Approval.find_by(id: params[:id],
-      user: current_user)
+    @approval = Approval.find_by(id: params[:id], user: current_user)
+    approvable_type = @approval.approvable_type
     current_user.destroy_permissions_for(@approval.approvable)
-    if @approval.approvable_type == 'User'
+    if approvable_type == 'User'
       Approval.find_by(user: @approval.approvable, approvable: @approval.user, approvable_type: 'User').destroy
     end
     @approval.destroy
-    @approved = current_user.approved_for(@approval)
-    @pending = current_user.pending_for(@approval)
-    @devices = current_user.devices.includes(:permissions)
-    gon.permissions = @devices.map{ |device| device.permissions.where(permissible_type: @approvable_type)}.inject(:+)
+    @presenter = ::Users::ApprovalsPresenter.new(current_user, approvable_type)
+    gon.clear
+    gon.push(@presenter.gon)
     respond_to do |format|
       format.html { redirect_to user_approvals_path }
       format.js { render "approve" }

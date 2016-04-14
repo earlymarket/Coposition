@@ -10,7 +10,7 @@ module Users
       @user = user
       @approvable_type = approvable_type
       @approved = users_approved
-      @pending = requests
+      @pending = users_requests
       @devices = user.devices
     end
 
@@ -33,7 +33,7 @@ module Users
         @approvable_type == 'Developer' ? @user.developers : @user.friends
       end
 
-      def requests
+      def users_requests
         @approvable_type == 'Developer' ? @user.developer_requests : @user.friend_requests
       end
 
