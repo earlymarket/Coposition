@@ -12,8 +12,8 @@ describe ::Users::DashboardsPresenter do
     it { is_expected.to respond_to :most_frequent_areas }
     it { is_expected.to respond_to :percent_change }
     it { is_expected.to respond_to :weeks_checkins_count }
-    it { is_expected.to respond_to :gon }
     it { is_expected.to respond_to :most_used_device }
+    it { is_expected.to respond_to :gon }
   end
 
   describe 'Output' do

@@ -30,6 +30,7 @@
 //= require cloudinary
 //= require attachinary
 //= require zeroclipboard
+//= require nouislider.min.js
 
 // -- Mapbox stuff --
 //= require mapbox
@@ -46,6 +47,7 @@
 //= require map
 //= require permissions
 //= require date-picker
+//= require slider
 
 // I've put require_tree back in. Any js where the load order isn't important doesn't need to be specified.
 //= require_tree .
