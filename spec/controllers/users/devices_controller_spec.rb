@@ -113,11 +113,11 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
 
     it 'should fail to to create a device when the device is assigned to a user' do
-      count = new_user.devices.count
+      count = user.devices.count
       taken_uuid = user.devices.last.uuid
       post :create, user_param.merge(device: { uuid: taken_uuid })
       expect(response).to redirect_to(new_user_device_path)
-      expect(new_user.devices.count).to be count
+      expect(user.devices.count).to be count
     end
 
     it 'should fail to to create a device with a duplicate username' do
