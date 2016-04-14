@@ -20298,27 +20298,9 @@ footer.page-footer {
   box-shadow: inherit;
 }
 /* line 16, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
-.c-devices.a-index .delay-slider {
-  width: 98%;
-}
-/* line 20, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
-.c-devices.a-index .permissions-col {
-  margin-top: 15px;
-}
-/* line 24, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index .delay-modal {
-  height: 200px;
-  width: 300px;
-}
-/* line 29, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
-.c-devices.a-index .master-permissions {
-  border: 2px solid lightgrey;
-  margin-right: 0;
-  margin-left: 0;
-}
-/* line 35, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
-.c-devices.a-index .master label {
-  color: black;
+  height: 180px;
+  width: 320px;
 }
 
 /* line 1, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
@@ -20503,23 +20485,38 @@ footer.page-footer {
 }
 
 /* line 3, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
+.c-approvals .approvalsGon {
+  display: none;
+}
+/* line 7, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
 .c-approvals #approved {
   margin-bottom: 1rem;
 }
-/* line 7, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
+/* line 11, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
 .c-approvals .avatar {
   margin-right: 1em;
 }
-/* line 11, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
+/* line 15, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
 .c-approvals .tagline {
   margin-left: 1rem;
 }
-/* line 15, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
+/* line 19, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
 .c-approvals .card-panel {
   padding: 5px;
   margin: 0.25rem 0 0 0;
 }
-/* line 18, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
+/* line 22, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
 .c-approvals .card-panel .row {
   margin: 0;
+}
+
+/* line 2, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/permissions.scss */
+.permissions .master-permissions {
+  border: 2px solid lightgrey;
+  margin-right: 0;
+  margin-left: 0;
+}
+/* line 8, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/permissions.scss */
+.permissions .master label {
+  color: black;
 }
