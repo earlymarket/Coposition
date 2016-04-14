@@ -46,9 +46,9 @@ RSpec.describe Users::ApprovalsController, type: :controller do
 
       it 'should create an accepted approval between user and developer' do
         post :create, dev_approval_create_params
-        expect(Approval.last.user).to eq user
         expect(Approval.last.approvable_id).to eq developer.id
         expect(Approval.last.status).to eq 'accepted'
+        expect(Approval.last.user).to eq user
       end
 
       it 'should confirm an existing developer approval request' do
