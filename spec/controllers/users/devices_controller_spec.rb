@@ -157,10 +157,14 @@ RSpec.describe Users::DevicesController, type: :controller do
 
     it 'should set a delay' do
       request.accept = 'text/javascript'
-      put :update, params.merge(delayed:13)
-
+      put :update, params.merge(delayed:5)
+      expect(flash[:notice]).to include 'minutes'
+      put :update, params.merge(delayed:100)
+      expect(flash[:notice]).to include 'hour'
+      put :update, params.merge(delayed:1440)
+      expect(flash[:notice]).to include 'day'
       device.reload
-      expect(device.delayed).to be 13
+      expect(device.delayed).to be 1440
     end
 
     it 'should set a delay of 0 as nil' do
