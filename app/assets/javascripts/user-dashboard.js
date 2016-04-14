@@ -7,8 +7,12 @@ $(document).on('page:change', function() {
 
       var checkin = friend.lastCheckin
       if(checkin){
-        var friendIcon = L.icon({iconUrl: COPO.utility.avatarUrl(friend.userinfo.avatar, {width: 30, height: 30})
-      })
+        var public_id = friend.userinfo.avatar.public_id;
+        var friendIcon = L.icon({
+          iconUrl: $.cloudinary.url(public_id, {format: 'png', transformation: 'map-pin'}),
+          iconSize: [36,52],
+          iconAnchor: [18,49]
+        })
         L.marker([checkin.lat, checkin.lng], {icon: friendIcon, title: friend.userinfo.username}).addTo(map)
       }
 

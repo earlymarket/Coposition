@@ -23,13 +23,8 @@ module ApplicationHelper
 
   def avatar_defaults
     {
-      size: '60x60',
-      crop: :thumb,
-      gravity: 'face:center',
-      radius: :max,
-      class: 'avatar',
-      format: 'png',
-      default_image: 'placeholder.png'
+      transformation: ['60x60cAvatar'],
+      format: 'png'
     }
   end
 

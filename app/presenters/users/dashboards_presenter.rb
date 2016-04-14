@@ -25,7 +25,7 @@ module Users
     end
 
     def most_used_device
-      Device.find(device_checkins_count.first.first)
+      Device.find(device_checkins_count.first.first) unless device_checkins_count.empty?
     end
 
     private
