@@ -22,36 +22,12 @@ window.COPO.permissions = {
     })
   },
 
- // set_masters: function(){
- //   if (gon.devices) {
- //     gon.devices.forEach(function(device){
- //       var permissions = _.filter(gon.permissions, _.matchesProperty('device_id', device.id))
- //       $("div[data-id='"+device.id+"'].master").each(function(){
- //         var switches_checked = [];
- //         var switch_type = $(this).data().switch;
- //         permissions.forEach(function(permission){
- //           var $switch = $("div[data-id='"+permission.id+"'][data-switch='"+switch_type+"'].permission-switch")
- //           switches_checked.push($switch.find('input').prop("checked"))
- //         })
- //         var new_master_checked_state = _.every(switches_checked)
- //         $(this).find('input').prop('checked', new_master_checked_state);
- //         if (switch_type === "disallowed") {
- //           var disallowed_checked = $(this).find('input').prop("checked");
- //           $("div[data-id='"+device.id+"'][data-switch=last_only].master").find('input').prop("checked", false);
- //           element = $("div[data-id='"+ device.id +"'].disable.permission-switch").find('input');
- //           element.prop("disabled", disallowed_checked);
- //         }
- //       })
- //     })
- //   }
- // },
-
-  set_masters: function(page_type){
-    if (gon[page_type]) {
-      gon[page_type].forEach(function(thing){
-        var property = (page_type === 'devices' ? 'device_id' : 'permissible_id')
-        var permissions = _.filter(gon.permissions, _.matchesProperty(property, thing.id))
-        $("div[data-id='"+thing.id+"'].master").each(function(){
+  set_masters: function(permissionables){
+    if (gon[permissionables]) {
+      gon[permissionables].forEach(function(permissionable){
+        var property = (permissionables === 'devices' ? 'device_id' : 'permissible_id')
+        var permissions = _.filter(gon.permissions, _.matchesProperty(property, permissionable.id))
+        $("div[data-id='"+permissionable.id+"'].master").each(function(){
           var switches_checked = [];
           var switch_type = $(this).data().switch;
           permissions.forEach(function(permission){
@@ -61,17 +37,16 @@ window.COPO.permissions = {
           var new_master_checked_state = _.every(switches_checked)
           $(this).find('input').prop('checked', new_master_checked_state);
           if (switch_type === "disallowed") {
-            var disallowed_checked = $(this).find('input').prop("checked");
-            $("div[data-id='"+thing.id+"'][data-switch=last_only].master").find('input').prop("checked", false);
-            element = $("div[data-id='"+ thing.id +"'].disable.master").find('input');
-            element.prop("disabled", disallowed_checked);
+            $("div[data-id='"+permissionable.id+"'][data-switch=last_only].master").find('input').prop("checked", false);
+            element = $("div[data-id='"+ permissionable.id +"'].disable.master").find('input');
+            element.prop("disabled", new_master_checked_state);
           }
         })
       })
     }
   },
 
-  switch_change:function(page_type){
+  switch_change:function(permissionables){
     $(".permission-switch").change(function( event ) {
       var attribute = $(this).data().attribute;
       var switch_type = $(this).data().switch;
@@ -90,7 +65,7 @@ window.COPO.permissions = {
         $("div[data-id='"+permission_id+"'][data-switch=last_only].permission-switch").find('input').prop("checked", false);
         COPO.permissions.toggle_switches_disabled(permission_id);
       }
-      COPO.permissions.set_masters(page_type);
+      COPO.permissions.set_masters(permissionables);
 
       $.ajax({
         url: "/users/"+gon.current_user_id+"/devices/"+device_id+"/permissions/"+permission_id+"",
@@ -110,13 +85,13 @@ window.COPO.permissions = {
     }
   },
 
-  master_change:function(page_type){
+  master_change:function(permissionables){
     $(".master").change(function( event ) {
       var $master = $(this)
       var master_checked = $master.find('input').prop("checked");
       var master_type = $master.data().switch;
       var id = $master.data().id;
-      var property = (page_type === 'devices' ? 'device_id' : 'permissible_id')
+      var property = (permissionables === 'devices' ? 'device_id' : 'permissible_id')
       var permissions = _.filter(gon.permissions, _.matchesProperty(property, id));
       permissions.forEach(function(permission){
         var $switch = $("div[data-id='"+permission.id+"'][data-switch='"+master_type+"'].permission-switch")
@@ -127,7 +102,7 @@ window.COPO.permissions = {
           $master.find('input').prop("checked", false)
         } else if (master_checked !== checked) {
           $switch.find('input').prop("checked", master_checked);
-          $switch.trigger("change", [page_type]);
+          $switch.trigger("change", [permissionables]);
         }
       })
     })

@@ -28,7 +28,7 @@
                   <div class='valign col s7'>
                     <h5>Master permissions</h5>
                   </div>
-                  <%= render partial: "users/permissions/controls", object: approvable, as: 'thing' %>
+                  <%= render partial: "users/permissions/controls", object: approvable, as: 'permissionable' %>
                 </li>
                 <% devices.each do |device| %>
                   <% permission =  device.permission_for(approvable) %>
@@ -45,7 +45,7 @@
                         <%= devices_access_icon  %>
                       </span>
                     </div>
-                    <%= render partial: "users/permissions/controls", object: permission, as: 'thing' %>
+                    <%= render partial: "users/permissions/controls", object: permission, as: 'permissionable' %>
                   </li>
                 <% end %>
 

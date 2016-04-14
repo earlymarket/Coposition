@@ -11,26 +11,26 @@ module PermissionsHelper
     title.html_safe
   end
 
-  def partial_class(thing)
-    'master-switches' if thing.class != Permission
+  def partial_class(permissionable)
+    'master-switches' if permissionable.class != Permission
   end
 
-  def switch_class(thing)
-    thing.class == Permission ? 'permission-switch' : 'master'
+  def switch_class(permissionable)
+    permissionable.class == Permission ? 'permission-switch' : 'master'
   end
 
-  def check_box_value(thing, type)
-    if thing.class == Permission
+  def check_box_value(permissionable, type)
+    if permissionable.class == Permission
       if ['disallowed', 'last_only'].include? type
-        thing.privilege == type
+        permissionable.privilege == type
       else
-        thing[type]
+        permissionable[type]
       end
     end
   end
 
-  def for_all(thing)
-    'for all' if thing.class != Permission
+  def for_all(permissionable)
+    'for all' if permissionable.class != Permission
   end
 
 end
