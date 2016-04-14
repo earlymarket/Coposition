@@ -16,16 +16,16 @@ module Users
       @weeks_checkins_count = weeks_checkins.count
     end
 
+    def most_used_device
+      Device.find(device_checkins_count.first.first) unless device_checkins_count.empty?
+    end
+
     def gon
       # gon converts these using #each_pair into seperate gon variables
       {
         friends: friends,
         weeks_checkins: weeks_checkins
       }
-    end
-
-    def most_used_device
-      Device.find(device_checkins_count.first.first) unless device_checkins_count.empty?
     end
 
     private
