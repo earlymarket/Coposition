@@ -30,8 +30,10 @@ class Users::ApprovalsController < ApplicationController
     @approvable_type = 'Developer'
     @approved = current_user.developers
     @pending = current_user.developer_requests
-    @devices = current_user.devices.includes(:permissions)
-    gon.permissions = @devices.map(&:permissions).inject(:+)
+    @devices = current_user.devices
+    gon.approved = @approved
+    gon.devices = @devices
+    gon.permissions = @devices.map{ |device| device.permissions.where(permissible_type: 'Developer')}.inject(:+)
     gon.current_user_id = current_user.id
     render "approvals"
   end
@@ -40,8 +42,10 @@ class Users::ApprovalsController < ApplicationController
     @approvable_type = 'User'
     @approved = current_user.friends
     @pending = current_user.friend_requests
-    @devices = current_user.devices.includes(:permissions)
-    gon.permissions = @devices.map(&:permissions).inject(:+)
+    @devices = current_user.devices
+    gon.approved = @approved
+    gon.devices = @devices
+    gon.permissions = @devices.map{ |device| device.permissions.where(permissible_type: 'User')}.inject(:+)
     gon.current_user_id = current_user.id
     render "approvals"
   end

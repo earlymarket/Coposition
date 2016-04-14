@@ -120,6 +120,14 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(new_user.devices.count).to be count
     end
 
+    it 'should fail to to create a device with a duplicate username' do
+      count = new_user.devices.count
+      taken_name = user.devices.last.name
+      post :create, user_param.merge(device: { name: taken_name })
+      expect(response).to redirect_to(new_user_device_path)
+      expect(new_user.devices.count).to be count
+    end
+
   end
 
   describe 'PUT #update' do
