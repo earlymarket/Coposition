@@ -61,7 +61,8 @@ class Users::DevicesController < ApplicationController
     @device = Device.find(params[:id])
     if params[:delayed]
       @device.set_delay(params[:delayed])
-      flash[:notice] = "#{@device.name} delayed by #{@device.delayed.to_i} minutes."
+      delayed = humanizeDelay(@device.delayed.to_i)
+      flash[:notice] = "#{@device.name} delayed by #{delayed}."
     elsif params[:published]
       @device.update(published: !@device.published)
       flash[:notice] = "Location sharing is #{boolean_to_state(@device.published)}."
@@ -101,6 +102,16 @@ class Users::DevicesController < ApplicationController
     def published?
       unless Device.find(params[:id]).published?
         redirect_to root_path, notice: "Device is not shared"
+      end
+    end
+
+    def humanizeDelay(delay)
+      if delay<60
+        "#{delay} #{'minute'.pluralize delay}"
+      elsif delay < 1440
+        "#{delay/60} #{'hour'.pluralize(delay/60)} and #{delay%60} #{'minutes'.pluralize(delay%60)}"
+      else
+        "#{delay/1440} #{'day'.pluralize(delay/1440)}"
       end
     end
 
