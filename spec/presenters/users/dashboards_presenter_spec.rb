@@ -7,7 +7,13 @@ describe ::Users::DashboardsPresenter do
     Checkin.all
   end
 
-  subject { ::Users::DashboardsPresenter.new(checkins) }
+  let(:presenter_args) do
+    {
+      checkins: checkins
+    }
+  end
+
+  subject { ::Users::DashboardsPresenter.new(presenter_args) }
 
   describe 'Interface' do
     it { is_expected.to respond_to :most_frequent_areas }

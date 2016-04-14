@@ -3,7 +3,7 @@ class Users::FriendsController < ApplicationController
 
   def show
     @friend = User.find(params[:id])
-    @devices = @friend.devices
+    @devices = @friend.devices.includes(:checkins)
   end
 
   def show_device
