@@ -107,7 +107,7 @@ class Users::DevicesController < ApplicationController
 
     def humanizeDelay(delay)
       if delay<60
-        "#{delay} #{'minute'.pluralize delay}"
+        "#{delay} #{'minute'.pluralize(delay)}"
       elsif delay < 1440
         "#{delay/60} #{'hour'.pluralize(delay/60)} and #{delay%60} #{'minutes'.pluralize(delay%60)}"
       else

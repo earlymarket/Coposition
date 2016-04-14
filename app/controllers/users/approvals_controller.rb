@@ -27,26 +27,14 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def apps
-    @approvable_type = 'Developer'
-    @approved = current_user.developers
-    @pending = current_user.developer_requests
-    @devices = current_user.devices
-    gon.approved = @approved
-    gon.devices = @devices
-    gon.permissions = @devices.map{ |device| device.permissions.where(permissible_type: 'Developer')}.inject(:+)
-    gon.current_user_id = current_user.id
+    @presenter = ::Users::ApprovalsPresenter.new(current_user, 'Developer')
+    gon.push(@presenter.gon)
     render "approvals"
   end
 
   def friends
-    @approvable_type = 'User'
-    @approved = current_user.friends
-    @pending = current_user.friend_requests
-    @devices = current_user.devices
-    gon.approved = @approved
-    gon.devices = @devices
-    gon.permissions = @devices.map{ |device| device.permissions.where(permissible_type: 'User')}.inject(:+)
-    gon.current_user_id = current_user.id
+    @presenter = ::Users::ApprovalsPresenter.new(current_user, 'User')
+    gon.push(@presenter.gon)
     render "approvals"
   end
 
@@ -58,7 +46,7 @@ class Users::ApprovalsController < ApplicationController
     @approved = current_user.approved_for(@approval)
     @pending = current_user.pending_for(@approval)
     @devices = current_user.devices.includes(:permissions)
-    gon.permissions = @devices.map(&:permissions).inject(:+)
+    gon.permissions = @devices.map{ |device| device.permissions.where(permissible_type: @approvable_type)}.inject(:+)
     respond_to do |format|
       format.html { redirect_to user_approvals_path }
       format.js
@@ -76,7 +64,7 @@ class Users::ApprovalsController < ApplicationController
     @approved = current_user.approved_for(@approval)
     @pending = current_user.pending_for(@approval)
     @devices = current_user.devices.includes(:permissions)
-    gon.permissions = @devices.map(&:permissions).inject(:+)
+    gon.permissions = @devices.map{ |device| device.permissions.where(permissible_type: @approvable_type)}.inject(:+)
     respond_to do |format|
       format.html { redirect_to user_approvals_path }
       format.js { render "approve" }
