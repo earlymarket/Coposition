@@ -45,7 +45,6 @@ class Users::ApprovalsController < ApplicationController
     approvable_type = @approval.approvable_type
     Approval.accept(current_user, @approval.approvable, approvable_type)
     @presenter = ::Users::ApprovalsPresenter.new(current_user, approvable_type)
-    gon.clear
     gon.push(@presenter.gon)
     respond_to do |format|
       format.html { redirect_to user_approvals_path }
@@ -62,7 +61,6 @@ class Users::ApprovalsController < ApplicationController
     end
     @approval.destroy
     @presenter = ::Users::ApprovalsPresenter.new(current_user, approvable_type)
-    gon.clear
     gon.push(@presenter.gon)
     respond_to do |format|
       format.html { redirect_to user_approvals_path }

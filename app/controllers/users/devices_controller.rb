@@ -61,8 +61,7 @@ class Users::DevicesController < ApplicationController
     @device = Device.find(params[:id])
     if params[:delayed]
       @device.set_delay(params[:delayed])
-      delayed = humanizeDelay(@device.delayed.to_i)
-      flash[:notice] = "#{@device.name} delayed by #{delayed}."
+      flash[:notice] = @device.humanize_delay
     elsif params[:published]
       @device.update(published: !@device.published)
       flash[:notice] = "Location sharing is #{boolean_to_state(@device.published)}."
