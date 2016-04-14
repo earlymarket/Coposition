@@ -46,7 +46,6 @@ RSpec.describe Users::ApprovalsController, type: :controller do
 
       it 'should create an accepted approval between user and developer' do
         post :create, dev_approval_create_params
-        expect(flash[:notice]).to eq 'Approval created'
         expect(Approval.last.user).to eq user
         expect(Approval.last.approvable_id).to eq developer.id
         expect(Approval.last.status).to eq 'accepted'
@@ -56,7 +55,6 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         approval.update(status: 'developer-requested', approvable_id: developer.id, approvable_type: 'Developer')
         count = Approval.count
         post :create, dev_approval_create_params
-        expect(flash[:notice]).to eq 'Approval created'
         expect(Approval.count).to eq count
         expect(Approval.last).to eq approval
         expect(Approval.last.status).to eq 'accepted'
@@ -68,7 +66,6 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         count = ActionMailer::Base.deliveries.count
         post :create, friend_approval_create_params
         expect(ActionMailer::Base.deliveries.count).to be(count+1)
-        expect(flash[:notice]).to eq 'Approval created'
         expect(Approval.count).to eq 2
         expect(Approval.first.user).to eq user
         expect(Approval.first.approvable_id).to eq friend.id
@@ -80,7 +77,6 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         approval.update(status: 'requested', approvable_id: friend.id, approvable_type: 'User')
         approval_two.update(status: 'pending', approvable_id: user.id, approvable_type: 'User')
         post :create, friend_approval_create_params
-        expect(flash[:notice]).to eq 'Approval created'
         expect(Approval.count).to eq 2
         expect(Approval.first.user).to eq user
         expect(Approval.first.approvable_id).to eq friend.id
@@ -123,10 +119,12 @@ RSpec.describe Users::ApprovalsController, type: :controller do
   end
 
   describe 'GET #apps' do
-    it 'should assign current users apps' do
+    it 'should assign current users apps, devices, pending' do
       approval.update(status: 'accepted', approvable_id: developer.id, approvable_type: 'Developer')
       get :apps, user_params
-      expect(assigns :approved).to eq user.developers
+      expect(assigns(:presenter).approved).to eq user.developers
+      expect(assigns(:presenter).devices).to eq user.devices
+      expect(assigns(:presenter).pending).to eq user.developer_requests
     end
   end
 
@@ -134,7 +132,9 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     it 'should assign current users friends' do
       approval_two.update(user: user, status: 'accepted', approvable_id: friend.id, approvable_type: 'User')
       get :friends, user_params
-      expect(assigns :approved).to eq user.friends
+      expect(assigns(:presenter).pending).to eq user.friend_requests
+      expect(assigns(:presenter).approved).to eq user.friends
+      expect(assigns(:presenter).devices).to eq user.devices
     end
   end
 
