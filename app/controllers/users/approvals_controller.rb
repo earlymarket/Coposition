@@ -10,19 +10,21 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def create
-    type = allowed_params[:approvable_type]
-    if approvable(type)
-      approval = Approval.construct(current_user, approvable(type), type)
+    approvable_type = allowed_params[:approvable_type]
+    if approvable(approvable_type)
+      approval = Approval.construct(current_user, approvable(approvable_type), approvable_type)
       if approval.save
-        redirect_to user_dashboard_path, notice: "Approval created"
+        @presenter = ::Users::ApprovalsPresenter.new(current_user, approvable_type)
+        gon.push(@presenter.gon)
+        render "approvals"
       else
-        redirect_to new_user_approval_path(approvable_type: type), alert: "Error: #{approval.errors.get(:base).first}"
+        redirect_to new_user_approval_path(approvable_type: approvable_type), alert: "Error: #{approval.errors.get(:base).first}"
       end
-    elsif type == 'User'
+    elsif approvable_type == 'User'
       UserMailer.invite_email(allowed_params[:approvable]).deliver_now
       redirect_to user_dashboard_path, notice: "User not signed up with Coposition, invite email sent!"
     else
-      redirect_to new_user_approval_path(approvable_type: type), alert: "Developer not found"
+      redirect_to new_user_approval_path(approvable_type: approvable_type), alert: "Developer not found"
     end
   end
 
