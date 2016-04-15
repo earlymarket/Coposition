@@ -102,16 +102,6 @@ class Users::DevicesController < ApplicationController
       end
     end
 
-    def humanizeDelay(delay)
-      if delay<60
-        "#{delay} #{'minute'.pluralize(delay)}"
-      elsif delay < 1440
-        "#{delay/60} #{'hour'.pluralize(delay/60)} and #{delay%60} #{'minutes'.pluralize(delay%60)}"
-      else
-        "#{delay/1440} #{'day'.pluralize(delay/1440)}"
-      end
-    end
-
     def boolean_to_state(boolean)
       boolean ? "on" : "off"
     end
