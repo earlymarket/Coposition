@@ -1,17 +1,24 @@
-.dashboard{
+.c-dashboards.a-show {
 
-  #most-checkins{
-    margin-top: 1em;
+  nav {
+    z-index: 10000;
+  }
 
-    .collection-header{
-      background-color: white;
-      padding: 10px 20px;
-      border-bottom: 1px solid #e0e0e0;
+  #map {
+    width:100%;
+    height: 300px;
+  }
+
+  .dashboard{
+
+    #most-checkins, ul.collection{
+      margin: 0;
+
+      ul.collection, ul.collection li {
+        background: transparent;
+        border: none;
+      }
     }
   }
-}
 
-#dashboard-quicklinks{
-  margin-bottom: 3em;
 }
-

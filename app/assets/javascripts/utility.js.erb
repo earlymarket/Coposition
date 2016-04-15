@@ -55,24 +55,21 @@ COPO.utility = {
     });
   },
 
-  avatar: function(avatar, customOptions){
-
-    var defaultOptions = {
-      width: 60,
-      height: 60,
-      crop: 'fill',
-      radius: 'max',
-      gravity: 'face:center'
-    }
-
-    var options = $.extend(defaultOptions, customOptions)
-
-    if(avatar && avatar.hasOwnProperty('public_id')) {
+  avatar: function(avatar, options){
+    options = $.extend(this.avatarDefaults, options)
+    if(avatar) {
       return $.cloudinary.image(avatar.public_id, options).prop('outerHTML')
-    } else {
-      return $.cloudinary.image("placeholder_wzhvlw.png", options).prop('outerHTML')
     }
   },
+
+  avatarUrl: function(avatar, options){
+    options = $.extend(this.avatarDefaults, options)
+    if(avatar) {
+      return $.cloudinary.url(avatar.public_id, options)
+    }
+  },
+
+  avatarDefaults: <%= avatar_defaults.to_json %>,
 
   initClipboard: function(selector, callback){
 

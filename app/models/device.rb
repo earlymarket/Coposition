@@ -48,11 +48,7 @@ class Device < ActiveRecord::Base
   end
 
   def set_delay(mins)
-    if mins.to_i == 0
-      update(delayed: nil)
-    else
-      update(delayed: mins)
-    end
+    mins.to_i == 0 ? update(delayed: nil) : update(delayed: mins)
   end
 
   def humanize_delay
