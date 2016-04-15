@@ -3,7 +3,7 @@ $(document).on('page:change', function() {
     COPO.maps.initMap();
     COPO.maps.initMarkers();
     COPO.maps.initControls();
-    COPO.maps.lc.start();
+    // COPO.maps.lc.start();
 
     $('li.tab').on('click', function() {
       var tab = event.target.innerText
@@ -39,4 +39,5 @@ $(document).on('page:change', function() {
       }
     })
   }
+
 });

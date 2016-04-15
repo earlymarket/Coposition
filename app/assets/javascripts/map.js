@@ -2,9 +2,22 @@ window.COPO = window.COPO || {};
 window.COPO.maps = {
   map: null,
 
-  initMap: function(){
+  initMap: function(customOptions){
     L.mapbox.accessToken = 'pk.eyJ1IjoiZ2FyeXNpdSIsImEiOiJjaWxjZjN3MTMwMDZhdnNtMnhsYmh4N3lpIn0.RAGGQ0OaM81HVe0OiAKE0w';
-    map = L.mapbox.map('map', 'mapbox.light', {maxZoom: 18} );
+
+    var defaultOptions = {
+      maxZoom: 18,
+      minZoom: 1
+    }
+
+    var options = $.extend(defaultOptions, customOptions);
+
+    map = L.mapbox.map('map', 'mapbox.light', options );
+
+    $(document).on('page:before-unload', function(){
+      map.stopLocate();
+    })
+
   },
 
   initMarkers: function(){
@@ -128,7 +141,7 @@ window.COPO.maps = {
 
     COPO.maps.lc = L.control.locate({
       follow: false,
-      setView: false,
+      setView: true,
       markerClass: L.marker,
       markerStyle: {
         icon: L.mapbox.marker.icon({
