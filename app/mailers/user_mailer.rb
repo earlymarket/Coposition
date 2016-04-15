@@ -1,5 +1,6 @@
 class UserMailer < ApplicationMailer
   def invite_email(address)
+    @url = "https://coposition.com/users/sign_up?email=#{address}"
     mail(to: address, subject: 'Coposition invite')
   end
 

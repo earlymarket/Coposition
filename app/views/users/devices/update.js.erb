@@ -1,9 +1,27 @@
-<%= render("/shared/notifications") %>
+<%= raw render_flash %>
 var fog = $('#fogButton<%=@device.id%>');
 fog.html("<%=j fogged_icon(@device.fogged)%>");
+
+var delay = $('#delayButton<%=@device.id%>');
+delay.html("<%=j devices_delay_icon(@device.delayed)%>");
 $('#mins').val('<%= @device.delayed %>');
+
 var publish = $('#publishedButton<%=@device.id%>');
 publish.html("<%=j devices_shared_icon(@device)%>");
+
 var link = $('#sharedLink<%=@device.id%>');
 link.html("<%=j devices_shared_link(@device)%>");
+
+var fogIcon = $('.fogIcon<%=@device.id%>');
+fogIcon.html("<%=j fogged_icon(@device.fogged) if @device.fogged %>");
+
+var delayIcon = $('.delayIcon<%=@device.id%>');
+delayIcon.html("<%=j devices_delay_icon(@device.delayed) if @device.delayed %>");
+
+var deviceStatus = $('#<%=@device.id%>-status');
+deviceStatus.html('<h5>Master permissions <%= fogged_icon(@device.fogged) %> \
+                    <%= devices_delay_icon(@device.delayed) %></h5> \
+                    This device is <%= @device.fogged ? "fogged" : "not fogged" %> \
+                    and is <%= @device.delayed ? "delayed by #{@device.delayed} minutes" : "not delayed" %>.')
+
 initPage();

@@ -3278,7 +3278,6 @@ Copyright (c) 2015 Daniel Eden
   -webkit-animation-name: slideOutUp;
   animation-name: slideOutUp;
 }
-.c3 svg{font:10px sans-serif;-webkit-tap-highlight-color:transparent}.c3 line,.c3 path{fill:none;stroke:#000}.c3 text{-webkit-user-select:none;-moz-user-select:none;user-select:none}.c3-bars path,.c3-event-rect,.c3-legend-item-tile,.c3-xgrid-focus,.c3-ygrid{shape-rendering:crispEdges}.c3-chart-arc path{stroke:#fff}.c3-chart-arc text{fill:#fff;font-size:13px}.c3-grid line{stroke:#aaa}.c3-grid text{fill:#aaa}.c3-xgrid,.c3-ygrid{stroke-dasharray:3 3}.c3-text.c3-empty{fill:gray;font-size:2em}.c3-line{stroke-width:1px}.c3-circle._expanded_{stroke-width:1px;stroke:#fff}.c3-selected-circle{fill:#fff;stroke-width:2px}.c3-bar{stroke-width:0}.c3-bar._expanded_{fill-opacity:.75}.c3-target.c3-focused{opacity:1}.c3-target.c3-focused path.c3-line,.c3-target.c3-focused path.c3-step{stroke-width:2px}.c3-target.c3-defocused{opacity:.3!important}.c3-region{fill:#4682b4;fill-opacity:.1}.c3-brush .extent{fill-opacity:.1}.c3-legend-item{font-size:12px}.c3-legend-item-hidden{opacity:.15}.c3-legend-background{opacity:.75;fill:#fff;stroke:#d3d3d3;stroke-width:1}.c3-title{font:14px sans-serif}.c3-tooltip-container{z-index:10}.c3-tooltip{border-collapse:collapse;border-spacing:0;background-color:#fff;empty-cells:show;-webkit-box-shadow:7px 7px 12px -9px #777;-moz-box-shadow:7px 7px 12px -9px #777;box-shadow:7px 7px 12px -9px #777;opacity:.9}.c3-tooltip tr{border:1px solid #CCC}.c3-tooltip th{background-color:#aaa;font-size:14px;padding:2px 5px;text-align:left;color:#FFF}.c3-tooltip td{font-size:13px;padding:3px 6px;background-color:#fff;border-left:1px dotted #999}.c3-tooltip td>span{display:inline-block;width:10px;height:10px;margin-right:6px}.c3-tooltip td.value{text-align:right}.c3-area{stroke-width:0;opacity:.2}.c3-chart-arcs-title{dominant-baseline:middle;font-size:1.3em}.c3-chart-arcs .c3-chart-arcs-background{fill:#e0e0e0;stroke:none}.c3-chart-arcs .c3-chart-arcs-gauge-unit{fill:#000;font-size:16px}.c3-chart-arcs .c3-chart-arcs-gauge-max,.c3-chart-arcs .c3-chart-arcs-gauge-min{fill:#777}.c3-chart-arc .c3-gauge-value{fill:#000}
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.
@@ -19706,6 +19705,448 @@ footer.page-footer {
   line-height: 30px;
 }
 
+/*!
+ * Materialize v0.97.6 (http://materializecss.com)
+ * Copyright 2014-2015 Materialize
+ * MIT License (https://raw.githubusercontent.com/Dogfalo/materialize/master/LICENSE)
+ */
+/* Functional styling;
+ * These styles are required for noUiSlider to function.
+ * You don't need to change these rules to apply your design.
+ */
+/* line 11, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-target,
+.noUi-target * {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -ms-touch-action: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* line 21, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-target {
+  position: relative;
+  direction: ltr;
+}
+
+/* line 25, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-base {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  /* Fix 401 */
+}
+
+/* line 31, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-origin {
+  position: absolute;
+  right: 0;
+  top: 6px;
+  left: 0;
+  bottom: 0;
+}
+
+/* line 38, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-handle {
+  position: relative;
+  z-index: 1;
+}
+
+/* line 42, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-stacking .noUi-handle {
+  /* This class is applied to the lower origin when
+     its values is > 50%. */
+  z-index: 10;
+}
+
+/* line 47, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-state-tap .noUi-origin {
+  -webkit-transition: left 0.25s, top 0.25s;
+  transition: left 0.25s, top 0.25s;
+}
+
+/* line 51, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-state-drag * {
+  cursor: inherit !important;
+}
+
+/* Painting and performance;
+ * Browsers can paint handles in their own layer.
+ */
+/* line 58, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-base {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+/* Slider size and handle placement;
+ */
+/* line 65, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-horizontal {
+  height: 18px;
+}
+
+/* line 68, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-horizontal .noUi-handle {
+  width: 34px;
+  height: 28px;
+  left: -17px;
+  top: -6px;
+}
+
+/* line 74, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-vertical {
+  width: 18px;
+}
+
+/* line 77, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-vertical .noUi-handle {
+  width: 28px;
+  height: 34px;
+  left: -6px;
+  top: -17px;
+}
+
+/* Styling;
+ */
+/* line 86, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-background {
+  background: #FAFAFA;
+  box-shadow: inset 0 1px 1px #f0f0f0;
+}
+
+/* line 90, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-connect {
+  background: #3FB8AF;
+  box-shadow: inset 0 0 3px rgba(51, 51, 51, 0.45);
+  -webkit-transition: background 450ms;
+  transition: background 450ms;
+}
+
+/* line 96, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-origin {
+  border-radius: 2px;
+}
+
+/* line 99, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-target {
+  border-radius: 4px;
+  border: 1px solid #D3D3D3;
+  box-shadow: inset 0 1px 1px #F0F0F0, 0 3px 6px -5px #BBB;
+}
+
+/* line 104, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-target.noUi-connect {
+  box-shadow: inset 0 0 3px rgba(51, 51, 51, 0.45), 0 3px 6px -5px #BBB;
+}
+
+/* Handles and cursors;
+ */
+/* line 110, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-dragable {
+  cursor: w-resize;
+}
+
+/* line 113, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-vertical .noUi-dragable {
+  cursor: n-resize;
+}
+
+/* line 116, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-handle {
+  border: 1px solid #D9D9D9;
+  border-radius: 3px;
+  background: #FFF;
+  cursor: default;
+  box-shadow: inset 0 0 1px #FFF, inset 0 1px 7px #EBEBEB, 0 3px 6px -3px #BBB;
+}
+
+/* line 125, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-active {
+  box-shadow: inset 0 0 1px #FFF, inset 0 1px 7px #DDD, 0 3px 6px -3px #BBB;
+}
+
+/* Handle stripes;
+ */
+/* line 133, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-handle:before,
+.noUi-handle:after {
+  content: "";
+  display: block;
+  position: absolute;
+  height: 14px;
+  width: 1px;
+  background: #E8E7E6;
+  left: 14px;
+  top: 6px;
+}
+
+/* line 144, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-handle:after {
+  left: 17px;
+}
+
+/* line 147, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-vertical .noUi-handle:before,
+.noUi-vertical .noUi-handle:after {
+  width: 14px;
+  height: 1px;
+  left: 6px;
+  top: 14px;
+}
+
+/* line 154, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-vertical .noUi-handle:after {
+  top: 17px;
+}
+
+/* Disabled state;
+ */
+/* line 160, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+[disabled].noUi-connect,
+[disabled] .noUi-connect {
+  background: #B8B8B8;
+}
+
+/* line 164, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+[disabled].noUi-origin,
+[disabled] .noUi-handle {
+  cursor: not-allowed;
+}
+
+/*Materialize Theming*/
+/* line 171, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-target {
+  box-shadow: none;
+  border: none;
+}
+
+/* line 176, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-base {
+  height: 15px;
+  top: -6px;
+}
+
+/* line 180, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-background {
+  height: 3px;
+  top: 6px;
+  background-color: #bfbfbf;
+  box-shadow: none;
+}
+
+/* line 186, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-horizontal {
+  height: 3px;
+}
+
+/* line 189, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-connect {
+  height: 3px;
+  top: 6px;
+  background-color: #26A69A;
+  box-shadow: none;
+}
+
+/*Handle*/
+/* line 197, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-horizontal .noUi-handle {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  box-shadow: none;
+  background-color: #26A69A;
+  border: none;
+  left: -7px;
+  top: -6px;
+  transition: width 0.2s cubic-bezier(0.215, 0.61, 0.355, 1), height 0.2s cubic-bezier(0.215, 0.61, 0.355, 1), left 0.2s cubic-bezier(0.215, 0.61, 0.355, 1), top 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+/* line 211, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-handle:before {
+  content: none;
+}
+
+/* line 214, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-handle:after {
+  content: none;
+}
+
+/*Handle on Drag*/
+/* line 218, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-target .noUi-active.noUi-handle {
+  width: 3px;
+  height: 3px;
+  left: 0;
+  top: 0;
+}
+
+/* line 227, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-target .range-label {
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  top: -17px;
+  left: -2px;
+  background-color: #26A69A;
+  border-radius: 50%;
+  transition: border-radius 0.25s cubic-bezier(0.215, 0.61, 0.355, 1), transform 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transform: scale(0.5) rotate(-45deg);
+  transform-origin: 50% 100%;
+}
+
+/* line 240, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-target .noUi-active .range-label {
+  border-radius: 15px 15px 15px 0;
+  transform: rotate(-45deg) translate(23px, -25px);
+}
+
+/* line 245, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.range-label span {
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  font-size: 12px;
+  transform: rotate(45deg);
+  opacity: 0;
+  position: absolute;
+  top: 7px;
+  left: -1px;
+  transition: opacity 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+/* line 257, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-active .range-label span {
+  opacity: 1;
+}
+
+/* line 261, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-pips,
+.noUi-pips * {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* line 266, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-pips {
+  position: absolute;
+  color: #999;
+}
+
+/* Values;
+ *
+ */
+/* line 274, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-value {
+  width: 40px;
+  position: absolute;
+  text-align: center;
+}
+
+/* line 279, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-value-sub {
+  color: #ccc;
+  font-size: 10px;
+}
+
+/* Markings;
+ *
+ */
+/* line 287, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-marker {
+  position: absolute;
+  background: #CCC;
+}
+
+/* line 291, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-marker-sub {
+  background: #AAA;
+}
+
+/* line 294, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-marker-large {
+  background: #AAA;
+}
+
+/* Horizontal layout;
+ *
+ */
+/* line 301, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-pips-horizontal {
+  padding: 5px 0;
+  height: 25px;
+  top: 100%;
+  left: 0;
+  width: 100%;
+}
+
+/* line 308, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-value-horizontal {
+  margin-left: -20px;
+  padding-top: 10px;
+}
+
+/* line 312, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-value-horizontal.noUi-value-sub {
+  padding-top: 15px;
+}
+
+/* line 316, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-marker-horizontal.noUi-marker {
+  margin-left: -1px;
+  width: 2px;
+  height: 5px;
+}
+
+/* line 321, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-marker-horizontal.noUi-marker-sub {
+  height: 5px;
+}
+
+/* line 324, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-marker-horizontal.noUi-marker-large {
+  height: 10px;
+}
+
+/* Vertical layout;
+ *
+ */
+/* line 331, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-pips-vertical {
+  padding: 0 10px;
+  height: 100%;
+  top: 0;
+  left: 100%;
+}
+
+/* line 337, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-value-vertical {
+  width: 15px;
+  margin-left: 20px;
+  margin-top: -5px;
+}
+
+/* line 343, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-marker-vertical.noUi-marker {
+  width: 5px;
+  height: 2px;
+  margin-top: -1px;
+}
+
+/* line 348, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-marker-vertical.noUi-marker-sub {
+  width: 10px;
+}
+
+/* line 351, /home/earlymarket/Documents/CoPosition/vendor/assets/stylesheets/nouislider.css */
+.noUi-marker-vertical.noUi-marker-large {
+  width: 15px;
+}
+
 /* line 2, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/placeholder.scss */
 .placeholder .bg-wrapper {
   height: 100%;
@@ -19827,19 +20268,22 @@ footer.page-footer {
 }
 
 /* line 3, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
-.dashboard #most-checkins {
-  margin-top: 1em;
+.c-dashboards.a-show nav {
+  z-index: 10000;
 }
-/* line 6, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
-.dashboard #most-checkins .collection-header {
-  background-color: white;
-  padding: 10px 20px;
-  border-bottom: 1px solid #e0e0e0;
+/* line 7, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
+.c-dashboards.a-show #map {
+  width: 100%;
+  height: 300px;
 }
-
 /* line 14, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
-#dashboard-quicklinks {
-  margin-bottom: 3em;
+.c-dashboards.a-show .dashboard #most-checkins, .c-dashboards.a-show .dashboard ul.collection {
+  margin: 0;
+}
+/* line 17, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
+.c-dashboards.a-show .dashboard #most-checkins ul.collection, .c-dashboards.a-show .dashboard #most-checkins ul.collection li, .c-dashboards.a-show .dashboard ul.collection ul.collection, .c-dashboards.a-show .dashboard ul.collection ul.collection li {
+  background: transparent;
+  border: none;
 }
 
 /* line 2, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
@@ -19854,6 +20298,11 @@ footer.page-footer {
 /* line 10, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index .linkbox:focus {
   box-shadow: inherit;
+}
+/* line 16, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
+.c-devices.a-index .delay-modal {
+  height: 180px;
+  width: 320px;
 }
 
 /* line 1, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
@@ -20038,23 +20487,38 @@ footer.page-footer {
 }
 
 /* line 3, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
+.c-approvals .approvalsGon {
+  display: none;
+}
+/* line 7, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
 .c-approvals #approved {
   margin-bottom: 1rem;
 }
-/* line 7, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
+/* line 11, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
 .c-approvals .avatar {
   margin-right: 1em;
 }
-/* line 11, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
+/* line 15, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
 .c-approvals .tagline {
   margin-left: 1rem;
 }
-/* line 15, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
+/* line 19, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
 .c-approvals .card-panel {
   padding: 5px;
   margin: 0.25rem 0 0 0;
 }
-/* line 18, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
+/* line 22, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
 .c-approvals .card-panel .row {
   margin: 0;
+}
+
+/* line 2, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/permissions.scss */
+.permissions .master-permissions {
+  border: 2px solid lightgrey;
+  margin-right: 0;
+  margin-left: 0;
+}
+/* line 8, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/permissions.scss */
+.permissions .master label {
+  color: black;
 }

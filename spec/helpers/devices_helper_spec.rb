@@ -15,7 +15,7 @@ RSpec.describe DevicesHelper, :type => :helper do
         device_id: device.id,
         address: "#{Faker::Address.city}, #{Faker::Address.country_code}"
       })
-      expect(helper.devices_last_checkin(device)).to match(checkin.address)
+      expect(helper.devices_last_checkin(device)).to include(checkin.city)
     end
   end
 

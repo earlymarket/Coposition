@@ -7,6 +7,8 @@ module DevicesHelper
   def devices_last_checkin(device)
     if device.checkins.exists?
       last_checkin = device.checkins.first
+      postcode = last_checkin.postal_code
+      last_checkin.address = last_checkin.address.gsub(" "+postcode, "") if postcode
       "<p>Last reported in #{last_checkin.address} on #{humanize_date(last_checkin.created_at)}</p>".html_safe
     else
       "<p>No Checkins found</p>".html_safe
@@ -15,9 +17,9 @@ module DevicesHelper
 
   def devices_delay_icon(value)
     if value
-      '<i class="material-icons">hourglass_full</i>'.html_safe
+      '<i class="material-icons">timer</i>'.html_safe
     else
-      '<i class="material-icons">hourglass_empty</i>'.html_safe
+      '<i class="material-icons">timer_off</i>'.html_safe
     end
   end
 
@@ -27,6 +29,10 @@ module DevicesHelper
     else
       '<i class="material-icons">visibility_off</i>'.html_safe
     end
+  end
+
+  def devices_access_icon
+    '<i class="material-icons">not_interested</i>'.html_safe
   end
 
   def devices_shared_link(device)
@@ -47,5 +53,4 @@ module DevicesHelper
       })
     output
   end
-
 end
