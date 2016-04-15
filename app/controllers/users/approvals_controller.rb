@@ -16,7 +16,7 @@ class Users::ApprovalsController < ApplicationController
       if approval.save
         @presenter = ::Users::ApprovalsPresenter.new(current_user, approvable_type)
         gon.push(@presenter.gon)
-        render "approvals"
+        approvable_type == 'User' ? redirect_to(user_friends_path) : redirect_to(user_apps_path)
       else
         redirect_to new_user_approval_path(approvable_type: approvable_type), alert: "Error: #{approval.errors.get(:base).first}"
       end
