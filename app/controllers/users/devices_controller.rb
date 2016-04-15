@@ -5,11 +5,9 @@ class Users::DevicesController < ApplicationController
   before_action :require_ownership, only: [:show, :destroy, :update]
 
   def index
+    @devices = current_user.devices.order(:id).includes(:developers, :permitted_users, :permissions)
+    @devices.each { |device| device.checkins.first.reverse_geocode! if device.checkins.exists? }
     gon.current_user_id = current_user.id
-    @devices = current_user.devices.order(:id).includes(:developers, :permitted_users, :permissions).map do |dev|
-      dev.checkins.first.reverse_geocode! if dev.checkins.exists?
-      dev
-    end
     gon.devices = @devices
     gon.permissions = @devices.map(&:permissions).inject(:+)
   end
@@ -38,16 +36,15 @@ class Users::DevicesController < ApplicationController
   def create
     @device = Device.new
     @device = Device.find_by uuid: allowed_params[:uuid] if allowed_params[:uuid].present?
-    if @device
-      if @device.user.nil?
-        @device.construct(current_user, allowed_params[:name])
+    if @device && @device.user.nil?
+      if @device.construct(current_user, allowed_params[:name])
         gon.checkins = @device.checkins.create(checkin_params) if params[:create_checkin].present?
         redirect_to user_device_path(id: @device.id), notice: "This device has been bound to your account!"
       else
-        redirect_to new_user_device_path, notice: 'This device has already been assigned to a user'
+        redirect_to new_user_device_path, notice: "You already have a device with the name #{allowed_params[:name]}"
       end
     else
-      redirect_to new_user_device_path, notice: 'The UUID provided does not match an existing device'
+      redirect_to new_user_device_path, notice: 'Invalid UUID provided'
     end
   end
 
@@ -62,7 +59,7 @@ class Users::DevicesController < ApplicationController
     @device = Device.find(params[:id])
     if params[:delayed]
       @device.set_delay(params[:delayed])
-      flash[:notice] = "#{@device.name} timeshifted by #{@device.delayed.to_i} minutes."
+      flash[:notice] = @device.humanize_delay
     elsif params[:published]
       @device.update(published: !@device.published)
       flash[:notice] = "Location sharing is #{boolean_to_state(@device.published)}."

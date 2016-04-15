@@ -113,11 +113,19 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
 
     it 'should fail to to create a device when the device is assigned to a user' do
-      count = new_user.devices.count
+      count = user.devices.count
       taken_uuid = user.devices.last.uuid
       post :create, user_param.merge(device: { uuid: taken_uuid })
       expect(response).to redirect_to(new_user_device_path)
-      expect(new_user.devices.count).to be count
+      expect(user.devices.count).to be count
+    end
+
+    it 'should fail to to create a device with a duplicate username' do
+      taken_name = user.devices.last.name
+      count = user.devices.count
+      post :create, user_param.merge(device: { name: taken_name })
+      expect(user.devices.count).to be count
+      expect(response).to redirect_to(new_user_device_path)
     end
 
   end
@@ -149,10 +157,14 @@ RSpec.describe Users::DevicesController, type: :controller do
 
     it 'should set a delay' do
       request.accept = 'text/javascript'
-      put :update, params.merge(delayed:13)
-
+      put :update, params.merge(delayed:5)
+      expect(flash[:notice]).to include 'minutes'
+      put :update, params.merge(delayed:100)
+      expect(flash[:notice]).to include 'hour'
+      put :update, params.merge(delayed:1440)
+      expect(flash[:notice]).to include 'day'
       device.reload
-      expect(device.delayed).to be 13
+      expect(device.delayed).to be 1440
     end
 
     it 'should set a delay of 0 as nil' do

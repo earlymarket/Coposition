@@ -1,14 +1,16 @@
-<%= Gon::Base.render_data %>
+<div class="approvalsGon">
+  <%= Gon::Base.render_data %>
+</div>
 <h1><%= action_name.titleize %></h1>
 <div class='center-align'>
-<%= link_to("Add #{action_name.singularize}", new_user_approval_path(approvable_type: @approvable_type), class: "btn waves-effect waves-light") %>
+  <%= link_to(new_user_approval_path(approvable_type: @presenter.approvable_type), class: "btn-floating btn-large waves-effect waves-light primary-color") do %>
+      <i class="material-icons">add</i>
+  <% end %>
 </div>
 </br>
-<%= render partial: "approved", locals: {approved: @approved, devices: @devices} %>
-<%= render partial: "pending", locals: {pending: @pending} if @pending.present? %>
+<%= render partial: "approved", locals: {approved: @presenter.approved, devices: @presenter.devices, approvable_type: @presenter.approvable_type} %>
+<%= render partial: "pending", locals: {pending: @presenter.pending} if @presenter.pending.present? %>
 
 <script>
   $('.modal-trigger').leanModal();
-  COPO.permissions.check_disabled();
-  COPO.permissions.switch_change();
 </script>
