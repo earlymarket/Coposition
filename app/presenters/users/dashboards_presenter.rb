@@ -23,6 +23,7 @@ module Users
     def gon
       # gon converts these using #each_pair into seperate gon variables
       {
+        current_user: current_user_info,
         friends: friends,
         weeks_checkins: weeks_checkins
       }
@@ -51,6 +52,13 @@ module Users
 
       def weeks_checkins
         @checkins.where(created_at: 1.week.ago..Time.now)
+      end
+
+      def current_user_info
+        {
+          userinfo: @user.public_info,
+          lastCheckin: @user.checkins.first
+        }
       end
 
   end
