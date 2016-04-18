@@ -34,12 +34,6 @@
     },
     "GOOGLE_MAPS_API_KEY":{
       "required":true
-    },
-    "SENDGRID_PASSWORD":{
-      "required":true
-    },
-    "SENDGRID_USERNAME":{
-      "required":true
     }
   },
   "addons":[

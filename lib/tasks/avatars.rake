@@ -54,13 +54,18 @@ def count_and_confirm(resource)
 end
 
 def set_avatar(resource)
-  uri = URI('http://uifaces.com/api/v1/random')
+  # uri = URI('http://uifaces.com/api/v1/random')
+  uri = URI('http://api.randomuser.me/')
   unless resource.avatar?
   pp resource.as_json
     uiface = Net::HTTP.get(uri)
     uiface = JSON.parse(uiface)
-    resource.avatar_url = uiface['image_urls']['epic']
-    puts "Avatar set to: #{uiface['image_urls']['epic']}"
+    # avatar_url = uiface['image_urls']['epic']
+    avatar_url = uiface['results'].first['picture']['large']
+    resource.avatar_url = avatar_url
+    puts "Avatar set to: #{avatar_url}"
+
+
   end
 end
 
