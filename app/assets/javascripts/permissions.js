@@ -1,12 +1,22 @@
 window.COPO = window.COPO || {};
 window.COPO.permissions = {
+  permission_switch: function(permission_switch){
+    return {
+      id: $(permission_switch).data().id,
+      attribute: $(permission_switch).data().attribute,
+      switch_type: $(permission_switch).data().switch,
+      checked: $(permission_switch).find('input').prop('checked'),
+      disabled: $(permission_switch).find('input').prop('disabled')
+    }
+  },
+
   check_disabled: function(){
     $('[data-switch=disallowed].permission-switch').each(function(){
-      var permission_id =  $(this).data().id;
-      if ($(this).find('input').prop('checked')){
-        COPO.permissions.toggle_switches_disabled(permission_id);
+      var permission_switch = COPO.permissions.permission_switch(this);
+      if (permission_switch.checked){
+        COPO.permissions.toggle_switches_disabled(permission_switch.id);
       } else {
-        COPO.permissions.icon_toggle('disallowed', permission_id);
+        COPO.permissions.icon_toggle('disallowed', permission_switch.id);
       }
     });
   },
@@ -14,9 +24,9 @@ window.COPO.permissions = {
   check_bypass: function(){
     ['bypass_fogging', 'bypass_delay'].forEach(function(attribute){
       $("[data-switch='"+attribute+"']").each(function(){
-        if ($(this).find('input').prop('checked')){
-          var permission_id =  $(this).data().id;
-          COPO.permissions.icon_toggle(attribute, permission_id);
+        var permission_switch = COPO.permissions.permission_switch(this);
+        if (permission_switch.checked){
+          COPO.permissions.icon_toggle(attribute, permission_switch.id);
         }
       });
     })
@@ -48,9 +58,10 @@ window.COPO.permissions = {
 
   switch_change:function(permissionables){
     $(".permission-switch").change(function( event ) {
-      var attribute = $(this).data().attribute;
-      var switch_type = $(this).data().switch;
-      var permission_id =  $(this).data().id;
+      var permission_switch = COPO.permissions.permission_switch(this);
+      var attribute = permission_switch.attribute;
+      var switch_type = permission_switch.switch_type
+      var permission_id =  permission_switch.id;
       COPO.permissions.icon_toggle(switch_type, permission_id);
       var permission = _.find(gon.permissions, _.matchesProperty('id', permission_id));
       var device_id = permission['device_id'];
@@ -87,21 +98,17 @@ window.COPO.permissions = {
 
   master_change:function(permissionables){
     $(".master").change(function( event ) {
-      var $master = $(this)
-      var master_checked = $master.find('input').prop("checked");
-      var master_type = $master.data().switch;
-      var id = $master.data().id;
+      var $master = $(this);
+      var master_switch = COPO.permissions.permission_switch(this)
       var property = (permissionables === 'devices' ? 'device_id' : 'permissible_id')
-      var permissions = _.filter(gon.permissions, _.matchesProperty(property, id));
+      var permissions = _.filter(gon.permissions, _.matchesProperty(property, master_switch.id));
       permissions.forEach(function(permission){
-        var $switch = $("div[data-id='"+permission.id+"'][data-switch='"+master_type+"'].permission-switch")
-        var switch_type = $switch.data().switch;
-        var checked = $switch.find('input').prop("checked")
-        var disabled = $switch.find('input').prop("disabled")
-        if ((disabled && switch_type === 'last_only')){
+        var $switch = $("div[data-id='"+permission.id+"'][data-switch='"+master_switch.switch_type+"'].permission-switch")
+        var permission_switch = COPO.permissions.permission_switch($switch)
+        if ((permission_switch.disabled && permission_switch.switch_type === 'last_only')){
           $master.find('input').prop("checked", false)
-        } else if (master_checked !== checked) {
-          $switch.find('input').prop("checked", master_checked);
+        } else if (master_switch.checked !== permission_switch.checked) {
+          $switch.find('input').prop("checked", master_switch.checked);
           $switch.trigger("change", [permissionables]);
         }
       })
