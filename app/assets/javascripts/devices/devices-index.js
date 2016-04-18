@@ -5,7 +5,7 @@ $(document).on('page:change', function() {
     COPO.permissions.switch_change('devices');
     COPO.permissions.check_disabled();
     COPO.permissions.check_bypass();
-    COPO.slider.initSliders();
+    COPO.slider.initSliders(gon.devices);
     window.initPage = function(){
       $('.clip_button').off();
       COPO.utility.initClipboard();

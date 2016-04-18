@@ -1,11 +1,11 @@
 window.COPO = window.COPO || {};
 window.COPO.slider = {
 
-  initSliders: function(){
+  initSliders: function(devices){
     $('.delay-slider').each(function(){
       var delaySlider = this;
       var device_id =  parseInt(delaySlider.dataset.device, 10);
-      var device = _.find(gon.devices, _.matchesProperty('id', device_id));
+      var device = _.find(devices, _.matchesProperty('id', device_id));
 
       noUiSlider.create(delaySlider, {
         start: [ device.delayed || 0 ],
