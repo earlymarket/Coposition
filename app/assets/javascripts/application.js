@@ -25,7 +25,8 @@
 
 // -- Misc vendor libs --
 
-//= require mustache.min
+//= require mustache
+//= require jquery.mustache
 //= require animateCSS.min.js
 //= require cloudinary
 //= require attachinary
