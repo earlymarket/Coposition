@@ -8,7 +8,7 @@ $(document).on('page:change', function() {
     M.makeMapPin(gon.current_user, 'blue').addTo(map);
 
     var markers = gon.friends.slice();
-    var friendClusters = M.arrayToCluster(markers, M.makeMapPin)
+    var friendClusters = M.arrayToCluster(markers, M.makeMapPin.bind(M))
 
     map.addLayer(friendClusters).fitBounds(friendClusters);
 
