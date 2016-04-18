@@ -1,8 +1,8 @@
 $(document).on('page:change', function() {
   if ($(".c-devices.a-index").length === 1) {
-    COPO.permissions.setMasters('devices');
-    COPO.permissions.masterChange('devices');
-    COPO.permissions.switchChange('devices');
+    COPO.permissions.setMasters('devices', gon.permissions);
+    COPO.permissions.masterChange('devices', gon.permissions);
+    COPO.permissions.switchChange('devices', gon.permissions);
     COPO.permissions.checkDisabled();
     COPO.permissions.checkBypass();
     COPO.slider.initSliders();

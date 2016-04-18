@@ -13,8 +13,8 @@ $('#approved').html("<%= j (render partial: 'approved', locals: {approved: @pres
 $('.modal-trigger').leanModal();
 $(".button-collapse").sideNav();
 $(document).unbind('scroll');
-COPO.permissions.setMasters('approved');
-COPO.permissions.masterChange('approved');
-COPO.permissions.switchChange('approved');
+COPO.permissions.setMasters('approved', gon.permissions);
+COPO.permissions.masterChange('approved', gon.permissions);
+COPO.permissions.switchChange('approved', gon.permissions);
 COPO.permissions.checkDisabled();
 COPO.permissions.checkBypass();
