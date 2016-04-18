@@ -159,5 +159,41 @@ window.COPO.maps = {
     }).addTo(map);
 
   },
+
+  mapPinIcon: function(public_id, color){
+    // The iconClass is a named Cloudinary transform
+    // At the moment there are only two: 'map-pin' and
+    // 'map-pin-blue'
+    var iconClass;
+    color === 'blue' ? iconClass = 'map-pin-blue' : iconClass = 'map-pin'
+    return L.icon({
+      iconUrl: $.cloudinary.url(public_id, {format: 'png', transformation: iconClass}),
+      iconSize: [36,52],
+      iconAnchor: [18,49]
+    })
+  },
+
+  arrayToCluster: function(markerArr, markerBuilderFn){
+    if(!markerBuilderFn){
+      return console.error('Marker building function undefined')
+    }
+    var output = []
+    $.each(markerArr, function(i, marker){
+      output.push(markerBuilderFn(marker))
+    })
+    return (new L.MarkerClusterGroup).addLayers(output)
+  },
+
+  makeMapPin: function(user, color){
+    var checkin = user.lastCheckin;
+    if(checkin){
+      var public_id = user.userinfo.avatar.public_id;
+      return L.marker([checkin.lat, checkin.lng], {
+        icon: COPO.maps.mapPinIcon(public_id, color),
+        title: user.userinfo.username,
+        riseOnHover: true
+      })
+    }
+  }
 }
 
