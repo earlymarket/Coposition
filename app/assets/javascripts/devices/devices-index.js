@@ -1,10 +1,10 @@
 $(document).on('page:change', function() {
   if ($(".c-devices.a-index").length === 1) {
-    COPO.permissions.set_masters('devices');
-    COPO.permissions.master_change('devices');
-    COPO.permissions.switch_change('devices');
-    COPO.permissions.check_disabled();
-    COPO.permissions.check_bypass();
+    COPO.permissions.setMasters('devices');
+    COPO.permissions.masterChange('devices');
+    COPO.permissions.switchChange('devices');
+    COPO.permissions.checkDisabled();
+    COPO.permissions.checkBypass();
     COPO.slider.initSliders();
     window.initPage = function(){
       $('.clip_button').off();
