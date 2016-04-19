@@ -51556,7 +51556,8 @@ COPO.utility = {
   },
 
   gonFix: function(){
-    $('#gonvariables > script').html("<script>\n//<![CDATA[\nwindow.gon={};gon.current_user_id=2;gon.devices=[{\"id\":7,\"uuid\":\"b22d4382-9961-4262-a6b5-c6f841f2501e\",\"user_id\":2,\"name\":\"Computer\",\"fogged\":false,\"delayed\":null,\"alias\":null,\"published\":false},{\"id\":10,\"uuid\":\"a0265c26-3c8f-4448-9a7c-08223d300c2c\",\"user_id\":2,\"name\":\"Laptop\",\"fogged\":true,\"delayed\":5,\"alias\":null,\"published\":true}];gon.permissions=[{\"id\":282,\"permissible_id\":3,\"device_id\":7,\"privilege\":\"complete\",\"permissible_type\":\"Developer\",\"bypass_fogging\":false,\"bypass_delay\":false},{\"id\":260,\"permissible_id\":2,\"device_id\":7,\"privilege\":\"complete\",\"permissible_type\":\"Developer\",\"bypass_fogging\":false,\"bypass_delay\":false},{\"id\":167,\"permissible_id\":1,\"device_id\":7,\"privilege\":\"complete\",\"permissible_type\":\"Developer\",\"bypass_fogging\":false,\"bypass_delay\":false},{\"id\":100,\"permissible_id\":4,\"device_id\":7,\"privilege\":\"complete\",\"permissible_type\":\"User\",\"bypass_fogging\":false,\"bypass_delay\":false},{\"id\":142,\"permissible_id\":3,\"device_id\":7,\"privilege\":\"complete\",\"permissible_type\":\"User\",\"bypass_fogging\":false,\"bypass_delay\":false},{\"id\":281,\"permissible_id\":3,\"device_id\":10,\"privilege\":\"complete\",\"permissible_type\":\"Developer\",\"bypass_fogging\":false,\"bypass_delay\":false},{\"id\":51,\"permissible_id\":4,\"device_id\":10,\"privilege\":\"complete\",\"permissible_type\":\"User\",\"bypass_fogging\":false,\"bypass_delay\":false},{\"id\":62,\"permissible_id\":3,\"device_id\":10,\"privilege\":\"complete\",\"permissible_type\":\"User\",\"bypass_fogging\":false,\"bypass_delay\":false},{\"id\":259,\"permissible_id\":2,\"device_id\":10,\"privilege\":\"complete\",\"permissible_type\":\"Developer\",\"bypass_fogging\":false,\"bypass_delay\":false},{\"id\":168,\"permissible_id\":1,\"device_id\":10,\"privilege\":\"complete\",\"permissible_type\":\"Developer\",\"bypass_fogging\":false,\"bypass_delay\":false}];\n//]]>\n<\/script>")
+    var contents = $('#gonvariables').html();
+    $('#gonvariables').html(contents);
   }
 };
 $(document).on('page:change', function() {
@@ -51803,6 +51804,7 @@ window.COPO.maps = {
     }
 
     var options = $.extend(defaultOptions, customOptions);
+
     map = L.mapbox.map('map', 'mapbox.light', options );
 
     $(document).on('page:before-unload', function(){
@@ -51959,7 +51961,7 @@ window.COPO.permissions = {
     $('[data-switch=disallowed].permission-switch').each(function(){
       var permission_id =  $(this).data().id;
       if ($(this).find('input').prop('checked')){
-        COPO.permissions.toggle_switches_disabled(permission_id);
+        COPO.permissions.toggle_switches_disabled(permission_id, true);
       } else {
         COPO.permissions.icon_toggle('disallowed', permission_id);
       }
@@ -52009,7 +52011,6 @@ window.COPO.permissions = {
       COPO.permissions.icon_toggle(switch_type, permission_id);
       var permission = _.find(gon.permissions, _.matchesProperty('id', permission_id));
       var device_id = permission['device_id'];
-
       if (permission[attribute].constructor === Boolean){
         permission[attribute] = !permission[attribute]
       } else {
@@ -52018,7 +52019,7 @@ window.COPO.permissions = {
 
       if (switch_type === "disallowed") {
         $("div[data-id='"+permission_id+"'][data-switch=last_only].permission-switch").find('input').prop("checked", false);
-        COPO.permissions.toggle_switches_disabled(permission_id);
+        COPO.permissions.toggle_switches_disabled(permission_id, $(this).find('input').prop("checked"));
       }
       COPO.permissions.set_masters(permissionables);
 
@@ -52063,9 +52064,9 @@ window.COPO.permissions = {
     })
   },
 
-  toggle_switches_disabled: function(permission_id){
+  toggle_switches_disabled: function(permission_id, newState){
     element = $("div[data-id='"+ permission_id +"'].disable").find('input');
-    element.prop("disabled", !element.prop("disabled"));
+    element.prop("disabled", newState);
   },
 
   new_privilege: function(current_privilege, switch_type){
@@ -52189,7 +52190,7 @@ window.COPO.slider = {
 }
 ;
 $(document).on('page:change', function() {
-  if ($(".c-approvals").length === 1) {
+  if (($(".c-approvals").length === 1) && ($(".a-new").length === 0)){
     $('.tooltipped').tooltip({delay: 50});
     COPO.permissions.set_masters('approved');
     COPO.permissions.master_change('approved');
@@ -52231,7 +52232,10 @@ $(document).on('page:change', function() {
     }
     initPage();
 
-
+    $(document).on('page:before-unload', function(){
+      $(".permission-switch").off("change");
+      $(".master").off("change");
+    })
   }
 })
 ;
