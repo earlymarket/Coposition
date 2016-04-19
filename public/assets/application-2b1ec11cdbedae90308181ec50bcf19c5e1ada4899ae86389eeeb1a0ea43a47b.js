@@ -51553,6 +51553,10 @@ COPO.utility = {
       console.log( 'ZeroClipboard error of type "' + event.name + '": ' + event.message );
       ZeroClipboard.destroy();
     });
+  },
+
+  gonFix: function(){
+    eval($("#gonvariables > script").html());
   }
 };
 $(document).on('page:change', function() {
@@ -52131,39 +52135,41 @@ window.COPO.datePicker = {
 window.COPO = window.COPO || {};
 window.COPO.slider = {
 
-  initSliders: function(){
+  initSliders: function(devices){
     $('.delay-slider').each(function(){
-      var delaySlider = this;
-      var device_id =  parseInt(delaySlider.dataset.device, 10);
-      var device = _.find(gon.devices, _.matchesProperty('id', device_id));
+      if(!this.noUiSlider){
+        var delaySlider = this;
+        var device_id =  parseInt(delaySlider.dataset.device, 10);
+        var device = _.find(devices, _.matchesProperty('id', device_id));
 
-      noUiSlider.create(delaySlider, {
-        start: [ device.delayed || 0 ],
-        range: {
-          'min': [ 0, 5 ],
-          '50%': [ 5, 1435 ],
-          'max': [ 1440 ]
-        },
-        pips: {
-          mode: 'values',
-          values: [0,5,1440],
-          density: 100,
-          stepped:true
-        },
-        format: wNumb({
-          decimals: 0
-        })
-      });
-
-      delaySlider.noUiSlider.on('change', function(){
-        var delayed = delaySlider.noUiSlider.get();
-        device.delayed = delayed;
-        $.ajax({
-          url: "/users/"+device.user_id+"/devices/"+device_id,
-          type: 'PUT',
-          data: { delayed: delayed }
+        noUiSlider.create(delaySlider, {
+          start: [ device.delayed || 0 ],
+          range: {
+            'min': [ 0, 5 ],
+            '50%': [ 5, 1435 ],
+            'max': [ 1440 ]
+          },
+          pips: {
+            mode: 'values',
+            values: [0,5,1440],
+            density: 100,
+            stepped:true
+          },
+          format: wNumb({
+            decimals: 0
+          })
         });
-      });
+
+        delaySlider.noUiSlider.on('change', function(){
+          var delayed = delaySlider.noUiSlider.get();
+          device.delayed = delayed;
+          $.ajax({
+            url: "/users/"+device.user_id+"/devices/"+device_id,
+            type: 'PUT',
+            data: { delayed: delayed }
+          });
+        });
+      }
     });
 
     $('.noUi-value.noUi-value-horizontal.noUi-value-large').each(function(){
@@ -52196,12 +52202,13 @@ $(document).on('page:change', function() {
 ;
 $(document).on('page:change', function() {
   if ($(".c-devices.a-index").length === 1) {
+    COPO.utility.gonFix();
     COPO.permissions.set_masters('devices');
     COPO.permissions.master_change('devices');
     COPO.permissions.switch_change('devices');
     COPO.permissions.check_disabled();
     COPO.permissions.check_bypass();
-    COPO.slider.initSliders();
+    COPO.slider.initSliders(gon.devices);
     window.initPage = function(){
       $('.clip_button').off();
       COPO.utility.initClipboard();
@@ -52224,6 +52231,7 @@ $(document).on('page:change', function() {
       })
     }
     initPage();
+
 
   }
 })
