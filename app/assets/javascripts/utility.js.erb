@@ -101,6 +101,7 @@ COPO.utility = {
   },
 
   gonFix: function(){
-    $('#gonvariables').html("<%= j Gon::Base.render_data(:init => true) %>")
+    var contents = $('#gonvariables').html();
+    $('#gonvariables').html(contents);
   }
 };
