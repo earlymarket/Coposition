@@ -184,13 +184,14 @@ window.COPO.maps = {
   },
 
   makeMapPin: function(user, color){
-    var checkin = user.lastCheckin;
+    var checkin = $.extend(true, {}, user.lastCheckin)
     if(checkin){
       var public_id = user.userinfo.avatar.public_id;
       return L.marker([checkin.lat, checkin.lng], {
         icon: COPO.maps.mapPinIcon(public_id, color),
-        title: user.userinfo.username,
-        riseOnHover: true
+        riseOnHover: true,
+        user: $.extend(true, {}, user.userinfo),
+        lastCheckin: checkin
       })
     }
   }
