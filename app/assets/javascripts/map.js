@@ -177,11 +177,10 @@ window.COPO.maps = {
     if(!markerBuilderFn){
       return console.error('Marker building function undefined')
     }
-    var output = []
-    $.each(markerArr, function(i, marker){
-      output.push(markerBuilderFn(marker))
+    var cluster = markerArr.map(function(marker){
+      return markerBuilderFn(marker)
     })
-    return (new L.MarkerClusterGroup).addLayers(output)
+    return (new L.MarkerClusterGroup).addLayers(cluster)
   },
 
   makeMapPin: function(user, color){
