@@ -1,7 +1,10 @@
 $(document).on('page:change', function() {
   if ($(".c-devices.a-index").length === 1) {
-    COPO.permissions.switch_change();
+    COPO.permissions.set_masters('devices');
+    COPO.permissions.master_change('devices');
+    COPO.permissions.switch_change('devices');
     COPO.permissions.check_disabled();
+    COPO.permissions.check_bypass();
     COPO.slider.initSliders();
     window.initPage = function(){
       $('.clip_button').off();

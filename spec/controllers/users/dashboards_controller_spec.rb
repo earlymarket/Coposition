@@ -5,7 +5,7 @@ RSpec.describe Users::DashboardsController, type: :controller do
   let(:checkin) { FactoryGirl::create(:checkin) }
   let(:device) do
     dev = FactoryGirl::create :device
-    dev.checkins << [checkin, FactoryGirl::create(:checkin)]
+    dev.checkins << [checkin, FactoryGirl::create(:checkin, created_at: 10.days.ago)]
     dev
   end
   let(:user) do

@@ -12,16 +12,37 @@
 
       <div id="perm<%=device.id%>" class="modal">
         <div class="modal-content">
-          <h4>Permissions Controls</h4>
+          <h4>Permission control for <%=device.name%></h4>
           <ul class="permissions collection" data-device=<%=device.id%>>
+            <li class="collection-item row valign-wrapper  master-permissions">
+              <div class='valign col s7' id="<%=device.id%>-status">
+                <h5>Master permissions <%= fogged_icon(device.fogged) %> <%= devices_delay_icon(device.delayed) %></h5>
+                This device is <%= device.fogged ? 'fogged' : 'not fogged' %> and is
+                <%= device.delayed ? "delayed by #{device.delayed} minutes" : 'not delayed' %>.
+              </div>
+              <%= render partial: "users/permissions/controls", object: device, as: 'permissionable' %>
+            </li>
 
             <% devices_permitted_actors_for(device).each do |permitted| %>
               <% permission =  device.permission_for(permitted) %>
               <li class="collection-item row valign-wrapper">
-                <div class='valign col s7'>
+
+                <div class='valign col s5'>
                   <%= permissible_title(permitted) %>
                 </div>
-                  <%= render partial: "users/permissions/controls", object: permission, as: 'permission' %>
+                <div class='col s2'>
+                  <span id='fogIcon<%=permission.id%>' class='fogIcon<%=device.id%> tooltipped' data-tooltip="<%=approvals_approvable_name(permitted)%> can only see fogged data for this device">
+                    <%= fogged_icon(device.fogged) if device.fogged %>
+                  </span>
+                  <span id='delayIcon<%=permission.id%>' class='delayIcon<%=device.id%> tooltipped' data-tooltip="<%=approvals_approvable_name(permitted)%> can only see your data after a delay for this device">
+                    <%= devices_delay_icon(device.delayed) if device.delayed %>
+                  </span>
+                  <span id='accessIcon<%=permission.id%>' class='tooltipped' data-tooltip="<%=approvals_approvable_name(permitted)%> can't see any data from this device">
+                    <%= devices_access_icon  %>
+                  </span>
+                </div>
+                <%= render partial: "users/permissions/controls", object: permission, as: 'permissionable' %>
+
               </li>
             <% end %>
 
@@ -30,7 +51,7 @@
       </div>
     <% end %>
 
-    <a class="modal-trigger left tooltipped" data-tooltip='Delay Settings' href="#delay<%=device.id%>"><i class="material-icons">hourglass_empty</i></a>
+    <a class="modal-trigger left tooltipped" id='delayButton<%=device.id%>' data-tooltip='Delay Settings' href="#delay<%=device.id%>"><%= devices_delay_icon(device.delayed)%></a>
     <div id="delay<%=device.id%>" class="modal delay-modal">
       <div class="modal-content">
         <h4>Delay Controls</h4>
