@@ -20308,10 +20308,6 @@ footer.page-footer {
 .c-devices.a-index .delay-slider {
   width: 98%;
 }
-/* line 25, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
-.c-devices.a-index .disabled-icon {
-  color: rgba(0, 0, 0, 0.2);
-}
 
 /* line 1, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
 .c-devices.a-show {
