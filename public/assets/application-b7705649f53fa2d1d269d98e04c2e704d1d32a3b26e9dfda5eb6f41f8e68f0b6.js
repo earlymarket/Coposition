@@ -51967,7 +51967,7 @@ window.COPO.permissions = {
 
   checkDisabled: function(user){
     $('[data-switch=disallowed].permission-switch').each(function(){
-      var pSwitch = new Switch(user, $(this))
+      let pSwitch = new Switch(user, $(this))
       if (pSwitch.checked){
         pSwitch.changeDisableSwitches(true);
       } else {
@@ -51979,7 +51979,7 @@ window.COPO.permissions = {
   checkBypass: function(user){
     ['bypass_fogging', 'bypass_delay'].forEach(function(attribute){
       $(`[data-switch=${attribute}]`).each(function(){
-        var pSwitch = new Switch(user, $(this))
+        let pSwitch = new Switch(user, $(this))
         if (pSwitch.checked){
           COPO.permissions.iconToggle(attribute, pSwitch.id);
         }
@@ -51990,9 +51990,9 @@ window.COPO.permissions = {
   setMasters: function(permissionableType, user, gonPermissions){
     if (gon[permissionableType]) {
       gon[permissionableType].forEach(function(permissionable){
-        var idType = (permissionableType === 'devices' ? 'device_id' : 'permissible_id')
+        let idType = (permissionableType === 'devices' ? 'device_id' : 'permissible_id')
         $(`div[data-id=${permissionable.id}].master`).each(function(){
-          var mSwitch = new MasterSwitch(user, $(this), gonPermissions, idType)
+          let mSwitch = new MasterSwitch(user, $(this), gonPermissions, idType)
           mSwitch.setState();
         })
       })
@@ -52001,7 +52001,7 @@ window.COPO.permissions = {
 
   switchChange:function(permissionableType, user, gonPermissions){
     $(".permission-switch").change(function() {
-      var pSwitch = new PermissionSwitch(user, $(this), gonPermissions)
+      let pSwitch = new PermissionSwitch(user, $(this), gonPermissions)
       pSwitch.toggleSwitch();
       COPO.permissions.setMasters(permissionableType, user, gonPermissions);
     })
@@ -52009,8 +52009,8 @@ window.COPO.permissions = {
 
   masterChange:function(permissionableType, user, gonPermissions){
     $(".master").change(function() {
-      var idType = (permissionableType === 'devices' ? 'device_id' : 'permissible_id')
-      var mSwitch = new MasterSwitch(user, $(this), gonPermissions, idType)
+      let idType = (permissionableType === 'devices' ? 'device_id' : 'permissible_id')
+      let mSwitch = new MasterSwitch(user, $(this), gonPermissions, idType)
       mSwitch.toggleSwitch();
       mSwitch.setState();
     })
