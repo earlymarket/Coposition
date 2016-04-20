@@ -35,6 +35,12 @@ RSpec.describe DevicesHelper, :type => :helper do
     end
   end
 
+  describe "#devices_access_icon" do
+    it "returns an icon" do
+      expect(helper.devices_access_icon).to match('icon')
+    end
+  end
+
   describe "#devices_shared_link" do
     it "return nothing if not published" do
       expect(helper.devices_shared_link(device)).to be(nil)
