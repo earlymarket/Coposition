@@ -1,7 +1,5 @@
 window.COPO = window.COPO || {};
 window.COPO.maps = {
-  map: null,
-
   initMap: function(customOptions){
     L.mapbox.accessToken = 'pk.eyJ1IjoiZ2FyeXNpdSIsImEiOiJjaWxjZjN3MTMwMDZhdnNtMnhsYmh4N3lpIn0.RAGGQ0OaM81HVe0OiAKE0w';
 
@@ -11,11 +9,10 @@ window.COPO.maps = {
     }
 
     var options = $.extend(defaultOptions, customOptions);
+    window.map = L.mapbox.map('map', 'mapbox.light', options );
 
-    map = L.mapbox.map('map', 'mapbox.light', options );
-
-    $(document).on('page:before-unload', function(){
-      map.stopLocate();
+    $(document).on('page:before-change', function(){
+      map.remove();
     })
 
   },
@@ -88,9 +85,9 @@ window.COPO.maps = {
 
   markerClickListener: function(marker) {
     marker.on('click', function(e) {
-      checkin = this.options.checkin;
+      var checkin = this.options.checkin;
       if(!marker._popup){
-        template = COPO.maps.buildMarkerPopup(checkin);
+        var template = COPO.maps.buildMarkerPopup(checkin);
         marker.bindPopup(L.Util.template(template, checkin));
         marker.openPopup();
       }
@@ -99,7 +96,7 @@ window.COPO.maps = {
           url: "/users/"+gon.current_user_id+"/devices/"+checkin.device_id+"/checkins/"+checkin.id,
           dataType: "json"
         }).done(function(data) {
-          $geocodedAddress = '<li class="address">Address: ' + data.address + '</li>'
+          var $geocodedAddress = '<li class="address">Address: ' + data.address + '</li>'
           $('.address').replaceWith($geocodedAddress);
           gon.checkins[_.indexOf(gon.checkins, checkin)] = data;
         })
@@ -173,13 +170,11 @@ window.COPO.maps = {
     })
   },
 
-  arrayToCluster: function(markerArr, markerBuilderFn){
+  arrayToCluster: (markerArr, markerBuilderFn) => {
     if(!markerBuilderFn){
       return console.error('Marker building function undefined')
     }
-    var cluster = markerArr.map(function(marker){
-      return markerBuilderFn(marker)
-    })
+    var cluster = markerArr.map(marker => markerBuilderFn(marker))
     return (new L.MarkerClusterGroup).addLayers(cluster)
   },
 

@@ -18,14 +18,19 @@ $(document).on('page:change', function() {
 
       marker.on('mouseover', function(e){
         if(!marker._popup){
-          var user = this.options.user;
-          user.username = COPO.utility.friendsName(user);
-          marker.bindPopup(Mustache.render(
-            'Visit <a href="./friends/{{ slug }}">{{username}}</a>\'s page for more info.',
-             user),
-            {offset: [0, -38]}
-          );
+          let user = this.options.user;
+          let name = COPO.utility.friendsName(user);
+          let date = new Date(this.options.lastCheckin.created_at).toUTCString();
+          let address = this.options.lastCheckin.address.replace(/, /g, '\n');
+          address = address || this.options.lastCheckin.fogged_area;
+
+          let content = `
+          <h2><a href="./friends/${user.slug}">${ name }</a></h2>
+          <div class="address">${ address }</div>
+          Checked in on ${ date }`
+          marker.bindPopup(content, { offset: [0, -38] } );
         }
+        COPO.maps.w3w.setCoordinates(e);
         marker.openPopup();
       })
     })
