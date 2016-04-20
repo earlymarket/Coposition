@@ -30,7 +30,7 @@ class Users::DevicesController < ApplicationController
     checkin = device.checkins.first
     gon.device = device
     gon.user = device.user.public_info
-    gon.checkin = checkin.reverse_geocode! if checkin
+    gon.checkin = checkin.reverse_geocode!.get_data if checkin
   end
 
   def create

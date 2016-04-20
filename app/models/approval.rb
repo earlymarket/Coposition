@@ -18,7 +18,7 @@ class Approval < ActiveRecord::Base
     if (approvable_type == 'Developer') || (user.friend_requests.include?(approvable))
       approval = Approval.accept(user, approvable, approvable_type)
     else
-      UserMailer.add_friend_email(user, approvable).deliver_now
+      UserMailer.add_friend_email(user, approvable).deliver_now unless approval.errors.messages.present?
     end
     approval
   end
