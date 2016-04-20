@@ -1,39 +1,41 @@
 window.COPO = window.COPO || {};
 window.COPO.slider = {
 
-  initSliders: function(){
+  initSliders: function(devices){
     $('.delay-slider').each(function(){
-      var delaySlider = this;
-      var device_id =  parseInt(delaySlider.dataset.device, 10);
-      var device = _.find(gon.devices, _.matchesProperty('id', device_id));
+      if(!this.noUiSlider){
+        var delaySlider = this;
+        var device_id =  parseInt(delaySlider.dataset.device, 10);
+        var device = _.find(devices, _.matchesProperty('id', device_id));
 
-      noUiSlider.create(delaySlider, {
-        start: [ device.delayed || 0 ],
-        range: {
-          'min': [ 0, 5 ],
-          '50%': [ 5, 1435 ],
-          'max': [ 1440 ]
-        },
-        pips: {
-          mode: 'values',
-          values: [0,5,1440],
-          density: 100,
-          stepped:true
-        },
-        format: wNumb({
-          decimals: 0
-        })
-      });
-
-      delaySlider.noUiSlider.on('change', function(){
-        var delayed = delaySlider.noUiSlider.get();
-        device.delayed = delayed;
-        $.ajax({
-          url: "/users/"+device.user_id+"/devices/"+device_id,
-          type: 'PUT',
-          data: { delayed: delayed }
+        noUiSlider.create(delaySlider, {
+          start: [ device.delayed || 0 ],
+          range: {
+            'min': [ 0, 5 ],
+            '50%': [ 5, 1435 ],
+            'max': [ 1440 ]
+          },
+          pips: {
+            mode: 'values',
+            values: [0,5,1440],
+            density: 100,
+            stepped:true
+          },
+          format: wNumb({
+            decimals: 0
+          })
         });
-      });
+
+        delaySlider.noUiSlider.on('change', function(){
+          var delayed = delaySlider.noUiSlider.get();
+          device.delayed = delayed;
+          $.ajax({
+            url: "/users/"+device.user_id+"/devices/"+device_id,
+            type: 'PUT',
+            data: { delayed: delayed }
+          });
+        });
+      }
     });
 
     $('.noUi-value.noUi-value-horizontal.noUi-value-large').each(function(){

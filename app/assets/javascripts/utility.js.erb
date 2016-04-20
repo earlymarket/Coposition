@@ -98,5 +98,10 @@ COPO.utility = {
       console.log( 'ZeroClipboard error of type "' + event.name + '": ' + event.message );
       ZeroClipboard.destroy();
     });
+  },
+
+  gonFix: function(){
+    var contents = $('#gonvariables').html();
+    $('#gonvariables').html(contents);
   }
 };
