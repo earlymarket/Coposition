@@ -51553,6 +51553,11 @@ COPO.utility = {
       console.log( 'ZeroClipboard error of type "' + event.name + '": ' + event.message );
       ZeroClipboard.destroy();
     });
+  },
+
+  gonFix: function(){
+    var contents = $('#gonvariables').html();
+    $('#gonvariables').html(contents);
   }
 };
 $(document).on('page:change', function() {
@@ -51956,7 +51961,7 @@ window.COPO.permissions = {
     $('[data-switch=disallowed].permission-switch').each(function(){
       var permission_id =  $(this).data().id;
       if ($(this).find('input').prop('checked')){
-        COPO.permissions.toggle_switches_disabled(permission_id);
+        COPO.permissions.toggle_switches_disabled(permission_id, true);
       } else {
         COPO.permissions.icon_toggle('disallowed', permission_id);
       }
@@ -52006,7 +52011,6 @@ window.COPO.permissions = {
       COPO.permissions.icon_toggle(switch_type, permission_id);
       var permission = _.find(gon.permissions, _.matchesProperty('id', permission_id));
       var device_id = permission['device_id'];
-
       if (permission[attribute].constructor === Boolean){
         permission[attribute] = !permission[attribute]
       } else {
@@ -52015,7 +52019,7 @@ window.COPO.permissions = {
 
       if (switch_type === "disallowed") {
         $("div[data-id='"+permission_id+"'][data-switch=last_only].permission-switch").find('input').prop("checked", false);
-        COPO.permissions.toggle_switches_disabled(permission_id);
+        COPO.permissions.toggle_switches_disabled(permission_id, $(this).find('input').prop("checked"));
       }
       COPO.permissions.set_masters(permissionables);
 
@@ -52060,9 +52064,9 @@ window.COPO.permissions = {
     })
   },
 
-  toggle_switches_disabled: function(permission_id){
+  toggle_switches_disabled: function(permission_id, newState){
     element = $("div[data-id='"+ permission_id +"'].disable").find('input');
-    element.prop("disabled", !element.prop("disabled"));
+    element.prop("disabled", newState);
   },
 
   new_privilege: function(current_privilege, switch_type){
@@ -52131,39 +52135,41 @@ window.COPO.datePicker = {
 window.COPO = window.COPO || {};
 window.COPO.slider = {
 
-  initSliders: function(){
+  initSliders: function(devices){
     $('.delay-slider').each(function(){
-      var delaySlider = this;
-      var device_id =  parseInt(delaySlider.dataset.device, 10);
-      var device = _.find(gon.devices, _.matchesProperty('id', device_id));
+      if(!this.noUiSlider){
+        var delaySlider = this;
+        var device_id =  parseInt(delaySlider.dataset.device, 10);
+        var device = _.find(devices, _.matchesProperty('id', device_id));
 
-      noUiSlider.create(delaySlider, {
-        start: [ device.delayed || 0 ],
-        range: {
-          'min': [ 0, 5 ],
-          '50%': [ 5, 1435 ],
-          'max': [ 1440 ]
-        },
-        pips: {
-          mode: 'values',
-          values: [0,5,1440],
-          density: 100,
-          stepped:true
-        },
-        format: wNumb({
-          decimals: 0
-        })
-      });
-
-      delaySlider.noUiSlider.on('change', function(){
-        var delayed = delaySlider.noUiSlider.get();
-        device.delayed = delayed;
-        $.ajax({
-          url: "/users/"+device.user_id+"/devices/"+device_id,
-          type: 'PUT',
-          data: { delayed: delayed }
+        noUiSlider.create(delaySlider, {
+          start: [ device.delayed || 0 ],
+          range: {
+            'min': [ 0, 5 ],
+            '50%': [ 5, 1435 ],
+            'max': [ 1440 ]
+          },
+          pips: {
+            mode: 'values',
+            values: [0,5,1440],
+            density: 100,
+            stepped:true
+          },
+          format: wNumb({
+            decimals: 0
+          })
         });
-      });
+
+        delaySlider.noUiSlider.on('change', function(){
+          var delayed = delaySlider.noUiSlider.get();
+          device.delayed = delayed;
+          $.ajax({
+            url: "/users/"+device.user_id+"/devices/"+device_id,
+            type: 'PUT',
+            data: { delayed: delayed }
+          });
+        });
+      }
     });
 
     $('.noUi-value.noUi-value-horizontal.noUi-value-large').each(function(){
@@ -52183,8 +52189,100 @@ window.COPO.slider = {
   }
 }
 ;
+class Switch {
+  constructor(user, domElement) {
+    this.user = user;
+    this.id = domElement.data().id;
+    this.type = domElement.data().switch;
+    this.attribute = domElement.data().attribute;
+    this.inputDomElement = domElement.find('input');
+    this.checked = this.inputDomElement.prop('checked');
+    this.disabled = this.inputDomElement.prop('disabled');
+  }
+
+  changeDisableSwitches(state) {
+    $(`div[data-id=${this.id}][data-switch=last_only].permission-switch`).find('input').prop("checked", false);
+    $(`div[data-id=${this.id}].disable`).find('input').prop("disabled", state);
+  }
+}
+
+class PermissionSwitch extends Switch {
+  constructor(user, domElement, permissions) {
+    super(user, domElement);
+    this.permission = _.find(permissions, _.matchesProperty('id', this.id));
+    this.attributeState = this.permission[this.attribute];
+  }
+
+  toggleSwitch() {
+    COPO.permissions.iconToggle(this.type, this.id);
+    if (this.type === "disallowed") {
+      this.changeDisableSwitches(this.checked);
+    }
+    this.permission[this.attribute] = this.nextState();
+    $.ajax({
+      url: `/users/${this.user}/devices/${this.permission['device_id']}/permissions/${this.id}`,
+      type: 'PUT',
+      data: { permission: this.permission }
+    });
+  }
+
+  nextState() {
+    if(this.attributeState === "disallowed") {
+      return "complete"
+    } else if(this.type === "disallowed") {
+      return "disallowed"
+    } else if(this.attributeState === "complete") {
+      return "last_only"
+    } else if(this.attributeState === "last_only") {
+      return "complete"
+    } else {
+      return !this.attributeState
+    }
+  }
+}
+
+class MasterSwitch extends Switch {
+  constructor(user, domElement, permissions, idType) {
+    super(user, domElement);
+    this.permissions = permissions.filter(_.matchesProperty(idType, this.id));
+  }
+
+  toggleSwitch() {
+    let self = this;
+    this.permissions.forEach(function(permission){
+      let pDomElement = $(`div[data-id=${permission.id}][data-switch=${self.type}].permission-switch`);
+      let pSwitch = new PermissionSwitch(self.user, pDomElement, self.permissions);
+      if ((pSwitch.disabled && pSwitch.type === 'last_only')){
+        self.inputDomElement.prop("checked", false)
+      } else if (self.checked !== pSwitch.checked) {
+        pSwitch.inputDomElement.prop("checked", self.checked);
+        pSwitch.checked = self.checked;
+        pSwitch.toggleSwitch();
+      }
+    })
+  }
+
+  setState() {
+    let switchesChecked = [];
+    let self = this;
+
+    this.permissions.forEach(function(permission){
+      let pDomElement = $(`div[data-id=${permission.id}][data-switch=${self.type}].permission-switch`);
+      switchesChecked.push(pDomElement.find('input').prop("checked"))
+    })
+    let newMasterCheckedState = _.every(switchesChecked)
+    this.inputDomElement.prop("checked", newMasterCheckedState)
+
+    if (this.type === "disallowed") {
+      $(`div[data-id=${self.id}][data-switch=last_only].master`).find('input').prop("checked", false);
+      let masters = $(`div[data-id=${self.id}].disable.master`).find('input');
+      masters.prop("disabled", newMasterCheckedState);
+    }
+  }
+}
+;
 $(document).on('page:change', function() {
-  if ($(".c-approvals").length === 1) {
+  if (($(".c-approvals").length === 1) && ($(".a-new").length === 0)){
     $('.tooltipped').tooltip({delay: 50});
     COPO.permissions.set_masters('approved');
     COPO.permissions.master_change('approved');
@@ -52196,12 +52294,13 @@ $(document).on('page:change', function() {
 ;
 $(document).on('page:change', function() {
   if ($(".c-devices.a-index").length === 1) {
+    COPO.utility.gonFix();
     COPO.permissions.set_masters('devices');
     COPO.permissions.master_change('devices');
     COPO.permissions.switch_change('devices');
     COPO.permissions.check_disabled();
     COPO.permissions.check_bypass();
-    COPO.slider.initSliders();
+    COPO.slider.initSliders(gon.devices);
     window.initPage = function(){
       $('.clip_button').off();
       COPO.utility.initClipboard();
@@ -52225,6 +52324,10 @@ $(document).on('page:change', function() {
     }
     initPage();
 
+    $(document).on('page:before-unload', function(){
+      $(".permission-switch").off("change");
+      $(".master").off("change");
+    })
   }
 })
 ;

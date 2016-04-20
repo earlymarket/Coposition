@@ -1,4 +1,5 @@
 # Coposition
+
 [![Build Status](https://travis-ci.org/earlymarket/Coposition.svg?branch=master)](https://travis-ci.org/earlymarket/Coposition)
 [![Code Climate](https://codeclimate.com/github/earlymarket/CoPosition/badges/gpa.svg)](https://codeclimate.com/github/earlymarket/CoPosition)
 [![Test Coverage](https://codeclimate.com/github/earlymarket/CoPosition/badges/coverage.svg)](https://codeclimate.com/github/earlymarket/CoPosition/coverage)
