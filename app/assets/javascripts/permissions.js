@@ -30,10 +30,10 @@ window.COPO.permissions = {
     })
   },
 
-  setMasters: function(permissionables, user, gonPermissions){
-    if (gon[permissionables]) {
-      gon[permissionables].forEach(function(permissionable){
-        var idType = (permissionables === 'devices' ? 'device_id' : 'permissible_id')
+  setMasters: function(permissionableType, user, gonPermissions){
+    if (gon[permissionableType]) {
+      gon[permissionableType].forEach(function(permissionable){
+        var idType = (permissionableType === 'devices' ? 'device_id' : 'permissible_id')
         $(`div[data-id=${permissionable.id}].master`).each(function(){
           var mSwitch = new MasterSwitch(user, $(this), gonPermissions, idType)
           mSwitch.setState();
@@ -42,17 +42,17 @@ window.COPO.permissions = {
     }
   },
 
-  switchChange:function(permissionables, user, gonPermissions){
+  switchChange:function(permissionableType, user, gonPermissions){
     $(".permission-switch").change(function() {
       var pSwitch = new PermissionSwitch(user, $(this), gonPermissions)
       pSwitch.toggleSwitch();
-      COPO.permissions.setMasters(permissionables, user, gonPermissions);
+      COPO.permissions.setMasters(permissionableType, user, gonPermissions);
     })
   },
 
-  masterChange:function(permissionables, user, gonPermissions){
+  masterChange:function(permissionableType, user, gonPermissions){
     $(".master").change(function() {
-      var idType = (permissionables === 'devices' ? 'device_id' : 'permissible_id')
+      var idType = (permissionableType === 'devices' ? 'device_id' : 'permissible_id')
       var mSwitch = new MasterSwitch(user, $(this), gonPermissions, idType)
       mSwitch.toggleSwitch();
       mSwitch.setState();
