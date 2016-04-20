@@ -24,6 +24,17 @@
         img{
           height: 130%;
         }
+
+        @media screen and (max-width: 600px){
+          img{
+            height: auto;
+            width: 100%;
+          }
+          max-height: 400px;
+          overflow:hidden;
+          padding-top:0;
+          padding-bottom:0;
+        }
       }
       &.cloud-cp{
         height: auto;
@@ -41,6 +52,13 @@
           height: 50px;
           width: auto;
           cursor: pointer;
+        }
+
+        @media screen and (max-width: 600px){
+          svg{
+            width: 50%;
+            height: auto;
+          }
         }
       }
 
@@ -61,6 +79,17 @@
       .card{
         padding: 2rem;
         cursor: pointer;
+      }
+
+
+      @media screen and (max-width: 600px){
+        & > .row{
+          margin-bottom: 0;
+
+          & > .col{
+            padding-bottom: 0;
+          }
+        }   
       }
 
       .active{
@@ -110,6 +139,12 @@
         height: 300px;
       }
     }
+
+    @media screen and (max-width: 600px){
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+    }
+
   }
 
   footer.page-footer{

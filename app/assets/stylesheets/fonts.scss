@@ -21,24 +21,44 @@ h1 {
   text-align: center;
 
   @media screen and (max-width: 600px){
-    font-size: 2.5rem;
+    font-size: 3rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
   }
 }
 h2 {
   @extend .dark-text, .brand;
   font-weight: 700;
+
+  @media screen and (max-width: 600px){
+    font-size: 2.2rem;
+  }
 }
 h3 {
   @extend .dark-text, .brand;
   font-weight: 700;
+
+  @media screen and (max-width: 600px){
+    font-size: 2rem;
+    line-height: 2.4rem;
+  }
 }
 h4{
   @extend .dark-text, .brand;
   font-weight: 700;
+
+  @media screen and (max-width: 600px){
+    font-size: 1.75rem;
+    line-height: 2.2rem;
+  }
 }
 h5{
   @extend .dark-text, .brand;
   font-weight: 700;
+
+  @media screen and (max-width: 600px){
+    font-size: 1.4rem;
+  }
 }
 h6{
 
