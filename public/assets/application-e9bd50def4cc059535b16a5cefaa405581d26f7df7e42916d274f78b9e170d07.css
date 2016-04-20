@@ -20500,18 +20500,21 @@ footer.page-footer {
 }
 /* line 11, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
 .c-approvals .avatar {
-  margin-right: 1em;
+  margin-right: 1rem;
 }
 /* line 15, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
 .c-approvals .tagline {
-  margin-left: 1rem;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-/* line 19, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
+/* line 22, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
 .c-approvals .card-panel {
   padding: 5px;
   margin: 0.25rem 0 0 0;
 }
-/* line 22, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
+/* line 25, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
 .c-approvals .card-panel .row {
   margin: 0;
 }
