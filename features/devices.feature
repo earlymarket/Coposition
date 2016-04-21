@@ -27,10 +27,10 @@ Feature: Devices
       And I click the link "Devices"
       When I click the link "visibility_off"
         Then I should see a link that says "visibility"
-        And I should have a published device
+        And I should have a "published" device
       When I click the link "cloud_off"
         Then I should see a link that says "cloud_done"
-        And I should have a fogged device
+        And I should have a "fogged" device
       When I click the link "timer"
       And I click the slider
         Then I should have a delayed device
