@@ -13,3 +13,10 @@ Feature: map
       When I right click on the map
       And I click "Create checkin here"
         Then I should have a new checkin
+
+    @javascript
+    Scenario: User creates a new checkin at their location
+      When I click "Your current location"
+      And I click on my current location marker
+      And I click "Create checkin here"
+        Then I should have a new checkin

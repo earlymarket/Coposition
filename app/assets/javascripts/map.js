@@ -149,6 +149,7 @@ window.COPO.maps = {
           'marker-symbol': 'star',
           'marker-color': '#01579B'
         }),
+        alt: 'currentLocation',
         riseOnHover: true
       },
       strings: {
