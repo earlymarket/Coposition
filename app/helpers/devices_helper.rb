@@ -19,7 +19,7 @@ module DevicesHelper
     if value
       '<i class="material-icons">timer</i>'.html_safe
     else
-      '<i class="material-icons">timer_off</i>'.html_safe
+      '<i class="material-icons disabled-icon">timer_off</i>'.html_safe
     end
   end
 
@@ -27,7 +27,7 @@ module DevicesHelper
     if device.published?
       '<i class="material-icons">visibility</i>'.html_safe
     else
-      '<i class="material-icons">visibility_off</i>'.html_safe
+      '<i class="material-icons disabled-icon">visibility_off</i>'.html_safe
     end
   end
 
