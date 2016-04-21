@@ -25,7 +25,7 @@ $(document).on('page:change', function() {
           address = address || this.options.lastCheckin.fogged_area;
 
           let content = `
-          <h2><a href="./friends/${user.slug}">${ name }</a></h2>
+          <h2>${ name } <a href="./friends/${user.slug}"><i class="material-icons tiny">perm_device_information</i></a></h2>
           <div class="address">${ address }</div>
           Checked in on ${ date }`
           marker.bindPopup(content, { offset: [0, -38] } );
