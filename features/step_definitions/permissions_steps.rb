@@ -13,16 +13,16 @@ Given(/^I accept the approval request$/) do
   Approval.accept(@me,@developer,'Developer')
 end
 
-
 Given(/^I click the switch "(.*?)"$/) do |target|
   find_by_id("#{@developer.id}-#{target}").click
 end
 
 Given(/^I should have "(.*?)" enabled$/) do |attribute|
+  sleep 0.5
   expect(Permission.last[attribute]).to be true
 end
 
 Given(/^I should have privilege set to "(.*?)"$/) do |value|
-  sleep 1
+  sleep 0.5
   expect(Permission.last.privilege).to eq value
 end

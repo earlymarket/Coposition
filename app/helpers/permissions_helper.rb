@@ -19,8 +19,8 @@ module PermissionsHelper
     permissionable.class == Permission ? 'permission-switch' : 'master'
   end
 
-  def permissions_label_id(permissionable)
-    permissionable.id if permissionable.class == Permission
+  def permissions_label_id(permissionable, switch)
+    "#{permissionable.id}-#{switch}" if permissionable.class == Permission
   end
 
   def permissions_check_box_value(permissionable, type)

@@ -18,11 +18,12 @@ Then(/^I should not have a device$/) do
 end
 
 Then(/^I should have a "(.*?)" device$/) do |attribute|
+  sleep 0.5
   expect(@me.devices.last[attribute]).to be true
 end
 
 Then(/^I should have a delayed device$/) do
-  sleep 1
+  sleep 0.5
   expect(@me.devices.last.delayed).to eq 5
 end
 
