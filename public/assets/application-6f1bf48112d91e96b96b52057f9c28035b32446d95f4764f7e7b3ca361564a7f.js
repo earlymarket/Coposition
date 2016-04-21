@@ -51955,9 +51955,11 @@ window.COPO.maps = {
 }
 
 ;
+'use strict';
+
 window.COPO = window.COPO || {};
 window.COPO.permissions = {
-  initSwitches: function(permissionableType, user, permissions){
+  initSwitches: function initSwitches(permissionableType, user, permissions) {
     COPO.permissions.setMasters(permissionableType, user, permissions);
     COPO.permissions.masterChange(permissionableType, user, permissions);
     COPO.permissions.switchChange(permissionableType, user, permissions);
@@ -51965,10 +51967,10 @@ window.COPO.permissions = {
     COPO.permissions.checkBypass(user);
   },
 
-  checkDisabled: function(user){
-    $('[data-switch=disallowed].permission-switch').each(function(){
-      let pSwitch = new Switch(user, $(this))
-      if (pSwitch.checked){
+  checkDisabled: function checkDisabled(user) {
+    $('[data-switch=disallowed].permission-switch').each(function () {
+      var pSwitch = new Switch(user, $(this));
+      if (pSwitch.checked) {
         pSwitch.changeDisableSwitches(true);
       } else {
         COPO.permissions.iconToggle('disallowed', pSwitch.id);
@@ -51976,53 +51978,53 @@ window.COPO.permissions = {
     });
   },
 
-  checkBypass: function(user){
-    ['bypass_fogging', 'bypass_delay'].forEach(function(attribute){
-      $(`[data-switch=${attribute}]`).each(function(){
-        let pSwitch = new Switch(user, $(this))
-        if (pSwitch.checked){
+  checkBypass: function checkBypass(user) {
+    ['bypass_fogging', 'bypass_delay'].forEach(function (attribute) {
+      $('[data-switch=' + attribute + ']').each(function () {
+        var pSwitch = new Switch(user, $(this));
+        if (pSwitch.checked) {
           COPO.permissions.iconToggle(attribute, pSwitch.id);
         }
       });
-    })
+    });
   },
 
-  setMasters: function(permissionableType, user, gonPermissions){
+  setMasters: function setMasters(permissionableType, user, gonPermissions) {
     if (gon[permissionableType]) {
-      gon[permissionableType].forEach(function(permissionable){
-        let idType = (permissionableType === 'devices' ? 'device_id' : 'permissible_id')
-        $(`div[data-id=${permissionable.id}].master`).each(function(){
-          let mSwitch = new MasterSwitch(user, $(this), gonPermissions, idType)
+      gon[permissionableType].forEach(function (permissionable) {
+        var idType = permissionableType === 'devices' ? 'device_id' : 'permissible_id';
+        $('div[data-id=' + permissionable.id + '].master').each(function () {
+          var mSwitch = new MasterSwitch(user, $(this), gonPermissions, idType);
           mSwitch.setState();
-        })
-      })
+        });
+      });
     }
   },
 
-  switchChange:function(permissionableType, user, gonPermissions){
-    $(".permission-switch").change(function() {
-      let pSwitch = new PermissionSwitch(user, $(this), gonPermissions)
+  switchChange: function switchChange(permissionableType, user, gonPermissions) {
+    $(".permission-switch").change(function () {
+      var pSwitch = new PermissionSwitch(user, $(this), gonPermissions);
       pSwitch.toggleSwitch();
       COPO.permissions.setMasters(permissionableType, user, gonPermissions);
-    })
+    });
   },
 
-  masterChange:function(permissionableType, user, gonPermissions){
-    $(".master").change(function() {
-      let idType = (permissionableType === 'devices' ? 'device_id' : 'permissible_id')
-      let mSwitch = new MasterSwitch(user, $(this), gonPermissions, idType)
+  masterChange: function masterChange(permissionableType, user, gonPermissions) {
+    $(".master").change(function () {
+      var idType = permissionableType === 'devices' ? 'device_id' : 'permissible_id';
+      var mSwitch = new MasterSwitch(user, $(this), gonPermissions, idType);
       mSwitch.toggleSwitch();
       mSwitch.setState();
-    })
+    });
   },
 
-  iconToggle: function(switchType, permissionId){
-    if (switchType === 'bypass_fogging'){
-      $('#fogIcon'+permissionId).toggle();
-    } else if (switchType === 'bypass_delay'){
-      $('#delayIcon'+permissionId).toggle();
-    } else if (switchType === 'disallowed'){
-      $('#accessIcon'+permissionId).toggle();
+  iconToggle: function iconToggle(switchType, permissionId) {
+    if (switchType === 'bypass_fogging') {
+      $('#fogIcon' + permissionId).toggle();
+    } else if (switchType === 'bypass_delay') {
+      $('#delayIcon' + permissionId).toggle();
+    } else if (switchType === 'disallowed') {
+      $('#accessIcon' + permissionId).toggle();
     }
   }
 };
@@ -52134,98 +52136,134 @@ window.COPO.slider = {
   }
 }
 ;
-class Switch {
-  constructor(user, domElement) {
+'use strict';
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var Switch = (function () {
+  function Switch(user, domElement) {
+    _classCallCheck(this, Switch);
+
     this.user = user;
     this.id = domElement.data().id;
-    this.type = domElement.data().switch;
+    this.type = domElement.data()['switch'];
     this.attribute = domElement.data().attribute;
     this.inputDomElement = domElement.find('input');
     this.checked = this.inputDomElement.prop('checked');
     this.disabled = this.inputDomElement.prop('disabled');
   }
 
-  changeDisableSwitches(state) {
-    $(`div[data-id=${this.id}][data-switch=last_only].permission-switch`).find('input').prop("checked", false);
-    $(`div[data-id=${this.id}].disable`).find('input').prop("disabled", state);
-  }
-}
+  _createClass(Switch, [{
+    key: 'changeDisableSwitches',
+    value: function changeDisableSwitches(state) {
+      $('div[data-id=' + this.id + '][data-switch=last_only].permission-switch').find('input').prop("checked", false);
+      $('div[data-id=' + this.id + '].disable').find('input').prop("disabled", state);
+    }
+  }]);
 
-class PermissionSwitch extends Switch {
-  constructor(user, domElement, permissions) {
-    super(user, domElement);
+  return Switch;
+})();
+
+var PermissionSwitch = (function (_Switch) {
+  _inherits(PermissionSwitch, _Switch);
+
+  function PermissionSwitch(user, domElement, permissions) {
+    _classCallCheck(this, PermissionSwitch);
+
+    _get(Object.getPrototypeOf(PermissionSwitch.prototype), 'constructor', this).call(this, user, domElement);
     this.permission = _.find(permissions, _.matchesProperty('id', this.id));
     this.attributeState = this.permission[this.attribute];
   }
 
-  toggleSwitch() {
-    COPO.permissions.iconToggle(this.type, this.id);
-    if (this.type === "disallowed") {
-      this.changeDisableSwitches(this.checked);
+  _createClass(PermissionSwitch, [{
+    key: 'toggleSwitch',
+    value: function toggleSwitch() {
+      COPO.permissions.iconToggle(this.type, this.id);
+      if (this.type === "disallowed") {
+        this.changeDisableSwitches(this.checked);
+      }
+      this.permission[this.attribute] = this.nextState();
+      $.ajax({
+        url: '/users/' + this.user + '/devices/' + this.permission['device_id'] + '/permissions/' + this.id,
+        type: 'PUT',
+        data: { permission: this.permission }
+      });
     }
-    this.permission[this.attribute] = this.nextState();
-    $.ajax({
-      url: `/users/${this.user}/devices/${this.permission['device_id']}/permissions/${this.id}`,
-      type: 'PUT',
-      data: { permission: this.permission }
-    });
-  }
-
-  nextState() {
-    if(this.attributeState === "disallowed") {
-      return "complete"
-    } else if(this.type === "disallowed") {
-      return "disallowed"
-    } else if(this.attributeState === "complete") {
-      return "last_only"
-    } else if(this.attributeState === "last_only") {
-      return "complete"
-    } else {
-      return !this.attributeState
+  }, {
+    key: 'nextState',
+    value: function nextState() {
+      if (this.attributeState === "disallowed") {
+        return "complete";
+      } else if (this.type === "disallowed") {
+        return "disallowed";
+      } else if (this.attributeState === "complete") {
+        return "last_only";
+      } else if (this.attributeState === "last_only") {
+        return "complete";
+      } else {
+        return !this.attributeState;
+      }
     }
-  }
-}
+  }]);
 
-class MasterSwitch extends Switch {
-  constructor(user, domElement, permissions, idType) {
-    super(user, domElement);
+  return PermissionSwitch;
+})(Switch);
+
+var MasterSwitch = (function (_Switch2) {
+  _inherits(MasterSwitch, _Switch2);
+
+  function MasterSwitch(user, domElement, permissions, idType) {
+    _classCallCheck(this, MasterSwitch);
+
+    _get(Object.getPrototypeOf(MasterSwitch.prototype), 'constructor', this).call(this, user, domElement);
     this.permissions = permissions.filter(_.matchesProperty(idType, this.id));
   }
 
-  toggleSwitch() {
-    let self = this;
-    this.permissions.forEach(function(permission){
-      let pDomElement = $(`div[data-id=${permission.id}][data-switch=${self.type}].permission-switch`);
-      let pSwitch = new PermissionSwitch(self.user, pDomElement, self.permissions);
-      if ((pSwitch.disabled && pSwitch.type === 'last_only')){
-        self.inputDomElement.prop("checked", false)
-      } else if (self.checked !== pSwitch.checked) {
-        pSwitch.inputDomElement.prop("checked", self.checked);
-        pSwitch.checked = self.checked;
-        pSwitch.toggleSwitch();
-      }
-    })
-  }
-
-  setState() {
-    let switchesChecked = [];
-    let self = this;
-
-    this.permissions.forEach(function(permission){
-      let pDomElement = $(`div[data-id=${permission.id}][data-switch=${self.type}].permission-switch`);
-      switchesChecked.push(pDomElement.find('input').prop("checked"))
-    })
-    let newMasterCheckedState = _.every(switchesChecked)
-    this.inputDomElement.prop("checked", newMasterCheckedState)
-
-    if (this.type === "disallowed") {
-      $(`div[data-id=${self.id}][data-switch=last_only].master`).find('input').prop("checked", false);
-      let masters = $(`div[data-id=${self.id}].disable.master`).find('input');
-      masters.prop("disabled", newMasterCheckedState);
+  _createClass(MasterSwitch, [{
+    key: 'toggleSwitch',
+    value: function toggleSwitch() {
+      var self = this;
+      this.permissions.forEach(function (permission) {
+        var pDomElement = $('div[data-id=' + permission.id + '][data-switch=' + self.type + '].permission-switch');
+        var pSwitch = new PermissionSwitch(self.user, pDomElement, self.permissions);
+        if (pSwitch.disabled && pSwitch.type === 'last_only') {
+          self.inputDomElement.prop("checked", false);
+        } else if (self.checked !== pSwitch.checked) {
+          pSwitch.inputDomElement.prop("checked", self.checked);
+          pSwitch.checked = self.checked;
+          pSwitch.toggleSwitch();
+        }
+      });
     }
-  }
-}
-;
+  }, {
+    key: 'setState',
+    value: function setState() {
+      var switchesChecked = [];
+      var self = this;
+
+      this.permissions.forEach(function (permission) {
+        var pDomElement = $('div[data-id=' + permission.id + '][data-switch=' + self.type + '].permission-switch');
+        switchesChecked.push(pDomElement.find('input').prop("checked"));
+      });
+      var newMasterCheckedState = _.every(switchesChecked);
+      this.inputDomElement.prop("checked", newMasterCheckedState);
+
+      if (this.type === "disallowed") {
+        $('div[data-id=' + self.id + '][data-switch=last_only].master').find('input').prop("checked", false);
+        var masters = $('div[data-id=' + self.id + '].disable.master').find('input');
+        masters.prop("disabled", newMasterCheckedState);
+      }
+    }
+  }]);
+
+  return MasterSwitch;
+})(Switch);
 $(document).on('page:change', function() {
   if (($(".c-approvals").length === 1) && ($(".a-new").length === 0)){
     $('.tooltipped').tooltip({delay: 50});
