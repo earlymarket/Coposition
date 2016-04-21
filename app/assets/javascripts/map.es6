@@ -174,16 +174,18 @@ window.COPO.maps = {
     return (new L.MarkerClusterGroup).addLayers(cluster)
   },
 
-  makeMapPin(user, color){
-    var checkin = $.extend(true, {}, user.lastCheckin)
+  makeMapPin(user, color, markerOptions){
+    let checkin = user.lastCheckin
     if(checkin){
-      var public_id = user.userinfo.avatar.public_id;
-      return L.marker([checkin.lat, checkin.lng], {
+      let public_id = user.userinfo.avatar.public_id;
+      let defaults = {
         icon: COPO.maps.mapPinIcon(public_id, color),
         riseOnHover: true,
         user: $.extend(true, {}, user.userinfo),
         lastCheckin: checkin
-      })
+      }
+      markerOptions = $.extend({}, defaults, markerOptions)
+      return L.marker([checkin.lat, checkin.lng], markerOptions)
     }
   }
 }
