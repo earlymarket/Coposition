@@ -57,35 +57,35 @@ class MasterSwitch extends Switch {
   }
 
   toggleSwitch() {
-    let self = this;
+    const SELF = this;
     this.permissions.forEach(function(permission){
-      let pDomElement = $(`div[data-id=${permission.id}][data-switch=${self.type}].permission-switch`);
-      let pSwitch = new PermissionSwitch(self.user, pDomElement, self.permissions);
-      if ((pSwitch.disabled && pSwitch.type === 'last_only')){
-        self.inputDomElement.prop("checked", false)
-      } else if (self.checked !== pSwitch.checked) {
-        pSwitch.inputDomElement.prop("checked", self.checked);
-        pSwitch.checked = self.checked;
-        pSwitch.toggleSwitch();
+      const PDOMELEMENT = $(`div[data-id=${permission.id}][data-switch=${SELF.type}].permission-switch`);
+      const PSWITCH = new PermissionSwitch(SELF.user, PDOMELEMENT, SELF.permissions);
+      if ((PSWITCH.disabled && PSWITCH.type === 'last_only')){
+        SELF.inputDomElement.prop("checked", false)
+      } else if (SELF.checked !== PSWITCH.checked) {
+        PSWITCH.inputDomElement.prop("checked", SELF.checked);
+        PSWITCH.checked = SELF.checked;
+        PSWITCH.toggleSwitch();
       }
     })
   }
 
   setState() {
-    let switchesChecked = [];
-    let self = this;
+    const SWITCHESCHECKED = [];
+    const SELF = this;
 
     this.permissions.forEach(function(permission){
-      let pDomElement = $(`div[data-id=${permission.id}][data-switch=${self.type}].permission-switch`);
-      switchesChecked.push(pDomElement.find('input').prop("checked"))
+      const PDOMELEMENT = $(`div[data-id=${permission.id}][data-switch=${SELF.type}].permission-switch`);
+      SWITCHESCHECKED.push(PDOMELEMENT.find('input').prop("checked"))
     })
-    let newMasterCheckedState = _.every(switchesChecked)
-    this.inputDomElement.prop("checked", newMasterCheckedState)
+    const NEWMASTERCHECKEDSTATE = _.every(SWITCHESCHECKED)
+    this.inputDomElement.prop("checked", NEWMASTERCHECKEDSTATE)
 
     if (this.type === "disallowed") {
-      $(`div[data-id=${self.id}][data-switch=last_only].master`).find('input').prop("checked", false);
-      let masters = $(`div[data-id=${self.id}].disable.master`).find('input');
-      masters.prop("disabled", newMasterCheckedState);
+      $(`div[data-id=${SELF.id}][data-switch=last_only].master`).find('input').prop("checked", false);
+      const MASTERS = $(`div[data-id=${SELF.id}].disable.master`).find('input');
+      MASTERS.prop("disabled", NEWMASTERCHECKEDSTATE);
     }
   }
 }
