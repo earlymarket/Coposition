@@ -58,7 +58,7 @@ class MasterSwitch extends Switch {
 
   toggleSwitch() {
     const SELF = this;
-    this.permissions.forEach(function(permission){
+    SELF.permissions.forEach(function(permission){
       const PDOMELEMENT = $(`div[data-id=${permission.id}][data-switch=${SELF.type}].permission-switch`);
       const PSWITCH = new PermissionSwitch(SELF.user, PDOMELEMENT, SELF.permissions);
       if ((PSWITCH.disabled && PSWITCH.type === 'last_only')){
@@ -75,14 +75,14 @@ class MasterSwitch extends Switch {
     const SWITCHESCHECKED = [];
     const SELF = this;
 
-    this.permissions.forEach(function(permission){
+    SELF.permissions.forEach(function(permission){
       const PDOMELEMENT = $(`div[data-id=${permission.id}][data-switch=${SELF.type}].permission-switch`);
       SWITCHESCHECKED.push(PDOMELEMENT.find('input').prop("checked"))
     })
     const NEWMASTERCHECKEDSTATE = _.every(SWITCHESCHECKED)
-    this.inputDomElement.prop("checked", NEWMASTERCHECKEDSTATE)
+    SELF.inputDomElement.prop("checked", NEWMASTERCHECKEDSTATE)
 
-    if (this.type === "disallowed") {
+    if (SELF.type === "disallowed") {
       $(`div[data-id=${SELF.id}][data-switch=last_only].master`).find('input').prop("checked", false);
       const MASTERS = $(`div[data-id=${SELF.id}].disable.master`).find('input');
       MASTERS.prop("disabled", NEWMASTERCHECKEDSTATE);
