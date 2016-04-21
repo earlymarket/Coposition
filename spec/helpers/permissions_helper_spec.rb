@@ -34,6 +34,13 @@ RSpec.describe DevicesHelper, :type => :helper do
     end
   end
 
+  describe '#permissions_label_id' do
+    it 'should return the permissionable id if a Permission' do
+      expect( helper.permissions_label_id(permission) ).to be(permission.id)
+      expect( helper.permissions_label_id(developer) ).to be(nil)
+    end
+  end
+
   describe '#permissions_switch_class' do
     it 'should return a different string depending on whether permissible is a Permission or not' do
       expect( helper.permissions_switch_class(permission) ).to include('permission')
