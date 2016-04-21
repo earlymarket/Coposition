@@ -17,15 +17,15 @@ Then(/^I should not have a device$/) do
   expect(User.find_by_email(@me.email).devices.count).to be 0
 end
 
-Then (/^I should have a "(.*?)" device$/) do |attribute|
+Then(/^I should have a "(.*?)" device$/) do |attribute|
   expect(@me.devices.last[attribute]).to be true
 end
 
-Then (/^I should have a delayed device$/) do
+Then(/^I should have a delayed device$/) do
   sleep 1
   expect(@me.devices.last.delayed).to eq 5
 end
 
-Given (/^I click the slider$/) do
+Given(/^I click the slider$/) do
   find(:class, '.noUi-origin').click
 end

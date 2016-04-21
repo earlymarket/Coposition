@@ -22,7 +22,7 @@ Given(/^I should have "(.*?)" enabled$/) do |attribute|
   expect(Permission.last[attribute]).to be true
 end
 
-Given (/^I should have privilege set to "(.*?)"$/) do |value|
+Given(/^I should have privilege set to "(.*?)"$/) do |value|
   sleep 1
   expect(Permission.last.privilege).to eq value
 end
