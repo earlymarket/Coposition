@@ -1,6 +1,6 @@
 $(document).on('page:change', function() {
   if ($(".c-dashboards.a-show").length === 1) {
-
+    COPO.utility.gonFix();
     var M = COPO.maps
     M.initMap();
     M.initControls();

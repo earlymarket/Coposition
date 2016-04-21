@@ -1,6 +1,7 @@
 window.COPO = window.COPO || {};
 window.COPO.maps = {
-  initMap: function(customOptions){
+  initMap(customOptions){
+    if(document.getElementById('map')._leaflet) return;
     L.mapbox.accessToken = 'pk.eyJ1IjoiZ2FyeXNpdSIsImEiOiJjaWxjZjN3MTMwMDZhdnNtMnhsYmh4N3lpIn0.RAGGQ0OaM81HVe0OiAKE0w';
 
     var defaultOptions = {
@@ -10,14 +11,9 @@ window.COPO.maps = {
 
     var options = $.extend(defaultOptions, customOptions);
     window.map = L.mapbox.map('map', 'mapbox.light', options );
-
-    $(document).on('page:before-change', function(){
-      map.remove();
-    })
-
   },
 
-  initMarkers: function(){
+  initMarkers(){
     map.once('ready', function() {
       COPO.maps.renderMarkers();
       COPO.maps.bindMarkerListeners();
@@ -31,7 +27,7 @@ window.COPO.maps = {
     });
   },
 
-  queueRefresh: function(){
+  queueRefresh(){
     map.once('zoomstart', function(e){
       map.removeEventListener('popupclose');
       COPO.maps.refreshMarkers();
@@ -41,14 +37,14 @@ window.COPO.maps = {
     })
   },
 
-  refreshMarkers: function(){
+  refreshMarkers(){
     map.removeLayer(COPO.maps.markers);
     map.removeLayer(COPO.maps.last);
     COPO.maps.renderMarkers();
     COPO.maps.bindMarkerListeners();
   },
 
-  renderMarkers: function(){
+  renderMarkers(){
     COPO.maps.allMarkers = new L.MarkerClusterGroup();
     COPO.maps.markers = new L.MarkerClusterGroup();
     COPO.maps.last = new L.MarkerClusterGroup();
@@ -77,13 +73,13 @@ window.COPO.maps = {
     map.addLayer(COPO.maps.last);
   },
 
-  bindMarkerListeners: function(){
+  bindMarkerListeners(){
     COPO.maps.allMarkers.eachLayer(function(marker) {
       COPO.maps.markerClickListener(marker);
     })
   },
 
-  markerClickListener: function(marker) {
+  markerClickListener(marker) {
     marker.on('click', function(e) {
       var checkin = this.options.checkin;
       if(!marker._popup){
@@ -106,7 +102,7 @@ window.COPO.maps = {
     });
   },
 
-  buildMarkerPopup: function(checkin){
+  buildMarkerPopup(checkin){
     var checkinTemp = {};
     checkinTemp.id = checkin.id
     checkinTemp.lat = checkin.lat.toFixed(6);
@@ -126,7 +122,7 @@ window.COPO.maps = {
     return Mustache.render(template, checkinTemp);
   },
 
-  initControls: function(){
+  initControls(){
     map.addControl(L.mapbox.geocoderControl('mapbox.places',
       { position: 'topright',
         keepOpen: true
@@ -157,7 +153,7 @@ window.COPO.maps = {
 
   },
 
-  mapPinIcon: function(public_id, color){
+  mapPinIcon(public_id, color){
     // The iconClass is a named Cloudinary transform
     // At the moment there are only two: 'map-pin' and
     // 'map-pin-blue'
@@ -178,7 +174,7 @@ window.COPO.maps = {
     return (new L.MarkerClusterGroup).addLayers(cluster)
   },
 
-  makeMapPin: function(user, color){
+  makeMapPin(user, color){
     var checkin = $.extend(true, {}, user.lastCheckin)
     if(checkin){
       var public_id = user.userinfo.avatar.public_id;
