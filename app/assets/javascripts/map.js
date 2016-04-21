@@ -61,12 +61,13 @@ window.COPO.maps = {
         var markerObject = {
           icon: L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#ff6900' }),
           title: 'ID: ' + checkin.id,
-          alt: 'ID: ' + checkin.id,
+          alt: 'checkin',
           checkin: checkin
         }
         if (i === 0) {
           markerObject.icon = L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#47b8e0' })
           markerObject.title = 'ID: ' + checkin.id + ' - Most recent'
+          markerObject.alt = 'lastCheckin'
         }
         var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), markerObject);
         COPO.maps.allMarkers.addLayer(marker);

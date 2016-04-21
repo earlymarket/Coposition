@@ -9,14 +9,14 @@ Feature: map
       And I click "Add"
 
     @javascript
-    Scenario: User creates a new checkin
+    Scenario: User creates and fogs checkin
       When I right click on the map
       And I click "Create checkin here"
         Then I should have a new checkin
-
-    @javascript
-    Scenario: User creates a new checkin at their location
-      When I click "Your current location"
-      And I click on my current location marker
-      And I click "Create checkin here"
-        Then I should have a new checkin
+      And I click on the map
+      And I click on my last checkin
+        When I click the link "cloud"
+      Then I should have a fogged last checkin
+      And I click the link "delete_forever"
+      And I confirm
+        Then I should have one less checkin
