@@ -10,9 +10,10 @@
     .leaflet-marker-icon {
       cursor: inherit;
       outline: 0;
-    }
-    .leaflet-marker-icon.leaflet-clickable {
-      cursor: pointer;
+
+      &.leaflet-clickable {
+        cursor: pointer;
+      }
     }
   }
 
