@@ -6,7 +6,7 @@ end
 
 Then(/^I have "(.*?)" checkins in the table$/) do |number|
   sleep 0.5
-  expect(all("tr").size).to be (number.to_i+1)
+  expect(all("tr").size).to be number.to_i+1
   expect(@me.checkins.count).to be number.to_i
 end
 
