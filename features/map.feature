@@ -10,23 +10,23 @@ Feature: map
 
     @javascript
     Scenario: User creates and fogs checkin
-    Given I have a checkin on the map
+    Given I have "1" checkins on the map
       When I right click on the "map"
       And I click "Create checkin here"
-        Then I should have a new checkin on the map
+        Then I have "2" checkins on the map
       And I click on the "map"
       And I click on my last checkin
         When I click the link "cloud"
       Then I should have a fogged last checkin
       And I click the link "delete_forever"
       And I confirm
-        Then I should have one less checkin on the map
+        Then I have "1" checkins on the map
 
     @javascript
     Scenario: User creates a checkin then switches to chart page
-      Given I have a checkin on the map
+      Given I have "1" checkins on the map
         When I right click on the "map"
         And I click "Create checkin here"
-        Then I should have a new checkin on the map
+        Then I have "2" checkins on the map
       When I click on the "chartTab"
-        Then I should have a new checkin in the table
+        Then I have "2" checkins in the table
