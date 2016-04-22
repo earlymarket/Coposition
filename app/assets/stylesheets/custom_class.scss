@@ -30,6 +30,20 @@
   opacity: 0.25;
 }
 
+i.material-icons.slashed:after {
+  content:" ";
+  height:10px;
+  width:150px;
+  background-color:red;
+  position:absolute;
+  top:40px;
+  left:-30px;
+  -moz-transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
 
 // Specific target classes
 .round-map {
