@@ -45,6 +45,7 @@ window.COPO.maps = {
   },
 
   refreshMarkers: function(){
+    map.removeEventListener('popupclose');
     map.removeLayer(COPO.maps.markers);
     map.removeLayer(COPO.maps.last);
     COPO.maps.renderMarkers();

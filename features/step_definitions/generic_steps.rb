@@ -26,3 +26,11 @@ Given(/^I confirm$/) do
   a = page.driver.browser.switch_to.alert
   a.accept
 end
+
+Given(/^I right click on the "(.*?)"$/) do |target|
+  find(:id, target).right_click
+end
+
+Given(/^I click on the "(.*?)"$/) do |target|
+  find(:id, target).click
+end
