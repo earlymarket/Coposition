@@ -30,3 +30,7 @@ end
 Given(/^I click the slider$/) do
   find(:class, '.noUi-origin').click
 end
+
+Given(/^I visit my device published page$/) do
+  visit "/users/#{@me.id}/devices/#{@me.devices.last.id}/shared"
+end

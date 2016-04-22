@@ -30,3 +30,10 @@ Feature: map
         Then I have "2" checkins on the map
       When I click on the "chartTab"
         Then I have "2" checkins in the table
+
+    @javascript
+    Scenario: User views their published page
+      Given I click the link "Devices"
+        And I click the link "visibility_off"
+      When I visit my device published page
+       Then I have "1" checkins on the map
