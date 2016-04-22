@@ -51473,7 +51473,7 @@ COPO.utility = {
     return COPO.utility.ujsLink('delete',
       '<i class="material-icons right red-text">delete_forever</i>' ,
       window.location.pathname + '/checkins/' + checkin.id )
-      .attr('data-confirm', 'Are you sure?').prop('outerHTML')
+      .attr('class', 'right').attr('data-confirm', 'Are you sure?').prop('outerHTML')
   },
 
   fogCheckinLink: function(checkin, foggedClass, fogId){
@@ -51838,6 +51838,8 @@ window.COPO.maps = {
   },
 
   refreshMarkers: function(){
+    map.closePopup();
+    map.removeEventListener('popupclose');
     map.removeLayer(COPO.maps.markers);
     map.removeLayer(COPO.maps.last);
     COPO.maps.renderMarkers();
@@ -51854,12 +51856,13 @@ window.COPO.maps = {
         var markerObject = {
           icon: L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#ff6900' }),
           title: 'ID: ' + checkin.id,
-          alt: 'ID: ' + checkin.id,
+          alt: 'checkin',
           checkin: checkin
         }
         if (i === 0) {
           markerObject.icon = L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#47b8e0' })
           markerObject.title = 'ID: ' + checkin.id + ' - Most recent'
+          markerObject.alt = 'lastCheckin'
         }
         var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), markerObject);
         COPO.maps.allMarkers.addLayer(marker);
@@ -51942,6 +51945,7 @@ window.COPO.maps = {
           'marker-symbol': 'star',
           'marker-color': '#01579B'
         }),
+        alt: 'currentLocation',
         riseOnHover: true
       },
       strings: {
@@ -52189,98 +52193,6 @@ window.COPO.slider = {
   }
 }
 ;
-class Switch {
-  constructor(user, domElement) {
-    this.user = user;
-    this.id = domElement.data().id;
-    this.type = domElement.data().switch;
-    this.attribute = domElement.data().attribute;
-    this.inputDomElement = domElement.find('input');
-    this.checked = this.inputDomElement.prop('checked');
-    this.disabled = this.inputDomElement.prop('disabled');
-  }
-
-  changeDisableSwitches(state) {
-    $(`div[data-id=${this.id}][data-switch=last_only].permission-switch`).find('input').prop("checked", false);
-    $(`div[data-id=${this.id}].disable`).find('input').prop("disabled", state);
-  }
-}
-
-class PermissionSwitch extends Switch {
-  constructor(user, domElement, permissions) {
-    super(user, domElement);
-    this.permission = _.find(permissions, _.matchesProperty('id', this.id));
-    this.attributeState = this.permission[this.attribute];
-  }
-
-  toggleSwitch() {
-    COPO.permissions.iconToggle(this.type, this.id);
-    if (this.type === "disallowed") {
-      this.changeDisableSwitches(this.checked);
-    }
-    this.permission[this.attribute] = this.nextState();
-    $.ajax({
-      url: `/users/${this.user}/devices/${this.permission['device_id']}/permissions/${this.id}`,
-      type: 'PUT',
-      data: { permission: this.permission }
-    });
-  }
-
-  nextState() {
-    if(this.attributeState === "disallowed") {
-      return "complete"
-    } else if(this.type === "disallowed") {
-      return "disallowed"
-    } else if(this.attributeState === "complete") {
-      return "last_only"
-    } else if(this.attributeState === "last_only") {
-      return "complete"
-    } else {
-      return !this.attributeState
-    }
-  }
-}
-
-class MasterSwitch extends Switch {
-  constructor(user, domElement, permissions, idType) {
-    super(user, domElement);
-    this.permissions = permissions.filter(_.matchesProperty(idType, this.id));
-  }
-
-  toggleSwitch() {
-    let self = this;
-    this.permissions.forEach(function(permission){
-      let pDomElement = $(`div[data-id=${permission.id}][data-switch=${self.type}].permission-switch`);
-      let pSwitch = new PermissionSwitch(self.user, pDomElement, self.permissions);
-      if ((pSwitch.disabled && pSwitch.type === 'last_only')){
-        self.inputDomElement.prop("checked", false)
-      } else if (self.checked !== pSwitch.checked) {
-        pSwitch.inputDomElement.prop("checked", self.checked);
-        pSwitch.checked = self.checked;
-        pSwitch.toggleSwitch();
-      }
-    })
-  }
-
-  setState() {
-    let switchesChecked = [];
-    let self = this;
-
-    this.permissions.forEach(function(permission){
-      let pDomElement = $(`div[data-id=${permission.id}][data-switch=${self.type}].permission-switch`);
-      switchesChecked.push(pDomElement.find('input').prop("checked"))
-    })
-    let newMasterCheckedState = _.every(switchesChecked)
-    this.inputDomElement.prop("checked", newMasterCheckedState)
-
-    if (this.type === "disallowed") {
-      $(`div[data-id=${self.id}][data-switch=last_only].master`).find('input').prop("checked", false);
-      let masters = $(`div[data-id=${self.id}].disable.master`).find('input');
-      masters.prop("disabled", newMasterCheckedState);
-    }
-  }
-}
-;
 $(document).on('page:change', function() {
   if (($(".c-approvals").length === 1) && ($(".a-new").length === 0)){
     $('.tooltipped').tooltip({delay: 50});
@@ -52396,10 +52308,10 @@ $(document).on('page:change', function() {
     COPO.maps.initControls();
     // COPO.maps.lc.start();
 
-    $('li.tab').on('click', function() {
-      var tab = event.target.innerText
+    $('li.tab').on('click', function(e) {
+      var tab = e.target.textContent
       setTimeout(function(event) {
-        if (tab ==='CHART'){
+        if (tab ==='Chart'){
           COPO.charts.refreshCharts(gon.checkins);
         } else {
           map.invalidateSize();
