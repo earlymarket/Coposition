@@ -17,3 +17,5 @@ Feature: chart
     When I click the link "delete_forever"
     And I confirm
       Then I have "0" checkins in the table
+    And I click "Map"
+      Then I have "0" checkins on the map
