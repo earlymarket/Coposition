@@ -14,6 +14,17 @@
     }
     .parallax-container{
       height: 500px;
+
+      @media screen and (orientation:portrait) and (max-width: 600px){
+        height: 200px;
+      }
+      @media screen and (orientation:landscape) and (max-width: 992px){
+        height: 200px;
+      }
+
+      @media screen and (orientation:portrait) and (max-width: 992px){
+        height: 300px;
+      }
     }
     .image-container{
       opacity:0;
@@ -54,10 +65,38 @@
           cursor: pointer;
         }
 
-        @media screen and (max-width: 600px){
+        @media screen and (orientation:portrait) and (max-width: 600px){
+          h1{
+            margin-top: 0.5rem;
+            margin-bottom: 0.2rem;
+          }
+
           svg{
-            width: 50%;
+            width: 40%;
             height: auto;
+          }
+
+          .start-btn{
+            height: 42px;
+          }
+        }
+
+        @media screen and (orientation:landscape) and (max-width: 992px){
+          margin-top: 4rem;
+
+          h1{
+            margin-top: 0.5rem;
+            margin-bottom: 0.2rem;
+          }
+
+          svg{
+            width: 25%;
+            height: auto;
+          }
+
+          .start-btn{
+            margin-top: 0.5rem;
+            height: 35px;
           }
         }
       }
@@ -136,7 +175,7 @@
       padding-bottom: 4rem;
 
       .app{
-        height: 300px;
+        // height: 300px;
       }
     }
 
