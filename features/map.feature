@@ -34,6 +34,6 @@ Feature: map
     @javascript
     Scenario: User views their published page
       Given I click the link "Devices"
-        And I click the link "visibility_off"
+        And I click the link "visibility"
       When I visit my device published page
        Then I have "1" checkins on the map
