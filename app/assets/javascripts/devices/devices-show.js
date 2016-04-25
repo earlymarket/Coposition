@@ -5,9 +5,9 @@ $(document).on('page:change', function() {
     COPO.maps.initControls();
     // COPO.maps.lc.start();
 
-    $('li.tab').on('click', function(e) {
-      var tab = e.target.textContent
-      setTimeout(function(event) {
+    $('li.tab').on('click', function(event) {
+      var tab = event.target.textContent
+      setTimeout(function() {
         if (tab ==='Chart'){
           COPO.charts.refreshCharts(gon.checkins);
         } else {
