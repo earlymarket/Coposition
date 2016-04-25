@@ -6,6 +6,7 @@ end
 
 Then(/^I have "(.*?)" checkins in the table$/) do |number|
   sleep 0.5
+  # +1 as the table headers count as another tr
   expect(all("tr").size).to be number.to_i+1
   expect(@me.checkins.count).to be number.to_i
 end
