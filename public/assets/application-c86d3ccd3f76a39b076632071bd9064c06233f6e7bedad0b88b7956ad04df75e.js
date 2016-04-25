@@ -51473,7 +51473,7 @@ COPO.utility = {
     return COPO.utility.ujsLink('delete',
       '<i class="material-icons right red-text">delete_forever</i>' ,
       window.location.pathname + '/checkins/' + checkin.id )
-      .attr('data-confirm', 'Are you sure?').prop('outerHTML')
+      .attr('class', 'right').attr('data-confirm', 'Are you sure?').prop('outerHTML')
   },
 
   fogCheckinLink: function(checkin, foggedClass, fogId){
@@ -51838,6 +51838,8 @@ window.COPO.maps = {
   },
 
   refreshMarkers: function(){
+    map.closePopup();
+    map.removeEventListener('popupclose');
     map.removeLayer(COPO.maps.markers);
     map.removeLayer(COPO.maps.last);
     COPO.maps.renderMarkers();
@@ -51854,12 +51856,13 @@ window.COPO.maps = {
         var markerObject = {
           icon: L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#ff6900' }),
           title: 'ID: ' + checkin.id,
-          alt: 'ID: ' + checkin.id,
+          alt: 'checkin',
           checkin: checkin
         }
         if (i === 0) {
           markerObject.icon = L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#47b8e0' })
           markerObject.title = 'ID: ' + checkin.id + ' - Most recent'
+          markerObject.alt = 'lastCheckin'
         }
         var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), markerObject);
         COPO.maps.allMarkers.addLayer(marker);
@@ -51942,6 +51945,7 @@ window.COPO.maps = {
           'marker-symbol': 'star',
           'marker-color': '#01579B'
         }),
+        alt: 'currentLocation',
         riseOnHover: true
       },
       strings: {
@@ -52304,10 +52308,10 @@ $(document).on('page:change', function() {
     COPO.maps.initControls();
     // COPO.maps.lc.start();
 
-    $('li.tab').on('click', function() {
-      var tab = event.target.innerText
+    $('li.tab').on('click', function(e) {
+      var tab = e.target.textContent
       setTimeout(function(event) {
-        if (tab ==='CHART'){
+        if (tab ==='Chart'){
           COPO.charts.refreshCharts(gon.checkins);
         } else {
           map.invalidateSize();
