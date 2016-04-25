@@ -9,7 +9,7 @@ window.COPO.permissions = {
   },
 
   checkDisabled: function(user){
-    $('[data-switchType=disallowed].permission-switch').each(function(){
+    $('[data-switchtype=disallowed].permission-switch').each(function(){
       const PSWITCH = new PermissionSwitch(user, $(this))
       if (PSWITCH.checked){
         PSWITCH.changeDisableSwitches(true);
@@ -21,7 +21,7 @@ window.COPO.permissions = {
 
   checkBypass: function(user){
     ['bypass_fogging', 'bypass_delay'].forEach(function(attribute){
-      $(`[data-switchType=${attribute}]`).each(function(){
+      $(`[data-switchtype=${attribute}]`).each(function(){
         const PSWITCH = new PermissionSwitch(user, $(this))
         if (PSWITCH.checked){
           COPO.permissions.iconToggle(attribute, PSWITCH.id);
@@ -59,12 +59,12 @@ window.COPO.permissions = {
     })
   },
 
-  iconToggle: function(switchType, permissionId){
-    if (switchType === 'bypass_fogging'){
+  iconToggle: function(switchtype, permissionId){
+    if (switchtype === 'bypass_fogging'){
       $('#fogIcon'+permissionId).toggle();
-    } else if (switchType === 'bypass_delay'){
+    } else if (switchtype === 'bypass_delay'){
       $('#delayIcon'+permissionId).toggle();
-    } else if (switchType === 'disallowed'){
+    } else if (switchtype === 'disallowed'){
       $('#accessIcon'+permissionId).toggle();
     }
   }
