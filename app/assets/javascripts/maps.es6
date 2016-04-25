@@ -170,7 +170,8 @@ window.COPO.maps = {
     if(!markerBuilderFn){
       return console.error('Marker building function undefined')
     }
-    var cluster = markerArr.map(marker => markerBuilderFn(marker))
+    let cluster = markerArr.map(marker => markerBuilderFn(marker))
+      .filter(marker => marker);
     return (new L.MarkerClusterGroup).addLayers(cluster)
   },
 
@@ -186,7 +187,20 @@ window.COPO.maps = {
       }
       markerOptions = $.extend({}, defaults, markerOptions)
       return L.marker([checkin.lat, checkin.lng], markerOptions)
+    } else {
+      return false
     }
+  },
+
+  makeMarker(checkin, markerOptions){
+    let defaults = {
+      icon: L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#ff6900' }),
+      title: 'ID: ' + checkin.id,
+      alt: 'ID: ' + checkin.id,
+      checkin: checkin
+    }
+    markerOptions = $.extend({}, defaults, markerOptions)
+    return L.marker([checkin.lat, checkin.lng], markerOptions)
   }
 }
 

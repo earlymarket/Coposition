@@ -45,7 +45,7 @@
 //= require navbar
 //= require init
 //= require charts
-//= require map
+//= require maps
 //= require permissions
 //= require date-picker
 //= require slider

@@ -3,32 +3,32 @@
 window.COPO = window.COPO || {};
 
 COPO.utility = {
-  urlParam: function(name){
+  urlParam(name){
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     if (!results) return null;
     return results[1] || 0;
   },
 
-  ujsLink: function(verb, text, path){
+  ujsLink(verb, text, path){
     var output =  $('<a data-remote="true" rel="nofollow" data-method="' + verb +'" href="' + path +'">' + text +'</a>')
     return output
   },
 
-  deleteCheckinLink: function(checkin){
+  deleteCheckinLink(checkin){
     return COPO.utility.ujsLink('delete',
       '<i class="material-icons right red-text">delete_forever</i>' ,
       window.location.pathname + '/checkins/' + checkin.id )
       .attr('data-confirm', 'Are you sure?').prop('outerHTML')
   },
 
-  fogCheckinLink: function(checkin, foggedClass, fogId){
+  fogCheckinLink(checkin, foggedClass, fogId){
     return COPO.utility.ujsLink('put',
       '<i class="material-icons">cloud</i>' ,
       window.location.pathname + '/checkins/' + checkin.id )
       .attr('id', fogId + checkin.id).attr('class', foggedClass).prop('outerHTML')
   },
 
-  createCheckinLink: function(coords){
+  createCheckinLink(coords){
     var checkin = {
       'checkin[lat]': coords.lat.toFixed(6),
       'checkin[lng]': coords.lng.toFixed(6)
@@ -37,11 +37,11 @@ COPO.utility = {
     return COPO.utility.ujsLink('post', 'Create checkin here', checkinPath).prop('outerHTML');
   },
 
-  friendsName: function(friend){
+  friendsName(friend){
     return friend.username ? friend.username : friend.email.split('@')[0]
   },
 
-  fadeUp: function(target){
+  fadeUp(target){
     $(target).velocity({
       opacity: 0,
       marginTop: '-40px'
@@ -49,20 +49,20 @@ COPO.utility = {
       duration: 375,
       easing: 'easeOutExpo',
       queue: false,
-      complete: function(){
+      complete(){
         $(target).remove();
       }
     });
   },
 
-  avatar: function(avatar, options){
+  avatar(avatar, options){
     options = $.extend(this.avatarDefaults, options)
     if(avatar) {
       return $.cloudinary.image(avatar.public_id, options).prop('outerHTML')
     }
   },
 
-  avatarUrl: function(avatar, options){
+  avatarUrl(avatar, options){
     options = $.extend(this.avatarDefaults, options)
     if(avatar) {
       return $.cloudinary.url(avatar.public_id, options)
@@ -71,7 +71,7 @@ COPO.utility = {
 
   avatarDefaults: <%= avatar_defaults.to_json %>,
 
-  initClipboard: function(selector, callback){
+  initClipboard(selector, callback){
 
     selector = selector || '.clip_button';
     var client = new ZeroClipboard( $(selector) );
@@ -100,8 +100,12 @@ COPO.utility = {
     });
   },
 
-  gonFix: function(){
+  gonFix(){
     var contents = $('#gonvariables').html();
     $('#gonvariables').html(contents);
+  },
+
+  commaToNewline(string){
+    return string.replace(/, /g, '\n')
   }
 };
