@@ -4,8 +4,8 @@ Feature: Developer
   Scenario: Developer asks user for approval
     Given I am signed in as developer
       And I click "Developers"
-      And I click "approvals"
-    Then I should see "0 pending"
+      And I click "users"
+    Then I should see "no approvals pending"
     When I click "New approval"
       And I fill in an existing "user"'s email in the "approval_user" field
       And I click "Request"
