@@ -8,26 +8,20 @@ RSpec.describe Developers::ApprovalsController, type: :controller do
   let(:second_user) {FactoryGirl::create :user}
   let(:approval) do
     app = FactoryGirl::create :approval
-    app.update(approvable: developer, user: user, approvable_type: 'Developer')
-    app
-  end
-  let(:second_approval) do
-    app = FactoryGirl::create :approval
-    app.update(approvable: developer, user: second_user, approvable_type: 'Developer')
+    app.update(approvable: developer, user: user, approvable_type: 'Developer', status: 'accepted')
     app
   end
   let(:developer_params) {{ developer_id: developer.id }}
   let(:approval_create_params) do
-   developer_params.merge(approval: { user: user.email, approvable_type: 'Developer' })
+    developer_params.merge(approval: { user: user.email, approvable_type: 'Developer' })
   end
 
   describe '#index' do
     it 'should show amount of pending users and show approved users' do
-      approval.update(user: user, status: 'accepted')
-      second_approval.update(user: second_user, status: 'developer-requested')
+      approval
       get :index, developer_params
-      expect(assigns(:pending)).to eq developer.pending_approvals
-      expect(assigns(:users)).to eq developer.users
+      expect(assigns :pending).to eq developer.pending_approvals
+      expect(assigns :users).to eq developer.users
     end
   end
 
@@ -48,7 +42,7 @@ RSpec.describe Developers::ApprovalsController, type: :controller do
     end
 
     it 'should fail to create an approval if request exists' do
-      approval.update(user: user, status: 'accepted')
+      approval
       post :create, approval_create_params
       expect(flash[:alert]).to match 'Error creating approval'
       expect(Approval.count).to eq 1
