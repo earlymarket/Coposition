@@ -9,8 +9,8 @@ window.COPO.permissions = {
   },
 
   checkDisabled: function(user){
-    $('[data-switch=disallowed].permission-switch').each(function(){
-      const PSWITCH = new Switch(user, $(this))
+    $('[data-switchType=disallowed].permission-switch').each(function(){
+      const PSWITCH = new PermissionSwitch(user, $(this))
       if (PSWITCH.checked){
         PSWITCH.changeDisableSwitches(true);
       } else {
@@ -21,8 +21,8 @@ window.COPO.permissions = {
 
   checkBypass: function(user){
     ['bypass_fogging', 'bypass_delay'].forEach(function(attribute){
-      $(`[data-switch=${attribute}]`).each(function(){
-        const PSWITCH = new Switch(user, $(this))
+      $(`[data-switchType=${attribute}]`).each(function(){
+        const PSWITCH = new PermissionSwitch(user, $(this))
         if (PSWITCH.checked){
           COPO.permissions.iconToggle(attribute, PSWITCH.id);
         }
@@ -44,7 +44,7 @@ window.COPO.permissions = {
 
   switchChange:function(permissionableType, user, gonPermissions){
     $(".permission-switch").change(function() {
-      const PSWITCH = new PermissionSwitch(user, $(this), gonPermissions)
+      const PSWITCH = new LocalSwitch(user, $(this), gonPermissions)
       PSWITCH.toggleSwitch();
       COPO.permissions.setMasters(permissionableType, user, gonPermissions);
     })
