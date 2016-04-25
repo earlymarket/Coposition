@@ -19100,7 +19100,7 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
   opacity: 0.25;
 }
 
-/* line 35, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
+/* line 34, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
 .round-map {
   border-radius: 300px;
   padding-left: 0;
@@ -19109,16 +19109,16 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
   width: 100%;
 }
 
-/* line 43, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
+/* line 42, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
 .btn, .btn-large, .btn-large, .btn-flat, .btn-floating {
   color: rgba(0, 0, 0, 0.8);
 }
-/* line 50, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
+/* line 49, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
 .btn i, .btn-large i, .btn-large i, .btn-flat i, .btn-floating i {
   color: rgba(0, 0, 0, 0.8);
 }
 
-/* line 55, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
+/* line 54, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
 .promo {
   position: absolute;
   left: 0;
@@ -19128,7 +19128,7 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
   z-index: -10;
   overflow: hidden;
 }
-/* line 63, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
+/* line 62, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
 .promo .overlay {
   position: absolute;
   left: 0;
@@ -19137,7 +19137,7 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
   height: 100%;
   z-index: -5;
 }
-/* line 72, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
+/* line 71, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
 .promo video {
   left: 0;
   top: 0;
@@ -19154,48 +19154,50 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
 }
 
 /* line 9, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
-.brand, h2, h3, h4, h5 {
-  font-family: "Noto Sans", "Helvetica", sans-serif;
+.brand, h1, h2, h3, h4, h5 {
+  font-family: "Roboto Condensed", "Helvetica", sans-serif;
+  font-weight: 300;
 }
 
-/* line 15, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 16, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
 html {
   font-family: "Fira Sans", "Helvetica", sans-serif;
   background-color: #fcfcfc;
+  font-weight: 300;
 }
 
-/* line 20, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 22, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
 h1 {
   text-align: center;
 }
 @media screen and (max-width: 600px) {
-  /* line 20, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+  /* line 22, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
   h1 {
     font-size: 2.5rem;
   }
 }
 
-/* line 27, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 30, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
 h2 {
-  font-weight: 700;
+  font-weight: 500;
 }
 
-/* line 31, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 34, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
 h3 {
-  font-weight: 700;
+  font-weight: 500;
 }
 
-/* line 35, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 38, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
 h4 {
-  font-weight: 700;
+  font-weight: 500;
 }
 
-/* line 39, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 42, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
 h5 {
-  font-weight: 700;
+  font-weight: 500;
 }
 
-/* line 47, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 50, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
 p {
   line-height: 1.7rem;
   font-size: 1.2rem;
@@ -19203,18 +19205,18 @@ p {
   text-align: left;
 }
 
-/* line 59, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 62, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
 pre {
   padding: 2rem;
   padding-left: 4rem;
 }
 
-/* line 65, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 68, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
 table {
   font-size: 1.5rem;
 }
 
-/* line 70, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 73, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
 footer h5 {
   color: #ffc952;
   font-weight: 400;
@@ -20311,6 +20313,19 @@ footer.page-footer {
 /* line 25, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index .disabled-icon {
   color: rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+/* line 28, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
+.c-devices.a-index .disabled-icon:after {
+  content: " ";
+  height: 4px;
+  width: 24px;
+  border-top: white solid 2px;
+  background-color: #ccc;
+  position: absolute;
+  top: 11px;
+  left: 0;
+  transform: rotate(45deg);
 }
 
 /* line 1, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
