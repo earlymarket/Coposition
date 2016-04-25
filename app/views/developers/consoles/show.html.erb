@@ -20,6 +20,8 @@
   <%= link_to('users', developers_approvals_path, class: 'waves-effect waves-light') %>
 </p>
 
+<%= link_to("New approval", new_developers_approval_path, class: "btn") %>
+
 <hr>
 
 <%= link_to('Edit your profile', edit_developer_path(current_developer.id), class: 'btn waves-effect waves-light') %>

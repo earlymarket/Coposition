@@ -1,7 +1,7 @@
 <p>
-	<% if @approvals %>
+	<% if @pending.present? %>
 
-	  You have <%= @approvals.length %> pending.
+	  You have <%= @pending.length %> pending.
 
 	<% else %>
 
