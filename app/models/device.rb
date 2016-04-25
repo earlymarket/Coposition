@@ -8,7 +8,7 @@ class Device < ActiveRecord::Base
   has_many :developers, through: :permissions, source: :permissible, :source_type => "Developer"
   has_many :permitted_users, through: :permissions, source: :permissible, :source_type => "User"
 
-  validates :name, uniqueness: { scope: :user_id }
+  validates :name, uniqueness: { scope: :user_id }, if: :user_id
 
   before_create do |dev|
     dev.uuid = SecureRandom.uuid
