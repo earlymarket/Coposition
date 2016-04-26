@@ -8,12 +8,13 @@
   <%= check_box_tag :create_checkin, id:"create_checkin" %>
   <%= f.label "create_checkin", for:"create_checkin", id:"create_checkin" %>
   </br></br>
-  <%= f.submit("Add", class: "form-control btn btn-default") %>
+  <%= f.submit("Add", class: "form-control btn btn-default", id: "add_button") %>
   <%= hidden_field_tag('location', nil) %>
 <% end %>
 
 <script>
 $("#create_checkin").change(function(){
+  $('#add_button').addClass('disabled');
   $('#new_device').after("<%= j (render partial: 'preview_map') %>");
   $("#create_checkin").unbind();
 });
