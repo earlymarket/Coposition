@@ -1,3 +1,4 @@
+=begin
 class Api::V1::Users::CheckinsController < Api::ApiController
   respond_to :json
 
@@ -31,3 +32,4 @@ class Api::V1::Users::CheckinsController < Api::ApiController
     end
 
 end
+=end

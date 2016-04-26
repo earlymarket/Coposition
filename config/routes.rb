@@ -38,7 +38,7 @@ Rails.application.routes.draw do
             get :status
           end
         end
-        resources :checkins, only: [:index], module: :users do
+        resources :checkins, only: [:index] do
           collection do
             get :last
           end
@@ -48,7 +48,7 @@ Rails.application.routes.draw do
             get :last
           end
         end
-        resources :devices, only: [:index, :create, :show, :update], module: :users do
+        resources :devices, only: [:index, :create, :show, :update] do
           resources :checkins, only: [:index] do
             collection do
               get :last
