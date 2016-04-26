@@ -168,14 +168,14 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
           lat: Faker::Address.latitude
         }
       expect(response.status).to eq(400)
-      expect(res_hash[:message]).to eq('You must provide a valid uuid, lat and lng')
+      expect(res_hash[:message]).to eq('You must provide a lat and lng')
     end
 
     it "should return 400 if you POST a device with invalid uuid" do
       request.headers['X-UUID'] = 'thisdevicedoesntexist'
       post :create, create_params
       expect(response.status).to eq(400)
-      expect(res_hash[:message]).to eq('You must provide a valid uuid, lat and lng')
+      expect(res_hash[:message]).to eq('You must provide a valid uuid')
     end
 
   end

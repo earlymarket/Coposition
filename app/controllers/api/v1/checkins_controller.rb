@@ -27,18 +27,20 @@ class Api::V1::CheckinsController < Api::ApiController
   end
 
   def create
-    if @device then checkin = @device.checkins.create(allowed_params) end
-    if checkin && checkin.id
+    checkin = @device.checkins.create(allowed_params)
+    if checkin.save
       render json: [checkin]
     else
-      render status: 400, json: { message: 'You must provide a valid uuid, lat and lng' }
+      render status: 400, json: { message: 'You must provide a lat and lng' }
     end
   end
 
   private
 
     def device_exists?
-      if request.headers['X-UUID'] then @device = Device.find_by(uuid: request.headers['X-UUID']) end
+      unless @device = Device.find_by(uuid: request.headers['X-UUID'])
+        render status: 400, json: { message: 'You must provide a valid uuid' }
+      end
     end
 
     def allowed_params
