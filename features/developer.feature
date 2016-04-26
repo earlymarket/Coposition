@@ -14,9 +14,15 @@ Feature: Developer
       Then I should see "Successfully sent"
 
     @javascript
-    Scenario: Developer pays
+    Scenario: Developer pays and refreshes
       Given I have an unpaid request
         And I click "Developers"
-        Then I should see "1 requests"
+        Then I should see "1 request since"
+        And I should see "1 request in"
       When I click "Pay now"
-        Then I should see "0 requests"
+        Then I should see "0 requests since"
+      When I have an unpaid request
+        Then I should see "0 requests since"
+      And I click "Refresh"
+        Then I should see "1 request since"
+        And I should see "2 requests in"
