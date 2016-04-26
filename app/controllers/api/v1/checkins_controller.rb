@@ -1,7 +1,7 @@
 class Api::V1::CheckinsController < Api::ApiController
   respond_to :json
 
-  skip_before_filter :find_user, :authenticate, only: :create
+  skip_before_filter :find_user, only: :create
   before_action :device_exists?, only: :create
   before_action :check_user_approved_approvable, :find_device, except: :create
 
