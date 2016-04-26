@@ -11,7 +11,7 @@ function showPosition(position) {
   $('#add_button').prop('disabled', false);
   var latlon = position.coords.latitude + "," + position.coords.longitude;
 
-  var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=16&size=500x500&sensor=false";
+  var img_url = "https://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=16&size=500x500&sensor=false";
 
   $('#mapholder').attr("src", img_url);
   $('#location').attr("value", latlon);
