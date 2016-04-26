@@ -3,7 +3,7 @@ class Developers::ApprovalsController < ApplicationController
   before_action :authenticate_developer!
 
   def index
-    @approvals = current_developer.pending_approvals
+    @pending = current_developer.pending_approvals
     @users = current_developer.users
   end
 
@@ -13,10 +13,11 @@ class Developers::ApprovalsController < ApplicationController
 
   def create
     user = User.find_by(email: allowed_params[:user])
-    if Approval.link(user, current_developer, 'Developer')
-      flash[:notice] = "Successfully sent" 
+    approval = Approval.link(user, current_developer, 'Developer') if user
+    if approval && approval.id
+      flash[:notice] = "Successfully sent"
     else
-      flash[:alert] = "Approval request already sent"
+      flash[:alert] = "Error creating approval"
     end
     redirect_to new_developers_approval_path
   end
