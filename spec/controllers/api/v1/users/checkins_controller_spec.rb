@@ -11,11 +11,6 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     user.devices << device
     device
   end
-  let(:second_device) do
-    device = FactoryGirl::create :device
-    second_user.devices << device
-    device
-  end
   let(:checkin) do
     checkin = FactoryGirl::create :checkin
     device.checkins << checkin
