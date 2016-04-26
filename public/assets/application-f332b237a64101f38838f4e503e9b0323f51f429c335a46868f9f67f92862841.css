@@ -19154,50 +19154,48 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
 }
 
 /* line 9, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
-.brand, h1, h2, h3, h4, h5 {
-  font-family: "Roboto Condensed", "Helvetica", sans-serif;
-  font-weight: 300;
+.brand, h2, h3, h4, h5 {
+  font-family: "Noto Sans", "Helvetica", sans-serif;
 }
 
-/* line 16, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 15, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
 html {
   font-family: "Fira Sans", "Helvetica", sans-serif;
   background-color: #fcfcfc;
-  font-weight: 300;
 }
 
-/* line 22, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 20, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
 h1 {
   text-align: center;
 }
 @media screen and (max-width: 600px) {
-  /* line 22, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+  /* line 20, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
   h1 {
     font-size: 2.5rem;
   }
 }
 
-/* line 30, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 27, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
 h2 {
-  font-weight: 500;
+  font-weight: 700;
 }
 
-/* line 34, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 31, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
 h3 {
-  font-weight: 500;
+  font-weight: 700;
 }
 
-/* line 38, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 35, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
 h4 {
-  font-weight: 500;
+  font-weight: 700;
 }
 
-/* line 42, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 39, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
 h5 {
-  font-weight: 500;
+  font-weight: 700;
 }
 
-/* line 50, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 47, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
 p {
   line-height: 1.7rem;
   font-size: 1.2rem;
@@ -19205,18 +19203,18 @@ p {
   text-align: left;
 }
 
-/* line 62, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 59, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
 pre {
   padding: 2rem;
   padding-left: 4rem;
 }
 
-/* line 68, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 65, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
 table {
   font-size: 1.5rem;
 }
 
-/* line 73, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
+/* line 70, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/fonts.scss */
 footer h5 {
   color: #ffc952;
   font-weight: 400;
