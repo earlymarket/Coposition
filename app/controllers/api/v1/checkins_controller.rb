@@ -38,7 +38,7 @@ class Api::V1::CheckinsController < Api::ApiController
   private
 
     def device_exists?
-      unless @device = Device.find_by(uuid: request.headers['X-UUID'])
+      if (@device = Device.find_by(uuid: request.headers['X-UUID'])).nil?
         render status: 400, json: { message: 'You must provide a valid uuid' }
       end
     end
