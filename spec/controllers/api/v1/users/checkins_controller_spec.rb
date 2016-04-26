@@ -23,6 +23,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
   end
   let(:create_headers) { request.headers["X-UUID"] = device.uuid }
   let(:params) {{ user_id: user.id, device_id: device.id }}
+  let(:create_params) {{ checkin: { lat: Faker::Address.latitude, lng: Faker::Address.longitude } }}
 
   before do |example|
     create_denhams
@@ -152,15 +153,11 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
   describe "POST #create" do
 
     it "should POST a checkin with a pre-existing device" do
-      count = Checkin.count
+      count = user.checkins.count
       create_headers
-      post :create,
-        checkin: {
-          lat: Faker::Address.latitude,
-          lng: Faker::Address.longitude
-        }
+      post :create, create_params
       expect(res_hash.first['uuid']).to eq device.uuid
-      expect(Checkin.count).to be(count + 1)
+      expect(user.checkins.count).to be(count + 1)
       expect(checkin.device).to be device
     end
 
@@ -173,20 +170,13 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       expect(response.status).to eq(400)
       expect(res_hash[:message]).to eq('You must provide a valid uuid, lat and lng')
     end
-=begin
-    it "should not create a checkin if signed in user does not own device" do
-      Approval.link(second_user,developer,'Developer')
-      Approval.accept(second_user,developer,'Developer')
-      create_headers
-      post :create, {
-        checkin: {
-          lat: Faker::Address.latitude,
-          lng: Faker::Address.longitude
-        }
-      }
-      expect(response.status).to eq(403)
-      expect(res_hash[:message]).to eq('User does not own device')
+
+    it "should return 400 if you POST a device with invalid uuid" do
+      request.headers['X-UUID'] = 'thisdevicedoesntexist'
+      post :create, create_params
+      expect(response.status).to eq(400)
+      expect(res_hash[:message]).to eq('You must provide a valid uuid, lat and lng')
     end
-=end
+
   end
 end

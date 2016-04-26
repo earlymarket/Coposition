@@ -27,8 +27,8 @@ class Api::V1::CheckinsController < Api::ApiController
   end
 
   def create
-    checkin = @device.checkins.create(allowed_params)
-    if checkin.id
+    if @device then checkin = @device.checkins.create(allowed_params) end
+    if checkin && checkin.id
       render json: [checkin]
     else
       render status: 400, json: { message: 'You must provide a valid uuid, lat and lng' }
