@@ -51473,7 +51473,7 @@ COPO.utility = {
     return COPO.utility.ujsLink('delete',
       '<i class="material-icons right red-text">delete_forever</i>' ,
       window.location.pathname + '/checkins/' + checkin.id )
-      .attr('data-confirm', 'Are you sure?').prop('outerHTML')
+      .attr('class', 'right').attr('data-confirm', 'Are you sure?').prop('outerHTML')
   },
 
   fogCheckinLink: function(checkin, foggedClass, fogId){
@@ -51553,6 +51553,11 @@ COPO.utility = {
       console.log( 'ZeroClipboard error of type "' + event.name + '": ' + event.message );
       ZeroClipboard.destroy();
     });
+  },
+
+  gonFix: function(){
+    var contents = $('#gonvariables').html();
+    $('#gonvariables').html(contents);
   }
 };
 $(document).on('page:change', function() {
@@ -51833,6 +51838,8 @@ window.COPO.maps = {
   },
 
   refreshMarkers: function(){
+    map.closePopup();
+    map.removeEventListener('popupclose');
     map.removeLayer(COPO.maps.markers);
     map.removeLayer(COPO.maps.last);
     COPO.maps.renderMarkers();
@@ -51849,12 +51856,13 @@ window.COPO.maps = {
         var markerObject = {
           icon: L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#ff6900' }),
           title: 'ID: ' + checkin.id,
-          alt: 'ID: ' + checkin.id,
+          alt: 'checkin',
           checkin: checkin
         }
         if (i === 0) {
           markerObject.icon = L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#47b8e0' })
           markerObject.title = 'ID: ' + checkin.id + ' - Most recent'
+          markerObject.alt = 'lastCheckin'
         }
         var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), markerObject);
         COPO.maps.allMarkers.addLayer(marker);
@@ -51937,6 +51945,7 @@ window.COPO.maps = {
           'marker-symbol': 'star',
           'marker-color': '#01579B'
         }),
+        alt: 'currentLocation',
         riseOnHover: true
       },
       strings: {
@@ -51956,7 +51965,7 @@ window.COPO.permissions = {
     $('[data-switch=disallowed].permission-switch').each(function(){
       var permission_id =  $(this).data().id;
       if ($(this).find('input').prop('checked')){
-        COPO.permissions.toggle_switches_disabled(permission_id);
+        COPO.permissions.toggle_switches_disabled(permission_id, true);
       } else {
         COPO.permissions.icon_toggle('disallowed', permission_id);
       }
@@ -52006,7 +52015,6 @@ window.COPO.permissions = {
       COPO.permissions.icon_toggle(switch_type, permission_id);
       var permission = _.find(gon.permissions, _.matchesProperty('id', permission_id));
       var device_id = permission['device_id'];
-
       if (permission[attribute].constructor === Boolean){
         permission[attribute] = !permission[attribute]
       } else {
@@ -52015,7 +52023,7 @@ window.COPO.permissions = {
 
       if (switch_type === "disallowed") {
         $("div[data-id='"+permission_id+"'][data-switch=last_only].permission-switch").find('input').prop("checked", false);
-        COPO.permissions.toggle_switches_disabled(permission_id);
+        COPO.permissions.toggle_switches_disabled(permission_id, $(this).find('input').prop("checked"));
       }
       COPO.permissions.set_masters(permissionables);
 
@@ -52060,9 +52068,9 @@ window.COPO.permissions = {
     })
   },
 
-  toggle_switches_disabled: function(permission_id){
+  toggle_switches_disabled: function(permission_id, newState){
     element = $("div[data-id='"+ permission_id +"'].disable").find('input');
-    element.prop("disabled", !element.prop("disabled"));
+    element.prop("disabled", newState);
   },
 
   new_privilege: function(current_privilege, switch_type){
@@ -52131,39 +52139,41 @@ window.COPO.datePicker = {
 window.COPO = window.COPO || {};
 window.COPO.slider = {
 
-  initSliders: function(){
+  initSliders: function(devices){
     $('.delay-slider').each(function(){
-      var delaySlider = this;
-      var device_id =  parseInt(delaySlider.dataset.device, 10);
-      var device = _.find(gon.devices, _.matchesProperty('id', device_id));
+      if(!this.noUiSlider){
+        var delaySlider = this;
+        var device_id =  parseInt(delaySlider.dataset.device, 10);
+        var device = _.find(devices, _.matchesProperty('id', device_id));
 
-      noUiSlider.create(delaySlider, {
-        start: [ device.delayed || 0 ],
-        range: {
-          'min': [ 0, 5 ],
-          '50%': [ 5, 1435 ],
-          'max': [ 1440 ]
-        },
-        pips: {
-          mode: 'values',
-          values: [0,5,1440],
-          density: 100,
-          stepped:true
-        },
-        format: wNumb({
-          decimals: 0
-        })
-      });
-
-      delaySlider.noUiSlider.on('change', function(){
-        var delayed = delaySlider.noUiSlider.get();
-        device.delayed = delayed;
-        $.ajax({
-          url: "/users/"+device.user_id+"/devices/"+device_id,
-          type: 'PUT',
-          data: { delayed: delayed }
+        noUiSlider.create(delaySlider, {
+          start: [ device.delayed || 0 ],
+          range: {
+            'min': [ 0, 5 ],
+            '50%': [ 5, 1435 ],
+            'max': [ 1440 ]
+          },
+          pips: {
+            mode: 'values',
+            values: [0,5,1440],
+            density: 100,
+            stepped:true
+          },
+          format: wNumb({
+            decimals: 0
+          })
         });
-      });
+
+        delaySlider.noUiSlider.on('change', function(){
+          var delayed = delaySlider.noUiSlider.get();
+          device.delayed = delayed;
+          $.ajax({
+            url: "/users/"+device.user_id+"/devices/"+device_id,
+            type: 'PUT',
+            data: { delayed: delayed }
+          });
+        });
+      }
     });
 
     $('.noUi-value.noUi-value-horizontal.noUi-value-large').each(function(){
@@ -52184,7 +52194,7 @@ window.COPO.slider = {
 }
 ;
 $(document).on('page:change', function() {
-  if ($(".c-approvals").length === 1) {
+  if (($(".c-approvals").length === 1) && ($(".a-new").length === 0)){
     $('.tooltipped').tooltip({delay: 50});
     COPO.permissions.set_masters('approved');
     COPO.permissions.master_change('approved');
@@ -52196,12 +52206,13 @@ $(document).on('page:change', function() {
 ;
 $(document).on('page:change', function() {
   if ($(".c-devices.a-index").length === 1) {
+    COPO.utility.gonFix();
     COPO.permissions.set_masters('devices');
     COPO.permissions.master_change('devices');
     COPO.permissions.switch_change('devices');
     COPO.permissions.check_disabled();
     COPO.permissions.check_bypass();
-    COPO.slider.initSliders();
+    COPO.slider.initSliders(gon.devices);
     window.initPage = function(){
       $('.clip_button').off();
       COPO.utility.initClipboard();
@@ -52225,6 +52236,10 @@ $(document).on('page:change', function() {
     }
     initPage();
 
+    $(document).on('page:before-unload', function(){
+      $(".permission-switch").off("change");
+      $(".master").off("change");
+    })
   }
 })
 ;
@@ -52293,10 +52308,10 @@ $(document).on('page:change', function() {
     COPO.maps.initControls();
     // COPO.maps.lc.start();
 
-    $('li.tab').on('click', function() {
-      var tab = event.target.innerText
+    $('li.tab').on('click', function(e) {
+      var tab = e.target.textContent
       setTimeout(function(event) {
-        if (tab ==='CHART'){
+        if (tab ==='Chart'){
           COPO.charts.refreshCharts(gon.checkins);
         } else {
           map.invalidateSize();
