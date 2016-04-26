@@ -7,6 +7,7 @@ Given(/^I am signed in as developer$/) do
       And I click "Sign up"
     Then I should see "You have signed up successfully."
   }
+  @developer = Developer.last
 end
 
 Given(/^I am signed in as a user$/) do

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::Users::CheckinsController, type: :controller do
+RSpec.describe Api::V1::CheckinsController, type: :controller do
   include ControllerMacros, CityMacros
 
   let(:developer){FactoryGirl::create :developer}
