@@ -14,6 +14,17 @@
     }
     .parallax-container{
       height: 500px;
+
+      @media screen and (orientation:portrait) and (max-width: 600px){
+        height: 200px;
+      }
+      @media screen and (orientation:landscape) and (max-width: 992px){
+        height: 200px;
+      }
+
+      @media screen and (orientation:portrait) and (max-width: 992px){
+        height: 300px;
+      }
     }
     .image-container{
       opacity:0;
@@ -23,6 +34,17 @@
         overflow: hidden;
         img{
           height: 130%;
+        }
+
+        @media screen and (max-width: 600px){
+          img{
+            height: auto;
+            width: 100%;
+          }
+          max-height: 400px;
+          overflow:hidden;
+          padding-top:0;
+          padding-bottom:0;
         }
       }
       &.cloud-cp{
@@ -41,6 +63,41 @@
           height: 50px;
           width: auto;
           cursor: pointer;
+        }
+
+        @media screen and (orientation:portrait) and (max-width: 600px){
+          h1{
+            margin-top: 0.5rem;
+            margin-bottom: 0.2rem;
+          }
+
+          svg{
+            width: 40%;
+            height: auto;
+          }
+
+          .start-btn{
+            width: 60%;
+          }
+        }
+
+        @media screen and (orientation:landscape) and (max-width: 992px){
+          margin-top: 4rem;
+
+          h1{
+            margin-top: 0.5rem;
+            margin-bottom: 0.2rem;
+          }
+
+          svg{
+            width: 25%;
+            height: auto;
+          }
+
+          .start-btn{
+            margin-top: 0.5rem;
+            width: 30%;
+          }
         }
       }
 
@@ -61,6 +118,17 @@
       .card{
         padding: 2rem;
         cursor: pointer;
+      }
+
+
+      @media screen and (max-width: 600px){
+        & > .row{
+          margin-bottom: 0;
+
+          & > .col{
+            padding-bottom: 0;
+          }
+        }   
       }
 
       .active{
@@ -107,13 +175,22 @@
       padding-bottom: 4rem;
 
       .app{
-        height: 300px;
+        // height: 300px;
       }
     }
+
+    @media screen and (max-width: 600px){
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+    }
+
   }
 
   footer.page-footer{
     margin-top: 0;
   }
 
+  video::-webkit-media-controls-start-playback-button {
+    display: none !important;
+  }
 }
