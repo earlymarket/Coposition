@@ -5,10 +5,10 @@ $(document).on('page:change', function() {
     COPO.maps.initControls();
     // COPO.maps.lc.start();
 
-    $('li.tab').on('click', function() {
-      var tab = event.target.innerText
-      setTimeout(function(event) {
-        if (tab ==='CHART'){
+    $('li.tab').on('click', function(event) {
+      var tab = event.target.textContent
+      setTimeout(function() {
+        if (tab ==='Chart'){
           COPO.charts.refreshCharts(gon.checkins);
         } else {
           map.invalidateSize();

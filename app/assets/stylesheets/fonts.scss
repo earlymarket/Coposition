@@ -1,4 +1,4 @@
-$brand: "Noto Sans", "Helvetica", sans-serif;
+$brand: "Roboto Condensed", "Helvetica", sans-serif;
 $body-text: "Fira Sans", "Helvetica", sans-serif;
 
 .monospace{
@@ -8,6 +8,7 @@ $body-text: "Fira Sans", "Helvetica", sans-serif;
 
 .brand {
   font-family: $brand;
+  font-weight: 300;
 }
 
 
@@ -15,9 +16,11 @@ $body-text: "Fira Sans", "Helvetica", sans-serif;
 html {
   font-family: $body-text;
   background-color: #fcfcfc;
+  font-weight: 300;
 }
 
 h1 {
+  @extend .brand;
   text-align: center;
 
   @media screen and (max-width: 600px){
@@ -26,19 +29,19 @@ h1 {
 }
 h2 {
   @extend .dark-text, .brand;
-  font-weight: 700;
+  font-weight: 500;
 }
 h3 {
   @extend .dark-text, .brand;
-  font-weight: 700;
+  font-weight: 500;
 }
 h4{
   @extend .dark-text, .brand;
-  font-weight: 700;
+  font-weight: 500;
 }
 h5{
   @extend .dark-text, .brand;
-  font-weight: 700;
+  font-weight: 500;
 }
 h6{
 

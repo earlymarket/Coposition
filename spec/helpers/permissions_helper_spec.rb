@@ -27,10 +27,19 @@ RSpec.describe DevicesHelper, :type => :helper do
     end
   end
 
-  describe '#permissions_control_class' do
-    it 'should return the string "master-switches" if permissionable is not a Permission' do
-      expect( helper.permissions_control_class(developer).class ).to eq(String)
-      expect( helper.permissions_control_class(developer) ).to include('master')
+  describe '#permissions_control_class and #permissions_for_all' do
+    it 'should return a string if permissionable is not a Permission' do
+      ([['permissions_control_class', 'master'], ['permissions_for_all', 'for all']]).each do |method, output|
+        expect( (helper.send(method, developer)).class ).to eq(String)
+        expect( helper.send(method, developer) ).to include(output)
+      end
+    end
+  end
+
+  describe '#permissions_label_id' do
+    it 'should return the permissionable id and switch type if a Permission' do
+      expect( helper.permissions_label_id(permission, 'disallowed') ).to include(permission.id.to_s)
+      expect( helper.permissions_label_id(developer, 'disallowed') ).to be(nil)
     end
   end
 
@@ -48,13 +57,6 @@ RSpec.describe DevicesHelper, :type => :helper do
       expect( helper.permissions_check_box_value(permission, 'last_only')).to eq false
       expect( helper.permissions_check_box_value(permission, 'bypass_delay')).to eq false
       expect( helper.permissions_check_box_value(permission, 'bypass_fogging')).to eq true
-    end
-  end
-
-  describe '#permissions_for_all' do
-    it 'should return the string "for all" if permissionable is not a Permission' do
-      expect( helper.permissions_for_all(user).class ).to eq(String)
-      expect( helper.permissions_for_all(user) ).to match('for all')
     end
   end
 end

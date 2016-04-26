@@ -16,3 +16,21 @@ Then(/^I should not have a device$/) do
   sleep 0.5
   expect(User.find_by_email(@me.email).devices.count).to be 0
 end
+
+Then(/^I should have a "(.*?)" device$/) do |attribute|
+  sleep 0.5
+  expect(@me.devices.last[attribute]).to be true
+end
+
+Then(/^I should have a delayed device$/) do
+  sleep 0.5
+  expect(@me.devices.last.delayed).to eq 5
+end
+
+Given(/^I click the slider$/) do
+  find(:class, '.noUi-origin').click
+end
+
+Given(/^I visit my device published page$/) do
+  visit "/users/#{@me.id}/devices/#{@me.devices.last.id}/shared"
+end
