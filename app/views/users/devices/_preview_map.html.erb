@@ -5,16 +5,18 @@
 </div>
 
 <script>
-navigator.geolocation.getCurrentPosition(showPosition);
+navigator.geolocation.getCurrentPosition(showPosition, error);
 function showPosition(position) {
-
   $('#add_button').removeClass("disabled");
   $('#add_button').prop('disabled', false);
   var latlon = position.coords.latitude + "," + position.coords.longitude;
-
   var img_url = "https://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=16&size=500x500&sensor=false";
   $('#mapholder').removeClass("hide");
   $('#mapholder').attr("src", img_url);
   $('#location').attr("value", latlon);
+}
+
+function error(err){
+  Materialize.toast('Could not get location', 3000)
 }
 </script>
