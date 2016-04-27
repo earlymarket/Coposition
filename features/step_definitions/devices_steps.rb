@@ -1,10 +1,13 @@
-
 Given(/^there's a device in the database with the UUID "(.*?)"$/) do |uuid|
-  dev = FactoryGirl::create :device
-  dev.uuid = uuid
+  @dev = FactoryGirl::create :device
+  @dev.uuid = uuid
+  @dev.save!
+end
+
+Given(/^the device has checkins$/) do
   checkin = FactoryGirl::create(:checkin)
-  dev.checkins << checkin
-  dev.save!
+  @dev.checkins << checkin
+  @dev.save!
 end
 
 Given(/^I enter UUID "(.*?)" and a friendly name "(.*?)"$/) do |uuid, name|
