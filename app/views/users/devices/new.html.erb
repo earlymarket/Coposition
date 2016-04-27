@@ -21,7 +21,7 @@ $("#create_checkin").change(function(){
       $('#new_device').after("<%= j (render partial: 'preview_map') %>");
     }
   } else {
-    $('#mapholder').remove();
+    $('#mapholder').fadeOut("fast", function(){$('#mapholder').remove();});
     $('#add_button').removeClass('disabled');
     $('#add_button').prop('disabled', false);
   }
