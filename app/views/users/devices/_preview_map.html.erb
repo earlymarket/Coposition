@@ -9,8 +9,8 @@ navigator.geolocation.getCurrentPosition(showPosition, error);
 function showPosition(position) {
   $('#add_button').removeClass("disabled");
   $('#add_button').prop('disabled', false);
-  var latlon = position.coords.latitude + "," + position.coords.longitude;
-  var img_url = "https://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=16&size=500x500&sensor=false";
+  var latlon = position.coords.longitude + "," + position.coords.latitude;
+  var img_url = "https://api.mapbox.com/v4/mapbox.light/pin-l("+latlon+")/"+latlon+",16/500x500@2x.png?access_token=pk.eyJ1IjoiZ2FyeXNpdSIsImEiOiJjaWxjZjN3MTMwMDZhdnNtMnhsYmh4N3lpIn0.RAGGQ0OaM81HVe0OiAKE0w"
   $('#mapholder').removeClass("hide");
   $('#mapholder').attr("src", img_url);
   $('#location').attr("value", latlon);
