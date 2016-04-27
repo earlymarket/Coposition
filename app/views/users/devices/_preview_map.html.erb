@@ -1,19 +1,19 @@
 <div class="row">
   <div class="col s12 m6 l6 container">
-    <img id="mapholder" class="round-map animated rotateIn"/>
+    <img id="mapholder" class="round-map animated rotateIn hide"/>
   </div>
 </div>
 
 <script>
 navigator.geolocation.getCurrentPosition(showPosition);
 function showPosition(position) {
+
   $('#add_button').removeClass("disabled");
   $('#add_button').prop('disabled', false);
   var latlon = position.coords.latitude + "," + position.coords.longitude;
 
   var img_url = "https://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=16&size=500x500&sensor=false";
-
+  $('#mapholder').removeClass("hide");
   $('#mapholder').attr("src", img_url);
-  $('#location').attr("value", latlon);
 }
 </script>
