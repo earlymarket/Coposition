@@ -20,10 +20,10 @@ window.COPO.maps = {
 
   },
 
-  initMarkers: function(){
+  initMarkers: function(checkins){
     map.once('ready', function() {
-      COPO.maps.renderMarkers();
-      COPO.maps.bindMarkerListeners();
+      COPO.maps.renderMarkers(checkins);
+      COPO.maps.bindMarkerListeners(checkins);
       if(COPO.maps.allMarkers.getLayers().length){
         map.fitBounds(COPO.maps.allMarkers.getBounds())
       } else {
@@ -34,59 +34,61 @@ window.COPO.maps = {
     });
   },
 
-  queueRefresh: function(){
+  queueRefresh: function(checkins){
     map.once('zoomstart', function(e){
       map.removeEventListener('popupclose');
-      COPO.maps.refreshMarkers();
+      COPO.maps.refreshMarkers(checkins);
     })
     map.once('popupclose', function(e){
-      COPO.maps.refreshMarkers();
+      COPO.maps.refreshMarkers(checkins);
     })
   },
 
-  refreshMarkers: function(){
+  refreshMarkers: function(checkins){
+    map.removeEventListener('popupclose');
+    map.closePopup();
     map.removeLayer(COPO.maps.markers);
     map.removeLayer(COPO.maps.last);
-    COPO.maps.renderMarkers();
-    COPO.maps.bindMarkerListeners();
+    COPO.maps.renderMarkers(checkins);
+    COPO.maps.bindMarkerListeners(checkins);
   },
 
-  renderMarkers: function(){
+  renderMarkers: function(checkins){
     COPO.maps.allMarkers = new L.MarkerClusterGroup();
     COPO.maps.markers = new L.MarkerClusterGroup();
     COPO.maps.last = new L.MarkerClusterGroup();
-    var checkins = gon.checkins;
-      for (var i = 0; i < checkins.length; i++) {
-        var checkin = checkins[i]
-        var markerObject = {
-          icon: L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#ff6900' }),
-          title: 'ID: ' + checkin.id,
-          alt: 'ID: ' + checkin.id,
-          checkin: checkin
-        }
-        if (i === 0) {
-          markerObject.icon = L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#47b8e0' })
-          markerObject.title = 'ID: ' + checkin.id + ' - Most recent'
-        }
-        var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), markerObject);
-        COPO.maps.allMarkers.addLayer(marker);
-        if (i === 0) {
-          COPO.maps.last.addLayer(marker);
-        } else {
-          COPO.maps.markers.addLayer(marker);
-        }
+    for (var i = 0; i < checkins.length; i++) {
+      var checkin = checkins[i]
+      var markerObject = {
+        icon: L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#ff6900' }),
+        title: 'ID: ' + checkin.id,
+        alt: 'checkin',
+        checkin: checkin
       }
+      if (i === 0) {
+        markerObject.icon = L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#47b8e0' })
+        markerObject.title = 'ID: ' + checkin.id + ' - Most recent'
+        markerObject.alt = 'lastCheckin'
+      }
+      var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), markerObject);
+      COPO.maps.allMarkers.addLayer(marker);
+      if (i === 0) {
+        COPO.maps.last.addLayer(marker);
+      } else {
+        COPO.maps.markers.addLayer(marker);
+      }
+    }
     map.addLayer(COPO.maps.markers);
     map.addLayer(COPO.maps.last);
   },
 
-  bindMarkerListeners: function(){
+  bindMarkerListeners: function(checkins){
     COPO.maps.allMarkers.eachLayer(function(marker) {
-      COPO.maps.markerClickListener(marker);
+      COPO.maps.markerClickListener(checkins, marker);
     })
   },
 
-  markerClickListener: function(marker) {
+  markerClickListener: function(checkins, marker) {
     marker.on('click', function(e) {
       checkin = this.options.checkin;
       if(!marker._popup){
@@ -101,7 +103,7 @@ window.COPO.maps = {
         }).done(function(data) {
           $geocodedAddress = '<li class="address">Address: ' + data.address + '</li>'
           $('.address').replaceWith($geocodedAddress);
-          gon.checkins[_.indexOf(gon.checkins, checkin)] = data;
+          checkins[_.indexOf(checkins, checkin)] = data;
         })
       }
       map.panTo(this.getLatLng());

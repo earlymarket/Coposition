@@ -1,14 +1,14 @@
 $(document).on('page:change', function() {
   if ($(".c-devices.a-show").length === 1) {
     COPO.maps.initMap();
-    COPO.maps.initMarkers();
+    COPO.maps.initMarkers(gon.checkins);
     COPO.maps.initControls();
     // COPO.maps.lc.start();
 
-    $('li.tab').on('click', function() {
-      var tab = event.target.innerText
-      setTimeout(function(event) {
-        if (tab ==='CHART'){
+    $('li.tab').on('click', function(event) {
+      var tab = event.target.textContent
+      setTimeout(function() {
+        if (tab ==='Chart'){
           COPO.charts.refreshCharts(gon.checkins);
         } else {
           map.invalidateSize();

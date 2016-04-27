@@ -21,4 +21,22 @@
   .delay-slider {
     width: 98%;
   }
+
+  .disabled-icon {
+    color: rgba(0,0,0,0.2);
+    position: relative;
+    &:after {
+      content:" ";
+      // these are relative to font based settings
+      height: 4px; // arbitary width of the strikethrough that visually matches
+      width: 24px; // matches font-size
+      border-top: white solid 2px;
+      background-color: #ccc; //needs to be solid. Matches how the icon renders on white
+      position: absolute;
+      top: 11px; //half font height but slightly higher to offset the visual illusion
+      left: 0;
+      transform: rotate(45deg);
+    }
+  }
+
 }

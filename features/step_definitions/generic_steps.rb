@@ -19,10 +19,19 @@ Then(/^I should see a link that says "(.*?)"$/) do |text|
 end
 
 Then(/^I should see "(.*?)"$/) do |text|
+  sleep 0.5 if text == "Enter a name for the device"
   expect(page.has_content? text).to be true
 end
 
 Given(/^I confirm$/) do
   a = page.driver.browser.switch_to.alert
   a.accept
+end
+
+Given(/^I right click on the "(.*?)"$/) do |target|
+  find(:id, target).right_click
+end
+
+Given(/^I click on the "(.*?)"$/) do |target|
+  find(:id, target).click
 end

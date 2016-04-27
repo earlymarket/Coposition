@@ -4,7 +4,7 @@ RSpec.describe CheckinsHelper, :type => :helper do
   let(:device) { FactoryGirl::create(:device) }
   let(:checkin) do
     checkin = FactoryGirl::create(:checkin)
-    checkin.device = device
+    checkin.update(device_id: device.id)
     checkin
   end
   let(:fogged) { FactoryGirl::create(:checkin, fogged: true) }

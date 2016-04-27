@@ -1,5 +1,4 @@
 $(document).on('ready page:change', function() {
-  // Target only the landing page (assuming at root of "/")
   if ($(".c-welcome.a-index").length > 0) {
     $("main").css('padding-top', '0');
 
@@ -32,10 +31,15 @@ $(document).on('ready page:change', function() {
         $("#next-btn").css('opacity', '0');
       }
     });
-    $(".promotion .card").unbind('click').click(function(e) {
-      $(".promotion .card").removeClass('active');
-      $(this).addClass('active');
-    });
+
+    if(window.innerWidth>992){
+      $(".promotion .card").unbind('click').click(function(e) {
+        $(".promotion .card").removeClass('active');
+        $(this).addClass('active');
+      });
+    }else{
+      $(".promotion .card").removeClass('active').unbind();
+    }
 
   } else {
     // Normalize the other pages

@@ -34,10 +34,10 @@ class Checkin < ActiveRecord::Base
 
   def get_data
     fogged_checkin = self
-    if fogged?
+    if fogged? || device.fogged?
       fogged_checkin.address = "#{nearest_city.name}, #{nearest_city.country_code}"
-      fogged_checkin.lat = self.fogged_lat || nearest_city.latitude || self.lat + rand(-0.5..0.5)
-      fogged_checkin.lng = self.fogged_lng || nearest_city.longitude || self.lng + rand(-0.5..0.5)
+      fogged_checkin.lat = fogged_checkin.fogged_lat
+      fogged_checkin.lng = fogged_checkin.fogged_lng
       fogged_checkin
     else
       self
@@ -64,7 +64,7 @@ class Checkin < ActiveRecord::Base
 
   def add_fogged_info
     self.fogged_lat ||= nearest_city.latitude || self.lat + rand(-0.5..0.5)
-    self.fogged_lng ||= nearest_city.longitude || self.lat + rand(-0.5..0.5)
+    self.fogged_lng ||= nearest_city.longitude || self.lng + rand(-0.5..0.5)
     self.fogged_area ||= nearest_city.name
     save
   end
