@@ -1,5 +1,8 @@
 Then(/^I have "(.*?)" checkins on the map$/) do |number|
   sleep 0.5
+  puts number
+  puts all("img.leaflet-marker-icon").size
+  puts @me.checkins.count
   expect(all("img.leaflet-marker-icon").size).to be number.to_i
   expect(@me.checkins.count).to be number.to_i
 end

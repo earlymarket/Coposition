@@ -45,15 +45,12 @@ window.COPO.maps = {
   },
 
   refreshMarkers: function(){
-    console.log('refresh start')
-    console.log(gon.checkins)
     map.removeEventListener('popupclose');
     map.closePopup();
     map.removeLayer(COPO.maps.markers);
     map.removeLayer(COPO.maps.last);
     COPO.maps.renderMarkers();
     COPO.maps.bindMarkerListeners();
-    console.log('refresh end')
   },
 
   renderMarkers: function(){
