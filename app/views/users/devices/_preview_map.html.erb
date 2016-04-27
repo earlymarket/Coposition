@@ -15,5 +15,6 @@ function showPosition(position) {
   var img_url = "https://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=16&size=500x500&sensor=false";
   $('#mapholder').removeClass("hide");
   $('#mapholder').attr("src", img_url);
+  $('#location').attr("value", latlon);
 }
 </script>
