@@ -1,4 +1,4 @@
-Feature: map
+Feature: amap
 
   Background: There are some devices
     Given I am signed in as a user
