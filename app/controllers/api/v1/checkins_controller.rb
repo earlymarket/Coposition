@@ -10,7 +10,7 @@ class Api::V1::CheckinsController < Api::ApiController
     checkins = @user.get_checkins(@permissible, @device).order(created_at: :desc) \
       .paginate(page: params[:page], per_page: per_page)
     paginated_response_headers(checkins)
-    checkins = checkins.map do |checkin|
+    checkins = checkins.includes(:device).map do |checkin|
       checkin.resolve_address(@permissible, params[:type])
     end
     render json: hide_fogging_info(checkins)
