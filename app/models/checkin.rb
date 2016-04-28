@@ -81,7 +81,7 @@ class Checkin < ActiveRecord::Base
       self
     else
       return get_data unless device.can_bypass_fogging?(permissible)
-      Checkin.find_by(id).select([:id, :uuid, :lat, :lng, :created_at, :updated_at])
+      Checkin.where(id: id).select([:id, :uuid, :lat, :lng, :created_at, :updated_at]).first
     end
   end
 
