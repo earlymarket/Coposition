@@ -1,6 +1,6 @@
 module CheckinsSpecHelpers
 
-  def call_checkin_method(method, priv, delay, number, checkin)
+  def call_checkin_action(method, priv, delay, number, checkin)
     device.permission_for(developer).update! privilege: priv
     device.permission_for(developer).update! bypass_delay: delay
     get method.to_sym, params
