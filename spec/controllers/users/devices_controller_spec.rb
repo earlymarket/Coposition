@@ -86,7 +86,7 @@ RSpec.describe Users::DevicesController, type: :controller do
 
     it 'should create a device with a given UUID' do
       count = user.devices.count
-      post :create, user_param.merge(device: { uuid: empty_device.uuid })
+      post :create, user_param.merge(device: { name: 'New Device', uuid: empty_device.uuid })
       expect(response.code).to eq '302'
       expect(user.devices.count).to be count+1
       expect(user.devices.all.last).to eq empty_device

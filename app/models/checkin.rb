@@ -69,7 +69,7 @@ class Checkin < ActiveRecord::Base
 
   def add_fogged_info
     self.fogged_lat ||= nearest_city.latitude || self.lat + rand(-0.5..0.5)
-    self.fogged_lng ||= nearest_city.longitude || self.lat + rand(-0.5..0.5)
+    self.fogged_lng ||= nearest_city.longitude || self.lng + rand(-0.5..0.5)
     self.fogged_area ||= nearest_city.name
     save
   end
