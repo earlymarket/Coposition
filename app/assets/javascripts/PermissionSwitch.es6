@@ -23,15 +23,17 @@ class LocalSwitch extends PermissionSwitch {
   }
 
   toggleSwitch() {
-    COPO.permissions.iconToggle(this.switchtype, this.id);
-    if (this.switchtype === "disallowed") {
-      this.changeDisableSwitches(this.checked);
+    const SELF = this;
+    COPO.permissions.iconToggle(SELF.switchtype, SELF.id);
+    if (SELF.switchtype === "disallowed") {
+      SELF.changeDisableSwitches(SELF.checked);
     }
-    this.permission[this.attribute] = this.nextState();
+    SELF.permission[SELF.attribute] = SELF.nextState();
     $.ajax({
-      url: `/users/${this.user}/devices/${this.permission['device_id']}/permissions/${this.id}`,
+      url: `/users/${SELF.user}/devices/${SELF.permission['device_id']}/permissions/${SELF.id}`,
       type: 'PUT',
-      data: { permission: this.permission }
+      dataType: 'script',
+      data: { permission: SELF.permission }
     });
   }
 
