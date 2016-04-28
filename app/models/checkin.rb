@@ -33,15 +33,20 @@ class Checkin < ActiveRecord::Base
   end
 
   def get_data
-    fogged_checkin = self
     if fogged? || device.fogged?
+      fogged_checkin = Checkin.new(attributes.delete_if {|key, _v| key =~ /fogged/ })
       fogged_checkin.address = "#{nearest_city.name}, #{nearest_city.country_code}"
-      fogged_checkin.lat = fogged_checkin.fogged_lat
-      fogged_checkin.lng = fogged_checkin.fogged_lng
-      fogged_checkin
-    else
-      self
+      fogged_checkin.lat = fogged_lat
+      fogged_checkin.lng = fogged_lng
+      return fogged_checkin
     end
+    self
+  end
+
+  def self.get_data
+    # this will convert it to an array
+    # paginate before use!
+    all.map {|checkin| checkin.get_data}
   end
 
   def reverse_geocode!
@@ -72,11 +77,11 @@ class Checkin < ActiveRecord::Base
   def resolve_address(permissible, type)
     if type == "address"
       reverse_geocode!
-      get_data unless device.can_bypass_fogging?(permissible)
+      return get_data unless device.can_bypass_fogging?(permissible)
       self
     else
-      get_data unless device.can_bypass_fogging?(permissible)
-      self.slice(:id, :uuid, :lat, :lng, :created_at, :updated_at, :fogged)
+      return get_data unless device.can_bypass_fogging?(permissible)
+      Checkin.find_by(id).select([:id, :uuid, :lat, :lng, :created_at, :updated_at])
     end
   end
 

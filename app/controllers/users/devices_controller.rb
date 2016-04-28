@@ -29,7 +29,7 @@ class Users::DevicesController < ApplicationController
     device = Device.find(params[:id])
     checkin = device.checkins.first
     gon.device = device
-    gon.user = device.user.public_info
+    gon.user = device.user.public_info_hash
     gon.checkin = checkin.reverse_geocode!.get_data if checkin
   end
 
