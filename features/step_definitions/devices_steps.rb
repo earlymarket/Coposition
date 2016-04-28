@@ -5,8 +5,7 @@ Given(/^there's a device in the database with the UUID "(.*?)"$/) do |uuid|
 end
 
 Given(/^the device has checkins$/) do
-  checkin = FactoryGirl::create(:checkin)
-  @dev.checkins << checkin
+  @dev.checkins << FactoryGirl::create(:checkin)
   @dev.save!
 end
 
