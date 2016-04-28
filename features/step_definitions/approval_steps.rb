@@ -9,21 +9,17 @@ Given(/^A user sends me a friend request$/) do
 end
 
 Then(/^I should have an app$/) do
-  sleep 0.5
-  expect(User.find_by_email(@me.email).developers.count).to be 1
+  expect(page).to have_selector("div.card-panel", count: 1)
 end
 
 Then(/^I should have a friend$/) do
-  sleep 0.5
-  expect(User.find_by_email(@me.email).friends.count).to be 1
+  expect(page).to have_selector("div.card-panel", count: 1)
 end
 
 Then(/^I should not have any apps$/) do
-  sleep 0.5
-  expect(User.find_by_email(@me.email).developers.count).to be 0
+  expect(page).to have_selector("div.card-panel", count: 0)
 end
 
 Then(/^I should not have any friends$/) do
-  sleep 0.5
-  expect(User.find_by_email(@me.email).friends.count).to be 0
+  expect(page).to have_selector("div.card-panel", count: 0)
 end

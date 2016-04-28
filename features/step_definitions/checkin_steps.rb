@@ -12,6 +12,5 @@ Given(/^I click on my last checkin$/) do
 end
 
 Then(/^I should have a fogged last checkin$/) do
-  sleep 0.5
-  expect(@me.checkins.first.fogged).to be true
+   expect(page).to have_selector("a.enabled-icon", count: 1)
 end

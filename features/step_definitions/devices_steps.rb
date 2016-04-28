@@ -15,18 +15,19 @@ Given(/^I enter UUID "(.*?)" and a friendly name "(.*?)"$/) do |uuid, name|
 end
 
 Then(/^I should not have a device$/) do
-  sleep 0.5
-  expect(User.find_by_email(@me.email).devices.count).to be 0
+  expect(page).to have_selector("div.card", count: 0)
 end
 
-Then(/^I should have a "(.*?)" device$/) do |attribute|
-  sleep 0.5
-  expect(@me.devices.last[attribute]).to be true
+Then(/^I should have a fogged device$/) do
+  expect(page).to have_selector('a[data-tooltip="Fogging"] i.disabled-icon', count: 0)
+end
+
+Then(/^I should have a published device$/) do
+  expect(page).to have_selector('a[data-tooltip="Device sharing"] i.disabled-icon', count: 0)
 end
 
 Then(/^I should have a delayed device$/) do
-  sleep 0.5
-  expect(@me.devices.last.delayed).to eq 5
+  expect(page).to have_selector('a.modal-trigger i.disabled-icon', count: 0)
 end
 
 Given(/^I click the slider$/) do

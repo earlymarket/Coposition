@@ -28,10 +28,10 @@ Feature: Devices
       And I click the link "Devices"
       When I click the link "visibility"
         Then I should see "Location sharing is on"
-        And I should have a "published" device
+        And I should have a published device
       When I click the link "cloud"
         Then I should see a link that says "cloud_done"
-        And I should have a "fogged" device
+        And I should have a fogged device
       When I click the link "timer"
       And I click the slider
         Then I should have a delayed device
