@@ -18,8 +18,8 @@ Given(/^I am signed in as a user$/) do
       Then I click the link "Sign up!"
     When I fill in the form with my "user" details
       And I click "Sign up"
+    Then I should see "Enter a name for the device"
   }
-  # Then I should see "Enter a name for the device"
   # @me = User.find_by(email: @me.email)
 end
 

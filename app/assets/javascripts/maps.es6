@@ -86,6 +86,7 @@ window.COPO.maps = {
 
   markerClickListener(checkins, marker) {
     marker.on('click', function(e) {
+      let checkin = this.options.checkin;
       if(!marker._popup){
         var template = COPO.maps.buildMarkerPopup(checkin);
         marker.bindPopup(L.Util.template(template, checkin));
