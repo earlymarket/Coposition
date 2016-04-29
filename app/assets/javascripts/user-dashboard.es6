@@ -53,14 +53,20 @@ $(document).on('page:change', function() {
 
     // --- end MONTHCLUSTERS ---
 
-    const LAYERS = [FRIENDCLUSTERS, MONTHSCLUSTERS];
+    const LAYERS = [
+      { status: "Your friend's check-ins",
+        data: FRIENDCLUSTERS},
+      { status: `Your last month's check-ins <a href='./devices'>(more details)</a>`,
+        data: MONTHSCLUSTERS}
+    ];
 
     let currentLayer = 0;
 
     let layerGroup = L.layerGroup().addTo(map);
-    let next = function () {
-      layerGroup.clearLayers().addLayer(LAYERS[currentLayer]);
-      map.fitBounds(LAYERS[currentLayer]);
+    function next() {
+      layerGroup.clearLayers().addLayer(LAYERS[currentLayer].data);
+      map.fitBounds(LAYERS[currentLayer].data);
+      $('#map-status').html(LAYERS[currentLayer].status);
       if(++currentLayer >= LAYERS.length) currentLayer = 0;
     }
     next();
@@ -83,5 +89,10 @@ $(document).on('page:change', function() {
     $(window).resize(function(){
       COPO.charts.drawBarChart(gon.weeks_checkins, '270');
     });
+
+    // Cleanup
+    $(document).on('page:before-unload', function(){
+      if(slideInterval) clearInterval(slideInterval);
+    })
   }
 });

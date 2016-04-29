@@ -52649,6 +52649,9 @@ window.COPO.maps = {
 
     var options = $.extend(defaultOptions, customOptions);
     window.map = L.mapbox.map('map', 'mapbox.light', options);
+    $(document).on('page:before-unload', function () {
+      map.remove();
+    });
   },
 
   initMarkers: function initMarkers(checkins) {
@@ -53357,6 +53360,13 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 $(document).on('page:change', function () {
   if ($(".c-dashboards.a-show").length === 1) {
     (function () {
+      var next = function next() {
+        layerGroup.clearLayers().addLayer(LAYERS[currentLayer].data);
+        map.fitBounds(LAYERS[currentLayer].data);
+        $('#map-status').html(LAYERS[currentLayer].status);
+        if (++currentLayer >= LAYERS.length) currentLayer = 0;
+      };
+
       COPO.utility.gonFix();
       var M = COPO.maps;
       var U = COPO.utility;
@@ -53405,16 +53415,14 @@ $(document).on('page:change', function () {
 
       // --- end MONTHCLUSTERS ---
 
-      var LAYERS = [FRIENDCLUSTERS, MONTHSCLUSTERS];
+      var LAYERS = [{ status: "Your friend's check-ins",
+        data: FRIENDCLUSTERS }, { status: 'Your last month\'s check-ins <a href=\'./devices\'>(more details)</a>',
+        data: MONTHSCLUSTERS }];
 
       var currentLayer = 0;
 
       var layerGroup = L.layerGroup().addTo(map);
-      var next = function next() {
-        layerGroup.clearLayers().addLayer(LAYERS[currentLayer]);
-        map.fitBounds(LAYERS[currentLayer]);
-        if (++currentLayer >= LAYERS.length) currentLayer = 0;
-      };
+
       next();
       var slideInterval = setInterval(next, 1000 * 5);
 
@@ -53434,6 +53442,11 @@ $(document).on('page:change', function () {
       });
       $(window).resize(function () {
         COPO.charts.drawBarChart(gon.weeks_checkins, '270');
+      });
+
+      // Cleanup
+      $(document).on('page:before-unload', function () {
+        if (slideInterval) clearInterval(slideInterval);
       });
     })();
   }
