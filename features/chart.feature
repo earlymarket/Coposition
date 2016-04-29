@@ -12,11 +12,11 @@ Feature: chart
 
     @javascript
     Scenario: User fogs and deletes a checkin
-    Given I have "1" checkins in the table
+    Given I have 1 checkins in the table
       When I click the link "cloud"
       Then I should have a fogged last checkin
     When I click the link "delete_forever"
     And I confirm
-      Then I have "0" checkins in the table
+      Then I have 0 checkins in the table
     And I click "Map"
-      Then I have "0" checkins on the map
+      Then I have 0 checkins on the map
