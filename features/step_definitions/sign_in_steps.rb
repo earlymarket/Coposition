@@ -18,14 +18,14 @@ Given(/^I am signed in as a user$/) do
       Then I click the link "Sign up!"
     When I fill in the form with my "user" details
       And I click "Sign up"
-    Then I should see "Enter a name for the device"
   }
-  @me = User.find_by(email: @me.email)
+  # Then I should see "Enter a name for the device"
+  # @me = User.find_by(email: @me.email)
 end
 
 When(/^I fill in the form with my "(.*?)" details$/) do |actor|
   @me = FactoryGirl::build actor.to_sym
-  find_by_id("#{actor}_email")
+  find_by_id("#{actor}_password_confirmation")
   fill_in "#{actor}_email", with: @me.email
   fill_in "#{actor}_password", with: @me.password
   fill_in "#{actor}_password_confirmation", with: @me.password_confirmation
