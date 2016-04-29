@@ -25,7 +25,13 @@ class Device < ActiveRecord::Base
   def permitted_history_for(permissible)
     return Checkin.none if permission_for(permissible).privilege == "disallowed"
     if permission_for(permissible).privilege == "last_only"
-      can_bypass_delay?(permissible) ? Checkin.where(id: checkins.first.id) : Checkin.where(id: checkins.before(delayed.to_i.minutes.ago).first.id)
+      if can_bypass_delay?(permissible)
+        Checkin.where(id: checkins.first.id)
+      elsif checkins.before(delayed.to_i.minutes.ago).present?
+        Checkin.where(id: checkins.before(delayed.to_i.minutes.ago).first.id)
+      else
+        Checkin.none
+      end
     else
       can_bypass_delay?(permissible) ? checkins : checkins.before(delayed.to_i.minutes.ago)
     end
