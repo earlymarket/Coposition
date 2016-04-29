@@ -19,7 +19,6 @@ Then(/^I should see a link that says "(.*?)"$/) do |text|
 end
 
 Then(/^I should see "(.*?)"$/) do |text|
-  #sleep 0.5 if text == "Enter a name for the device"
   expect(page).to have_content(text)
 end
 
