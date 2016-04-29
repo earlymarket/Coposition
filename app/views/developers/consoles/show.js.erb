@@ -1,2 +1,2 @@
-$('#requests-today').html('<%= @requests_today %>')
-$('#unpaid').html('<%= @unpaid %>')
+$('#requests-today').html('<%= pluralize(@requests_today, "request") %>')
+$('#unpaid').html('<%= pluralize(@unpaid, "request") %>')

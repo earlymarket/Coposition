@@ -42524,7 +42524,851 @@ Picker.extend( 'pickadate', DatePicker )
     return _moment;
 
 }));
-(function defineMustache(global,factory){if(typeof exports==="object"&&exports&&typeof exports.nodeName!=="string"){factory(exports)}else if(typeof define==="function"&&define.amd){define(["exports"],factory)}else{global.Mustache={};factory(global.Mustache)}})(this,function mustacheFactory(mustache){var objectToString=Object.prototype.toString;var isArray=Array.isArray||function isArrayPolyfill(object){return objectToString.call(object)==="[object Array]"};function isFunction(object){return typeof object==="function"}function typeStr(obj){return isArray(obj)?"array":typeof obj}function escapeRegExp(string){return string.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g,"\\$&")}function hasProperty(obj,propName){return obj!=null&&typeof obj==="object"&&propName in obj}var regExpTest=RegExp.prototype.test;function testRegExp(re,string){return regExpTest.call(re,string)}var nonSpaceRe=/\S/;function isWhitespace(string){return!testRegExp(nonSpaceRe,string)}var entityMap={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;","/":"&#x2F;","`":"&#x60;","=":"&#x3D;"};function escapeHtml(string){return String(string).replace(/[&<>"'`=\/]/g,function fromEntityMap(s){return entityMap[s]})}var whiteRe=/\s*/;var spaceRe=/\s+/;var equalsRe=/\s*=/;var curlyRe=/\s*\}/;var tagRe=/#|\^|\/|>|\{|&|=|!/;function parseTemplate(template,tags){if(!template)return[];var sections=[];var tokens=[];var spaces=[];var hasTag=false;var nonSpace=false;function stripSpace(){if(hasTag&&!nonSpace){while(spaces.length)delete tokens[spaces.pop()]}else{spaces=[]}hasTag=false;nonSpace=false}var openingTagRe,closingTagRe,closingCurlyRe;function compileTags(tagsToCompile){if(typeof tagsToCompile==="string")tagsToCompile=tagsToCompile.split(spaceRe,2);if(!isArray(tagsToCompile)||tagsToCompile.length!==2)throw new Error("Invalid tags: "+tagsToCompile);openingTagRe=new RegExp(escapeRegExp(tagsToCompile[0])+"\\s*");closingTagRe=new RegExp("\\s*"+escapeRegExp(tagsToCompile[1]));closingCurlyRe=new RegExp("\\s*"+escapeRegExp("}"+tagsToCompile[1]))}compileTags(tags||mustache.tags);var scanner=new Scanner(template);var start,type,value,chr,token,openSection;while(!scanner.eos()){start=scanner.pos;value=scanner.scanUntil(openingTagRe);if(value){for(var i=0,valueLength=value.length;i<valueLength;++i){chr=value.charAt(i);if(isWhitespace(chr)){spaces.push(tokens.length)}else{nonSpace=true}tokens.push(["text",chr,start,start+1]);start+=1;if(chr==="\n")stripSpace()}}if(!scanner.scan(openingTagRe))break;hasTag=true;type=scanner.scan(tagRe)||"name";scanner.scan(whiteRe);if(type==="="){value=scanner.scanUntil(equalsRe);scanner.scan(equalsRe);scanner.scanUntil(closingTagRe)}else if(type==="{"){value=scanner.scanUntil(closingCurlyRe);scanner.scan(curlyRe);scanner.scanUntil(closingTagRe);type="&"}else{value=scanner.scanUntil(closingTagRe)}if(!scanner.scan(closingTagRe))throw new Error("Unclosed tag at "+scanner.pos);token=[type,value,start,scanner.pos];tokens.push(token);if(type==="#"||type==="^"){sections.push(token)}else if(type==="/"){openSection=sections.pop();if(!openSection)throw new Error('Unopened section "'+value+'" at '+start);if(openSection[1]!==value)throw new Error('Unclosed section "'+openSection[1]+'" at '+start)}else if(type==="name"||type==="{"||type==="&"){nonSpace=true}else if(type==="="){compileTags(value)}}openSection=sections.pop();if(openSection)throw new Error('Unclosed section "'+openSection[1]+'" at '+scanner.pos);return nestTokens(squashTokens(tokens))}function squashTokens(tokens){var squashedTokens=[];var token,lastToken;for(var i=0,numTokens=tokens.length;i<numTokens;++i){token=tokens[i];if(token){if(token[0]==="text"&&lastToken&&lastToken[0]==="text"){lastToken[1]+=token[1];lastToken[3]=token[3]}else{squashedTokens.push(token);lastToken=token}}}return squashedTokens}function nestTokens(tokens){var nestedTokens=[];var collector=nestedTokens;var sections=[];var token,section;for(var i=0,numTokens=tokens.length;i<numTokens;++i){token=tokens[i];switch(token[0]){case"#":case"^":collector.push(token);sections.push(token);collector=token[4]=[];break;case"/":section=sections.pop();section[5]=token[2];collector=sections.length>0?sections[sections.length-1][4]:nestedTokens;break;default:collector.push(token)}}return nestedTokens}function Scanner(string){this.string=string;this.tail=string;this.pos=0}Scanner.prototype.eos=function eos(){return this.tail===""};Scanner.prototype.scan=function scan(re){var match=this.tail.match(re);if(!match||match.index!==0)return"";var string=match[0];this.tail=this.tail.substring(string.length);this.pos+=string.length;return string};Scanner.prototype.scanUntil=function scanUntil(re){var index=this.tail.search(re),match;switch(index){case-1:match=this.tail;this.tail="";break;case 0:match="";break;default:match=this.tail.substring(0,index);this.tail=this.tail.substring(index)}this.pos+=match.length;return match};function Context(view,parentContext){this.view=view;this.cache={".":this.view};this.parent=parentContext}Context.prototype.push=function push(view){return new Context(view,this)};Context.prototype.lookup=function lookup(name){var cache=this.cache;var value;if(cache.hasOwnProperty(name)){value=cache[name]}else{var context=this,names,index,lookupHit=false;while(context){if(name.indexOf(".")>0){value=context.view;names=name.split(".");index=0;while(value!=null&&index<names.length){if(index===names.length-1)lookupHit=hasProperty(value,names[index]);value=value[names[index++]]}}else{value=context.view[name];lookupHit=hasProperty(context.view,name)}if(lookupHit)break;context=context.parent}cache[name]=value}if(isFunction(value))value=value.call(this.view);return value};function Writer(){this.cache={}}Writer.prototype.clearCache=function clearCache(){this.cache={}};Writer.prototype.parse=function parse(template,tags){var cache=this.cache;var tokens=cache[template];if(tokens==null)tokens=cache[template]=parseTemplate(template,tags);return tokens};Writer.prototype.render=function render(template,view,partials){var tokens=this.parse(template);var context=view instanceof Context?view:new Context(view);return this.renderTokens(tokens,context,partials,template)};Writer.prototype.renderTokens=function renderTokens(tokens,context,partials,originalTemplate){var buffer="";var token,symbol,value;for(var i=0,numTokens=tokens.length;i<numTokens;++i){value=undefined;token=tokens[i];symbol=token[0];if(symbol==="#")value=this.renderSection(token,context,partials,originalTemplate);else if(symbol==="^")value=this.renderInverted(token,context,partials,originalTemplate);else if(symbol===">")value=this.renderPartial(token,context,partials,originalTemplate);else if(symbol==="&")value=this.unescapedValue(token,context);else if(symbol==="name")value=this.escapedValue(token,context);else if(symbol==="text")value=this.rawValue(token);if(value!==undefined)buffer+=value}return buffer};Writer.prototype.renderSection=function renderSection(token,context,partials,originalTemplate){var self=this;var buffer="";var value=context.lookup(token[1]);function subRender(template){return self.render(template,context,partials)}if(!value)return;if(isArray(value)){for(var j=0,valueLength=value.length;j<valueLength;++j){buffer+=this.renderTokens(token[4],context.push(value[j]),partials,originalTemplate)}}else if(typeof value==="object"||typeof value==="string"||typeof value==="number"){buffer+=this.renderTokens(token[4],context.push(value),partials,originalTemplate)}else if(isFunction(value)){if(typeof originalTemplate!=="string")throw new Error("Cannot use higher-order sections without the original template");value=value.call(context.view,originalTemplate.slice(token[3],token[5]),subRender);if(value!=null)buffer+=value}else{buffer+=this.renderTokens(token[4],context,partials,originalTemplate)}return buffer};Writer.prototype.renderInverted=function renderInverted(token,context,partials,originalTemplate){var value=context.lookup(token[1]);if(!value||isArray(value)&&value.length===0)return this.renderTokens(token[4],context,partials,originalTemplate)};Writer.prototype.renderPartial=function renderPartial(token,context,partials){if(!partials)return;var value=isFunction(partials)?partials(token[1]):partials[token[1]];if(value!=null)return this.renderTokens(this.parse(value),context,partials,value)};Writer.prototype.unescapedValue=function unescapedValue(token,context){var value=context.lookup(token[1]);if(value!=null)return value};Writer.prototype.escapedValue=function escapedValue(token,context){var value=context.lookup(token[1]);if(value!=null)return mustache.escape(value)};Writer.prototype.rawValue=function rawValue(token){return token[1]};mustache.name="mustache.js";mustache.version="2.2.1";mustache.tags=["{{","}}"];var defaultWriter=new Writer;mustache.clearCache=function clearCache(){return defaultWriter.clearCache()};mustache.parse=function parse(template,tags){return defaultWriter.parse(template,tags)};mustache.render=function render(template,view,partials){if(typeof template!=="string"){throw new TypeError('Invalid template! Template should be a "string" '+'but "'+typeStr(template)+'" was given as the first '+"argument for mustache#render(template, view, partials)")}return defaultWriter.render(template,view,partials)};mustache.to_html=function to_html(template,view,partials,send){var result=mustache.render(template,view,partials);if(isFunction(send)){send(result)}else{return result}};mustache.escape=escapeHtml;mustache.Scanner=Scanner;mustache.Context=Context;mustache.Writer=Writer});
+/*!
+ * mustache.js - Logic-less {{mustache}} templates with JavaScript
+ * http://github.com/janl/mustache.js
+ */
+
+/*global define: false Mustache: true*/
+
+
+(function defineMustache (global, factory) {
+  if (typeof exports === 'object' && exports && typeof exports.nodeName !== 'string') {
+    factory(exports); // CommonJS
+  } else if (typeof define === 'function' && define.amd) {
+    define(['exports'], factory); // AMD
+  } else {
+    global.Mustache = {};
+    factory(global.Mustache); // script, wsh, asp
+  }
+}(this, function mustacheFactory (mustache) {
+
+  var objectToString = Object.prototype.toString;
+  var isArray = Array.isArray || function isArrayPolyfill (object) {
+    return objectToString.call(object) === '[object Array]';
+  };
+
+  function isFunction (object) {
+    return typeof object === 'function';
+  }
+
+  /**
+   * More correct typeof string handling array
+   * which normally returns typeof 'object'
+   */
+  function typeStr (obj) {
+    return isArray(obj) ? 'array' : typeof obj;
+  }
+
+  function escapeRegExp (string) {
+    return string.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
+  }
+
+  /**
+   * Null safe way of checking whether or not an object,
+   * including its prototype, has a given property
+   */
+  function hasProperty (obj, propName) {
+    return obj != null && typeof obj === 'object' && (propName in obj);
+  }
+
+  // Workaround for https://issues.apache.org/jira/browse/COUCHDB-577
+  // See https://github.com/janl/mustache.js/issues/189
+  var regExpTest = RegExp.prototype.test;
+  function testRegExp (re, string) {
+    return regExpTest.call(re, string);
+  }
+
+  var nonSpaceRe = /\S/;
+  function isWhitespace (string) {
+    return !testRegExp(nonSpaceRe, string);
+  }
+
+  var entityMap = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+    '/': '&#x2F;',
+    '`': '&#x60;',
+    '=': '&#x3D;'
+  };
+
+  function escapeHtml (string) {
+    return String(string).replace(/[&<>"'`=\/]/g, function fromEntityMap (s) {
+      return entityMap[s];
+    });
+  }
+
+  var whiteRe = /\s*/;
+  var spaceRe = /\s+/;
+  var equalsRe = /\s*=/;
+  var curlyRe = /\s*\}/;
+  var tagRe = /#|\^|\/|>|\{|&|=|!/;
+
+  /**
+   * Breaks up the given `template` string into a tree of tokens. If the `tags`
+   * argument is given here it must be an array with two string values: the
+   * opening and closing tags used in the template (e.g. [ "<%", "%>" ]). Of
+   * course, the default is to use mustaches (i.e. mustache.tags).
+   *
+   * A token is an array with at least 4 elements. The first element is the
+   * mustache symbol that was used inside the tag, e.g. "#" or "&". If the tag
+   * did not contain a symbol (i.e. {{myValue}}) this element is "name". For
+   * all text that appears outside a symbol this element is "text".
+   *
+   * The second element of a token is its "value". For mustache tags this is
+   * whatever else was inside the tag besides the opening symbol. For text tokens
+   * this is the text itself.
+   *
+   * The third and fourth elements of the token are the start and end indices,
+   * respectively, of the token in the original template.
+   *
+   * Tokens that are the root node of a subtree contain two more elements: 1) an
+   * array of tokens in the subtree and 2) the index in the original template at
+   * which the closing tag for that section begins.
+   */
+  function parseTemplate (template, tags) {
+    if (!template)
+      return [];
+
+    var sections = [];     // Stack to hold section tokens
+    var tokens = [];       // Buffer to hold the tokens
+    var spaces = [];       // Indices of whitespace tokens on the current line
+    var hasTag = false;    // Is there a {{tag}} on the current line?
+    var nonSpace = false;  // Is there a non-space char on the current line?
+
+    // Strips all whitespace tokens array for the current line
+    // if there was a {{#tag}} on it and otherwise only space.
+    function stripSpace () {
+      if (hasTag && !nonSpace) {
+        while (spaces.length)
+          delete tokens[spaces.pop()];
+      } else {
+        spaces = [];
+      }
+
+      hasTag = false;
+      nonSpace = false;
+    }
+
+    var openingTagRe, closingTagRe, closingCurlyRe;
+    function compileTags (tagsToCompile) {
+      if (typeof tagsToCompile === 'string')
+        tagsToCompile = tagsToCompile.split(spaceRe, 2);
+
+      if (!isArray(tagsToCompile) || tagsToCompile.length !== 2)
+        throw new Error('Invalid tags: ' + tagsToCompile);
+
+      openingTagRe = new RegExp(escapeRegExp(tagsToCompile[0]) + '\\s*');
+      closingTagRe = new RegExp('\\s*' + escapeRegExp(tagsToCompile[1]));
+      closingCurlyRe = new RegExp('\\s*' + escapeRegExp('}' + tagsToCompile[1]));
+    }
+
+    compileTags(tags || mustache.tags);
+
+    var scanner = new Scanner(template);
+
+    var start, type, value, chr, token, openSection;
+    while (!scanner.eos()) {
+      start = scanner.pos;
+
+      // Match any text between tags.
+      value = scanner.scanUntil(openingTagRe);
+
+      if (value) {
+        for (var i = 0, valueLength = value.length; i < valueLength; ++i) {
+          chr = value.charAt(i);
+
+          if (isWhitespace(chr)) {
+            spaces.push(tokens.length);
+          } else {
+            nonSpace = true;
+          }
+
+          tokens.push([ 'text', chr, start, start + 1 ]);
+          start += 1;
+
+          // Check for whitespace on the current line.
+          if (chr === '\n')
+            stripSpace();
+        }
+      }
+
+      // Match the opening tag.
+      if (!scanner.scan(openingTagRe))
+        break;
+
+      hasTag = true;
+
+      // Get the tag type.
+      type = scanner.scan(tagRe) || 'name';
+      scanner.scan(whiteRe);
+
+      // Get the tag value.
+      if (type === '=') {
+        value = scanner.scanUntil(equalsRe);
+        scanner.scan(equalsRe);
+        scanner.scanUntil(closingTagRe);
+      } else if (type === '{') {
+        value = scanner.scanUntil(closingCurlyRe);
+        scanner.scan(curlyRe);
+        scanner.scanUntil(closingTagRe);
+        type = '&';
+      } else {
+        value = scanner.scanUntil(closingTagRe);
+      }
+
+      // Match the closing tag.
+      if (!scanner.scan(closingTagRe))
+        throw new Error('Unclosed tag at ' + scanner.pos);
+
+      token = [ type, value, start, scanner.pos ];
+      tokens.push(token);
+
+      if (type === '#' || type === '^') {
+        sections.push(token);
+      } else if (type === '/') {
+        // Check section nesting.
+        openSection = sections.pop();
+
+        if (!openSection)
+          throw new Error('Unopened section "' + value + '" at ' + start);
+
+        if (openSection[1] !== value)
+          throw new Error('Unclosed section "' + openSection[1] + '" at ' + start);
+      } else if (type === 'name' || type === '{' || type === '&') {
+        nonSpace = true;
+      } else if (type === '=') {
+        // Set the tags for the next time around.
+        compileTags(value);
+      }
+    }
+
+    // Make sure there are no open sections when we're done.
+    openSection = sections.pop();
+
+    if (openSection)
+      throw new Error('Unclosed section "' + openSection[1] + '" at ' + scanner.pos);
+
+    return nestTokens(squashTokens(tokens));
+  }
+
+  /**
+   * Combines the values of consecutive text tokens in the given `tokens` array
+   * to a single token.
+   */
+  function squashTokens (tokens) {
+    var squashedTokens = [];
+
+    var token, lastToken;
+    for (var i = 0, numTokens = tokens.length; i < numTokens; ++i) {
+      token = tokens[i];
+
+      if (token) {
+        if (token[0] === 'text' && lastToken && lastToken[0] === 'text') {
+          lastToken[1] += token[1];
+          lastToken[3] = token[3];
+        } else {
+          squashedTokens.push(token);
+          lastToken = token;
+        }
+      }
+    }
+
+    return squashedTokens;
+  }
+
+  /**
+   * Forms the given array of `tokens` into a nested tree structure where
+   * tokens that represent a section have two additional items: 1) an array of
+   * all tokens that appear in that section and 2) the index in the original
+   * template that represents the end of that section.
+   */
+  function nestTokens (tokens) {
+    var nestedTokens = [];
+    var collector = nestedTokens;
+    var sections = [];
+
+    var token, section;
+    for (var i = 0, numTokens = tokens.length; i < numTokens; ++i) {
+      token = tokens[i];
+
+      switch (token[0]) {
+        case '#':
+        case '^':
+          collector.push(token);
+          sections.push(token);
+          collector = token[4] = [];
+          break;
+        case '/':
+          section = sections.pop();
+          section[5] = token[2];
+          collector = sections.length > 0 ? sections[sections.length - 1][4] : nestedTokens;
+          break;
+        default:
+          collector.push(token);
+      }
+    }
+
+    return nestedTokens;
+  }
+
+  /**
+   * A simple string scanner that is used by the template parser to find
+   * tokens in template strings.
+   */
+  function Scanner (string) {
+    this.string = string;
+    this.tail = string;
+    this.pos = 0;
+  }
+
+  /**
+   * Returns `true` if the tail is empty (end of string).
+   */
+  Scanner.prototype.eos = function eos () {
+    return this.tail === '';
+  };
+
+  /**
+   * Tries to match the given regular expression at the current position.
+   * Returns the matched text if it can match, the empty string otherwise.
+   */
+  Scanner.prototype.scan = function scan (re) {
+    var match = this.tail.match(re);
+
+    if (!match || match.index !== 0)
+      return '';
+
+    var string = match[0];
+
+    this.tail = this.tail.substring(string.length);
+    this.pos += string.length;
+
+    return string;
+  };
+
+  /**
+   * Skips all text until the given regular expression can be matched. Returns
+   * the skipped string, which is the entire tail if no match can be made.
+   */
+  Scanner.prototype.scanUntil = function scanUntil (re) {
+    var index = this.tail.search(re), match;
+
+    switch (index) {
+      case -1:
+        match = this.tail;
+        this.tail = '';
+        break;
+      case 0:
+        match = '';
+        break;
+      default:
+        match = this.tail.substring(0, index);
+        this.tail = this.tail.substring(index);
+    }
+
+    this.pos += match.length;
+
+    return match;
+  };
+
+  /**
+   * Represents a rendering context by wrapping a view object and
+   * maintaining a reference to the parent context.
+   */
+  function Context (view, parentContext) {
+    this.view = view;
+    this.cache = { '.': this.view };
+    this.parent = parentContext;
+  }
+
+  /**
+   * Creates a new context using the given view with this context
+   * as the parent.
+   */
+  Context.prototype.push = function push (view) {
+    return new Context(view, this);
+  };
+
+  /**
+   * Returns the value of the given name in this context, traversing
+   * up the context hierarchy if the value is absent in this context's view.
+   */
+  Context.prototype.lookup = function lookup (name) {
+    var cache = this.cache;
+
+    var value;
+    if (cache.hasOwnProperty(name)) {
+      value = cache[name];
+    } else {
+      var context = this, names, index, lookupHit = false;
+
+      while (context) {
+        if (name.indexOf('.') > 0) {
+          value = context.view;
+          names = name.split('.');
+          index = 0;
+
+          /**
+           * Using the dot notion path in `name`, we descend through the
+           * nested objects.
+           *
+           * To be certain that the lookup has been successful, we have to
+           * check if the last object in the path actually has the property
+           * we are looking for. We store the result in `lookupHit`.
+           *
+           * This is specially necessary for when the value has been set to
+           * `undefined` and we want to avoid looking up parent contexts.
+           **/
+          while (value != null && index < names.length) {
+            if (index === names.length - 1)
+              lookupHit = hasProperty(value, names[index]);
+
+            value = value[names[index++]];
+          }
+        } else {
+          value = context.view[name];
+          lookupHit = hasProperty(context.view, name);
+        }
+
+        if (lookupHit)
+          break;
+
+        context = context.parent;
+      }
+
+      cache[name] = value;
+    }
+
+    if (isFunction(value))
+      value = value.call(this.view);
+
+    return value;
+  };
+
+  /**
+   * A Writer knows how to take a stream of tokens and render them to a
+   * string, given a context. It also maintains a cache of templates to
+   * avoid the need to parse the same template twice.
+   */
+  function Writer () {
+    this.cache = {};
+  }
+
+  /**
+   * Clears all cached templates in this writer.
+   */
+  Writer.prototype.clearCache = function clearCache () {
+    this.cache = {};
+  };
+
+  /**
+   * Parses and caches the given `template` and returns the array of tokens
+   * that is generated from the parse.
+   */
+  Writer.prototype.parse = function parse (template, tags) {
+    var cache = this.cache;
+    var tokens = cache[template];
+
+    if (tokens == null)
+      tokens = cache[template] = parseTemplate(template, tags);
+
+    return tokens;
+  };
+
+  /**
+   * High-level method that is used to render the given `template` with
+   * the given `view`.
+   *
+   * The optional `partials` argument may be an object that contains the
+   * names and templates of partials that are used in the template. It may
+   * also be a function that is used to load partial templates on the fly
+   * that takes a single argument: the name of the partial.
+   */
+  Writer.prototype.render = function render (template, view, partials) {
+    var tokens = this.parse(template);
+    var context = (view instanceof Context) ? view : new Context(view);
+    return this.renderTokens(tokens, context, partials, template);
+  };
+
+  /**
+   * Low-level method that renders the given array of `tokens` using
+   * the given `context` and `partials`.
+   *
+   * Note: The `originalTemplate` is only ever used to extract the portion
+   * of the original template that was contained in a higher-order section.
+   * If the template doesn't use higher-order sections, this argument may
+   * be omitted.
+   */
+  Writer.prototype.renderTokens = function renderTokens (tokens, context, partials, originalTemplate) {
+    var buffer = '';
+
+    var token, symbol, value;
+    for (var i = 0, numTokens = tokens.length; i < numTokens; ++i) {
+      value = undefined;
+      token = tokens[i];
+      symbol = token[0];
+
+      if (symbol === '#') value = this.renderSection(token, context, partials, originalTemplate);
+      else if (symbol === '^') value = this.renderInverted(token, context, partials, originalTemplate);
+      else if (symbol === '>') value = this.renderPartial(token, context, partials, originalTemplate);
+      else if (symbol === '&') value = this.unescapedValue(token, context);
+      else if (symbol === 'name') value = this.escapedValue(token, context);
+      else if (symbol === 'text') value = this.rawValue(token);
+
+      if (value !== undefined)
+        buffer += value;
+    }
+
+    return buffer;
+  };
+
+  Writer.prototype.renderSection = function renderSection (token, context, partials, originalTemplate) {
+    var self = this;
+    var buffer = '';
+    var value = context.lookup(token[1]);
+
+    // This function is used to render an arbitrary template
+    // in the current context by higher-order sections.
+    function subRender (template) {
+      return self.render(template, context, partials);
+    }
+
+    if (!value) return;
+
+    if (isArray(value)) {
+      for (var j = 0, valueLength = value.length; j < valueLength; ++j) {
+        buffer += this.renderTokens(token[4], context.push(value[j]), partials, originalTemplate);
+      }
+    } else if (typeof value === 'object' || typeof value === 'string' || typeof value === 'number') {
+      buffer += this.renderTokens(token[4], context.push(value), partials, originalTemplate);
+    } else if (isFunction(value)) {
+      if (typeof originalTemplate !== 'string')
+        throw new Error('Cannot use higher-order sections without the original template');
+
+      // Extract the portion of the original template that the section contains.
+      value = value.call(context.view, originalTemplate.slice(token[3], token[5]), subRender);
+
+      if (value != null)
+        buffer += value;
+    } else {
+      buffer += this.renderTokens(token[4], context, partials, originalTemplate);
+    }
+    return buffer;
+  };
+
+  Writer.prototype.renderInverted = function renderInverted (token, context, partials, originalTemplate) {
+    var value = context.lookup(token[1]);
+
+    // Use JavaScript's definition of falsy. Include empty arrays.
+    // See https://github.com/janl/mustache.js/issues/186
+    if (!value || (isArray(value) && value.length === 0))
+      return this.renderTokens(token[4], context, partials, originalTemplate);
+  };
+
+  Writer.prototype.renderPartial = function renderPartial (token, context, partials) {
+    if (!partials) return;
+
+    var value = isFunction(partials) ? partials(token[1]) : partials[token[1]];
+    if (value != null)
+      return this.renderTokens(this.parse(value), context, partials, value);
+  };
+
+  Writer.prototype.unescapedValue = function unescapedValue (token, context) {
+    var value = context.lookup(token[1]);
+    if (value != null)
+      return value;
+  };
+
+  Writer.prototype.escapedValue = function escapedValue (token, context) {
+    var value = context.lookup(token[1]);
+    if (value != null)
+      return mustache.escape(value);
+  };
+
+  Writer.prototype.rawValue = function rawValue (token) {
+    return token[1];
+  };
+
+  mustache.name = 'mustache.js';
+  mustache.version = '2.2.1';
+  mustache.tags = [ '{{', '}}' ];
+
+  // All high-level mustache.* functions use this writer.
+  var defaultWriter = new Writer();
+
+  /**
+   * Clears all cached templates in the default writer.
+   */
+  mustache.clearCache = function clearCache () {
+    return defaultWriter.clearCache();
+  };
+
+  /**
+   * Parses and caches the given template in the default writer and returns the
+   * array of tokens it contains. Doing this ahead of time avoids the need to
+   * parse templates on the fly as they are rendered.
+   */
+  mustache.parse = function parse (template, tags) {
+    return defaultWriter.parse(template, tags);
+  };
+
+  /**
+   * Renders the `template` with the given `view` and `partials` using the
+   * default writer.
+   */
+  mustache.render = function render (template, view, partials) {
+    if (typeof template !== 'string') {
+      throw new TypeError('Invalid template! Template should be a "string" ' +
+                          'but "' + typeStr(template) + '" was given as the first ' +
+                          'argument for mustache#render(template, view, partials)');
+    }
+
+    return defaultWriter.render(template, view, partials);
+  };
+
+  // This is here for backwards compatibility with 0.4.x.,
+  /*eslint-disable */ // eslint wants camel cased function name
+  mustache.to_html = function to_html (template, view, partials, send) {
+    /*eslint-enable*/
+
+    var result = mustache.render(template, view, partials);
+
+    if (isFunction(send)) {
+      send(result);
+    } else {
+      return result;
+    }
+  };
+
+  // Export the escaping function so that the user may override it.
+  // See https://github.com/janl/mustache.js/issues/244
+  mustache.escape = escapeHtml;
+
+  // Export these mainly for testing, but also for advanced usage.
+  mustache.Scanner = Scanner;
+  mustache.Context = Context;
+  mustache.Writer = Writer;
+
+}));
+/*! jQuery Mustache - v0.2.8 - 2013-06-23
+* https://github.com/jonnyreeves/jquery-Mustache
+* Copyright (c) 2013 Jonny Reeves; Licensed MIT */
+
+/*global jQuery, window */
+
+(function ($, window) {
+	'use strict';
+
+	var templateMap = {},
+		instance = null,
+		options = {
+			// Should an error be thrown if an attempt is made to render a non-existent template.  If false, the
+			// operation will fail silently.
+			warnOnMissingTemplates: false,
+
+			// Should an error be thrown if an attempt is made to overwrite a template which has already been added.
+			// If true the original template will be overwritten with the new value.
+			allowOverwrite: true,
+
+			// The 'type' attribute which you use to denoate a Mustache Template in the DOM; eg:
+			// `<script type="text/html" id="my-template"></script>`
+			domTemplateType: 'text/html',
+
+			// Specifies the `dataType` attribute used when external templates are loaded.
+			externalTemplateDataType: 'text'
+		};
+
+	function getMustache() {
+		// Lazily retrieve Mustache from the window global if it hasn't been defined by
+		// the User.
+		if (instance === null) {
+			instance = window.Mustache;
+			if (instance === void 0) {
+				$.error("Failed to locate Mustache instance, are you sure it has been loaded?");
+			}
+		}
+		return instance;
+	}
+
+	/**
+	 * @return {boolean} if the supplied templateName has been added.
+	 */
+	function has(templateName) {
+		return templateMap[templateName] !== void 0;
+	}
+
+	/**
+	 * Registers a template so that it can be used by $.Mustache.
+	 *
+	 * @param templateName		A name which uniquely identifies this template.
+	 * @param templateHtml		The HTML which makes us the template; this will be rendered by Mustache when render()
+	 *							is invoked.
+	 * @throws					If options.allowOverwrite is false and the templateName has already been registered.
+	 */
+	function add(templateName, templateHtml) {
+		if (!options.allowOverwrite && has(templateName)) {
+			$.error('TemplateName: ' + templateName + ' is already mapped.');
+			return;
+		}
+		templateMap[templateName] = $.trim(templateHtml);
+	}
+
+	/**
+	 * Adds one or more tempaltes from the DOM using either the supplied templateElementIds or by retrieving all script
+	 * tags of the 'domTemplateType'.  Templates added in this fashion will be registered with their elementId value.
+	 *
+	 * @param [...templateElementIds]	List of element id's present on the DOM which contain templates to be added; 
+	 *									if none are supplied all script tags that are of the same type as the 
+	 *									`options.domTemplateType` configuration value will be added.
+	 */
+	function addFromDom() {
+		var templateElementIds;
+
+		// If no args are supplied, all script blocks will be read from the document.
+		if (arguments.length === 0) {
+			templateElementIds = $('script[type="' + options.domTemplateType + '"]').map(function () {
+				return this.id;
+			});
+		}
+		else {
+			templateElementIds = $.makeArray(arguments);
+		}
+
+		$.each(templateElementIds, function() {
+			var templateElement = document.getElementById(this);
+
+			if (templateElement === null) {
+				$.error('No such elementId: #' + this);
+			}
+			else {
+				add(this, $(templateElement).html());
+			}
+		});
+	}
+
+	/**
+	 * Removes a template, the contents of the removed Template will be returned.
+	 *
+	 * @param templateName		The name of the previously registered Mustache template that you wish to remove.
+	 * @returns					String which represents the raw content of the template.
+	 */
+	function remove(templateName) {
+		var result = templateMap[templateName];
+		delete templateMap[templateName];
+		return result;
+	}
+
+	/**
+	 * Removes all templates and tells Mustache to flush its cache.
+	 */
+	function clear() {
+		templateMap = {};
+		getMustache().clearCache();
+	}
+
+	/**
+	 * Renders a previously added Mustache template using the supplied templateData object.  Note if the supplied
+	 * templateName doesn't exist an empty String will be returned.
+	 */
+	function render(templateName, templateData) {
+		if (!has(templateName)) {
+			if (options.warnOnMissingTemplates) {
+				$.error('No template registered for: ' + templateName);
+			}
+			return '';
+		}
+		return getMustache().to_html(templateMap[templateName], templateData, templateMap);
+	}
+
+	/**
+	 * Loads the external Mustache templates located at the supplied URL and registers them for later use.  This method
+	 * returns a jQuery Promise and also support an `onComplete` callback.
+	 *
+	 * @param url			URL of the external Mustache template file to load.
+	 * @param onComplete	Optional callback function which will be invoked when the templates from the supplied URL
+	 *						have been loaded and are ready for use.
+	 * @returns				jQuery deferred promise which will complete when the templates have been loaded and are
+	 *						ready for use.
+	 */
+	function load(url, onComplete) {
+		return $.ajax({
+				url: url,
+				dataType: options.externalTemplateDataType
+			}).done(function (templates) {
+				$(templates).filter('script').each(function (i, el) {
+					add(el.id, $(el).html());
+				});
+
+				if ($.isFunction(onComplete)) {
+					onComplete();
+				}
+			});
+	}
+
+	/**
+	 * Returns an Array of templateNames which have been registered and can be retrieved via
+	 * $.Mustache.render() or $(element).mustache().
+	 */
+	function templates() {
+		return $.map(templateMap, function (value, key) {
+			return key;
+		});
+	}
+
+	// Expose the public methods on jQuery.Mustache
+	$.Mustache = {
+		options: options,
+		load: load,
+		has: has,
+		add: add,
+		addFromDom: addFromDom,
+		remove: remove,
+		clear: clear,
+		render: render,
+		templates: templates,
+		instance: instance
+	};
+
+	/**
+	 * Renders one or more viewModels into the current jQuery element.
+	 *
+	 * @param templateName	The name of the Mustache template you wish to render, Note that the
+	 *						template must have been previously loaded and / or added.
+	 * @param templateData	One or more JavaScript objects which will be used to render the Mustache
+	 *						template.
+	 * @param options.method	jQuery method to use when rendering, defaults to 'append'.
+	 */
+	$.fn.mustache = function (templateName, templateData, options) {
+		var settings = $.extend({
+			method:	'append'
+		}, options);
+
+		var renderTemplate = function (obj, viewModel) {
+			$(obj)[settings.method](render(templateName, viewModel));
+		};
+
+		return this.each(function () {
+			var element = this;
+
+			// Render a collection of viewModels.
+			if ($.isArray(templateData)) {
+				$.each(templateData, function () {
+					renderTemplate(element, this);
+				});
+			}
+
+			// Render a single viewModel.
+			else {
+				renderTemplate(element, templateData);
+			}
+		});
+	};
+
+}(window.jQuery||window.Zepto, window));
 (function(){"use strict";var a;a=jQuery,a.fn.extend({animateCSS:function(b,c){var d,e,f,g,h,i,j,k,l,m;return k={effect:b,delay:0,animationClass:"animated",infinite:!1,callback:c,duration:1e3,debug:!1},l="webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend",k=a.extend(k,c),h=function(a){return e(a)},e=function(a){return k.infinite===!0&&(k.animationClass+=" infinite"),setTimeout(function(){return j(a),m(a),d(a),g(a)},k.delay)},d=function(a){return a.addClass(k.effect+" "+k.animationClass+" ")},m=function(a){return"hidden"===a.css("visibility")&&a.css("visibility","visible"),a.is(":hidden")?a.show():void 0},i=function(a){return a.removeClass(k.effect+" "+k.animationClass)},j=function(a){return a.css({"-webkit-animation-duration":k.duration+"ms","-moz-animation-duration":k.duration+"ms","-o-animation-duration":k.duration+"ms","animation-duration":k.duration+"ms"})},f=function(a){return k.infinite===!1&&i(a),"function"==typeof k.callback?k.callback.call(a):void 0},g=function(a){return a.one(l,function(){return f(a)})},this.each(function(){return h(a(this))})}})}).call(this);
 /*! jQuery UI - v1.11.4+CommonJS - 2015-08-28
 * http://jqueryui.com
@@ -51455,48 +52299,44 @@ L.Control.w3w = L.Control.extend({
 /* exported utility */
 
 
+'use strict';
+
 window.COPO = window.COPO || {};
 
 COPO.utility = {
-  urlParam: function(name){
+  urlParam: function urlParam(name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     if (!results) return null;
     return results[1] || 0;
   },
 
-  ujsLink: function(verb, text, path){
-    var output =  $('<a data-remote="true" rel="nofollow" data-method="' + verb +'" href="' + path +'">' + text +'</a>')
-    return output
+  ujsLink: function ujsLink(verb, text, path) {
+    var output = $('<a data-remote="true" rel="nofollow" data-method="' + verb + '" href="' + path + '">' + text + '</a>');
+    return output;
   },
 
-  deleteCheckinLink: function(checkin){
-    return COPO.utility.ujsLink('delete',
-      '<i class="material-icons right red-text">delete_forever</i>' ,
-      window.location.pathname + '/checkins/' + checkin.id )
-      .attr('data-confirm', 'Are you sure?').prop('outerHTML')
+  deleteCheckinLink: function deleteCheckinLink(checkin) {
+    return COPO.utility.ujsLink('delete', '<i class="material-icons right red-text">delete_forever</i>', window.location.pathname + '/checkins/' + checkin.id).attr('class', 'right').attr('data-confirm', 'Are you sure?').prop('outerHTML');
   },
 
-  fogCheckinLink: function(checkin, foggedClass, fogId){
-    return COPO.utility.ujsLink('put',
-      '<i class="material-icons">cloud</i>' ,
-      window.location.pathname + '/checkins/' + checkin.id )
-      .attr('id', fogId + checkin.id).attr('class', foggedClass).prop('outerHTML')
+  fogCheckinLink: function fogCheckinLink(checkin, foggedClass, fogId) {
+    return COPO.utility.ujsLink('put', '<i class="material-icons">cloud</i>', window.location.pathname + '/checkins/' + checkin.id).attr('id', fogId + checkin.id).attr('class', foggedClass).prop('outerHTML');
   },
 
-  createCheckinLink: function(coords){
+  createCheckinLink: function createCheckinLink(coords) {
     var checkin = {
       'checkin[lat]': coords.lat.toFixed(6),
       'checkin[lng]': coords.lng.toFixed(6)
-    }
+    };
     var checkinPath = location.pathname + '/checkins?' + $.param(checkin);
     return COPO.utility.ujsLink('post', 'Create checkin here', checkinPath).prop('outerHTML');
   },
 
-  friendsName: function(friend){
-    return friend.username ? friend.username : friend.email.split('@')[0]
+  friendsName: function friendsName(friend) {
+    return friend.username ? friend.username : friend.email.split('@')[0];
   },
 
-  fadeUp: function(target){
+  fadeUp: function fadeUp(target) {
     $(target).velocity({
       opacity: 0,
       marginTop: '-40px'
@@ -51504,60 +52344,63 @@ COPO.utility = {
       duration: 375,
       easing: 'easeOutExpo',
       queue: false,
-      complete: function(){
+      complete: function complete() {
         $(target).remove();
       }
     });
   },
 
-  avatar: function(avatar, options){
-    options = $.extend(this.avatarDefaults, options)
-    if(avatar) {
-      return $.cloudinary.image(avatar.public_id, options).prop('outerHTML')
+  avatar: function avatar(_avatar, options) {
+    options = $.extend(this.avatarDefaults, options);
+    if (_avatar) {
+      return $.cloudinary.image(_avatar.public_id, options).prop('outerHTML');
     }
   },
 
-  avatarUrl: function(avatar, options){
-    options = $.extend(this.avatarDefaults, options)
-    if(avatar) {
-      return $.cloudinary.url(avatar.public_id, options)
+  avatarUrl: function avatarUrl(avatar, options) {
+    options = $.extend(this.avatarDefaults, options);
+    if (avatar) {
+      return $.cloudinary.url(avatar.public_id, options);
     }
   },
 
-  avatarDefaults: {"transformation":["60x60cAvatar"],"format":"png"},
+  avatarDefaults: { "transformation": ["60x60cAvatar"], "format": "png" },
 
-  initClipboard: function(selector, callback){
+  initClipboard: function initClipboard(selector, callback) {
 
     selector = selector || '.clip_button';
-    var client = new ZeroClipboard( $(selector) );
+    var client = new ZeroClipboard($(selector));
 
-    client.on( 'ready', function(event) {
+    client.on('ready', function (event) {
       // console.log( 'movie is loaded' );
       $('.clip_button').removeClass('hide');
 
-      client.on( 'copy', function(event) {
+      client.on('copy', function (event) {
         event.clipboardData.setData('text/plain', event.target.value);
       });
 
-      callback = callback || function(event){
+      callback = callback || function (event) {
         $('.material-tooltip').children('span').text('Copied');
-      }
+      };
 
-      client.on( 'aftercopy', function(event) {
+      client.on('aftercopy', function (event) {
         callback(event);
       });
-
     });
 
-    client.on( 'error', function(event) {
-      console.log( 'ZeroClipboard error of type "' + event.name + '": ' + event.message );
+    client.on('error', function (event) {
+      console.log('ZeroClipboard error of type "' + event.name + '": ' + event.message);
       ZeroClipboard.destroy();
     });
   },
 
-  gonFix: function(){
+  gonFix: function gonFix() {
     var contents = $('#gonvariables').html();
     $('#gonvariables').html(contents);
+  },
+
+  commaToNewline: function commaToNewline(string) {
+    return string.replace(/, /g, '\n');
   }
 };
 $(document).on('page:change', function() {
@@ -51791,145 +52634,139 @@ window.COPO.charts = {
   }
 }
 ;
+'use strict';
+
 window.COPO = window.COPO || {};
 window.COPO.maps = {
-  map: null,
-
-  initMap: function(customOptions){
+  initMap: function initMap(customOptions) {
+    if (document.getElementById('map')._leaflet) return;
     L.mapbox.accessToken = 'pk.eyJ1IjoiZ2FyeXNpdSIsImEiOiJjaWxjZjN3MTMwMDZhdnNtMnhsYmh4N3lpIn0.RAGGQ0OaM81HVe0OiAKE0w';
 
     var defaultOptions = {
       maxZoom: 18,
       minZoom: 1
-    }
+    };
 
     var options = $.extend(defaultOptions, customOptions);
-
-    map = L.mapbox.map('map', 'mapbox.light', options );
-
-    $(document).on('page:before-unload', function(){
-      map.stopLocate();
-    })
-
+    window.map = L.mapbox.map('map', 'mapbox.light', options);
   },
 
-  initMarkers: function(){
-    map.once('ready', function() {
-      COPO.maps.renderMarkers();
-      COPO.maps.bindMarkerListeners();
-      if(COPO.maps.allMarkers.getLayers().length){
-        map.fitBounds(COPO.maps.allMarkers.getBounds())
+  initMarkers: function initMarkers(checkins) {
+    map.once('ready', function () {
+      COPO.maps.renderMarkers(checkins);
+      COPO.maps.bindMarkerListeners(checkins);
+      if (COPO.maps.allMarkers.getLayers().length) {
+        map.fitBounds(COPO.maps.allMarkers.getBounds());
       } else {
-        map.once('locationfound', function(e) {
+        map.once('locationfound', function (e) {
           map.panTo(e.latlng);
-        })
+        });
       }
     });
   },
 
-  queueRefresh: function(){
-    map.once('zoomstart', function(e){
+  queueRefresh: function queueRefresh(checkins) {
+    map.once('zoomstart', function (e) {
       map.removeEventListener('popupclose');
-      COPO.maps.refreshMarkers();
-    })
-    map.once('popupclose', function(e){
-      COPO.maps.refreshMarkers();
-    })
+      COPO.maps.refreshMarkers(checkins);
+    });
+    map.once('popupclose', function (e) {
+      COPO.maps.refreshMarkers(checkins);
+    });
   },
 
-  refreshMarkers: function(){
+  refreshMarkers: function refreshMarkers(checkins) {
+    map.removeEventListener('popupclose');
+    map.closePopup();
     map.removeLayer(COPO.maps.markers);
     map.removeLayer(COPO.maps.last);
-    COPO.maps.renderMarkers();
-    COPO.maps.bindMarkerListeners();
+    COPO.maps.renderMarkers(checkins);
+    COPO.maps.bindMarkerListeners(checkins);
   },
 
-  renderMarkers: function(){
+  renderMarkers: function renderMarkers(checkins) {
     COPO.maps.allMarkers = new L.MarkerClusterGroup();
     COPO.maps.markers = new L.MarkerClusterGroup();
     COPO.maps.last = new L.MarkerClusterGroup();
-    var checkins = gon.checkins;
-      for (var i = 0; i < checkins.length; i++) {
-        var checkin = checkins[i]
-        var markerObject = {
-          icon: L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#ff6900' }),
-          title: 'ID: ' + checkin.id,
-          alt: 'ID: ' + checkin.id,
-          checkin: checkin
-        }
-        if (i === 0) {
-          markerObject.icon = L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#47b8e0' })
-          markerObject.title = 'ID: ' + checkin.id + ' - Most recent'
-        }
-        var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), markerObject);
-        COPO.maps.allMarkers.addLayer(marker);
-        if (i === 0) {
-          COPO.maps.last.addLayer(marker);
-        } else {
-          COPO.maps.markers.addLayer(marker);
-        }
+    for (var i = 0; i < checkins.length; i++) {
+      var checkin = checkins[i];
+      var markerObject = {
+        icon: L.mapbox.marker.icon({ 'marker-symbol': 'heliport', 'marker-color': '#ff6900' }),
+        title: 'ID: ' + checkin.id,
+        alt: 'checkin',
+        checkin: checkin
+      };
+      if (i === 0) {
+        markerObject.icon = L.mapbox.marker.icon({ 'marker-symbol': 'heliport', 'marker-color': '#47b8e0' });
+        markerObject.title = 'ID: ' + checkin.id + ' - Most recent';
+        markerObject.alt = 'lastCheckin';
       }
+      var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), markerObject);
+      COPO.maps.allMarkers.addLayer(marker);
+      if (i === 0) {
+        COPO.maps.last.addLayer(marker);
+      } else {
+        COPO.maps.markers.addLayer(marker);
+      }
+    }
     map.addLayer(COPO.maps.markers);
     map.addLayer(COPO.maps.last);
   },
 
-  bindMarkerListeners: function(){
-    COPO.maps.allMarkers.eachLayer(function(marker) {
-      COPO.maps.markerClickListener(marker);
-    })
+  bindMarkerListeners: function bindMarkerListeners(checkins) {
+    COPO.maps.allMarkers.eachLayer(function (marker) {
+      COPO.maps.markerClickListener(checkins, marker);
+    });
   },
 
-  markerClickListener: function(marker) {
-    marker.on('click', function(e) {
-      checkin = this.options.checkin;
-      if(!marker._popup){
-        template = COPO.maps.buildMarkerPopup(checkin);
+  markerClickListener: function markerClickListener(checkins, marker) {
+    marker.on('click', function (e) {
+      if (!marker._popup) {
+        var template = COPO.maps.buildMarkerPopup(checkin);
         marker.bindPopup(L.Util.template(template, checkin));
         marker.openPopup();
       }
-      if ($(".c-devices.a-show").length === 1){
+      if ($(".c-devices.a-show").length === 1) {
         $.get({
-          url: "/users/"+gon.current_user_id+"/devices/"+checkin.device_id+"/checkins/"+checkin.id,
+          url: "/users/" + gon.current_user_id + "/devices/" + checkin.device_id + "/checkins/" + checkin.id,
           dataType: "json"
-        }).done(function(data) {
-          $geocodedAddress = '<li class="address">Address: ' + data.address + '</li>'
+        }).done(function (data) {
+          var $geocodedAddress = '<li class="address">Address: ' + data.address + '</li>';
           $('.address').replaceWith($geocodedAddress);
-          gon.checkins[_.indexOf(gon.checkins, checkin)] = data;
-        })
+          checkins[_.indexOf(checkins, checkin)] = data;
+        });
       }
       map.panTo(this.getLatLng());
       COPO.maps.w3w.setCoordinates(e);
     });
   },
 
-  buildMarkerPopup: function(checkin){
+  buildMarkerPopup: function buildMarkerPopup(checkin) {
     var checkinTemp = {};
-    checkinTemp.id = checkin.id
+    checkinTemp.id = checkin.id;
     checkinTemp.lat = checkin.lat.toFixed(6);
     checkinTemp.lng = checkin.lng.toFixed(6);
     checkinTemp.created_at = new Date(checkin.created_at).toUTCString();
     checkinTemp.address = checkin.address;
     var foggedClass;
     checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
-    checkinTemp.foggedAddress = function(){
-      if(checkin.fogged){
-        return '<li class="foggedAddress">Fogged address: ' + checkin.fogged_area + '</li>'
+    checkinTemp.foggedAddress = function () {
+      if (checkin.fogged) {
+        return '<li class="foggedAddress">Fogged address: ' + checkin.fogged_area + '</li>';
       }
-    }
+    };
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
     var template = $('#markerPopupTmpl').html();
     return Mustache.render(template, checkinTemp);
   },
 
-  initControls: function(){
-    map.addControl(L.mapbox.geocoderControl('mapbox.places',
-      { position: 'topright',
-        keepOpen: true
-      }
-    ));
+  initControls: function initControls() {
+    map.addControl(L.mapbox.geocoderControl('mapbox.places', { position: 'topright',
+      keepOpen: true
+    }));
 
-    COPO.maps.w3w = new L.Control.w3w({apikey: '4AQOB5CT', position: 'topright'});
+    COPO.maps.w3w = new L.Control.w3w({ apikey: '4AQOB5CT', position: 'topright' });
     COPO.maps.w3w.addTo(map);
 
     COPO.maps.lc = L.control.locate({
@@ -51950,134 +52787,131 @@ window.COPO.maps = {
       }
 
     }).addTo(map);
-
   },
-}
 
-;
+  mapPinIcon: function mapPinIcon(public_id, color) {
+    // The iconClass is a named Cloudinary transform
+    // At the moment there are only two: 'map-pin' and
+    // 'map-pin-blue'
+    var iconClass;
+    color === 'blue' ? iconClass = 'map-pin-blue' : iconClass = 'map-pin';
+    return L.icon({
+      iconUrl: $.cloudinary.url(public_id, { format: 'png', transformation: iconClass }),
+      iconSize: [36, 52],
+      iconAnchor: [18, 49]
+    });
+  },
+
+  arrayToCluster: function arrayToCluster(markerArr, markerBuilderFn) {
+    if (!markerBuilderFn) {
+      return console.error('Marker building function undefined');
+    }
+    var cluster = markerArr.map(function (marker) {
+      return markerBuilderFn(marker);
+    }).filter(function (marker) {
+      return marker;
+    });
+    return new L.MarkerClusterGroup().addLayers(cluster);
+  },
+
+  makeMapPin: function makeMapPin(user, color, markerOptions) {
+    var checkin = user.lastCheckin;
+    if (checkin) {
+      var public_id = user.userinfo.avatar.public_id;
+      var defaults = {
+        icon: COPO.maps.mapPinIcon(public_id, color),
+        riseOnHover: true,
+        user: $.extend(true, {}, user.userinfo),
+        lastCheckin: checkin
+      };
+      markerOptions = $.extend({}, defaults, markerOptions);
+      return L.marker([checkin.lat, checkin.lng], markerOptions);
+    } else {
+      return false;
+    }
+  },
+
+  makeMarker: function makeMarker(checkin, markerOptions) {
+    var defaults = {
+      icon: L.mapbox.marker.icon({ 'marker-symbol': 'heliport', 'marker-color': '#ff6900' }),
+      title: 'ID: ' + checkin.id,
+      alt: 'ID: ' + checkin.id,
+      checkin: checkin
+    };
+    markerOptions = $.extend({}, defaults, markerOptions);
+    return L.marker([checkin.lat, checkin.lng], markerOptions);
+  }
+};
+'use strict';
+
 window.COPO = window.COPO || {};
 window.COPO.permissions = {
-  check_disabled: function(){
-    $('[data-switch=disallowed].permission-switch').each(function(){
-      var permission_id =  $(this).data().id;
-      if ($(this).find('input').prop('checked')){
-        COPO.permissions.toggle_switches_disabled(permission_id, true);
+  initSwitches: function initSwitches(permissionableType, user, permissions) {
+    COPO.permissions.setMasters(permissionableType, user, permissions);
+    COPO.permissions.masterChange(permissionableType, user, permissions);
+    COPO.permissions.switchChange(permissionableType, user, permissions);
+    COPO.permissions.checkDisabled(user);
+    COPO.permissions.checkBypass(user);
+  },
+
+  checkDisabled: function checkDisabled(user) {
+    $('[data-switchtype=disallowed].permission-switch').each(function () {
+      var PSWITCH = new PermissionSwitch(user, $(this));
+      if (PSWITCH.checked) {
+        PSWITCH.changeDisableSwitches(true);
       } else {
-        COPO.permissions.icon_toggle('disallowed', permission_id);
+        COPO.permissions.iconToggle('disallowed', PSWITCH.id);
       }
     });
   },
 
-  check_bypass: function(){
-    ['bypass_fogging', 'bypass_delay'].forEach(function(attribute){
-      $("[data-switch='"+attribute+"']").each(function(){
-        if ($(this).find('input').prop('checked')){
-          var permission_id =  $(this).data().id;
-          COPO.permissions.icon_toggle(attribute, permission_id);
+  checkBypass: function checkBypass(user) {
+    ['bypass_fogging', 'bypass_delay'].forEach(function (attribute) {
+      $('[data-switchtype=' + attribute + ']').each(function () {
+        var PSWITCH = new PermissionSwitch(user, $(this));
+        if (PSWITCH.checked) {
+          COPO.permissions.iconToggle(attribute, PSWITCH.id);
         }
       });
-    })
+    });
   },
 
-  set_masters: function(permissionables){
-    if (gon[permissionables]) {
-      gon[permissionables].forEach(function(permissionable){
-        var property = (permissionables === 'devices' ? 'device_id' : 'permissible_id')
-        var permissions = _.filter(gon.permissions, _.matchesProperty(property, permissionable.id))
-        $("div[data-id='"+permissionable.id+"'].master").each(function(){
-          var switches_checked = [];
-          var switch_type = $(this).data().switch;
-          permissions.forEach(function(permission){
-            var $switch = $("div[data-id='"+permission.id+"'][data-switch='"+switch_type+"'].permission-switch")
-            switches_checked.push($switch.find('input').prop("checked"))
-          })
-          var new_master_checked_state = _.every(switches_checked)
-          $(this).find('input').prop('checked', new_master_checked_state);
-          if (switch_type === "disallowed") {
-            $("div[data-id='"+permissionable.id+"'][data-switch=last_only].master").find('input').prop("checked", false);
-            element = $("div[data-id='"+ permissionable.id +"'].disable.master").find('input');
-            element.prop("disabled", new_master_checked_state);
-          }
-        })
-      })
+  setMasters: function setMasters(permissionableType, user, gonPermissions) {
+    if (gon[permissionableType]) {
+      gon[permissionableType].forEach(function (permissionable) {
+        var IDTYPE = permissionableType === 'devices' ? 'device_id' : 'permissible_id';
+        $('div[data-id=' + permissionable.id + '].master').each(function () {
+          var MSWITCH = new MasterSwitch(user, $(this), gonPermissions, IDTYPE);
+          MSWITCH.setState();
+        });
+      });
     }
   },
 
-  switch_change:function(permissionables){
-    $(".permission-switch").change(function( event ) {
-      var attribute = $(this).data().attribute;
-      var switch_type = $(this).data().switch;
-      var permission_id =  $(this).data().id;
-      COPO.permissions.icon_toggle(switch_type, permission_id);
-      var permission = _.find(gon.permissions, _.matchesProperty('id', permission_id));
-      var device_id = permission['device_id'];
-      if (permission[attribute].constructor === Boolean){
-        permission[attribute] = !permission[attribute]
-      } else {
-        permission[attribute] = COPO.permissions.new_privilege(permission[attribute], switch_type);
-      }
-
-      if (switch_type === "disallowed") {
-        $("div[data-id='"+permission_id+"'][data-switch=last_only].permission-switch").find('input').prop("checked", false);
-        COPO.permissions.toggle_switches_disabled(permission_id, $(this).find('input').prop("checked"));
-      }
-      COPO.permissions.set_masters(permissionables);
-
-      $.ajax({
-        url: "/users/"+gon.current_user_id+"/devices/"+device_id+"/permissions/"+permission_id+"",
-        type: 'PUT',
-        data: { permission: permission }
-      });
-    })
+  switchChange: function switchChange(permissionableType, user, gonPermissions) {
+    $(".permission-switch").change(function () {
+      var PSWITCH = new LocalSwitch(user, $(this), gonPermissions);
+      PSWITCH.toggleSwitch();
+      COPO.permissions.setMasters(permissionableType, user, gonPermissions);
+    });
   },
 
-  icon_toggle: function(switch_type, permission_id){
-    if (switch_type === 'bypass_fogging'){
-      $('#fogIcon'+permission_id).toggle();
-    } else if (switch_type === 'bypass_delay'){
-      $('#delayIcon'+permission_id).toggle();
-    } else if (switch_type === 'disallowed'){
-      $('#accessIcon'+permission_id).toggle();
-    }
+  masterChange: function masterChange(permissionableType, user, gonPermissions) {
+    $(".master").change(function () {
+      var IDTYPE = permissionableType === 'devices' ? 'device_id' : 'permissible_id';
+      var MSWITCH = new MasterSwitch(user, $(this), gonPermissions, IDTYPE);
+      MSWITCH.toggleSwitch();
+      MSWITCH.setState();
+    });
   },
 
-  master_change:function(permissionables){
-    $(".master").change(function( event ) {
-      var $master = $(this)
-      var master_checked = $master.find('input').prop("checked");
-      var master_type = $master.data().switch;
-      var id = $master.data().id;
-      var property = (permissionables === 'devices' ? 'device_id' : 'permissible_id')
-      var permissions = _.filter(gon.permissions, _.matchesProperty(property, id));
-      permissions.forEach(function(permission){
-        var $switch = $("div[data-id='"+permission.id+"'][data-switch='"+master_type+"'].permission-switch")
-        var switch_type = $switch.data().switch;
-        var checked = $switch.find('input').prop("checked")
-        var disabled = $switch.find('input').prop("disabled")
-        if ((disabled && switch_type === 'last_only')){
-          $master.find('input').prop("checked", false)
-        } else if (master_checked !== checked) {
-          $switch.find('input').prop("checked", master_checked);
-          $switch.trigger("change", [permissionables]);
-        }
-      })
-    })
-  },
-
-  toggle_switches_disabled: function(permission_id, newState){
-    element = $("div[data-id='"+ permission_id +"'].disable").find('input');
-    element.prop("disabled", newState);
-  },
-
-  new_privilege: function(current_privilege, switch_type){
-    if(current_privilege === "disallowed"){
-      return "complete"
-    } else if(switch_type === "disallowed"){
-      return "disallowed"
-    } else if(current_privilege === "complete"){
-      return "last_only"
-    } else if(current_privilege === "last_only"){
-      return "complete"
+  iconToggle: function iconToggle(switchtype, permissionId) {
+    if (switchtype === 'bypass_fogging') {
+      $('#fogIcon' + permissionId).toggle();
+    } else if (switchtype === 'bypass_delay') {
+      $('#delayIcon' + permissionId).toggle();
+    } else if (switchtype === 'disallowed') {
+      $('#accessIcon' + permissionId).toggle();
     }
   }
 };
@@ -52189,117 +53023,145 @@ window.COPO.slider = {
   }
 }
 ;
-class Switch {
-  constructor(user, domElement) {
+'use strict';
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var PermissionSwitch = (function () {
+  function PermissionSwitch(user, domElement) {
+    _classCallCheck(this, PermissionSwitch);
+
     this.user = user;
     this.id = domElement.data().id;
-    this.type = domElement.data().switch;
+    this.switchtype = domElement.data().switchtype;
     this.attribute = domElement.data().attribute;
     this.inputDomElement = domElement.find('input');
     this.checked = this.inputDomElement.prop('checked');
     this.disabled = this.inputDomElement.prop('disabled');
   }
 
-  changeDisableSwitches(state) {
-    $(`div[data-id=${this.id}][data-switch=last_only].permission-switch`).find('input').prop("checked", false);
-    $(`div[data-id=${this.id}].disable`).find('input').prop("disabled", state);
-  }
-}
+  _createClass(PermissionSwitch, [{
+    key: 'changeDisableSwitches',
+    value: function changeDisableSwitches(state) {
+      $('div[data-id=' + this.id + '][data-switchtype=last_only].permission-switch').find('input').prop("checked", false);
+      $('div[data-id=' + this.id + '].disable').find('input').prop("disabled", state);
+    }
+  }]);
 
-class PermissionSwitch extends Switch {
-  constructor(user, domElement, permissions) {
-    super(user, domElement);
+  return PermissionSwitch;
+})();
+
+var LocalSwitch = (function (_PermissionSwitch) {
+  _inherits(LocalSwitch, _PermissionSwitch);
+
+  function LocalSwitch(user, domElement, permissions) {
+    _classCallCheck(this, LocalSwitch);
+
+    _get(Object.getPrototypeOf(LocalSwitch.prototype), 'constructor', this).call(this, user, domElement);
     this.permission = _.find(permissions, _.matchesProperty('id', this.id));
     this.attributeState = this.permission[this.attribute];
   }
 
-  toggleSwitch() {
-    COPO.permissions.iconToggle(this.type, this.id);
-    if (this.type === "disallowed") {
-      this.changeDisableSwitches(this.checked);
+  _createClass(LocalSwitch, [{
+    key: 'toggleSwitch',
+    value: function toggleSwitch() {
+      COPO.permissions.iconToggle(this.switchtype, this.id);
+      if (this.switchtype === "disallowed") {
+        this.changeDisableSwitches(this.checked);
+      }
+      this.permission[this.attribute] = this.nextState();
+      $.ajax({
+        url: '/users/' + this.user + '/devices/' + this.permission['device_id'] + '/permissions/' + this.id,
+        type: 'PUT',
+        data: { permission: this.permission }
+      });
     }
-    this.permission[this.attribute] = this.nextState();
-    $.ajax({
-      url: `/users/${this.user}/devices/${this.permission['device_id']}/permissions/${this.id}`,
-      type: 'PUT',
-      data: { permission: this.permission }
-    });
-  }
-
-  nextState() {
-    if(this.attributeState === "disallowed") {
-      return "complete"
-    } else if(this.type === "disallowed") {
-      return "disallowed"
-    } else if(this.attributeState === "complete") {
-      return "last_only"
-    } else if(this.attributeState === "last_only") {
-      return "complete"
-    } else {
-      return !this.attributeState
+  }, {
+    key: 'nextState',
+    value: function nextState() {
+      if (this.attributeState === "disallowed") {
+        return "complete";
+      } else if (this.switchtype === "disallowed") {
+        return "disallowed";
+      } else if (this.attributeState === "complete") {
+        return "last_only";
+      } else if (this.attributeState === "last_only") {
+        return "complete";
+      } else {
+        return !this.attributeState;
+      }
     }
-  }
-}
+  }]);
 
-class MasterSwitch extends Switch {
-  constructor(user, domElement, permissions, idType) {
-    super(user, domElement);
+  return LocalSwitch;
+})(PermissionSwitch);
+
+var MasterSwitch = (function (_PermissionSwitch2) {
+  _inherits(MasterSwitch, _PermissionSwitch2);
+
+  function MasterSwitch(user, domElement, permissions, idType) {
+    _classCallCheck(this, MasterSwitch);
+
+    _get(Object.getPrototypeOf(MasterSwitch.prototype), 'constructor', this).call(this, user, domElement);
     this.permissions = permissions.filter(_.matchesProperty(idType, this.id));
   }
 
-  toggleSwitch() {
-    let self = this;
-    this.permissions.forEach(function(permission){
-      let pDomElement = $(`div[data-id=${permission.id}][data-switch=${self.type}].permission-switch`);
-      let pSwitch = new PermissionSwitch(self.user, pDomElement, self.permissions);
-      if ((pSwitch.disabled && pSwitch.type === 'last_only')){
-        self.inputDomElement.prop("checked", false)
-      } else if (self.checked !== pSwitch.checked) {
-        pSwitch.inputDomElement.prop("checked", self.checked);
-        pSwitch.checked = self.checked;
-        pSwitch.toggleSwitch();
-      }
-    })
-  }
-
-  setState() {
-    let switchesChecked = [];
-    let self = this;
-
-    this.permissions.forEach(function(permission){
-      let pDomElement = $(`div[data-id=${permission.id}][data-switch=${self.type}].permission-switch`);
-      switchesChecked.push(pDomElement.find('input').prop("checked"))
-    })
-    let newMasterCheckedState = _.every(switchesChecked)
-    this.inputDomElement.prop("checked", newMasterCheckedState)
-
-    if (this.type === "disallowed") {
-      $(`div[data-id=${self.id}][data-switch=last_only].master`).find('input').prop("checked", false);
-      let masters = $(`div[data-id=${self.id}].disable.master`).find('input');
-      masters.prop("disabled", newMasterCheckedState);
+  _createClass(MasterSwitch, [{
+    key: 'toggleSwitch',
+    value: function toggleSwitch() {
+      var SELF = this;
+      SELF.permissions.forEach(function (permission) {
+        var PDOMELEMENT = $('div[data-id=' + permission.id + '][data-switchtype=' + SELF.switchtype + '].permission-switch');
+        var PSWITCH = new LocalSwitch(SELF.user, PDOMELEMENT, SELF.permissions);
+        if (PSWITCH.disabled && PSWITCH.switchtype === 'last_only') {
+          SELF.inputDomElement.prop("checked", false);
+        } else if (SELF.checked !== PSWITCH.checked) {
+          PSWITCH.inputDomElement.prop("checked", SELF.checked);
+          PSWITCH.checked = SELF.checked;
+          PSWITCH.toggleSwitch();
+        }
+      });
     }
-  }
-}
-;
+  }, {
+    key: 'setState',
+    value: function setState() {
+      var SWITCHESCHECKED = [];
+      var SELF = this;
+
+      SELF.permissions.forEach(function (permission) {
+        var PDOMELEMENT = $('div[data-id=' + permission.id + '][data-switchtype=' + SELF.switchtype + '].permission-switch');
+        SWITCHESCHECKED.push(PDOMELEMENT.find('input').prop("checked"));
+      });
+      var NEWMASTERCHECKEDSTATE = _.every(SWITCHESCHECKED);
+      SELF.inputDomElement.prop("checked", NEWMASTERCHECKEDSTATE);
+
+      if (SELF.switchtype === "disallowed") {
+        $('div[data-id=' + SELF.id + '][data-switchtype=last_only].master').find('input').prop("checked", false);
+        var MASTERS = $('div[data-id=' + SELF.id + '].disable.master').find('input');
+        MASTERS.prop("disabled", NEWMASTERCHECKEDSTATE);
+      }
+    }
+  }]);
+
+  return MasterSwitch;
+})(PermissionSwitch);
 $(document).on('page:change', function() {
-  if (($(".c-approvals").length === 1) && ($(".a-new").length === 0)){
+  if (($(".c-approvals.a-apps").length === 1) || ($(".c-approvals.a-friends").length === 1)) {
     $('.tooltipped').tooltip({delay: 50});
-    COPO.permissions.set_masters('approved');
-    COPO.permissions.master_change('approved');
-    COPO.permissions.switch_change('approved');
-    COPO.permissions.check_disabled();
-    COPO.permissions.check_bypass();
+    COPO.permissions.initSwitches('approved', gon.current_user_id, gon.permissions)
   }
 })
 ;
 $(document).on('page:change', function() {
   if ($(".c-devices.a-index").length === 1) {
     COPO.utility.gonFix();
-    COPO.permissions.set_masters('devices');
-    COPO.permissions.master_change('devices');
-    COPO.permissions.switch_change('devices');
-    COPO.permissions.check_disabled();
-    COPO.permissions.check_bypass();
+    COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions)
     COPO.slider.initSliders(gon.devices);
     window.initPage = function(){
       $('.clip_button').off();
@@ -52392,14 +53254,14 @@ $(document).on('page:change', function() {
 $(document).on('page:change', function() {
   if ($(".c-devices.a-show").length === 1) {
     COPO.maps.initMap();
-    COPO.maps.initMarkers();
+    COPO.maps.initMarkers(gon.checkins);
     COPO.maps.initControls();
     // COPO.maps.lc.start();
 
-    $('li.tab').on('click', function() {
-      var tab = event.target.innerText
-      setTimeout(function(event) {
-        if (tab ==='CHART'){
+    $('li.tab').on('click', function(event) {
+      var tab = event.target.textContent
+      setTimeout(function() {
+        if (tab ==='Chart'){
           COPO.charts.refreshCharts(gon.checkins);
         } else {
           map.invalidateSize();
@@ -52417,8 +53279,8 @@ $(document).on('page:change', function() {
       coords.lng = e.latlng.lng.toFixed(6);
       coords.checkinLink = COPO.utility.createCheckinLink(e.latlng);
       template = $('#createCheckinTmpl').html();
-      template = Mustache.render(template, coords);
-      var popup = L.popup().setLatLng(e.latlng).setContent(template);
+      var content = Mustache.render(template, coords);
+      var popup = L.popup().setLatLng(e.latlng).setContent(content);
       popup.openOn(map);
     })
 
@@ -52435,13 +53297,12 @@ $(document).on('page:change', function() {
 $(document).on('page:change', function() {
   if ($(".c-friends.a-show_device").length === 1) {
     COPO.maps.initMap();
-    COPO.maps.initMarkers();
+    COPO.maps.initMarkers(gon.checkins);
     COPO.maps.initControls();
   }
 });
 
 $(document).on('ready page:change', function() {
-  // Target only the landing page (assuming at root of "/")
   if ($(".c-welcome.a-index").length > 0) {
     $("main").css('padding-top', '0');
 
@@ -52474,42 +53335,107 @@ $(document).on('ready page:change', function() {
         $("#next-btn").css('opacity', '0');
       }
     });
-    $(".promotion .card").unbind('click').click(function(e) {
-      $(".promotion .card").removeClass('active');
-      $(this).addClass('active');
-    });
+
+    if(window.innerWidth>992){
+      $(".promotion .card").unbind('click').click(function(e) {
+        $(".promotion .card").removeClass('active');
+        $(this).addClass('active');
+      });
+    }else{
+      $(".promotion .card").removeClass('active').unbind();
+    }
 
   } else {
     // Normalize the other pages
     $("main").css('padding-top', '64px');
   }
 });
-$(document).on('page:change', function() {
+'use strict';
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+
+$(document).on('page:change', function () {
   if ($(".c-dashboards.a-show").length === 1) {
-    COPO.maps.initMap();
-    map.fitWorld();
+    (function () {
+      COPO.utility.gonFix();
+      var M = COPO.maps;
+      var U = COPO.utility;
+      M.initMap();
+      M.initControls();
 
-    $.each(gon.friends, function(i,friend){
+      // Add the user to the map with a special pin. Will persist while other layers cycle.
+      M.makeMapPin(gon.current_user, 'blue', { clickable: false }).addTo(map);
 
-      var checkin = friend.lastCheckin
-      if(checkin){
-        var public_id = friend.userinfo.avatar.public_id;
-        var friendIcon = L.icon({
-          iconUrl: $.cloudinary.url(public_id, {format: 'png', transformation: 'map-pin'}),
-          iconSize: [36,52],
-          iconAnchor: [18,49]
-        })
-        L.marker([checkin.lat, checkin.lng], {icon: friendIcon, title: friend.userinfo.username}).addTo(map)
-      }
+      var FRIENDS = [].concat(_toConsumableArray(gon.friends));
 
-    })
+      // --- init FRIENDCLUSTERS i.e. clustered markers of user's friend's last checkins ---
+      var FRIENDCLUSTERS = M.arrayToCluster(FRIENDS, M.makeMapPin);
 
-    google.charts.setOnLoadCallback(function() {
-       COPO.charts.drawBarChart(gon.weeks_checkins, '270');
-    });
-    $(window).resize(function(){
-      COPO.charts.drawBarChart(gon.weeks_checkins, '270');
-    });
+      var addFriendPopup = function addFriendPopup(marker) {
+        var user = marker.options.user;
+        var name = U.friendsName(user);
+        var date = new Date(marker.options.lastCheckin.created_at).toUTCString();
+        var address = U.commaToNewline(marker.options.lastCheckin.address) || marker.options.lastCheckin.fogged_area;
+
+        var content = '\n      <h2>' + name + ' <a href="./friends/' + user.slug + '" title="Device info">\n        <i class="material-icons tiny">perm_device_information</i>\n        </a></h2>\n      <div class="address">' + address + '</div>\n      Checked in: ' + date;
+        marker.bindPopup(content, { offset: [0, -38] });
+      };
+
+      FRIENDCLUSTERS.eachLayer(function (marker) {
+        marker.on('click', function (e) {
+          map.panTo(this.getLatLng());
+          COPO.maps.w3w.setCoordinates(e);
+        });
+
+        marker.on('mouseover', function (e) {
+          if (!marker._popup) {
+            addFriendPopup(marker);
+          }
+          COPO.maps.w3w.setCoordinates(e);
+          marker.openPopup();
+        });
+      });
+
+      // --- end FRIENDCLUSTERS init ---
+
+      // --- init MONTHCLUSTERS. The user's last month's checkins.
+
+      var MONTHSCHECKINS = [].concat(_toConsumableArray(gon.months_checkins));
+      var MONTHSCLUSTERS = M.arrayToCluster(MONTHSCHECKINS, M.makeMarker);
+
+      // --- end MONTHCLUSTERS ---
+
+      var LAYERS = [FRIENDCLUSTERS, MONTHSCLUSTERS];
+
+      var currentLayer = 0;
+
+      var layerGroup = L.layerGroup().addTo(map);
+      var next = function next() {
+        layerGroup.clearLayers().addLayer(LAYERS[currentLayer]);
+        map.fitBounds(LAYERS[currentLayer]);
+        if (++currentLayer >= LAYERS.length) currentLayer = 0;
+      };
+      next();
+      var slideInterval = setInterval(next, 1000 * 5);
+
+      map.on('mouseover', function (e, undefined) {
+        clearInterval(slideInterval);
+        slideInterval = undefined;
+      });
+
+      map.on('mouseout', function () {
+        if (!slideInterval) {
+          slideInterval = setInterval(next, 1000 * 5);
+        }
+      });
+
+      google.charts.setOnLoadCallback(function () {
+        COPO.charts.drawBarChart(gon.weeks_checkins, '270');
+      });
+      $(window).resize(function () {
+        COPO.charts.drawBarChart(gon.weeks_checkins, '270');
+      });
+    })();
   }
 });
 // This is a manifest file that'll be compiled into application.js, which will include all the files
@@ -52538,6 +53464,7 @@ $(document).on('page:change', function() {
 
 
 // -- Misc vendor libs --
+
 
 
 

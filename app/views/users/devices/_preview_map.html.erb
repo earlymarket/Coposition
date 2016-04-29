@@ -1,17 +1,22 @@
 <div class="row">
   <div class="col s12 m6 l6 container">
-    <img id="mapholder" class="round-map animated rotateIn"/>
+    <img id="mapholder" class="round-map animated zoomIn hide"/>
   </div>
 </div>
 
 <script>
-navigator.geolocation.getCurrentPosition(showPosition);
+navigator.geolocation.getCurrentPosition(showPosition, error);
 function showPosition(position) {
-  var latlon = position.coords.latitude + "," + position.coords.longitude;
-
-  var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=16&size=500x500&sensor=false";
-
+  $('#add_button').removeClass("disabled");
+  $('#add_button').prop('disabled', false);
+  var latlon = position.coords.longitude + "," + position.coords.latitude;
+  var img_url = "https://api.mapbox.com/v4/mapbox.light/pin-l("+latlon+")/"+latlon+",16/500x500@2x.png?access_token=pk.eyJ1IjoiZ2FyeXNpdSIsImEiOiJjaWxjZjN3MTMwMDZhdnNtMnhsYmh4N3lpIn0.RAGGQ0OaM81HVe0OiAKE0w"
+  $('#mapholder').removeClass("hide");
   $('#mapholder').attr("src", img_url);
   $('#location').attr("value", latlon);
+}
+
+function error(err){
+  Materialize.toast('Could not get location', 3000)
 }
 </script>

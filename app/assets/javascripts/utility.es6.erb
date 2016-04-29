@@ -18,7 +18,7 @@ COPO.utility = {
     return COPO.utility.ujsLink('delete',
       '<i class="material-icons right red-text">delete_forever</i>' ,
       window.location.pathname + '/checkins/' + checkin.id )
-      .attr('data-confirm', 'Are you sure?').prop('outerHTML')
+      .attr('class', 'right').attr('data-confirm', 'Are you sure?').prop('outerHTML')
   },
 
   fogCheckinLink(checkin, foggedClass, fogId){

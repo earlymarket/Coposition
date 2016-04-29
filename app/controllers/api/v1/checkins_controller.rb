@@ -1,10 +1,9 @@
-class Api::V1::Users::CheckinsController < Api::ApiController
+class Api::V1::CheckinsController < Api::ApiController
   respond_to :json
 
-  acts_as_token_authentication_handler_for User, only: :create
-
-  before_action :check_user_approved_approvable, :find_device
-  before_action :check_user, only: :create
+  skip_before_filter :find_user, only: :create
+  before_action :device_exists?, only: :create
+  before_action :check_user_approved_approvable, :find_device, except: :create
 
   def index
     params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 1000
@@ -29,7 +28,7 @@ class Api::V1::Users::CheckinsController < Api::ApiController
 
   def create
     checkin = @device.checkins.create(allowed_params)
-    if checkin.id
+    if checkin.save
       render json: [checkin]
     else
       render status: 400, json: { message: 'You must provide a lat and lng' }
@@ -38,18 +37,18 @@ class Api::V1::Users::CheckinsController < Api::ApiController
 
   private
 
+    def device_exists?
+      if (@device = Device.find_by(uuid: request.headers['X-UUID'])).nil?
+        render status: 400, json: { message: 'You must provide a valid uuid' }
+      end
+    end
+
     def allowed_params
       params.require(:checkin).permit(:lat, :lng)
     end
 
     def find_device
       if params[:device_id] then @device = Device.find(params[:device_id]) end
-    end
-
-    def check_user
-      unless current_user?(params[:user_id])
-        render status: 403, json: { message: 'User does not own device' }
-      end
     end
 
 end
