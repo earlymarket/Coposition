@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Users::Devise::RegistrationsController, type: :controller do
 
   include ControllerMacros
+  let(:user){ create_user }
 
   before do
     request.headers['X-Secret-App-Key'] = "this-is-a-mobile-app"
@@ -41,7 +42,6 @@ RSpec.describe Users::Devise::RegistrationsController, type: :controller do
   end
 
   describe 'destroy' do
-    let (:user){ create_user }
 
     context 'with a password' do
       it 'should destroy the user' do
