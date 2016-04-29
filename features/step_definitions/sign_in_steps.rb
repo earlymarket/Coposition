@@ -25,6 +25,7 @@ end
 
 When(/^I fill in the form with my "(.*?)" details$/) do |actor|
   @me = FactoryGirl::build actor.to_sym
+  find_by_id("#{actor}_email")
   fill_in "#{actor}_email", with: @me.email
   fill_in "#{actor}_password", with: @me.password
   fill_in "#{actor}_password_confirmation", with: @me.password_confirmation

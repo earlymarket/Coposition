@@ -9,14 +9,14 @@ Feature: Approvals
 
     Scenario: User accepts requests
       When I click "Approve"
-        Then I should have an app
+        Then I should have an approved app
       And I click "Friends"
       When I click "Approve"
-        Then I should have a friend
+        Then I should have an approved friend
 
     Scenario: User rejects requests
       When I click "Reject"
-        Then I should not have any apps
+        Then I should not have any approved apps
       And I click "Friends"
       When I click "Reject"
-        Then I should not have any friends
+        Then I should not have any approved friends

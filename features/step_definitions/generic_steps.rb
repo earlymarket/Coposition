@@ -15,12 +15,11 @@ Given(/^I click the link "(.*?)"$/) do |target|
 end
 
 Then(/^I should see a link that says "(.*?)"$/) do |text|
-  expect(page.has_link? text).to be true
+  expect(page).to have_selector(:link_or_button, text)
 end
 
 Then(/^I should see "(.*?)"$/) do |text|
-  sleep 0.5 if text == "Enter a name for the device"
-  expect(page.has_content? text).to be true
+  expect(page).to have_content(text)
 end
 
 Given(/^I confirm$/) do
