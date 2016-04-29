@@ -61,7 +61,7 @@ module Users
 
       def current_user_info
         {
-          userinfo: @user.public_info,
+          userinfo: @user.public_info_hash,
           lastCheckin: @user.checkins.first
         }
       end
