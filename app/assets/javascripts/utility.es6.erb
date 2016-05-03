@@ -69,7 +69,7 @@ COPO.utility = {
     }
   },
 
-  avatarDefaults: <%= avatar_defaults.to_json %>,
+  avatarDefaults: <%= Rails.application.config_for(:cloudinary)['custom_transforms']['avatar'].to_json %>,
 
   initClipboard(selector, callback){
 

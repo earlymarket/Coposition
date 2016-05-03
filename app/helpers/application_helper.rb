@@ -17,15 +17,8 @@ module ApplicationHelper
   end
 
   def avatar_for(resource, options = {})
-    options = options.reverse_merge(avatar_defaults)
+    options = options.reverse_merge(Rails.application.config_for(:cloudinary)['custom_transforms']['avatar'])
     resource.avatar? ? cl_image_tag(resource.avatar.public_id, options) : cl_image_tag('no_avatar', options)
-  end
-
-  def avatar_defaults
-    {
-      transformation: ['60x60cAvatar'],
-      format: 'png'
-    }
   end
 
   def render_flash
