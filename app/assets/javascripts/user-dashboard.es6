@@ -7,7 +7,10 @@ $(document).on('page:change', function() {
     M.initControls();
 
     // Add the user to the map with a special pin. Will persist while other layers cycle.
-    M.makeMapPin(gon.current_user, 'blue', {clickable: false}).addTo(map);
+    if(gon.current_user.lastCheckin) {
+      let user = $.extend({}, gon.current_user)
+      M.makeMapPin(user, 'blue', {clickable: false}).addTo(map);
+    }
 
     const FRIENDS = [...gon.friends];
 
@@ -65,7 +68,7 @@ $(document).on('page:change', function() {
     let layerGroup = L.layerGroup().addTo(map);
     function next() {
       layerGroup.clearLayers().addLayer(LAYERS[currentLayer].data);
-      map.fitBounds(LAYERS[currentLayer].data);
+      if(LAYERS[currentLayer].data.getBounds().isValid()) map.fitBounds(LAYERS[currentLayer].data);
       $('#map-status').html(LAYERS[currentLayer].status);
       if(++currentLayer >= LAYERS.length) currentLayer = 0;
     }
