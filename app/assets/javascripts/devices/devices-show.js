@@ -26,8 +26,8 @@ $(document).on('page:change', function() {
       coords.lng = e.latlng.lng.toFixed(6);
       coords.checkinLink = COPO.utility.createCheckinLink(e.latlng);
       template = $('#createCheckinTmpl').html();
-      template = Mustache.render(template, coords);
-      var popup = L.popup().setLatLng(e.latlng).setContent(template);
+      var content = Mustache.render(template, coords);
+      var popup = L.popup().setLatLng(e.latlng).setContent(content);
       popup.openOn(map);
     })
 
