@@ -54,7 +54,7 @@ $(document).on('page:change', function() {
     // --- end MONTHCLUSTERS ---
 
     const LAYERS = [
-      { status: "Your friend's check-ins",
+      { status: `Your friend's check-ins <a href='./friends'>(more details)</a>`,
         data: FRIENDCLUSTERS},
       { status: `Your last month's check-ins <a href='./devices'>(more details)</a>`,
         data: MONTHSCLUSTERS}
