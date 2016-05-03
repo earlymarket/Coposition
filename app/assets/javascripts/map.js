@@ -160,6 +160,6 @@ window.COPO.maps = {
 
     }).addTo(map);
 
-  },
+  }
 }
 

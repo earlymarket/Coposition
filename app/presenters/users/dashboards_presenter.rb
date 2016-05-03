@@ -43,7 +43,7 @@ module Users
         friends = @user.friends.includes(:devices)
         friends.map do |friend|
           {
-            userinfo: friend.public_info,
+            userinfo: friend.public_info_hash,
             lastCheckin: friend.get_user_checkins_for(@user).first
           }
         end

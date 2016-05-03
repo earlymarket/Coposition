@@ -38,24 +38,18 @@ RSpec.describe ApplicationHelper, :type => :helper do
   end
 
   describe '#render_flash' do
-    it 'should render an alert as a toast notification' do
-      flash[:alert] = Faker::Lorem.sentence
-      expect{ helper.render_flash }.not_to raise_error
-      expect(helper.render_flash).to match(flash[:alert])
-      expect(helper.render_flash.length).to be > flash[:alert].length
+    it 'should render an alert and a notice as a toast notification' do
+      [:alert, :notice].each do |type|
+        flash[type] = Faker::Lorem.sentence
+        expect{ helper.render_flash }.not_to raise_error
+        expect(helper.render_flash).to match(flash[type])
+        expect(helper.render_flash.length).to be > flash[type].length
 
-      # Make sure the alert is being marked for discard after rendering
-      # Otherwise the toast will appear on every subsequent page
+        # Make sure the alert is being marked for discard after rendering
+        # Otherwise the toast will appear on every subsequent page
 
-      expect(flash.instance_values['discard'].instance_values['hash'].keys.include? 'alert').to be true
-    end
-
-    it 'should render a notice as a toast notification' do
-      flash[:notice] = Faker::Lorem.sentence
-      expect{ helper.render_flash }.not_to raise_error
-      expect(helper.render_flash).to match(flash[:notice])
-      expect(helper.render_flash.length).to be > flash[:notice].length
-      expect(flash.instance_values['discard'].instance_values['hash'].keys.include? 'notice').to be true
+        expect(flash.instance_values['discard'].instance_values['hash'].keys.include? type.to_s).to be true
+      end
     end
 
     it 'should render a bunch of error messages in the flash as toasts' do
