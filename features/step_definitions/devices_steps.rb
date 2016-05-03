@@ -35,5 +35,6 @@ Given(/^I click the slider$/) do
 end
 
 Given(/^I visit my device published page$/) do
+  # binding.pry
   visit "/users/#{@me.id}/devices/#{@me.devices.last.id}/shared"
 end
