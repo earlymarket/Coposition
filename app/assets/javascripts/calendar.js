@@ -34,7 +34,7 @@ window.COPO.calendar = {
     function createdAtArray(args) {
       createdAtArr = [];
       _.times(args.diff+1, function(){
-        createdAtArr.push(new Date(args.firstDate));
+        createdAtArr.push(new Date(moment(args.firstDate).endOf('day')));
         args.firstDate = args.firstDate.add(1, args.increment);
       });
       _(args.createdAt).each(function(checkin){
