@@ -20418,38 +20418,42 @@ footer.page-footer {
 }
 
 /* line 2, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/user-dashboard.scss */
-.c-dashboards.a-show nav {
+.c-dashboards.a-show nav, .c-dashboards.a-show #mobile-nav {
   z-index: 10000;
 }
 /* line 6, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/user-dashboard.scss */
+.c-dashboards.a-show #sidenav-overlay {
+  z-index: 9999;
+}
+/* line 10, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/user-dashboard.scss */
 .c-dashboards.a-show #map {
   width: 100%;
   height: 300px;
 }
-/* line 10, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/user-dashboard.scss */
+/* line 14, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/user-dashboard.scss */
 .c-dashboards.a-show #map .leaflet-marker-icon {
   cursor: inherit;
   outline: 0;
 }
-/* line 14, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/user-dashboard.scss */
+/* line 18, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/user-dashboard.scss */
 .c-dashboards.a-show #map .leaflet-marker-icon.leaflet-clickable {
   cursor: pointer;
 }
-/* line 20, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/user-dashboard.scss */
+/* line 24, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/user-dashboard.scss */
 .c-dashboards.a-show #map-status {
   font-size: 1.4rem;
 }
-/* line 26, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/user-dashboard.scss */
+/* line 30, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/user-dashboard.scss */
 .c-dashboards.a-show .dashboard .address {
   font: 0.7rem Fira Mono;
   margin-bottom: 1em;
   white-space: pre;
 }
-/* line 32, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/user-dashboard.scss */
+/* line 36, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/user-dashboard.scss */
 .c-dashboards.a-show .dashboard #most-checkins, .c-dashboards.a-show .dashboard ul.collection {
   margin: 0;
 }
-/* line 35, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/user-dashboard.scss */
+/* line 39, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/user-dashboard.scss */
 .c-dashboards.a-show .dashboard #most-checkins ul.collection, .c-dashboards.a-show .dashboard #most-checkins ul.collection li, .c-dashboards.a-show .dashboard ul.collection ul.collection, .c-dashboards.a-show .dashboard ul.collection ul.collection li {
   background: transparent;
   border: none;

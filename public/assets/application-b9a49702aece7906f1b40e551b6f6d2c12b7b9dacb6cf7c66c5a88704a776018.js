@@ -52476,25 +52476,25 @@ function addEventListeners() {
 }
 
 function addClickListeners() {
-  $(".landing-section .start-btn").click(function(e){
+  $(".landing-section .start-btn").click(function(e) {
     var offset = $(".landing-section.splash").height();
     $("body").animate({ scrollTop: offset });
   });
 }
 
-function addWindowResizeListeners(){
+function addWindowResizeListeners() {
   $(window).resize(function(e) {
     responsiveVideo();
   });
 }
 
-function responsiveVideo(){
+function responsiveVideo() {
   var ratio = 1920/1080;
   var $h = $(".promo").height();
   var $w = $(".promo").width();
   var rRatio = $w/$h;
 
-  if(rRatio < ratio){
+  if(rRatio < ratio) {
     // Aspect ratio is lower than 16:9
     $(".promo video").css({
       width: 'auto',
@@ -52508,6 +52508,10 @@ function responsiveVideo(){
     });
   }
 }
+;
+$(document).on('page:before-unload', function() {
+  if($('#sidenav-overlay')) $("#sidenav-overlay").trigger("click");
+})
 ;
 window.COPO = window.COPO || {};
 window.COPO.charts = {
@@ -52649,7 +52653,7 @@ window.COPO.maps = {
 
     var options = $.extend(defaultOptions, customOptions);
     window.map = L.mapbox.map('map', 'mapbox.light', options);
-    $(document).on('page:before-unload', function () {
+    $(document).one('page:before-unload', function () {
       map.remove();
     });
   },
@@ -52724,6 +52728,7 @@ window.COPO.maps = {
 
   markerClickListener: function markerClickListener(checkins, marker) {
     marker.on('click', function (e) {
+      var checkin = this.options.checkin;
       if (!marker._popup) {
         var template = COPO.maps.buildMarkerPopup(checkin);
         marker.bindPopup(L.Util.template(template, checkin));
@@ -53415,7 +53420,7 @@ $(document).on('page:change', function () {
 
       // --- end MONTHCLUSTERS ---
 
-      var LAYERS = [{ status: "Your friend's check-ins",
+      var LAYERS = [{ status: 'Your friend\'s check-ins <a href=\'./friends\'>(more details)</a>',
         data: FRIENDCLUSTERS }, { status: 'Your last month\'s check-ins <a href=\'./devices\'>(more details)</a>',
         data: MONTHSCLUSTERS }];
 
@@ -53493,6 +53498,7 @@ $(document).on('page:change', function () {
 
 
 // -- Run every page
+
 
 
 

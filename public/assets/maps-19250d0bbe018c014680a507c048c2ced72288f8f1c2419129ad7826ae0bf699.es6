@@ -11,7 +11,7 @@ window.COPO.maps = {
 
     var options = $.extend(defaultOptions, customOptions);
     window.map = L.mapbox.map('map', 'mapbox.light', options );
-    $(document).on('page:before-unload', function(){
+    $(document).one('page:before-unload', function(){
       map.remove();
     })
   },
@@ -86,6 +86,7 @@ window.COPO.maps = {
 
   markerClickListener(checkins, marker) {
     marker.on('click', function(e) {
+      let checkin = this.options.checkin;
       if(!marker._popup){
         var template = COPO.maps.buildMarkerPopup(checkin);
         marker.bindPopup(L.Util.template(template, checkin));
