@@ -1,6 +1,5 @@
 <div id='gonvariables'><%= Gon::Base.render_data %></div>
 <h1>Your devices</h1>
-<div id='calendar_basic'></div>
 <div class="row">
   <div class="center">
     <%= link_to(new_user_device_path, class: "btn-floating btn-large waves-effect waves-light primary-color") do %>
@@ -8,6 +7,7 @@
     <% end %>
   </div>
 </div>
+<div id='calendar_basic'></div>
 <div>
   <% @devices.each do |device| %>
     <%= render device %>
@@ -16,5 +16,4 @@
 
 <script>
   $('.modal-trigger').leanModal();
-  COPO.calendar.drawChart();
 </script>
