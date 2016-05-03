@@ -27,7 +27,7 @@ window.COPO.calendar = {
       let createdAt = _.map(checkins, 'created_at');
       let createdAtArr = [];
       _(createdAt).each(function(checkin){
-        createdAtArr.push(new Date(moment(checkin).endOf('day')));
+        createdAtArr.push(moment(checkin).endOf('day'));
       });
       let countedDates = _.toPairs(_.countBy(createdAtArr));
       countedDates = countedDates.map(function(n){ return [new Date(n[0]), n[1]] });
