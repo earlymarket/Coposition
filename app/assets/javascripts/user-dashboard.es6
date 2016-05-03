@@ -14,8 +14,8 @@ $(document).on('page:change', function() {
 
     const FRIENDS = [...gon.friends];
 
-    // --- init FRIENDCLUSTERS i.e. clustered markers of user's friend's last checkins ---
-    const FRIENDCLUSTERS = M.arrayToCluster(FRIENDS, M.makeMapPin);
+    // --- init FRIENDSCLUSTERS i.e. clustered markers of user's friend's last checkins ---
+    const FRIENDSCLUSTERS = M.arrayToCluster(FRIENDS, M.makeMapPin);
 
     let addFriendPopup = function(marker){
       let user = marker.options.user;
@@ -32,7 +32,7 @@ $(document).on('page:change', function() {
       marker.bindPopup(content, { offset: [0, -38] } );
     }
 
-    FRIENDCLUSTERS.eachLayer(function(marker){
+    FRIENDSCLUSTERS.eachLayer(function(marker){
       marker.on('click', function(e) {
         map.panTo(this.getLatLng());
         COPO.maps.w3w.setCoordinates(e);
@@ -47,7 +47,12 @@ $(document).on('page:change', function() {
       })
     })
 
-    // --- end FRIENDCLUSTERS init ---
+    // --- end FRIENDSCLUSTERS init ---
+
+    const FRIENDSBOUNDS = function() {
+      let friendsWithCheckins = _.compact(FRIENDS.map(friend => friend.lastCheckin));
+      return L.latLngBounds(friendsWithCheckins.map(friend => L.latLng(friend.lat, friend.lng)))
+    };
 
     // --- init MONTHCLUSTERS. The user's last month's checkins.
 
@@ -56,23 +61,30 @@ $(document).on('page:change', function() {
 
     // --- end MONTHCLUSTERS ---
 
+    const MONTHSBOUNDS = function() {
+      return L.latLngBounds(MONTHSCHECKINS.map(checkin => L.latLng(checkin.lat, checkin.lng)))
+    };
+
     const LAYERS = [
       { status: `Your friend's check-ins <a href='./friends'>(more details)</a>`,
-        data: FRIENDCLUSTERS},
+        clusters: FRIENDSCLUSTERS,
+        bounds: FRIENDSBOUNDS},
       { status: `Your last month's check-ins <a href='./devices'>(more details)</a>`,
-        data: MONTHSCLUSTERS}
+        clusters: MONTHSCLUSTERS,
+        bounds: MONTHSBOUNDS}
     ];
 
-    let currentLayer = 0;
+    let slideIndex = 0;
 
     let layerGroup = L.layerGroup().addTo(map);
     function next() {
-      layerGroup.clearLayers().addLayer(LAYERS[currentLayer].data);
-      if(LAYERS[currentLayer].data.getBounds().isValid()) map.fitBounds(LAYERS[currentLayer].data);
-      $('#map-status').html(LAYERS[currentLayer].status);
-      if(++currentLayer >= LAYERS.length) currentLayer = 0;
+      let currentSlide = LAYERS[slideIndex];
+      layerGroup.clearLayers().addLayer(currentSlide.clusters);
+      map.fitBounds(currentSlide.bounds(), {padding: [40, 40]});
+      $('#map-status').html(currentSlide.status);
+      if(++slideIndex >= LAYERS.length) slideIndex = 0;
     }
-    next();
+    map.once('ready', next);
     let slideInterval = setInterval(next, 1000 * 5);
 
     map.on('mouseover', function(e, undefined){
