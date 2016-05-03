@@ -1,14 +1,14 @@
 window.COPO = window.COPO || {};
 window.COPO.calendar = {
 
-  drawChart: function(checkins, size) {
-    var chart = new google.visualization.Calendar(document.getElementById('calendar'));
-    var dataTable = new google.visualization.DataTable();
+  drawChart(checkins, size) {
+    let chart = new google.visualization.Calendar(document.getElementById('calendar'));
+    let dataTable = new google.visualization.DataTable();
     dataTable.addColumn({ type: 'date', id: 'Date' });
     dataTable.addColumn({ type: 'number', id: 'Frequency' });
-    var rowData = countCheckinsByDate();
+    let rowData = countCheckinsByDate();
     dataTable.addRows(rowData);
-    var options = {
+    let options = {
       title: "Checkin frequency",
       calendar: {
         cellSize: size,
@@ -19,27 +19,23 @@ window.COPO.calendar = {
         },
       },
       colorAxis: {colors:['white','orange']},
-      noDataPattern: {
-        backgroundColor: '',
-        color: ''
-      },
-
     };
+
     chart.draw(dataTable, options);
 
     function countCheckinsByDate() {
-      var createdAt = _.map(checkins, 'created_at');
-      var createdAtArr = [];
+      let createdAt = _.map(checkins, 'created_at');
+      let createdAtArr = [];
       _(createdAt).each(function(checkin){
         createdAtArr.push(new Date(moment(checkin).endOf('day')));
       });
-      var countedDates = _.toPairs(_.countBy(createdAtArr));
-      countedDates = _.map(countedDates, function(n){ return [new Date(n[0]), n[1]]});
+      let countedDates = _.toPairs(_.countBy(createdAtArr));
+      countedDates = countedDates.map(function(n){ return [new Date(n[0]), n[1]] });
       return countedDates;
     }
   },
 
-  refreshCalendar: function(checkins){
+  refreshCalendar(checkins){
     let cellsize = null;
     if (window.innerWidth < 1000) {
       cellsize = window.innerWidth/70;
