@@ -1,6 +1,10 @@
 .c-dashboards.a-show {
-  nav {
+  nav, #mobile-nav {
     z-index: 10000;
+  }
+
+  #sidenav-overlay {
+    z-index: 9999;
   }
 
   #map {
