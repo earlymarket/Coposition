@@ -27,10 +27,11 @@ $(document).on('page:change', function() {
      });
 
     map.on('contextmenu', function(e){
-      var coords = {};
-      coords.lat = e.latlng.lat.toFixed(6);
-      coords.lng = e.latlng.lng.toFixed(6);
-      coords.checkinLink = COPO.utility.createCheckinLink(e.latlng);
+      var coords = {
+        lat: e.latlng.lat.toFixed(6),
+        lng: e.latlng.lng.toFixed(6),
+        checkinLink: COPO.utility.createCheckinLink(e.latlng)
+      };
       template = $('#createCheckinTmpl').html();
       var content = Mustache.render(template, coords);
       var popup = L.popup().setLatLng(e.latlng).setContent(content);

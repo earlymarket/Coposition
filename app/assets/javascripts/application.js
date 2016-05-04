@@ -49,7 +49,7 @@
 //= require charts
 //= require maps
 //= require permissions
-//= require date-picker
+//= require datePicker
 //= require slider
 //= require dateRange
 

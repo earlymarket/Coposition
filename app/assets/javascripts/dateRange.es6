@@ -15,16 +15,12 @@ window.COPO.dateRange = {
         return moment(num, "X").format("LL");
       },
       onChange(num) {
-        const FROM = moment(num.from, "X");
-        const TO = moment(num.to, "X");
-        const CHECKINS = COPO.dateRange.filteredCheckins(checkins, FROM, TO);
+        const CHECKINS = COPO.dateRange.filteredCheckins(checkins, moment(num.from, "X"), moment(num.to, "X"));
         COPO.maps.refreshMarkers(CHECKINS);
         COPO.charts.refreshCharts(CHECKINS);
       },
       onFinish(num) {
-        //const FROM = moment(num.from, "X");
-        //const TO = moment(num.to, "X");
-        //const CHECKINS = COPO.dateRange.filteredCheckins(checkins, FROM, TO);
+        //const CHECKINS = COPO.dateRange.filteredCheckins(checkins, moment(num.from, "X"), moment(num.to, "X"));
         //COPO.maps.refreshMarkers(CHECKINS);
         //COPO.charts.refreshCharts(CHECKINS);
       },
