@@ -1,7 +1,6 @@
 window.COPO = window.COPO || {};
 window.COPO.dateRange = {
-
-  initDateRange(checkins){
+  initDateRange(checkins) {
     const min = checkins.length ? moment(checkins[checkins.length-1].created_at) : moment().subtract(3, "months");
     $("#dateRange").ionRangeSlider({
       type: "double",
@@ -32,18 +31,14 @@ window.COPO.dateRange = {
     });
   },
 
-  filteredCheckins(checkins, FROM, TO){
-    function isAfter(checkin){
-      if (moment(checkin.created_at).valueOf() >= moment(FROM).valueOf()) {
+  filteredCheckins(checkins, FROM, TO) {
+    function isBetweenDates(checkin) {
+      const checkinDate = moment(checkin.created_at).valueOf()
+      if (checkinDate >=  moment(FROM).valueOf() && checkinDate <= moment(TO).valueOf()) {
         return checkin;
       }
     }
-    function isBefore(checkin){
-      if (moment(checkin.created_at).valueOf() <= moment(TO).valueOf()) {
-        return checkin;
-      }
-    }
-    const filteredCheckins = checkins.filter(isAfter).filter(isBefore);
+    const filteredCheckins = checkins.filter(isBetweenDates);
     return filteredCheckins;
   }
 }
