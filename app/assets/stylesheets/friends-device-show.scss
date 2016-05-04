@@ -1,50 +1,13 @@
 .c-friends.a-show_device {
 
-  .tabs {
-    overflow: hidden;
-  }
-
   #map {
-    width:100%;
-    position:absolute !important;
-    top: 64px;
-    margin-top: 48px;
-    bottom: 120px;
-  }
-
-  #chart {
-    height: 70vh;
-    width: 100%;
-  }
-
-  #bar-chart {
-    margin-top: 20px;
-    margin-left: 40px;
-    margin-right: 40px;
-    height: 40vh;
-  }
-
-  #table-chart {
-    height: 30vh;
-    margin-top: 10px;
-  }
-
-  #dateRange {
-    width: 500px;
+    bottom: 80px;
   }
 
   .bottom-panel {
-    position: absolute;
-    bottom: 0px;
-    display: block;
-    height: 120px;
-    width: 100%;
-    text-align: center;
-    background: white;
+    height: 80px;
   }
 
-  .bottom-panel * {
-    margin: 0;
-  }
+
 }
 
