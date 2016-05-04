@@ -1,7 +1,5 @@
 window.COPO = window.COPO || {};
 window.COPO.charts = {
-  barChartData: null,
-
   drawBarChart: function(checkins, height) {
     // Define the data for the chart.
     var chart_div = document.getElementById('bar-chart');
