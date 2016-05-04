@@ -1,7 +1,7 @@
 $(document).on('page:change', function() {
   if ($(".c-devices.a-show").length === 1) {
     COPO.maps.initMap();
-    COPO.maps.initMarkers(gon.checkins);
+    COPO.maps.initMarkers(COPO.dateRange.filteredCheckins(gon.checkins, moment().subtract(1, "months"), moment().endOf("day")));
     COPO.maps.initControls();
     //COPO.datePicker.initDatePicker();
     COPO.dateRange.initDateRange(gon.checkins);
@@ -21,7 +21,9 @@ $(document).on('page:change', function() {
     });
 
     $(window).resize(function(){
-      COPO.charts.refreshCharts(gon.checkins);
+      var slider = $("#dateRange").data("ionRangeSlider");
+      var checkins = COPO.dateRange.filteredCheckins(gon.checkins, moment(slider.old_from, "X"), moment(slider.old_to, "X"))
+      COPO.charts.refreshCharts(checkins);
      });
 
     map.on('contextmenu', function(e){

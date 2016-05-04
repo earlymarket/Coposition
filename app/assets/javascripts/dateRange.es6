@@ -34,7 +34,7 @@ window.COPO.dateRange = {
   filteredCheckins(checkins, FROM, TO) {
     function isBetweenDates(checkin) {
       const checkinDate = moment(checkin.created_at).valueOf()
-      if (checkinDate >=  moment(FROM).valueOf() && checkinDate <= moment(TO).valueOf()) {
+      if (checkinDate >= moment(FROM).valueOf() && checkinDate <= moment(TO).valueOf()) {
         return checkin;
       }
     }

@@ -1,5 +1,7 @@
 <%= raw render_flash %>
 gon.checkins.unshift(<%= raw @checkin.to_json %>);
 
-COPO.maps.refreshMarkers(gon.checkins);
-COPO.charts.refreshCharts(gon.checkins);
+var slider = $("#dateRange").data("ionRangeSlider");
+var checkins = COPO.dateRange.filteredCheckins(gon.checkins, moment(slider.old_from, "X"), moment(slider.old_to, "X"))
+COPO.maps.refreshMarkers(checkins);
+COPO.charts.refreshCharts(checkins);

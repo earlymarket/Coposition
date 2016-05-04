@@ -2,5 +2,7 @@
 var checkin = _.find(gon.checkins, _.matchesProperty('id',<%= @checkin.id %>));
 _.remove(gon.checkins, checkin);
 
-COPO.charts.refreshCharts(gon.checkins);
-COPO.maps.refreshMarkers(gon.checkins);
+var slider = $("#dateRange").data("ionRangeSlider");
+var checkins = COPO.dateRange.filteredCheckins(gon.checkins, moment(slider.old_from, "X"), moment(slider.old_to, "X"))
+COPO.maps.refreshMarkers(checkins);
+COPO.charts.refreshCharts(checkins);
