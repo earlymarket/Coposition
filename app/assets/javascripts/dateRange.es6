@@ -8,9 +8,9 @@ window.COPO.dateRange = {
       grid: true,
       drag_interval: true,
       min: min.format("X"),
-      max: moment().format("X"),
+      max: moment().endOf("day").format("X"),
       from: moment().subtract(1, "months").format("X"),
-      to: moment().subtract(0, "months").format("X"),
+      to: moment().endOf("day").format("X"),
       prettify(num) {
         return moment(num, "X").format("LL");
       },
@@ -38,6 +38,7 @@ window.COPO.dateRange = {
         return checkin;
       }
     }
+
     const filteredCheckins = checkins.filter(isBetweenDates);
     return filteredCheckins;
   }

@@ -11,8 +11,8 @@ $(document).on('page:change', function() {
       var tab = event.target.textContent
       setTimeout(function() {
         if (tab ==='Chart'){
-          let slider = $("#dateRange").data("ionRangeSlider");
-          let checkins = COPO.dateRange.filteredCheckins(gon.checkins, moment(slider.old_from, "X"), moment(slider.old_to, "X"))
+          var slider = $("#dateRange").data("ionRangeSlider");
+          var checkins = COPO.dateRange.filteredCheckins(gon.checkins, moment(slider.old_from, "X"), moment(slider.old_to, "X"))
           COPO.charts.refreshCharts(checkins);
         } else {
           map.invalidateSize();
