@@ -49,7 +49,6 @@
 //= require charts
 //= require maps
 //= require permissions
-//= require datePicker
 //= require slider
 //= require dateRange
 

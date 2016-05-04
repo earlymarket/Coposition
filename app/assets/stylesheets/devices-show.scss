@@ -9,32 +9,6 @@
     padding-left: 5px;
   }
 
-  /* Header - Day of the week */
-  .picker__weekday-display { background-color: $primary-color-darker; }
-  /* Body - Today info */
-  .picker__date-display { background-color: $primary-color; }
-  /* Buttons of actions */
-  .picker__nav--prev:hover, .picker__nav--next:hover { background-color: $primary-color-lighter; }
-  .picker__nav--prev:before { border-right: 0.75em solid $primary-color; }
-  .picker__nav--next:before { border-left: 0.75em solid $primary-color; }
-  .picker__today, .picker__close { color: $primary-color; }
-  .btn-flat.picker__today:active, .btn-flat.picker__close:active, .btn-flat.picker__clear:active { background-color: $primary-color; }
-  /* Select months of the year */
-  .picker__select--month.browser-default {
-    display: inline;
-    background-color: #FFFFFF;
-    width: 34%;
-    border: none;
-    outline: none;
-  }
-  /* Every month of the year except: today */
-  .picker__day--infocus:hover { color: $primary-color; }
-  .picker__day--selected, .picker__day--selected:hover, .picker--focused .picker__day--selected { color: $primary-color-darker; }
-  .picker__day.picker__day--infocus.picker__day--selected.picker__day--highlighted { background-color: $primary-color-lighter; }
-  /* Today */
-  .picker__day.picker__day--infocus.picker__day--today.picker__day--selected.picker__day--highlighted { background-color: $primary-color-lighter; }
-  .picker__day.picker__day--today { color: $primary-color-darker; }
-
   .tabs {
     overflow: hidden;
   }

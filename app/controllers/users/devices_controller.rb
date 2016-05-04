@@ -14,8 +14,7 @@ class Users::DevicesController < ApplicationController
 
   def show
     @device = Device.find(params[:id])
-    @from, @to = date_range
-    gon.checkins = @device.checkins #.where(created_at: @from..@to).paginate(page: params[:page], per_page: 1000)
+    gon.checkins = @device.checkins
     flash[:notice] = "No checkins available" if gon.checkins.empty?
     gon.current_user_id = current_user.id
   end
@@ -83,16 +82,6 @@ class Users::DevicesController < ApplicationController
       unless user_owns_device?
         flash[:notice] = "You do not own that device"
         redirect_to root_path
-      end
-    end
-
-    def date_range
-      if (params[:from].present?)
-        return Date.parse(params[:from]).beginning_of_day, Date.parse(params[:to]).end_of_day
-      elsif @device.checkins.present?
-        most_recent = Date.parse(@device.checkins.first.created_at.to_s)
-        return  (most_recent << 1).beginning_of_day, most_recent.end_of_day
-      else return nil, nil
       end
     end
 
