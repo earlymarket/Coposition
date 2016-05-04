@@ -100,32 +100,32 @@ window.COPO.charts = {
       var cssClassNames = { 'headerRow' : 'primary-color' }
       var options = { width: '100%', allowHtml: true, cssClassNames: cssClassNames }
       table.draw(data, options);
+    }
 
-      function userTableData() {
-        data.addColumn('string');
-        checkins.forEach(function(checkin){
-          var humanizedDate = moment(checkin.created_at).format('LLL');
-          var foggedClass;
-          checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
-          var delete_button = COPO.utility.deleteCheckinLink(checkin);
-          var fogging_button = COPO.utility.fogCheckinLink(checkin, foggedClass, 'tableFog');
-          tableData.push([humanizedDate, checkin.address, fogging_button+delete_button]);
-        })
-        data.addRows(tableData);
-        data.setProperty(0, 0, 'style', 'width:20%');
-        data.setProperty(0, 1, 'style', 'width:60%');
-        data.setProperty(0, 2, 'style', 'width:10%');
-      }
+    function userTableData() {
+      data.addColumn('string');
+      checkins.forEach(function(checkin){
+        var humanizedDate = moment(checkin.created_at).format('LLL');
+        var foggedClass;
+        checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
+        var delete_button = COPO.utility.deleteCheckinLink(checkin);
+        var fogging_button = COPO.utility.fogCheckinLink(checkin, foggedClass, 'tableFog');
+        tableData.push([humanizedDate, checkin.address, fogging_button+delete_button]);
+      })
+      data.addRows(tableData);
+      data.setProperty(0, 0, 'style', 'width:20%');
+      data.setProperty(0, 1, 'style', 'width:60%');
+      data.setProperty(0, 2, 'style', 'width:10%');
+    }
 
-      function friendTableData() {
-        checkins.forEach(function(checkin){
-          var humanizedDate = moment(checkin.created_at).format('LLL');
-          tableData.push([humanizedDate, checkin.address]);
-        })
-        data.addRows(tableData);
-        data.setProperty(0, 0, 'style', 'width:30%');
-        data.setProperty(0, 1, 'style', 'width:70%');
-      }
+    function friendTableData() {
+      checkins.forEach(function(checkin){
+        var humanizedDate = moment(checkin.created_at).format('LLL');
+        tableData.push([humanizedDate, checkin.address]);
+      })
+      data.addRows(tableData);
+      data.setProperty(0, 0, 'style', 'width:30%');
+      data.setProperty(0, 1, 'style', 'width:70%');
     }
   },
 
