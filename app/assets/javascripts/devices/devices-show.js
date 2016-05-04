@@ -4,7 +4,7 @@ $(document).on('page:change', function() {
     COPO.maps.initMarkers(COPO.dateRange.filteredCheckins(gon.checkins, moment().subtract(1, "months"), moment().endOf("day")));
     COPO.maps.initControls();
     //COPO.datePicker.initDatePicker();
-    COPO.dateRange.initDateRange(gon.checkins);
+    COPO.dateRange.initDateRange(gon.checkins, 'user');
     // COPO.maps.lc.start();
 
     $('li.tab').on('click', function(event) {
@@ -13,7 +13,7 @@ $(document).on('page:change', function() {
         if (tab ==='Chart'){
           var slider = $("#dateRange").data("ionRangeSlider");
           var checkins = COPO.dateRange.filteredCheckins(gon.checkins, moment(slider.old_from, "X"), moment(slider.old_to, "X"))
-          COPO.charts.refreshCharts(checkins);
+          COPO.charts.refreshCharts(checkins, 'user');
         } else {
           map.invalidateSize();
         }
@@ -23,7 +23,7 @@ $(document).on('page:change', function() {
     $(window).resize(function(){
       var slider = $("#dateRange").data("ionRangeSlider");
       var checkins = COPO.dateRange.filteredCheckins(gon.checkins, moment(slider.old_from, "X"), moment(slider.old_to, "X"))
-      COPO.charts.refreshCharts(checkins);
+      COPO.charts.refreshCharts(checkins, 'user');
      });
 
     map.on('contextmenu', function(e){

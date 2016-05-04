@@ -1,6 +1,6 @@
 window.COPO = window.COPO || {};
 window.COPO.dateRange = {
-  initDateRange(checkins) {
+  initDateRange(checkins, page) {
     const min = checkins.length ? moment(checkins[checkins.length-1].created_at) : moment().subtract(3, "months");
     $("#dateRange").ionRangeSlider({
       type: "double",
@@ -17,12 +17,12 @@ window.COPO.dateRange = {
       onChange(num) {
         const CHECKINS = COPO.dateRange.filteredCheckins(checkins, moment(num.from, "X"), moment(num.to, "X"));
         COPO.maps.refreshMarkers(CHECKINS);
-        COPO.charts.refreshCharts(CHECKINS);
+        COPO.charts.refreshCharts(CHECKINS, page);
       },
       onFinish(num) {
         //const CHECKINS = COPO.dateRange.filteredCheckins(checkins, moment(num.from, "X"), moment(num.to, "X"));
         //COPO.maps.refreshMarkers(CHECKINS);
-        //COPO.charts.refreshCharts(CHECKINS);
+        //COPO.charts.refreshCharts(CHECKINS, page);
       },
     });
   },
