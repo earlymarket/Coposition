@@ -37,5 +37,10 @@ window.COPO.dateRange = {
 
     const filteredCheckins = checkins.filter(isBetweenDates);
     return filteredCheckins;
+  },
+
+  currentCheckins(checkins){
+    var slider = $("#dateRange").data("ionRangeSlider");
+    return COPO.dateRange.filteredCheckins(checkins, moment(slider.old_from, "X"), moment(slider.old_to, "X"))
   }
 }

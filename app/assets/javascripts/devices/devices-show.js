@@ -10,9 +10,7 @@ $(document).on('page:change', function() {
       var tab = event.target.textContent
       setTimeout(function() {
         if (tab ==='Chart'){
-          var slider = $("#dateRange").data("ionRangeSlider");
-          var checkins = COPO.dateRange.filteredCheckins(gon.checkins, moment(slider.old_from, "X"), moment(slider.old_to, "X"))
-          COPO.charts.refreshCharts(checkins, page);
+          COPO.charts.refreshCharts(COPO.dateRange.currentCheckins(gon.checkins), page);
         } else {
           map.invalidateSize();
         }
@@ -20,9 +18,7 @@ $(document).on('page:change', function() {
     });
 
     $(window).resize(function(){
-      var slider = $("#dateRange").data("ionRangeSlider");
-      var checkins = COPO.dateRange.filteredCheckins(gon.checkins, moment(slider.old_from, "X"), moment(slider.old_to, "X"))
-      COPO.charts.refreshCharts(checkins, page);
+      COPO.charts.refreshCharts(COPO.dateRange.currentCheckins(gon.checkins), page);
     });
 
     if (page === 'user') {
