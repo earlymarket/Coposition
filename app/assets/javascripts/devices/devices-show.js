@@ -3,6 +3,7 @@ $(document).on('page:change', function() {
     COPO.maps.initMap();
     COPO.maps.initMarkers(gon.checkins);
     COPO.maps.initControls();
+    //COPO.datePicker.initDatePicker();
     COPO.dateRange.initDateRange(gon.checkins);
     // COPO.maps.lc.start();
 

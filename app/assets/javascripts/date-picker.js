@@ -1,7 +1,7 @@
-$(document).on('page:change', function() {
-  if ($(".c-devices.a-show").length === 1) {
+window.COPO = window.COPO || {};
+window.COPO.datePicker = {
 
-    // materialize datepicker init
+  initDatePicker: function(){
     $('.datepicker').pickadate({
       selectMonths: true,
       selectYears: 15,
@@ -26,12 +26,7 @@ $(document).on('page:change', function() {
     // Check if there’s a “from” or “to” date to start with.
     COPO.datePicker.checkPickers(to_picker, from_picker, 'min')
     COPO.datePicker.checkPickers(from_picker, to_picker, 'max')
-
-  }
-})
-
-window.COPO = window.COPO || {};
-window.COPO.datePicker = {
+  },
 
   setLimits: function(event, beingSet, setter, limit){
     if ( event.select ) {
