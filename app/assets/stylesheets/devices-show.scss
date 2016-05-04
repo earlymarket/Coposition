@@ -44,7 +44,7 @@
     position:absolute !important;
     top: 64px;
     margin-top: 48px;
-    bottom: 100px;
+    bottom: 120px;
   }
 
   #chart {
@@ -64,11 +64,15 @@
     margin-top: 10px;
   }
 
+  #dateRange {
+    width: 500px;
+  }
+
   .bottom-panel {
     position: absolute;
     bottom: 0px;
     display: block;
-    height: 100px;
+    height: 120px;
     width: 100%;
     text-align: center;
     background: white;

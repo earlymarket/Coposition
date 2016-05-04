@@ -15,7 +15,7 @@ class Users::DevicesController < ApplicationController
   def show
     @device = Device.find(params[:id])
     @from, @to = date_range
-    gon.checkins = @device.checkins.where(created_at: @from..@to).paginate(page: params[:page], per_page: 1000)
+    gon.checkins = @device.checkins #.where(created_at: @from..@to).paginate(page: params[:page], per_page: 1000)
     flash[:notice] = "No checkins available" if gon.checkins.empty?
     gon.current_user_id = current_user.id
   end

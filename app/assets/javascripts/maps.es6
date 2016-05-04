@@ -18,8 +18,11 @@ window.COPO.maps = {
 
   initMarkers(checkins) {
     map.once('ready', function() {
-      COPO.maps.renderMarkers(checkins);
-      COPO.maps.bindMarkerListeners(checkins);
+      let FROM = moment().subtract(1, "months");
+      let TO = moment().subtract(0, "months");
+      let filteredCheckins = COPO.dateRange.filteredCheckins(checkins, FROM, TO);
+      COPO.maps.renderMarkers(filteredCheckins);
+      COPO.maps.bindMarkerListeners(filteredCheckins);
       if(COPO.maps.allMarkers.getLayers().length) {
         map.fitBounds(COPO.maps.allMarkers.getBounds())
       } else {
