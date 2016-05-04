@@ -10,7 +10,9 @@ $(document).on('page:change', function() {
       var tab = event.target.textContent
       setTimeout(function() {
         if (tab ==='Chart'){
-          COPO.charts.refreshCharts(gon.checkins);
+          let slider = $("#dateRange").data("ionRangeSlider");
+          let checkins = COPO.dateRange.filteredCheckins(gon.checkins, moment(slider.old_from, "X"), moment(slider.old_to, "X"))
+          COPO.charts.refreshCharts(checkins);
         } else {
           map.invalidateSize();
         }

@@ -9,7 +9,7 @@ window.COPO.dateRange = {
       drag_interval: true,
       min: +moment().subtract(3, "years").format("X"),
       max: +moment().format("X"),
-      from: +moment().subtract(1, "months").format("X"),
+      from: +moment().subtract(3, "months").format("X"),
       to: +moment().subtract(0, "months").format("X"),
       prettify: function (num) {
         return moment(num, "X").format("LL");
