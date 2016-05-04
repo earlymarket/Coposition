@@ -18,7 +18,7 @@ window.COPO.maps = {
 
   initMarkers(checkins) {
     map.once('ready', function() {
-      let FROM = moment().subtract(3, "months");
+      let FROM = moment().subtract(1, "months");
       let TO = moment().subtract(0, "months");
       let filteredCheckins = COPO.dateRange.filteredCheckins(checkins, FROM, TO);
       COPO.maps.renderMarkers(filteredCheckins);

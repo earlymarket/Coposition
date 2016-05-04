@@ -2,15 +2,21 @@ window.COPO = window.COPO || {};
 window.COPO.dateRange = {
 
   initDateRange: function(checkins){
+    let min = null;
+    if (checkins.length) {
+      min = moment(checkins[checkins.length-1].created_at).format("X")
+    } else {
+      min = moment().subtract(3, "months").format("X");
+    }
     $("#dateRange").ionRangeSlider({
       type: "double",
       force_edges: true,
       grid: true,
       drag_interval: true,
-      min: +moment().subtract(3, "years").format("X"),
-      max: +moment().format("X"),
-      from: +moment().subtract(3, "months").format("X"),
-      to: +moment().subtract(0, "months").format("X"),
+      min: min,
+      max: moment().format("X"),
+      from: moment().subtract(1, "months").format("X"),
+      to: moment().subtract(0, "months").format("X"),
       prettify: function (num) {
         return moment(num, "X").format("LL");
       },
