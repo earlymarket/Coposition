@@ -35,7 +35,7 @@ class Checkin < ActiveRecord::Base
   def get_data
     if fogged? || device.fogged?
       fogged_checkin = Checkin.new(attributes.delete_if {|key, _v| key =~ /fogged/ })
-      fogged_checkin.address = "#{nearest_city.name}, #{nearest_city.country_code}"
+      fogged_checkin.address = fogged_area
       fogged_checkin.lat = fogged_lat
       fogged_checkin.lng = fogged_lng
       return fogged_checkin

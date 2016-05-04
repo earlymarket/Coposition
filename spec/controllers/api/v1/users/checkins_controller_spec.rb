@@ -77,7 +77,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         device.switch_fog
         device.checkins.create(lat: 51.57471, lng: -0.50626)
         get :last, params.merge(type: "address")
-        expect(res_hash.first['address']).to eq "Denham, GB"
+        expect(res_hash.first['address']).to eq "Denham"
         expect(res_hash.first['lat']).to eq(51.57471)
         expect(res_hash.first['lng']).to eq(-0.50626)
       end
