@@ -1,43 +1,38 @@
 window.COPO = window.COPO || {};
 window.COPO.dateRange = {
 
-  initDateRange: function(checkins){
-    let min = null;
-    if (checkins.length) {
-      min = moment(checkins[checkins.length-1].created_at).format("X")
-    } else {
-      min = moment().subtract(3, "months").format("X");
-    }
+  initDateRange(checkins){
+    const min = checkins.length ? moment(checkins[checkins.length-1].created_at) : moment().subtract(3, "months");
     $("#dateRange").ionRangeSlider({
       type: "double",
       force_edges: true,
       grid: true,
       drag_interval: true,
-      min: min,
+      min: min.format("X"),
       max: moment().format("X"),
       from: moment().subtract(1, "months").format("X"),
       to: moment().subtract(0, "months").format("X"),
-      prettify: function (num) {
+      prettify(num) {
         return moment(num, "X").format("LL");
       },
-      onChange: function (num) {
-        let FROM = moment(num.from, "X");
-        let TO = moment(num.to, "X");
-        let CHECKINS = COPO.dateRange.filteredCheckins(checkins, FROM, TO);
+      onChange(num) {
+        const FROM = moment(num.from, "X");
+        const TO = moment(num.to, "X");
+        const CHECKINS = COPO.dateRange.filteredCheckins(checkins, FROM, TO);
         COPO.maps.refreshMarkers(CHECKINS);
         COPO.charts.refreshCharts(CHECKINS);
       },
-      onFinish: function (num) {
-        //let FROM = moment(num.from, "X");
-        //let TO = moment(num.to, "X");
-        //let CHECKINS = COPO.dateRange.filteredCheckins(checkins, FROM, TO);
+      onFinish(num) {
+        //const FROM = moment(num.from, "X");
+        //const TO = moment(num.to, "X");
+        //const CHECKINS = COPO.dateRange.filteredCheckins(checkins, FROM, TO);
         //COPO.maps.refreshMarkers(CHECKINS);
         //COPO.charts.refreshCharts(CHECKINS);
       },
     });
   },
 
-  filteredCheckins: function(checkins, FROM, TO){
+  filteredCheckins(checkins, FROM, TO){
     function isAfter(checkin){
       if (moment(checkin.created_at).valueOf() >= moment(FROM).valueOf()) {
         return checkin;
@@ -48,7 +43,7 @@ window.COPO.dateRange = {
         return checkin;
       }
     }
-    let filteredCheckins = checkins.filter(isAfter).filter(isBefore);
+    const filteredCheckins = checkins.filter(isAfter).filter(isBefore);
     return filteredCheckins;
   }
 }
