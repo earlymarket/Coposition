@@ -1,19 +1,5 @@
 <% content_for :outside_container do %>
-  <%= Gon::Base.render_data %>
-
-  <ul class="tabs row">
-    <li class="tab map col s6" id="mapTab"><a href="#map">Map</a></li>
-    <li class="tab chart col s6" id="chartTab"><a href="#chart">Chart</a></li>
-  </ul>
-
-  <div id='chart'>
-    <div id='bar-chart'></div>
-    <div class='container'>
-      <div id="table-chart"></div>
-    </div>
-  </div>
-
-  <div id='map'></div>
+  <%= render 'users/shared/device_show' %>
 
   <div class="bottom-panel">
     <div id='dateRange'></div>
