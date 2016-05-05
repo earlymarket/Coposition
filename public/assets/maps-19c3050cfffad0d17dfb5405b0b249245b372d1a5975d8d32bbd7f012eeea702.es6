@@ -1,6 +1,6 @@
 window.COPO = window.COPO || {};
 window.COPO.maps = {
-  initMap(customOptions){
+  initMap(customOptions) {
     if(document.getElementById('map')._leaflet) return;
     L.mapbox.accessToken = 'pk.eyJ1IjoiZ2FyeXNpdSIsImEiOiJjaWxjZjN3MTMwMDZhdnNtMnhsYmh4N3lpIn0.RAGGQ0OaM81HVe0OiAKE0w';
 
@@ -11,16 +11,16 @@ window.COPO.maps = {
 
     var options = $.extend(defaultOptions, customOptions);
     window.map = L.mapbox.map('map', 'mapbox.light', options );
-    $(document).one('page:before-unload', function(){
+    $(document).one('page:before-unload', function() {
       map.remove();
     })
   },
 
-  initMarkers(checkins){
+  initMarkers(checkins) {
     map.once('ready', function() {
       COPO.maps.renderMarkers(checkins);
       COPO.maps.bindMarkerListeners(checkins);
-      if(COPO.maps.allMarkers.getLayers().length){
+      if(COPO.maps.allMarkers.getLayers().length) {
         map.fitBounds(COPO.maps.allMarkers.getBounds())
       } else {
         map.once('locationfound', function(e) {
@@ -30,17 +30,17 @@ window.COPO.maps = {
     });
   },
 
-  queueRefresh(checkins){
-    map.once('zoomstart', function(e){
+  queueRefresh(checkins) {
+    map.once('zoomstart', function(e) {
       map.removeEventListener('popupclose');
       COPO.maps.refreshMarkers(checkins);
     })
-    map.once('popupclose', function(e){
+    map.once('popupclose', function(e) {
       COPO.maps.refreshMarkers(checkins);
     })
   },
 
-  refreshMarkers(checkins){
+  refreshMarkers(checkins) {
     map.removeEventListener('popupclose');
     map.closePopup();
     map.removeLayer(COPO.maps.markers);
@@ -49,7 +49,7 @@ window.COPO.maps = {
     COPO.maps.bindMarkerListeners(checkins);
   },
 
-  renderMarkers(checkins){
+  renderMarkers(checkins) {
     COPO.maps.allMarkers = new L.MarkerClusterGroup();
     COPO.maps.markers = new L.MarkerClusterGroup();
     COPO.maps.last = new L.MarkerClusterGroup();
@@ -78,7 +78,7 @@ window.COPO.maps = {
     map.addLayer(COPO.maps.last);
   },
 
-  bindMarkerListeners(checkins){
+  bindMarkerListeners(checkins) {
     COPO.maps.allMarkers.eachLayer(function(marker) {
       COPO.maps.markerClickListener(checkins, marker);
     })
@@ -87,12 +87,12 @@ window.COPO.maps = {
   markerClickListener(checkins, marker) {
     marker.on('click', function(e) {
       let checkin = this.options.checkin;
-      if(!marker._popup){
+      if(!marker._popup) {
         var template = COPO.maps.buildMarkerPopup(checkin);
         marker.bindPopup(L.Util.template(template, checkin));
         marker.openPopup();
       }
-      if ($(".c-devices.a-show").length === 1){
+      if ($(".c-devices.a-show").length === 1) {
         $.get({
           url: "/users/"+gon.current_user_id+"/devices/"+checkin.device_id+"/checkins/"+checkin.id,
           dataType: "json"
@@ -107,7 +107,7 @@ window.COPO.maps = {
     });
   },
 
-  buildMarkerPopup(checkin){
+  buildMarkerPopup(checkin) {
     var checkinTemp = {};
     checkinTemp.id = checkin.id
     checkinTemp.lat = checkin.lat.toFixed(6);
@@ -116,8 +116,8 @@ window.COPO.maps = {
     checkinTemp.address = checkin.address;
     var foggedClass;
     checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
-    checkinTemp.foggedAddress = function(){
-      if(checkin.fogged){
+    checkinTemp.foggedAddress = function() {
+      if(checkin.fogged) {
         return '<li class="foggedAddress">Fogged address: ' + checkin.fogged_area + '</li>'
       }
     }
@@ -127,7 +127,7 @@ window.COPO.maps = {
     return Mustache.render(template, checkinTemp);
   },
 
-  initControls(){
+  initControls() {
     map.addControl(L.mapbox.geocoderControl('mapbox.places',
       { position: 'topright',
         keepOpen: true
@@ -158,7 +158,7 @@ window.COPO.maps = {
 
   },
 
-  mapPinIcon(public_id, color){
+  mapPinIcon(public_id, color) {
     // The iconClass is a named Cloudinary transform
     // At the moment there are only two: 'map-pin' and
     // 'map-pin-blue'
@@ -172,7 +172,7 @@ window.COPO.maps = {
   },
 
   arrayToCluster: (markerArr, markerBuilderFn) => {
-    if(!markerBuilderFn){
+    if(!markerBuilderFn) {
       return console.error('Marker building function undefined')
     }
     let cluster = markerArr.map(marker => markerBuilderFn(marker))
@@ -180,9 +180,9 @@ window.COPO.maps = {
     return (new L.MarkerClusterGroup).addLayers(cluster)
   },
 
-  makeMapPin(user, color, markerOptions){
-    let checkin = user.lastCheckin
-    if(checkin){
+  makeMapPin(user, color, markerOptions) {
+    let checkin = user.lastCheckin;
+    if(checkin) {
       let public_id = user.userinfo.avatar.public_id;
       let defaults = {
         icon: COPO.maps.mapPinIcon(public_id, color),
@@ -197,7 +197,7 @@ window.COPO.maps = {
     }
   },
 
-  makeMarker(checkin, markerOptions){
+  makeMarker(checkin, markerOptions) {
     let defaults = {
       icon: L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#ff6900' }),
       title: 'ID: ' + checkin.id,
@@ -206,6 +206,13 @@ window.COPO.maps = {
     }
     markerOptions = $.extend({}, defaults, markerOptions)
     return L.marker([checkin.lat, checkin.lng], markerOptions)
+  },
+
+  userToLatlng(user) {
+    let checkin = user.lastCheckin;
+    if(checkin) {
+      return L.latLng(checkin.lat, checkin.lng)
+    }
   }
 }
 
