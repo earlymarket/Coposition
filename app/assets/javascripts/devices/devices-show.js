@@ -2,9 +2,9 @@ $(document).on('page:change', function() {
   if ($(".c-friends.a-show_device").length === 1 || $(".c-devices.a-show").length === 1) {
     const page = $(".c-devices.a-show").length === 1 ? 'user' : 'friend'
     COPO.maps.initMap();
-    COPO.maps.initMarkers(COPO.dateRange.filteredCheckins(gon.checkins, moment().subtract(1, "months"), moment().endOf("day")));
-    COPO.maps.initControls();
     COPO.dateRange.initDateRange(gon.checkins, page);
+    COPO.maps.initMarkers(COPO.dateRange.currentCheckins(gon.checkins));
+    COPO.maps.initControls();
 
     $('li.tab').on('click', function(event) {
       var tab = event.target.textContent
