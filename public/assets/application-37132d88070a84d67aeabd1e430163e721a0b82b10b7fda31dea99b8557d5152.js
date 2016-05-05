@@ -53085,9 +53085,9 @@ window.COPO = window.COPO || {};
 window.COPO.dateRange = {
   initDateRange: function initDateRange(checkins, page) {
     var MIN = checkins.length ? moment(checkins[checkins.length - 1].created_at) : moment().subtract(3, "months");
-    var FROM = moment().subtract(1, "months");
+    var FROM = moment().subtract(1, "months").format("X");
     if (checkins.length && moment(checkins[0].created_at).format("X").valueOf() <= FROM.valueOf()) {
-      FROM = moment(checkins[0].created_at).subtract(1, "week");
+      FROM = moment(checkins[0].created_at).subtract(1, "week").format("X");
     }
     $("#dateRange").ionRangeSlider({
       type: "double",
@@ -53096,7 +53096,7 @@ window.COPO.dateRange = {
       drag_interval: true,
       min: MIN.format("X"),
       max: moment().endOf("day").format("X"),
-      from: FROM.format("X"),
+      from: FROM,
       to: moment().endOf("day").format("X"),
       prettify: function prettify(num) {
         return moment(num, "X").format("LL");
