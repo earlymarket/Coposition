@@ -30,6 +30,10 @@ window.COPO.maps = {
     });
   },
 
+  fitBounds() {
+    map.fitBounds(COPO.maps.allMarkers.getBounds())
+  },
+
   queueRefresh(checkins) {
     map.once('zoomstart', function(e) {
       map.removeEventListener('popupclose');
