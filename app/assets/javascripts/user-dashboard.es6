@@ -68,10 +68,10 @@ $(document).on('page:change', function() {
     const LAYERS = [
       { status: `Your friend's check-ins <a href='./friends'>(more details)</a>`,
         clusters: FRIENDSCLUSTERS,
-        bounds: FRIENDSBOUNDS},
+        bounds: FRIENDSBOUNDS },
       { status: `Your last month's check-ins <a href='./devices'>(more details)</a>`,
         clusters: MONTHSCLUSTERS,
-        bounds: MONTHSBOUNDS}
+        bounds: MONTHSBOUNDS }
     ];
 
     let slideIndex = 0;
@@ -80,7 +80,7 @@ $(document).on('page:change', function() {
     function next() {
       let currentSlide = LAYERS[slideIndex];
       layerGroup.clearLayers().addLayer(currentSlide.clusters);
-      map.fitBounds(currentSlide.bounds(), {padding: [40, 40]});
+      if(currentSlide.bounds().isValid()) map.fitBounds(currentSlide.bounds(), {padding: [40, 40]});
       $('#map-status').html(currentSlide.status);
       if(++slideIndex >= LAYERS.length) slideIndex = 0;
     }
