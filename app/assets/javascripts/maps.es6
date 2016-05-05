@@ -31,7 +31,9 @@ window.COPO.maps = {
   },
 
   fitBounds() {
-    map.fitBounds(COPO.maps.allMarkers.getBounds())
+    if (COPO.maps.allMarkers.getLayers().length){
+      map.fitBounds(COPO.maps.allMarkers.getBounds())
+    }
   },
 
   queueRefresh(checkins) {
