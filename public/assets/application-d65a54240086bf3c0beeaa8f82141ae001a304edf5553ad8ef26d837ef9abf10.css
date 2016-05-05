@@ -3292,6 +3292,8 @@ Copyright (c) 2015 Daniel Eden
  *
 
  */
+@import url(ion.rangeSlider.css);
+@import url(ion.rangeSlider.skinFlat.css);
 /* line 378, /home/earlymarket/.rvm/gems/ruby-2.2.2/gems/materialize-sass-0.97.5/app/assets/stylesheets/materialize/components/_color.scss */
 .materialize-red.lighten-5 {
   background-color: #fdeaeb !important;
@@ -20499,17 +20501,8 @@ footer.page-footer {
   transform: rotate(45deg);
 }
 
-/* line 1, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show {
-  /* Header - Day of the week */
-  /* Body - Today info */
-  /* Buttons of actions */
-  /* Select months of the year */
-  /* Every month of the year except: today */
-  /* Today */
-}
 /* line 2, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .date-select {
+.c-devices.a-show .date-select, .c-friends.a-show_device .date-select {
   background: #fff;
   position: absolute;
   width: 220px;
@@ -20518,116 +20511,70 @@ footer.page-footer {
   z-index: 9;
   padding-left: 5px;
 }
-/* line 13, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .picker__weekday-display {
-  background-color: #2092bb;
-}
-/* line 15, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .picker__date-display {
-  background-color: #47b8e0;
-}
-/* line 17, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .picker__nav--prev:hover, .c-devices.a-show .picker__nav--next:hover {
-  background-color: #88d1eb;
-}
-/* line 18, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .picker__nav--prev:before {
-  border-right: 0.75em solid #47b8e0;
-}
-/* line 19, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .picker__nav--next:before {
-  border-left: 0.75em solid #47b8e0;
-}
-/* line 20, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .picker__today, .c-devices.a-show .picker__close {
-  color: #47b8e0;
-}
-/* line 21, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .btn-flat.picker__today:active, .c-devices.a-show .btn-flat.picker__close:active, .c-devices.a-show .btn-flat.picker__clear:active {
-  background-color: #47b8e0;
-}
-/* line 23, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .picker__select--month.browser-default {
-  display: inline;
-  background-color: #FFFFFF;
-  width: 34%;
-  border: none;
-  outline: none;
-}
-/* line 31, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .picker__day--infocus:hover {
-  color: #47b8e0;
-}
-/* line 32, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .picker__day--selected, .c-devices.a-show .picker__day--selected:hover, .c-devices.a-show .picker--focused .picker__day--selected {
-  color: #2092bb;
-}
-/* line 33, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .picker__day.picker__day--infocus.picker__day--selected.picker__day--highlighted {
-  background-color: #88d1eb;
-}
-/* line 35, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .picker__day.picker__day--infocus.picker__day--today.picker__day--selected.picker__day--highlighted {
-  background-color: #88d1eb;
-}
-/* line 36, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .picker__day.picker__day--today {
-  color: #2092bb;
-}
-/* line 38, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .tabs {
+/* line 12, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .tabs, .c-friends.a-show_device .tabs {
   overflow: hidden;
 }
-/* line 42, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show #map {
+/* line 16, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show #map, .c-friends.a-show_device #map {
   width: 100%;
   position: absolute !important;
   top: 64px;
   margin-top: 48px;
-  bottom: 100px;
 }
-/* line 50, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show #chart {
+/* line 23, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show #chart, .c-friends.a-show_device #chart {
   height: 70vh;
   width: 100%;
 }
-/* line 55, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show #bar-chart {
+/* line 28, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show #bar-chart, .c-friends.a-show_device #bar-chart {
   margin-top: 20px;
   margin-left: 40px;
   margin-right: 40px;
   height: 40vh;
 }
-/* line 62, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show #table-chart {
-  height: 30vh;
+/* line 35, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show #table-chart, .c-friends.a-show_device #table-chart {
   margin-top: 10px;
 }
-/* line 67, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .bottom-panel {
+/* line 39, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .bottom-panel, .c-friends.a-show_device .bottom-panel {
   position: absolute;
   bottom: 0px;
   display: block;
-  height: 100px;
   width: 100%;
   text-align: center;
   background: white;
 }
-/* line 77, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .bottom-panel * {
+/* line 48, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .bottom-panel *, .c-friends.a-show_device .bottom-panel * {
   margin: 0;
 }
-/* line 81, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .buttons {
+/* line 52, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .buttons, .c-friends.a-show_device .buttons {
   margin: 10px;
 }
-/* line 85, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .disabled-icon {
+/* line 56, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .disabled-icon, .c-friends.a-show_device .disabled-icon {
   color: rgba(0, 0, 0, 0.12);
 }
-/* line 94, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show .fogged {
+/* line 65, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .fogged, .c-friends.a-show_device .fogged {
   color: #2196f3;
+}
+
+/* line 72, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show #map {
+  bottom: 120px;
+}
+/* line 76, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show #table-chart {
+  height: 30vh;
+}
+/* line 80, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+.c-devices.a-show .bottom-panel {
+  height: 120px;
 }
 
 /* line 2, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-shared.scss */
@@ -20672,12 +20619,17 @@ footer.page-footer {
   white-space: nowrap;
 }
 
-/* line 2, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/friends-device-show.scss */
+/* line 3, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/friends-device-show.scss */
 .c-friends.a-show_device #map {
-  width: 100%;
-  position: absolute !important;
-  top: 64px;
-  bottom: 0px;
+  bottom: 80px;
+}
+/* line 7, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/friends-device-show.scss */
+.c-friends.a-show_device #table-chart {
+  height: 35vh;
+}
+/* line 11, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/friends-device-show.scss */
+.c-friends.a-show_device .bottom-panel {
+  height: 80px;
 }
 
 /* line 3, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */

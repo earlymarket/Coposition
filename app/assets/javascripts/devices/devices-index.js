@@ -3,6 +3,7 @@ $(document).on('page:change', function() {
     COPO.utility.gonFix();
     COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions)
     COPO.slider.initSliders(gon.devices);
+    COPO.calendar.refreshCalendar(gon.checkins);
     window.initPage = function(){
       $('.clip_button').off();
       COPO.utility.initClipboard();
@@ -13,6 +14,10 @@ $(document).on('page:change', function() {
       $('.linkbox').on('click', function(e){
         this.select()
       })
+
+      $(window).resize(function(){
+        COPO.calendar.refreshCalendar(gon.checkins);
+      });
 
       //backup for iOS
       $('.linkbox').on('touchstart', function(){

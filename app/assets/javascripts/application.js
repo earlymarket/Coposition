@@ -32,6 +32,7 @@
 //= require attachinary
 //= require zeroclipboard
 //= require nouislider.min.js
+//= require ion.rangeSlider.min.js
 
 // -- Mapbox stuff --
 //= require mapbox
@@ -48,8 +49,9 @@
 //= require charts
 //= require maps
 //= require permissions
-//= require date-picker
 //= require slider
+//= require dateRange
+//= require calendar
 
 // I've put require_tree back in. Any js where the load order isn't important doesn't need to be specified.
 //= require_tree .
