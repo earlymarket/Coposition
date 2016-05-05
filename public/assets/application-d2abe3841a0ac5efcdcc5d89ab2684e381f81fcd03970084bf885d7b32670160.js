@@ -52760,6 +52760,10 @@ window.COPO.maps = {
     });
   },
 
+  fitBounds: function fitBounds() {
+    map.fitBounds(COPO.maps.allMarkers.getBounds());
+  },
+
   queueRefresh: function queueRefresh(checkins) {
     map.once('zoomstart', function (e) {
       map.removeEventListener('popupclose');
@@ -53080,28 +53084,33 @@ window.COPO.slider = {
 window.COPO = window.COPO || {};
 window.COPO.dateRange = {
   initDateRange: function initDateRange(checkins, page) {
-    var min = checkins.length ? moment(checkins[checkins.length - 1].created_at) : moment().subtract(3, "months");
+    var MIN = checkins.length ? moment(checkins[checkins.length - 1].created_at) : moment().subtract(3, "months");
+    var FROM = moment().subtract(1, "months");
+    if (checkins.length && moment(checkins[0].created_at).format("X").valueOf() <= FROM.valueOf()) {
+      FROM = moment(checkins[0].created_at).subtract(1, "week");
+    }
     $("#dateRange").ionRangeSlider({
       type: "double",
       force_edges: true,
       grid: true,
       drag_interval: true,
-      min: min.format("X"),
+      min: MIN.format("X"),
       max: moment().endOf("day").format("X"),
-      from: moment().subtract(1, "months").format("X"),
+      from: FROM.format("X"),
       to: moment().endOf("day").format("X"),
       prettify: function prettify(num) {
         return moment(num, "X").format("LL");
       },
       onChange: function onChange(num) {
-        var CHECKINS = COPO.dateRange.filteredCheckins(checkins, moment(num.from, "X"), moment(num.to, "X"));
-        COPO.maps.refreshMarkers(CHECKINS);
-        COPO.charts.refreshCharts(CHECKINS, page);
-      },
-      onFinish: function onFinish(num) {
         //const CHECKINS = COPO.dateRange.filteredCheckins(checkins, moment(num.from, "X"), moment(num.to, "X"));
         //COPO.maps.refreshMarkers(CHECKINS);
         //COPO.charts.refreshCharts(CHECKINS, page);
+      },
+      onFinish: function onFinish(num) {
+        var CHECKINS = COPO.dateRange.filteredCheckins(checkins, moment(num.from, "X"), moment(num.to, "X"));
+        COPO.maps.refreshMarkers(CHECKINS);
+        COPO.maps.fitBounds();
+        COPO.charts.refreshCharts(CHECKINS, page);
       }
     });
   },
@@ -53121,6 +53130,59 @@ window.COPO.dateRange = {
   currentCheckins: function currentCheckins(checkins) {
     var slider = $("#dateRange").data("ionRangeSlider");
     return COPO.dateRange.filteredCheckins(checkins, moment(slider.old_from, "X"), moment(slider.old_to, "X"));
+  }
+};
+'use strict';
+
+window.COPO = window.COPO || {};
+window.COPO.calendar = {
+
+  drawChart: function drawChart(checkins, size) {
+    var chart = new google.visualization.Calendar(document.getElementById('calendar'));
+    var dataTable = new google.visualization.DataTable();
+    dataTable.addColumn({ type: 'date', id: 'Date' });
+    dataTable.addColumn({ type: 'number', id: 'Frequency' });
+    var rowData = countCheckinsByDate();
+    dataTable.addRows(rowData);
+    var options = {
+      title: "Checkin frequency",
+      calendar: {
+        cellSize: size,
+        monthOutlineColor: {
+          stroke: 'grey',
+          strokeOpacity: 0.8,
+          strokeWidth: 1.5
+        }
+      },
+      colorAxis: { colors: ['white', 'orange'] }
+    };
+
+    chart.draw(dataTable, options);
+
+    function countCheckinsByDate() {
+      var createdAt = _.map(checkins, 'created_at');
+      var createdAtArr = [];
+      _(createdAt).each(function (checkin) {
+        createdAtArr.push(moment(checkin).endOf('day'));
+      });
+      var countedDates = _.toPairs(_.countBy(createdAtArr));
+      countedDates = countedDates.map(function (n) {
+        return [new Date(n[0]), n[1]];
+      });
+      return countedDates;
+    }
+  },
+
+  refreshCalendar: function refreshCalendar(checkins) {
+    var cellsize = null;
+    if (window.innerWidth < 1000) {
+      cellsize = window.innerWidth / 70;
+    } else if (window.innerWidth < 1500) {
+      cellsize = window.innerWidth / 85;
+    } else {
+      cellsize = 18;
+    }
+    COPO.calendar.drawChart(checkins, cellsize);
   }
 };
 'use strict';
@@ -53263,6 +53325,7 @@ $(document).on('page:change', function() {
     COPO.utility.gonFix();
     COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions)
     COPO.slider.initSliders(gon.devices);
+    COPO.calendar.refreshCalendar(gon.checkins);
     window.initPage = function(){
       $('.clip_button').off();
       COPO.utility.initClipboard();
@@ -53273,6 +53336,10 @@ $(document).on('page:change', function() {
       $('.linkbox').on('click', function(e){
         this.select()
       })
+
+      $(window).resize(function(){
+        COPO.calendar.refreshCalendar(gon.checkins);
+      });
 
       //backup for iOS
       $('.linkbox').on('touchstart', function(){
@@ -53355,9 +53422,9 @@ $(document).on('page:change', function() {
   if ($(".c-friends.a-show_device").length === 1 || $(".c-devices.a-show").length === 1) {
     const page = $(".c-devices.a-show").length === 1 ? 'user' : 'friend'
     COPO.maps.initMap();
-    COPO.maps.initMarkers(COPO.dateRange.filteredCheckins(gon.checkins, moment().subtract(1, "months"), moment().endOf("day")));
-    COPO.maps.initControls();
     COPO.dateRange.initDateRange(gon.checkins, page);
+    COPO.maps.initMarkers(COPO.dateRange.currentCheckins(gon.checkins));
+    COPO.maps.initControls();
 
     $('li.tab').on('click', function(event) {
       var tab = event.target.textContent
@@ -53608,6 +53675,7 @@ $(document).on('page:change', function () {
 
 
 // -- Run every page
+
 
 
 

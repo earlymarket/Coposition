@@ -1,28 +1,33 @@
 window.COPO = window.COPO || {};
 window.COPO.dateRange = {
   initDateRange(checkins, page) {
-    const min = checkins.length ? moment(checkins[checkins.length-1].created_at) : moment().subtract(3, "months");
+    const MIN = checkins.length ? moment(checkins[checkins.length-1].created_at) : moment().subtract(3, "months");
+    let FROM = moment().subtract(1, "months");
+    if (checkins.length && moment(checkins[0].created_at).format("X").valueOf() <= FROM.valueOf()) {
+      FROM = moment(checkins[0].created_at).subtract(1, "week");
+    }
     $("#dateRange").ionRangeSlider({
       type: "double",
       force_edges: true,
       grid: true,
       drag_interval: true,
-      min: min.format("X"),
+      min: MIN.format("X"),
       max: moment().endOf("day").format("X"),
-      from: moment().subtract(1, "months").format("X"),
+      from: FROM.format("X"),
       to: moment().endOf("day").format("X"),
       prettify(num) {
         return moment(num, "X").format("LL");
       },
       onChange(num) {
-        const CHECKINS = COPO.dateRange.filteredCheckins(checkins, moment(num.from, "X"), moment(num.to, "X"));
-        COPO.maps.refreshMarkers(CHECKINS);
-        COPO.charts.refreshCharts(CHECKINS, page);
-      },
-      onFinish(num) {
         //const CHECKINS = COPO.dateRange.filteredCheckins(checkins, moment(num.from, "X"), moment(num.to, "X"));
         //COPO.maps.refreshMarkers(CHECKINS);
         //COPO.charts.refreshCharts(CHECKINS, page);
+      },
+      onFinish(num) {
+        const CHECKINS = COPO.dateRange.filteredCheckins(checkins, moment(num.from, "X"), moment(num.to, "X"));
+        COPO.maps.refreshMarkers(CHECKINS);
+        COPO.maps.fitBounds();
+        COPO.charts.refreshCharts(CHECKINS, page);
       },
     });
   },
@@ -40,7 +45,7 @@ window.COPO.dateRange = {
   },
 
   currentCheckins(checkins){
-    var slider = $("#dateRange").data("ionRangeSlider");
+    const slider = $("#dateRange").data("ionRangeSlider");
     return COPO.dateRange.filteredCheckins(checkins, moment(slider.old_from, "X"), moment(slider.old_to, "X"))
   }
 }
