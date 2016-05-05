@@ -76,7 +76,7 @@ class Users::DevicesController < ApplicationController
     end
 
     def checkin_params
-      { lat: params[:location].split(",").first, lng: params[:location].split(",").last }
+      { lng: params[:location].split(",").first, lat: params[:location].split(",").last }
     end
 
     def require_ownership
