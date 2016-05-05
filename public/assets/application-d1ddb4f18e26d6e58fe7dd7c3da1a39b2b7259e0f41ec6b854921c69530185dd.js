@@ -52761,7 +52761,9 @@ window.COPO.maps = {
   },
 
   fitBounds: function fitBounds() {
-    map.fitBounds(COPO.maps.allMarkers.getBounds());
+    if (COPO.maps.allMarkers.getLayers().length) {
+      map.fitBounds(COPO.maps.allMarkers.getBounds());
+    }
   },
 
   queueRefresh: function queueRefresh(checkins) {
