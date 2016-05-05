@@ -4,6 +4,7 @@ class Users::FriendsController < ApplicationController
   def show
     @friend = User.find(params[:id])
     @devices = @friend.devices.includes(:checkins)
+    gon.checkins = @friend.get_user_checkins_for(current_user).since(Date.today.beginning_of_year)
   end
 
   def show_device
