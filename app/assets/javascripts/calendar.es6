@@ -2,13 +2,13 @@ window.COPO = window.COPO || {};
 window.COPO.calendar = {
 
   drawChart(checkins, size) {
-    let chart = new google.visualization.Calendar(document.getElementById('calendar'));
-    let dataTable = new google.visualization.DataTable();
+    const chart = new google.visualization.Calendar(document.getElementById('calendar'));
+    const dataTable = new google.visualization.DataTable();
     dataTable.addColumn({ type: 'date', id: 'Date' });
     dataTable.addColumn({ type: 'number', id: 'Frequency' });
-    let rowData = countCheckinsByDate();
+    const rowData = countCheckinsByDate();
     dataTable.addRows(rowData);
-    let options = {
+    const options = {
       title: "Checkin frequency",
       calendar: {
         cellSize: size,
@@ -24,8 +24,8 @@ window.COPO.calendar = {
     chart.draw(dataTable, options);
 
     function countCheckinsByDate() {
-      let createdAt = _.map(checkins, 'created_at');
-      let createdAtArr = [];
+      const createdAt = _.map(checkins, 'created_at');
+      const createdAtArr = [];
       _(createdAt).each(function(checkin){
         createdAtArr.push(moment(checkin).endOf('day'));
       });
