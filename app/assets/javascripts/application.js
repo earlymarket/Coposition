@@ -25,7 +25,8 @@
 
 // -- Misc vendor libs --
 
-//= require mustache.min
+//= require mustache
+//= require jquery.mustache
 //= require animateCSS.min.js
 //= require cloudinary
 //= require attachinary
@@ -43,8 +44,9 @@
 //= require utility
 //= require navbar
 //= require init
+//= require cleanup
 //= require charts
-//= require map
+//= require maps
 //= require permissions
 //= require date-picker
 //= require slider
