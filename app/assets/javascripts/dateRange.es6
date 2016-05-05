@@ -40,7 +40,7 @@ window.COPO.dateRange = {
   },
 
   currentCheckins(checkins){
-    var slider = $("#dateRange").data("ionRangeSlider");
+    const slider = $("#dateRange").data("ionRangeSlider");
     return COPO.dateRange.filteredCheckins(checkins, moment(slider.old_from, "X"), moment(slider.old_to, "X"))
   }
 }
