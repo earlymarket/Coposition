@@ -14,7 +14,8 @@ window.COPO.permissions = {
       if (PSWITCH.checked){
         PSWITCH.changeDisableSwitches(true);
       } else {
-        COPO.permissions.iconToggle('disallowed', PSWITCH.id);
+        $('#accessIcon'+PSWITCH.id).css('display', 'none');
+        //COPO.permissions.iconToggle('disallowed', PSWITCH.id);
       }
     });
   },
@@ -24,7 +25,11 @@ window.COPO.permissions = {
       $(`[data-switchtype=${attribute}]`).each(function(){
         const PSWITCH = new PermissionSwitch(user, $(this))
         if (PSWITCH.checked){
-          COPO.permissions.iconToggle(attribute, PSWITCH.id);
+          if (PSWITCH.switchtype === 'bypass_fogging'){
+            $('#fogIcon'+PSWITCH.id).css('display', 'none');
+          } else {
+            $('#delayIcon'+PSWITCH.id).css('display', 'none');
+          }
         }
       });
     })
