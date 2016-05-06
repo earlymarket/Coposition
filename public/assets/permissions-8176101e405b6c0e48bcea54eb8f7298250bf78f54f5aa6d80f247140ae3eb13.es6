@@ -8,6 +8,11 @@ window.COPO.permissions = {
     COPO.permissions.checkBypass(user);
   },
 
+  switchesOff: function(){
+    $(".permission-switch").off("change");
+    $(".master").off("change");
+  },
+
   checkDisabled: function(user){
     $('[data-switchtype=disallowed].permission-switch').each(function(){
       const PSWITCH = new PermissionSwitch(user, $(this))

@@ -52959,7 +52959,7 @@ window.COPO.maps = {
     }
   }
 };
-'use strict';
+"use strict";
 
 window.COPO = window.COPO || {};
 window.COPO.permissions = {
@@ -52969,6 +52969,11 @@ window.COPO.permissions = {
     COPO.permissions.switchChange(permissionableType, user, permissions);
     COPO.permissions.checkDisabled(user);
     COPO.permissions.checkBypass(user);
+  },
+
+  switchesOff: function switchesOff() {
+    $(".permission-switch").off("change");
+    $(".master").off("change");
   },
 
   checkDisabled: function checkDisabled(user) {
@@ -52985,7 +52990,7 @@ window.COPO.permissions = {
 
   checkBypass: function checkBypass(user) {
     ['bypass_fogging', 'bypass_delay'].forEach(function (attribute) {
-      $('[data-switchtype=' + attribute + ']').each(function () {
+      $("[data-switchtype=" + attribute + "]").each(function () {
         var PSWITCH = new PermissionSwitch(user, $(this));
         if (PSWITCH.checked) {
           if (PSWITCH.switchtype === 'bypass_fogging') {
@@ -53002,7 +53007,7 @@ window.COPO.permissions = {
     if (gon[permissionableType]) {
       gon[permissionableType].forEach(function (permissionable) {
         var IDTYPE = permissionableType === 'devices' ? 'device_id' : 'permissible_id';
-        $('div[data-id=' + permissionable.id + '].master').each(function () {
+        $("div[data-id=" + permissionable.id + "].master").each(function () {
           var MSWITCH = new MasterSwitch(user, $(this), gonPermissions, IDTYPE);
           MSWITCH.setState();
         });
@@ -53337,8 +53342,7 @@ $(document).on('page:change', function() {
     COPO.permissions.initSwitches('approved', gon.current_user_id, gon.permissions)
 
     $(document).on('page:before-unload', function(){
-      $(".permission-switch").off("change");
-      $(".master").off("change");
+      COPO.permissions.switchesOff();
     })
   }
 })
@@ -53377,8 +53381,7 @@ $(document).on('page:change', function() {
     initPage();
 
     $(document).on('page:before-unload', function(){
-      $(".permission-switch").off("change");
-      $(".master").off("change");
+      COPO.permissions.switchesOff();
       $(window).off("resize");
     })
   }
