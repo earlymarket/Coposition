@@ -28,6 +28,13 @@ COPO.utility = {
       .attr('id', fogId + checkin.id).attr('class', foggedClass).prop('outerHTML')
   },
 
+  geocodeCheckinLink(checkin){
+    return COPO.utility.ujsLink('get',
+      'Get address' ,
+      window.location.pathname + '/checkins/' + checkin.id )
+      .prop('outerHTML')
+  },
+
   createCheckinLink(coords){
     var checkin = {
       'checkin[lat]': coords.lat.toFixed(6),
