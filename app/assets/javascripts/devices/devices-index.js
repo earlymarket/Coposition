@@ -3,7 +3,7 @@ $(document).on('page:change', function() {
     COPO.utility.gonFix();
     COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions)
     COPO.slider.initSliders(gon.devices);
-    COPO.calendar.refreshCalendar(gon.checkins);
+    google.charts.setOnLoadCallback(function(){ COPO.calendar.refreshCalendar(gon.checkins) });
     window.initPage = function(){
       $('.clip_button').off();
       COPO.utility.initClipboard();
