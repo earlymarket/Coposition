@@ -1,5 +1,6 @@
 <%= raw render_flash %>
 gon.checkins.unshift(<%= raw @checkin.to_json %>);
 
-COPO.maps.refreshMarkers(gon.checkins);
-COPO.charts.refreshCharts(gon.checkins);
+var checkins = COPO.dateRange.currentCheckins(gon.checkins)
+COPO.maps.refreshMarkers(checkins);
+COPO.charts.refreshCharts(checkins, 'user');

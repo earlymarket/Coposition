@@ -117,12 +117,14 @@ class User < ActiveRecord::Base
   end
 
   def public_info
-    # Use this whenever we want to pass User to js
     # Clears out any potentially sensitive attributes
-    attributes.keep_if do |key, _v|
-      %w(id username email slug).any? { |public_attr| public_attr == key }
-    end
-    .merge(avatar: avatar || { public_id: 'no_avatar' } )
+    # Returns a normal ActiveRecord relation
+    User.select([:id, :username, :email, :slug]).find(self.id)
+  end
+
+  def public_info_hash
+    # Converts to hash and attaches avatar
+    public_info.attributes.merge(avatar: avatar || { public_id: 'no_avatar' } )
   end
 
 end

@@ -23,8 +23,10 @@ module Users
     def gon
       # gon converts these using #each_pair into seperate gon variables
       {
+        current_user: current_user_info,
         friends: friends,
-        weeks_checkins: weeks_checkins
+        weeks_checkins: weeks_checkins,
+        months_checkins: months_checkins
       }
     end
 
@@ -43,7 +45,7 @@ module Users
         friends = @user.friends.includes(:devices)
         friends.map do |friend|
           {
-            userinfo: friend.public_info,
+            userinfo: friend.public_info_hash,
             lastCheckin: friend.get_user_checkins_for(@user).first
           }
         end
@@ -51,6 +53,17 @@ module Users
 
       def weeks_checkins
         @checkins.where(created_at: 1.week.ago..Time.now)
+      end
+
+      def months_checkins
+        @checkins.where(created_at: 1.month.ago..Time.now)
+      end
+
+      def current_user_info
+        {
+          userinfo: @user.public_info_hash,
+          lastCheckin: @user.checkins.first
+        }
       end
 
   end

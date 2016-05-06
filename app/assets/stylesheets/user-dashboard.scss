@@ -1,14 +1,37 @@
 .c-dashboards.a-show {
-  nav {
+  nav, #mobile-nav {
     z-index: 10000;
+  }
+
+  #sidenav-overlay {
+    z-index: 9999;
   }
 
   #map {
     width:100%;
     height: 300px;
+
+    .leaflet-marker-icon {
+      cursor: inherit;
+      outline: 0;
+
+      &.leaflet-clickable {
+        cursor: pointer;
+      }
+    }
   }
 
-  .dashboard{
+  #map-status {
+    font-size: 1.4rem;
+  }
+
+  .dashboard {
+
+    .address {
+      font: 0.7rem Fira Mono;
+      margin-bottom: 1em;
+      white-space: pre;
+    }
 
     #most-checkins, ul.collection{
       margin: 0;
