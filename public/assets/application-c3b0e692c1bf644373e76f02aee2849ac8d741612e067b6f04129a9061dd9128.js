@@ -52978,12 +52978,11 @@ window.COPO.permissions = {
 
   checkDisabled: function checkDisabled(user) {
     $('[data-switchtype=disallowed].permission-switch').each(function () {
-      var PSWITCH = new PermissionSwitch(user, $(this));
-      if (PSWITCH.checked) {
-        PSWITCH.changeDisableSwitches(true);
+      var P_SWITCH = new PermissionSwitch(user, $(this));
+      if (P_SWITCH.checked) {
+        P_SWITCH.changeDisableSwitches(true);
       } else {
-        $('#accessIcon' + PSWITCH.id).css('display', 'none');
-        //COPO.permissions.iconToggle('disallowed', PSWITCH.id);
+        $('#accessIcon' + P_SWITCH.id).css('display', 'none');
       }
     });
   },
@@ -52991,12 +52990,12 @@ window.COPO.permissions = {
   checkBypass: function checkBypass(user) {
     ['bypass_fogging', 'bypass_delay'].forEach(function (attribute) {
       $("[data-switchtype=" + attribute + "]").each(function () {
-        var PSWITCH = new PermissionSwitch(user, $(this));
-        if (PSWITCH.checked) {
-          if (PSWITCH.switchtype === 'bypass_fogging') {
-            $('#fogIcon' + PSWITCH.id).css('display', 'none');
+        var P_SWITCH = new PermissionSwitch(user, $(this));
+        if (P_SWITCH.checked) {
+          if (P_SWITCH.switchtype === 'bypass_fogging') {
+            $('#fogIcon' + P_SWITCH.id).css('display', 'none');
           } else {
-            $('#delayIcon' + PSWITCH.id).css('display', 'none');
+            $('#delayIcon' + P_SWITCH.id).css('display', 'none');
           }
         }
       });
@@ -53006,10 +53005,10 @@ window.COPO.permissions = {
   setMasters: function setMasters(permissionableType, user, gonPermissions) {
     if (gon[permissionableType]) {
       gon[permissionableType].forEach(function (permissionable) {
-        var IDTYPE = permissionableType === 'devices' ? 'device_id' : 'permissible_id';
+        var ID_TYPE = permissionableType === 'devices' ? 'device_id' : 'permissible_id';
         $("div[data-id=" + permissionable.id + "].master").each(function () {
-          var MSWITCH = new MasterSwitch(user, $(this), gonPermissions, IDTYPE);
-          MSWITCH.setState();
+          var M_SWITCH = new MasterSwitch(user, $(this), gonPermissions, ID_TYPE);
+          M_SWITCH.setState();
         });
       });
     }
@@ -53017,18 +53016,18 @@ window.COPO.permissions = {
 
   switchChange: function switchChange(permissionableType, user, gonPermissions) {
     $(".permission-switch").change(function () {
-      var PSWITCH = new LocalSwitch(user, $(this), gonPermissions);
-      PSWITCH.toggleSwitch();
+      var P_SWITCH = new LocalSwitch(user, $(this), gonPermissions);
+      P_SWITCH.toggleSwitch();
       COPO.permissions.setMasters(permissionableType, user, gonPermissions);
     });
   },
 
   masterChange: function masterChange(permissionableType, user, gonPermissions) {
     $(".master").change(function () {
-      var IDTYPE = permissionableType === 'devices' ? 'device_id' : 'permissible_id';
-      var MSWITCH = new MasterSwitch(user, $(this), gonPermissions, IDTYPE);
-      MSWITCH.toggleSwitch();
-      MSWITCH.setState();
+      var ID_TYPE = permissionableType === 'devices' ? 'device_id' : 'permissible_id';
+      var M_SWITCH = new MasterSwitch(user, $(this), gonPermissions, ID_TYPE);
+      M_SWITCH.toggleSwitch();
+      M_SWITCH.setState();
     });
   },
 
@@ -53299,33 +53298,33 @@ var MasterSwitch = (function (_PermissionSwitch2) {
     key: 'toggleSwitch',
     value: function toggleSwitch() {
       this.permissions.forEach(function (permission) {
-        var PDOMELEMENT = $('div[data-id=' + permission.id + '][data-switchtype=' + this.switchtype + '].permission-switch');
-        var PSWITCH = new LocalSwitch(this.user, PDOMELEMENT, this.permissions);
-        if (PSWITCH.disabled && PSWITCH.switchtype === 'last_only') {
+        var P_DOM_ELEMENT = $('div[data-id=' + permission.id + '][data-switchtype=' + this.switchtype + '].permission-switch');
+        var P_SWITCH = new LocalSwitch(this.user, P_DOM_ELEMENT, this.permissions);
+        if (P_SWITCH.disabled && P_SWITCH.switchtype === 'last_only') {
           this.inputDomElement.prop("checked", false);
-        } else if (this.checked !== PSWITCH.checked) {
-          PSWITCH.inputDomElement.prop("checked", this.checked);
-          PSWITCH.checked = this.checked;
-          PSWITCH.toggleSwitch();
+        } else if (this.checked !== P_SWITCH.checked) {
+          P_SWITCH.inputDomElement.prop("checked", this.checked);
+          P_SWITCH.checked = this.checked;
+          P_SWITCH.toggleSwitch();
         }
       }, this);
     }
   }, {
     key: 'setState',
     value: function setState() {
-      var SWITCHESCHECKED = [];
+      var SWITCHES_CHECKED = [];
 
       this.permissions.forEach(function (permission) {
-        var PDOMELEMENT = $('div[data-id=' + permission.id + '][data-switchtype=' + this.switchtype + '].permission-switch');
-        SWITCHESCHECKED.push(PDOMELEMENT.find('input').prop("checked"));
+        var P_DOM_ELEMENT = $('div[data-id=' + permission.id + '][data-switchtype=' + this.switchtype + '].permission-switch');
+        SWITCHES_CHECKED.push(P_DOM_ELEMENT.find('input').prop("checked"));
       }, this);
-      var NEWMASTERCHECKEDSTATE = _.every(SWITCHESCHECKED);
-      this.inputDomElement.prop("checked", NEWMASTERCHECKEDSTATE);
+      var NEW_MASTER_CHECKED_STATE = _.every(SWITCHES_CHECKED);
+      this.inputDomElement.prop("checked", NEW_MASTER_CHECKED_STATE);
 
       if (this.switchtype === "disallowed") {
         $('div[data-id=' + this.id + '][data-switchtype=last_only].master').find('input').prop("checked", false);
         var MASTERS = $('div[data-id=' + this.id + '].disable.master').find('input');
-        MASTERS.prop("disabled", NEWMASTERCHECKEDSTATE);
+        MASTERS.prop("disabled", NEW_MASTER_CHECKED_STATE);
       }
     }
   }]);
