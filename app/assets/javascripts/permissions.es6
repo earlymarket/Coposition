@@ -20,7 +20,6 @@ window.COPO.permissions = {
         PSWITCH.changeDisableSwitches(true);
       } else {
         $('#accessIcon'+PSWITCH.id).css('display', 'none');
-        //COPO.permissions.iconToggle('disallowed', PSWITCH.id);
       }
     });
   },
