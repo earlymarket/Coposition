@@ -3,14 +3,14 @@
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
 </head>
 <body class="placeholder">
-  <div class="parallax promo">
-    <video autoplay="autoplay" loop="loop" poster="/videos/background.png">
-      <source src="/videos/background.webm" type="video/webm" />
-      <source src="/videos/background.mp4" type="video/mp4" />
-      <source src="/videos/background.ogv" type="video/ogg" />
-      <img alt="Coposition" src="/videos/background.png"/>
+  <div class="promo">
+    <div class="filter"></div>
+    <video autoplay="autoplay" loop="loop" class="fillWidth" poster="/videos/background.jpg">
+      <source src="/videos/background.webm" type="video/webm" />Your browser does not support the video tag. Please upgrade your browser for a better experience.
+      <source src="/videos/background.mp4" type="video/mp4" />Your browser does not support the video tag. Please you upgrade your browser for a better experience.
+      <source src="/videos/background.ogv" type="video/ogg" />Your browser does not support the video tag. Please you upgrade your browser for a better experience.
+      <img alt="Coposition" src="/videos/background.jpg"/>
     </video>
-    <div class="overlay"></div>
   </div>
 
   <div class="valign-wrapper bg-wrapper">
@@ -20,10 +20,34 @@
       <h5>Worry free location data management.</h5>
       <p>
 
-  <script type="text/javascript">
-         window.Maitre = { uuid: "MFfa39989fd3" };
-  </script>
-  <script data-maitre src='https://maitreapp.co/widget.js' async></script>
+      <script type="text/javascript">
+             window.Maitre = { uuid: "MFfa39989fd3" };
+      </script>
+      <script data-maitre src='https://maitreapp.co/widget.js' async></script>
+      <script type="text/javascript">
+        responsiveVideo();
+
+        function responsiveVideo() {
+          var ratio = 1920/1080;
+          // var h = $(".promo").height();
+          // var w = $(".promo").width();
+          var h = document.getElementsByClassName("promo")[0].clientHeight;
+          var w = document.getElementsByClassName("promo")[0].clientWidth;
+          var rRatio = w/h;
+
+          if(rRatio < ratio) {
+            // Aspect ratio is lower than 16:9
+            document.getElementsByTagName("video")[0].style.width = "auto";
+            document.getElementsByTagName("video")[0].style.height = "100%";
+          }else{
+            // Aspect ratio is higher than 16:9
+            document.getElementsByTagName("video")[0].style.width = "100%";
+            document.getElementsByTagName("video")[0].style.height = "auto";
+          }
+        }
+
+        window.onresize = responsiveVideo;
+      </script>
     </div>
   </div>
 </body>
