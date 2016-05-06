@@ -34,6 +34,7 @@ $(document).on('page:change', function() {
     $(document).on('page:before-unload', function(){
       $(".permission-switch").off("change");
       $(".master").off("change");
+      $(window).off("resize");
     })
   }
 })

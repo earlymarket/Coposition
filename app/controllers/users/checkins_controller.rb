@@ -25,6 +25,7 @@ class Users::CheckinsController < ApplicationController
     respond_to do |format|
       format.html
       format.json { render json: checkin.as_json }
+      format.js
     end
   end
 
