@@ -17,6 +17,10 @@ RSpec.describe Users::PermissionsController, type: :controller do
   end
 
   describe 'update' do
+    before do
+      request.accept = 'text/javascript'
+    end
+
     it 'should update the privilege level, bypass_fogging and bypass_delay attributes' do
        put :update, {
         user_id: user.id,

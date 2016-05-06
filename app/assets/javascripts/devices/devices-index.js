@@ -32,8 +32,7 @@ $(document).on('page:change', function() {
     initPage();
 
     $(document).on('page:before-unload', function(){
-      $(".permission-switch").off("change");
-      $(".master").off("change");
+      COPO.permissions.switchesOff();
       $(window).off("resize");
     })
   }
