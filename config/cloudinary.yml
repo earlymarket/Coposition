@@ -1,0 +1,39 @@
+---
+development:
+  cloud_name: coposition
+  api_key: <%= ENV['CLOUDINARY_API_KEY'] %>
+  api_secret: <%= ENV['CLOUDINARY_API_SECRET'] %>
+  enhance_image_tag: true
+  static_image_support: false
+  custom_transforms: {
+    avatar: {
+      transformation: ['60x60cAvatar'],
+      format: 'png'
+    }
+  }
+
+production:
+  cloud_name: coposition
+  api_key: <%= ENV['CLOUDINARY_API_KEY'] %>
+  api_secret: <%= ENV['CLOUDINARY_API_SECRET'] %>
+  enhance_image_tag: true
+  static_image_support: true
+  custom_transforms: {
+    avatar: {
+      transformation: ['60x60cAvatar'],
+      format: 'png'
+    }
+  }
+
+test:
+  cloud_name: coposition
+  api_key: <%= ENV['CLOUDINARY_API_KEY'] %>
+  api_secret: <%= ENV['CLOUDINARY_API_SECRET'] %>
+  enhance_image_tag: true
+  static_image_support: false
+  custom_transforms: {
+    avatar: {
+      transformation: ['60x60cAvatar'],
+      format: 'png'
+    }
+  }
