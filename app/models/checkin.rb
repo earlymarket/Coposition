@@ -16,6 +16,8 @@ class Checkin < ActiveRecord::Base
       results.first.methods.each do |m|
         obj.send("#{m}=", results.first.send(m)) if column_names.include? m.to_s
       end
+    else
+      obj.update(address: 'No address available')
     end
   end
 
@@ -58,7 +60,7 @@ class Checkin < ActiveRecord::Base
   end
 
   def reverse_geocoded?
-    address != 'No address available' && nil
+    address != 'Not yet geocoded'
   end
 
   def nearest_city
