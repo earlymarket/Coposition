@@ -52399,6 +52399,10 @@ COPO.utility = {
     return COPO.utility.ujsLink('put', '<i class="material-icons">cloud</i>', window.location.pathname + '/checkins/' + checkin.id).attr('id', fogId + checkin.id).attr('class', foggedClass).prop('outerHTML');
   },
 
+  geocodeCheckinLink: function geocodeCheckinLink(checkin) {
+    return COPO.utility.ujsLink('get', 'Get address', window.location.pathname + '/checkins/' + checkin.id).prop('outerHTML');
+  },
+
   createCheckinLink: function createCheckinLink(coords) {
     var checkin = {
       'checkin[lat]': coords.lat.toFixed(6),
@@ -52591,7 +52595,7 @@ $(document).on('page:before-unload', function() {
 ;
 window.COPO = window.COPO || {};
 window.COPO.charts = {
-  drawBarChart: function(checkins, height) {
+  drawBarChart: function(checkins, height, page) {
     // Define the data for the chart.
     var chart_div = document.getElementById('bar-chart');
     if (chart_div){
@@ -52660,7 +52664,7 @@ window.COPO.charts = {
           table_checkins = checkins_for_table(columnDate, 'YYYY-MM');
         }
       }
-      COPO.charts.drawTable(table_checkins);
+      COPO.charts.drawTable(table_checkins, page);
     }
 
     function checkins_for_table(columnDate, format) {
@@ -52701,7 +52705,11 @@ window.COPO.charts = {
         checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
         var delete_button = COPO.utility.deleteCheckinLink(checkin);
         var fogging_button = COPO.utility.fogCheckinLink(checkin, foggedClass, 'tableFog');
-        tableData.push([humanizedDate, checkin.address, fogging_button+delete_button]);
+        tableData.push([
+          humanizedDate,
+          checkin.address === 'Not yet geocoded' ? COPO.utility.geocodeCheckinLink(checkin) : checkin.address,
+          fogging_button + delete_button
+        ])
       })
       data.addRows(tableData);
       data.setProperty(0, 0, 'style', 'width:20%');
@@ -52721,7 +52729,7 @@ window.COPO.charts = {
   },
 
   refreshCharts: function(checkins, page){
-    COPO.charts.drawBarChart(checkins);
+    COPO.charts.drawBarChart(checkins, null, page);
     COPO.charts.drawTable(checkins, page);
   }
 }
@@ -53358,6 +53366,7 @@ $(document).on('page:change', function() {
     $(document).on('page:before-unload', function(){
       $(".permission-switch").off("change");
       $(".master").off("change");
+      $(window).off("resize");
     })
   }
 })
@@ -53423,6 +53432,7 @@ $(document).on('page:change', function() {
 $(document).on('page:change', function() {
   if ($(".c-friends.a-show_device").length === 1 || $(".c-devices.a-show").length === 1) {
     const page = $(".c-devices.a-show").length === 1 ? 'user' : 'friend'
+    COPO.utility.gonFix();
     COPO.maps.initMap();
     COPO.dateRange.initDateRange(gon.checkins, page);
     COPO.maps.initMarkers(COPO.dateRange.currentCheckins(gon.checkins));
@@ -53630,6 +53640,7 @@ $(document).on('page:change', function () {
       // Cleanup
       $(document).on('page:before-unload', function () {
         if (slideInterval) clearInterval(slideInterval);
+        $(window).off("resize");
       });
     })();
   }
