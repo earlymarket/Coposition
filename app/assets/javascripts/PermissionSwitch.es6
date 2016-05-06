@@ -31,6 +31,7 @@ class LocalSwitch extends PermissionSwitch {
     $.ajax({
       url: `/users/${this.user}/devices/${this.permission['device_id']}/permissions/${this.id}`,
       type: 'PUT',
+      dataType: 'script',
       data: { permission: this.permission }
     });
   }
@@ -57,35 +58,33 @@ class MasterSwitch extends PermissionSwitch {
   }
 
   toggleSwitch() {
-    const SELF = this;
-    SELF.permissions.forEach(function(permission){
-      const PDOMELEMENT = $(`div[data-id=${permission.id}][data-switchtype=${SELF.switchtype}].permission-switch`);
-      const PSWITCH = new LocalSwitch(SELF.user, PDOMELEMENT, SELF.permissions);
-      if ((PSWITCH.disabled && PSWITCH.switchtype === 'last_only')){
-        SELF.inputDomElement.prop("checked", false)
-      } else if (SELF.checked !== PSWITCH.checked) {
-        PSWITCH.inputDomElement.prop("checked", SELF.checked);
-        PSWITCH.checked = SELF.checked;
-        PSWITCH.toggleSwitch();
+    this.permissions.forEach(function(permission) {
+      const P_DOM_ELEMENT = $(`div[data-id=${permission.id}][data-switchtype=${this.switchtype}].permission-switch`);
+      const P_SWITCH = new LocalSwitch(this.user, P_DOM_ELEMENT, this.permissions);
+      if ((P_SWITCH.disabled && P_SWITCH.switchtype === 'last_only')){
+        this.inputDomElement.prop("checked", false)
+      } else if (this.checked !== P_SWITCH.checked) {
+        P_SWITCH.inputDomElement.prop("checked", this.checked);
+        P_SWITCH.checked = this.checked;
+        P_SWITCH.toggleSwitch();
       }
-    })
+    }, this);
   }
 
   setState() {
-    const SWITCHESCHECKED = [];
-    const SELF = this;
+    const SWITCHES_CHECKED = [];
 
-    SELF.permissions.forEach(function(permission){
-      const PDOMELEMENT = $(`div[data-id=${permission.id}][data-switchtype=${SELF.switchtype}].permission-switch`);
-      SWITCHESCHECKED.push(PDOMELEMENT.find('input').prop("checked"))
-    })
-    const NEWMASTERCHECKEDSTATE = _.every(SWITCHESCHECKED)
-    SELF.inputDomElement.prop("checked", NEWMASTERCHECKEDSTATE)
+    this.permissions.forEach(function(permission){
+      const P_DOM_ELEMENT = $(`div[data-id=${permission.id}][data-switchtype=${this.switchtype}].permission-switch`);
+      SWITCHES_CHECKED.push(P_DOM_ELEMENT.find('input').prop("checked"))
+    }, this)
+    const NEW_MASTER_CHECKED_STATE = _.every(SWITCHES_CHECKED)
+    this.inputDomElement.prop("checked", NEW_MASTER_CHECKED_STATE)
 
-    if (SELF.switchtype === "disallowed") {
-      $(`div[data-id=${SELF.id}][data-switchtype=last_only].master`).find('input').prop("checked", false);
-      const MASTERS = $(`div[data-id=${SELF.id}].disable.master`).find('input');
-      MASTERS.prop("disabled", NEWMASTERCHECKEDSTATE);
+    if (this.switchtype === "disallowed") {
+      $(`div[data-id=${this.id}][data-switchtype=last_only].master`).find('input').prop("checked", false);
+      const MASTERS = $(`div[data-id=${this.id}].disable.master`).find('input');
+      MASTERS.prop("disabled", NEW_MASTER_CHECKED_STATE);
     }
   }
 }

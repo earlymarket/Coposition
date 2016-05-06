@@ -3,9 +3,15 @@ class Users::PermissionsController < ApplicationController
   before_action :authenticate_user!, :require_ownership
 
   def update
-    permission = Permission.find(params[:id])
-    permission.update(allowed_params)
-    render nothing: true
+    @permission = Permission.find(params[:id])
+    @permission.update(allowed_params)
+    devices = current_user.devices.order(:id).includes(:permissions)
+    gon.permissions = devices.map(&:permissions).inject(:+)
+    gon.current_user_id = current_user.id
+    gon.devices = devices
+    respond_to do |format|
+      format.js
+    end
   end
 
   private

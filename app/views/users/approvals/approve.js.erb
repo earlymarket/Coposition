@@ -1,4 +1,4 @@
-$('.approvalsGon').html("<%= j Gon::Base.render_data %>")
+$('#gonvariables').html("<%= j Gon::Base.render_data %>")
 
 if (COPO.utility.urlParam("redirect")) {
   window.location.replace(COPO.utility.urlParam("redirect"));
