@@ -5,8 +5,7 @@ $(document).on('page:change', function() {
     COPO.permissions.initSwitches('approved', gon.current_user_id, gon.permissions)
 
     $(document).on('page:before-unload', function(){
-      $(".permission-switch").off("change");
-      $(".master").off("change");
+      COPO.permissions.switchesOff();
     })
   }
 })
