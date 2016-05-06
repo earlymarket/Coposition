@@ -108,6 +108,7 @@ $(document).on('page:change', function() {
     // Cleanup
     $(document).on('page:before-unload', function(){
       if(slideInterval) clearInterval(slideInterval);
+      $(window).off("resize");
     })
   }
 });

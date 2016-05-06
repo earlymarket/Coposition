@@ -13,7 +13,6 @@ RSpec.describe DevicesHelper, :type => :helper do
     it "returns the last checkin address if it exists" do
       checkin = FactoryGirl::create(:checkin, {
         device_id: device.id,
-        address: "#{Faker::Address.city}, #{Faker::Address.country_code}"
       })
       expect(helper.devices_last_checkin(device)).to include(checkin.city)
     end
