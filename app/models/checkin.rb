@@ -33,15 +33,20 @@ class Checkin < ActiveRecord::Base
   end
 
   def get_data
-    fogged_checkin = self
-    if fogged?
-      fogged_checkin.address = "#{nearest_city.name}, #{nearest_city.country_code}"
-      fogged_checkin.lat = self.fogged_lat || nearest_city.latitude || self.lat + rand(-0.5..0.5)
-      fogged_checkin.lng = self.fogged_lng || nearest_city.longitude || self.lng + rand(-0.5..0.5)
-      fogged_checkin
-    else
-      self
+    if fogged? || device.fogged?
+      fogged_checkin = Checkin.new(attributes.delete_if {|key, _v| key =~ /fogged/ })
+      fogged_checkin.address = fogged_area
+      fogged_checkin.lat = fogged_lat
+      fogged_checkin.lng = fogged_lng
+      return fogged_checkin
     end
+    self
+  end
+
+  def self.get_data
+    # this will convert it to an array
+    # paginate before use!
+    all.map {|checkin| checkin.get_data}
   end
 
   def reverse_geocode!
@@ -64,7 +69,7 @@ class Checkin < ActiveRecord::Base
 
   def add_fogged_info
     self.fogged_lat ||= nearest_city.latitude || self.lat + rand(-0.5..0.5)
-    self.fogged_lng ||= nearest_city.longitude || self.lat + rand(-0.5..0.5)
+    self.fogged_lng ||= nearest_city.longitude || self.lng + rand(-0.5..0.5)
     self.fogged_area ||= nearest_city.name
     save
   end
@@ -72,19 +77,20 @@ class Checkin < ActiveRecord::Base
   def resolve_address(permissible, type)
     if type == "address"
       reverse_geocode!
-      get_data unless device.can_bypass_fogging?(permissible)
+      return get_data unless device.can_bypass_fogging?(permissible)
       self
     else
-      get_data unless device.can_bypass_fogging?(permissible)
-      self.slice(:id, :uuid, :lat, :lng, :created_at, :updated_at, :fogged)
+      return get_data unless device.can_bypass_fogging?(permissible)
+      Checkin.where(id: id).select([:id, :uuid, :lat, :lng, :created_at, :updated_at]).first
     end
   end
 
   def self.hash_group_and_count_by(attribute)
-    select(&attribute).group_by(&attribute).inject({}) do |hash, (key,checkins)|
-      hash[key] = checkins.length
-      hash
-    end.sort_by{ |_, count| count }.reverse!
+    select(&attribute).group_by(&attribute)
+    .each_with_object({}) do |(key,checkins), result|
+      result[key] = checkins.count
+    end
+    .sort_by{ |_attribute, count| count }.reverse!
   end
 
   def self.percentage_increase(time_range)

@@ -15,14 +15,22 @@ Given(/^I click the link "(.*?)"$/) do |target|
 end
 
 Then(/^I should see a link that says "(.*?)"$/) do |text|
-  expect(page.has_link? text).to be true
+  expect(page).to have_selector(:link_or_button, text)
 end
 
 Then(/^I should see "(.*?)"$/) do |text|
-  expect(page.has_content? text).to be true
+  expect(page).to have_content(text)
 end
 
 Given(/^I confirm$/) do
   a = page.driver.browser.switch_to.alert
   a.accept
+end
+
+Given(/^I right click on the "(.*?)"$/) do |target|
+  find(:id, target).right_click
+end
+
+Given(/^I click on the "(.*?)"$/) do |target|
+  find(:id, target).click
 end

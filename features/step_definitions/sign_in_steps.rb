@@ -7,6 +7,7 @@ Given(/^I am signed in as developer$/) do
       And I click "Sign up"
     Then I should see "You have signed up successfully."
   }
+  @developer = Developer.last
 end
 
 Given(/^I am signed in as a user$/) do
@@ -24,6 +25,7 @@ end
 
 When(/^I fill in the form with my "(.*?)" details$/) do |actor|
   @me = FactoryGirl::build actor.to_sym
+  find_by_id("#{actor}_password_confirmation")
   fill_in "#{actor}_email", with: @me.email
   fill_in "#{actor}_password", with: @me.password
   fill_in "#{actor}_password_confirmation", with: @me.password_confirmation

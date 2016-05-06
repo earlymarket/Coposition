@@ -1,4 +1,4 @@
-$brand: "Noto Sans", "Helvetica", sans-serif;
+$brand: "Roboto Condensed", "Helvetica", sans-serif;
 $body-text: "Fira Sans", "Helvetica", sans-serif;
 
 .monospace{
@@ -8,6 +8,7 @@ $body-text: "Fira Sans", "Helvetica", sans-serif;
 
 .brand {
   font-family: $brand;
+  font-weight: 300;
 }
 
 
@@ -15,31 +16,78 @@ $body-text: "Fira Sans", "Helvetica", sans-serif;
 html {
   font-family: $body-text;
   background-color: #fcfcfc;
+  font-weight: 300;
 }
 
 h1 {
+  @extend .brand;
   text-align: center;
+
+  @media screen and (max-width: 992px){
+    font-size: 3rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
 
   @media screen and (max-width: 600px){
     font-size: 2.5rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
   }
 }
 h2 {
   @extend .dark-text, .brand;
   font-weight: 700;
+
+  @media screen and (max-width: 992px){
+    font-size: 2.2rem;
+  }
+
+  @media screen and (max-width: 600px){
+    font-size: 2.2rem;
+  }
 }
 h3 {
   @extend .dark-text, .brand;
   font-weight: 700;
+
+  @media screen and (max-width: 992px){
+    font-size: 2rem;
+    line-height: 2rem;
+  }
+
+  @media screen and (max-width: 600px){
+    font-size: 2rem;
+    line-height: 2rem;
+  }
 }
 h4{
   @extend .dark-text, .brand;
   font-weight: 700;
+
+  @media screen and (max-width: 992px){
+    font-size: 1.6rem;
+    line-height: 2.2rem;
+  }
+
+  @media screen and (max-width: 600px){
+    font-size: 1.6rem;
+    line-height: 2.2rem;
+  }
 }
 h5{
   @extend .dark-text, .brand;
   font-weight: 700;
+
+  @media screen and (max-width: 992px){
+    font-size: 1.4rem;
+  }
+
+  @media screen and (max-width: 600px){
+    font-size: 1.4rem;
+  }
 }
+
 h6{
 
 }

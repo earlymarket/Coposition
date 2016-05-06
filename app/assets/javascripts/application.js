@@ -25,13 +25,14 @@
 
 // -- Misc vendor libs --
 
-//= require mustache.min
+//= require mustache
+//= require jquery.mustache
 //= require animateCSS.min.js
-//= require d3.min.js
-//= require c3.min.js
 //= require cloudinary
 //= require attachinary
 //= require zeroclipboard
+//= require nouislider.min.js
+//= require ion.rangeSlider.min.js
 
 // -- Mapbox stuff --
 //= require mapbox
@@ -44,10 +45,13 @@
 //= require utility
 //= require navbar
 //= require init
+//= require cleanup
 //= require charts
-//= require map
+//= require maps
 //= require permissions
-//= require date-picker
+//= require slider
+//= require dateRange
+//= require calendar
 
 // I've put require_tree back in. Any js where the load order isn't important doesn't need to be specified.
 //= require_tree .

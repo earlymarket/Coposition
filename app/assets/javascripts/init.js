@@ -56,25 +56,25 @@ function addEventListeners() {
 }
 
 function addClickListeners() {
-  $(".landing-section .start-btn").click(function(e){
+  $(".landing-section .start-btn").click(function(e) {
     var offset = $(".landing-section.splash").height();
     $("body").animate({ scrollTop: offset });
   });
 }
 
-function addWindowResizeListeners(){
+function addWindowResizeListeners() {
   $(window).resize(function(e) {
     responsiveVideo();
   });
 }
 
-function responsiveVideo(){
+function responsiveVideo() {
   var ratio = 1920/1080;
   var $h = $(".promo").height();
   var $w = $(".promo").width();
   var rRatio = $w/$h;
 
-  if(rRatio < ratio){
+  if(rRatio < ratio) {
     // Aspect ratio is lower than 16:9
     $(".promo video").css({
       width: 'auto',

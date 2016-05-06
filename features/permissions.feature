@@ -1,20 +1,22 @@
 Feature: Permissions
 
-  Background: There is a device and an approval
+  Background: There is an approved device
     Given I am signed in as a user
       And I click the link "Devices"
       And there's a device in the database with the UUID "123456789123"
       And the developer "Wherefore Art Thou" exists
       And the developer "Wherefore Art Thou" sends me an approval request
+      And I accept the approval request
+      And I click "add"
+      And I enter UUID "123456789123" and a friendly name "G-RALA"
+      And I click "Add"
 
     @javascript
-    Scenario: User accepts and reviews permissions
-      Given I accept the approval request
-      Given I click "Add new device"
-        And I enter UUID "123456789123" and a friendly name "G-RALA"
-      When I click "Add"
-      Then I should see "This device has been bound to your account!"
-        # And I should see "G-RALA"
-      When I click the link "Devices"
-        And I click the link "Permissions"
-        Then I should see "Wherefore Art Thou"
+    Scenario: User reviews and changes permissions
+      Given I click the link "Apps"
+        Then I change my permissions
+
+    @javascript
+    Scenario: User reviews and changes permissions from the devices page
+      Given I click the link "Devices"
+        Then I change my permissions

@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   namespace :api, path: '', constraints: {subdomain: 'api'}, defaults: {format: 'json'} do
     namespace :v1 do
       resource :uuid, only: [:show]
+      resources :checkins, only: [:create]
       resources :demo do
         collection do
           get :reset_approvals
@@ -37,7 +38,7 @@ Rails.application.routes.draw do
             get :status
           end
         end
-        resources :checkins, only: [:index], module: :users do
+        resources :checkins, only: [:index] do
           collection do
             get :last
           end
@@ -48,7 +49,7 @@ Rails.application.routes.draw do
           end
         end
         resources :devices, only: [:index, :create, :show, :update], module: :users do
-          resources :checkins, only: [:index, :create] do
+          resources :checkins, only: [:index] do
             collection do
               get :last
             end
@@ -69,7 +70,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show], module: :users do
     resource :dashboard, only: [:show]
-    resources :devices, except: [:edit] do
+    resources :devices, except: :edit do
       member { get :shared }
       resources :checkins, only: [:show, :create, :new, :update]
       delete '/checkins/', to: 'checkins#destroy_all'
@@ -98,6 +99,7 @@ Rails.application.routes.draw do
   resources :developers, only: [:edit, :update]
 
   namespace :developers do
+    get '/', to: 'consoles#show'
     resource :console, only: [:show]
     resources :approvals, only: [:index, :new, :create]
     # For cool API usage stats in the future

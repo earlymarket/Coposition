@@ -8,20 +8,30 @@ class Device < ActiveRecord::Base
   has_many :developers, through: :permissions, source: :permissible, :source_type => "Developer"
   has_many :permitted_users, through: :permissions, source: :permissible, :source_type => "User"
 
+  validates :name, presence: :true
+  validates :name, uniqueness: { scope: :user_id }, if: :user_id
+
   before_create do |dev|
     dev.uuid = SecureRandom.uuid
   end
 
   def construct(current_user, device_name)
-    update(user: current_user, name: device_name)
-    developers << current_user.developers
-    permitted_users << current_user.friends
+    if update(user: current_user, name: device_name)
+      developers << current_user.developers
+      permitted_users << current_user.friends
+    end
   end
 
   def permitted_history_for(permissible)
     return Checkin.none if permission_for(permissible).privilege == "disallowed"
     if permission_for(permissible).privilege == "last_only"
-      can_bypass_delay?(permissible) ? Checkin.where(id: checkins.first.id) : Checkin.where(id: checkins.before(delayed.to_i.minutes.ago).first.id)
+      if can_bypass_delay?(permissible)
+        Checkin.where(id: checkins.first.id)
+      elsif checkins.before(delayed.to_i.minutes.ago).present?
+        Checkin.where(id: checkins.before(delayed.to_i.minutes.ago).first.id)
+      else
+        Checkin.none
+      end
     else
       can_bypass_delay?(permissible) ? checkins : checkins.before(delayed.to_i.minutes.ago)
     end
@@ -45,10 +55,18 @@ class Device < ActiveRecord::Base
   end
 
   def set_delay(mins)
-    if mins.to_i == 0
-      update(delayed: nil)
+    mins.to_i == 0 ? update(delayed: nil) : update(delayed: mins)
+  end
+
+  def humanize_delay
+    if delayed.nil?
+      "#{name} is not delayed."
+    elsif delayed < 60
+      "#{name} delayed by #{delayed} #{'minute'.pluralize(delayed)}."
+    elsif delayed < 1440
+      "#{name} delayed by #{delayed/60} #{'hour'.pluralize(delayed/60)} and #{delayed%60} #{'minutes'.pluralize(delayed%60)}."
     else
-      update(delayed: mins)
+      "#{name} delayed by #{delayed/1440} #{'day'.pluralize(delayed/1440)}."
     end
   end
 

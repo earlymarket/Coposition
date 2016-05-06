@@ -1,7 +1,7 @@
 <p>
-	<% if @approvals %>
+	<% if @pending.present? %>
 
-	  You have <%= @approvals.length %> pending.
+	  You have <%= @pending.length %> pending.
 
 	<% else %>
 
@@ -10,7 +10,7 @@
 	<% end %>
 </p>
 
-<%= link_to("New approval", new_developers_approval_path, class: "btn") %>
+<%= link_to("New user", new_developers_approval_path, class: "btn") %>
 
 <h3 class="">Users</h3>
 <div class='collection'>

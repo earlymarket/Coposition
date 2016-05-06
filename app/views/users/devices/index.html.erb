@@ -1,18 +1,19 @@
-<%= Gon::Base.render_data %>
+<div id='gonvariables'><%= Gon::Base.render_data %></div>
 <h1>Your devices</h1>
+<div class="row">
+  <div class="center">
+    <%= link_to(new_user_device_path, class: "btn-floating btn-large waves-effect waves-light primary-color") do %>
+      <i class="material-icons">add</i>
+    <% end %>
+  </div>
+</div>
+<div id='calendar'></div>
 <div>
   <% @devices.each do |device| %>
     <%= render device %>
   <% end %>
 </div>
-</br>
-<div class="row">
 
-  <div class="center">
-    <%= link_to("Add new device", new_user_device_path, class: "btn") %>
-  </div>
-
-</div>
 <script>
   $('.modal-trigger').leanModal();
 </script>

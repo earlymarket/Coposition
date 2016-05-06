@@ -8,7 +8,7 @@ module ApplicationHelper
     if value
       '<i class="material-icons">cloud_done</i>'.html_safe
     else
-      '<i class="material-icons">cloud_off</i>'.html_safe
+      '<i class="material-icons disabled-icon">cloud</i>'.html_safe
     end
   end
 
@@ -16,23 +16,16 @@ module ApplicationHelper
     date.strftime("%a #{date.day.ordinalize} %b %T")
   end
 
-  def avatar_for(resource, custom_options = {})
-    default_options = {
-      size: '60x60',
-      crop: :thumb,
-      gravity: 'face:center',
-      radius: :max,
-      class: 'avatar'
-    }
-    options = default_options.merge(custom_options)
-    resource.avatar? ? cl_image_tag(resource.avatar.path, options) : cl_image_tag("placeholder_wzhvlw.png", options)
+  def avatar_for(resource, options = {})
+    options = options.reverse_merge(Rails.application.config_for(:cloudinary)['custom_transforms']['avatar'])
+    resource.avatar? ? cl_image_tag(resource.avatar.public_id, options) : cl_image_tag('no_avatar', options)
   end
 
   def render_flash
     output = ''
 
     if alert
-      output << "Materialize.toast('#{j alert}', 3000);\n"
+      output << "Materialize.toast('#{j alert}', 3000, 'red');\n"
       flash.discard(:alert)
     end
 

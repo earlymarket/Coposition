@@ -15,7 +15,7 @@ RSpec.describe DevicesHelper, :type => :helper do
         device_id: device.id,
         address: "#{Faker::Address.city}, #{Faker::Address.country_code}"
       })
-      expect(helper.devices_last_checkin(device)).to match(checkin.address)
+      expect(helper.devices_last_checkin(device)).to include(checkin.city)
     end
   end
 
@@ -32,6 +32,12 @@ RSpec.describe DevicesHelper, :type => :helper do
       expect(helper.devices_shared_icon(device)).not_to eq(helper.devices_shared_icon(other))
       expect(helper.devices_shared_icon(device)).to match('icon')
       expect(helper.devices_shared_icon(other)).to match('icon')
+    end
+  end
+
+  describe "#devices_access_icon" do
+    it "returns an icon" do
+      expect(helper.devices_access_icon).to match('icon')
     end
   end
 

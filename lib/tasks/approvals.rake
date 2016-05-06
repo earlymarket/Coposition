@@ -7,7 +7,7 @@ namespace :approvals do
       .where.not(id: user.friend_requests.select(:id)) \
       .where.not(id: user.id)
     non_friends.each do |approvable|
-      Approval.link(approvable, user, 'User')
+      Approval.construct(approvable, user, 'User')
       puts "#{approvable.username || 'User #' + approvable.id} sent a friend request"
     end
   end

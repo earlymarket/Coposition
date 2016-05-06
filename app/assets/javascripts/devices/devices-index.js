@@ -1,7 +1,9 @@
 $(document).on('page:change', function() {
   if ($(".c-devices.a-index").length === 1) {
-    COPO.permissions.switch_change();
-    COPO.permissions.check_disabled();
+    COPO.utility.gonFix();
+    COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions)
+    COPO.slider.initSliders(gon.devices);
+    COPO.calendar.refreshCalendar(gon.checkins);
     window.initPage = function(){
       $('.clip_button').off();
       COPO.utility.initClipboard();
@@ -12,6 +14,10 @@ $(document).on('page:change', function() {
       $('.linkbox').on('click', function(e){
         this.select()
       })
+
+      $(window).resize(function(){
+        COPO.calendar.refreshCalendar(gon.checkins);
+      });
 
       //backup for iOS
       $('.linkbox').on('touchstart', function(){
@@ -24,5 +30,10 @@ $(document).on('page:change', function() {
       })
     }
     initPage();
+
+    $(document).on('page:before-unload', function(){
+      $(".permission-switch").off("change");
+      $(".master").off("change");
+    })
   }
 })

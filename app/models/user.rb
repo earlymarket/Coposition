@@ -56,26 +56,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def approved_for(approval)
-    if approval.approvable_type == 'User'
-      self.friends
-    elsif approval.approvable_type == 'Developer'
-      self.developers
-    else
-      raise "Unhandled approval type"
-    end
-  end
-
-  def pending_for(approval)
-    if approval.approvable_type == 'User'
-      self.friend_requests
-    elsif approval.approvable_type == 'Developer'
-      self.developer_requests
-    else
-      raise "Unhandled approval type"
-    end
-  end
-
   ## Devices
 
   def approve_devices(permissible)
@@ -97,10 +77,10 @@ class User < ActiveRecord::Base
   ## Checkins
 
   def get_checkins(permissible, device)
-    device ? device.permitted_history_for(permissible) : get_user_checkins(permissible)
+    device ? device.permitted_history_for(permissible) : get_user_checkins_for(permissible)
   end
 
-  def get_user_checkins(permissible)
+  def get_user_checkins_for(permissible)
     checkins_ids = devices.inject([]) do |result, device|
       result + device.permitted_history_for(permissible).pluck(:id)
     end
@@ -134,6 +114,17 @@ class User < ActiveRecord::Base
     #   end
     #   @notes
     # end
+  end
+
+  def public_info
+    # Clears out any potentially sensitive attributes
+    # Returns a normal ActiveRecord relation
+    User.select([:id, :username, :email, :slug]).find(self.id)
+  end
+
+  def public_info_hash
+    # Converts to hash and attaches avatar
+    public_info.attributes.merge(avatar: avatar || { public_id: 'no_avatar' } )
   end
 
 end

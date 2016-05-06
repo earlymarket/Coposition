@@ -1,29 +1,28 @@
-<h1>Developer console</h1><br>
+<h1>Developer console</h1>
+
 <br>
+
 <p>
   Your <%= current_developer.company_name %> API key is <code><%= current_developer.api_key %></code>
   <br>
-  You've made <span id="requests-today"><%= @requests_today %></span> requests in the last day.
+  You've made <span id="requests-today"><%= pluralize(@requests_today, 'request') %></span> in the last day.
   <br>
-  You've made <span id="unpaid"><%= @unpaid %></span> requests since you last paid.
+  You've made <span id="unpaid"><%= pluralize(@requests_today, 'request') %></span> since you last paid.
 </p>
 
-<p>
-  <%= link_to('Pay now', pay_developers_requests_path, class: 'btn waves-effect waves-light', method: 'put', remote: true) %>
-  <%= link_to('Refresh', developers_console_path, class: 'btn waves-effect waves-light', remote: true) %>
-</p>
+<%= link_to('Pay now', pay_developers_requests_path, class: 'btn waves-effect waves-light', method: 'put', remote: true) %>
+<%= link_to('Refresh', developers_console_path, class: 'btn waves-effect waves-light', remote: true) %>
 
 <hr>
 
 <p>
-  Take a look at your <br>
-  <%= link_to('approvals', developers_approvals_path, class: 'btn waves-effect waves-light') %>
-  <br>
-  <%= link_to('Edit your profile', edit_developer_path(current_developer.id)) %>
+  See your app's current
+  <%= link_to('users', developers_approvals_path, class: 'waves-effect waves-light') %>
 </p>
 
+<%= link_to("New user", new_developers_approval_path, class: "btn") %>
+
 <hr>
-<br>
-<img src="https://imgs.xkcd.com/comics/compiling.png"/>
-<br>
+
+<%= link_to('Edit your profile', edit_developer_path(current_developer.id), class: 'btn waves-effect waves-light') %>
 <%= link_to('Sign out', destroy_developer_session_path, method: :delete, class: 'btn') %>

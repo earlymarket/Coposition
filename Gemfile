@@ -36,6 +36,9 @@ gem 'attachinary', '~> 1.3.1'
 gem 'lodash-rails'
 gem 'momentjs-rails'
 gem 'zeroclipboard-rails'
+gem 'mustache-js-rails', '~> 2.0.3'
+gem 'sprockets', '>= 3.0.0'
+gem 'sprockets-es6'
 
 # Use Unicorn as the app server
 
