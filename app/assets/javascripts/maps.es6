@@ -213,6 +213,11 @@ window.COPO.maps = {
     if(checkin) {
       return L.latLng(checkin.lat, checkin.lng)
     }
+  },
+
+  panAndW3w(e, target) {
+    map.panTo(target.getLatLng());
+    COPO.maps.w3w.setCoordinates(e);
   }
 }
 
