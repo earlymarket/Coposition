@@ -110,12 +110,11 @@ window.COPO.charts = {
         checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
         var delete_button = COPO.utility.deleteCheckinLink(checkin);
         var fogging_button = COPO.utility.fogCheckinLink(checkin, foggedClass, 'tableFog');
-        if (checkin.address === 'Not yet geocoded') {
-          var geocode_button = COPO.utility.geocodeCheckinLink(checkin);
-          tableData.push([humanizedDate, geocode_button, fogging_button+delete_button]);
-        } else {
-          tableData.push([humanizedDate, checkin.address, fogging_button+delete_button]);
-        }
+        tableData.push([
+          humanizedDate,
+          checkin.address === 'Not yet geocoded' ? COPO.utility.geocodeCheckinLink(checkin) : checkin.address,
+          fogging_button + delete_button
+        ])
       })
       data.addRows(tableData);
       data.setProperty(0, 0, 'style', 'width:20%');
