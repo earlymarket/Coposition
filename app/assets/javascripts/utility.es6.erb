@@ -30,9 +30,9 @@ COPO.utility = {
 
   geocodeCheckinLink(checkin){
     return COPO.utility.ujsLink('get',
-      '<i class="material-icons">gps_fixed</i>' ,
+      'Get address' ,
       window.location.pathname + '/checkins/' + checkin.id )
-      .attr('class', '').prop('outerHTML')
+      .attr('class', 'valign').prop('outerHTML')
   },
 
   createCheckinLink(coords){

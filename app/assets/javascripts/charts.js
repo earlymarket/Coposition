@@ -111,7 +111,7 @@ window.COPO.charts = {
         var delete_button = COPO.utility.deleteCheckinLink(checkin);
         var fogging_button = COPO.utility.fogCheckinLink(checkin, foggedClass, 'tableFog');
         if (checkin.address === 'Not yet geocoded') {
-          var geocode_button = 'Get address: '+COPO.utility.geocodeCheckinLink(checkin);
+          var geocode_button = COPO.utility.geocodeCheckinLink(checkin);
           tableData.push([humanizedDate, geocode_button, fogging_button+delete_button]);
         } else {
           tableData.push([humanizedDate, checkin.address, fogging_button+delete_button]);
