@@ -1,6 +1,6 @@
 $(document).on('page:change', function() {
   if ($(".c-friends.a-show_device").length === 1 || $(".c-devices.a-show").length === 1) {
-    const page = $(".c-devices.a-show").length === 1 ? 'user' : 'friend'
+    var page = $(".c-devices.a-show").length === 1 ? 'user' : 'friend'
     COPO.utility.gonFix();
     COPO.maps.initMap();
     COPO.dateRange.initDateRange(gon.checkins, page);
