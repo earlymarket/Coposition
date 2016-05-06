@@ -215,8 +215,8 @@ window.COPO.maps = {
     }
   },
 
-  panAndW3w(e, target) {
-    map.panTo(target.getLatLng());
+  panAndW3w(e) {
+    map.panTo(this.getLatLng());
     COPO.maps.w3w.setCoordinates(e);
   }
 }

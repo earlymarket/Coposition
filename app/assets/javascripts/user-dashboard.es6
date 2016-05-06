@@ -34,7 +34,7 @@ $(document).on('page:change', function () {
 
     FRIENDS_CLUSTERS.eachLayer((marker) => {
       marker.on('click', function (e) {
-        M.panAndW3w(e, this)
+        M.panAndW3w.call(this, e)
       });
       marker.on('mouseover', (e) => {
         if(!marker._popup) {
@@ -91,27 +91,19 @@ $(document).on('page:change', function () {
     map.once ('ready', next);
     let slideInterval = setInterval(next, 1000 * 5);
 
-    map.on ('mouseover', function (e, undefined) {
+    map.on ('mouseover', (e, undefined) => {
       clearInterval (slideInterval);
       slideInterval = undefined;
     })
 
-    map.on('mouseout', function () {
-      if (!slideInterval) {
-        slideInterval = setInterval(next, 1000 * 5);
-      }
+    map.on('mouseout', () => {
+      if (!slideInterval) slideInterval = setInterval(next, 1000 * 5)
     })
 
-    google.charts.setOnLoadCallback(function () {
-      COPO.charts.drawBarChart(gon.weeks_checkins, '270');
-    });
-    $(window).resize(function () {
-      COPO.charts.drawBarChart(gon.weeks_checkins, '270');
-    });
+    google.charts.setOnLoadCallback(() => {COPO.charts.drawBarChart(gon.weeks_checkins, '270')});
+    $(window).resize(() => {COPO.charts.drawBarChart(gon.weeks_checkins, '270')});
 
     // Cleanup
-    $(document).on('page:before-unload', function () {
-      if (slideInterval) clearInterval(slideInterval);
-    })
+    $(document).on('page:before-unload', () => {if (slideInterval) clearInterval(slideInterval)})
   }
 });
