@@ -32,7 +32,7 @@ COPO.utility = {
     return COPO.utility.ujsLink('get',
       'Get address' ,
       window.location.pathname + '/checkins/' + checkin.id )
-      .attr('class', 'valign').prop('outerHTML')
+      .prop('outerHTML')
   },
 
   createCheckinLink(coords){
