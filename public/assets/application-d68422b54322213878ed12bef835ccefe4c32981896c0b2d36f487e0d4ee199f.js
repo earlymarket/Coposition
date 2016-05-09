@@ -53552,6 +53552,7 @@ $(document).on('page:change', function () {
         if (++slideIndex >= LAYERS.length) slideIndex = 0;
       };
 
+      Smooch.init({ appToken: '48zalrms2pp1raaolssv7dry8' });
       COPO.utility.gonFix();
       var M = COPO.maps;
       var U = COPO.utility;
