@@ -21,6 +21,8 @@ class Users::CheckinsController < ApplicationController
   def show
     @checkin = Checkin.find(params[:id])
     @checkin.reverse_geocode!
+    gon.checkins = @checkin.device.checkins
+    gon.current_user_id = current_user.id
     respond_to do |format|
       format.json { render json: @checkin.as_json }
       format.js
