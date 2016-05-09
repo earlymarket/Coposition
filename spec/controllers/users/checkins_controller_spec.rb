@@ -40,6 +40,22 @@ RSpec.describe Users::CheckinsController, type: :controller do
     end
   end
 
+  describe 'GET #show' do
+    it 'should assign :id.checkin to @checkin if user owns device which owns checkin' do
+      request.accept = "application/json"
+      get :show, params
+      expect(assigns :checkin).to eq(Checkin.find(checkin.id))
+    end
+
+    it 'should not assign :id.checkin if user does not own device which owns checkin' do
+      user
+      request.accept = "application/json"
+      get :show, params.merge(user_id: new_user.username)
+      expect(response).to redirect_to(root_path)
+      expect(assigns :checkin).to eq nil
+    end
+  end
+
   describe 'PUT #update' do
     it 'should switch fogging' do
       checkin.update(fogged: false)
