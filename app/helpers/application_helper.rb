@@ -51,4 +51,8 @@ module ApplicationHelper
     output
   end
 
+  def name_or_email_name(user)
+    user.username.present? ? user.username : user.email.split("@").first
+  end
+
 end
