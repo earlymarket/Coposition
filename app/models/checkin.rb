@@ -66,7 +66,10 @@ class Checkin < ActiveRecord::Base
   def nearest_city
     center_point = [self.lat, self.lng]
     box = Geocoder::Calculations.bounding_box(center_point, 20)
-    City.near(self).within_bounding_box(box).first || NoCity.new
+    if City.within_bounding_box(box).first == nil
+      box = Geocoder::Calculations.bounding_box(center_point, 200)
+    end
+    City.within_bounding_box(box).first || NoCity.new
   end
 
   def add_fogged_info
