@@ -1,28 +1,51 @@
 <div id='gonvariables'><%= Gon::Base.render_data %></div>
-<section class="dashboard row">
+<section class="dashboard">
   <h4>Hello <%= current_user.username %></h4>
-  <p>
-    You checked-in <%= @presenter.weeks_checkins_count || 0 %> times this week.
-    <% if @presenter.percent_change.present? %>
-      <br />
-      That is an <%= @presenter.percent_change > 0 ? 'increase' : 'decrease' %> of <%= @presenter.percent_change %>% from last week.
-    <% end %>
-
-    <% if @presenter.most_used_device.present? %>
-        Your most used device is <%= @presenter.most_used_device.name %>.
-    <% end %>
-  </p>
 </section>
 
 <section class="dashboard row">
   <div class="col s12">
-    <div id="map"></div>
-    <div id="map-status"></div>
+    <div class="map-wrapper" style="position: relative;">
+      <div id="map-overlay"
+        class="valign-wrapper z-depth-1 hide"
+        style="
+        position: absolute;
+        z-index: 1500;
+        width: 100%;
+        background: white;
+        height: 100%;
+        opacity: 0.85;
+        padding: 1rem;
+        ">
+        <div style="width: 100%;">
+          <h5 style="text-align: center;">Nothing here yet</h5>
+          <p>Here you will be shown your check-ins this month and your friend's last check-ins on a map. But you don't have any at the moment.</p>
+          <p>To add a check-in, go to the <%= link_to('devices', user_devices_path) %> page and select/create a device.</p>
+          <p>To add a friend, go to your <%= link_to('friends', user_friends_path) %> page and send them an invite.</p>
+        </div>
+      </div>
+      <div id="map"></div>
+      <div id="map-status"></div>
+      <blockquote>
+        <h4>Where are you?</h4>
+        Use the locate control in the top left to temporarily find your current location. Or check-in on a device of your own!
+      </blockquote>
+    </div>
   </div>
 </section>
 
 <div class="divider"></div>
+<p>
+  You checked-in <%= @presenter.weeks_checkins_count || 0 %> times this week.
+  <% if @presenter.percent_change.present? %>
+    <br />
+    That is an <%= @presenter.percent_change > 0 ? 'increase' : 'decrease' %> of <%= @presenter.percent_change %>% from last week.
+  <% end %>
 
+  <% if @presenter.most_used_device.present? %>
+      Your most used device is <%= @presenter.most_used_device.name %>.
+  <% end %>
+</p>
 <section id="dashboard-charts" class="dashboard row">
   <article class="chart col s12 l6" id='weeks-checkins'>
     <h5>This weeks check-ins</h5>

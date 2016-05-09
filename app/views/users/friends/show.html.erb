@@ -1,4 +1,4 @@
-<h1><%=friends_name(@friend)%>'s devices</h1>
+<h1><%=name_or_email_name(@friend)%>'s devices</h1>
 <% @devices.each do |device| %>
     <div class="card row">
       <%= link_to show_device_user_friend_path(current_user.url_id, @friend, device_id: device.id), class:"col s12" do %>
