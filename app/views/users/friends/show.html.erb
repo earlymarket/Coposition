@@ -14,4 +14,7 @@
   $(window).resize(function(){
     COPO.calendar.refreshCalendar(gon.checkins);
   });
+  $(document).on('page:before-unload', function(){
+    $(window).off("resize");
+  })
 </script>

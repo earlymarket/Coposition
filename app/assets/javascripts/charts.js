@@ -1,6 +1,6 @@
 window.COPO = window.COPO || {};
 window.COPO.charts = {
-  drawBarChart: function(checkins, height) {
+  drawBarChart: function(checkins, height, page) {
     // Define the data for the chart.
     var chart_div = document.getElementById('bar-chart');
     if (chart_div){
@@ -69,7 +69,7 @@ window.COPO.charts = {
           table_checkins = checkins_for_table(columnDate, 'YYYY-MM');
         }
       }
-      COPO.charts.drawTable(table_checkins);
+      COPO.charts.drawTable(table_checkins, page);
     }
 
     function checkins_for_table(columnDate, format) {
@@ -110,7 +110,11 @@ window.COPO.charts = {
         checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
         var delete_button = COPO.utility.deleteCheckinLink(checkin);
         var fogging_button = COPO.utility.fogCheckinLink(checkin, foggedClass, 'tableFog');
-        tableData.push([humanizedDate, checkin.address, fogging_button+delete_button]);
+        tableData.push([
+          humanizedDate,
+          checkin.address === 'Not yet geocoded' ? COPO.utility.geocodeCheckinLink(checkin) : checkin.address,
+          fogging_button + delete_button
+        ])
       })
       data.addRows(tableData);
       data.setProperty(0, 0, 'style', 'width:20%');
@@ -130,7 +134,7 @@ window.COPO.charts = {
   },
 
   refreshCharts: function(checkins, page){
-    COPO.charts.drawBarChart(checkins);
+    COPO.charts.drawBarChart(checkins, null, page);
     COPO.charts.drawTable(checkins, page);
   }
 }
