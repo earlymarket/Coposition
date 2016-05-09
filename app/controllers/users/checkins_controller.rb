@@ -19,12 +19,10 @@ class Users::CheckinsController < ApplicationController
   end
 
   def show
-    checkin = Checkin.find(params[:id])
-    checkin.reverse_geocode!
-    @checkin = checkin
+    @checkin = Checkin.find(params[:id])
+    @checkin.reverse_geocode!
     respond_to do |format|
-      format.html
-      format.json { render json: checkin.as_json }
+      format.json { render json: @checkin.as_json }
       format.js
     end
   end
