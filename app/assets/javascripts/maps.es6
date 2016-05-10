@@ -101,7 +101,11 @@ window.COPO.maps = {
       if ($(".c-devices.a-show").length === 1) {
         $.get({
           url: "/users/"+gon.current_user_id+"/devices/"+checkin.device_id+"/checkins/"+checkin.id,
-          dataType: "script"
+          dataType: "json"
+        }).done(function(data) {
+          var $geocodedAddress = '<li class="address">Address: ' + data.address + '</li>'
+          $('.address').replaceWith($geocodedAddress);
+          checkins[_.indexOf(checkins, checkin)] = data;
         })
       }
       map.panTo(this.getLatLng());
