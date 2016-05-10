@@ -11,6 +11,7 @@ class Users::CheckinsController < ApplicationController
   def create
     @device = Device.find(params[:device_id])
     @checkin = @device.checkins.create(allowed_params)
+    reload_gon_variables
     flash[:notice] = "Checked in."
     respond_to do |format|
       format.html { redirect_to user_device_path(current_user.url_id, params[:device_id]) }
@@ -21,8 +22,7 @@ class Users::CheckinsController < ApplicationController
   def show
     @checkin = Checkin.find(params[:id])
     @checkin.reverse_geocode!
-    gon.checkins = @checkin.device.checkins
-    gon.current_user_id = current_user.id
+    reload_gon_variables
     respond_to do |format|
       format.js
     end
@@ -31,13 +31,15 @@ class Users::CheckinsController < ApplicationController
   def update
     @checkin = Checkin.find(params[:id])
     @checkin.switch_fog
+    reload_gon_variables
     flash[:notice] = "Check-in fogging changed."
   end
 
   def destroy
+    @checkin = Checkin.find_by(id: params[:id]).delete
+    reload_gon_variables
+    flash[:notice] = "Check-in deleted."
     respond_to do |format|
-      @checkin = Checkin.find_by(id: params[:id]).delete
-      flash[:notice] = "Check-in deleted."
       format.js
       format.html {redirect_to user_device_path(current_user.url_id, params[:device_id])}
     end
@@ -67,6 +69,11 @@ class Users::CheckinsController < ApplicationController
         flash[:alert] = "You do not own this device."
         redirect_to root_path
       end
+    end
+
+    def reload_gon_variables
+      gon.checkins = @checkin.device.checkins
+      gon.current_user_id = current_user.id
     end
 
 end
