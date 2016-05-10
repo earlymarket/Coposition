@@ -11,17 +11,18 @@
   <%= f.submit("Add", class: "form-control btn btn-default", id: "add_button") %>
   <%= hidden_field_tag('location', nil) %>
 <% end %>
+
 <script>
 
 $("#create_checkin").change(function(){
   if ($('#create_checkin').prop('checked')){
     $('#add_button').addClass('disabled');
     $('#add_button').prop('disabled', true);
-    if($('#map').length === 0){
+    if($('#preview').length === 0){
       $('#new_device').after("<%= j (render partial: 'preview_map') %>");
     }
   } else {
-    $('#map').fadeOut("fast", function(){$('#map').remove();});
+    $('#preview').fadeOut("fast", function(){$('#preview').remove();});
     $('#add_button').removeClass('disabled');
     $('#add_button').prop('disabled', false);
   }

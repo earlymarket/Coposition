@@ -1,4 +1,7 @@
-<div id="map" class="square-map animated zoomIn hide"/>
+<div id="preview" class="hide animated zoomIn">
+  <div id="map" class="square-map"/>
+  <pre id='coordinates' class='ui-coordinates'></pre>
+</div>
 
 <script>
 
@@ -6,28 +9,31 @@ navigator.geolocation.getCurrentPosition(showPosition, error);
 function showPosition(position) {
   $('#add_button').removeClass("disabled");
   $('#add_button').prop('disabled', false);
-  $('#map').removeClass("hide");
-  COPO.maps.initMap();
+  $('#preview').removeClass("hide");
 
+  var coordinates = document.getElementById('coordinates');
+
+  COPO.maps.initMap();
   markerOptions = {
     icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#ff6900' }),
     draggable: true
   }
-
   var marker = L.marker([position.coords.latitude, position.coords.longitude], markerOptions)
-  var latlon = position.coords.longitude + "," + position.coords.latitude;
-  $('#location').attr("value", latlon);
   marker.addTo(map);
   map.once('ready', function() {
     map.setView(marker.getLatLng(), 16)
   })
-
   marker.on('dragend', function(e) {
     var marker = e.target.getLatLng()
+    coordinates.innerHTML = 'Latitude: ' + marker.lat + '<br />Longitude: ' + marker.lng;
     var latlon = marker.lng + "," + marker.lat;
     $('#location').attr("value", latlon);
   })
 
+
+  var latlon = position.coords.longitude + "," + position.coords.latitude;
+  $('#location').attr("value", latlon);
+  coordinates.innerHTML = 'Latitude: ' + position.coords.latitude + '<br />Longitude: ' + position.coords.longitude;
 }
 
 function error(err){
