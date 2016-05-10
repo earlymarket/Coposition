@@ -5,7 +5,8 @@
 
 <script>
 
-navigator.geolocation.getCurrentPosition(showPosition, error);
+navigator.geolocation.getCurrentPosition(showPosition, geoLocationError);
+
 function showPosition(position) {
   $('#add_button').removeClass("disabled");
   $('#add_button').prop('disabled', false);
@@ -36,7 +37,7 @@ function showPosition(position) {
   coordinates.innerHTML = 'Latitude: ' + position.coords.latitude + '<br />Longitude: ' + position.coords.longitude;
 }
 
-function error(err){
+function geoLocationError(err){
   Materialize.toast('Could not get location', 3000)
 }
 
