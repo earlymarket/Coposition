@@ -12,7 +12,8 @@ function showPosition(position) {
   $('#add_button').prop('disabled', false);
   $('#preview').removeClass("hide");
 
-  var coordinates = document.getElementById('coordinates');
+  var location = { lat: position.coords.latitude, lng: position.coords.longitude }
+  updateLocation(location);
 
   COPO.maps.initMap();
   markerOptions = {
@@ -25,16 +26,14 @@ function showPosition(position) {
     map.setView(marker.getLatLng(), 16)
   })
   marker.on('dragend', function(e) {
-    var marker = e.target.getLatLng()
-    coordinates.innerHTML = 'Latitude: ' + marker.lat + '<br />Longitude: ' + marker.lng;
-    var latlon = marker.lng + "," + marker.lat;
-    $('#location').attr("value", latlon);
+    updateLocation(e.target.getLatLng());
   })
 
-
-  var latlon = position.coords.longitude + "," + position.coords.latitude;
-  $('#location').attr("value", latlon);
-  coordinates.innerHTML = 'Latitude: ' + position.coords.latitude + '<br />Longitude: ' + position.coords.longitude;
+  function updateLocation(loc){
+    $('#coordinates').html('Latitude: ' + loc.lat.toFixed(6) + '<br />Longitude: ' + loc.lng.toFixed(6));
+    var latlon = loc.lng + "," + loc.lat;
+    $('#location').attr("value", latlon);
+  }
 }
 
 function geoLocationError(err){
