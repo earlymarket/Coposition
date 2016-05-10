@@ -13,19 +13,13 @@ class Users::CheckinsController < ApplicationController
     @checkin = @device.checkins.create(allowed_params)
     reload_gon_variables
     flash[:notice] = "Checked in."
-    respond_to do |format|
-      format.html { redirect_to user_device_path(current_user.url_id, params[:device_id]) }
-      format.js
-    end
   end
 
   def show
     @checkin = Checkin.find(params[:id])
     @checkin.reverse_geocode!
     reload_gon_variables
-    respond_to do |format|
-      format.js
-    end
+
   end
 
   def update
@@ -39,10 +33,6 @@ class Users::CheckinsController < ApplicationController
     @checkin = Checkin.find_by(id: params[:id]).delete
     reload_gon_variables
     flash[:notice] = "Check-in deleted."
-    respond_to do |format|
-      format.js
-      format.html {redirect_to user_device_path(current_user.url_id, params[:device_id])}
-    end
   end
 
   def destroy_all
