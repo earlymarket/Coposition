@@ -19,7 +19,6 @@ class Users::CheckinsController < ApplicationController
     @checkin = Checkin.find(params[:id])
     @checkin.reverse_geocode!
     reload_gon_variables
-
   end
 
   def update
