@@ -53533,6 +53533,18 @@ $(document).on('ready page:change', function() {
     $("main").css('padding-top', '64px');
   }
 });
+window.COPO = window.COPO || {};
+window.COPO.smooch = {
+  initSmooch: function(user){
+    Smooch.init({
+      appToken: "48zalrms2pp1raaolssv7dry8",
+      userId: user.id.toString(),
+      email: user.email,
+      givenName: user.username
+    });
+  }
+}
+;
 'use strict';
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
@@ -53549,6 +53561,7 @@ $(document).on('page:change', function () {
       };
 
       COPO.utility.gonFix();
+      COPO.smooch.initSmooch(gon.current_user.userinfo);
       var M = COPO.maps;
       var U = COPO.utility;
       M.initMap();
