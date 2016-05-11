@@ -115,5 +115,9 @@ COPO.utility = {
 
   commaToNewline(string){
     return string.replace(/, /g, '\n')
+  },
+
+  geoLocationError(err){
+    Materialize.toast('Could not get location', 3000)
   }
 };
