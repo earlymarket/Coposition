@@ -13,11 +13,11 @@ $(document).on('page:change', () => {
         $PREVIEW.css('display', 'block');
         navigator.geolocation.getCurrentPosition(showPosition, COPO.utility.geoLocationError);
       } else {
-        $(document).off('page:before-unload', COPO.maps.removeMap);
         $PREVIEW.fadeOut("fast", () => $PREVIEW.addClass("hide"));
         $ADD_BUTTON.removeClass('disabled').prop('disabled', false);
         if (typeof map !== "undefined") {
-          map.remove();
+          $(document).off('page:before-unload', COPO.maps.removeMap);
+          COPO.maps.removeMap();
         }
       }
     });
@@ -50,5 +50,9 @@ $(document).on('page:change', () => {
         $('#location').attr("value", LATLON);
       }
     }
+
+    $(document).on('page:before-unload', function(){
+      $CREATE_CHECKIN.off('change');
+    })
   }
 });
