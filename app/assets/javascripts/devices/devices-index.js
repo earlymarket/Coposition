@@ -2,7 +2,7 @@ $(document).on('page:change', function() {
   if ($(".c-devices.a-index").length === 1) {
     COPO.utility.gonFix();
     COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions)
-    COPO.slider.initSliders(gon.devices);
+    COPO.delaySlider.initSliders(gon.devices);
     window.initPage = function(){
       $('.clip_button').off();
       COPO.utility.initClipboard();

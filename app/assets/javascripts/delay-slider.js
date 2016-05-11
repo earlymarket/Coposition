@@ -1,5 +1,5 @@
 window.COPO = window.COPO || {};
-window.COPO.slider = {
+window.COPO.delaySlider = {
 
   initSliders: function(devices){
     $('.delay-slider').each(function(){

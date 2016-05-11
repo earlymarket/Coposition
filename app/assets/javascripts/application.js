@@ -49,7 +49,7 @@
 //= require maps
 //= require permissions
 //= require date-picker
-//= require slider
+//= require delay-slider
 
 // I've put require_tree back in. Any js where the load order isn't important doesn't need to be specified.
 //= require_tree .
