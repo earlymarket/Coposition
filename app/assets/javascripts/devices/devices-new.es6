@@ -3,21 +3,22 @@ $(document).on('page:change', () => {
     const $CREATE_CHECKIN = $('#create_checkin');
     const $ADD_BUTTON = $('#add_button');
     const $PREVIEW = $('#preview');
+    if ($CREATE_CHECKIN.prop('checked')) {
+      navigator.geolocation.getCurrentPosition(showPosition, COPO.utility.geoLocationError);
+    }
 
     $CREATE_CHECKIN.change(() => {
       if ($CREATE_CHECKIN.prop('checked')) {
         $ADD_BUTTON.addClass('disabled').prop('disabled', true);
-        if ($PREVIEW.hasClass("hide")) {
-          $PREVIEW.css('display', 'block');
-          navigator.geolocation.getCurrentPosition(showPosition, COPO.utility.geoLocationError);
-        }
+        $PREVIEW.css('display', 'block');
+        navigator.geolocation.getCurrentPosition(showPosition, COPO.utility.geoLocationError);
       } else {
-        $(document).off('page:before-unload');
+        $(document).off('page:before-unload', COPO.maps.removeMap);
         $PREVIEW.fadeOut("fast", () => $PREVIEW.addClass("hide"));
+        $ADD_BUTTON.removeClass('disabled').prop('disabled', false);
         if (typeof map !== "undefined") {
           map.remove();
         }
-        $ADD_BUTTON.removeClass('disabled').prop('disabled', false);
       }
     });
 
