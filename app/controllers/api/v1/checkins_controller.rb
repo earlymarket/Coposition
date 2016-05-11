@@ -54,7 +54,8 @@ class Api::V1::CheckinsController < Api::ApiController
     def checkin_public_info(array_of_checkins)
       return array_of_checkins if array_of_checkins.empty?
       array_of_checkins.map do |checkin|
-        checkin.attributes.delete_if {|key, v| key =~ /fogged/ || v == nil }
+        checkin.address = checkin.fogged_area if checkin.address == 'Not yet geocoded'
+        checkin.attributes.delete_if {|key, v| key =~ /fogged|uuid/ || v == nil }
       end
     end
 
