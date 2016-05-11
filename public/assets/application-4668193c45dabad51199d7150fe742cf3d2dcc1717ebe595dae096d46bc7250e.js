@@ -52481,6 +52481,10 @@ COPO.utility = {
 
   commaToNewline: function commaToNewline(string) {
     return string.replace(/, /g, '\n');
+  },
+
+  geoLocationError: function geoLocationError(err) {
+    Materialize.toast('Could not get location', 3000);
   }
 };
 $(document).on('page:change', function() {
@@ -52749,9 +52753,7 @@ window.COPO.maps = {
 
     var options = $.extend(defaultOptions, customOptions);
     window.map = L.mapbox.map('map', 'mapbox.light', options);
-    $(document).one('page:before-unload', function () {
-      map.remove();
-    });
+    $(document).one('page:before-unload', COPO.maps.removeMap);
   },
 
   initMarkers: function initMarkers(checkins) {
@@ -52766,6 +52768,10 @@ window.COPO.maps = {
         });
       }
     });
+  },
+
+  removeMap: function removeMap() {
+    map.remove();
   },
 
   fitBounds: function fitBounds() {
@@ -52839,11 +52845,7 @@ window.COPO.maps = {
       if ($(".c-devices.a-show").length === 1) {
         $.get({
           url: "/users/" + gon.current_user_id + "/devices/" + checkin.device_id + "/checkins/" + checkin.id,
-          dataType: "json"
-        }).done(function (data) {
-          var $geocodedAddress = '<li class="address">Address: ' + data.address + '</li>';
-          $('.address').replaceWith($geocodedAddress);
-          checkins[_.indexOf(checkins, checkin)] = data;
+          dataType: "script"
         });
       }
       map.panTo(this.getLatLng());
@@ -53383,6 +53385,74 @@ $(document).on('page:change', function() {
   }
 })
 ;
+'use strict';
+
+$(document).on('page:change', function () {
+  if ($(".c-devices.a-new").length === 1) {
+    (function () {
+      var showPosition = function showPosition(position) {
+        $ADD_BUTTON.removeClass("disabled").prop('disabled', false);
+        $PREVIEW.removeClass("hide");
+
+        var LOCATION = { lat: position.coords.latitude, lng: position.coords.longitude };
+        updateLocation(LOCATION);
+
+        COPO.maps.initMap({
+          tileLayer: {
+            continuousWorld: false,
+            noWrap: true
+          }
+        });
+        var MARKER_OPTIONS = {
+          icon: L.mapbox.marker.icon({ 'marker-symbol': 'marker', 'marker-color': '#ff6900' }),
+          draggable: true
+        };
+        var MARKER = L.marker([LOCATION.lat, LOCATION.lng], MARKER_OPTIONS);
+        MARKER.addTo(map);
+        map.once('ready', function () {
+          return map.setView(MARKER.getLatLng(), 16);
+        });
+        MARKER.on('dragend', function (e) {
+          return updateLocation(e.target.getLatLng());
+        });
+
+        function updateLocation(loc) {
+          $('#coordinates').html('Latitude: ' + loc.lat.toFixed(6) + '<br />Longitude: ' + loc.lng.toFixed(6));
+          var LATLON = loc.lng + ',' + loc.lat;
+          $('#location').attr("value", LATLON);
+        }
+      };
+
+      var $CREATE_CHECKIN = $('#create_checkin');
+      var $ADD_BUTTON = $('#add_button');
+      var $PREVIEW = $('#preview');
+      if ($CREATE_CHECKIN.prop('checked')) {
+        navigator.geolocation.getCurrentPosition(showPosition, COPO.utility.geoLocationError);
+      }
+
+      $CREATE_CHECKIN.change(function () {
+        if ($CREATE_CHECKIN.prop('checked')) {
+          $ADD_BUTTON.addClass('disabled').prop('disabled', true);
+          $PREVIEW.css('display', 'block');
+          navigator.geolocation.getCurrentPosition(showPosition, COPO.utility.geoLocationError);
+        } else {
+          $PREVIEW.fadeOut("fast", function () {
+            return $PREVIEW.addClass("hide");
+          });
+          $ADD_BUTTON.removeClass('disabled').prop('disabled', false);
+          if (typeof map !== "undefined") {
+            $(document).off('page:before-unload', COPO.maps.removeMap);
+            COPO.maps.removeMap();
+          }
+        }
+      });
+
+      $(document).on('page:before-unload', function () {
+        $CREATE_CHECKIN.off('change');
+      });
+    })();
+  }
+});
 $(document).on('page:change', function() {
   if ($(".c-devices.a-shared").length === 1) {
 
@@ -53537,6 +53607,18 @@ $(document).on('ready page:change', function() {
     $("main").css('padding-top', '64px');
   }
 });
+window.COPO = window.COPO || {};
+window.COPO.smooch = {
+  initSmooch: function(user){
+    Smooch.init({
+      appToken: "48zalrms2pp1raaolssv7dry8",
+      userId: user.id.toString(),
+      email: user.email,
+      givenName: user.username
+    });
+  }
+}
+;
 'use strict';
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
@@ -53552,8 +53634,8 @@ $(document).on('page:change', function () {
         if (++slideIndex >= LAYERS.length) slideIndex = 0;
       };
 
-      Smooch.init({ appToken: '48zalrms2pp1raaolssv7dry8' });
       COPO.utility.gonFix();
+      COPO.smooch.initSmooch(gon.current_user.userinfo);
       var M = COPO.maps;
       var U = COPO.utility;
       M.initMap();

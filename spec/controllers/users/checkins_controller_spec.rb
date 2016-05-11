@@ -26,6 +26,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
     it 'should assign a device, create a new checkin and assign it to @checkin' do
       checkin
       count = device.checkins.count
+      request.accept = 'text/javascript'
       post :create, {
         user_id: user.username,
         device_id: device.id,
@@ -42,13 +43,13 @@ RSpec.describe Users::CheckinsController, type: :controller do
 
   describe 'GET #show' do
     it 'should assign :id.checkin to @checkin if user owns device which owns checkin' do
-      get :show, params
+      xhr :get, :show, params
       expect(assigns :checkin).to eq(Checkin.find(checkin.id))
     end
 
     it 'should not assign :id.checkin if user does not own device which owns checkin' do
       user
-      get :show, params.merge(user_id: new_user.username)
+      xhr :get, :show, params.merge(user_id: new_user.username)
       expect(response).to redirect_to(root_path)
       expect(assigns :checkin).to eq nil
     end
@@ -92,6 +93,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
     it 'should delete a checkin by id' do
       count = checkin.device.checkins.count
       expect(count).to be > 0
+      request.accept = 'text/javascript'
       delete :destroy, params
       expect(device.checkins.count).to eq(count - 1)
     end
@@ -99,6 +101,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
     it 'should not delete a checkin if it does not belong to the user' do
       count = checkin.device.checkins.count
       expect(count).to be > 0
+      request.accept = 'text/javascript'
       delete :destroy, params.merge(user_id: new_user.username)
       expect(response).to redirect_to(root_path)
       expect(device.checkins.count).to eq count
