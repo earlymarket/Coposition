@@ -36,7 +36,7 @@ class Checkin < ActiveRecord::Base
 
   def get_data
     if fogged? || device.fogged?
-      fogged_checkin = Checkin.new(attributes.delete_if {|key, _v| key =~ /fogged/ })
+      fogged_checkin = Checkin.new(attributes.delete_if {|key, _v| key =~ /fogged|city|postal/ })
       fogged_checkin.address = fogged_area
       fogged_checkin.lat = fogged_lat
       fogged_checkin.lng = fogged_lng
@@ -77,14 +77,9 @@ class Checkin < ActiveRecord::Base
   end
 
   def resolve_address(permissible, type)
-    if type == "address"
-      reverse_geocode!
-      return get_data unless device.can_bypass_fogging?(permissible)
-      self
-    else
-      return get_data unless device.can_bypass_fogging?(permissible)
-      Checkin.where(id: id).select([:id, :uuid, :lat, :lng, :created_at, :updated_at]).first
-    end
+    reverse_geocode! if type == "address"
+    return get_data unless device.can_bypass_fogging?(permissible)
+    self
   end
 
   def self.hash_group_and_count_by(attribute)
