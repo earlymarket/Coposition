@@ -12,20 +12,7 @@
   <%= hidden_field_tag('location', nil) %>
 <% end %>
 
-<script>
-
-$("#create_checkin").change(function(){
-  if ($('#create_checkin').prop('checked')){
-    $('#add_button').addClass('disabled');
-    $('#add_button').prop('disabled', true);
-    if($('#preview').length === 0){
-      $('#new_device').after("<%= j (render partial: 'preview_map') %>");
-    }
-  } else {
-    $(document).off('page:before-unload')
-    $('#preview').fadeOut("fast", function(){$('#preview').remove();});
-    $('#add_button').removeClass('disabled');
-    $('#add_button').prop('disabled', false);
-  }
-});
-</script>
+<div id="preview" class="hide animated zoomIn">
+  <div id="map" class="rectangle-map"/>
+  <pre id='coordinates' class='ui-coordinates'></pre>
+</div>
