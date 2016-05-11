@@ -52845,11 +52845,7 @@ window.COPO.maps = {
       if ($(".c-devices.a-show").length === 1) {
         $.get({
           url: "/users/" + gon.current_user_id + "/devices/" + checkin.device_id + "/checkins/" + checkin.id,
-          dataType: "json"
-        }).done(function (data) {
-          var $geocodedAddress = '<li class="address">Address: ' + data.address + '</li>';
-          $('.address').replaceWith($geocodedAddress);
-          checkins[_.indexOf(checkins, checkin)] = data;
+          dataType: "script"
         });
       }
       map.panTo(this.getLatLng());
@@ -53611,6 +53607,18 @@ $(document).on('ready page:change', function() {
     $("main").css('padding-top', '64px');
   }
 });
+window.COPO = window.COPO || {};
+window.COPO.smooch = {
+  initSmooch: function(user){
+    Smooch.init({
+      appToken: "48zalrms2pp1raaolssv7dry8",
+      userId: user.id.toString(),
+      email: user.email,
+      givenName: user.username
+    });
+  }
+}
+;
 'use strict';
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
@@ -53627,6 +53635,7 @@ $(document).on('page:change', function () {
       };
 
       COPO.utility.gonFix();
+      COPO.smooch.initSmooch(gon.current_user.userinfo);
       var M = COPO.maps;
       var U = COPO.utility;
       M.initMap();

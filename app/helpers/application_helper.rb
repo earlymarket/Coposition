@@ -1,9 +1,5 @@
 module ApplicationHelper
 
-  def area_name(checkin)
-    checkin.fogged_area || checkin.nearest_city.name
-  end
-
   def fogged_icon(value)
     if value
       '<i class="material-icons">cloud_done</i>'.html_safe

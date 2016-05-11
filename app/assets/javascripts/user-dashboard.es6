@@ -1,6 +1,7 @@
 $(document).on('page:change', function() {
   if ($(".c-dashboards.a-show").length === 1) {
     COPO.utility.gonFix();
+    COPO.smooch.initSmooch(gon.current_user.userinfo);
     const M = COPO.maps
     const U = COPO.utility
     M.initMap();
