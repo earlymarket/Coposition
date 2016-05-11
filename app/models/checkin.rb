@@ -51,6 +51,16 @@ class Checkin < ActiveRecord::Base
     all.map {|checkin| checkin.get_data}
   end
 
+  def public_info
+    address = fogged_area if address == 'Not yet geocoded'
+    attributes.delete_if {|key, v| key =~ /fogged|uuid/ || v == nil }
+  end
+
+  def self.public_info
+    all.map {|checkin| checkin.public_info }
+  end
+
+
   def reverse_geocode!
     unless reverse_geocoded?
       reverse_geocode

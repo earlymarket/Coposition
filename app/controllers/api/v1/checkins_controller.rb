@@ -13,14 +13,14 @@ class Api::V1::CheckinsController < Api::ApiController
     checkins = checkins.includes(:device).map do |checkin|
       checkin.resolve_address(@permissible, params[:type])
     end
-    render json: checkin_public_info(checkins)
+    render json: checkins.public_info
   end
 
   def last
     checkin = @user.get_checkins(@permissible, @device).order(created_at: :desc).first
     checkin = checkin.resolve_address(@permissible, params[:type]) if checkin
     if checkin
-      render json: checkin_public_info([checkin])
+      render json: checkin.public_info
     else
       render json: []
     end
