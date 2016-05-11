@@ -90,7 +90,13 @@ $(document).on('page:change', function () {
         return gon.months_checkins.length > 0
       },
       clusters () {
-        return M.arrayToCluster(gon.months_checkins, M.makeMarker);
+        if(!gon.current_user.lastCheckin) {
+          return M.arrayToCluster(gon.months_checkins, M.makeMarker);
+        } else {
+          let checkins = [...gon.months_checkins];
+          checkins = checkins.filter(checkin => checkin.id !== gon.current_user.lastCheckin.id);
+          return M.arrayToCluster(checkins, M.makeMarker);
+        }
       },
       bounds () {
         return L.latLngBounds(
@@ -123,40 +129,41 @@ $(document).on('page:change', function () {
       showNullState () {
         $('#map-overlay').removeClass('hide');
       },
-      initSlideHandler () {
+      initTimer () {
         if (!this.hasSlides()) return;
         this.slideIndex = 0;
         this.activeLayer = L.layerGroup().addTo(map);
-      },
-      next() {
-        let currentSlide = this.slides[this.slideIndex];
-        this.activeLayer.clearLayers().addLayer(currentSlide.clusters);
-        if (currentSlide.bounds.isValid()) window.map.fitBounds(currentSlide.bounds, {padding: [40, 40]});
-        $('#map-status').html(currentSlide.status);
-        if (++this.slideIndex >= this.slides.length) this.slideIndex = 0;
-      },
-      init (undefined) {
-        this.persistent.forEach(feature => feature.init(this));
-        this.slideTypes.forEach(slide => slide.init(this));
-        this.initSlideHandler();
         window.map.once ('ready', this.next.bind(this));
         this.slideInterval = setInterval(this.next.bind(this), 1000 * 5);
-
         window.map.on ('mouseover', (e, undefined) => {
           clearInterval (this.slideInterval);
           this.slideInterval = undefined;
         })
-
         map.on('mouseout', () => {
           if (!this.slideInterval) this.slideInterval = setInterval(this.next.bind(this), 1000 * 5)
         })
-
         // Cleanup
         $(document).on('page:before-unload', () => {
           if (this.slideInterval) clearInterval(this.slideInterval);
         })
-
+      },
+      next() {
+        let currentSlide = this.slides[this.slideIndex];
+        this.activeLayer.clearLayers().addLayer(currentSlide.clusters);
+        if (currentSlide.bounds.isValid()) {
+          window.map.fitBounds(currentSlide.bounds, {padding: [40, 40]})
+        };
+        $('#map-status').html(currentSlide.status);
+        if (++this.slideIndex >= this.slides.length) {
+          this.slideIndex = 0
+        };
+      },
+      init () {
+        this.persistent.forEach(feature => feature.init(this));
+        this.slideTypes.forEach(slide => slide.init(this));
+        this.initTimer();
         if (!this.hasSlides() && !gon.current_user.lastCheckin) this.showNullState();
+        console.log('Slide deck init finished!');
       }
     };
     DECK.init();
