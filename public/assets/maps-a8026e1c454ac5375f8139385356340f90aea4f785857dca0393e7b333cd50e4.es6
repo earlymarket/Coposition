@@ -11,9 +11,7 @@ window.COPO.maps = {
 
     var options = $.extend(defaultOptions, customOptions);
     window.map = L.mapbox.map('map', 'mapbox.light', options );
-    $(document).one('page:before-unload', function() {
-      map.remove();
-    })
+    $(document).one('page:before-unload', COPO.maps.removeMap);
   },
 
   initMarkers(checkins) {
@@ -28,6 +26,10 @@ window.COPO.maps = {
         })
       }
     });
+  },
+
+  removeMap() {
+    map.remove();
   },
 
   fitBounds() {

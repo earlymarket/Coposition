@@ -19101,25 +19101,16 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
   opacity: 0.25;
 }
 
-/* line 34, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
-.round-map {
-  border-radius: 300px;
-  padding-left: 0;
-  padding-right: 0;
-  border: 1px solid black;
-  width: 100%;
-}
-
-/* line 42, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
+/* line 33, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
 .btn, .btn-large, [data-maitre-submit-button], .btn-large, .btn-flat, .btn-floating {
   color: rgba(0, 0, 0, 0.8);
 }
-/* line 49, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
+/* line 40, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
 .btn i, .btn-large i, [data-maitre-submit-button] i, .btn-large i, .btn-flat i, .btn-floating i {
   color: rgba(0, 0, 0, 0.8);
 }
 
-/* line 54, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
+/* line 45, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
 .promo {
   position: absolute;
   left: 0;
@@ -19129,14 +19120,14 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
   overflow: hidden;
   z-index: -10;
 }
-/* line 62, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
+/* line 53, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
 .promo .filter {
   position: absolute;
   width: 100%;
   height: 100%;
   z-index: -5;
 }
-/* line 69, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
+/* line 60, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/custom_class.scss */
 .promo video {
   left: 0;
   top: 0;
@@ -20786,6 +20777,29 @@ a[data-maitre-status]:hover {
 .c-dashboards.a-show .dashboard #most-checkins ul.collection, .c-dashboards.a-show .dashboard #most-checkins ul.collection li, .c-dashboards.a-show .dashboard ul.collection ul.collection, .c-dashboards.a-show .dashboard ul.collection ul.collection li {
   background: transparent;
   border: none;
+}
+
+/* line 3, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-new.scss */
+.c-devices.a-new .rectangle-map {
+  top: 10px;
+  border: 1px solid black;
+  border-radius: 10px;
+  z-index: 1;
+  width: 100%;
+  height: 400px;
+}
+/* line 12, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-new.scss */
+.c-devices.a-new pre.ui-coordinates {
+  position: relative;
+  width: 170px;
+  left: 100px;
+  padding: 5px 10px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 11px;
+  line-height: 18px;
+  border-radius: 3px;
+  z-index: 2;
 }
 
 /* line 2, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */

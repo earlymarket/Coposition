@@ -52481,6 +52481,10 @@ COPO.utility = {
 
   commaToNewline: function commaToNewline(string) {
     return string.replace(/, /g, '\n');
+  },
+
+  geoLocationError: function geoLocationError(err) {
+    Materialize.toast('Could not get location', 3000);
   }
 };
 $(document).on('page:change', function() {
@@ -52749,9 +52753,7 @@ window.COPO.maps = {
 
     var options = $.extend(defaultOptions, customOptions);
     window.map = L.mapbox.map('map', 'mapbox.light', options);
-    $(document).one('page:before-unload', function () {
-      map.remove();
-    });
+    $(document).one('page:before-unload', COPO.maps.removeMap);
   },
 
   initMarkers: function initMarkers(checkins) {
@@ -52766,6 +52768,10 @@ window.COPO.maps = {
         });
       }
     });
+  },
+
+  removeMap: function removeMap() {
+    map.remove();
   },
 
   fitBounds: function fitBounds() {
@@ -53383,6 +53389,74 @@ $(document).on('page:change', function() {
   }
 })
 ;
+'use strict';
+
+$(document).on('page:change', function () {
+  if ($(".c-devices.a-new").length === 1) {
+    (function () {
+      var showPosition = function showPosition(position) {
+        $ADD_BUTTON.removeClass("disabled").prop('disabled', false);
+        $PREVIEW.removeClass("hide");
+
+        var LOCATION = { lat: position.coords.latitude, lng: position.coords.longitude };
+        updateLocation(LOCATION);
+
+        COPO.maps.initMap({
+          tileLayer: {
+            continuousWorld: false,
+            noWrap: true
+          }
+        });
+        var MARKER_OPTIONS = {
+          icon: L.mapbox.marker.icon({ 'marker-symbol': 'marker', 'marker-color': '#ff6900' }),
+          draggable: true
+        };
+        var MARKER = L.marker([LOCATION.lat, LOCATION.lng], MARKER_OPTIONS);
+        MARKER.addTo(map);
+        map.once('ready', function () {
+          return map.setView(MARKER.getLatLng(), 16);
+        });
+        MARKER.on('dragend', function (e) {
+          return updateLocation(e.target.getLatLng());
+        });
+
+        function updateLocation(loc) {
+          $('#coordinates').html('Latitude: ' + loc.lat.toFixed(6) + '<br />Longitude: ' + loc.lng.toFixed(6));
+          var LATLON = loc.lng + ',' + loc.lat;
+          $('#location').attr("value", LATLON);
+        }
+      };
+
+      var $CREATE_CHECKIN = $('#create_checkin');
+      var $ADD_BUTTON = $('#add_button');
+      var $PREVIEW = $('#preview');
+      if ($CREATE_CHECKIN.prop('checked')) {
+        navigator.geolocation.getCurrentPosition(showPosition, COPO.utility.geoLocationError);
+      }
+
+      $CREATE_CHECKIN.change(function () {
+        if ($CREATE_CHECKIN.prop('checked')) {
+          $ADD_BUTTON.addClass('disabled').prop('disabled', true);
+          $PREVIEW.css('display', 'block');
+          navigator.geolocation.getCurrentPosition(showPosition, COPO.utility.geoLocationError);
+        } else {
+          $PREVIEW.fadeOut("fast", function () {
+            return $PREVIEW.addClass("hide");
+          });
+          $ADD_BUTTON.removeClass('disabled').prop('disabled', false);
+          if (typeof map !== "undefined") {
+            $(document).off('page:before-unload', COPO.maps.removeMap);
+            COPO.maps.removeMap();
+          }
+        }
+      });
+
+      $(document).on('page:before-unload', function () {
+        $CREATE_CHECKIN.off('change');
+      });
+    })();
+  }
+});
 $(document).on('page:change', function() {
   if ($(".c-devices.a-shared").length === 1) {
 
