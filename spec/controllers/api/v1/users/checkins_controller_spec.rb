@@ -147,7 +147,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
   describe "POST #create" do
 
-    it "should POST a checkin with a pre-existing device" do
+    it "should create a checkin when there is a pre-existing device" do
       count = user.checkins.count
       create_headers
       post :create, create_params
@@ -156,7 +156,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       expect(checkin.device).to be device
     end
 
-    it "should return 400 if you POST a device with missing parameters" do
+    it "should return 400 if you POST a checkin with missing parameters" do
       create_headers
       post :create,
         checkin: {
@@ -166,7 +166,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       expect(res_hash[:message]).to eq('You must provide a lat and lng')
     end
 
-    it "should return 400 if you POST a device with invalid uuid" do
+    it "should return 400 if you POST a checkin with invalid uuid" do
       request.headers['X-UUID'] = 'thisdevicedoesntexist'
       post :create, create_params
       expect(response.status).to eq(400)
