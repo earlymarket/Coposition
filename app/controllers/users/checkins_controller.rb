@@ -56,9 +56,4 @@ class Users::CheckinsController < ApplicationController
       end
     end
 
-    def reload_gon_variables
-      gon.checkins = @checkin.device.checkins
-      gon.current_user_id = current_user.id
-    end
-
 end
