@@ -51,9 +51,7 @@ $(document).on('page:change', () => {
         $.get(
           `https://maps.googleapis.com/maps/api/geocode/json?latlng=${loc.lat},${loc.lng}&key=AIzaSyDqwD4k7HuZ1zlf3-un1qcbKnqknL9gt4c`)
         .done(function(data) {
-          if(data.status==='ZERO_RESULTS'){
-            $('#coordinates').append("No address available")
-          } else {
+          if(data.status!=='ZERO_RESULTS'){
             $('#coordinates').append(data.results[0].formatted_address.replace(/, /g, '\n'))
           }
         });
