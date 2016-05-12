@@ -91,13 +91,17 @@ $(document).on('page:change', function () {
         return gon.months_checkins.length > 0
       },
       layers () {
-        if(!gon.current_user.lastCheckin) {
-          return M.arrayToCluster(gon.months_checkins, M.makeMarker);
-        } else {
-          let checkins = [...gon.months_checkins];
+        let checkins = [...gon.months_checkins];
+        if(gon.current_user.lastCheckin) {
           checkins = checkins.filter(checkin => checkin.id !== gon.current_user.lastCheckin.id);
-          return M.arrayToCluster(checkins, M.makeMarker);
         }
+        let clusters = M.arrayToCluster(checkins, M.makeMarker)
+        clusters.eachLayer((marker) => {
+          marker.on('click', function (e) {
+            M.panAndW3w.call(this, e)
+          });
+        });
+        return clusters;
       },
       bounds () {
         return L.latLngBounds(
