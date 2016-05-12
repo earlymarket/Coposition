@@ -16,7 +16,7 @@ class Users::DevicesController < ApplicationController
   def show
     @device = Device.find(params[:id])
     gon.checkins = @device.checkins
-    flash[:notice] = "No checkins available" if gon.checkins.empty?
+    flash[:notice] = "Right click on the map to checkin"
     gon.current_user_id = current_user.id
   end
 
