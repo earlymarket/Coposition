@@ -52,6 +52,7 @@
 //= require dateRange
 //= require calendar
 //= require delay-slider
+//= require slides
 
 // I've put require_tree back in. Any js where the load order isn't important doesn't need to be specified.
 //= require_tree .

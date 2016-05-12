@@ -5,7 +5,8 @@
 
 <section class="dashboard row">
   <div class="col s12">
-    <div class="map-wrapper" style="position: relative;">
+    <div id="map-wrapper" style="position: relative;">
+      <p id="map-status"></p>
       <div id="map-overlay"
         class="valign-wrapper z-depth-1 hide"
         style="
@@ -26,13 +27,13 @@
       </div>
       <div id="map"></div>
     </div>
-    <div id="map-status"></div>
+
   </div>
 </section>
 
 <div class="divider"></div>
 <p>
-  You checked-in <%= @presenter.weeks_checkins_count || 0 %> times this week.
+  You checked in <%= @presenter.weeks_checkins_count || 0 %> times this week.
   <% if @presenter.percent_change.present? %>
     <br />
     That is an <%= @presenter.percent_change > 0 ? 'increase' : 'decrease' %> of <%= @presenter.percent_change %>% from last week.

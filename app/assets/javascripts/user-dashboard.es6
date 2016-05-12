@@ -1,7 +1,8 @@
 $(document).on('page:change', function () {
   if ($(".c-dashboards.a-show").length === 1) {
-    const M = COPO.maps;
-    const U = COPO.utility;
+    const M  = window.COPO.maps;
+    const U  = window.COPO.utility;
+    const SL = window.COPO.slides;
     U.gonFix();
     M.initMap();
     M.initControls();
@@ -13,17 +14,15 @@ $(document).on('page:change', function () {
         return Boolean(gon.current_user.lastCheckin) === true
       },
       init () {
-        console.log('init self marker');
-        console.log('User has made a checkin: ' + this.hasCheckin());
         if (this.hasCheckin()) {
           M.makeMapPin(gon.current_user, 'blue', {clickable: false}).addTo(map);
-        } else if ($('#map-overlay hide').length) {
+        } else if (!$('#map-overlay hide').length) {
           let whereAmI = `
           <blockquote>
             <h4>Where am I?</h4>
             Use the locate control in the top left to temporarily find your current location. Or check-in on a device of your own!
           </blockquote>`
-          $('#map-status').after(whereAmI);
+          $('#map-wrapper').after(whereAmI);
         }
       }
     }
@@ -74,9 +73,6 @@ $(document).on('page:change', function () {
       },
       status: `Your friend's check-ins <a href='./friends'>(more details)</a>`,
       init (caller) {
-        console.log('init friends slide');
-        console.log('User has friends: ' + this.hasFriends());
-        console.log('User has friends with checkins: ' + this.hasFriendsWithCheckins());
         if (this.hasFriendsWithCheckins()) {
           caller.slides.push({
             status:   this.status,
@@ -110,8 +106,6 @@ $(document).on('page:change', function () {
       },
       status: `Your last month's check-ins <a href='./devices'>(more details)</a>`,
       init (caller) {
-        console.log('init monthly slide');
-        console.log('User had checkins in the last month: ' + this.hasCheckins())
         if (this.hasCheckins()) {
           caller.slides.push({
             status:   this.status,
@@ -128,49 +122,53 @@ $(document).on('page:change', function () {
       slides: [],
       slideTypes: [FRIENDS_SLIDE, MONTHLY_SLIDE],
       persistent: [SELF_MARKER],
+      pause () {
+        this.paused = true;
+      },
+      unpause () {
+        this.paused = false;
+      },
       hasSlides () {
         return this.slides.length > 0;
       },
       showNullState () {
         $('#map-overlay').removeClass('hide');
       },
-      initTimer () {
+      initHandler () {
         if (!this.hasSlides()) return;
         this.slideIndex = 0;
         this.activeLayer = L.layerGroup().addTo(map);
-        window.map.once ('ready', this.next.bind(this));
-        this.slideInterval = setInterval(this.next.bind(this), 1000 * 5);
-        window.map.on ('mouseover', (e, undefined) => {
-          clearInterval (this.slideInterval);
-          this.slideInterval = undefined;
-        })
-        map.on('mouseout', () => {
-          if (!this.slideInterval) this.slideInterval = setInterval(this.next.bind(this), 1000 * 5)
-        })
+        map.once('ready', this.next.bind(this));
+        map.on('mouseover', this.pause.bind(this));
+        map.on('mouseout', this.unpause.bind(this));
+        $(document).on('timer:ping', this.next.bind(this) )
         // Cleanup
-        $(document).on('page:before-unload', () => {
-          if (this.slideInterval) clearInterval(this.slideInterval);
-        })
+        $(document).one('page:before-unload', function () {
+          $(document).off('timer:ping');
+        });
       },
       next() {
-        let currentSlide = this.slides[this.slideIndex];
-        this.activeLayer.clearLayers().addLayer(currentSlide.layers);
-        if (currentSlide.bounds.isValid()) {
-          window.map.fitBounds(currentSlide.bounds, {padding: [40, 40]})
-        };
-        $('#map-status').html(currentSlide.status);
-        if (++this.slideIndex >= this.slides.length) {
-          this.slideIndex = 0
+        if(!this.paused) {
+          let currentSlide = this.slides[this.slideIndex];
+          this.activeLayer.clearLayers().addLayer(currentSlide.layers);
+          if (currentSlide.bounds.isValid()) {
+            window.map.fitBounds(currentSlide.bounds, {padding: [40, 40]})
+          };
+          $('#map-status').html(currentSlide.status);
+          if (++this.slideIndex >= this.slides.length) {
+            this.slideIndex = 0
+          };
         };
       },
       init () {
+        this.paused = false;
         this.persistent.forEach(feature => feature.init(this));
         this.slideTypes.forEach(slide => slide.init(this));
-        this.initTimer();
+        this.initHandler();
         if (!this.hasSlides() && !gon.current_user.lastCheckin) this.showNullState();
-        console.log('Slide deck init finished!');
       }
     };
+    const timer = timer || new SL.Timer(5000);
     DECK.init();
     google.charts.setOnLoadCallback(() => {COPO.charts.drawBarChart(gon.weeks_checkins, '270')});
     $(window).resize(() => {COPO.charts.drawBarChart(gon.weeks_checkins, '270')});
