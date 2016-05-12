@@ -94,7 +94,7 @@ function responsiveVideo() {
       height: '100%'
     });
   }else{
-    // Aspect ration is higher than 16:9
+    // Aspect ratio is higher than 16:9
     $(".promo video").css({
       width: '100%',
       height: 'auto'

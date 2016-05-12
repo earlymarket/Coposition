@@ -1,6 +1,6 @@
 <%= raw render_flash %>
-var checkin = _.find(gon.checkins, _.matchesProperty('id',<%= @checkin.id %>));
-_.remove(gon.checkins, checkin);
+$('#gonvariables').html("<%= j Gon::Base.render_data %>")
 
-COPO.charts.refreshCharts(gon.checkins);
-COPO.maps.refreshMarkers(gon.checkins);
+var checkins = COPO.dateRange.currentCheckins(gon.checkins)
+COPO.maps.refreshMarkers(checkins);
+COPO.charts.refreshCharts(checkins, 'user');

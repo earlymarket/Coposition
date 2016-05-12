@@ -1,4 +1,6 @@
+<div id='gonvariables'><%= Gon::Base.render_data %></div>
 <h1><%=name_or_email_name(@friend)%>'s devices</h1>
+<div id='calendar'></div>
 <% @devices.each do |device| %>
     <div class="card row">
       <%= link_to show_device_user_friend_path(current_user.url_id, @friend, device_id: device.id), class:"col s12" do %>
@@ -7,3 +9,12 @@
       <% end %>
     </div>
 <% end %>
+<script>
+  COPO.calendar.refreshCalendar(gon.checkins);
+  $(window).resize(function(){
+    COPO.calendar.refreshCalendar(gon.checkins);
+  });
+  $(document).on('page:before-unload', function(){
+    $(window).off("resize");
+  })
+</script>

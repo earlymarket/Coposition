@@ -11,9 +11,7 @@ window.COPO.maps = {
 
     var options = $.extend(defaultOptions, customOptions);
     window.map = L.mapbox.map('map', 'mapbox.light', options );
-    $(document).one('page:before-unload', function() {
-      map.remove();
-    })
+    $(document).one('page:before-unload', COPO.maps.removeMap);
   },
 
   initMarkers(checkins) {
@@ -28,6 +26,16 @@ window.COPO.maps = {
         })
       }
     });
+  },
+
+  removeMap() {
+    map.remove();
+  },
+
+  fitBounds() {
+    if (COPO.maps.allMarkers.getLayers().length){
+      map.fitBounds(COPO.maps.allMarkers.getBounds())
+    }
   },
 
   queueRefresh(checkins) {
@@ -95,11 +103,7 @@ window.COPO.maps = {
       if ($(".c-devices.a-show").length === 1) {
         $.get({
           url: "/users/"+gon.current_user_id+"/devices/"+checkin.device_id+"/checkins/"+checkin.id,
-          dataType: "json"
-        }).done(function(data) {
-          var $geocodedAddress = '<li class="address">Address: ' + data.address + '</li>'
-          $('.address').replaceWith($geocodedAddress);
-          checkins[_.indexOf(checkins, checkin)] = data;
+          dataType: "script"
         })
       }
       map.panTo(this.getLatLng());

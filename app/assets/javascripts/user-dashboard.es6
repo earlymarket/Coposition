@@ -5,6 +5,7 @@ $(document).on('page:change', function () {
     U.gonFix();
     M.initMap();
     M.initControls();
+    COPO.smooch.initSmooch(gon.current_user.userinfo);
 
     // Persistent map feature declarations
     const SELF_MARKER = {
@@ -167,7 +168,6 @@ $(document).on('page:change', function () {
       }
     };
     DECK.init();
-
     google.charts.setOnLoadCallback(() => {COPO.charts.drawBarChart(gon.weeks_checkins, '270')});
     $(window).resize(() => {COPO.charts.drawBarChart(gon.weeks_checkins, '270')});
   }

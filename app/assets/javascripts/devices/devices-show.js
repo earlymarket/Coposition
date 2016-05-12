@@ -1,15 +1,17 @@
 $(document).on('page:change', function() {
-  if ($(".c-devices.a-show").length === 1) {
+  if ($(".c-friends.a-show_device").length === 1 || $(".c-devices.a-show").length === 1) {
+    var page = $(".c-devices.a-show").length === 1 ? 'user' : 'friend'
+    COPO.utility.gonFix();
     COPO.maps.initMap();
-    COPO.maps.initMarkers(gon.checkins);
+    COPO.dateRange.initDateRange(gon.checkins, page);
+    COPO.maps.initMarkers(COPO.dateRange.currentCheckins(gon.checkins));
     COPO.maps.initControls();
-    // COPO.maps.lc.start();
 
     $('li.tab').on('click', function(event) {
       var tab = event.target.textContent
       setTimeout(function() {
         if (tab ==='Chart'){
-          COPO.charts.refreshCharts(gon.checkins);
+          COPO.charts.refreshCharts(COPO.dateRange.currentCheckins(gon.checkins), page);
         } else {
           map.invalidateSize();
         }
@@ -17,27 +19,30 @@ $(document).on('page:change', function() {
     });
 
     $(window).resize(function(){
-      COPO.charts.refreshCharts(gon.checkins);
-     });
+      COPO.charts.refreshCharts(COPO.dateRange.currentCheckins(gon.checkins), page);
+    });
 
-    map.on('contextmenu', function(e){
-      var coords = {};
-      coords.lat = e.latlng.lat.toFixed(6);
-      coords.lng = e.latlng.lng.toFixed(6);
-      coords.checkinLink = COPO.utility.createCheckinLink(e.latlng);
-      template = $('#createCheckinTmpl').html();
-      var content = Mustache.render(template, coords);
-      var popup = L.popup().setLatLng(e.latlng).setContent(content);
-      popup.openOn(map);
-    })
+    if (page === 'user') {
+      map.on('contextmenu', function(e){
+        var coords = {
+          lat: e.latlng.lat.toFixed(6),
+          lng: e.latlng.lng.toFixed(6),
+          checkinLink: COPO.utility.createCheckinLink(e.latlng)
+        };
+        template = $('#createCheckinTmpl').html();
+        var content = Mustache.render(template, coords);
+        var popup = L.popup().setLatLng(e.latlng).setContent(content);
+        popup.openOn(map);
+      })
 
-    map.on('popupopen', function(e){
-      var coords = e.popup.getLatLng()
-      if($('#current-location').length){
-        $createCheckinLink = COPO.utility.createCheckinLink(coords);
-        $('#current-location').replaceWith($createCheckinLink);
-      }
-    })
+      map.on('popupopen', function(e){
+        var coords = e.popup.getLatLng()
+        if($('#current-location').length){
+          $createCheckinLink = COPO.utility.createCheckinLink(coords);
+          $('#current-location').replaceWith($createCheckinLink);
+        }
+      })
+    }
   }
-
 });
+

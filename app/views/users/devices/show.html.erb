@@ -1,43 +1,16 @@
 <% content_for :outside_container do %>
-  <%= Gon::Base.render_data %>
-  <ul class="tabs row">
-    <li class="tab map col s6" id="mapTab"><a href="#map">Map</a></li>
-    <li class="tab chart col s6" id="chartTab"><a href="#chart">Chart</a></li>
-  </ul>
-
-  <ul id='filters' class='date-select collapsible'>
-    <li>
-      <div class='collapsible-header'>Select a date range</div>
-      <div class='collapsible-body'>
-        <%= form_for @device, url: user_device_path(current_user.url_id, @device), class: "form-group", method: :get do |f| %>
-          <%= f.label 'From' %>
-          <%= text_field_tag(:from, @from, class: "datepicker", id: "input_from", required: true) %>
-          <%= f.label 'to' %>
-          <%= text_field_tag(:to, @to, class: "datepicker", id: "input_to", required: true) %>
-          <%= f.submit("Filter", class: "form-control btn btn-default") %>
-          <%= link_to("Reset", user_device_path(current_user.url_id, @device) , { method: :get, class: "btn-flat" })%>
-        <% end %>
-      </div>
-    </li>
-  </ul>
-
-  <div id='chart'>
-    <div id='bar-chart'></div>
-    <div class='container'>
-      <div id="table-chart"></div>
-    </div>
-  </div>
-
-  <div id='map'></div>
+  <%= render 'users/shared/device_show' %>
 
   <div class="bottom-panel">
+    <div id='dateRange'></div>
     <div class="buttons">
       <%= link_to("Delete history", user_device_checkins_path(current_user.url_id, @device.id), { method: :delete, class: "btn red white-text", data: { confirm: 'Delete all checkins for this device?' } })%>
       <%= link_to("Delete device", user_device_path(current_user.url_id, @device), { method: :delete, class: "btn red white-text", data: { confirm: 'Are you sure?' } })%>
     </div>
+
   </div>
 
-<!-- templates -->
+  <!-- templates -->
   <script type="x-tmpl-mustache" id="markerPopupTmpl">
     <h3>ID: {{ id }}</h3>
     <ul>
@@ -58,4 +31,4 @@
     </ul>
   </script>
 
-  <% end %>
+<% end %>

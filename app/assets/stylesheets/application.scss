@@ -35,14 +35,18 @@
 @import 'MarkerCluster';
 @import 'MarkerCluster.Default';
 @import 'nouislider';
+@import 'ion.rangeSlider';
+@import 'ion.rangeSlider.skinFlat';
 
 // Page/feature specific
 @import 'placeholder';
 @import 'welcome-index';
 @import 'user-dashboard';
+@import 'devices-new';
 @import 'devices-index';
 @import 'devices-show';
 @import 'devices-shared';
 @import 'friends-device-show';
 @import 'approvals';
 @import 'permissions';
+

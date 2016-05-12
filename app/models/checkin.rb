@@ -16,6 +16,8 @@ class Checkin < ActiveRecord::Base
       results.first.methods.each do |m|
         obj.send("#{m}=", results.first.send(m)) if column_names.include? m.to_s
       end
+    else
+      obj.update(address: 'No address available')
     end
   end
 
@@ -35,7 +37,7 @@ class Checkin < ActiveRecord::Base
   def get_data
     if fogged? || device.fogged?
       fogged_checkin = Checkin.new(attributes.delete_if {|key, _v| key =~ /fogged/ })
-      fogged_checkin.address = "#{nearest_city.name}, #{nearest_city.country_code}"
+      fogged_checkin.address = fogged_area
       fogged_checkin.lat = fogged_lat
       fogged_checkin.lng = fogged_lng
       return fogged_checkin
@@ -58,13 +60,12 @@ class Checkin < ActiveRecord::Base
   end
 
   def reverse_geocoded?
-    address != 'No address available' && nil
+    address != 'Not yet geocoded'
   end
 
   def nearest_city
     center_point = [self.lat, self.lng]
-    box = Geocoder::Calculations.bounding_box(center_point, 20)
-    @nearest_city ||= City.near(self).within_bounding_box(box).first || NoCity.new
+    City.near(center_point, 200).first || NoCity.new
   end
 
   def add_fogged_info

@@ -2,8 +2,21 @@ require "rails_helper"
 
 RSpec.describe DevicesHelper, :type => :helper do
   let(:safebuffer) { ActiveSupport::SafeBuffer }
-  let(:device) { FactoryGirl::create(:device, user_id: 1) }
+  let(:developer) { FactoryGirl::create :developer }
+  let(:user) { FactoryGirl::create :user }
+  let(:device) do
+    device = FactoryGirl::create(:device, user_id: 1)
+    device.developers << developer
+    device.permitted_users << user
+    device
+  end
   let(:other) { Device.update(device.id, published: true) }
+
+  describe '#devices_permitted_actors_for' do
+    it "returns the devices developers and permitted users" do
+      expect(helper.devices_permitted_actors_for(device)).to include(developer && user)
+    end
+  end
 
   describe '#devices_last_checkin' do
     it "returns 'No Checkins found' if a checkin doesn't exist" do
@@ -13,7 +26,6 @@ RSpec.describe DevicesHelper, :type => :helper do
     it "returns the last checkin address if it exists" do
       checkin = FactoryGirl::create(:checkin, {
         device_id: device.id,
-        address: "#{Faker::Address.city}, #{Faker::Address.country_code}"
       })
       expect(helper.devices_last_checkin(device)).to include(checkin.city)
     end

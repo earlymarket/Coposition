@@ -4,16 +4,15 @@ class Users::FriendsController < ApplicationController
   def show
     @friend = User.find(params[:id])
     @devices = @friend.devices.includes(:checkins)
+    checkins = @friend.get_user_checkins_for(current_user)
+    gon.checkins = checkins.since(checkins.first.created_at.beginning_of_year) if checkins.exists?
   end
 
   def show_device
     @friend = User.find(params[:id])
     @device = @friend.devices.find(params[:device_id])
-    gon.checkins = @friend.get_checkins(current_user, @device).order(created_at: :desc) \
-      .paginate(page: params[:page], per_page: 1000)
-    gon.checkins = gon.checkins.map do |checkin|
-      checkin.get_data
-    end unless @device.can_bypass_fogging?(current_user)
+    gon.checkins = @friend.get_checkins(current_user, @device)
+    gon.checkins.get_data unless @device.can_bypass_fogging?(current_user)
   end
 
   private

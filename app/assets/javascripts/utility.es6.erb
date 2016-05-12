@@ -28,6 +28,13 @@ COPO.utility = {
       .attr('id', fogId + checkin.id).attr('class', foggedClass).prop('outerHTML')
   },
 
+  geocodeCheckinLink(checkin){
+    return COPO.utility.ujsLink('get',
+      'Get address' ,
+      window.location.pathname + '/checkins/' + checkin.id )
+      .prop('outerHTML')
+  },
+
   createCheckinLink(coords){
     var checkin = {
       'checkin[lat]': coords.lat.toFixed(6),
@@ -69,7 +76,7 @@ COPO.utility = {
     }
   },
 
-  avatarDefaults: <%= avatar_defaults.to_json %>,
+  avatarDefaults: <%= Rails.application.config_for(:cloudinary)['custom_transforms']['avatar'].to_json %>,
 
   initClipboard(selector, callback){
 
@@ -107,5 +114,9 @@ COPO.utility = {
 
   commaToNewline(string){
     return string.replace(/, /g, '\n')
+  },
+
+  geoLocationError(err){
+    Materialize.toast('Could not get location', 3000)
   }
 };
