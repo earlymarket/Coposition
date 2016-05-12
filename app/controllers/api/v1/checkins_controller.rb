@@ -11,16 +11,16 @@ class Api::V1::CheckinsController < Api::ApiController
       .paginate(page: params[:page], per_page: per_page)
     paginated_response_headers(checkins)
     checkins = checkins.includes(:device).map do |checkin|
-      checkin.resolve_address(@permissible, params[:type])
+      checkin.resolve_address(@permissible, params[:type]).public_info
     end
-    render json: checkins.public_info
+    render json: checkins
   end
 
   def last
     checkin = @user.get_checkins(@permissible, @device).order(created_at: :desc).first
     checkin = checkin.resolve_address(@permissible, params[:type]) if checkin
     if checkin
-      render json: checkin.public_info
+      render json: [checkin.public_info]
     else
       render json: []
     end
@@ -49,14 +49,6 @@ class Api::V1::CheckinsController < Api::ApiController
 
     def find_device
       if params[:device_id] then @device = Device.find(params[:device_id]) end
-    end
-
-    def checkin_public_info(array_of_checkins)
-      return array_of_checkins if array_of_checkins.empty?
-      array_of_checkins.map do |checkin|
-        checkin.address = checkin.fogged_area if checkin.address == 'Not yet geocoded'
-        checkin.attributes.delete_if {|key, v| key =~ /fogged|uuid/ || v == nil }
-      end
     end
 
 end
