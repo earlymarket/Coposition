@@ -36,7 +36,7 @@ $(document).on('page:change', function () {
       hasFriendsWithCheckins () {
         return this.hasFriends() && gon.friends.filter(friend => friend.lastCheckin).length > 0;
       },
-      clusters () {
+      layers () {
         let clusters = M.arrayToCluster(gon.friends, M.makeMapPin);
         clusters.eachLayer((marker) => {
           marker.on('click', function (e) {
@@ -79,7 +79,7 @@ $(document).on('page:change', function () {
         if (this.hasFriendsWithCheckins()) {
           caller.slides.push({
             status:   this.status,
-            clusters: this.clusters(),
+            layers: this.layers(),
             bounds:   this.bounds()
           });
         }
@@ -89,7 +89,7 @@ $(document).on('page:change', function () {
       hasCheckins () {
         return gon.months_checkins.length > 0
       },
-      clusters () {
+      layers () {
         if(!gon.current_user.lastCheckin) {
           return M.arrayToCluster(gon.months_checkins, M.makeMarker);
         } else {
@@ -110,7 +110,7 @@ $(document).on('page:change', function () {
         if (this.hasCheckins()) {
           caller.slides.push({
             status:   this.status,
-            clusters: this.clusters(),
+            layers: this.layers(),
             bounds:   this.bounds()
           });
         }
@@ -149,7 +149,7 @@ $(document).on('page:change', function () {
       },
       next() {
         let currentSlide = this.slides[this.slideIndex];
-        this.activeLayer.clearLayers().addLayer(currentSlide.clusters);
+        this.activeLayer.clearLayers().addLayer(currentSlide.layers);
         if (currentSlide.bounds.isValid()) {
           window.map.fitBounds(currentSlide.bounds, {padding: [40, 40]})
         };
