@@ -36,7 +36,7 @@ class Checkin < ActiveRecord::Base
 
   def get_data
     if fogged? || device.fogged?
-      fogged_checkin = Checkin.new(attributes.delete_if {|key, _v| key =~ /fogged|city|postal/ })
+      fogged_checkin = Checkin.new(attributes.delete_if {|key, _v| key =~ /city|postal/ })
       fogged_checkin.address = fogged_area
       fogged_checkin.lat = fogged_lat
       fogged_checkin.lng = fogged_lng
@@ -52,14 +52,10 @@ class Checkin < ActiveRecord::Base
   end
 
   def public_info
-    self.address = self.fogged_area if self.address == 'Not yet geocoded'
-    attributes.delete_if {|key, v| key =~ /fogged|uuid/ || v == nil }
+    public_checkin = Checkin.new(attributes)
+    public_checkin.address = fogged_area if address == 'Not yet geocoded'
+    public_checkin.attributes.delete_if {|key, value| key =~ /fogged|uuid/ || value == nil}
   end
-
-  def self.public_info
-    all.map {|checkin| checkin.public_info }
-  end
-
 
   def reverse_geocode!
     unless reverse_geocoded?
