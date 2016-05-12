@@ -52,7 +52,7 @@ class Checkin < ActiveRecord::Base
   end
 
   def public_info
-    address = fogged_area if address == 'Not yet geocoded'
+    self.address = self.fogged_area if self.address == 'Not yet geocoded'
     attributes.delete_if {|key, v| key =~ /fogged|uuid/ || v == nil }
   end
 
