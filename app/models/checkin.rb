@@ -34,27 +34,24 @@ class Checkin < ActiveRecord::Base
     end
   end
 
-  def replace_foggable_attributes
-    if fogged? || device.fogged?
-      fogged_checkin = Checkin.new(attributes.delete_if {|key, _v| key =~ /city|postal/ })
-      fogged_checkin.address = fogged_area
-      fogged_checkin.lat = fogged_lat
-      fogged_checkin.lng = fogged_lng
-      return fogged_checkin
-    end
-    self
-  end
-
-  def self.replace_foggable_attributes
-    # this will convert it to an array
-    # paginate before use!
-    all.map {|checkin| checkin.replace_foggable_attributes}
-  end
-
-  def public_info
+  def public_info(permissible)
     public_checkin = Checkin.new(attributes)
+    if (fogged? || device.fogged?) && (!permissible || !device.can_bypass_fogging?(permissible))
+      public_checkin = public_checkin.replace_foggable_attributes
+    end
     public_checkin.address = fogged_area if address == 'Not yet geocoded'
     public_checkin.attributes.delete_if {|key, value| key =~ /fogged|uuid/ || value == nil}
+  end
+
+  def self.public_info(permissible)
+    # this will convert it to an array
+    # paginate before use!
+    all.map {|checkin| checkin.public_info(permissible) }
+  end
+
+  def resolve_address(permissible, type)
+    reverse_geocode! if type == "address"
+    public_info(permissible)
   end
 
   def reverse_geocode!
@@ -62,28 +59,6 @@ class Checkin < ActiveRecord::Base
       reverse_geocode
       save
     end
-    self
-  end
-
-  def reverse_geocoded?
-    address != 'Not yet geocoded'
-  end
-
-  def nearest_city
-    center_point = [self.lat, self.lng]
-    City.near(center_point, 200).first || NoCity.new
-  end
-
-  def add_fogged_info
-    self.fogged_lat ||= nearest_city.latitude || self.lat + rand(-0.5..0.5)
-    self.fogged_lng ||= nearest_city.longitude || self.lng + rand(-0.5..0.5)
-    self.fogged_area ||= nearest_city.name
-    save
-  end
-
-  def resolve_address(permissible, type)
-    reverse_geocode! if type == "address"
-    return replace_foggable_attributes unless device.can_bypass_fogging?(permissible)
     self
   end
 
@@ -102,4 +77,31 @@ class Checkin < ActiveRecord::Base
       (((recent_checkins_count/older_checkins_count)-1)*100).round(2)
     end
   end
+
+  protected
+
+    def replace_foggable_attributes
+      fogged_checkin = Checkin.new(attributes.delete_if {|key, _v| key =~ /city|postal/ })
+      fogged_checkin.address = fogged_area
+      fogged_checkin.lat = fogged_lat
+      fogged_checkin.lng = fogged_lng
+      return fogged_checkin
+    end
+
+    def nearest_city
+      center_point = [self.lat, self.lng]
+      City.near(center_point, 200).first || NoCity.new
+    end
+
+    def add_fogged_info
+      self.fogged_lat ||= nearest_city.latitude || self.lat + rand(-0.5..0.5)
+      self.fogged_lng ||= nearest_city.longitude || self.lng + rand(-0.5..0.5)
+      self.fogged_area ||= nearest_city.name
+      save
+    end
+
+    def reverse_geocoded?
+      address != 'Not yet geocoded'
+    end
+
 end

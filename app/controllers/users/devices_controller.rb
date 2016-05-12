@@ -30,7 +30,7 @@ class Users::DevicesController < ApplicationController
     checkin = device.checkins.first
     gon.device = device
     gon.user = device.user.public_info_hash
-    gon.checkin = checkin.reverse_geocode!.replace_foggable_attributes if checkin
+    gon.checkin = checkin.reverse_geocode!.public_info(nil) if checkin
   end
 
   def create
