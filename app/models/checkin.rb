@@ -34,7 +34,7 @@ class Checkin < ActiveRecord::Base
     end
   end
 
-  def get_data
+  def replace_foggable_attributes
     if fogged? || device.fogged?
       fogged_checkin = Checkin.new(attributes.delete_if {|key, _v| key =~ /city|postal/ })
       fogged_checkin.address = fogged_area
@@ -45,10 +45,10 @@ class Checkin < ActiveRecord::Base
     self
   end
 
-  def self.get_data
+  def self.replace_foggable_attributes
     # this will convert it to an array
     # paginate before use!
-    all.map {|checkin| checkin.get_data}
+    all.map {|checkin| checkin.replace_foggable_attributes}
   end
 
   def public_info
@@ -83,7 +83,7 @@ class Checkin < ActiveRecord::Base
 
   def resolve_address(permissible, type)
     reverse_geocode! if type == "address"
-    return get_data unless device.can_bypass_fogging?(permissible)
+    return replace_foggable_attributes unless device.can_bypass_fogging?(permissible)
     self
   end
 
