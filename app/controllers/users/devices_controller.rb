@@ -39,7 +39,7 @@ class Users::DevicesController < ApplicationController
     if @device && @device.user.nil?
       if @device.construct(current_user, allowed_params[:name])
         gon.checkins = @device.checkins.create(checkin_params) if params[:create_checkin].present?
-        redirect_to user_device_path(id: @device.id), notice: "This device has been bound to your account!"
+        redirect_to user_device_path(id: @device.id)
       else
         redirect_to new_user_device_path, notice: "You already have a device with the name #{allowed_params[:name]}"
       end
