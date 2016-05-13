@@ -45,9 +45,16 @@ $(document).on('page:change', () => {
       MARKER.on('dragend', e => updateLocation(e.target.getLatLng()));
 
       function updateLocation(loc) {
-        $('#coordinates').html(`Latitude: ${loc.lat.toFixed(6)}<br />Longitude: ${loc.lng.toFixed(6)}`);
+        $('#coordinates').html(`Lat: ${loc.lat.toFixed(6)}<br />Lng: ${loc.lng.toFixed(6)}<br />`);
         const LATLON = `${loc.lng},${loc.lat}`;
         $('#location').attr("value", LATLON);
+        $.get(
+          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${loc.lat},${loc.lng}&key=AIzaSyDqwD4k7HuZ1zlf3-un1qcbKnqknL9gt4c`)
+        .done(function(data) {
+          if(data.status!=='ZERO_RESULTS'){
+            $('#coordinates').append(data.results[0].formatted_address.replace(/, /g, '\n'))
+          }
+        });
       }
     }
 
