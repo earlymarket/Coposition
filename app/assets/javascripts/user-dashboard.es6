@@ -148,16 +148,15 @@ $(document).on('page:change', function () {
         });
       },
       next() {
-        if(!this.paused) {
-          let currentSlide = this.slides[this.slideIndex];
-          this.activeLayer.clearLayers().addLayer(currentSlide.layers);
-          if (currentSlide.bounds.isValid()) {
-            window.map.fitBounds(currentSlide.bounds, {padding: [40, 40]})
-          };
-          $('#map-status').html(currentSlide.status);
-          if (++this.slideIndex >= this.slides.length) {
-            this.slideIndex = 0
-          };
+        if(this.paused) return;
+        let currentSlide = this.slides[this.slideIndex];
+        this.activeLayer.clearLayers().addLayer(currentSlide.layers);
+        if (currentSlide.bounds.isValid()) {
+          window.map.fitBounds(currentSlide.bounds, {padding: [40, 40]})
+        };
+        $('#map-status').html(currentSlide.status);
+        if (++this.slideIndex >= this.slides.length) {
+          this.slideIndex = 0
         };
       },
       init () {
