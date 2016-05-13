@@ -30,7 +30,7 @@ class Users::DevicesController < ApplicationController
     checkin = device.checkins.first
     gon.device = device
     gon.user = device.user.public_info_hash
-    gon.checkin = checkin.resolve_address(nil, 'address') if checkin
+    gon.checkin = checkin.resolve_address({type: 'address'}) if checkin
   end
 
   def create

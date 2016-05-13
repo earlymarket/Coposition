@@ -34,16 +34,16 @@ class Checkin < ActiveRecord::Base
     end
   end
 
-  def resolve_address(permissible, type)
-    reverse_geocode! if type == "address"
-    public_info(permissible)
+  def resolve_address(options = {})
+    options = {permissible: nil, type: nil}.merge(options)
+    reverse_geocode! if options[:type] == "address"
+    public_info(options[:permissible])
   end
 
-  def self.resolve_address(permissible, type)
-    # permissible and type can both be nil
+  def self.resolve_address(options = {})
     # this will convert it to an array
     # paginate before use!
-    all.map {|checkin| checkin.resolve_address(permissible, type) }
+    all.map {|checkin| checkin.resolve_address(options) }
   end
 
   def reverse_geocode!
