@@ -70,6 +70,15 @@ class Checkin < ActiveRecord::Base
     end
   end
 
+  def self.calendar_data
+    since(first.created_at.beginning_of_year)
+    .unscope(:order)
+    .group("date_trunc('day', created_at)")
+    .count
+    .to_a
+    .sort
+  end
+
   protected
 
     def public_info(permissible)
