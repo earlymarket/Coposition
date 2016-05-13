@@ -34,21 +34,16 @@ class Checkin < ActiveRecord::Base
     end
   end
 
-  def get_data
-    if fogged? || device.fogged?
-      fogged_checkin = Checkin.new(attributes.delete_if {|key, _v| key =~ /fogged/ })
-      fogged_checkin.address = fogged_area
-      fogged_checkin.lat = fogged_lat
-      fogged_checkin.lng = fogged_lng
-      return fogged_checkin
-    end
-    self
+  def resolve_address(options = {})
+    options = {permissible: nil, type: nil}.merge(options)
+    reverse_geocode! if options[:type] == "address"
+    public_info(options[:permissible])
   end
 
-  def self.get_data
+  def self.resolve_address(options = {})
     # this will convert it to an array
     # paginate before use!
-    all.map {|checkin| checkin.get_data}
+    all.map {|checkin| checkin.resolve_address(options) }
   end
 
   def reverse_geocode!
@@ -57,33 +52,6 @@ class Checkin < ActiveRecord::Base
       save
     end
     self
-  end
-
-  def reverse_geocoded?
-    address != 'Not yet geocoded'
-  end
-
-  def nearest_city
-    center_point = [self.lat, self.lng]
-    City.near(center_point, 200).first || NoCity.new
-  end
-
-  def add_fogged_info
-    self.fogged_lat ||= nearest_city.latitude || self.lat + rand(-0.5..0.5)
-    self.fogged_lng ||= nearest_city.longitude || self.lng + rand(-0.5..0.5)
-    self.fogged_area ||= nearest_city.name
-    save
-  end
-
-  def resolve_address(permissible, type)
-    if type == "address"
-      reverse_geocode!
-      return get_data unless device.can_bypass_fogging?(permissible)
-      self
-    else
-      return get_data unless device.can_bypass_fogging?(permissible)
-      Checkin.where(id: id).select([:id, :uuid, :lat, :lng, :created_at, :updated_at]).first
-    end
   end
 
   def self.hash_group_and_count_by(attribute)
@@ -101,4 +69,41 @@ class Checkin < ActiveRecord::Base
       (((recent_checkins_count/older_checkins_count)-1)*100).round(2)
     end
   end
+
+  protected
+
+    def public_info(permissible)
+      public_checkin = Checkin.new(attributes)
+      if replace_foggable_attributes?(permissible)
+        public_checkin = public_checkin.replace_foggable_attributes
+      end
+      public_checkin.address = fogged_area if address == 'Not yet geocoded'
+      public_checkin.attributes.delete_if {|key, value| key =~ /fogged|uuid/ || value == nil}
+    end
+
+    def replace_foggable_attributes?(permissible)
+      (fogged? || device.fogged?) && (!permissible || !device.can_bypass_fogging?(permissible))
+    end
+
+    def replace_foggable_attributes
+      assign_attributes(address: fogged_area, lat: fogged_lat, lng: fogged_lng)
+      Checkin.new(attributes.delete_if {|key, _v| key =~ /city|postal/ })
+    end
+
+    def nearest_city
+      center_point = [self.lat, self.lng]
+      City.near(center_point, 200).first || NoCity.new
+    end
+
+    def add_fogged_info
+      self.fogged_lat ||= nearest_city.latitude || self.lat + rand(-0.5..0.5)
+      self.fogged_lng ||= nearest_city.longitude || self.lng + rand(-0.5..0.5)
+      self.fogged_area ||= nearest_city.name
+      save
+    end
+
+    def reverse_geocoded?
+      address != 'Not yet geocoded'
+    end
+
 end

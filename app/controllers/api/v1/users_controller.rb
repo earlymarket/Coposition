@@ -9,6 +9,6 @@ class Api::V1::UsersController < Api::ApiController
   end
 
   def show
-    respond_with @user
+    respond_with @user.public_info
   end
 end
