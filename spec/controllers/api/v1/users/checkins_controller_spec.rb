@@ -19,8 +19,9 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
   let(:create_headers) { request.headers["X-UUID"] = device.uuid }
   let(:params) {{ user_id: user.id, device_id: device.id }}
   let(:create_params) {{ checkin: { lat: Faker::Address.latitude, lng: Faker::Address.longitude } }}
+  let(:foggable_checkin_attributes) { ["city" , "postal_code"] }
   let(:private_checkin_attributes) { ["uuid", "fogged", "fogged_lat", "fogged_lng", "fogged_area"] }
-  let(:private_and_foggable_checkin_attributes) { private_checkin_attributes << ["city, postal_code"]}
+  let(:private_and_foggable_checkin_attributes) { private_checkin_attributes + foggable_checkin_attributes }
 
   before do |example|
     create_denhams
@@ -93,6 +94,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         Permission.last.update(bypass_fogging: true)
         get :last, params.merge(type: "address")
         expect(res_hash.first['address']).to eq "The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK"
+        expect((foggable_checkin_attributes - res_hash.first.keys).empty?).to be true
       end
     end
 
