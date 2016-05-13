@@ -7,7 +7,7 @@ class Users::DevicesController < ApplicationController
   def index
     @devices = current_user.devices.order(:id).includes(:developers, :permitted_users, :permissions)
     @devices.each { |device| device.checkins.first.reverse_geocode! if device.checkins.exists? }
-    gon.checkins = current_user.checkins.since(current_user.checkins.first.created_at.beginning_of_year) if current_user.checkins.exists?
+    gon.checkins = current_user.checkins.calendar_data if current_user.checkins.exists?
     gon.current_user_id = current_user.id
     gon.devices = @devices
     gon.permissions = @devices.map(&:permissions).inject(:+)
@@ -16,7 +16,7 @@ class Users::DevicesController < ApplicationController
   def show
     @device = Device.find(params[:id])
     gon.checkins = @device.checkins
-    flash[:notice] = "No checkins available" if gon.checkins.empty?
+    flash[:notice] = "Right click on the map to checkin"
     gon.current_user_id = current_user.id
   end
 
@@ -39,7 +39,7 @@ class Users::DevicesController < ApplicationController
     if @device && @device.user.nil?
       if @device.construct(current_user, allowed_params[:name])
         gon.checkins = @device.checkins.create(checkin_params) if params[:create_checkin].present?
-        redirect_to user_device_path(id: @device.id), notice: "This device has been bound to your account!"
+        redirect_to user_device_path(id: @device.id)
       else
         redirect_to new_user_device_path, notice: "You already have a device with the name #{allowed_params[:name]}"
       end

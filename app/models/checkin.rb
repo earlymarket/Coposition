@@ -65,8 +65,7 @@ class Checkin < ActiveRecord::Base
 
   def nearest_city
     center_point = [self.lat, self.lng]
-    box = Geocoder::Calculations.bounding_box(center_point, 20)
-    @nearest_city ||= City.near(self).within_bounding_box(box).first || NoCity.new
+    City.near(center_point, 200).first || NoCity.new
   end
 
   def add_fogged_info
@@ -101,5 +100,14 @@ class Checkin < ActiveRecord::Base
     if recent_checkins_count > 0 && older_checkins_count > 0
       (((recent_checkins_count/older_checkins_count)-1)*100).round(2)
     end
+  end
+
+  def self.calendar_data
+    since(first.created_at.beginning_of_year)
+    .unscope(:order)
+    .group("date_trunc('day', created_at)")
+    .count
+    .to_a
+    .sort
   end
 end

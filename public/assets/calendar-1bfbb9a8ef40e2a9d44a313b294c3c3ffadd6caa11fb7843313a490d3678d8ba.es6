@@ -6,7 +6,7 @@ window.COPO.calendar = {
     const dataTable = new google.visualization.DataTable();
     dataTable.addColumn({ type: 'date', id: 'Date' });
     dataTable.addColumn({ type: 'number', id: 'Frequency' });
-    const rowData = countCheckinsByDate();
+    const rowData = gon.checkins.map((day) =>[new Date(day[0]), day[1]]);;
     dataTable.addRows(rowData);
     const options = {
       title: "Checkin frequency",
@@ -22,17 +22,6 @@ window.COPO.calendar = {
     };
 
     chart.draw(dataTable, options);
-
-    function countCheckinsByDate() {
-      const createdAt = _.map(checkins, 'created_at');
-      const createdAtArr = [];
-      _(createdAt).each(function(checkin){
-        createdAtArr.push(moment(checkin).endOf('day'));
-      });
-      let countedDates = _.toPairs(_.countBy(createdAtArr));
-      countedDates = countedDates.map(function(n){ return [new Date(n[0]), n[1]] });
-      return countedDates;
-    }
   },
 
   refreshCalendar(checkins){
