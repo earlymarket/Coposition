@@ -101,4 +101,13 @@ class Checkin < ActiveRecord::Base
       (((recent_checkins_count/older_checkins_count)-1)*100).round(2)
     end
   end
+
+  def self.calendar_data
+    since(first.created_at.beginning_of_year)
+    .unscope(:order)
+    .group("date_trunc('day', created_at)")
+    .count
+    .to_a
+    .sort
+  end
 end
