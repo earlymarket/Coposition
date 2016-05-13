@@ -12,13 +12,15 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     device
   end
   let(:checkin) do
-    checkin = FactoryGirl::create :checkin
+    checkin = FactoryGirl::create(:checkin, device: device)
     device.checkins << checkin
     checkin
   end
   let(:create_headers) { request.headers["X-UUID"] = device.uuid }
   let(:params) {{ user_id: user.id, device_id: device.id }}
   let(:create_params) {{ checkin: { lat: Faker::Address.latitude, lng: Faker::Address.longitude } }}
+  let(:private_checkin_attributes) { ["uuid", "fogged", "fogged_lat", "fogged_lng", "fogged_area"] }
+  let(:private_and_foggable_checkin_attributes) { private_checkin_attributes << ["city, postal_code"]}
 
   before do |example|
     create_denhams
@@ -56,9 +58,10 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         checkin
       end
 
-      it "should fetch the last reported location" do
+      it "should fetch the last reported location (public attributes only)" do
         get :last, params
         expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
+        expect(res_hash.first.keys).not_to include private_checkin_attributes
       end
 
       it "should fetch the last reported location for a friend" do
@@ -80,6 +83,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         expect(res_hash.first['address']).to eq "Denham"
         expect(res_hash.first['lat']).to eq(51.57471)
         expect(res_hash.first['lng']).to eq(-0.50626)
+        expect(res_hash.first.keys).not_to include private_and_foggable_checkin_attributes
       end
 
       it "should bypass fogging if bypass_fogging is true" do
