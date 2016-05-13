@@ -11,11 +11,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     user.devices << device
     device
   end
-  let(:checkin) do
-    checkin = FactoryGirl::create(:checkin, device: device)
-    device.checkins << checkin
-    checkin
-  end
+  let(:checkin){ FactoryGirl::create :checkin, device: device }
   let(:create_headers) { request.headers["X-UUID"] = device.uuid }
   let(:params) {{ user_id: user.id, device_id: device.id }}
   let(:create_params) {{ checkin: { lat: Faker::Address.latitude, lng: Faker::Address.longitude } }}
