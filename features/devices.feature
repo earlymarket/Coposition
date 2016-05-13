@@ -11,7 +11,7 @@ Feature: Devices
       Given I click "add"
         And I enter UUID "123456789123" and a friendly name "G-RALA"
       When I click "Add"
-      Then I should see "This device has been bound to your account!"
+      Then I should see "Right click on the map to checkin"
         # And I should see "G-RALA"
         And I click the link "Devices"
       Then I should see "Denham"
