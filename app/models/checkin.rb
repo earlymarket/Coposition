@@ -74,11 +74,15 @@ class Checkin < ActiveRecord::Base
 
     def public_info(permissible)
       public_checkin = Checkin.new(attributes)
-      if (fogged? || device.fogged?) && (!permissible || !device.can_bypass_fogging?(permissible))
+      if replace_foggable_attributes?(permissible)
         public_checkin = public_checkin.replace_foggable_attributes
       end
       public_checkin.address = fogged_area if address == 'Not yet geocoded'
       public_checkin.attributes.delete_if {|key, value| key =~ /fogged|uuid/ || value == nil}
+    end
+
+    def replace_foggable_attributes?(permissible)
+      (fogged? || device.fogged?) && (!permissible || !device.can_bypass_fogging?(permissible))
     end
 
     def replace_foggable_attributes
