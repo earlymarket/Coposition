@@ -12,7 +12,7 @@ class Users::FriendsController < ApplicationController
     @friend = User.find(params[:id])
     @device = @friend.devices.find(params[:device_id])
     gon.checkins = @friend.get_checkins(current_user, @device)
-    gon.checkins = gon.checkins.public_info(current_user)
+    gon.checkins = gon.checkins.resolve_address(current_user, nil)
   end
 
   private
