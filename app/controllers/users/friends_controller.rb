@@ -5,7 +5,15 @@ class Users::FriendsController < ApplicationController
     @friend = User.find(params[:id])
     @devices = @friend.devices.includes(:checkins)
     checkins = @friend.get_user_checkins_for(current_user)
-    gon.checkins = checkins.since(checkins.first.created_at.beginning_of_year) if checkins.exists?
+    if checkins.exists?
+      gon.checkins = checkins
+      .since(checkins.first.created_at.beginning_of_year)
+      .unscope(:order)
+      .group("date_trunc('day', created_at)")
+      .count
+      .to_a
+      .sort
+    end
   end
 
   def show_device

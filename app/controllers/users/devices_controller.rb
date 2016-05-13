@@ -7,7 +7,15 @@ class Users::DevicesController < ApplicationController
   def index
     @devices = current_user.devices.order(:id).includes(:developers, :permitted_users, :permissions)
     @devices.each { |device| device.checkins.first.reverse_geocode! if device.checkins.exists? }
-    gon.checkins = current_user.checkins.since(current_user.checkins.first.created_at.beginning_of_year) if current_user.checkins.exists?
+    if current_user.checkins.exists?
+      gon.checkins = current_user.checkins
+      .since(current_user.checkins.first.created_at.beginning_of_year)
+      .unscope(:order)
+      .group("date_trunc('day', created_at)")
+      .count
+      .to_a
+      .sort
+    end
     gon.current_user_id = current_user.id
     gon.devices = @devices
     gon.permissions = @devices.map(&:permissions).inject(:+)
