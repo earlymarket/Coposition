@@ -15,7 +15,9 @@ deploy:
   provider: script
   script: ./deploy.sh
   on:
-    branch: master
+    branch:
+    - master
+    - staging
 addons:
   code_climate:
     repo_token:
