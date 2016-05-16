@@ -16,7 +16,6 @@ RSpec.describe Users::DashboardsController, type: :controller do
 
   describe 'GET #show' do
     it 'should load metadata for dashboard page' do
-      checkin.add_fogged_info
       get :show, user_id: user.id
       expect((assigns :presenter).class).to eq(Users::DashboardsPresenter)
       expect((assigns :presenter).most_used_device).to eq device
