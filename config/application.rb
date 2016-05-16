@@ -1,6 +1,5 @@
 require File.expand_path('../boot', __FILE__)
 
-require "csv"
 require "rails"
 # Pick the frameworks you want:
 require "active_model/railtie"
@@ -10,6 +9,7 @@ require "action_controller/railtie"
 require "action_mailer/railtie"
 require "action_view/railtie"
 require "sprockets/railtie"
+require "csv"
 # require "rails/test_unit/railtie"
 require 'sprockets/es6'
 require "attachinary/orm/active_record"
