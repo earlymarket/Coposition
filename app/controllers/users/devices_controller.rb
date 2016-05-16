@@ -18,6 +18,10 @@ class Users::DevicesController < ApplicationController
     gon.checkins = @device.checkins
     flash[:notice] = "Right click on the map to checkin"
     gon.current_user_id = current_user.id
+    respond_to do |format|
+      format.html
+      format.csv { send_data @device.checkins.to_csv, filename: "device-#{@device.id}-checkins-#{Date.today}.csv"}
+    end
   end
 
   def new

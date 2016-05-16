@@ -108,4 +108,16 @@ class Checkin < ActiveRecord::Base
       (((recent_checkins_count/older_checkins_count)-1)*100).round(2)
     end
   end
+
+  def self.to_csv
+    attributes = Checkin.column_names
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      all.each do |checkin|
+        csv << checkin.attributes.values_at(*attributes)
+      end
+    end
+  end
 end
