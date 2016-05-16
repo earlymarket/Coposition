@@ -62,7 +62,7 @@
 
     <%= link_to(fogged_icon(device.fogged), user_device_path(current_user.url_id, device.id), { method: :put, id:"fogButton#{device.id}", remote: true, class: 'left tooltipped', data: { fogged: device.fogged?, tooltip:'Fogging' } })%>
 
-    <a class="right tooltipped" data-tooltip="Download checkins (.csv)" href="<%= user_device_path(current_user.url_id, device) %>.csv"><i class="material-icons">file_download</i></a>
+    <a class="left tooltipped" data-tooltip="Download checkins (.csv)" href="<%= user_device_path(current_user.url_id, device) %>.csv"><i class="material-icons">file_download</i></a>
 
     <%= link_to(devices_shared_icon(device), user_device_path(current_user.url_id, device.id, published: device.published), { method: :put, id:"publishedButton#{device.id}", remote: true, class: 'left tooltipped', data: { published: device.published?, tooltip:'Device sharing' } })%>
     <div class="valign-wrapper" id="sharedLink<%= device.id %>">
