@@ -76,7 +76,7 @@ class Device < ActiveRecord::Base
   end
 
   def self.public_info
-    all.select([:id, :user_id, :name, :alias, :published])
+    select([:id, :user_id, :name, :alias, :published])
   end
 
 end
