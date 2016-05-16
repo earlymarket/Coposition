@@ -53163,7 +53163,9 @@ window.COPO.calendar = {
     var dataTable = new google.visualization.DataTable();
     dataTable.addColumn({ type: 'date', id: 'Date' });
     dataTable.addColumn({ type: 'number', id: 'Frequency' });
-    var rowData = countCheckinsByDate();
+    var rowData = gon.checkins.map(function (day) {
+      return [new Date(day[0]), day[1]];
+    });;
     dataTable.addRows(rowData);
     var options = {
       title: "Checkin frequency",
@@ -53179,19 +53181,6 @@ window.COPO.calendar = {
     };
 
     chart.draw(dataTable, options);
-
-    function countCheckinsByDate() {
-      var createdAt = _.map(checkins, 'created_at');
-      var createdAtArr = [];
-      _(createdAt).each(function (checkin) {
-        createdAtArr.push(moment(checkin).endOf('day'));
-      });
-      var countedDates = _.toPairs(_.countBy(createdAtArr));
-      countedDates = countedDates.map(function (n) {
-        return [new Date(n[0]), n[1]];
-      });
-      return countedDates;
-    }
   },
 
   refreshCalendar: function refreshCalendar(checkins) {

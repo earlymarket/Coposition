@@ -13,17 +13,13 @@ class Api::V1::CheckinsController < Api::ApiController
     checkins = checkins.includes(:device).map do |checkin|
       checkin.resolve_address(@permissible, params[:type])
     end
-    render json: hide_fogging_info(checkins)
+    render json: checkins
   end
 
   def last
     checkin = @user.get_checkins(@permissible, @device).order(created_at: :desc).first
     checkin = checkin.resolve_address(@permissible, params[:type]) if checkin
-    if checkin
-      render json: hide_fogging_info([checkin])
-    else
-      render json: []
-    end
+    checkin ? (render json: [checkin]) : (render json: [])
   end
 
   def create
@@ -49,13 +45,6 @@ class Api::V1::CheckinsController < Api::ApiController
 
     def find_device
       if params[:device_id] then @device = Device.find(params[:device_id]) end
-    end
-
-    def hide_fogging_info(array_of_checkins)
-      return array_of_checkins if array_of_checkins.empty?
-      array_of_checkins.map do |checkin|
-        checkin.attributes.delete_if {|key, _v| key =~ /fogged/ }
-      end
     end
 
 end

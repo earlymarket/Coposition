@@ -7,7 +7,7 @@ class Users::DevicesController < ApplicationController
   def index
     @devices = current_user.devices.order(:id).includes(:developers, :permitted_users, :permissions)
     @devices.each { |device| device.checkins.first.reverse_geocode! if device.checkins.exists? }
-    gon.checkins = current_user.checkins.since(current_user.checkins.first.created_at.beginning_of_year) if current_user.checkins.exists?
+    gon.checkins = current_user.checkins.calendar_data if current_user.checkins.exists?
     gon.current_user_id = current_user.id
     gon.devices = @devices
     gon.permissions = @devices.map(&:permissions).inject(:+)
@@ -30,7 +30,7 @@ class Users::DevicesController < ApplicationController
     checkin = device.checkins.first
     gon.device = device
     gon.user = device.user.public_info_hash
-    gon.checkin = checkin.reverse_geocode!.get_data if checkin
+    gon.checkin = checkin.reverse_geocode!.replace_foggable_attributes.public_info if checkin
   end
 
   def create
