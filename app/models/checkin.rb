@@ -89,8 +89,8 @@ class Checkin < ActiveRecord::Base
 
   def resolve_address(permissible, type)
     reverse_geocode! if type == "address"
-    return replace_foggable_attributes unless device.can_bypass_fogging?(permissible)
-    self
+    return replace_foggable_attributes.public_info unless device.can_bypass_fogging?(permissible)
+    self.public_info
   end
 
   def self.hash_group_and_count_by(attribute)
