@@ -34,16 +34,33 @@ class Checkin < ActiveRecord::Base
     end
   end
 
-  def resolve_address(options = {})
-    options = {permissible: nil, type: nil}.merge(options)
-    reverse_geocode! if options[:type] == "address"
-    public_info(options[:permissible])
+  def replace_foggable_attributes
+    if fogged? || device.fogged?
+      fogged_checkin = Checkin.new(attributes.delete_if {|key, _v| key =~ /city|postal/ })
+      fogged_checkin.assign_attributes(address: fogged_area, lat: fogged_lat, lng: fogged_lng)
+      return fogged_checkin
+    end
+    self
   end
 
-  def self.resolve_address(options = {})
+  def self.replace_foggable_attributes
     # this will convert it to an array
     # paginate before use!
-    all.map {|checkin| checkin.resolve_address(options) }
+    all.map {|checkin| checkin.replace_foggable_attributes }
+  end
+
+  def public_info
+    address = fogged_area if address == 'Not yet geocoded'
+    attributes.delete_if {|key, value| key =~ /fogged|uuid/ || value == nil}
+  end
+
+  def self.calendar_data
+    since(first.created_at.beginning_of_year)
+    .unscope(:order)
+    .group("date_trunc('day', created_at)")
+    .count
+    .to_a
+    .sort
   end
 
   def reverse_geocode!
@@ -51,6 +68,28 @@ class Checkin < ActiveRecord::Base
       reverse_geocode
       save
     end
+    self
+  end
+
+  def reverse_geocoded?
+    address != 'Not yet geocoded'
+  end
+
+  def nearest_city
+    center_point = [self.lat, self.lng]
+    City.near(center_point, 200).first || NoCity.new
+  end
+
+  def add_fogged_info
+    self.fogged_lat ||= nearest_city.latitude || self.lat + rand(-0.5..0.5)
+    self.fogged_lng ||= nearest_city.longitude || self.lng + rand(-0.5..0.5)
+    self.fogged_area ||= nearest_city.name
+    save
+  end
+
+  def resolve_address(permissible, type)
+    reverse_geocode! if type == "address"
+    return replace_foggable_attributes unless device.can_bypass_fogging?(permissible)
     self
   end
 
@@ -69,50 +108,4 @@ class Checkin < ActiveRecord::Base
       (((recent_checkins_count/older_checkins_count)-1)*100).round(2)
     end
   end
-
-  def self.calendar_data
-    since(first.created_at.beginning_of_year)
-    .unscope(:order)
-    .group("date_trunc('day', created_at)")
-    .count
-    .to_a
-    .sort
-  end
-
-  protected
-
-    def public_info(permissible)
-      public_checkin = Checkin.new(attributes)
-      if replace_foggable_attributes?(permissible)
-        public_checkin = public_checkin.replace_foggable_attributes
-      end
-      public_checkin.address = fogged_area if address == 'Not yet geocoded'
-      public_checkin.attributes.delete_if {|key, value| key =~ /fogged|uuid/ || value == nil}
-    end
-
-    def replace_foggable_attributes?(permissible)
-      (fogged? || device.fogged?) && (!permissible || !device.can_bypass_fogging?(permissible))
-    end
-
-    def replace_foggable_attributes
-      assign_attributes(address: fogged_area, lat: fogged_lat, lng: fogged_lng)
-      Checkin.new(attributes.delete_if {|key, _v| key =~ /city|postal/ })
-    end
-
-    def nearest_city
-      center_point = [self.lat, self.lng]
-      City.near(center_point, 200).first || NoCity.new
-    end
-
-    def add_fogged_info
-      self.fogged_lat ||= nearest_city.latitude || self.lat + rand(-0.5..0.5)
-      self.fogged_lng ||= nearest_city.longitude || self.lng + rand(-0.5..0.5)
-      self.fogged_area ||= nearest_city.name
-      save
-    end
-
-    def reverse_geocoded?
-      address != 'Not yet geocoded'
-    end
-
 end

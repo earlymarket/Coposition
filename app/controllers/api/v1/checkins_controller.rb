@@ -10,18 +10,16 @@ class Api::V1::CheckinsController < Api::ApiController
     checkins = @user.get_checkins(@permissible, @device).order(created_at: :desc) \
       .paginate(page: params[:page], per_page: per_page)
     paginated_response_headers(checkins)
-    checkins = checkins.includes(:device).resolve_address({permissible: @permissible, type: params[:type]})
+    checkins = checkins.includes(:device).map do |checkin|
+      checkin.resolve_address(@permissible, params[:type]).public_info
+    end
     render json: checkins
   end
 
   def last
     checkin = @user.get_checkins(@permissible, @device).order(created_at: :desc).first
-    checkin = checkin.resolve_address({permissible: @permissible, type: params[:type]}) if checkin
-    if checkin
-      render json: [checkin]
-    else
-      render json: []
-    end
+    checkin = checkin.resolve_address(@permissible, params[:type]).public_info if checkin
+    checkin ? (render json: [checkin]) : (render json: [])
   end
 
   def create
