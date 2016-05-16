@@ -17,7 +17,6 @@ deploy:
   on:
     branch:
     - master
-    - staging
 addons:
   code_climate:
     repo_token:
