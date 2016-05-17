@@ -13,10 +13,11 @@ $(document).on('page:change', function () {
       hasCheckin () {
         return Boolean(gon.current_user.lastCheckin) === true
       },
-      init () {
+      init (caller) {
         if (this.hasCheckin()) {
           M.makeMapPin(gon.current_user, 'blue', {clickable: false}).addTo(map);
-        } else if (!$('#map-overlay hide').length) {
+          caller.hasContent = true;
+        } else if (caller.hasContent) {
           let whereAmI = `
           <blockquote>
             <h4>Where am I?</h4>
@@ -79,6 +80,16 @@ $(document).on('page:change', function () {
             layers: this.layers(),
             bounds:   this.bounds()
           });
+          caller.hasContent = true;
+        } else if (caller.hasContent) {
+          let whereAreMyFriends = `
+          <blockquote>
+            <h4>Where are my friends?</h4>
+            You have ${gon.friends.length} ${U.pluralize('friend', gon.friends.length)} signed up but they haven't checked in yet
+            (or they haven't shared thier location with you).
+            They'll appear on the map once they share their location.
+          </blockquote>`
+          $('#map-wrapper').after(whereAreMyFriends);
         }
       }
     }
@@ -112,6 +123,7 @@ $(document).on('page:change', function () {
             layers: this.layers(),
             bounds:   this.bounds()
           });
+          caller.hasContent = true;
         }
       }
     }
@@ -122,6 +134,7 @@ $(document).on('page:change', function () {
       slides: [],
       slideTypes: [FRIENDS_SLIDE, MONTHLY_SLIDE],
       persistent: [SELF_MARKER],
+      hasContent: false,
       pause () {
         this.paused = true;
       },
@@ -134,21 +147,27 @@ $(document).on('page:change', function () {
       showNullState () {
         $('#map-overlay').removeClass('hide');
       },
-      initHandler () {
+      initTimerHandler () {
         if (!this.hasSlides()) return;
         this.slideIndex = 0;
         this.activeLayer = L.layerGroup().addTo(map);
+        // Run this.next() once to populate the map
         map.once('ready', this.next.bind(this));
         map.on('mouseover', this.pause.bind(this));
         map.on('mouseout', this.unpause.bind(this));
-        $(document).on('timer:ping', this.next.bind(this) )
+        $(document).on('timer:ping', this.cycleNext.bind(this))
         // Cleanup
         $(document).one('page:before-unload', function () {
           $(document).off('timer:ping');
         });
       },
-      next() {
+      cycleNext () {
+        // Seperating the "next" action from the one that gets triggered by the timer
+        // This is so a user triggered "next" works even if cycling is paused
         if(this.paused) return;
+        this.next.call(this);
+      },
+      next () {
         let currentSlide = this.slides[this.slideIndex];
         this.activeLayer.clearLayers().addLayer(currentSlide.layers);
         if (currentSlide.bounds.isValid()) {
@@ -163,12 +182,13 @@ $(document).on('page:change', function () {
         this.paused = false;
         this.persistent.forEach(feature => feature.init(this));
         this.slideTypes.forEach(slide => slide.init(this));
-        this.initHandler();
-        if (!this.hasSlides() && !gon.current_user.lastCheckin) this.showNullState();
+        this.initTimerHandler();
+        if (!this.hasContent) this.showNullState();
       }
     };
-    const timer = timer || new SL.Timer(5000);
+    const timer = new SL.Timer(5000);
     DECK.init();
+    window.deck = DECK;
     google.charts.setOnLoadCallback(() => {COPO.charts.drawBarChart(gon.weeks_checkins, '270')});
     $(window).resize(() => {COPO.charts.drawBarChart(gon.weeks_checkins, '270')});
   }
