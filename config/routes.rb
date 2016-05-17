@@ -54,7 +54,7 @@ Rails.application.routes.draw do
               get :last
             end
           end
-          resources :permissions, only: [:update]
+          resources :permissions, only: [:update, :index]
           put '/permissions', to: 'permissions#update_all'
         end
       end

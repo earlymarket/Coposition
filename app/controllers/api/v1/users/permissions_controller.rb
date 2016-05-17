@@ -1,9 +1,14 @@
 class  Api::V1::Users::PermissionsController < Api::ApiController
   respond_to :json
 
-  acts_as_token_authentication_handler_for User
+  acts_as_token_authentication_handler_for User, only: [:update, :update_all]
 
   before_action :require_ownership
+
+  def index
+    permissions = Permission.where(device_id: params[:device_id])
+    render json: permissions
+  end
 
   def update
     permission = Permission.find(params[:id])
