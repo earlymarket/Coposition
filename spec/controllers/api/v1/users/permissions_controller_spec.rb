@@ -25,6 +25,15 @@ RSpec.describe Api::V1::Users::PermissionsController, type: :controller do
     api_request_headers(developer, user)
   end
 
+  describe 'index' do
+    it 'should return a list of permissions' do
+      permission
+      get :index, { device_id: device.id, user_id: user.id }
+      expect(res_hash.length).to eq Permission.count
+      expect(res_hash.first.keys).to eq(Permission.column_names)
+    end
+  end
+
   describe 'update' do
     it 'should update the privilege level, bypass_fogging and bypass_delay attributes' do
        put :update, {

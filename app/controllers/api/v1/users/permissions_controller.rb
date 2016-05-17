@@ -1,7 +1,7 @@
 class  Api::V1::Users::PermissionsController < Api::ApiController
   respond_to :json
 
-  acts_as_token_authentication_handler_for User, only: [:update, :update_all]
+  acts_as_token_authentication_handler_for User
 
   before_action :require_ownership
 
