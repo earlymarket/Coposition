@@ -44,6 +44,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
 
   private
     def allowed_params
+      binding.pry
       params.require(:approval).permit(:user, :approvable, :approvable_type, :status)
     end
 
