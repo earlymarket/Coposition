@@ -7,18 +7,8 @@
   <div class="col s12">
     <div id="map-wrapper" style="position: relative;">
       <p id="map-status"></p>
-      <div id="map-overlay"
-        class="valign-wrapper z-depth-1 hide"
-        style="
-        position: absolute;
-        z-index: 1500;
-        width: 100%;
-        background: white;
-        height: 100%;
-        opacity: 0.85;
-        padding: 1rem;
-        ">
-        <div style="width: 100%;">
+      <div id="map-overlay" class="valign-wrapper z-depth-1 hide">
+        <div>
           <h5 style="text-align: center;">Nothing here yet</h5>
           <p>Here you will be shown your check-ins this month and your friend's last check-ins on a map. But you don't have any at the moment!</p>
           <p>To add a check-in, go to the <%= link_to('devices', user_devices_path) %> page and select/create a device.</p>
@@ -43,21 +33,21 @@
       Your most used device is <%= @presenter.most_used_device.name %>.
   <% end %>
 </p>
-<section id="dashboard-charts" class="dashboard row">
-  <article class="chart col s12 l6" id='weeks-checkins'>
-    <h5>This weeks check-ins</h5>
-    <div id='bar-chart'></div>
-  </article>
-  <article class="col s12 l6" id="most-checkins">
-    <ul class="collection">
-      <li class="collection-header"><h5>Most frequent check-in location</h5></li>
-      <% @presenter.most_frequent_areas.each do |area_count| %>
-        <li class="collection-item"><div><%= area_count[0] %><span class="badge"><%= area_count[1] %> check-ins</span></div></li>
-      <% end if @presenter.most_frequent_areas.present? %>
-    </ul>
-  </article>
-</section>
-
+<h5>Last 10 Countries Visited</h5>
+<table>
+  <thead>
+    <tr>
+      <td colspan="2">Country</td><td>Last Visited</td>
+    </tr>
+  </thead>
+  <tbody>
+  <% @presenter.last_countries.each do |country| %>
+    <tr>
+      <td><%= dashboard_flag(country[:country_code]) %></td><td ><%= dashboard_country_name(country[:country_code]) %></td><td><%= humanize_date(country[:last_visited]) %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
 <div class="divider"></div>
 
 <section id="dashboard-quicklinks">

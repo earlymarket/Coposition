@@ -20,13 +20,23 @@ module Users
       Device.find(device_checkins_count.first.first) unless device_checkins_count.empty?
     end
 
+    def last_countries
+      @checkins.select('distinct(country_code)', 'id', 'created_at').sort.reverse.uniq(&:country_code).first(10)
+      .map do |checkin|
+        {
+          country_code: checkin.country_code,
+          last_visited: checkin.created_at
+        }
+      end
+    end
+
     def gon
       # gon converts these using #each_pair into seperate gon variables
       {
         current_user: current_user_info,
         friends: friends,
         weeks_checkins: weeks_checkins,
-        months_checkins: months_checkins
+        months_checkins: months_checkins,
       }
     end
 
