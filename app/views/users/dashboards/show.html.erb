@@ -33,11 +33,11 @@
       Your most used device is <%= @presenter.most_used_device.name %>.
   <% end %>
 </p>
-<h5>Last 10 Countries Visited</h5>
+<h5><%= dashboard_visited_countries_title(@presenter.last_countries.count) %></h5>
 <table>
   <thead>
     <tr>
-      <td colspan="2">Country</td><td>Last Visited</td>
+      <td></td><td>Country</td><td>Last Visited</td>
     </tr>
   </thead>
   <tbody>
