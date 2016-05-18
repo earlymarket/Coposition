@@ -1,7 +1,7 @@
 class Api::V1::Users::ApprovalsController < Api::ApiController
   respond_to :json
 
-  acts_as_token_authentication_handler_for User, only: [:update]
+  acts_as_token_authentication_handler_for User, except: [:create]
 
   before_action :check_user, only: :update
 
