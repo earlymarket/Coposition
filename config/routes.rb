@@ -41,6 +41,7 @@ Rails.application.routes.draw do
         end
         resources :checkins, only: [:index] do
           collection do
+            get :app_index
             get :last
           end
         end

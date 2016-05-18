@@ -25,8 +25,8 @@ class Api::V1::CheckinsController < Api::ApiController
   def app_index
     checkins = @device ? @device.checkins : @user.checkins
     checkins = checkins.includes(:device).map do |checkin|
-      checkin.reverse_geocode! if params[:type] == 'address'
-    end
+      checkin.reverse_geocode!
+    end if params[:type] == 'address'
     render json: checkins
   end
 
