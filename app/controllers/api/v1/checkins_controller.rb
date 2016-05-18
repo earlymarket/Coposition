@@ -7,7 +7,7 @@ class Api::V1::CheckinsController < Api::ApiController
 
   def index
     params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 1000
-    checkins = @user.get_checkins(@permissible, @device).order(created_at: :desc) \
+    checkins = @user.get_checkins(@permissible, @device) \
       .paginate(page: params[:page], per_page: per_page)
     paginated_response_headers(checkins)
     checkins = checkins.includes(:device).map do |checkin|
@@ -17,9 +17,17 @@ class Api::V1::CheckinsController < Api::ApiController
   end
 
   def last
-    checkin = @user.get_checkins(@permissible, @device).order(created_at: :desc).first
+    checkin = @user.get_checkins(@permissible, @device).first
     checkin = checkin.resolve_address(@permissible, params[:type]) if checkin
     checkin ? (render json: [checkin]) : (render json: [])
+  end
+
+  def app_index
+    checkins = @device ? @device.checkins : @user.checkins
+    checkins = checkins.includes(:device).map do |checkin|
+      checkin.reverse_geocode! if params[:type] == 'address'
+    end
+    render json: checkins
   end
 
   def create
