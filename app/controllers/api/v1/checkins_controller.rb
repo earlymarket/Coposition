@@ -8,8 +8,7 @@ class Api::V1::CheckinsController < Api::ApiController
 
   def index
     params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 1000
-    checkins = @user.get_checkins(@permissible, @device) \
-      .paginate(page: params[:page], per_page: per_page)
+    checkins = @user.get_checkins(@permissible, @device).paginate(page: params[:page], per_page: per_page)
     paginated_response_headers(checkins)
     checkins = checkins.includes(:device).map do |checkin|
       checkin.resolve_address(@permissible, params[:type])
@@ -58,7 +57,7 @@ class Api::V1::CheckinsController < Api::ApiController
 
     def copo_app_only
       unless req_from_coposition_app?
-        render status: 401, json: { message: 'You must supply the secret app key, please use the regular index route otherwise' }
+        render status: 401, json: { message: 'You must supply the secret app key' }
       end
     end
 end
