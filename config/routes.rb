@@ -24,6 +24,7 @@ Rails.application.routes.draw do
 
   namespace :api, path: '', constraints: {subdomain: 'api'}, defaults: {format: 'json'} do
     namespace :v1 do
+      resources :hooks, only: [:create, :destroy]
       resource :uuid, only: [:show]
       resources :checkins, only: [:create]
       resources :developers, only: [:index, :show]
