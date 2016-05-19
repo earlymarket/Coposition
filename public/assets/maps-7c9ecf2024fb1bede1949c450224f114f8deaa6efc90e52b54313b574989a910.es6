@@ -217,6 +217,11 @@ window.COPO.maps = {
     if(checkin) {
       return L.latLng(checkin.lat, checkin.lng)
     }
+  },
+
+  panAndW3w(e) {
+    map.panTo(this.getLatLng());
+    COPO.maps.w3w.setCoordinates(e);
   }
 }
 

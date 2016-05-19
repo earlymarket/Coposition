@@ -20746,34 +20746,53 @@ a[data-maitre-status]:hover {
   z-index: 9999;
 }
 /* line 10, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
+.c-dashboards.a-show table td, .c-dashboards.a-show th {
+  padding: 2px 5px;
+}
+/* line 12, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
+.c-dashboards.a-show table td img, .c-dashboards.a-show th img {
+  display: inline-block;
+  vertical-align: middle;
+}
+/* line 18, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
+.c-dashboards.a-show #map-overlay {
+  position: absolute;
+  z-index: 1500;
+  width: 100%;
+  background: white;
+  height: 100%;
+  opacity: 0.85;
+  padding: 1rem;
+}
+/* line 27, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
+.c-dashboards.a-show #map-overlay div {
+  width: 100%;
+}
+/* line 31, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
 .c-dashboards.a-show #map {
   width: 100%;
   height: 300px;
 }
-/* line 14, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
+/* line 35, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
 .c-dashboards.a-show #map .leaflet-marker-icon {
   cursor: inherit;
   outline: 0;
 }
-/* line 18, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
+/* line 39, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
 .c-dashboards.a-show #map .leaflet-marker-icon.leaflet-clickable {
   cursor: pointer;
 }
-/* line 24, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
-.c-dashboards.a-show #map-status {
-  font-size: 1.4rem;
-}
-/* line 30, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
+/* line 51, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
 .c-dashboards.a-show .dashboard .address {
   font: 0.7rem Fira Mono;
   margin-bottom: 1em;
   white-space: pre;
 }
-/* line 36, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
+/* line 57, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
 .c-dashboards.a-show .dashboard #most-checkins, .c-dashboards.a-show .dashboard ul.collection {
   margin: 0;
 }
-/* line 39, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
+/* line 60, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/user-dashboard.scss */
 .c-dashboards.a-show .dashboard #most-checkins ul.collection, .c-dashboards.a-show .dashboard #most-checkins ul.collection li, .c-dashboards.a-show .dashboard ul.collection ul.collection, .c-dashboards.a-show .dashboard ul.collection ul.collection li {
   background: transparent;
   border: none;
