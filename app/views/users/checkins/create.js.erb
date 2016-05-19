@@ -1,5 +1,5 @@
 <%= raw render_flash %>
-gon.checkins.unshift(<%= raw @checkin.to_json %>);
+$('#gonvariables').html("<%= j Gon::Base.render_data %>")
 
 var checkins = COPO.dateRange.currentCheckins(gon.checkins)
 COPO.maps.refreshMarkers(checkins);
