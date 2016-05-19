@@ -33,7 +33,7 @@ Rails.application.routes.draw do
           get :demo_user_approves_demo_dev
         end
       end
-      resources :users do
+      resources :users, only: [:show] do
         resources :approvals, only: [:create, :index, :update], module: :users do
           collection do
             get :status
