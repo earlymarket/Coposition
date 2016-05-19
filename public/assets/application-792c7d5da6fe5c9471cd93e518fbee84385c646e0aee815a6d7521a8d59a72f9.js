@@ -52485,6 +52485,11 @@ COPO.utility = {
 
   geoLocationError: function geoLocationError(err) {
     Materialize.toast('Could not get location', 3000);
+  },
+
+  pluralize: function pluralize(noun, count) {
+    if (count > 1) return noun + 's';
+    return noun;
   }
 };
 $(document).on('page:change', function() {
@@ -52510,8 +52515,9 @@ $(document).on('ready page:change', function() {
     belowOrigin: true
   });
 
-  // materialize accordion init
-  $('.collapsible').collapsible();
+  // We're calling this later now in the dodgy hack
+  // // materialize accordion init
+  // $('.collapsible').collapsible();
 
   // materialize parallax init
   $('.parallax').parallax();
@@ -52546,6 +52552,18 @@ $(document).on('ready page:change', function() {
   $('.attachinary-input').attachinary()
   // Event listeners
   setup();
+
+  // dodgy hack to fix the multiple sidenav problem
+  // works by deleting and recreating the nav dom node
+  // inspired by this attrocity:
+  // https://github.com/Dogfalo/materialize/issues/1894
+  (function () {
+    var oldMenu = $('.button-collapse').remove()
+    $('nav').prepend(oldMenu)
+    $(".button-collapse").sideNav();
+    $('.collapsible').collapsible();
+  })();
+
 });
 
 
@@ -52959,6 +52977,11 @@ window.COPO.maps = {
     if (checkin) {
       return L.latLng(checkin.lat, checkin.lng);
     }
+  },
+
+  panAndW3w: function panAndW3w(e) {
+    map.panTo(this.getLatLng());
+    COPO.maps.w3w.setCoordinates(e);
   }
 };
 "use strict";
@@ -53043,63 +53066,6 @@ window.COPO.permissions = {
     }
   }
 };
-window.COPO = window.COPO || {};
-window.COPO.slider = {
-
-  initSliders: function(devices){
-    $('.delay-slider').each(function(){
-      if(!this.noUiSlider){
-        var delaySlider = this;
-        var device_id =  parseInt(delaySlider.dataset.device, 10);
-        var device = _.find(devices, _.matchesProperty('id', device_id));
-
-        noUiSlider.create(delaySlider, {
-          start: [ device.delayed || 0 ],
-          range: {
-            'min': [ 0, 5 ],
-            '50%': [ 5, 1435 ],
-            'max': [ 1440 ]
-          },
-          pips: {
-            mode: 'values',
-            values: [0,5,1440],
-            density: 100,
-            stepped:true
-          },
-          format: wNumb({
-            decimals: 0
-          })
-        });
-
-        delaySlider.noUiSlider.on('change', function(){
-          var delayed = delaySlider.noUiSlider.get();
-          device.delayed = delayed;
-          $.ajax({
-            url: "/users/"+device.user_id+"/devices/"+device_id,
-            type: 'PUT',
-            data: { delayed: delayed }
-          });
-        });
-      }
-    });
-
-    $('.noUi-value.noUi-value-horizontal.noUi-value-large').each(function(){
-      var val = $(this).html();
-      val = COPO.slider.recountVal(val);
-      $(this).html(val);
-    });
-  },
-
-  recountVal: function(val){
-    switch(val){
-      case '0': return 'Off';
-      case '5': return '5 min';
-      case '1440': return '1 day';
-      default: return val;
-    }
-  }
-}
-;
 "use strict";
 
 window.COPO = window.COPO || {};
@@ -53193,6 +53159,84 @@ window.COPO.calendar = {
       cellsize = 18;
     }
     COPO.calendar.drawChart(checkins, cellsize);
+  }
+};
+window.COPO = window.COPO || {};
+window.COPO.delaySlider = {
+
+  initSliders: function(devices){
+    $('.delay-slider').each(function(){
+      if(!this.noUiSlider){
+        var delaySlider = this;
+        var device_id =  parseInt(delaySlider.dataset.device, 10);
+        var device = _.find(devices, _.matchesProperty('id', device_id));
+
+        noUiSlider.create(delaySlider, {
+          start: [ device.delayed || 0 ],
+          range: {
+            'min': [ 0, 5 ],
+            '50%': [ 5, 1435 ],
+            'max': [ 1440 ]
+          },
+          pips: {
+            mode: 'values',
+            values: [0,5,1440],
+            density: 100,
+            stepped:true
+          },
+          format: wNumb({
+            decimals: 0
+          })
+        });
+
+        delaySlider.noUiSlider.on('change', function(){
+          var delayed = delaySlider.noUiSlider.get();
+          device.delayed = delayed;
+          $.ajax({
+            url: "/users/"+device.user_id+"/devices/"+device_id,
+            type: 'PUT',
+            data: { delayed: delayed }
+          });
+        });
+      }
+    });
+
+    $('.noUi-value.noUi-value-horizontal.noUi-value-large').each(function(){
+      var val = $(this).html();
+      val = COPO.delaySlider.recountVal(val);
+      $(this).html(val);
+    });
+  },
+
+  recountVal: function(val){
+    switch(val){
+      case '0': return 'Off';
+      case '5': return '5 min';
+      case '1440': return '1 day';
+      default: return val;
+    }
+  }
+}
+;
+'use strict';
+
+window.COPO = window.COPO || {};
+window.COPO.slides = {
+  Timer: function Timer(interval) {
+    var _this = this;
+
+    this.interval = interval;
+    this.ping = function () {
+      $(window.document).trigger({
+        type: 'timer:ping',
+        id: this.id
+      });
+    };
+    this.id = setInterval(this.ping.bind(this), interval);
+    this.stop = function () {
+      clearInterval(_this.id);
+    };
+    $(document).one('page:before-unload', this.stop.bind(this));
   }
 };
 'use strict';
@@ -53338,7 +53382,7 @@ $(document).on('page:change', function() {
   if ($(".c-devices.a-index").length === 1) {
     COPO.utility.gonFix();
     COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions)
-    COPO.slider.initSliders(gon.devices);
+    COPO.delaySlider.initSliders(gon.devices);
     google.charts.setOnLoadCallback(function(){ COPO.calendar.refreshCalendar(gon.checkins) });
     window.initPage = function(){
       $('.clip_button').off();
@@ -53620,116 +53664,198 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 $(document).on('page:change', function () {
   if ($(".c-dashboards.a-show").length === 1) {
     (function () {
-      var next = function next() {
-        var currentSlide = LAYERS[slideIndex];
-        layerGroup.clearLayers().addLayer(currentSlide.clusters);
-        map.fitBounds(currentSlide.bounds(), { padding: [40, 40] });
-        $('#map-status').html(currentSlide.status);
-        if (++slideIndex >= LAYERS.length) slideIndex = 0;
-      };
-
-      COPO.utility.gonFix();
-      COPO.smooch.initSmooch(gon.current_user.userinfo);
-      var M = COPO.maps;
-      var U = COPO.utility;
+      var M = window.COPO.maps;
+      var U = window.COPO.utility;
+      var SL = window.COPO.slides;
+      U.gonFix();
       M.initMap();
       M.initControls();
+      COPO.smooch.initSmooch(gon.current_user.userinfo);
 
-      // Add the user to the map with a special pin. Will persist while other layers cycle.
-      if (gon.current_user.lastCheckin) {
-        var user = $.extend({}, gon.current_user);
-        M.makeMapPin(user, 'blue', { clickable: false }).addTo(map);
-      }
-
-      var FRIENDS = [].concat(_toConsumableArray(gon.friends));
-
-      // --- init FRIENDSCLUSTERS i.e. clustered markers of user's friend's last checkins ---
-      var FRIENDSCLUSTERS = M.arrayToCluster(FRIENDS, M.makeMapPin);
-
-      var addFriendPopup = function addFriendPopup(marker) {
-        var user = marker.options.user;
-        var name = U.friendsName(user);
-        var date = new Date(marker.options.lastCheckin.created_at).toUTCString();
-        var address = U.commaToNewline(marker.options.lastCheckin.address) || marker.options.lastCheckin.fogged_area;
-
-        var content = '\n      <h2>' + name + ' <a href="./friends/' + user.slug + '" title="Device info">\n        <i class="material-icons tiny">perm_device_information</i>\n        </a></h2>\n      <div class="address">' + address + '</div>\n      Checked in: ' + date;
-        marker.bindPopup(content, { offset: [0, -38] });
-      };
-
-      FRIENDSCLUSTERS.eachLayer(function (marker) {
-        marker.on('click', function (e) {
-          map.panTo(this.getLatLng());
-          COPO.maps.w3w.setCoordinates(e);
-        });
-
-        marker.on('mouseover', function (e) {
-          if (!marker._popup) {
-            addFriendPopup(marker);
+      // Persistent map feature declarations
+      var SELF_MARKER = {
+        hasCheckin: function hasCheckin() {
+          return Boolean(gon.current_user.lastCheckin) === true;
+        },
+        init: function init(caller) {
+          if (this.hasCheckin()) {
+            M.makeMapPin(gon.current_user, 'blue', { clickable: false }).addTo(map);
+            caller.hasContent = true;
+          } else if (caller.hasContent) {
+            var whereAmI = '\n          <blockquote>\n            <h4>Where am I?</h4>\n            Use the locate control in the top left to temporarily find your current location. Or check-in on a device of your own!\n          </blockquote>';
+            $('#map-wrapper').after(whereAmI);
           }
-          COPO.maps.w3w.setCoordinates(e);
-          marker.openPopup();
-        });
-      });
-
-      // --- end FRIENDSCLUSTERS init ---
-
-      var FRIENDSBOUNDS = function FRIENDSBOUNDS() {
-        var friendsWithCheckins = _.compact(FRIENDS.map(function (friend) {
-          return friend.lastCheckin;
-        }));
-        return L.latLngBounds(friendsWithCheckins.map(function (friend) {
-          return L.latLng(friend.lat, friend.lng);
-        }));
-      };
-
-      // --- init MONTHCLUSTERS. The user's last month's checkins.
-
-      var MONTHSCHECKINS = [].concat(_toConsumableArray(gon.months_checkins));
-      var MONTHSCLUSTERS = M.arrayToCluster(MONTHSCHECKINS, M.makeMarker);
-
-      // --- end MONTHCLUSTERS ---
-
-      var MONTHSBOUNDS = function MONTHSBOUNDS() {
-        return L.latLngBounds(MONTHSCHECKINS.map(function (checkin) {
-          return L.latLng(checkin.lat, checkin.lng);
-        }));
-      };
-
-      var LAYERS = [{ status: 'Your friend\'s check-ins <a href=\'./friends\'>(more details)</a>',
-        clusters: FRIENDSCLUSTERS,
-        bounds: FRIENDSBOUNDS }, { status: 'Your last month\'s check-ins <a href=\'./devices\'>(more details)</a>',
-        clusters: MONTHSCLUSTERS,
-        bounds: MONTHSBOUNDS }];
-
-      var slideIndex = 0;
-
-      var layerGroup = L.layerGroup().addTo(map);
-
-      map.once('ready', next);
-      var slideInterval = setInterval(next, 1000 * 5);
-
-      map.on('mouseover', function (e, undefined) {
-        clearInterval(slideInterval);
-        slideInterval = undefined;
-      });
-
-      map.on('mouseout', function () {
-        if (!slideInterval) {
-          slideInterval = setInterval(next, 1000 * 5);
         }
-      });
+      };
+      // end of persistent declarations
 
+      // Slide type declarations
+      var FRIENDS_SLIDE = {
+        hasFriends: function hasFriends() {
+          return gon.friends.length > 0;
+        },
+        hasFriendsWithCheckins: function hasFriendsWithCheckins() {
+          return this.hasFriends() && gon.friends.filter(function (friend) {
+            return friend.lastCheckin;
+          }).length > 0;
+        },
+        layers: function layers() {
+          var _this = this;
+
+          var clusters = M.arrayToCluster(gon.friends, M.makeMapPin);
+          clusters.eachLayer(function (marker) {
+            marker.on('click', function (e) {
+              M.panAndW3w.call(this, e);
+            });
+            marker.on('mouseover', function (e) {
+              if (!marker._popup) {
+                _this.addPopup(marker);
+              }
+              COPO.maps.w3w.setCoordinates(e);
+              marker.openPopup();
+            });
+          });
+          return clusters;
+        },
+        addPopup: function addPopup(marker) {
+          var user = marker.options.user;
+          var name = U.friendsName(user);
+          var date = new Date(marker.options.lastCheckin.created_at).toUTCString();
+          var address = U.commaToNewline(marker.options.lastCheckin.address) || marker.options.lastCheckin.fogged_area;
+          var content = '\n        <h2>' + name + ' <a href="./friends/' + user.slug + '" title="Device info">\n          <i class="material-icons tiny">perm_device_information</i>\n          </a></h2>\n        <div class="address">' + address + '</div>\n        Checked in: ' + date;
+          marker.bindPopup(content, { offset: [0, -38] });
+        },
+        bounds: function bounds() {
+          return L.latLngBounds(_.compact(gon.friends.map(function (friend) {
+            return friend.lastCheckin;
+          })).map(function (friend) {
+            return L.latLng(friend.lat, friend.lng);
+          }));
+        },
+        status: 'Your friend\'s check-ins <a href=\'./friends\'>(more details)</a>',
+        init: function init(caller) {
+          if (this.hasFriendsWithCheckins()) {
+            caller.slides.push({
+              status: this.status,
+              layers: this.layers(),
+              bounds: this.bounds()
+            });
+            caller.hasContent = true;
+          } else if (caller.hasContent) {
+            var whereAreMyFriends = '\n          <blockquote>\n            <h4>Where are my friends?</h4>\n            You have ' + gon.friends.length + ' ' + U.pluralize('friend', gon.friends.length) + ' signed up but they haven\'t checked in yet\n            (or they haven\'t shared thier location with you).\n            They\'ll appear on the map once they share their location.\n          </blockquote>';
+            $('#map-wrapper').after(whereAreMyFriends);
+          }
+        }
+      };
+      var MONTHLY_SLIDE = {
+        hasCheckins: function hasCheckins() {
+          return gon.months_checkins.length > 0;
+        },
+        layers: function layers() {
+          var checkins = [].concat(_toConsumableArray(gon.months_checkins));
+          if (gon.current_user.lastCheckin) {
+            checkins = checkins.filter(function (checkin) {
+              return checkin.id !== gon.current_user.lastCheckin.id;
+            });
+          }
+          var clusters = M.arrayToCluster(checkins, M.makeMarker);
+          clusters.eachLayer(function (marker) {
+            marker.on('click', function (e) {
+              M.panAndW3w.call(this, e);
+            });
+          });
+          return clusters;
+        },
+        bounds: function bounds() {
+          return L.latLngBounds(gon.months_checkins.map(function (checkin) {
+            return L.latLng(checkin.lat, checkin.lng);
+          }));
+        },
+        status: 'Your last month\'s check-ins <a href=\'./devices\'>(more details)</a>',
+        init: function init(caller) {
+          if (this.hasCheckins()) {
+            caller.slides.push({
+              status: this.status,
+              layers: this.layers(),
+              bounds: this.bounds()
+            });
+            caller.hasContent = true;
+          }
+        }
+      };
+      // end of slide type declarations
+      var DECK = {
+        // slides are the states that are cycled through
+        // slideTypes are the objects we initialize in DECK.init()
+        slides: [],
+        slideTypes: [FRIENDS_SLIDE, MONTHLY_SLIDE],
+        persistent: [SELF_MARKER],
+        hasContent: false,
+        pause: function pause() {
+          this.paused = true;
+        },
+        unpause: function unpause() {
+          this.paused = false;
+        },
+        hasSlides: function hasSlides() {
+          return this.slides.length > 0;
+        },
+        showNullState: function showNullState() {
+          $('#map-overlay').removeClass('hide');
+        },
+        initTimerHandler: function initTimerHandler() {
+          if (!this.hasSlides()) return;
+          this.slideIndex = 0;
+          this.activeLayer = L.layerGroup().addTo(map);
+          // Run this.next() once to populate the map
+          map.once('ready', this.next.bind(this));
+          map.on('mouseover', this.pause.bind(this));
+          map.on('mouseout', this.unpause.bind(this));
+          $(document).on('timer:ping', this.cycleNext.bind(this));
+          // Cleanup
+          $(document).one('page:before-unload', function () {
+            $(document).off('timer:ping');
+          });
+        },
+        cycleNext: function cycleNext() {
+          // Seperating the "next" action from the one that gets triggered by the timer
+          // This is so a user triggered "next" works even if cycling is paused
+          if (this.paused) return;
+          this.next.call(this);
+        },
+        next: function next() {
+          var currentSlide = this.slides[this.slideIndex];
+          this.activeLayer.clearLayers().addLayer(currentSlide.layers);
+          if (currentSlide.bounds.isValid()) {
+            window.map.fitBounds(currentSlide.bounds, { padding: [40, 40] });
+          };
+          $('#map-status').html(currentSlide.status);
+          if (++this.slideIndex >= this.slides.length) {
+            this.slideIndex = 0;
+          };
+        },
+        init: function init() {
+          var _this2 = this;
+
+          this.paused = false;
+          this.persistent.forEach(function (feature) {
+            return feature.init(_this2);
+          });
+          this.slideTypes.forEach(function (slide) {
+            return slide.init(_this2);
+          });
+          this.initTimerHandler();
+          if (!this.hasContent) this.showNullState();
+        }
+      };
+      var timer = new SL.Timer(5000);
+      DECK.init();
+      window.deck = DECK;
       google.charts.setOnLoadCallback(function () {
         COPO.charts.drawBarChart(gon.weeks_checkins, '270');
       });
       $(window).resize(function () {
         COPO.charts.drawBarChart(gon.weeks_checkins, '270');
-      });
-
-      // Cleanup
-      $(document).on('page:before-unload', function () {
-        if (slideInterval) clearInterval(slideInterval);
-        $(window).off("resize");
       });
     })();
   }
@@ -53777,6 +53903,7 @@ $(document).on('page:change', function () {
 
 
 // -- Run every page
+
 
 
 
