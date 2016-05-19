@@ -4,6 +4,7 @@ class Api::V1::CheckinsController < Api::ApiController
   skip_before_filter :find_user, only: :create
   before_action :device_exists?, only: :create
   before_action :check_user_approved_approvable, :find_device, except: :create
+  before_action :copo_app_only, only: :app_index
 
   def index
     params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 1000
@@ -55,4 +56,9 @@ class Api::V1::CheckinsController < Api::ApiController
       if params[:device_id] then @device = Device.find(params[:device_id]) end
     end
 
+    def copo_app_only
+      unless req_from_coposition_app?
+        render status: 401, json: { message: 'You must supply the secret app key, please use the regular index route otherwise' }
+      end
+    end
 end
