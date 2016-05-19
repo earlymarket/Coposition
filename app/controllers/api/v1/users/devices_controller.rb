@@ -3,11 +3,11 @@ class Api::V1::Users::DevicesController < Api::ApiController
 
   acts_as_token_authentication_handler_for User, only: [:update, :create]
 
-  before_action :check_user_approved_approvable
-  before_action :check_user, only: :update
+  before_action :check_user_approved_approvable, only: [:index, :show]
+  before_action :check_user, only: [:update, :create]
 
   def index
-    devices = @user.devices
+    devices = req_from_coposition_app? ? @user.devices : @user.devices.public_info
     render json: devices
   end
 
@@ -28,6 +28,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
 
   def show
     device = @user.devices.where(id: params[:id])
+    device = device.public_info unless req_from_coposition_app?
     render json: device
   end
 

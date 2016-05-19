@@ -25,7 +25,7 @@ class Checkin < ActiveRecord::Base
   after_create do
     if device
       self.uuid = device.uuid
-      self.fogged = device.fogged
+      self.fogged ||= device.fogged
       device.checkins << self
       reverse_geocode! if device.checkins.count == 1
       add_fogged_info

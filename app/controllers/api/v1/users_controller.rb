@@ -9,6 +9,7 @@ class Api::V1::UsersController < Api::ApiController
   end
 
   def show
-    respond_with @user.public_info
+    @user = @user.public_info unless req_from_coposition_app?
+    respond_with @user
   end
 end
