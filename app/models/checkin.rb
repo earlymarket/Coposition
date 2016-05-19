@@ -84,6 +84,7 @@ class Checkin < ActiveRecord::Base
     self.fogged_lat ||= nearest_city.latitude || self.lat + rand(-0.5..0.5)
     self.fogged_lng ||= nearest_city.longitude || self.lng + rand(-0.5..0.5)
     self.fogged_area ||= nearest_city.name
+    self.country_code ||= nearest_city.country_code
     save
   end
 

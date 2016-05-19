@@ -1,115 +1,195 @@
-$(document).on('page:change', function() {
+$(document).on('page:change', function () {
   if ($(".c-dashboards.a-show").length === 1) {
-    COPO.utility.gonFix();
-    COPO.smooch.initSmooch(gon.current_user.userinfo);
-    const M = COPO.maps
-    const U = COPO.utility
+    const M  = window.COPO.maps;
+    const U  = window.COPO.utility;
+    const SL = window.COPO.slides;
+    U.gonFix();
     M.initMap();
     M.initControls();
+    COPO.smooch.initSmooch(gon.current_user.userinfo);
 
-    // Add the user to the map with a special pin. Will persist while other layers cycle.
-    if(gon.current_user.lastCheckin) {
-      let user = $.extend({}, gon.current_user)
-      M.makeMapPin(user, 'blue', {clickable: false}).addTo(map);
-    }
-
-    const FRIENDS = [...gon.friends];
-
-    // --- init FRIENDSCLUSTERS i.e. clustered markers of user's friend's last checkins ---
-    const FRIENDSCLUSTERS = M.arrayToCluster(FRIENDS, M.makeMapPin);
-
-    let addFriendPopup = function(marker){
-      let user = marker.options.user;
-      let name = U.friendsName(user);
-      let date = new Date(marker.options.lastCheckin.created_at).toUTCString();
-      let address = U.commaToNewline(marker.options.lastCheckin.address) || marker.options.lastCheckin.fogged_area;
-
-      let content = `
-      <h2>${ name } <a href="./friends/${user.slug}" title="Device info">
-        <i class="material-icons tiny">perm_device_information</i>
-        </a></h2>
-      <div class="address">${ address }</div>
-      Checked in: ${ date }`
-      marker.bindPopup(content, { offset: [0, -38] } );
-    }
-
-    FRIENDSCLUSTERS.eachLayer(function(marker){
-      marker.on('click', function(e) {
-        map.panTo(this.getLatLng());
-        COPO.maps.w3w.setCoordinates(e);
-      })
-
-      marker.on('mouseover', function(e){
-        if(!marker._popup){
-          addFriendPopup(marker);
+    // Persistent map feature declarations
+    const SELF_MARKER = {
+      hasCheckin () {
+        return Boolean(gon.current_user.lastCheckin) === true
+      },
+      init (caller) {
+        if (this.hasCheckin()) {
+          M.makeMapPin(gon.current_user, 'blue', {clickable: false}).addTo(map);
+          caller.hasContent = true;
+        } else if (caller.hasContent) {
+          let whereAmI = `
+          <blockquote>
+            <h4>Where am I?</h4>
+            Use the locate control in the top left to temporarily find your current location. Or check-in on a device of your own!
+          </blockquote>`
+          $('#map-wrapper').after(whereAmI);
         }
-        COPO.maps.w3w.setCoordinates(e);
-        marker.openPopup();
-      })
-    })
-
-    // --- end FRIENDSCLUSTERS init ---
-
-    const FRIENDSBOUNDS = function() {
-      let friendsWithCheckins = _.compact(FRIENDS.map(friend => friend.lastCheckin));
-      return L.latLngBounds(friendsWithCheckins.map(friend => L.latLng(friend.lat, friend.lng)))
-    };
-
-    // --- init MONTHCLUSTERS. The user's last month's checkins.
-
-    const MONTHSCHECKINS = [...gon.months_checkins];
-    const MONTHSCLUSTERS = M.arrayToCluster(MONTHSCHECKINS, M.makeMarker);
-
-    // --- end MONTHCLUSTERS ---
-
-    const MONTHSBOUNDS = function() {
-      return L.latLngBounds(MONTHSCHECKINS.map(checkin => L.latLng(checkin.lat, checkin.lng)))
-    };
-
-    const LAYERS = [
-      { status: `Your friend's check-ins <a href='./friends'>(more details)</a>`,
-        clusters: FRIENDSCLUSTERS,
-        bounds: FRIENDSBOUNDS},
-      { status: `Your last month's check-ins <a href='./devices'>(more details)</a>`,
-        clusters: MONTHSCLUSTERS,
-        bounds: MONTHSBOUNDS}
-    ];
-
-    let slideIndex = 0;
-
-    let layerGroup = L.layerGroup().addTo(map);
-    function next() {
-      let currentSlide = LAYERS[slideIndex];
-      layerGroup.clearLayers().addLayer(currentSlide.clusters);
-      map.fitBounds(currentSlide.bounds(), {padding: [40, 40]});
-      $('#map-status').html(currentSlide.status);
-      if(++slideIndex >= LAYERS.length) slideIndex = 0;
-    }
-    map.once('ready', next);
-    let slideInterval = setInterval(next, 1000 * 5);
-
-    map.on('mouseover', function(e, undefined){
-      clearInterval(slideInterval);
-      slideInterval = undefined;
-    })
-
-    map.on('mouseout', function(){
-      if(!slideInterval){
-        slideInterval = setInterval(next, 1000 * 5);
       }
-    })
+    }
+    // end of persistent declarations
 
-    google.charts.setOnLoadCallback(function() {
-      COPO.charts.drawBarChart(gon.weeks_checkins, '270');
-    });
-    $(window).resize(function(){
-      COPO.charts.drawBarChart(gon.weeks_checkins, '270');
-    });
-
-    // Cleanup
-    $(document).on('page:before-unload', function(){
-      if(slideInterval) clearInterval(slideInterval);
-      $(window).off("resize");
-    })
+    // Slide type declarations
+    const FRIENDS_SLIDE = {
+      hasFriends () {
+        return gon.friends.length > 0;
+      },
+      hasFriendsWithCheckins () {
+        return this.hasFriends() && gon.friends.filter(friend => friend.lastCheckin).length > 0;
+      },
+      layers () {
+        let clusters = M.arrayToCluster(gon.friends, M.makeMapPin);
+        clusters.eachLayer((marker) => {
+          marker.on('click', function (e) {
+            M.panAndW3w.call(this, e)
+          });
+          marker.on('mouseover', (e) => {
+            if(!marker._popup) {
+              this.addPopup(marker);
+            }
+            COPO.maps.w3w.setCoordinates(e);
+            marker.openPopup();
+          });
+        });
+        return clusters;
+      },
+      addPopup (marker) {
+        let user    = marker.options.user;
+        let name    = U.friendsName(user);
+        let date    = new Date(marker.options.lastCheckin.created_at).toUTCString();
+        let address = U.commaToNewline(marker.options.lastCheckin.address) || marker.options.lastCheckin.fogged_area;
+        let content = `
+        <h2>${ name } <a href="./friends/${user.slug}" title="Device info">
+          <i class="material-icons tiny">perm_device_information</i>
+          </a></h2>
+        <div class="address">${ address }</div>
+        Checked in: ${ date }`
+        marker.bindPopup(content, { offset: [0, -38] } );
+      },
+      bounds () {
+        return L.latLngBounds(
+          _.compact(gon.friends.map(friend => friend.lastCheckin))
+          .map(friend => L.latLng(friend.lat, friend.lng))
+        )
+      },
+      status: `Your friend's check-ins <a href='./friends'>(more details)</a>`,
+      init (caller) {
+        if (this.hasFriendsWithCheckins()) {
+          caller.slides.push({
+            status:   this.status,
+            layers: this.layers(),
+            bounds:   this.bounds()
+          });
+          caller.hasContent = true;
+        } else if (caller.hasContent) {
+          let whereAreMyFriends = `
+          <blockquote>
+            <h4>Where are my friends?</h4>
+            You have ${gon.friends.length} ${U.pluralize('friend', gon.friends.length)} signed up but they haven't checked in yet
+            (or they haven't shared thier location with you).
+            They'll appear on the map once they share their location.
+          </blockquote>`
+          $('#map-wrapper').after(whereAreMyFriends);
+        }
+      }
+    }
+    const MONTHLY_SLIDE = {
+      hasCheckins () {
+        return gon.months_checkins.length > 0
+      },
+      layers () {
+        let checkins = [...gon.months_checkins];
+        if(gon.current_user.lastCheckin) {
+          checkins = checkins.filter(checkin => checkin.id !== gon.current_user.lastCheckin.id);
+        }
+        let clusters = M.arrayToCluster(checkins, M.makeMarker)
+        clusters.eachLayer((marker) => {
+          marker.on('click', function (e) {
+            M.panAndW3w.call(this, e)
+          });
+        });
+        return clusters;
+      },
+      bounds () {
+        return L.latLngBounds(
+          gon.months_checkins.map(checkin => L.latLng(checkin.lat, checkin.lng))
+        );
+      },
+      status: `Your last month's check-ins <a href='./devices'>(more details)</a>`,
+      init (caller) {
+        if (this.hasCheckins()) {
+          caller.slides.push({
+            status:   this.status,
+            layers: this.layers(),
+            bounds:   this.bounds()
+          });
+          caller.hasContent = true;
+        }
+      }
+    }
+    // end of slide type declarations
+    const DECK = {
+      // slides are the states that are cycled through
+      // slideTypes are the objects we initialize in DECK.init()
+      slides: [],
+      slideTypes: [FRIENDS_SLIDE, MONTHLY_SLIDE],
+      persistent: [SELF_MARKER],
+      hasContent: false,
+      pause () {
+        this.paused = true;
+      },
+      unpause () {
+        this.paused = false;
+      },
+      hasSlides () {
+        return this.slides.length > 0;
+      },
+      showNullState () {
+        $('#map-overlay').removeClass('hide');
+      },
+      initTimerHandler () {
+        if (!this.hasSlides()) return;
+        this.slideIndex = 0;
+        this.activeLayer = L.layerGroup().addTo(map);
+        // Run this.next() once to populate the map
+        map.once('ready', this.next.bind(this));
+        map.on('mouseover', this.pause.bind(this));
+        map.on('mouseout', this.unpause.bind(this));
+        $(document).on('timer:ping', this.cycleNext.bind(this))
+        // Cleanup
+        $(document).one('page:before-unload', function () {
+          $(document).off('timer:ping');
+        });
+      },
+      cycleNext () {
+        // Seperating the "next" action from the one that gets triggered by the timer
+        // This is so a user triggered "next" works even if cycling is paused
+        if(this.paused) return;
+        this.next.call(this);
+      },
+      next () {
+        let currentSlide = this.slides[this.slideIndex];
+        this.activeLayer.clearLayers().addLayer(currentSlide.layers);
+        if (currentSlide.bounds.isValid()) {
+          window.map.fitBounds(currentSlide.bounds, {padding: [40, 40]})
+        };
+        $('#map-status').html(currentSlide.status);
+        if (++this.slideIndex >= this.slides.length) {
+          this.slideIndex = 0
+        };
+      },
+      init () {
+        this.paused = false;
+        this.persistent.forEach(feature => feature.init(this));
+        this.slideTypes.forEach(slide => slide.init(this));
+        this.initTimerHandler();
+        if (!this.hasContent) this.showNullState();
+      }
+    };
+    const timer = new SL.Timer(5000);
+    DECK.init();
+    window.deck = DECK;
+    google.charts.setOnLoadCallback(() => {COPO.charts.drawBarChart(gon.weeks_checkins, '270')});
+    $(window).resize(() => {COPO.charts.drawBarChart(gon.weeks_checkins, '270')});
   }
 });
