@@ -1,5 +1,5 @@
 window.COPO = window.COPO || {};
-window.COPO.slider = {
+window.COPO.delaySlider = {
 
   initSliders: function(devices){
     $('.delay-slider').each(function(){
@@ -40,7 +40,7 @@ window.COPO.slider = {
 
     $('.noUi-value.noUi-value-horizontal.noUi-value-large').each(function(){
       var val = $(this).html();
-      val = COPO.slider.recountVal(val);
+      val = COPO.delaySlider.recountVal(val);
       $(this).html(val);
     });
   },

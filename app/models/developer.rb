@@ -23,4 +23,8 @@ class Developer < ActiveRecord::Base
     "A new developer has registered, id: #{self.id}, company_name: #{self.company_name}, there are now #{Developer.count} developers."
   end
 
+  def public_info
+    Developer.select([:id, :email, :company_name, :tagline, :redirect_url]).find(self.id)
+  end
+
 end
