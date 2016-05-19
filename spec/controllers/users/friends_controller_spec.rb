@@ -6,11 +6,7 @@ RSpec.describe Users::FriendsController, type: :controller do
   let(:user) { create_user }
   let(:second_user) { FactoryGirl::create :user }
   let(:device) { FactoryGirl::create :device, user_id: second_user.id }
-  let(:checkin) do
-    check = FactoryGirl::create(:checkin)
-    device.checkins << check
-    check
-  end
+  let(:checkin){ FactoryGirl::create :checkin, device: device }
   let(:approval) do
     device
     Approval.link(user, second_user, 'User')

@@ -18,6 +18,10 @@ class Users::DevicesController < ApplicationController
     gon.checkins = @device.checkins
     flash[:notice] = "Right click on the map to checkin"
     gon.current_user_id = current_user.id
+    respond_to do |format|
+      format.html
+      format.csv { send_data @device.checkins.to_csv, filename: "device-#{@device.id}-checkins-#{Date.today}.csv"}
+    end
   end
 
   def new
@@ -28,9 +32,9 @@ class Users::DevicesController < ApplicationController
   def shared
     device = Device.find(params[:id])
     checkin = device.checkins.first
-    gon.device = device
+    gon.device = device.public_info
     gon.user = device.user.public_info_hash
-    gon.checkin = checkin.reverse_geocode!.get_data if checkin
+    gon.checkin = checkin.reverse_geocode!.replace_foggable_attributes.public_info if checkin
   end
 
   def create

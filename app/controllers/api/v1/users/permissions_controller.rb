@@ -5,6 +5,11 @@ class  Api::V1::Users::PermissionsController < Api::ApiController
 
   before_action :require_ownership
 
+  def index
+    permissions = Permission.where(device_id: params[:device_id])
+    render json: permissions
+  end
+
   def update
     permission = Permission.find(params[:id])
     permission.update(allowed_params)

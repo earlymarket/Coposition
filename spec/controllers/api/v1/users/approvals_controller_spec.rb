@@ -6,11 +6,8 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
   let(:user){FactoryGirl::create :user}
   let(:developer){FactoryGirl::create :developer}
   let(:second_user){FactoryGirl::create :user}
-  let(:approval) do
-    app = FactoryGirl::create :approval
-    app.update(user: user, approvable_id: developer.id, approvable_type: 'Developer')
-    app
-  end
+  let(:approval){FactoryGirl::create(:approval, user: user, approvable_id: developer.id, approvable_type: 'Developer')}
+
   let(:params) {{ user_id: user.id, format: :json }}
   let(:dev_approval_create_params) do
     params.merge({ approval: { approvable: developer.id, approvable_type: 'Developer' } })
@@ -24,15 +21,6 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
 
   before do
     request.headers["X-Api-Key"] = developer.api_key
-  end
-
-  describe "get #index" do
-    it "should get a list of a users approvals" do
-      Approval.link(user, developer, 'Developer')
-      get :index, params
-      expect(res_hash.length).to eq 1
-      expect(res_hash.first["user_id"]).to eq user.id
-    end
   end
 
   describe "a developer" do
@@ -74,11 +62,14 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
 
   end
 
+  before do
+    request.headers["X-User-Token"] = user.authentication_token
+    request.headers["X-User-Email"] = user.email
+  end
+
   describe "a user" do
 
     before do
-      request.headers["X-User-Token"] = user.authentication_token
-      request.headers["X-User-Email"] = user.email
       request.headers['X-Secret-App-Key'] = "this-is-a-mobile-app"
     end
 
@@ -162,6 +153,15 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
         expect(user.approved? developer).to be false
       end
 
+    end
+  end
+
+  describe "get #index" do
+    it "should get a list of a users approvals" do
+      Approval.link(user, developer, 'Developer')
+      get :index, params
+      expect(res_hash.length).to eq 1
+      expect(res_hash.first["user_id"]).to eq user.id
     end
   end
 end

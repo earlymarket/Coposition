@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resource :uuid, only: [:show]
       resources :checkins, only: [:create]
+      resources :developers, only: [:index, :show]
       resources :demo do
         collection do
           get :reset_approvals
@@ -40,6 +41,7 @@ Rails.application.routes.draw do
         end
         resources :checkins, only: [:index] do
           collection do
+            get :app_index
             get :last
           end
         end
@@ -54,7 +56,7 @@ Rails.application.routes.draw do
               get :last
             end
           end
-          resources :permissions, only: [:update]
+          resources :permissions, only: [:update, :index]
           put '/permissions', to: 'permissions#update_all'
         end
       end

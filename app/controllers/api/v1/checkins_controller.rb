@@ -4,26 +4,30 @@ class Api::V1::CheckinsController < Api::ApiController
   skip_before_filter :find_user, only: :create
   before_action :device_exists?, only: :create
   before_action :check_user_approved_approvable, :find_device, except: :create
+  before_action :copo_app_only, only: :app_index
 
   def index
     params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 1000
-    checkins = @user.get_checkins(@permissible, @device).order(created_at: :desc) \
-      .paginate(page: params[:page], per_page: per_page)
+    checkins = @user.get_checkins(@permissible, @device).paginate(page: params[:page], per_page: per_page)
     paginated_response_headers(checkins)
     checkins = checkins.includes(:device).map do |checkin|
       checkin.resolve_address(@permissible, params[:type])
     end
-    render json: hide_fogging_info(checkins)
+    render json: checkins
   end
 
   def last
-    checkin = @user.get_checkins(@permissible, @device).order(created_at: :desc).first
+    checkin = @user.get_checkins(@permissible, @device).first
     checkin = checkin.resolve_address(@permissible, params[:type]) if checkin
-    if checkin
-      render json: hide_fogging_info([checkin])
-    else
-      render json: []
-    end
+    checkin ? (render json: [checkin]) : (render json: [])
+  end
+
+  def app_index
+    checkins = @device ? @device.checkins : @user.checkins
+    checkins = checkins.includes(:device).map do |checkin|
+      checkin.reverse_geocode!
+    end if params[:type] == 'address'
+    render json: checkins
   end
 
   def create
@@ -44,18 +48,16 @@ class Api::V1::CheckinsController < Api::ApiController
     end
 
     def allowed_params
-      params.require(:checkin).permit(:lat, :lng)
+      params.require(:checkin).permit(:lat, :lng, :created_at, :fogged)
     end
 
     def find_device
       if params[:device_id] then @device = Device.find(params[:device_id]) end
     end
 
-    def hide_fogging_info(array_of_checkins)
-      return array_of_checkins if array_of_checkins.empty?
-      array_of_checkins.map do |checkin|
-        checkin.attributes.delete_if {|key, _v| key =~ /fogged/ }
+    def copo_app_only
+      unless req_from_coposition_app?
+        render status: 401, json: { message: 'You must supply the secret app key' }
       end
     end
-
 end

@@ -6,11 +6,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
   let(:user) { create_user }
   let(:device) { FactoryGirl::create :device, user_id: user.id }
   let(:new_user) { create_user }
-  let(:checkin) do
-    check = FactoryGirl::create(:checkin)
-    device.checkins << check
-    check
-  end
+  let(:checkin){ FactoryGirl::create :checkin, device: device }
   let(:params) {{ user_id: user.username, device_id: device.id, id: checkin.id }}
 
   describe 'GET #new' do

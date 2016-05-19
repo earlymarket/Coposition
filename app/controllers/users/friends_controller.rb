@@ -2,17 +2,18 @@ class Users::FriendsController < ApplicationController
   before_action :friends?
 
   def show
-    @friend = User.find(params[:id])
+    @friend = User.find(params[:id]).public_info
     @devices = @friend.devices.includes(:checkins)
     checkins = @friend.get_user_checkins_for(current_user)
     gon.checkins = checkins.calendar_data if checkins.exists?
   end
 
   def show_device
-    @friend = User.find(params[:id])
+    @friend = User.find(params[:id]).public_info
     @device = @friend.devices.find(params[:device_id])
     gon.checkins = @friend.get_checkins(current_user, @device)
-    gon.checkins.get_data unless @device.can_bypass_fogging?(current_user)
+    gon.checkins.replace_foggable_attributes unless @device.can_bypass_fogging?(current_user)
+    gon.checkins = gon.checkins.map { |checkin| checkin.public_info }
   end
 
   private

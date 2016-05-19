@@ -25,7 +25,7 @@ class Checkin < ActiveRecord::Base
   after_create do
     if device
       self.uuid = device.uuid
-      self.fogged = device.fogged
+      self.fogged ||= device.fogged
       device.checkins << self
       reverse_geocode! if device.checkins.count == 1
       add_fogged_info
@@ -34,21 +34,33 @@ class Checkin < ActiveRecord::Base
     end
   end
 
-  def get_data
+  def replace_foggable_attributes
     if fogged? || device.fogged?
-      fogged_checkin = Checkin.new(attributes.delete_if {|key, _v| key =~ /fogged/ })
-      fogged_checkin.address = fogged_area
-      fogged_checkin.lat = fogged_lat
-      fogged_checkin.lng = fogged_lng
+      fogged_checkin = Checkin.new(attributes.delete_if {|key, _v| key =~ /city|postal/ })
+      fogged_checkin.assign_attributes(address: fogged_area, lat: fogged_lat, lng: fogged_lng)
       return fogged_checkin
     end
     self
   end
 
-  def self.get_data
+  def self.replace_foggable_attributes
     # this will convert it to an array
     # paginate before use!
-    all.map {|checkin| checkin.get_data}
+    all.map {|checkin| checkin.replace_foggable_attributes }
+  end
+
+  def public_info
+    assign_attributes(address: fogged_area) if address == 'Not yet geocoded'
+    attributes.delete_if {|key, value| key =~ /fogged|uuid/ || value == nil}
+  end
+
+  def self.calendar_data
+    since(first.created_at.beginning_of_year)
+    .unscope(:order)
+    .group("date_trunc('day', created_at)")
+    .count
+    .to_a
+    .sort
   end
 
   def reverse_geocode!
@@ -72,18 +84,14 @@ class Checkin < ActiveRecord::Base
     self.fogged_lat ||= nearest_city.latitude || self.lat + rand(-0.5..0.5)
     self.fogged_lng ||= nearest_city.longitude || self.lng + rand(-0.5..0.5)
     self.fogged_area ||= nearest_city.name
+    self.country_code ||= nearest_city.country_code
     save
   end
 
   def resolve_address(permissible, type)
-    if type == "address"
-      reverse_geocode!
-      return get_data unless device.can_bypass_fogging?(permissible)
-      self
-    else
-      return get_data unless device.can_bypass_fogging?(permissible)
-      Checkin.where(id: id).select([:id, :uuid, :lat, :lng, :created_at, :updated_at]).first
-    end
+    reverse_geocode! if type == "address"
+    return replace_foggable_attributes.public_info unless device.can_bypass_fogging?(permissible)
+    self.public_info
   end
 
   def self.hash_group_and_count_by(attribute)
@@ -102,12 +110,15 @@ class Checkin < ActiveRecord::Base
     end
   end
 
-  def self.calendar_data
-    since(first.created_at.beginning_of_year)
-    .unscope(:order)
-    .group("date_trunc('day', created_at)")
-    .count
-    .to_a
-    .sort
+  def self.to_csv
+    attributes = Checkin.column_names
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      all.each do |checkin|
+        csv << checkin.attributes.values_at(*attributes)
+      end
+    end
   end
 end

@@ -69,4 +69,14 @@ class Device < ActiveRecord::Base
     end
   end
 
+  def public_info
+    # Clears out any potentially sensitive attributes
+    # Returns a normal ActiveRecord relation
+    Device.select([:id, :user_id, :name, :alias, :published]).find(self.id)
+  end
+
+  def self.public_info
+    select([:id, :user_id, :name, :alias, :published])
+  end
+
 end

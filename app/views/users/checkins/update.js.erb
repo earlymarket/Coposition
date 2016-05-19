@@ -1,5 +1,6 @@
 <%= raw render_flash %>
-$('#gonvariables').html("<%= j Gon::Base.render_data %>")
+var checkin = _.find(gon.checkins, _.matchesProperty('id',<%= @checkin.id %>));
+checkin.fogged = <%= @checkin.fogged %>
 //change open popups
 
 if(<%= @checkin.fogged %>){

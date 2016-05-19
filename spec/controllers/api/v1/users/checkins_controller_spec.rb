@@ -11,14 +11,13 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     user.devices << device
     device
   end
-  let(:checkin) do
-    checkin = FactoryGirl::create :checkin
-    device.checkins << checkin
-    checkin
-  end
+  let(:checkin){ FactoryGirl::create :checkin, device: device }
   let(:create_headers) { request.headers["X-UUID"] = device.uuid }
   let(:params) {{ user_id: user.id, device_id: device.id }}
   let(:create_params) {{ checkin: { lat: Faker::Address.latitude, lng: Faker::Address.longitude } }}
+  let(:foggable_checkin_attributes) { ["city" , "postal_code"] }
+  let(:private_checkin_attributes) { ["uuid", "fogged", "fogged_lat", "fogged_lng", "fogged_area"] }
+  let(:private_and_foggable_checkin_attributes) { private_checkin_attributes + foggable_checkin_attributes }
 
   before do |example|
     create_denhams
@@ -56,9 +55,10 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         checkin
       end
 
-      it "should fetch the last reported location" do
+      it "should fetch the last reported location (public attributes only)" do
         get :last, params
         expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
+        expect(res_hash.first.keys).not_to include private_checkin_attributes
       end
 
       it "should fetch the last reported location for a friend" do
@@ -80,6 +80,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         expect(res_hash.first['address']).to eq "Denham"
         expect(res_hash.first['lat']).to eq(51.57471)
         expect(res_hash.first['lng']).to eq(-0.50626)
+        expect(res_hash.first.keys).not_to include private_and_foggable_checkin_attributes
       end
 
       it "should bypass fogging if bypass_fogging is true" do
@@ -89,6 +90,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         Permission.last.update(bypass_fogging: true)
         get :last, params.merge(type: "address")
         expect(res_hash.first['address']).to eq "The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK"
+        expect((foggable_checkin_attributes - res_hash.first.keys).empty?).to be true
       end
     end
 
@@ -141,6 +143,33 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       it "should fetch the most recent checkins (up to 30 checkins)" do
         get :index, { user_id: user.id }
         expect(res_hash.first['id']).to be device.checkins.first.id
+      end
+    end
+  end
+
+  describe "GET #app_index" do
+    context "with the secret app key" do
+      before do
+        request.headers["X-Secret-App-Key"] = 'this-is-a-mobile-app'
+        checkin
+      end
+
+      it "should fetch the user's device checkins" do
+        get :app_index, params
+        expect(res_hash.first['id']).to be checkin.id
+      end
+
+      it "should geocode checkins if type param provided" do
+        get :app_index, params.merge(type: "address")
+        expect(res_hash.first['city']).to eq 'Denham'
+      end
+    end
+
+    context "without secret app key" do
+      it "should return an error message" do
+        checkin
+        get :app_index, params
+        expect(res_hash[:message]).to match "You must supply the secret app key"
       end
     end
   end
