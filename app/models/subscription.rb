@@ -11,6 +11,13 @@ class Subscription < ActiveRecord::Base
     request = Net::HTTP::Post.new(target_url)
     request.add_field('Content-Type', 'application/json')
     request.body = data
-    response = http.request(request)
+    check_response(http.request(request))
   end
+
+  def check_response(response)
+    if response.code == '410'
+      destroy
+    end
+  end
+
 end
