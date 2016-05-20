@@ -10,8 +10,7 @@ class Api::V1::UsersController < Api::ApiController
   end
 
   def auth
-    token = request.headers['X-User-Token']
-    user = User.find_by(authentication_token: token)
+    user = User.find_by(webhook_key: request.headers['X-Webhook-Key'])
     if user
       render status: 204, json:  { message: 'success' }
     else
