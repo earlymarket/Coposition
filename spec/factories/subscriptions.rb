@@ -1,7 +1,6 @@
 FactoryGirl.define do
   factory :subscription do
-    user_id 1
-    url "MyString"
-    event "MyString"
+    target_url { "http://#{Faker::Internet.domain_word}.#{Faker::Internet.domain_suffix}/" }
+    event "New checkin"
   end
 end
