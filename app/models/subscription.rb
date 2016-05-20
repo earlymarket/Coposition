@@ -6,9 +6,10 @@ class Subscription < ActiveRecord::Base
   def send_data(data)
     uri = URI.parse("https://zapier.com/")
     http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
     request = Net::HTTP::Post.new(target_url)
     request.add_field('Content-Type', 'application/json')
-    request.body = data
+    request.body = data.to_json
     check_response(http.request(request))
   end
 
