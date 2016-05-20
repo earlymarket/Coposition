@@ -16,6 +16,8 @@ class Subscription < ActiveRecord::Base
   def check_response(response)
     if response.code == '410'
       destroy
+    elsif !response.kind_of? Net::HTTPSuccess
+      puts response
     end
   end
 
