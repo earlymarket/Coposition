@@ -1,8 +1,7 @@
 class Api::V1::UsersController < Api::ApiController
   respond_to :json
 
-  skip_before_filter :find_user,  only: :auth
-  skip_before_filter :authenticate, only: :auth
+  skip_before_action :find_user, :authenticate,  only: :auth
   before_action :check_user_approved_approvable, only: :show
 
   def show
@@ -13,9 +12,9 @@ class Api::V1::UsersController < Api::ApiController
   def auth
     user = User.find_by(email: params[:email])
     if user && user.valid_password?(params[:password])
-      render status: 204, json: {message: 'success'}
+      render status: 204, json:  { message: 'success' }
     else
-      render status: 400, json: {message: 'email or password does not match'}
+      render status: 400, json: { message: 'email or password does not match' }
     end
   end
 end
