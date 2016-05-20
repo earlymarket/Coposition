@@ -5,7 +5,7 @@
 
   <ul class="right hide-on-med-and-down">
     <li><a href="#">About</a></li>
-    <li><%= link_to("API", api_path) %></li>
+    <li><%= link_to('API', 'https://earlymarket.github.io/copo-docs/') %></li>
 
     <% if user_signed_in? %>
       <li><%= link_to("Dashboard", user_dashboard_path(current_user.url_id)) %></li>
