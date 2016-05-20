@@ -20,6 +20,7 @@ class User < ActiveRecord::Base
   has_many :checkins, through: :devices
   has_many :requests
   has_many :approvals, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
   has_many :developers, -> { where "status = 'accepted'" }, through: :approvals, source: :approvable, :source_type => "Developer"
   has_many :friends, -> { where "status = 'accepted'" }, through: :approvals, source: :approvable, :source_type => "User"
   has_many :pending_friends, -> { where "status = 'pending'" }, :through => :approvals, source: :approvable, :source_type => "User"
