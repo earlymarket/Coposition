@@ -1,4 +1,4 @@
-class Api::V1::HooksController < ActionController::Base
+class Api::V1::SubscriptionsController < ActionController::Base
 
   def create
     # will receive url, event, user/dev

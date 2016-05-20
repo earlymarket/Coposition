@@ -73,8 +73,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  ################
-
   ## Checkins
 
   def get_checkins(permissible, device)
@@ -86,6 +84,12 @@ class User < ActiveRecord::Base
       result + device.permitted_history_for(permissible).pluck(:id)
     end
     Checkin.where(id: checkins_ids)
+  end
+
+  ## Subscriptions
+
+  def has_new_checkin_subscription?
+    subscriptions.find_by(event: 'new_checkin')
   end
 
   ##############
