@@ -15,7 +15,7 @@ class Api::V1::SubscriptionsController < ActionController::Base
   private
 
     def allowed_params
-      params.require(:target_url, :event)
+      params.permit(:target_url, :event)
     end
 end
 
