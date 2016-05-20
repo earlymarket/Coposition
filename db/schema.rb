@@ -140,7 +140,7 @@ ActiveRecord::Schema.define(version: 20160520093728) do
 
   create_table "subscriptions", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "url"
+    t.string   "target_url"
     t.string   "event"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
