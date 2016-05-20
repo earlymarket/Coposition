@@ -1,15 +1,15 @@
 class Api::V1::SubscriptionsController < ActionController::Base
 
   def create
-    # will receive url, event, user/dev
-    # when event takes place, checks if user/dev has subscription (so has event+url attached to their account)
-    # if they do, posts the data from this event to the url
     user = User.find_by(email: params[:email])
     sub = user.subscriptions.create(allowed_params)
-    render json: sub.id
+    render status: 201, json: sub.id
   end
 
   def destroy
+    user = User.find_by(email: params[:email])
+    sub = user.subscriptions.find(params[:id]).destroy
+    render status: 200, json: sub.id
   end
 
   private
