@@ -33,7 +33,7 @@ class Api::V1::CheckinsController < Api::ApiController
   def create
     checkin = @device.checkins.create(allowed_params)
     if checkin.save
-      if @device.user && (sub = @device.user.has_new_checkin_subscription?)
+      if @device.user && (sub = @device.user.has_subscription?('new_checkin'))
         sub.send_data([checkin])
       end
       render json: [checkin]

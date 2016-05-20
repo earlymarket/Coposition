@@ -88,8 +88,8 @@ class User < ActiveRecord::Base
 
   ## Subscriptions
 
-  def has_new_checkin_subscription?
-    subscriptions.find_by(event: 'new_checkin')
+  def has_subscription?(event)
+    subscriptions.find_by(event: event)
   end
 
   ##############
