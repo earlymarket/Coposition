@@ -18,6 +18,12 @@
         </div>
         <div class="row">
           <div class="input-field col s12">
+          <%= f.label :webhook_key, class: 'active' %>
+          <%= f.text_field :webhook_key, readonly: true %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
             <%= f.label :avatar, 'Upload a new avatar', class:'active'%></br>
             <%= f.attachinary_file_field :avatar %>
           </div>
