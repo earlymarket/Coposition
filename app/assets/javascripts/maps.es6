@@ -132,13 +132,27 @@ window.COPO.maps = {
   },
 
   initControls(controls) {
-    controls = controls || ['geocoder', 'locate', 'w3w'];
+    // When giving custom controls, I recommend adding layers last
+    // This is because it expands downwards
+    controls = controls || ['geocoder', 'locate', 'w3w', 'layers'];
     controls.forEach((control) => {
       let fn = this[control + 'ControlInit']
       if (typeof(fn) === 'function') {
         fn();
       }
     })
+  },
+
+  layersControlInit() {
+    let map = window.map;
+    L.control.layers({
+      'Light': L.mapbox.tileLayer('mapbox.light'),
+      'Dark': L.mapbox.tileLayer('mapbox.dark'),
+      'Streets': L.mapbox.tileLayer('mapbox.streets'),
+      'Hybrid': L.mapbox.tileLayer('mapbox.streets-satellite'),
+      'Satellite': L.mapbox.tileLayer('mapbox.satellite'),
+      'High Contrast': L.mapbox.tileLayer('mapbox.high-contrast')
+    }, null, {position: 'topleft'}).addTo(map);
   },
 
   geocoderControlInit() {
