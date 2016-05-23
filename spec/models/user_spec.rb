@@ -69,7 +69,7 @@ RSpec.describe User, type: :model do
 
   describe "slack" do
     it "should generate a helpful message for slack" do
-      expect(user.slack_message).to eq "A new user has registered, id: #{user.id}, name: #{user.username}, there are now #{User.count} users."
+      expect(user.slack_message).to match "id: #{user.id}, name: #{user.username}"
     end
   end
 

@@ -6,7 +6,7 @@ class Request < ActiveRecord::Base
 
   def slack_message
     unless (controller == "api/v1/checkins" && action == "create") || (controller == "api/v1/users/requests")
-      "A developer has made a new request, developer id: #{self.developer_id}, controller: #{self.controller}, action: #{self.action}, user_id: #{self.user_id}."
+      "A developer has made a new request, company name: #{Developer.find(self.developer_id).company_name}, controller: #{self.controller}, action: #{self.action}, user_id: #{self.user_id}."
     end
   end
 end
