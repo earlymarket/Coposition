@@ -4,7 +4,6 @@ class Api::V1::CheckinsController < Api::ApiController
   skip_before_filter :find_user, only: :create
   before_action :device_exists?, only: :create
   before_action :check_user_approved_approvable, :find_device, except: :create
-  before_action :copo_app_only, only: :app_index
 
   def index
     if req_from_coposition_app?
@@ -58,12 +57,6 @@ class Api::V1::CheckinsController < Api::ApiController
       if params[:device_id] then @device = Device.find(params[:device_id]) end
     end
 
-    def copo_app_only
-      unless req_from_coposition_app?
-        render status: 401, json: { message: 'You must supply the secret app key' }
-      end
-    end
-
     def app_index_checkins
       checkins = @device ? @device.checkins : @user.checkins
       checkins = checkins.includes(:device).map do |checkin|
@@ -74,6 +67,9 @@ class Api::V1::CheckinsController < Api::ApiController
 
     def app_last_checkin
       checkins = @device ? @device.checkins : @user.checkins
-      checkins.first if checkins
+      if checkins
+        checkin = checkins.first
+        params[:type] == 'address' ? checkin.reverse_geocode! : checkin
+      end
     end
 end
