@@ -23,4 +23,10 @@ RSpec.describe Developer, type: :model do
     end
   end
 
+  describe "slack" do
+    it "should generate a helpful message for slack" do
+      expect(developer.slack_message).to eq "A new developer has registered, id: #{developer.id}, company_name: #{developer.company_name}, there are now #{Developer.count} developers."
+    end
+  end
+
 end

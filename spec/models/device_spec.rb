@@ -28,4 +28,9 @@ RSpec.describe Device, type: :model do
     expect(device.permission_for(developer).privilege).to eq "complete"
   end
 
+  describe "slack" do
+    it "should generate a helpful message for slack" do
+      expect(device.slack_message).to eq "A new device has been created, id: #{device.id}, name: #{device.name}, user_id: #{device.user_id}. There are now #{Device.count} devices"
+    end
+  end
 end
