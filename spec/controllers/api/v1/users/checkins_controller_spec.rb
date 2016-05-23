@@ -148,33 +148,6 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     end
   end
 
-  describe "GET #app_index" do
-    context "with the secret app key" do
-      before do
-        request.headers["X-Secret-App-Key"] = 'this-is-a-mobile-app'
-        checkin
-      end
-
-      it "should fetch the user's device checkins" do
-        get :app_index, params
-        expect(res_hash.first['id']).to be checkin.id
-      end
-
-      it "should geocode checkins if type param provided" do
-        get :app_index, params.merge(type: "address")
-        expect(res_hash.first['city']).to eq 'Denham'
-      end
-    end
-
-    context "without secret app key" do
-      it "should return an error message" do
-        checkin
-        get :app_index, params
-        expect(res_hash[:message]).to match "You must supply the secret app key"
-      end
-    end
-  end
-
   describe "POST #create" do
 
     it "should create a checkin when there is a pre-existing device" do

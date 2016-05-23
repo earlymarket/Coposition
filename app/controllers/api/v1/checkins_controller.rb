@@ -7,27 +7,27 @@ class Api::V1::CheckinsController < Api::ApiController
   before_action :copo_app_only, only: :app_index
 
   def index
-    params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 1000
-    checkins = @user.get_checkins(@permissible, @device).paginate(page: params[:page], per_page: per_page)
-    paginated_response_headers(checkins)
-    checkins = checkins.includes(:device).map do |checkin|
-      checkin.resolve_address(@permissible, params[:type])
+    if req_from_coposition_app?
+      app_index
+    else
+      params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 1000
+      checkins = @user.get_checkins(@permissible, @device).paginate(page: params[:page], per_page: per_page)
+      paginated_response_headers(checkins)
+      checkins = checkins.includes(:device).map do |checkin|
+        checkin.resolve_address(@permissible, params[:type])
+      end
+      render json: checkins
     end
-    render json: checkins
   end
 
   def last
-    checkin = @user.get_checkins(@permissible, @device).first
-    checkin = checkin.resolve_address(@permissible, params[:type]) if checkin
-    checkin ? (render json: [checkin]) : (render json: [])
-  end
-
-  def app_index
-    checkins = @device ? @device.checkins : @user.checkins
-    checkins = checkins.includes(:device).map do |checkin|
-      checkin.reverse_geocode!
-    end if params[:type] == 'address'
-    render json: checkins
+    if req_from_coposition_app?
+      app_last
+    else
+      checkin = @user.get_checkins(@permissible, @device).first
+      checkin = checkin.resolve_address(@permissible, params[:type]) if checkin
+      checkin ? (render json: [checkin]) : (render json: [])
+    end
   end
 
   def create
@@ -62,5 +62,19 @@ class Api::V1::CheckinsController < Api::ApiController
       unless req_from_coposition_app?
         render status: 401, json: { message: 'You must supply the secret app key' }
       end
+    end
+
+    def app_index
+      checkins = @device ? @device.checkins : @user.checkins
+      checkins = checkins.includes(:device).map do |checkin|
+        checkin.reverse_geocode!
+      end if params[:type] == 'address'
+      render json: checkins
+    end
+
+    def app_last
+      checkins = @device ? @device.checkins : @user.checkins
+      checkin = checkins.first if checkins
+      checkin ? (render json: [checkin]) : (render json: [])
     end
 end
