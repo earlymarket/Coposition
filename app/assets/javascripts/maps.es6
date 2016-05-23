@@ -131,10 +131,10 @@ window.COPO.maps = {
     return Mustache.render(template, checkinTemp);
   },
 
-  initControls(options) {
-    options = options || ['geocoder', 'locate', 'w3w'];
-    options.forEach((option) => {
-      let fn = window.COPO.maps[option + 'ControlInit']
+  initControls(controls) {
+    controls = controls || ['geocoder', 'locate', 'w3w'];
+    controls.forEach((control) => {
+      let fn = this[control + 'ControlInit']
       if (typeof(fn) === 'function') {
         fn();
       }
