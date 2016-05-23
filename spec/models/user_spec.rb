@@ -67,22 +67,10 @@ RSpec.describe User, type: :model do
     end
   end
 
-  # describe "last_checkin" do
-  #   it "should get the users last checkin" do
-  #     checkin = FactoryGirl::create(:checkin)
-  #     device.checkins << checkin
-  #     expect(user.last_checkin).to eq checkin
-  #   end
-  # end
-
-  # describe "notifications" do
-  #   it "should have a notification if there's a pending approval" do
-  #     Approval.link(user,developer,'Developer')
-
-  #     expect(user.notifications).to be_an_instance_of Array
-  #     expect(user.notifications.length).to eq 1
-  #     expect(user.notifications.first[:notification][:msg]).to_not be nil
-  #   end
-  # end
+  describe "slack" do
+    it "should generate a helpful message for slack" do
+      expect(user.slack_message).to match "id: #{user.id}, name: #{user.username}"
+    end
+  end
 
 end
