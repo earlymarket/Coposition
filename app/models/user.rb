@@ -29,6 +29,8 @@ class User < ActiveRecord::Base
   has_many :permissions, :as => :permissible, dependent: :destroy
   has_many :permitted_devices, through: :permissions, source: :permissible, :source_type => "Device"
 
+  before_create :generate_token, unless: :webhook_key?
+
   has_attachment :avatar
   ## Pathing
 
@@ -131,5 +133,11 @@ class User < ActiveRecord::Base
     # Converts to hash and attaches avatar
     public_info.attributes.merge(avatar: avatar || { public_id: 'no_avatar' } )
   end
+
+  private
+
+    def generate_token
+      self.webhook_key = SecureRandom.uuid
+    end
 
 end
