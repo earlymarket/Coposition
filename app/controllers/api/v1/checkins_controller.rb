@@ -7,21 +7,19 @@ class Api::V1::CheckinsController < Api::ApiController
 
   def index
     if req_from_coposition_app?
-      checkins = app_index_checkins
+      checkins = copo_app_checkins
     else
       params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 1000
       checkins = @user.get_checkins(@permissible, @device).paginate(page: params[:page], per_page: per_page)
       paginated_response_headers(checkins)
-      checkins = checkins.includes(:device).map do |checkin|
-        checkin.resolve_address(@permissible, params[:type])
-      end
+      checkins = checkins.resolve_address(@permissible, params[:type])
     end
     render json: checkins
   end
 
   def last
     if req_from_coposition_app?
-      checkin = app_last_checkin
+      checkin = copo_app_checkin
     else
       checkin = @user.get_checkins(@permissible, @device).first
       checkin = checkin.resolve_address(@permissible, params[:type]) if checkin
@@ -57,7 +55,7 @@ class Api::V1::CheckinsController < Api::ApiController
       if params[:device_id] then @device = Device.find(params[:device_id]) end
     end
 
-    def app_index_checkins
+    def copo_app_checkins
       checkins = @device ? @device.checkins : @user.checkins
       checkins = checkins.includes(:device).map do |checkin|
         checkin.reverse_geocode!
@@ -65,7 +63,7 @@ class Api::V1::CheckinsController < Api::ApiController
       checkins
     end
 
-    def app_last_checkin
+    def copo_app_checkin
       checkins = @device ? @device.checkins : @user.checkins
       if checkins
         checkin = checkins.first
