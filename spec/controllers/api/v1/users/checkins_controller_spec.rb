@@ -32,6 +32,13 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     end
   end
 
+  shared_context "from copo app" do
+    before do
+      request.headers["X-Secret-App-Key"] = 'this-is-a-mobile-app'
+      checkin
+    end
+  end
+
   describe "GET #last" do
     context "without developer approval" do
       it "shouldn't fetch the last reported location", :skip_before do
@@ -104,18 +111,15 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     end
 
     context "from coposition app" do
-      before do
-        request.headers["X-Secret-App-Key"] = 'this-is-a-mobile-app'
-        checkin
-      end
+      include_context "from copo app"
 
-      it "should fetch the user's device checkins with all attributes" do
+      it "should fetch the user's last device checkin with all attributes" do
         get :last, params
         expect(res_hash.first['id']).to be checkin.id
         expect(res_hash.first.keys).to eq checkin.attributes.keys
       end
 
-      it "should geocode checkins if type param provided" do
+      it "should geocode last checkin if type param provided" do
         get :last, params.merge(type: "address")
         expect(res_hash.first['city']).to eq 'Denham'
       end
@@ -166,18 +170,15 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     end
 
     context "from coposition app" do
-      before do
-        request.headers["X-Secret-App-Key"] = 'this-is-a-mobile-app'
-        checkin
-      end
+      include_context "from copo app"
 
-      it "should fetch the user's device checkins" do
+      it "should fetch all the user's device checkins" do
         get :index, params
         expect(res_hash.first['id']).to be checkin.id
         expect(res_hash.first.keys).to eq checkin.attributes.keys
       end
 
-      it "should geocode checkins if type param provided" do
+      it "should geocode all checkins if type param provided" do
         get :index, params.merge(type: "address")
         expect(res_hash.first['city']).to eq 'Denham'
       end
