@@ -131,16 +131,39 @@ window.COPO.maps = {
     return Mustache.render(template, checkinTemp);
   },
 
-  initControls() {
+  initControls(controls) {
+    // When giving custom controls, I recommend adding layers last
+    // This is because it expands downwards
+    controls = controls || ['geocoder', 'locate', 'w3w', 'layers'];
+    controls.forEach((control) => {
+      let fn = this[control + 'ControlInit']
+      if (typeof(fn) === 'function') {
+        fn();
+      }
+    })
+  },
+
+  layersControlInit() {
+    let map = window.map;
+    L.control.layers({
+      'Light': L.mapbox.tileLayer('mapbox.light'),
+      'Dark': L.mapbox.tileLayer('mapbox.dark'),
+      'Streets': L.mapbox.tileLayer('mapbox.streets'),
+      'Hybrid': L.mapbox.tileLayer('mapbox.streets-satellite'),
+      'Satellite': L.mapbox.tileLayer('mapbox.satellite'),
+      'High Contrast': L.mapbox.tileLayer('mapbox.high-contrast')
+    }, null, {position: 'topleft'}).addTo(map);
+  },
+
+  geocoderControlInit() {
     map.addControl(L.mapbox.geocoderControl('mapbox.places',
       { position: 'topright',
         keepOpen: true
       }
     ));
+  },
 
-    COPO.maps.w3w = new L.Control.w3w({apikey: '4AQOB5CT', position: 'topright'});
-    COPO.maps.w3w.addTo(map);
-
+  locateControlInit() {
     COPO.maps.lc = L.control.locate({
       follow: false,
       setView: true,
@@ -159,7 +182,11 @@ window.COPO.maps = {
       }
 
     }).addTo(map);
+  },
 
+  w3wControlInit() {
+    COPO.maps.w3w = new L.Control.w3w({apikey: '4AQOB5CT', position: 'topright'});
+    COPO.maps.w3w.addTo(map);
   },
 
   mapPinIcon(public_id, color) {

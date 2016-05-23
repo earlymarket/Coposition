@@ -52891,14 +52891,39 @@ window.COPO.maps = {
     return Mustache.render(template, checkinTemp);
   },
 
-  initControls: function initControls() {
+  initControls: function initControls(controls) {
+    var _this = this;
+
+    // When giving custom controls, I recommend adding layers last
+    // This is because it expands downwards
+    controls = controls || ['geocoder', 'locate', 'w3w', 'layers'];
+    controls.forEach(function (control) {
+      var fn = _this[control + 'ControlInit'];
+      if (typeof fn === 'function') {
+        fn();
+      }
+    });
+  },
+
+  layersControlInit: function layersControlInit() {
+    var map = window.map;
+    L.control.layers({
+      'Light': L.mapbox.tileLayer('mapbox.light'),
+      'Dark': L.mapbox.tileLayer('mapbox.dark'),
+      'Streets': L.mapbox.tileLayer('mapbox.streets'),
+      'Hybrid': L.mapbox.tileLayer('mapbox.streets-satellite'),
+      'Satellite': L.mapbox.tileLayer('mapbox.satellite'),
+      'High Contrast': L.mapbox.tileLayer('mapbox.high-contrast')
+    }, null, { position: 'topleft' }).addTo(map);
+  },
+
+  geocoderControlInit: function geocoderControlInit() {
     map.addControl(L.mapbox.geocoderControl('mapbox.places', { position: 'topright',
       keepOpen: true
     }));
+  },
 
-    COPO.maps.w3w = new L.Control.w3w({ apikey: '4AQOB5CT', position: 'topright' });
-    COPO.maps.w3w.addTo(map);
-
+  locateControlInit: function locateControlInit() {
     COPO.maps.lc = L.control.locate({
       follow: false,
       setView: true,
@@ -52917,6 +52942,11 @@ window.COPO.maps = {
       }
 
     }).addTo(map);
+  },
+
+  w3wControlInit: function w3wControlInit() {
+    COPO.maps.w3w = new L.Control.w3w({ apikey: '4AQOB5CT', position: 'topright' });
+    COPO.maps.w3w.addTo(map);
   },
 
   mapPinIcon: function mapPinIcon(public_id, color) {
@@ -53669,7 +53699,7 @@ $(document).on('page:change', function () {
       var SL = window.COPO.slides;
       U.gonFix();
       M.initMap();
-      M.initControls();
+      M.initControls(['locate', 'w3w', 'layers']);
       COPO.smooch.initSmooch(gon.current_user.userinfo);
 
       // Persistent map feature declarations
