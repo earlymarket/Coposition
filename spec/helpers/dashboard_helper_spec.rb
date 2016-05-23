@@ -3,23 +3,26 @@ require 'rails_helper'
 RSpec.describe DashboardHelper, :type => :helper do
 
   describe '#dashboard_country_name' do
-    it "should turn 'gb' to 'United Kingdom' without case sensitivity" do
-      expect(helper.dashboard_country_name('gb')).to eq 'United Kingdom'
-      expect(helper.dashboard_country_name('GB')).to eq 'United Kingdom'
+    it "turns 'gb' to 'United Kingdom' regardless of case" do
+      examples = ['gb', 'gB', 'Gb', 'GB']
+      examples.each {|e| expect(helper.dashboard_country_name(e)).to eq 'United Kingdom'}
     end
 
-    it "Unknown codes should just be returned" do
+    it "returns unknown codes" do
       expect(helper.dashboard_country_name('NO CODE')).to eq 'NO CODE'
     end
   end
 
   describe '#dashboard_flag' do
-    it "should return a placeholder if it can't find the country code or if we don't have a flag for it" do
-      expect(helper.dashboard_flag('NO CODE')).to match 'noflag.png'
+    it "should return a placeholder if we don't have a flag" do
       expect(helper.dashboard_flag('GL')).to match 'noflag.png'
     end
 
-    it 'should return a flag if we know the country' do
+    it "returns a placeholder when we don't know the country code" do
+      expect(helper.dashboard_flag('ABCD')).to match 'noflag.png'
+    end
+
+    it "should return a flag if we know the country and have it's flag" do
       expect(helper.dashboard_flag('GB')).to match 'gb.png'
     end
   end
