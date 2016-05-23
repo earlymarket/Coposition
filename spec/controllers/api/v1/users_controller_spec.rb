@@ -7,6 +7,14 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   let(:user) { FactoryGirl::create :user }
 
   describe '#show' do
+    context 'without an API key' do
+      it 'should render status 401 with message' do
+        get :show, { id: user.id, format: :json }
+        expect(response.status).to eq 401
+        expect(res_hash[:message]).to eq "No valid API Key"
+      end
+    end
+
     context 'with a correct API key' do
       before do
         request.headers['X-Api-Key'] = dev.api_key
