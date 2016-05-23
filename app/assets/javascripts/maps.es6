@@ -131,16 +131,25 @@ window.COPO.maps = {
     return Mustache.render(template, checkinTemp);
   },
 
-  initControls() {
+  initControls(options) {
+    options = options || ['geocoder', 'locate', 'w3w'];
+    options.forEach((option) => {
+      let fn = window.COPO.maps[option + 'ControlInit']
+      if (typeof(fn) === 'function') {
+        fn();
+      }
+    })
+  },
+
+  geocoderControlInit() {
     map.addControl(L.mapbox.geocoderControl('mapbox.places',
       { position: 'topright',
         keepOpen: true
       }
     ));
+  },
 
-    COPO.maps.w3w = new L.Control.w3w({apikey: '4AQOB5CT', position: 'topright'});
-    COPO.maps.w3w.addTo(map);
-
+  locateControlInit() {
     COPO.maps.lc = L.control.locate({
       follow: false,
       setView: true,
@@ -159,7 +168,11 @@ window.COPO.maps = {
       }
 
     }).addTo(map);
+  },
 
+  w3wControlInit() {
+    COPO.maps.w3w = new L.Control.w3w({apikey: '4AQOB5CT', position: 'topright'});
+    COPO.maps.w3w.addTo(map);
   },
 
   mapPinIcon(public_id, color) {
