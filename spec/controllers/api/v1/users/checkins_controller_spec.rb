@@ -102,6 +102,24 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
       end
     end
+
+    context "from coposition app" do
+      before do
+        request.headers["X-Secret-App-Key"] = 'this-is-a-mobile-app'
+        checkin
+      end
+
+      it "should fetch the user's device checkins with all attributes" do
+        get :last, params
+        expect(res_hash.first['id']).to be checkin.id
+        expect(res_hash.first.keys).to eq checkin.attributes.keys
+      end
+
+      it "should geocode checkins if type param provided" do
+        get :last, params.merge(type: "address")
+        expect(res_hash.first['city']).to eq 'Denham'
+      end
+    end
   end
 
   describe "GET #index when the device has 31 checkins" do
@@ -144,6 +162,24 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       it "should fetch the most recent checkins (up to 30 checkins)" do
         get :index, { user_id: user.id }
         expect(res_hash.first['id']).to be device.checkins.first.id
+      end
+    end
+
+    context "from coposition app" do
+      before do
+        request.headers["X-Secret-App-Key"] = 'this-is-a-mobile-app'
+        checkin
+      end
+
+      it "should fetch the user's device checkins" do
+        get :index, params
+        expect(res_hash.first['id']).to be checkin.id
+        expect(res_hash.first.keys).to eq checkin.attributes.keys
+      end
+
+      it "should geocode checkins if type param provided" do
+        get :index, params.merge(type: "address")
+        expect(res_hash.first['city']).to eq 'Denham'
       end
     end
   end

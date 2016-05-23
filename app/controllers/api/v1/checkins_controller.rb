@@ -8,7 +8,7 @@ class Api::V1::CheckinsController < Api::ApiController
 
   def index
     if req_from_coposition_app?
-      app_index
+      checkins = app_index_checkins
     else
       params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 1000
       checkins = @user.get_checkins(@permissible, @device).paginate(page: params[:page], per_page: per_page)
@@ -16,18 +16,18 @@ class Api::V1::CheckinsController < Api::ApiController
       checkins = checkins.includes(:device).map do |checkin|
         checkin.resolve_address(@permissible, params[:type])
       end
-      render json: checkins
     end
+    render json: checkins
   end
 
   def last
     if req_from_coposition_app?
-      app_last
+      checkin = app_last_checkin
     else
       checkin = @user.get_checkins(@permissible, @device).first
       checkin = checkin.resolve_address(@permissible, params[:type]) if checkin
-      checkin ? (render json: [checkin]) : (render json: [])
     end
+    checkin ? (render json: [checkin]) : (render json: [])
   end
 
   def create
@@ -64,17 +64,16 @@ class Api::V1::CheckinsController < Api::ApiController
       end
     end
 
-    def app_index
+    def app_index_checkins
       checkins = @device ? @device.checkins : @user.checkins
       checkins = checkins.includes(:device).map do |checkin|
         checkin.reverse_geocode!
       end if params[:type] == 'address'
-      render json: checkins
+      checkins
     end
 
-    def app_last
+    def app_last_checkin
       checkins = @device ? @device.checkins : @user.checkins
-      checkin = checkins.first if checkins
-      checkin ? (render json: [checkin]) : (render json: [])
+      checkins.first if checkins
     end
 end
