@@ -36,7 +36,7 @@ Rails.application.routes.draw do
       end
       resources :users, only: [:show] do
         collection do
-          post :auth
+          get :auth
         end
         resources :approvals, only: [:create, :index, :update], module: :users do
           collection do

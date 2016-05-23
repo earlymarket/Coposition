@@ -12,6 +12,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     device
   end
   let(:checkin){ FactoryGirl::create :checkin, device: device }
+  let(:subscription){ FactoryGirl::create :subscription, user: user }
   let(:create_headers) { request.headers["X-UUID"] = device.uuid }
   let(:params) {{ user_id: user.id, device_id: device.id }}
   let(:create_params) {{ checkin: { lat: Faker::Address.latitude, lng: Faker::Address.longitude } }}
@@ -177,6 +178,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
   describe "POST #create" do
 
     it "should create a checkin when there is a pre-existing device" do
+      subscription
       count = user.checkins.count
       create_headers
       post :create, create_params

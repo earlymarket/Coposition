@@ -10,11 +10,11 @@ class Api::V1::UsersController < Api::ApiController
   end
 
   def auth
-    user = User.find_by(email: params[:email])
-    if user && user.valid_password?(params[:password])
-      render status: 204, json:  { message: 'success' }
+    user = User.find_by(webhook_key: request.headers['X-Webhook-Key'])
+    if user
+      render status: 204, json: { message: 'Success' }
     else
-      render status: 400, json: { message: 'email or password does not match' }
+      render status: 400, json: { message: 'Invalid webhook key supplied' }
     end
   end
 end
