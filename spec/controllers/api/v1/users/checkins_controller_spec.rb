@@ -169,18 +169,18 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       end
     end
 
-    context "from coposition app" do
+    context "copo mobile app" do
       include_context "from copo app"
 
       it "should fetch all the user's device checkins" do
         get :index, params
-        expect(res_hash.first['id']).to be checkin.id
         expect(res_hash.first.keys).to eq checkin.attributes.keys
+        expect(res_hash.first['id']).to be checkin.id
       end
 
       it "should geocode all checkins if type param provided" do
         get :index, params.merge(type: "address")
-        expect(res_hash.first['city']).to eq 'Denham'
+        expect(res_hash.first['address']).to match 'The Pilot Centre'
       end
     end
   end
