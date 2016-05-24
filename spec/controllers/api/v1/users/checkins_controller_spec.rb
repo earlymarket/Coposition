@@ -15,6 +15,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
   let(:subscription){ FactoryGirl::create :subscription, user: user }
   let(:create_headers) { request.headers["X-UUID"] = device.uuid }
   let(:params) {{ user_id: user.id, device_id: device.id }}
+  let(:geocode_params) { params.merge(type: "address") }
   let(:create_params) {{ checkin: { lat: Faker::Address.latitude, lng: Faker::Address.longitude } }}
   let(:foggable_checkin_attributes) { ["city" , "postal_code"] }
   let(:private_checkin_attributes) { ["uuid", "fogged", "fogged_lat", "fogged_lng", "fogged_area"] }
@@ -29,6 +30,13 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       Approval.accept(second_user,user,'User')
       Approval.link(user,developer,'Developer')
       Approval.accept(user,developer,'Developer')
+    end
+  end
+
+  shared_context "from copo app" do
+    before do
+      request.headers["X-Secret-App-Key"] = 'this-is-a-mobile-app'
+      checkin
     end
   end
 
@@ -68,7 +76,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       end
 
       it "should fetch the last reported location's address in full by default" do
-        get :last, params.merge(type: "address")
+        get :last, geocode_params
         expect(res_hash.first['address']).to eq "The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK"
         expect(res_hash.first['lat']).to eq checkin.lat
         expect(res_hash.first['lng']).to eq checkin.lng
@@ -77,7 +85,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       it "should fog the last reported location's address if fogged" do
         device.switch_fog
         device.checkins.create(lat: 51.57471, lng: -0.50626)
-        get :last, params.merge(type: "address")
+        get :last, geocode_params
         expect(res_hash.first['address']).to eq "Denham"
         expect(res_hash.first['lat']).to eq(51.57471)
         expect(res_hash.first['lng']).to eq(-0.50626)
@@ -89,7 +97,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         device.switch_fog
         device.checkins.create(lat: 51.57471, lng: -0.50626)
         Permission.last.update(bypass_fogging: true)
-        get :last, params.merge(type: "address")
+        get :last, geocode_params
         expect(res_hash.first['address']).to eq "The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK"
         expect((foggable_checkin_attributes - res_hash.first.keys).empty?).to be true
       end
@@ -100,6 +108,21 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         checkin
         get :last, { user_id: user.id }
         expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
+      end
+    end
+
+    context "from coposition app" do
+      include_context "from copo app"
+
+      it "should fetch the user's last device checkin with all attributes" do
+        get :last, params
+        expect(res_hash.first['id']).to be checkin.id
+        expect(res_hash.first.keys).to eq checkin.attributes.keys
+      end
+
+      it "should geocode last checkin if type param provided" do
+        get :last, geocode_params
+        expect(res_hash.first['city']).to eq 'Denham'
       end
     end
   end
@@ -146,31 +169,19 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         expect(res_hash.first['id']).to be device.checkins.first.id
       end
     end
-  end
 
-  describe "GET #app_index" do
-    context "with the secret app key" do
-      before do
-        request.headers["X-Secret-App-Key"] = 'this-is-a-mobile-app'
-        checkin
-      end
+    context "copo mobile app" do
+      include_context "from copo app"
 
-      it "should fetch the user's device checkins" do
-        get :app_index, params
+      it "should fetch all the user's device checkins" do
+        get :index, params
+        expect(res_hash.first.keys).to eq checkin.attributes.keys
         expect(res_hash.first['id']).to be checkin.id
       end
 
-      it "should geocode checkins if type param provided" do
-        get :app_index, params.merge(type: "address")
-        expect(res_hash.first['city']).to eq 'Denham'
-      end
-    end
-
-    context "without secret app key" do
-      it "should return an error message" do
-        checkin
-        get :app_index, params
-        expect(res_hash[:message]).to match "You must supply the secret app key"
+      it "should geocode all checkins with type address" do
+        get :index, geocode_params
+        expect(res_hash.first['address']).to match 'The Pilot Centre'
       end
     end
   end

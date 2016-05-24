@@ -4,30 +4,27 @@ class Api::V1::CheckinsController < Api::ApiController
   skip_before_filter :find_user, only: :create
   before_action :device_exists?, only: :create
   before_action :check_user_approved_approvable, :find_device, except: :create
-  before_action :copo_app_only, only: :app_index
 
   def index
-    params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 1000
-    checkins = @user.get_checkins(@permissible, @device).paginate(page: params[:page], per_page: per_page)
-    paginated_response_headers(checkins)
-    checkins = checkins.includes(:device).map do |checkin|
-      checkin.resolve_address(@permissible, params[:type])
+    if req_from_coposition_app?
+      checkins = copo_app_checkins
+    else
+      params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 1000
+      checkins = @user.get_checkins(@permissible, @device).paginate(page: params[:page], per_page: per_page)
+      paginated_response_headers(checkins)
+      checkins = checkins.resolve_address(@permissible, params[:type])
     end
     render json: checkins
   end
 
   def last
-    checkin = @user.get_checkins(@permissible, @device).first
-    checkin = checkin.resolve_address(@permissible, params[:type]) if checkin
+    if req_from_coposition_app?
+      checkin = copo_app_checkin
+    else
+      checkin = @user.get_checkins(@permissible, @device).first
+      checkin = checkin.resolve_address(@permissible, params[:type]) if checkin
+    end
     checkin ? (render json: [checkin]) : (render json: [])
-  end
-
-  def app_index
-    checkins = @device ? @device.checkins : @user.checkins
-    checkins = checkins.includes(:device).map do |checkin|
-      checkin.reverse_geocode!
-    end if params[:type] == 'address'
-    render json: checkins
   end
 
   def create
@@ -56,9 +53,19 @@ class Api::V1::CheckinsController < Api::ApiController
       if params[:device_id] then @device = Device.find(params[:device_id]) end
     end
 
-    def copo_app_only
-      unless req_from_coposition_app?
-        render status: 401, json: { message: 'You must supply the secret app key' }
+    def copo_app_checkins
+      checkins = @device ? @device.checkins : @user.checkins
+      checkins = checkins.includes(:device).map do |checkin|
+        checkin.reverse_geocode!
+      end if params[:type] == 'address'
+      checkins
+    end
+
+    def copo_app_checkin
+      checkins = @device ? @device.checkins : @user.checkins
+      if checkins
+        checkin = checkins.first
+        params[:type] == 'address' ? checkin.reverse_geocode! : checkin
       end
     end
 end

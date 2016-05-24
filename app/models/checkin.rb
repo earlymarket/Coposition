@@ -94,6 +94,12 @@ class Checkin < ActiveRecord::Base
     self.public_info
   end
 
+  def self.resolve_address(permissible, type)
+    includes(:device).map do |checkin|
+      checkin.resolve_address(permissible, type)
+    end
+  end
+
   def self.hash_group_and_count_by(attribute)
     select(&attribute).group_by(&attribute)
     .each_with_object({}) do |(key,checkins), result|
