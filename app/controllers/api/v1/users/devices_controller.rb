@@ -17,7 +17,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
     if device
       if device.user.nil?
         device.construct(@user, device_params[:name])
-        if (sub = @user.has_subscription?('new_device')) then sub.send_data([device]) end
+        @user.send_data_if_subbed('new_device', device)
         render json: device
       else
         render status: 400, json: { message: 'This device has already been assigned to a user' }

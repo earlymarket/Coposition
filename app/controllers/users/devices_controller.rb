@@ -43,7 +43,7 @@ class Users::DevicesController < ApplicationController
     if @device && @device.user.nil?
       if @device.construct(current_user, allowed_params[:name])
         gon.checkins = @device.checkins.create(checkin_params) if params[:create_checkin].present?
-        if (sub = current_user.has_subscription?('new_device')) then sub.send_data([@device]) end
+        current_user.send_data_if_subbed('new_device', @device)
         redirect_to user_device_path(id: @device.id)
       else
         redirect_to new_user_device_path, notice: "You already have a device with the name #{allowed_params[:name]}"

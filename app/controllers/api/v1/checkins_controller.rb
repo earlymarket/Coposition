@@ -33,9 +33,7 @@ class Api::V1::CheckinsController < Api::ApiController
   def create
     checkin = @device.checkins.create(allowed_params)
     if checkin.save
-      if @device.user && (sub = @device.user.has_subscription?('new_checkin'))
-        sub.send_data([checkin])
-      end
+      if @device.user then @device.user.send_data_if_subbed('new_checkin', checkin) end
       render json: [checkin]
     else
       render status: 400, json: { message: 'You must provide a lat and lng' }

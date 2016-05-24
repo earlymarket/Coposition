@@ -94,6 +94,10 @@ class User < ActiveRecord::Base
     subscriptions.find_by(event: event)
   end
 
+  def send_data_if_subbed(event, data)
+    if sub = subscriptions.find_by(event: event) then sub.send_data([data]) end
+  end
+
   ##############
 
   def slack_message
