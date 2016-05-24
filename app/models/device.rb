@@ -77,7 +77,7 @@ class Device < ActiveRecord::Base
   end
 
   def subscriptions(event)
-    Subscription.where(event: event).where(user_id: self.user_id)
+    Subscription.where(event: event).where(subs[:user_id].eq(user_id).or(subs[:user_id].in(permitted_users.pluck(:id))))
   end
 
   def notify_subscribers(event, data)
@@ -89,5 +89,11 @@ class Device < ActiveRecord::Base
   def self.public_info
     select([:id, :user_id, :name, :alias, :published])
   end
+
+  private
+
+    def subs
+      Subscription.arel_table
+    end
 
 end
