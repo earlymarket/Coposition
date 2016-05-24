@@ -17,6 +17,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
     if device
       if device.user.nil?
         device.construct(@user, device_params[:name])
+        device.notify_subscribers('new_device', device)
         render json: device
       else
         render status: 400, json: { message: 'This device has already been assigned to a user' }
