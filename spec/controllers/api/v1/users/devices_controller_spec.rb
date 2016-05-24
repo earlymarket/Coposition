@@ -64,14 +64,20 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       count = user.devices.count
       create_params.merge!(device: { uuid: 123 })
       post :create, create_params
-      expect(res_hash[:message]).to match 'does not match'
+      expect(res_hash[:message]).to match 'Invalid UUID'
       expect(user.devices.count).to be count
     end
 
     it 'should fail to to create a device with a taken UUID' do
       create_params.merge!(device: { uuid: device.uuid })
       post :create, create_params
-      expect(res_hash[:message]).to match 'already been assigned'
+      expect(res_hash[:message]).to match 'Invalid UUID'
+    end
+
+    it 'should fail to to create a device with a taken name' do
+      create_params.merge!(device: { name: device.name })
+      post :create, create_params
+      expect(res_hash[:message]).to match 'already have a device with the name'
     end
 
   end
