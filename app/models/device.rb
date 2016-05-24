@@ -80,6 +80,7 @@ class Device < ActiveRecord::Base
   end
 
   def notify_subscribers(event, data)
+    data = data.as_json.merge(user: user.public_info.as_json) if user
     subscriptions(event).each do |subscription|
       subscription.send_data(data)
     end unless subscriptions(event).empty?
