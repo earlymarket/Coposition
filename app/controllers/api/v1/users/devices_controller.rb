@@ -12,7 +12,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
   end
 
   def create
-    device = Device.create
+    device = Device.new
     device = Device.find_by uuid: device_params[:uuid] if device_params[:uuid].present?
     if device && device.user.nil?
       if device.construct(@user, device_params[:name])
