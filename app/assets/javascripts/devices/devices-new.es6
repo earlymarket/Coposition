@@ -35,6 +35,7 @@ $(document).on('page:change', () => {
           noWrap: true
         }
       });
+      COPO.maps.initControls(['geocoder', 'w3w', 'layers']);
       const MARKER_OPTIONS = {
         icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#ff6900' }),
         draggable: true
