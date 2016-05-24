@@ -88,12 +88,6 @@ class User < ActiveRecord::Base
     Checkin.where(id: checkins_ids)
   end
 
-  ## Subscriptions
-
-  def has_subscription?(event)
-    subscriptions.find_by(event: event)
-  end
-
   ##############
 
   def slack_message
