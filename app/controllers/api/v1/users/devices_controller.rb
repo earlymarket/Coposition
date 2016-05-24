@@ -19,7 +19,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
         device.notify_subscribers('new_device', device)
         render json: device
       else
-        render status: 400, json: { message: 'You already have a device with the name #{device_params[:name]}' }
+        render status: 400, json: { message: "You already have a device with the name #{device_params[:name]}" }
       end
     else
       render status: 400, json: { message: 'Invalid UUID provided' }

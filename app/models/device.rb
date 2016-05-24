@@ -80,9 +80,11 @@ class Device < ActiveRecord::Base
   end
 
   def notify_subscribers(event, data)
-    data = data.as_json.merge(user: user.public_info.as_json) if user
+    zapier_data = [data]
+    zapier_data << public_info unless data.model_name == 'Device'
+    zapier_data << user.public_info if user
     subscriptions(event).each do |subscription|
-      subscription.send_data(data)
+      subscription.send_data(zapier_data)
     end unless subscriptions(event).empty?
   end
 
