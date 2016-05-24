@@ -6,8 +6,8 @@ class Device < ActiveRecord::Base
   has_many :checkins, dependent: :destroy
   has_many :permissions, dependent: :destroy
   has_many :developers, through: :permissions, source: :permissible, :source_type => "Developer"
-  has_many :allowed_users, ->  { where.not privilege: 0 }, class_name: 'Permission'
-  has_many :permitted_users, through: :allowed_users, source: :permissible, :source_type => "User"
+  has_many :allowed_user_permissions, ->  { where.not privilege: 0 }, class_name: 'Permission'
+  has_many :permitted_users, through: :allowed_user_permissions, source: :permissible, :source_type => "User"
 
   validates :name, uniqueness: { scope: :user_id }, if: :user_id
 
