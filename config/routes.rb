@@ -55,11 +55,6 @@ Rails.application.routes.draw do
           end
         end
         resources :devices, only: [:index, :create, :show, :update], module: :users do
-          resources :checkins, only: [:index] do
-            collection do
-              get :last
-            end
-          end
           resources :permissions, only: [:update, :index]
           put '/permissions', to: 'permissions#update_all'
         end
