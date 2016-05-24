@@ -12,7 +12,7 @@ class Users::CheckinsController < ApplicationController
     @device = Device.find(params[:device_id])
     @checkin = @device.checkins.create(allowed_params)
     reload_gon_variables
-    current_user.send_data_if_subbed('new_checkin', @checkin)
+    @device.notify_subscribers('new_checkin', @checkin)
     flash[:notice] = "Checked in."
   end
 

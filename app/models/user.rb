@@ -88,12 +88,6 @@ class User < ActiveRecord::Base
     Checkin.where(id: checkins_ids)
   end
 
-  ## Subscriptions
-
-  def send_data_if_subbed(event, data)
-    if (sub = subscriptions.find_by(event: event)) then sub.send_data([data]) end
-  end
-
   ##############
 
   def slack_message

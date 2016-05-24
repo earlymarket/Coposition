@@ -75,6 +75,16 @@ class Device < ActiveRecord::Base
     Device.select([:id, :user_id, :name, :alias, :published]).find(self.id)
   end
 
+  def subscriptions(event)
+    Subscription.where(event: event).where(user_id: self.user_id)
+  end
+
+  def notify_subscribers(event, data)
+    subscriptions(event).each do |subscription|
+      subscription.send_data(data)
+    end unless subscriptions(event).empty?
+  end
+
   def self.public_info
     select([:id, :user_id, :name, :alias, :published])
   end
