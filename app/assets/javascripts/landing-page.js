@@ -18,10 +18,10 @@ $(document).on('ready page:change', function() {
       var $currOffset = $(window).scrollTop();
       var winHeight = window.innerHeight;
 
-      if($currOffset >= winHeight && $(".contents-menu").css('position') != "fixed"){
+      if($currOffset >= winHeight && $(".contents-menu").css('position') !== "fixed"){
         $(".contents-menu").css('position', 'fixed');
 
-      }else if($currOffset < winHeight && $(".contents-menu").css('position') == "fixed"){
+      }else if($currOffset < winHeight && $(".contents-menu").css('position') === "fixed"){
         $(".contents-menu").css('position', 'relative');
       }
 

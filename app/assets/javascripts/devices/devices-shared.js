@@ -4,16 +4,17 @@ $(document).on('page:change', function() {
     COPO.maps.initMap()
     COPO.maps.initControls();
     var checkin = gon.checkin;
+    var avatar, template, rendered;
 
     if(!checkin) {
-      var avatar = COPO.utility.avatar(gon.user.avatar, {class: 'left'});
+      avatar = COPO.utility.avatar(gon.user.avatar, {class: 'left'});
       var friend = {
         name: COPO.utility.friendsName(gon.user),
         device: gon.device,
         avatar: avatar
        }
-      var template = $('#nullPopupTemplate').html();
-      var rendered = Mustache.render(template, friend);
+      template = $('#nullPopupTemplate').html();
+      rendered = Mustache.render(template, friend);
 
       var popup = L.popup({'closeButton': false, 'closeOnClick': false})
         .setLatLng(new L.latLng([51.5073509, -0.1277583])) //hardcoded latlng for London
@@ -23,7 +24,7 @@ $(document).on('page:change', function() {
         map.panTo(popup.getLatLng());
       })
     } else {
-      var avatar = COPO.utility.avatar(gon.user.avatar);
+      avatar = COPO.utility.avatar(gon.user.avatar);
       $.extend(checkin, {
         avatar: avatar,
         created_at: new Date(checkin.created_at).toUTCString(),
@@ -32,8 +33,8 @@ $(document).on('page:change', function() {
         friend: COPO.utility.friendsName(gon.user)
       })
 
-      var template = $('#fullPopupTemplate').html();
-      var rendered = Mustache.render(template, checkin);
+      template = $('#fullPopupTemplate').html();
+      rendered = Mustache.render(template, checkin);
 
       map.setView([checkin.lat, checkin.lng], 12)
       var marker = L.marker([checkin.lat, checkin.lng], {

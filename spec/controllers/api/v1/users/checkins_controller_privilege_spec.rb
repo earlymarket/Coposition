@@ -59,9 +59,9 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         end
       end
 
-      context "with privilege set to complete and bypass_delay set to false" do
-        it "should return 1 old checkin" do
-          ['last', 'index'].each { |method| call_checkin_action(method, 'complete', false, 1, historic_checkin) }
+      context "with bypass_delay set to false and privilege set to complete" do
+        it "should return the historic checkin" do
+          ['index', 'last'].each { |action| call_checkin_action(action, 'complete', false, 1, historic_checkin) }
         end
       end
     end
