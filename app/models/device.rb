@@ -23,12 +23,7 @@ class Device < ActiveRecord::Base
   end
 
   def permitted_history_for(permissible)
-    if can_bypass_delay?(permissible)
-      delayed_checkins = checkins
-    else
-      delayed_checkins = checkins.before(delayed.to_i.minutes.ago)
-    end
-
+    delayed_checkins = delayed_checkins_for(permissible)
     case permission_for(permissible).privilege
     when 'disallowed'
       Checkin.none
@@ -36,6 +31,14 @@ class Device < ActiveRecord::Base
       delayed_checkins.empty? ? delayed_checkins : Checkin.where(id: delayed_checkins.first.id)
     else
       delayed_checkins
+    end
+  end
+
+  def delayed_checkins_for(permissible)
+    if can_bypass_delay?(permissible)
+      checkins
+    else
+      checkins.before(delayed.to_i.minutes.ago)
     end
   end
 
