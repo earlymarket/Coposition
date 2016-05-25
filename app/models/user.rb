@@ -70,20 +70,6 @@ class User < ActiveRecord::Base
       end
     end
   end
-=begin
-    if permissible.class.to_s == 'Developer'
-      dev_devices = devices.includes(:developers)
-      dev_devices.each do |device|
-        device.developers << permissible unless device.developers.include? permissible
-      end
-    else
-      usr_devices = devices.includes(:permitted_users)
-      usr_devices.each do |device|
-        device.permitted_users << permissible unless device.permitted_users.include? permissible
-      end
-    end
-  end
-=end
 
   ## Checkins
 
