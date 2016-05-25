@@ -62,6 +62,15 @@ class User < ActiveRecord::Base
   ## Devices
 
   def approve_devices(permissible)
+    devices.each do |device|
+      if permissible.class.to_s == 'Developer'
+        device.developers << permissible unless device.developers.include? permissible
+      else
+        device.permitted_users << permissible unless device.permitted_users.include? permissible
+      end
+    end
+  end
+=begin
     if permissible.class.to_s == 'Developer'
       dev_devices = devices.includes(:developers)
       dev_devices.each do |device|
@@ -74,6 +83,9 @@ class User < ActiveRecord::Base
       end
     end
   end
+=end
+
+  def add_permissible
 
   ## Checkins
 
