@@ -50,6 +50,12 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(assigns :device).to eq(nil)
     end
 
+    it 'should redirect to root path and render error message if device doesnt exist' do
+      get :show, params.merge(id: 1000)
+      expect(flash[:alert]).to eq "Couldn't find Device with 'id'=1000"
+      expect(response).to redirect_to(root_path)
+    end
+
     it 'should create a CSV file if .csv appended to url' do
       get :show, params.merge(format: :csv)
       expect(response.header['Content-Type']).to include 'text/csv'

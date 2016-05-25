@@ -38,6 +38,15 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         expect(assigns(:user)).to eq(User.find(user.id))
       end
 
+      it 'should return 404 and an error message if user does not exist' do
+        get :show, {
+          id: 1000,
+          format: :json
+        }
+        expect(response.status).to eq 404
+        expect(res_hash[:error]).to eq "Couldn't find User with 'id'=1000"
+      end
+
     end
   end
 
