@@ -8,6 +8,7 @@ RSpec.describe ApplicationHelper, :type => :helper do
   let(:checkin) { FactoryGirl::create(:checkin) }
 
 
+
   describe '#humanize_date' do
     it 'should accept a date' do
       expect { helper.humanize_date(Faker::Date.forward(30)) }.not_to raise_error
@@ -21,8 +22,7 @@ RSpec.describe ApplicationHelper, :type => :helper do
   describe '#fogged_icon' do
     it 'returns different icons depending on a boolean input' do
       expect(helper.fogged_icon(true)).not_to eq(helper.fogged_icon(false))
-      expect(helper.fogged_icon(true)).to match('icon')
-      expect(helper.fogged_icon(false)).to match('icon')
+      expect(helper.fogged_icon(true) && helper.fogged_icon(false)).to match('icon')
     end
   end
 
