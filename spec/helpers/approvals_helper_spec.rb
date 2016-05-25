@@ -17,7 +17,7 @@ RSpec.describe ApprovalsHelper, :type => :helper do
 
     it 'should set class key' do
       expect(user_approvals_input[:class]).to eq 'validate'
-      expect(developer_approvals_input[:class]).to eq 'validate devs_typeahead'
+      expect(developer_approvals_input[:class]).to match 'devs_typeahead'
     end
   end
 
