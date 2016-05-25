@@ -1,3 +1,5 @@
+/*eslint no-unused-expressions: [2, { allowTernary: true }]*/
+
 window.COPO = window.COPO || {};
 window.COPO.charts = {
   drawBarChart: function(checkins, height, page) {
