@@ -3,9 +3,7 @@ require 'pp'
 
   desc "Adds a random avatar to a user."
   task :user, [:id]  => :environment do |_t, args|
-    validate_id(args)
-    user = User.find_by(id: args[:id])
-    set_avatar(user)
+    find_and_set_avatar(args, 'User')
   end
 
   desc "Adds a random avatar to all users without an avatar."
@@ -19,9 +17,7 @@ require 'pp'
 
   desc "Adds a random avatar to an app/developer."
   task :app, [:id]  => :environment do |_t, args|
-    validate_id(args)
-    app = Developer.find_by(id: args[:id])
-    set_avatar(app)
+    find_and_set_avatar(args, 'Developer')
   end
 
   desc "Adds a random avatar to all apps/developers without an avatar."
@@ -33,6 +29,12 @@ require 'pp'
     end
   end
 
+end
+
+def find_and_set_avatar(args, type)
+  validate_id(args)
+  app = type.constantize.find_by(id: args[:id])
+  set_avatar(app)
 end
 
 def count_and_confirm(resource)
