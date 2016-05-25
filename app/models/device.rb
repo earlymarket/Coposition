@@ -23,11 +23,15 @@ class Device < ActiveRecord::Base
   end
 
   def permitted_history_for(permissible)
+    resolve_privilege(delayed_checkins_for(permissible), permissible)
+  end
+
+  def resolve_privilege(unresolved_checkins, permissible)
     return Checkin.none if privilege_for(permissible) == 'disallowed'
-    if privilege_for(permissible) == 'last_only' && delayed_checkins_for(permissible).any?
-      Checkin.where(id: delayed_checkins_for(permissible).first.id)
+    if privilege_for(permissible) == 'last_only' && unresolved_checkins.any?
+      Checkin.where(id: unresolved_checkins.first.id)
     else
-      delayed_checkins_for(permissible)
+      unresolved_checkins
     end
   end
 
