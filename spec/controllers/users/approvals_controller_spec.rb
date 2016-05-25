@@ -35,9 +35,9 @@ RSpec.describe Users::ApprovalsController, type: :controller do
   end
 
   describe 'GET #new' do
-    it 'should assign a new approval' do
+    it 'should assign an empty approval' do
       get :new, user_params
-      expect((assigns :approval).class).to eq Approval.new.class
+      expect((assigns :approval).model_name).to match 'Approval'
     end
   end
 
