@@ -2,7 +2,7 @@ namespace :avatars do
 require 'pp'
 
   desc "Adds a random avatar to a user."
-  task :user, [:id]  => :environment do |t, args|
+  task :user, [:id]  => :environment do |_t, args|
     validate_id(args)
     user = User.find_by(id: args[:id])
     set_avatar(user)
@@ -18,7 +18,7 @@ require 'pp'
   end
 
   desc "Adds a random avatar to an app/developer."
-  task :app, [:id]  => :environment do |t, args|
+  task :app, [:id]  => :environment do |_t, args|
     validate_id(args)
     app = Developer.find_by(id: args[:id])
     set_avatar(app)
