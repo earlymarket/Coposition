@@ -1,7 +1,3 @@
-engines:
-  rubocop:
-    AllCops:
-      TargetRubyVersion: 2.2
 languages:
    Ruby: true
    JavaScript: true
