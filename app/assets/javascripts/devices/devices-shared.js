@@ -4,9 +4,7 @@ $(document).on('page:change', function() {
     COPO.maps.initMap()
     COPO.maps.initControls();
     var checkin = gon.checkin;
-    var avatar;
-    var template;
-    var rendered;
+    var avatar, template, rendered;
 
     if(!checkin) {
       avatar = COPO.utility.avatar(gon.user.avatar, {class: 'left'});
