@@ -23,19 +23,20 @@ class Device < ActiveRecord::Base
   end
 
   def permitted_history_for(permissible)
-    return Checkin.none if permission_for(permissible).privilege == "disallowed"
-    if permission_for(permissible).privilege == "last_only"
-      if can_bypass_delay?(permissible)
-        Checkin.where(id: checkins.first.id)
-      elsif checkins.before(delayed.to_i.minutes.ago).present?
-        Checkin.where(id: checkins.before(delayed.to_i.minutes.ago).first.id)
-      else
-        Checkin.none
-      end
+    if can_bypass_delay?(permissible)
+      delayed_checkins = checkins
     else
-      can_bypass_delay?(permissible) ? checkins : checkins.before(delayed.to_i.minutes.ago)
+      delayed_checkins = checkins.before(delayed.to_i.minutes.ago)
     end
 
+    case permission_for(permissible).privilege
+    when 'disallowed'
+      Checkin.none
+    when 'last_only'
+      delayed_checkins.empty? ? delayed_checkins : Checkin.where(id: delayed_checkins.first.id)
+    else
+      delayed_checkins
+    end
   end
 
   def permission_for(permissible)
@@ -77,7 +78,7 @@ class Device < ActiveRecord::Base
   end
 
   def subscriptions(event)
-    Subscription.where(event: event).where(subs[:user_id].eq(user_id).or(subs[:user_id].in(permitted_users.pluck(:id))))
+    Subscription.where(event: event).where(subs[:user_id].eq(user_id).or(subs[:user_id].in(permitted_users.ids)))
   end
 
   def notify_subscribers(event, data)
