@@ -1,5 +1,4 @@
 class Users::ApprovalsController < ApplicationController
-
   before_action :authenticate_user!
 
   def new
@@ -16,28 +15,32 @@ class Users::ApprovalsController < ApplicationController
       if approval.save
         @presenter = ::Users::ApprovalsPresenter.new(current_user, approvable_type)
         gon.push(@presenter.gon)
-        approvable_type == 'User' ? redirect_to(user_friends_path, notice: 'Friend request sent') : redirect_to(user_apps_path, notice: 'Developer approved')
+        if approvable_type == 'User'
+          redirect_to(user_friends_path, notice: 'Friend request sent')
+        else
+          redirect_to(user_apps_path, notice: 'Developer approved')
+        end
       else
         redirect_to new_user_approval_path(approvable_type: approvable_type), alert: "Error: #{approval.errors.get(:base).first}"
       end
     elsif approvable_type == 'User'
       UserMailer.invite_email(allowed_params[:approvable]).deliver_now
-      redirect_to user_dashboard_path, notice: "User not signed up with Coposition, invite email sent!"
+      redirect_to user_dashboard_path, notice: 'User not signed up with Coposition, invite email sent!'
     else
-      redirect_to new_user_approval_path(approvable_type: approvable_type), alert: "Developer not found"
+      redirect_to new_user_approval_path(approvable_type: approvable_type), alert: 'Developer not found'
     end
   end
 
   def apps
     @presenter = ::Users::ApprovalsPresenter.new(current_user, 'Developer')
     gon.push(@presenter.gon)
-    render "approvals"
+    render 'approvals'
   end
 
   def friends
     @presenter = ::Users::ApprovalsPresenter.new(current_user, 'User')
     gon.push(@presenter.gon)
-    render "approvals"
+    render 'approvals'
   end
 
   def approve
@@ -64,22 +67,21 @@ class Users::ApprovalsController < ApplicationController
     gon.push(@presenter.gon)
     respond_to do |format|
       format.html { redirect_to user_approvals_path }
-      format.js { render "approve" }
+      format.js { render 'approve' }
     end
   end
 
   private
 
-    def allowed_params
-      params.require(:approval).permit(:approvable, :approvable_type)
-    end
+  def allowed_params
+    params.require(:approval).permit(:approvable, :approvable_type)
+  end
 
-    def approvable(type)
-      if type == 'Developer'
-        Developer.find_by(company_name: allowed_params[:approvable])
-      elsif type == 'User'
-        User.find_by(email: allowed_params[:approvable])
-      end
+  def approvable(type)
+    if type == 'Developer'
+      Developer.find_by(company_name: allowed_params[:approvable])
+    elsif type == 'User'
+      User.find_by(email: allowed_params[:approvable])
     end
-
+  end
 end

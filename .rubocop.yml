@@ -1,2 +1,15 @@
 AllCops:
   TargetRubyVersion: 2.2
+
+Metrics/LineLength:
+  Max: 120
+
+Style/NumericLiterals:
+  MinDigits: 20
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+

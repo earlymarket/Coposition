@@ -13,15 +13,16 @@ class Users::FriendsController < ApplicationController
     @device = @friend.devices.find(params[:device_id])
     gon.checkins = @friend.get_checkins(current_user, @device)
     gon.checkins.replace_foggable_attributes unless @device.can_bypass_fogging?(current_user)
-    gon.checkins = gon.checkins.map { |checkin| checkin.public_info }
+    gon.checkins = gon.checkins.map(&:public_info)
   end
 
   private
-    def friends?
-      friend = User.find(params[:id])
-      unless friend.approved?(current_user)
-        flash[:notice] = 'You are not friends with that user'
-        redirect_to user_friends_path(current_user)
-      end
+
+  def friends?
+    friend = User.find(params[:id])
+    unless friend.approved?(current_user)
+      flash[:notice] = 'You are not friends with that user'
+      redirect_to user_friends_path(current_user)
     end
+  end
 end

@@ -3,14 +3,14 @@ require 'rails_helper'
 RSpec.describe Users::DevicesController, type: :controller do
   include ControllerMacros
 
-  let(:empty_device) { FactoryGirl::create :device }
-  let(:checkin) { FactoryGirl::create(:checkin, created_at: Date.yesterday) }
+  let(:empty_device) { FactoryGirl.create :device }
+  let(:checkin) { FactoryGirl.create(:checkin, created_at: Date.yesterday) }
   let(:device) do
-    dev = FactoryGirl::create :device
-    dev.checkins << [checkin, FactoryGirl::create(:checkin)]
+    dev = FactoryGirl.create :device
+    dev.checkins << [checkin, FactoryGirl.create(:checkin)]
     dev
   end
-  let(:developer) { FactoryGirl::create :developer }
+  let(:developer) { FactoryGirl.create :developer }
   let(:user) do
     user = create_user
     user.devices << device
@@ -22,7 +22,7 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
   let(:new_user) { create_user }
   let(:approval) { create_approval(user, new_user) }
-  let(:user_param) {{ user_id: user.username }}
+  let(:user_param) { { user_id: user.username } }
   let(:params) { user_param.merge(id: device.id) }
   let(:date_params) { params.merge(from: Date.yesterday, to: Date.yesterday) }
 
@@ -34,20 +34,20 @@ RSpec.describe Users::DevicesController, type: :controller do
   describe 'GET #index' do
     it 'should assign current_user.devices to @devices' do
       get :index, user_param
-      expect(assigns :devices).to eq(user.devices)
+      expect(assigns(:devices)).to eq(user.devices)
     end
   end
 
   describe 'GET #show' do
     it 'should assign :id.device to @device if user owns device' do
       get :show, params
-      expect(assigns :device).to eq(Device.find(device.id))
+      expect(assigns(:device)).to eq(Device.find(device.id))
     end
 
     it 'should not assign to @device if user does not own device' do
       get :show, params.merge(user_id: new_user.username)
       expect(response).to redirect_to(root_path)
-      expect(assigns :device).to eq(nil)
+      expect(assigns(:device)).to eq(nil)
     end
 
     it 'should redirect to root path and render error message if device doesnt exist' do
@@ -59,8 +59,8 @@ RSpec.describe Users::DevicesController, type: :controller do
     it 'should create a CSV file if .csv appended to url' do
       get :show, params.merge(format: :csv)
       expect(response.header['Content-Type']).to include 'text/csv'
-      expect(response.body).to include(checkin.attributes.keys.join(","))
-      expect(response.body).to include(checkin.attributes.values.join(","))
+      expect(response.body).to include(checkin.attributes.keys.join(','))
+      expect(response.body).to include(checkin.attributes.values.join(','))
     end
   end
 
@@ -88,12 +88,11 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
 
   describe 'POST #create' do
-
     it 'should create a new device' do
       count = user.devices.count
       post :create, user_param.merge(device: { name: 'New Device' })
       expect(response.code).to eq '302'
-      expect(user.devices.count).to be count+1
+      expect(user.devices.count).to be count + 1
       expect(user.devices.all.last.name).to eq 'New Device'
     end
 
@@ -101,26 +100,26 @@ RSpec.describe Users::DevicesController, type: :controller do
       count = user.devices.count
       post :create, user_param.merge(device: { name: 'New Device', uuid: empty_device.uuid })
       expect(response.code).to eq '302'
-      expect(user.devices.count).to be count+1
+      expect(user.devices.count).to be count + 1
       expect(user.devices.all.last).to eq empty_device
     end
 
     it 'should create a new device and a checkin if location provided' do
       devices_count = user.devices.count
       checkins_count = Checkin.count
-      post :create, user_param.merge({
+      post :create, user_param.merge(
         location: '51.588330,-0.513069',
         device: { name: 'New Device' },
         create_checkin: true
-      })
-      expect(user.devices.count).to be devices_count+1
-      expect(Checkin.count).to be checkins_count+1
+      )
+      expect(user.devices.count).to be devices_count + 1
+      expect(Checkin.count).to be checkins_count + 1
       expect(Checkin.last.lat).to eq 51.588330
     end
 
     it 'should fail to to create a device with an invalid UUID' do
       count = user.devices.count
-      post :create,  user_param.merge(device: { uuid: 123 })
+      post :create, user_param.merge(device: { uuid: 123 })
       expect(response).to redirect_to(new_user_device_path)
       expect(user.devices.count).to be count
     end
@@ -140,7 +139,6 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(user.devices.count).to be count
       expect(response).to redirect_to(new_user_device_path)
     end
-
   end
 
   describe 'PUT #update' do
@@ -170,11 +168,11 @@ RSpec.describe Users::DevicesController, type: :controller do
 
     it 'should set a delay' do
       request.accept = 'text/javascript'
-      put :update, params.merge(delayed:5)
+      put :update, params.merge(delayed: 5)
       expect(flash[:notice]).to include 'minutes'
-      put :update, params.merge(delayed:100)
+      put :update, params.merge(delayed: 100)
       expect(flash[:notice]).to include 'hour'
-      put :update, params.merge(delayed:1440)
+      put :update, params.merge(delayed: 1440)
       expect(flash[:notice]).to include 'day'
       device.reload
       expect(device.delayed).to be 1440
@@ -182,7 +180,7 @@ RSpec.describe Users::DevicesController, type: :controller do
 
     it 'should set a delay of 0 as nil' do
       request.accept = 'text/javascript'
-      put :update, params.merge(delayed:0)
+      put :update, params.merge(delayed: 0)
 
       device.reload
       expect(device.delayed).to be nil
@@ -195,7 +193,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       count = Device.count
       delete :destroy, params
 
-      expect(Device.count).to be count-1
+      expect(Device.count).to be count - 1
     end
 
     it 'should not delete if user does not own device' do
@@ -206,5 +204,4 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(Device.count).to be count
     end
   end
-
 end

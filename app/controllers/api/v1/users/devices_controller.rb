@@ -34,23 +34,18 @@ class Api::V1::Users::DevicesController < Api::ApiController
 
   def update
     device = @user.devices.where(id: params[:id]).first
-    if device_exists? device
-      device.update(device_params)
-      render json: device
-    end
+    return unless device_exists? device
+    device.update(device_params)
+    render json: device
   end
 
   private
 
-    def check_user
-      unless current_user?(params[:user_id])
-        render status: 403, json: { message: 'User does not own device' }
-      end
-    end
+  def check_user
+    render status: 403, json: { message: 'User does not own device' } unless current_user?(params[:user_id])
+  end
 
-    def device_params
-      params.require(:device).permit(:name, :uuid, :fogged, :delayed, :alias)
-    end
-
+  def device_params
+    params.require(:device).permit(:name, :uuid, :fogged, :delayed, :alias)
+  end
 end
-

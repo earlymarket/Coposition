@@ -1,10 +1,10 @@
 class Subscription < ActiveRecord::Base
-  require "net/http"
+  require 'net/http'
 
   belongs_to :user
 
   def send_data(data)
-    uri = URI.parse("https://zapier.com/")
+    uri = URI.parse('https://zapier.com/')
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
     request = Net::HTTP::Post.new(target_url)
@@ -16,9 +16,8 @@ class Subscription < ActiveRecord::Base
   def check_response(response)
     if response.code == '410'
       destroy
-    elsif !response.kind_of? Net::HTTPSuccess
+    elsif !response.is_a? Net::HTTPSuccess
       puts response
     end
   end
-
 end

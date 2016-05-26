@@ -1,16 +1,16 @@
 Given(/^the developer "(.*?)" exists$/) do |dev_name|
-  @developer = FactoryGirl::create :developer
+  @developer = FactoryGirl.create :developer
   @developer.company_name = dev_name
   @developer.save
 end
 
 Given(/^the developer "(.*?)" sends me an approval request$/) do |dev_name|
   @developer = Developer.find_by(company_name: dev_name)
-  Approval.link(@me,@developer,'Developer')
+  Approval.link(@me, @developer, 'Developer')
 end
 
 Given(/^I accept the approval request$/) do
-  Approval.accept(@me,@developer,'Developer')
+  Approval.accept(@me, @developer, 'Developer')
 end
 
 Given(/^I click the switch "(.*?)"$/) do |target|
@@ -28,7 +28,7 @@ Given(/^I should have privilege set to "(.*?)"$/) do |value|
 end
 
 Given(/^I change my permissions$/) do
-  steps %Q{
+  steps %(
     Given I click the link "lock"
       And I click the switch "bypass-fogging"
       And I click the switch "bypass-delay"
@@ -42,5 +42,5 @@ Given(/^I change my permissions$/) do
       And I click the switch "bypass-fogging"
         Then I should have privilege set to "disallowed"
         And I should have "bypass_delay" enabled
-  }
+  )
 end

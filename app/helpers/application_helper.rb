@@ -1,5 +1,4 @@
 module ApplicationHelper
-
   def fogged_icon(value)
     if value
       '<i class="material-icons">cloud_done</i>'.html_safe
@@ -41,7 +40,6 @@ module ApplicationHelper
   end
 
   def name_or_email_name(user)
-    user.username.present? ? user.username : user.email.split("@").first
+    user.username.present? ? user.username : user.email.split('@').first
   end
-
 end
