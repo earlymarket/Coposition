@@ -7,7 +7,7 @@ namespace :avatars do
   end
 
   desc 'Adds a random avatar to all users without an avatar.'
-  task :'users:all' => :environment do
+  task users: :environment do
     users = User.all
     count_and_confirm(users)
     users.each do |user|
@@ -21,7 +21,7 @@ namespace :avatars do
   end
 
   desc 'Adds a random avatar to all apps/developers without an avatar.'
-  task :'apps:all' => :environment do
+  task apps: :environment do
     apps = Developer.all
     count_and_confirm(apps)
     apps.each do |app|
@@ -38,9 +38,7 @@ end
 
 def count_and_confirm(resource)
   count = resource.count
-  resource.each do |entity|
-    count -= 1 if entity.avatar?
-  end
+  resource.each { |entity| count -= 1 if entity.avatar? }
 
   abort('Everyone already has an avatar!') if count == 0
 
