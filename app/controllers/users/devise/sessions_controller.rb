@@ -17,22 +17,14 @@ class Users::Devise::SessionsController < Devise::SessionsController
   end
 
   def respond_with_auth_token
-    @email = params[:user][:email] if params[:user]
-    @password = params[:user][:password] if params[:user]
-
-    return unless valid_request?
-
-    user = User.find_by(email: @email)
-    if user && user.valid_password?(@password)
-      render status: 200, json: {
-        id: user.id,
-        email: user.email,
-        username: user.username,
-        authentication_token: user.authentication_token
-      }
-    else
-      render status: 401, json: { message: 'Invalid email or password.' }
+    if params[:user]
+      email = params[:user][:email]
+      password = params[:user][:password]
     end
+
+    return unless valid_request?(email, password)
+
+    render status: 200, json: @user.public_info.as_json.merge(authentication_token: @user.authentication_token)
   end
 
   def destroy_auth_token
@@ -47,12 +39,13 @@ class Users::Devise::SessionsController < Devise::SessionsController
     end
   end
 
-  def valid_request?
-    if @email.nil? || @password.nil?
-      render status: 400, json: { message: 'The request MUST contain the user email and password.' }
+  def valid_request?(email, password)
+    if (@user = User.find_by(email: email)) && @user.valid_password?(password)
+      @user
+    else
+      render status: 401, json: { message: 'The request MUST contain the user email and password.' }
       return false
     end
-    true
   end
 
   def after_sign_in_path_for(resource)

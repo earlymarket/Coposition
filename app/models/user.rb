@@ -98,7 +98,7 @@ class User < ActiveRecord::Base
   def public_info
     # Clears out any potentially sensitive attributes
     # Returns a normal ActiveRecord relation
-    User.select([:id, :username, :email, :slug]).find(id)
+    User.select([:id, :username, :email]).find(id)
   end
 
   def public_info_hash
