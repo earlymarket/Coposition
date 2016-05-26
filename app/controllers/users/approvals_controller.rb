@@ -45,9 +45,9 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def approve
-    @approval = Approval.find_by(id: params[:id], user: current_user)
-    approvable_type = @approval.approvable_type
-    Approval.accept(current_user, @approval.approvable, approvable_type)
+    approval = Approval.find_by(id: params[:id], user: current_user)
+    approvable_type = approval.approvable_type
+    Approval.accept(current_user, approval.approvable, approvable_type)
     @presenter = ::Users::ApprovalsPresenter.new(current_user, approvable_type)
     gon.push(@presenter.gon)
     respond_to do |format|
@@ -57,13 +57,13 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def reject
-    @approval = Approval.find_by(id: params[:id], user: current_user)
-    approvable_type = @approval.approvable_type
-    current_user.destroy_permissions_for(@approval.approvable)
+    approval = Approval.find_by(id: params[:id], user: current_user)
+    approvable_type = approval.approvable_type
+    current_user.destroy_permissions_for(approval.approvable)
     if approvable_type == 'User'
-      Approval.find_by(user: @approval.approvable, approvable: @approval.user, approvable_type: 'User').destroy
+      Approval.find_by(user: approval.approvable, approvable: approval.user, approvable_type: 'User').destroy
     end
-    @approval.destroy
+    approval.destroy
     @presenter = ::Users::ApprovalsPresenter.new(current_user, approvable_type)
     gon.push(@presenter.gon)
     respond_to do |format|
