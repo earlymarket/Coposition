@@ -21,7 +21,8 @@ class Users::ApprovalsController < ApplicationController
           redirect_to(user_apps_path, notice: 'Developer approved')
         end
       else
-        redirect_to new_user_approval_path(approvable_type: approvable_type), alert: "Error: #{approval.errors.get(:base).first}"
+        redirect_to new_user_approval_path(approvable_type: approvable_type),
+                    alert: "Error: #{approval.errors.get(:base).first}"
       end
     elsif approvable_type == 'User'
       UserMailer.invite_email(allowed_params[:approvable]).deliver_now

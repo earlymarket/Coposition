@@ -58,7 +58,8 @@ RSpec.describe DevicesHelper, type: :helper do
     it 'return the path to the shared device if device is published' do
       expect(helper.devices_shared_link(other)).to be_kind_of(String)
       # http://test.host/users/1/devices/5/shared
-      expect(helper.devices_shared_link(other)).to match(%r{http://.+/users/#{device.user_id}/devices/#{device.id}/shared*+})
+      expect(helper.devices_shared_link(other))
+        .to match(%r{http://.+/users/#{device.user_id}/devices/#{device.id}/shared*+})
     end
   end
 end

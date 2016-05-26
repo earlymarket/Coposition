@@ -71,8 +71,7 @@ class Checkin < ActiveRecord::Base
   end
 
   def nearest_city
-    center_point = [lat, lng]
-    City.near(center_point, 200).first || NoCity.new
+    City.near([lat, lng], 200).first || NoCity.new
   end
 
   def add_fogged_info
@@ -97,10 +96,9 @@ class Checkin < ActiveRecord::Base
 
   def self.hash_group_and_count_by(attribute)
     select(&attribute).group_by(&attribute)
-      .each_with_object({}) do |(key, checkins), result|
-        result[key] = checkins.count
-      end
-      .sort_by { |_attribute, count| count }.reverse!
+                      .each_with_object({}) do |(key, checkins), result|
+                        result[key] = checkins.count
+                      end.sort_by { |_attribute, count| count }.reverse!
   end
 
   def self.percentage_increase(time_range)

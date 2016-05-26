@@ -17,7 +17,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'devise'
 gem 'friendly_id', '~> 5.1.0'
 gem 'responders', '~> 2.0'
-gem 'rack-cors', :require => 'rack/cors'
+gem 'rack-cors', require: 'rack/cors'
 gem 'factory_girl_rails'
 gem 'faker'
 gem 'geocoder'
@@ -74,8 +74,8 @@ end
 group :test do
   gem 'codeclimate-test-reporter', require: nil
   gem 'selenium-webdriver', '~> 2.53'
-  gem 'cucumber-rails', :require => false
+  gem 'cucumber-rails', require: false
   gem 'launchy'
   gem 'database_cleaner'
-  gem 'simplecov', :require => false
+  gem 'simplecov', require: false
 end
