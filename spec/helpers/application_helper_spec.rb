@@ -9,7 +9,7 @@ RSpec.describe ApplicationHelper, type: :helper do
 
   describe '#humanize_date' do
     it 'should accept a date' do
-      expect { helper.humanize_date(Faker::Date.forward(30))}.not_to raise_error
+      expect { helper.humanize_date(Faker::Date.forward(30)) }.not_to raise_error
     end
 
     it 'should return a string' do

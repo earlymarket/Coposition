@@ -10,3 +10,4 @@ exclude_paths:
 - "db/schema.rb"
 - "vendor/*"
 - "bin/*"
+- "lib/tasks/cucumber.rake"
