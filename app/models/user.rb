@@ -21,11 +21,16 @@ class User < ActiveRecord::Base
   has_many :requests
   has_many :approvals, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
-  has_many :developers, -> { where "status = 'accepted'" }, through: :approvals, source: :approvable, source_type: 'Developer'
-  has_many :friends, -> { where "status = 'accepted'" }, through: :approvals, source: :approvable, source_type: 'User'
-  has_many :pending_friends, -> { where "status = 'pending'" }, through: :approvals, source: :approvable, source_type: 'User'
-  has_many :friend_requests, -> { where "status = 'requested'" }, through: :approvals, source: :approvable, source_type: 'User'
-  has_many :developer_requests, -> { where "status = 'developer-requested'" }, through: :approvals, source: :approvable, source_type: 'Developer'
+  has_many :developers, -> { where "status = 'accepted'" },
+           through: :approvals, source: :approvable, source_type: 'Developer'
+  has_many :friends, -> { where "status = 'accepted'" },
+           through: :approvals, source: :approvable, source_type: 'User'
+  has_many :pending_friends, -> { where "status = 'pending'" },
+           through: :approvals, source: :approvable, source_type: 'User'
+  has_many :friend_requests, -> { where "status = 'requested'" },
+           through: :approvals, source: :approvable, source_type: 'User'
+  has_many :developer_requests, -> { where "status = 'developer-requested'" },
+           through: :approvals, source: :approvable, source_type: 'Developer'
   has_many :permissions, as: :permissible, dependent: :destroy
   has_many :permitted_devices, through: :permissions, source: :permissible, source_type: 'Device'
 

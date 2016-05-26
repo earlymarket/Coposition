@@ -43,8 +43,7 @@ class Checkin < ActiveRecord::Base
   end
 
   def self.replace_foggable_attributes
-    # this will convert it to an array
-    # paginate before use!
+    # this will convert it to an array, paginate before use!
     all.map(&:replace_foggable_attributes)
   end
 
@@ -55,11 +54,8 @@ class Checkin < ActiveRecord::Base
 
   def self.calendar_data
     since(first.created_at.beginning_of_year)
-      .unscope(:order)
-      .group("date_trunc('day', created_at)")
-      .count
-      .to_a
-      .sort
+      .unscope(:order).group("date_trunc('day', created_at)")
+      .count.to_a.sort
   end
 
   def reverse_geocode!
@@ -100,8 +96,7 @@ class Checkin < ActiveRecord::Base
   end
 
   def self.hash_group_and_count_by(attribute)
-    select(&attribute)
-      .group_by(&attribute)
+    select(&attribute).group_by(&attribute)
       .each_with_object({}) do |(key, checkins), result|
         result[key] = checkins.count
       end
@@ -118,10 +113,8 @@ class Checkin < ActiveRecord::Base
 
   def self.to_csv
     attributes = Checkin.column_names
-
     CSV.generate(headers: true) do |csv|
       csv << attributes
-
       all.each do |checkin|
         csv << checkin.attributes.values_at(*attributes)
       end
