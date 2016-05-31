@@ -28,7 +28,8 @@ class Device < ActiveRecord::Base
 
   def resolve_privilege(unresolved_checkins, permissible)
     return Checkin.none if privilege_for(permissible) == 'disallowed'
-    if privilege_for(permissible) == 'last_only' && unresolved_checkins.any?
+    if privilege_for(permissible) == 'last_only'
+      return Checkin.none if unresolved_checkins.empty?
       Checkin.where(id: unresolved_checkins.first.id)
     else
       unresolved_checkins
