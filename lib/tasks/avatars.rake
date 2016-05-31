@@ -44,12 +44,12 @@ def count_and_confirm(resource)
 
   confirm = ''
 
-  until confirm.casecmp('y') || confirm.casecmp('n')
+  until confirm =~ /[yn]/i
     puts "There are #{resource.count} #{resource.name}s. #{count} without avatars. Continue? (y/n)"
     confirm = STDIN.gets.chomp
   end
 
-  abort('Task aborted') if confirm == 'n'
+  abort('Task aborted') if confirm =~ /[n]/i
 end
 
 def add_avatar(resource)
