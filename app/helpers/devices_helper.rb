@@ -36,14 +36,13 @@ module DevicesHelper
 
   def devices_shared_link(device)
     return nil unless device.published?
-    link = shared_user_device_url(id: device.id, user_id: params['user_id'] || device.user_id)
-    output = text_field_tag(nil, link, class: 'linkbox', id: 'linkbox' << device.id.to_s)
+    link = shared_user_device_url(id: device.id, user_id: device.user_id)
+    output = text_field_tag(nil, link, class: 'linkbox', id: "linkbox#{device.id}")
     output << content_tag(:i, 'assignment',
                           class: 'material-icons tooltipped clip_button hide',
                           data: {
-                            'clipboard-target': ('linkbox' << device.id.to_s),
-                            tooltip: 'Click to copy',
-                            position: 'right'
+                            'clipboard-target': "linkbox#{device.id}",
+                            tooltip: 'Click to copy', position: 'right'
                           })
     output
   end
