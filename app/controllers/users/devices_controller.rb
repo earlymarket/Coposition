@@ -15,10 +15,9 @@ class Users::DevicesController < ApplicationController
   def show
     @device = Device.find(params[:id])
     gon.checkins = @device.checkins
-    flash[:notice] = 'Right click on the map to checkin'
     gon.current_user_id = current_user.id
     respond_to do |format|
-      format.html
+      format.html { flash[:notice] = 'Right click on the map to checkin' }
       format.csv { send_data @device.checkins.to_csv, filename: "device-#{@device.id}-checkins-#{Date.today}.csv" }
     end
   end
