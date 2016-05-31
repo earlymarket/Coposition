@@ -66,6 +66,10 @@ def add_avatar(resource)
 end
 
 def validate_id(args)
-  is_valid = true if Float(args[:id]) rescue false
+  is_valid = begin
+    true if Float(args[:id])
+  rescue ArgumentError
+    false
+  end
   abort('Bad param. Specify an ID.') unless is_valid
 end
