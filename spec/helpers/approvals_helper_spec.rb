@@ -10,14 +10,11 @@ RSpec.describe ApprovalsHelper, type: :helper do
   let(:developer_approvals_input) { helper.approvals_input('Developer') }
 
   describe '#approvals_input' do
-    it 'should assign placeholder key a string' do
+    it 'should assign placeholder and class key a string' do
       expect(developer_approvals_input[:placeholder]).to match 'name'
-      expect(developer_approvals_input[:class]).to match 'devs_typeahead'
-    end
-
-    it 'should assign class key' do
-      expect(user_approvals_input[:class]).to match 'validate'
       expect(user_approvals_input[:placeholder]).to match 'email@email.com'
+      expect(user_approvals_input[:class]).to match 'validate'
+      expect(developer_approvals_input[:class]).to match 'devs_typeahead'
     end
   end
 
