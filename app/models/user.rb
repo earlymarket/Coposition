@@ -82,10 +82,10 @@ class User < ActiveRecord::Base
   end
 
   def get_user_checkins_for(permissible)
-    checkins_ids = devices.inject([]) do |result, device|
-      result + device.permitted_history_for(permissible).pluck(:id)
+    subqueries = devices.map do |device|
+      Checkin.arel_table[:id].in(device.permitted_history_for(permissible).ids)
     end
-    Checkin.where(id: checkins_ids)
+    Checkin.where(subqueries.inject(&:or))
   end
 
   ##############
