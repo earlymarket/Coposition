@@ -5,31 +5,31 @@ RSpec.describe Users::ApprovalsController, type: :controller do
 
   let(:user) do
     user = create_user
-    user.devices << FactoryGirl::create(:device)
+    user.devices << FactoryGirl.create(:device)
     user
   end
-  let(:friend){FactoryGirl::create :user}
-  let(:developer){FactoryGirl::create :developer}
+  let(:friend) { FactoryGirl.create :user }
+  let(:developer) { FactoryGirl.create :developer }
   let(:approval) do
-    app = FactoryGirl::create :approval
+    app = FactoryGirl.create :approval
     app.update(user: user)
     app.save
     app
   end
   let(:approval_two) do
-    app = FactoryGirl::create :approval
+    app = FactoryGirl.create :approval
     app.update(user: friend)
     app.save
     app
   end
-  let(:user_params) {{ user_id: user.id }}
+  let(:user_params) { { user_id: user.id } }
   let(:dev_approval_create_params) do
-   user_params.merge(approval: { approvable: developer.company_name, approvable_type: 'Developer' })
+    user_params.merge(approval: { approvable: developer.company_name, approvable_type: 'Developer' })
   end
   let(:friend_approval_create_params) do
-   user_params.merge(approval: { approvable: friend.email, approvable_type: 'User' })
+    user_params.merge(approval: { approvable: friend.email, approvable_type: 'User' })
   end
-  let(:approve_reject_params) {user_params.merge(id: approval.id) }
+  let(:approve_reject_params) { user_params.merge(id: approval.id) }
   let(:invite_params) do
     user_params.merge(invite: '', approval: { approvable: 'new@email.com', approvable_type: 'User' })
   end
@@ -43,7 +43,6 @@ RSpec.describe Users::ApprovalsController, type: :controller do
 
   describe 'POST #create' do
     context 'when adding a developer' do
-
       it 'should create an accepted approval between user and developer' do
         post :create, dev_approval_create_params
         expect(Approval.last.approvable_id).to eq developer.id
@@ -65,7 +64,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
       it 'should create a pending approval, friend request and send an email' do
         count = ActionMailer::Base.deliveries.count
         post :create, friend_approval_create_params
-        expect(ActionMailer::Base.deliveries.count).to be(count+1)
+        expect(ActionMailer::Base.deliveries.count).to be(count + 1)
         expect(Approval.count).to eq 2
         expect(Approval.first.user).to eq user
         expect(Approval.first.approvable_id).to eq friend.id
@@ -87,14 +86,14 @@ RSpec.describe Users::ApprovalsController, type: :controller do
 
     context 'when an incorrect name is provided' do
       it 'should not create an approval if Developer does not exist' do
-        dev_approval_create_params[:approval].merge!(approvable: 'does not exist')
+        dev_approval_create_params[:approval][:approvable] = 'does not exist'
         post :create, dev_approval_create_params
         expect(Approval.count).to eq 0
         expect(flash[:alert]).to match 'not found'
       end
 
       it 'should not create or approve an approval if trying to add self' do
-        friend_approval_create_params[:approval].merge!(approvable: user.email)
+        friend_approval_create_params[:approval][:approvable] = user.email
         post :create, friend_approval_create_params
         expect(flash[:alert]).to match 'Adding self'
         expect(Approval.count).to eq 0
@@ -113,7 +112,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
       it 'should send an email to the address provided' do
         count = ActionMailer::Base.deliveries.count
         post :create, invite_params
-        expect(ActionMailer::Base.deliveries.count).to be(count+1)
+        expect(ActionMailer::Base.deliveries.count).to be(count + 1)
       end
     end
   end
@@ -175,5 +174,4 @@ RSpec.describe Users::ApprovalsController, type: :controller do
       expect(Approval.count).to eq 0
     end
   end
-
 end

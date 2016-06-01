@@ -17,14 +17,13 @@ FriendlyId.defaults do |config|
   config.use :reserved
 
   config.reserved_words = %w(new edit index session login logout users admin
-    stylesheets assets javascripts images)
+                             stylesheets assets javascripts images)
 
   config.use Module.new {
     def should_generate_new_friendly_id?
       slug.blank? || username_changed?
     end
   }
-
 
   #  ## Friendly Finders
   #

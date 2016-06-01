@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-
-  root to: "welcome#index"
+  root to: 'welcome#index'
 
   # Specified routes
 
@@ -18,11 +17,11 @@ Rails.application.routes.draw do
   }
 
   # Attachinary
-  mount Attachinary::Engine => "/attachinary"
+  mount Attachinary::Engine => '/attachinary'
 
   # API
 
-  namespace :api, path: '', constraints: {subdomain: 'api'}, defaults: {format: 'json'} do
+  namespace :api, path: '', constraints: { subdomain: 'api' }, defaults: { format: 'json' } do
     namespace :v1 do
       resources :subscriptions, only: [:create, :destroy]
       resource :uuid, only: [:show]
@@ -64,8 +63,6 @@ Rails.application.routes.draw do
     end
   end
 
-
-
   # Users
 
   resources :users, only: [:show], module: :users do
@@ -92,8 +89,6 @@ Rails.application.routes.draw do
     get '/apps', to: 'approvals#apps'
     get '/friends', to: 'approvals#friends'
   end
-
-
 
   # Devs
   resources :developers, only: [:edit, :update]

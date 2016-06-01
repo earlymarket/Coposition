@@ -1,5 +1,4 @@
 class Developers::ApprovalsController < ApplicationController
-
   before_action :authenticate_developer!
 
   def index
@@ -15,9 +14,9 @@ class Developers::ApprovalsController < ApplicationController
     user = User.find_by(email: allowed_params[:user])
     approval = Approval.link(user, current_developer, 'Developer') if user
     if approval && approval.id
-      flash[:notice] = "Successfully sent"
+      flash[:notice] = 'Successfully sent'
     else
-      flash[:alert] = "Error creating approval"
+      flash[:alert] = 'Error creating approval'
     end
     redirect_to new_developers_approval_path
   end
@@ -25,5 +24,4 @@ class Developers::ApprovalsController < ApplicationController
   def allowed_params
     params.require(:approval).permit(:user)
   end
-
 end

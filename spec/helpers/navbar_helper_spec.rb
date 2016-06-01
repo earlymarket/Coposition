@@ -1,7 +1,6 @@
-require "rails_helper"
+require 'rails_helper'
 
-RSpec.describe NavbarHelper, :type => :helper do
-
+RSpec.describe NavbarHelper, type: :helper do
   let(:random_word) { Faker::Lorem.word }
   let(:random_count) { Faker::Number.between(1, 99) }
 
@@ -17,5 +16,4 @@ RSpec.describe NavbarHelper, :type => :helper do
       expect(helper.navbar_indicator(random_word, 0)).to eq(random_word)
     end
   end
-
 end

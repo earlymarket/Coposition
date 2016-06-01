@@ -7,9 +7,9 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
 
   def create
     if req_from_coposition_app?
-      resource_exists?(approvable_type,approvable)
+      resource_exists?(approvable_type, approvable)
       Approval.link(@user, approvable, approvable_type)
-      if @user.has_request_from(approvable) || approvable_type == 'Developer'
+      if @user.request_from?(approvable) || approvable_type == 'Developer'
         Approval.accept(@user, approvable, approvable_type)
       end
       approval = @user.approval_for(approvable)
@@ -19,7 +19,6 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
     end
     render json: approval
   end
-
 
   def update
     approval = Approval.where(id: params[:id], user: @user).first
@@ -39,30 +38,28 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   end
 
   def status
-  	respond_with approval_status: @user.approval_for(@dev).status
+    respond_with approval_status: @user.approval_for(@dev).status
   end
 
   private
-    def allowed_params
-      params.require(:approval).permit(:user, :approvable, :approvable_type, :status)
-    end
 
-    def check_user
-      unless current_user?(params[:user_id])
-        render status: 403, json: { message: 'Incorrect User' }
-      end
-    end
+  def allowed_params
+    params.require(:approval).permit(:user, :approvable, :approvable_type, :status)
+  end
 
-    def approvable_type
-      allowed_params[:approvable_type]
-    end
+  def check_user
+    render status: 403, json: { message: 'Incorrect User' } unless current_user?(params[:user_id])
+  end
 
-    def approvable
-      model_find(approvable_type).find(allowed_params[:approvable])
-    end
+  def approvable_type
+    allowed_params[:approvable_type]
+  end
 
-    def model_find(type)
-      [User, Developer].find { |model| model.name == type.titleize}
-    end
+  def approvable
+    model_find(approvable_type).find(allowed_params[:approvable])
+  end
 
+  def model_find(type)
+    [User, Developer].find { |model| model.name == type.titleize }
+  end
 end

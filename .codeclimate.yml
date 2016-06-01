@@ -9,3 +9,5 @@ exclude_paths:
 - "db/migrate/*"
 - "db/schema.rb"
 - "vendor/*"
+- "bin/*"
+- "lib/tasks/cucumber.rake"

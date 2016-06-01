@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe UserMailer, type: :mailer do
   describe 'invite_email' do
@@ -23,8 +23,8 @@ RSpec.describe UserMailer, type: :mailer do
   end
 
   describe 'add_friend_email' do
-    let(:user) { FactoryGirl::create :user }
-    let(:friend) { FactoryGirl::create :user }
+    let(:user) { FactoryGirl.create :user }
+    let(:friend) { FactoryGirl.create :user }
     let(:mail) { UserMailer.add_friend_email(user, friend) }
 
     it 'renders the subject' do

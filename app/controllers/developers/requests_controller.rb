@@ -1,5 +1,4 @@
 class Developers::RequestsController < ApplicationController
-
   def pay
     unpaid = current_developer.requests.where(paid: false)
     unpaid.update_all(paid: true)
@@ -9,5 +8,4 @@ class Developers::RequestsController < ApplicationController
       format.js
     end
   end
-
 end
