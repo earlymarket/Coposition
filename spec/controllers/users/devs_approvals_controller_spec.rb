@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 RSpec.describe Users::DevsApprovalsController, type: :controller do
   include ControllerMacros
   let(:user) { create_user }
