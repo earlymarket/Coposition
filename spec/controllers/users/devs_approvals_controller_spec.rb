@@ -24,9 +24,7 @@ RSpec.describe Users::DevsApprovalsController, type: :controller do
         expect(Approval.last).to eq approval
         expect(Approval.last.status).to eq 'accepted'
       end
-    end
 
-    context 'when an incorrect name is provided' do
       it 'should not create an approval if Developer does not exist' do
         approval_create_params[:approval][:approvable] = 'does not exist'
         post :create, approval_create_params
@@ -34,7 +32,7 @@ RSpec.describe Users::DevsApprovalsController, type: :controller do
         expect(flash[:alert]).to match 'not found'
       end
 
-      it 'should not approve if trying to add an exisiting developer' do
+      it 'should not approve if trying to add an already approved developer' do
         approval.update(status: 'accepted', approvable_id: developer.id, approvable_type: 'Developer')
         post :create, approval_create_params
         expect(flash[:alert]).to match 'exists'
