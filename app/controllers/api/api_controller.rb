@@ -7,11 +7,11 @@ class Api::ApiController < ActionController::Base
   private
 
   def find_user
-    if params[:controller] == "api/v1/users"
-      @user = User.find(params[:id])
-    else
-      @user = User.find(params[:user_id])
-    end
+    @user = if params[:controller] == 'api/v1/users'
+              User.find(params[:id])
+            else
+              User.find(params[:user_id])
+            end
   end
 
   def authenticate
@@ -65,6 +65,6 @@ class Api::ApiController < ActionController::Base
   end
 
   def record_not_found(exception)
-    render json: {error: exception.message}.to_json, status: 404 and return
+    render json: { error: exception.message }.to_json, status: 404
   end
 end

@@ -39,7 +39,7 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.default_url_options = { host: 'localhost:3000' }
 
   # config.action_mailer.raise_delivery_errors = true
 
@@ -48,16 +48,16 @@ Rails.application.configure do
 
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default :charset => "utf-8"
+  config.action_mailer.default charset: 'utf-8'
 
   config.action_mailer.smtp_settings = {
-    address: "smtp.sendgrid.net",
-    domain: "localhost:3000",
+    address: 'smtp.sendgrid.net',
+    domain: 'localhost:3000',
     port: 587,
-    authentication: "plain",
+    authentication: 'plain',
     enable_starttls_auto: true,
-    user_name:  "",
-    password: ""
+    user_name:  '',
+    password: ''
   }
 
   config.after_initialize do

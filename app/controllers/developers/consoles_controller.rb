@@ -10,5 +10,4 @@ class Developers::ConsolesController < ApplicationController
       format.js
     end
   end
-
 end

@@ -53,7 +53,7 @@ $(document).on('ready page:change', function() {
     $('nav').prepend(oldMenu)
     $(".button-collapse").sideNav();
     $('.collapsible').collapsible();
-  })();
+  }());
 
 });
 

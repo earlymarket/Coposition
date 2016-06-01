@@ -31,6 +31,9 @@
       <%= link_to(navbar_indicator('Friends', current_user.friend_requests.count), user_friends_path(current_user.url_id)) %>
     </li>
     <li>
+      <%= link_to('Edit account', edit_user_registration_path) %>
+    </li>
+    <li>
       <%= link_to("Log out", destroy_user_session_path, method: :delete) %>
     </li>
 

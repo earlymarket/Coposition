@@ -9,7 +9,7 @@ class Api::V1::CheckinsController < Api::ApiController
     if req_from_coposition_app?
       checkins = copo_app_checkins
     else
-      params[:per_page].to_i <= 1000 ? per_page = params[:per_page] : per_page = 1000
+      per_page = params[:per_page].to_i <= 1000 ? params[:per_page] : 1000
       checkins = @user.get_checkins(@permissible, @device).paginate(page: params[:page], per_page: per_page)
       paginated_response_headers(checkins)
       checkins = checkins.resolve_address(@permissible, params[:type])
@@ -39,33 +39,30 @@ class Api::V1::CheckinsController < Api::ApiController
 
   private
 
-    def device_exists?
-      if (@device = Device.find_by(uuid: request.headers['X-UUID'])).nil?
-        render status: 400, json: { message: 'You must provide a valid uuid' }
-      end
+  def device_exists?
+    if (@device = Device.find_by(uuid: request.headers['X-UUID'])).nil?
+      render status: 400, json: { message: 'You must provide a valid uuid' }
     end
+  end
 
-    def allowed_params
-      params.require(:checkin).permit(:lat, :lng, :created_at, :fogged)
-    end
+  def allowed_params
+    params.require(:checkin).permit(:lat, :lng, :created_at, :fogged)
+  end
 
-    def find_device
-      if params[:device_id] then @device = Device.find(params[:device_id]) end
-    end
+  def find_device
+    @device = Device.find(params[:device_id]) if params[:device_id]
+  end
 
-    def copo_app_checkins
-      checkins = @device ? @device.checkins : @user.checkins
-      checkins = checkins.includes(:device).map do |checkin|
-        checkin.reverse_geocode!
-      end if params[:type] == 'address'
-      checkins
-    end
+  def copo_app_checkins
+    checkins = @device ? @device.checkins : @user.checkins
+    checkins = checkins.includes(:device).map(&:reverse_geocode!) if params[:type] == 'address'
+    checkins
+  end
 
-    def copo_app_checkin
-      checkins = @device ? @device.checkins : @user.checkins
-      if checkins
-        checkin = checkins.first
-        params[:type] == 'address' ? checkin.reverse_geocode! : checkin
-      end
-    end
+  def copo_app_checkin
+    checkins = @device ? @device.checkins : @user.checkins
+    return unless checkins
+    checkin = checkins.first
+    params[:type] == 'address' ? checkin.reverse_geocode! : checkin
+  end
 end

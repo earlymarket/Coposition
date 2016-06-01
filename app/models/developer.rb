@@ -8,11 +8,11 @@ class Developer < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :requests, dependent: :destroy
-  has_many :permissions, :as => :permissible, dependent: :destroy
+  has_many :permissions, as: :permissible, dependent: :destroy
   has_many :devices, through: :permissions
 
-  has_many :approvals, :as => :approvable, dependent: :destroy
-  has_many :pending_requests, -> { where "status = 'developer-requested'" }, :through => :approvals, source: :user
+  has_many :approvals, as: :approvable, dependent: :destroy
+  has_many :pending_requests, -> { where "status = 'developer-requested'" }, through: :approvals, source: :user
   has_many :users, -> { where "status = 'accepted'" }, through: :approvals
 
   before_create do |dev|
@@ -20,11 +20,10 @@ class Developer < ActiveRecord::Base
   end
 
   def slack_message
-    "A new developer has registered, id: #{self.id}, company_name: #{self.company_name}, there are now #{Developer.count} developers."
+    "A new developer registered, id: #{id}, company_name: #{company_name}, there are now #{Developer.count} developers."
   end
 
   def public_info
-    Developer.select([:id, :email, :company_name, :tagline, :redirect_url]).find(self.id)
+    Developer.select([:id, :email, :company_name, :tagline, :redirect_url]).find(id)
   end
-
 end

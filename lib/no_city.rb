@@ -1,8 +1,19 @@
 class NoCity
-  def nil?; true; end
-  def id; nil; end
-  def latitude; nil; end
-  def longitude; nil; end
+  def nil?
+    true
+  end
+
+  def id
+    nil
+  end
+
+  def latitude
+    nil
+  end
+
+  def longitude
+    nil
+  end
 
   def name
     'No nearby cities'

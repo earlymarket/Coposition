@@ -1,16 +1,15 @@
 module ApprovalsHelper
-
   def approvals_input(type)
-    if type == "Developer"
-      { placeholder: "App name", class: "validate devs_typeahead", required: true }
-    elsif type == "User"
-      { placeholder: "email@email.com", class: "validate", required: true }
+    if type == 'Developer'
+      { placeholder: 'App name', class: 'validate devs_typeahead', required: true }
+    elsif type == 'User'
+      { placeholder: 'email@email.com', class: 'validate', required: true }
     end
   end
 
   def approvals_approvable_name(approvable)
     if approvable.respond_to? :username
-      approvable.username.present? ? approvable.username : approvable.email.split("@").first
+      approvable.username.present? ? approvable.username : approvable.email.split('@').first
     else
       approvable.company_name
     end
@@ -22,7 +21,7 @@ module ApprovalsHelper
     str << user_friend_path(current_user.url_id, approvable)
     str << '" class="black-text">'
     str << capture(&block)
-    str << "</a>"
+    str << '</a>'
     raw str
   end
 

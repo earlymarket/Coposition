@@ -1,12 +1,13 @@
 class Users::PermissionsController < ApplicationController
-
   before_action :authenticate_user!, :require_ownership
 
   def update
     @permission = Permission.find(params[:id])
     @permission.update(allowed_params)
     devices = current_user.devices.order(:id).includes(:permissions)
-    gon.checkins = current_user.checkins.since(current_user.checkins.first.created_at.beginning_of_year) if current_user.checkins.exists?
+    if current_user.checkins.exists?
+      gon.checkins = current_user.checkins.since(current_user.checkins.first.created_at.beginning_of_year)
+    end
     gon.permissions = devices.map(&:permissions).inject(:+)
     gon.current_user_id = current_user.id
     gon.devices = devices
@@ -16,14 +17,14 @@ class Users::PermissionsController < ApplicationController
   end
 
   private
-    def allowed_params
-      params.require(:permission).permit(:privilege, :bypass_fogging, :bypass_delay)
-    end
 
-    def require_ownership
-      unless user_owns_permission?
-        flash[:alert] = "You do not control that permission"
-        redirect_to root_path
-      end
-    end
+  def allowed_params
+    params.require(:permission).permit(:privilege, :bypass_fogging, :bypass_delay)
+  end
+
+  def require_ownership
+    return if user_owns_permission?
+    flash[:alert] = 'You do not control that permission'
+    redirect_to root_path
+  end
 end

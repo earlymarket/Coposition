@@ -1,5 +1,5 @@
 class Users::Devise::RegistrationsController < Devise::RegistrationsController
-  protect_from_forgery with: :exception, :unless => :req_from_coposition_app?
+  protect_from_forgery with: :exception, unless: :req_from_coposition_app?
   respond_to :json
   before_filter :configure_sign_up_params, only: [:create]
   before_filter :configure_account_update_params, only: [:update]
@@ -49,10 +49,10 @@ class Users::Devise::RegistrationsController < Devise::RegistrationsController
   def app_sign_up
     user = User.new(user_api_params)
     if user.save
-      render :json=> user.as_json, :status=>201
+      render json: user.as_json, status: 201
     else
       warden.custom_failure!
-      render :json=> user.errors, :status=>422
+      render json: user.errors, status: 422
     end
   end
 
