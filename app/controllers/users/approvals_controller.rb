@@ -12,21 +12,18 @@ class Users::ApprovalsController < ApplicationController
     user = User.find_by(email: allowed_params[:approvable])
     approval = Approval.add_friend(current_user, user) if user
     if approval_created?(user, approval)
-      @presenter = ::Users::ApprovalsPresenter.new(current_user, 'User')
-      gon.push(@presenter.gon)
+      presenter_and_gon('User')
       redirect_to(user_friends_path, notice: 'Friend request sent')
     end
   end
 
   def apps
-    @presenter = ::Users::ApprovalsPresenter.new(current_user, 'Developer')
-    gon.push(@presenter.gon)
+    presenter_and_gon('Developer')
     render 'approvals'
   end
 
   def friends
-    @presenter = ::Users::ApprovalsPresenter.new(current_user, 'User')
-    gon.push(@presenter.gon)
+    presenter_and_gon('User')
     render 'approvals'
   end
 
@@ -34,20 +31,19 @@ class Users::ApprovalsController < ApplicationController
     approval = Approval.find_by(id: params[:id], user: current_user)
     approvable_type = approval.approvable_type
     Approval.accept(current_user, approval.approvable, approvable_type)
-    @presenter = ::Users::ApprovalsPresenter.new(current_user, approvable_type)
-    gon.push(@presenter.gon)
+    presenter_and_gon(approvable_type)
   end
 
   def reject
     approval = Approval.find_by(id: params[:id], user: current_user)
     approvable_type = approval.approvable_type
-    current_user.destroy_permissions_for(approval.approvable)
+    approvable = approval.approvable
+    current_user.destroy_permissions_for(approvable)
     if approvable_type == 'User'
-      Approval.find_by(user: approval.approvable, approvable: approval.user, approvable_type: 'User').destroy
+      Approval.destroy_all(user: approvable, approvable: current_user, approvable_type: 'User')
     end
     approval.destroy
-    @presenter = ::Users::ApprovalsPresenter.new(current_user, approvable_type)
-    gon.push(@presenter.gon)
+    presenter_and_gon(approvable_type)
     render 'approve'
   end
 
@@ -66,5 +62,10 @@ class Users::ApprovalsController < ApplicationController
       redirect_to user_dashboard_path, notice: 'User not signed up with Coposition, invite email sent!'
     end
     false
+  end
+
+  def presenter_and_gon(type)
+    @presenter = ::Users::ApprovalsPresenter.new(current_user, type)
+    gon.push(@presenter.gon)
   end
 end
