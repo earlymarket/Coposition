@@ -9,26 +9,11 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def create
-    approvable_type = allowed_params[:approvable_type]
-    if approvable(approvable_type)
-      approval = Approval.construct(current_user, approvable(approvable_type), approvable_type)
-      if approval.save
-        @presenter = ::Users::ApprovalsPresenter.new(current_user, approvable_type)
-        gon.push(@presenter.gon)
-        if approvable_type == 'User'
-          redirect_to(user_friends_path, notice: 'Friend request sent')
-        else
-          redirect_to(user_apps_path, notice: 'Developer approved')
-        end
-      else
-        redirect_to new_user_approval_path(approvable_type: approvable_type),
-                    alert: "Error: #{approval.errors.get(:base).first}"
-      end
-    elsif approvable_type == 'User'
-      UserMailer.invite_email(allowed_params[:approvable]).deliver_now
-      redirect_to user_dashboard_path, notice: 'User not signed up with Coposition, invite email sent!'
-    else
-      redirect_to new_user_approval_path(approvable_type: approvable_type), alert: 'Developer not found'
+    user = User.find_by(email: allowed_params[:approvable])
+    unless redirect_if_errors(user)
+      @presenter = ::Users::ApprovalsPresenter.new(current_user, 'User')
+      gon.push(@presenter.gon)
+      redirect_to(user_friends_path, notice: 'Friend request sent')
     end
   end
 
@@ -78,11 +63,19 @@ class Users::ApprovalsController < ApplicationController
     params.require(:approval).permit(:approvable, :approvable_type)
   end
 
-  def approvable(type)
-    if type == 'Developer'
-      Developer.find_by(company_name: allowed_params[:approvable])
-    elsif type == 'User'
-      User.find_by(email: allowed_params[:approvable])
+  def send_email_and_redirect
+    UserMailer.invite_email(allowed_params[:approvable]).deliver_now
+    redirect_to user_dashboard_path, notice: 'User not signed up with Coposition, invite email sent!'
+  end
+
+  def redirect_if_errors(user)
+    if user
+      approval = Approval.add_friend(current_user, user)
+      return false if approval.save
+      redirect_to new_user_approval_path(approvable_type: 'User'),
+                  alert: "Error: #{approval.errors.get(:base).first}"
+    else
+      send_email_and_redirect
     end
   end
 end
