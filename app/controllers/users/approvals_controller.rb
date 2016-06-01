@@ -57,17 +57,13 @@ class Users::ApprovalsController < ApplicationController
     params.require(:approval).permit(:approvable, :approvable_type)
   end
 
-  def send_email_and_redirect
-    UserMailer.invite_email(allowed_params[:approvable]).deliver_now
-    redirect_to user_dashboard_path, notice: 'User not signed up with Coposition, invite email sent!'
-  end
-
   def approval_created?(user, approval)
     return true if user && approval.save
     if user.present?
       redirect_to new_user_approval_path(approvable_type: 'User'), alert: "Error: #{approval.errors.get(:base).first}"
     else
-      send_email_and_redirect
+      UserMailer.invite_email(allowed_params[:approvable]).deliver_now
+      redirect_to user_dashboard_path, notice: 'User not signed up with Coposition, invite email sent!'
     end
     false
   end
