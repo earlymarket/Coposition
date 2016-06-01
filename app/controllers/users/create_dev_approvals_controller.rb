@@ -14,7 +14,7 @@ class Users::CreateDevApprovalsController < ApplicationController
   private
 
   def allowed_params
-    params.require(:approval).permit(:approvable, :approvable_type)
+    params.require(:approval).permit(:approvable)
   end
 
   def approval_created?(developer, approval)
