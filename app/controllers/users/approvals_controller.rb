@@ -35,10 +35,6 @@ class Users::ApprovalsController < ApplicationController
     Approval.accept(current_user, approval.approvable, approvable_type)
     @presenter = ::Users::ApprovalsPresenter.new(current_user, approvable_type)
     gon.push(@presenter.gon)
-    respond_to do |format|
-      format.html { redirect_to user_approvals_path }
-      format.js
-    end
   end
 
   def reject
@@ -51,10 +47,7 @@ class Users::ApprovalsController < ApplicationController
     approval.destroy
     @presenter = ::Users::ApprovalsPresenter.new(current_user, approvable_type)
     gon.push(@presenter.gon)
-    respond_to do |format|
-      format.html { redirect_to user_approvals_path }
-      format.js { render 'approve' }
-    end
+    render 'approve'
   end
 
   private
@@ -69,11 +62,10 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def redirect_if_errors(user)
-    if user
+    if user.present?
       approval = Approval.add_friend(current_user, user)
       return false if approval.save
-      redirect_to new_user_approval_path(approvable_type: 'User'),
-                  alert: "Error: #{approval.errors.get(:base).first}"
+      redirect_to new_user_approval_path(approvable_type: 'User'), alert: "Error: #{approval.errors.get(:base).first}"
     else
       send_email_and_redirect
     end

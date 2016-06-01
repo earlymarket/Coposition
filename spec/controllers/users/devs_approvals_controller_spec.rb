@@ -33,6 +33,13 @@ RSpec.describe Users::DevsApprovalsController, type: :controller do
         expect(Approval.count).to eq 0
         expect(flash[:alert]).to match 'not found'
       end
+
+      it 'should not approve if trying to add an exisiting developer' do
+        approval.update(status: 'accepted', approvable_id: developer.id, approvable_type: 'Developer')
+        post :create, approval_create_params
+        expect(flash[:alert]).to match 'exists'
+        expect(Approval.count).to eq 1
+      end
     end
   end
 end

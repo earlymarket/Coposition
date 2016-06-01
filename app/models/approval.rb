@@ -13,8 +13,11 @@ class Approval < ActiveRecord::Base
   end
 
   def self.add_developer(user, developer)
-    Approval.link(user, developer, 'Developer')
-    Approval.accept(user, developer, 'Developer')
+    approval = Approval.link(user, developer, 'Developer')
+    if user.developer_requests.include?(developer) || approval.errors.empty?
+      approval = Approval.accept(user, developer, 'Developer')
+    end
+    approval
   end
 
   def self.add_friend(user, friend)

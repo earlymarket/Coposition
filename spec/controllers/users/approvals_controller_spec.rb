@@ -71,7 +71,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         expect(Approval.count).to eq 0
       end
 
-      it 'should not create/approve if trying to add an exisiting friend/dev' do
+      it 'should not create/approve if trying to add an exisiting friend' do
         approval.update(status: 'accepted', approvable_id: friend.id, approvable_type: 'User')
         approval_two.update(status: 'accepted', approvable_id: user.id, approvable_type: 'User')
         post :create, friend_approval_create_params
