@@ -14,7 +14,7 @@ class Approval < ActiveRecord::Base
 
   def self.add_developer(user, developer)
     approval = Approval.link(user, developer, 'Developer')
-    if user.developer_requests.include?(developer) || approval.errors.empty?
+    if user.request_from?(developer) || approval.errors.empty?
       approval = Approval.accept(user, developer, 'Developer')
     end
     approval
@@ -22,7 +22,7 @@ class Approval < ActiveRecord::Base
 
   def self.add_friend(user, friend)
     approval = Approval.link(user, friend, 'User')
-    if user.friend_requests.include?(friend)
+    if user.request_from?(friend)
       approval = Approval.accept(user, friend, 'User')
     else
       UserMailer.add_friend_email(user, friend).deliver_now unless approval.errors.messages.present?
