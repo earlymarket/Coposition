@@ -6,7 +6,7 @@ window.COPO.calendar = {
     const dataTable = new google.visualization.DataTable();
     dataTable.addColumn({ type: 'date', id: 'Date' });
     dataTable.addColumn({ type: 'number', id: 'Frequency' });
-    const rowData = gon.checkins.map((day) =>[new Date(day[0]), day[1]]);;
+    const rowData = checkins.map((day) =>[new Date(day[0]), day[1]]);;
     dataTable.addRows(rowData);
     const options = {
       title: "Checkin frequency",
@@ -33,6 +33,8 @@ window.COPO.calendar = {
     } else {
       cellsize = 18;
     }
-    COPO.calendar.drawChart(checkins, cellsize);
+    if (checkins){
+      COPO.calendar.drawChart(checkins, cellsize);
+    }
   }
 }

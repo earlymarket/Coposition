@@ -52562,7 +52562,7 @@ $(document).on('ready page:change', function() {
     $('nav').prepend(oldMenu)
     $(".button-collapse").sideNav();
     $('.collapsible').collapsible();
-  })();
+  }());
 
 });
 
@@ -52615,6 +52615,9 @@ $(document).on('page:before-unload', function() {
   if($('#sidenav-overlay')) $("#sidenav-overlay").trigger("click");
 })
 ;
+/*eslint no-unused-expressions: [2, { allowTernary: true }]*/
+
+
 window.COPO = window.COPO || {};
 window.COPO.charts = {
   drawBarChart: function(checkins, height, page) {
@@ -52723,8 +52726,7 @@ window.COPO.charts = {
       data.addColumn('string');
       checkins.forEach(function(checkin){
         var humanizedDate = moment(checkin.created_at).format('LLL');
-        var foggedClass;
-        checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
+        var foggedClass = checkin.fogged ?  'fogged enabled-icon' : ' disabled-icon';
         var delete_button = COPO.utility.deleteCheckinLink(checkin);
         var fogging_button = COPO.utility.fogCheckinLink(checkin, foggedClass, 'tableFog');
         tableData.push([
@@ -53159,7 +53161,7 @@ window.COPO.calendar = {
     var dataTable = new google.visualization.DataTable();
     dataTable.addColumn({ type: 'date', id: 'Date' });
     dataTable.addColumn({ type: 'number', id: 'Frequency' });
-    var rowData = gon.checkins.map(function (day) {
+    var rowData = checkins.map(function (day) {
       return [new Date(day[0]), day[1]];
     });;
     dataTable.addRows(rowData);
@@ -53188,7 +53190,9 @@ window.COPO.calendar = {
     } else {
       cellsize = 18;
     }
-    COPO.calendar.drawChart(checkins, cellsize);
+    if (checkins) {
+      COPO.calendar.drawChart(checkins, cellsize);
+    }
   }
 };
 window.COPO = window.COPO || {};
@@ -53466,6 +53470,7 @@ $(document).on('page:change', function () {
             noWrap: true
           }
         });
+        COPO.maps.initControls(['geocoder', 'w3w', 'layers']);
         var MARKER_OPTIONS = {
           icon: L.mapbox.marker.icon({ 'marker-symbol': 'marker', 'marker-color': '#ff6900' }),
           draggable: true
@@ -53527,16 +53532,17 @@ $(document).on('page:change', function() {
     COPO.maps.initMap()
     COPO.maps.initControls();
     var checkin = gon.checkin;
+    var avatar, template, rendered;
 
     if(!checkin) {
-      var avatar = COPO.utility.avatar(gon.user.avatar, {class: 'left'});
+      avatar = COPO.utility.avatar(gon.user.avatar, {class: 'left'});
       var friend = {
         name: COPO.utility.friendsName(gon.user),
         device: gon.device,
         avatar: avatar
        }
-      var template = $('#nullPopupTemplate').html();
-      var rendered = Mustache.render(template, friend);
+      template = $('#nullPopupTemplate').html();
+      rendered = Mustache.render(template, friend);
 
       var popup = L.popup({'closeButton': false, 'closeOnClick': false})
         .setLatLng(new L.latLng([51.5073509, -0.1277583])) //hardcoded latlng for London
@@ -53546,7 +53552,7 @@ $(document).on('page:change', function() {
         map.panTo(popup.getLatLng());
       })
     } else {
-      var avatar = COPO.utility.avatar(gon.user.avatar);
+      avatar = COPO.utility.avatar(gon.user.avatar);
       $.extend(checkin, {
         avatar: avatar,
         created_at: new Date(checkin.created_at).toUTCString(),
@@ -53555,8 +53561,8 @@ $(document).on('page:change', function() {
         friend: COPO.utility.friendsName(gon.user)
       })
 
-      var template = $('#fullPopupTemplate').html();
-      var rendered = Mustache.render(template, checkin);
+      template = $('#fullPopupTemplate').html();
+      rendered = Mustache.render(template, checkin);
 
       map.setView([checkin.lat, checkin.lng], 12)
       var marker = L.marker([checkin.lat, checkin.lng], {
@@ -53647,10 +53653,10 @@ $(document).on('ready page:change', function() {
       var $currOffset = $(window).scrollTop();
       var winHeight = window.innerHeight;
 
-      if($currOffset >= winHeight && $(".contents-menu").css('position') != "fixed"){
+      if($currOffset >= winHeight && $(".contents-menu").css('position') !== "fixed"){
         $(".contents-menu").css('position', 'fixed');
 
-      }else if($currOffset < winHeight && $(".contents-menu").css('position') == "fixed"){
+      }else if($currOffset < winHeight && $(".contents-menu").css('position') === "fixed"){
         $(".contents-menu").css('position', 'relative');
       }
 
