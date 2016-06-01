@@ -16,10 +16,10 @@ class Api::V1::Users::RequestsController < Api::ApiController
   def last
     developer_id = params[:developer_id]
     requests = if developer_id == @dev.id.to_s
-                 # We use [-2] instead of .last because the last request will ironically be the one you're making
+                 # We use second instead of first because the first request will ironically be the one you're making
                  @user.requests.where(developer_id: developer_id).second
                elsif developer_id
-                 # If we're checking someone else's last request, go ahead and show their last one
+                 # If we're checking someone else's most recent request, go ahead and show their first one
                  @user.requests.where(developer_id: developer_id).first
                else
                  @user.requests.second
