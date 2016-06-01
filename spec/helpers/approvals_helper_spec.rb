@@ -63,7 +63,7 @@ RSpec.describe ApprovalsHelper, type: :helper do
   describe '#create_approval_url' do
     it 'should return a different path for user approvals and for developers' do
       allow(helper).to receive(:current_user) { user }
-      expect(helper.create_approval_url('Developer')).to match 'devs_approvals'
+      expect(helper.create_approval_url('Developer')).to match 'create_dev_approvals'
       expect(helper.create_approval_url('User')).to match 'approvals'
     end
   end

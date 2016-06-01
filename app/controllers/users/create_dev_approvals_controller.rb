@@ -1,4 +1,4 @@
-class Users::DevsApprovalsController < ApplicationController
+class Users::CreateDevApprovalsController < ApplicationController
   before_action :authenticate_user!
 
   def create
