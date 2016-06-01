@@ -55,9 +55,9 @@ class Api::V1::CheckinsController < Api::ApiController
 
     def copo_app_checkins
       checkins = @device ? @device.checkins : @user.checkins
-      checkins = checkins.includes(:device).map do |checkin|
-        checkin.reverse_geocode!
-      end if params[:type] == 'address'
+      if params[:type] == 'address'
+        checkins = checkins.includes(:device).map(&:reverse_geocode!)
+      end
       checkins
     end
 

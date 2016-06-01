@@ -35,7 +35,7 @@ class Checkin < ActiveRecord::Base
   end
 
   def replace_foggable_attributes
-    if fogged? || device.fogged?
+    if device.fogged? || fogged?
       fogged_checkin = Checkin.new(attributes.delete_if {|key, _v| key =~ /city|postal/ })
       fogged_checkin.assign_attributes(address: fogged_area, lat: fogged_lat, lng: fogged_lng)
       return fogged_checkin
@@ -52,6 +52,7 @@ class Checkin < ActiveRecord::Base
   def public_info
     assign_attributes(address: fogged_area) if address == 'Not yet geocoded'
     attributes.delete_if {|key, value| key =~ /fogged|uuid/ || value == nil}
+    # self.select([:id, :lat, :lng, :created_at, :device_id, :address, :city, :postal_code, :country_code])
   end
 
   def self.calendar_data
