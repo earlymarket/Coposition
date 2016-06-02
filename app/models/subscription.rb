@@ -1,7 +1,7 @@
 class Subscription < ActiveRecord::Base
   require 'net/http'
 
-  belongs_to :user
+  belongs_to :subscriber, polymorphic: true
 
   def send_data(data)
     uri = URI.parse('https://zapier.com/')

@@ -21,7 +21,14 @@ class Developers::ApprovalsController < ApplicationController
     redirect_to new_developers_approval_path
   end
 
+  private
+
   def allowed_params
     params.require(:approval).permit(:user)
+  end
+
+  def check_subscriptions
+    if current_developer.subscriptions.where(event: 'create_approval').present?
+    end
   end
 end

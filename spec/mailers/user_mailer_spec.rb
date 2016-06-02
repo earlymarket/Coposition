@@ -44,4 +44,27 @@ RSpec.describe UserMailer, type: :mailer do
       expect(mail.body.encoded).to match(url_string)
     end
   end
+
+  describe 'add_friend_email' do
+    let(:developer) { FactoryGirl.create :developer }
+    let(:user) { FactoryGirl.create :user }
+    let(:mail) { UserMailer.add_user_email(developer, user) }
+
+    it 'renders the subject' do
+      expect(mail.subject).to match('approval request')
+    end
+
+    it 'renders the receiver email' do
+      expect(mail.to).to eql([user.email])
+    end
+
+    it 'renders the developers company name' do
+      expect(mail.body.encoded).to match(developer.company_name)
+    end
+
+    it 'renders apps page url' do
+      url_string = "/users/#{user.id}/apps"
+      expect(mail.body.encoded).to match(url_string)
+    end
+  end
 end

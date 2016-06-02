@@ -9,7 +9,7 @@ RSpec.describe Api::V1::SubscriptionsController, type: :controller do
   let(:destroy_params) { params.merge(id: subscription.id) }
 
   before do
-    request.headers['X-Webhook-Key'] = user.webhook_key
+    request.headers['X-Authentication-Key'] = user.webhook_key
   end
 
   describe '#create' do

@@ -1,13 +1,15 @@
 class Api::V1::SubscriptionsController < ActionController::Base
   def create
-    user = User.find_by(webhook_key: request.headers['X-Webhook-Key'])
-    sub = user.subscriptions.create(allowed_params)
+    subscriber = User.find_by(webhook_key: request.headers['X-Authentication-Key'])
+    subscriber ||= Developer.find_by(api_key: request.headers['X-Authentication-Key'])
+    sub = subscriber.subscriptions.create(allowed_params)
     render status: 201, json: { id: sub.id }
   end
 
   def destroy
-    user = User.find_by(webhook_key: request.headers['X-Webhook-Key'])
-    sub = user.subscriptions.find(params[:id]).destroy
+    subscriber = User.find_by(webhook_key: request.headers['X-Authentication-Key'])
+    subscriber ||= Developer.find_by(api_key: request.headers['X-Authentication-Key'])
+    sub = subscriber.subscriptions.destroy(params[:id])
     render status: 200, json: { id: sub.id }
   end
 

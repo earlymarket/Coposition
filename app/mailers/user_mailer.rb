@@ -9,4 +9,10 @@ class UserMailer < ApplicationMailer
     @email = user.email
     mail(to: friend.email, subject: "Coposition friend request from #{@email}")
   end
+
+  def add_user_email(developer, user)
+    @url = "https://coposition.com/users/#{user.id}/apps"
+    @company_name = developer.company_name
+    mail(to: user.email, subject: "Coposition approval request from #{@company_name}")
+  end
 end
