@@ -46,11 +46,17 @@ class Api::ApiController < ActionController::Base
     params[:permissible_id] ? User.find(params[:permissible_id]) : @dev
   end
 
-  def paginated_response_headers(resource)
-    response['X-Current-Page'] = resource.current_page.to_json
-    response['X-Next-Page'] = resource.next_page.to_json
-    response['X-Total-Entries'] = resource.total_entries.to_json
-    response['X-Per-Page'] = resource.per_page.to_json
+  def paginated_response_headers(metadata)
+    response['X-Current-Page']  = metadata[:current_page].to_json
+    response['X-Next-Page']     = metadata[:next_page].to_json
+    response['X-Total-Entries'] = metadata[:total_entries].to_json
+    response['X-Per-Page']      = metadata[:per_page].to_json
+    # metadata = {
+    #   current_page: sanitized.current_page,
+    #   next_page: sanitized.next_page,
+    #   total_entries: sanitized.total_entries,
+    #   per_page: sanitized.per_page
+    # }
   end
 
   def current_user?(user_id)

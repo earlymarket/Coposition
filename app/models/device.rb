@@ -22,6 +22,13 @@ class Device < ActiveRecord::Base
     end
   end
 
+  def safe_checkin_info_for(args)
+    sanitized = permitted_history_for(args[:permissible]).limit_returned_checkins(args)
+    sanitized = sanitized.map(&:reverse_geocode!) if args[:type] == 'address'
+    sanitized = sanitized.map(&:replace_foggable_attributes) unless can_bypass_fogging?(args[:permissible])
+    sanitized = sanitized.map(&:public_info)
+  end
+
   def permitted_history_for(permissible)
     resolve_privilege(delayed_checkins_for(permissible), permissible)
   end
