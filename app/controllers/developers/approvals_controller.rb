@@ -26,9 +26,8 @@ class Developers::ApprovalsController < ApplicationController
   end
 
   def zapier_data(email, user)
-    approval = user.approval_for(current_developer) if user
-    zapier_data = [email, approval]
-    zapier_data << user.public_info if user
-    zapier_data
+    zapier_data = [email: email]
+    return zapier_data unless user
+    zapier_data.push(user.public_info, user.approval_for(current_developer))
   end
 end
