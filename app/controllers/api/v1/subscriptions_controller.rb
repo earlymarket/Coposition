@@ -7,9 +7,10 @@ class Api::V1::SubscriptionsController < ActionController::Base
   end
 
   def destroy
-    subscriber = User.find_by(webhook_key: request.headers['X-Authentication-Key'])
-    subscriber ||= Developer.find_by(api_key: request.headers['X-Authentication-Key'])
-    sub = subscriber.subscriptions.destroy(params[:id])
+    key = request.headers['X-Authentication-Key']
+    subscriber = User.find_by(webhook_key: key)
+    subscriber ||= Developer.find_by(api_key: key)
+    sub = subscriber.subscriptions.destroy(params[:id]).first
     render status: 200, json: { id: sub.id }
   end
 

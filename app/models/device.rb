@@ -76,7 +76,7 @@ class Device < ActiveRecord::Base
   end
 
   def subscriptions(event)
-    Subscription.where(event: event).where(user_id: user_id)
+    Subscription.where(event: event).where(subscriber_id: user_id)
   end
 
   def notify_subscribers(event, data)

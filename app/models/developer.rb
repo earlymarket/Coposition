@@ -26,4 +26,13 @@ class Developer < ActiveRecord::Base
   def public_info
     Developer.select([:id, :email, :company_name, :tagline, :redirect_url]).find(id)
   end
+
+  def subscribed_to?(event)
+    subscriptions.find_by(event: event)
+  end
+
+  def notify_if_subscribed(event, data)
+    return unless (sub = subscribed_to? event)
+    sub.send_data(data)
+  end
 end
