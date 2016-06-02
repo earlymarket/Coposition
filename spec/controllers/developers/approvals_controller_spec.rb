@@ -11,7 +11,7 @@ RSpec.describe Developers::ApprovalsController, type: :controller do
     app.update(approvable: developer, user: user, approvable_type: 'Developer', status: 'accepted')
     app
   end
-  let(:subscription) { FactoryGirl.create :subscription, event: 'create_approval', subscriber: developer }
+  let(:subscription) { FactoryGirl.create :subscription, event: 'new_approval', subscriber: developer }
   let(:developer_params) { { developer_id: developer.id } }
   let(:approval_create_params) do
     developer_params.merge(approval: { user: user.email, approvable_type: 'Developer' })

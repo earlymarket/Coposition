@@ -15,7 +15,7 @@ class Developers::ApprovalsController < ApplicationController
     user = User.find_by(email: email)
     approval = Approval.link(user, current_developer, 'Developer') if user
     approval && approval.id ? flash[:notice] = 'Successfully sent' : flash[:alert] = 'Error creating approval'
-    current_developer.notify_if_subscribed('create_approval', zapier_data(email, user))
+    current_developer.notify_if_subscribed('new_approval', zapier_data(email, user))
     redirect_to new_developers_approval_path
   end
 
