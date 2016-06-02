@@ -22,49 +22,31 @@ RSpec.describe UserMailer, type: :mailer do
     end
   end
 
-  describe 'add_friend_email' do
+  describe 'add_user_email' do
     let(:user) { FactoryGirl.create :user }
-    let(:friend) { FactoryGirl.create :user }
-    let(:mail) { UserMailer.add_friend_email(user, friend) }
+    let(:added_user) { FactoryGirl.create :user }
+    let(:developer) { FactoryGirl.create :developer }
+    let(:friend_mail) { UserMailer.add_user_email(user, added_user, false) }
+    let(:developer_mail) { UserMailer.add_user_email(developer, added_user, true) }
 
     it 'renders the subject' do
-      expect(mail.subject).to match('friend request')
+      expect(friend_mail.subject).to match('approval request')
     end
 
     it 'renders the receiver email' do
-      expect(mail.to).to eql([friend.email])
+      expect(friend_mail.to).to eql([added_user.email])
     end
 
     it 'renders the senders email' do
-      expect(mail.body.encoded).to match(user.email)
+      expect(friend_mail.body.encoded).to match(user.email)
+      expect(developer_mail.body.encoded).to match(developer.company_name)
     end
 
-    it 'renders friends page url' do
-      url_string = "/users/#{friend.id}/friends"
-      expect(mail.body.encoded).to match(url_string)
-    end
-  end
-
-  describe 'add_friend_email' do
-    let(:developer) { FactoryGirl.create :developer }
-    let(:user) { FactoryGirl.create :user }
-    let(:mail) { UserMailer.add_user_email(developer, user) }
-
-    it 'renders the subject' do
-      expect(mail.subject).to match('approval request')
-    end
-
-    it 'renders the receiver email' do
-      expect(mail.to).to eql([user.email])
-    end
-
-    it 'renders the developers company name' do
-      expect(mail.body.encoded).to match(developer.company_name)
-    end
-
-    it 'renders apps page url' do
-      url_string = "/users/#{user.id}/apps"
-      expect(mail.body.encoded).to match(url_string)
+    it 'renders the correct page url' do
+      friends_url_string = "/users/#{added_user.id}/friends"
+      apps_url_string = "/users/#{added_user.id}/apps"
+      expect(friend_mail.body.encoded).to match(friends_url_string)
+      expect(developer_mail.body.encoded).to match(apps_url_string)
     end
   end
 end
