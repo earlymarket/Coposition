@@ -9,9 +9,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
     if req_from_coposition_app?
       resource_exists?(approvable_type, approvable)
       Approval.link(@user, approvable, approvable_type)
-      if @user.request_from?(approvable) || approvable_type == 'Developer'
-        Approval.accept(@user, approvable, approvable_type)
-      end
+      accept_if_friend_request_or_adding_developer
       approval = @user.approval_for(approvable)
     else
       Approval.link(@user, @dev, 'Developer')
@@ -21,7 +19,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   end
 
   def update
-    approval = Approval.where(id: params[:id], user: @user).first
+    approval = Approval.find_by(id: params[:id], user: @user)
     if approval_exists? approval
       if allowed_params[:status] == 'accepted'
         Approval.accept(@user, approval.approvable, approval.approvable_type)
@@ -61,5 +59,11 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
 
   def model_find(type)
     [User, Developer].find { |model| model.name == type.titleize }
+  end
+
+  def accept_if_friend_request_or_adding_developer
+    if @user.request_from?(approvable) || approvable_type == 'Developer'
+      Approval.accept(@user, approvable, approvable_type)
+    end
   end
 end

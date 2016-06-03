@@ -9,38 +9,21 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def create
-    approvable_type = allowed_params[:approvable_type]
-    if approvable(approvable_type)
-      approval = Approval.construct(current_user, approvable(approvable_type), approvable_type)
-      if approval.save
-        @presenter = ::Users::ApprovalsPresenter.new(current_user, approvable_type)
-        gon.push(@presenter.gon)
-        if approvable_type == 'User'
-          redirect_to(user_friends_path, notice: 'Friend request sent')
-        else
-          redirect_to(user_apps_path, notice: 'Developer approved')
-        end
-      else
-        redirect_to new_user_approval_path(approvable_type: approvable_type),
-                    alert: "Error: #{approval.errors.get(:base).first}"
-      end
-    elsif approvable_type == 'User'
-      UserMailer.invite_email(allowed_params[:approvable]).deliver_now
-      redirect_to user_dashboard_path, notice: 'User not signed up with Coposition, invite email sent!'
-    else
-      redirect_to new_user_approval_path(approvable_type: approvable_type), alert: 'Developer not found'
+    user = User.find_by(email: allowed_params[:approvable])
+    approval = Approval.add_friend(current_user, user) if user
+    if approval_created?(user, approval)
+      presenter_and_gon('User')
+      redirect_to(user_friends_path, notice: 'Friend request sent')
     end
   end
 
   def apps
-    @presenter = ::Users::ApprovalsPresenter.new(current_user, 'Developer')
-    gon.push(@presenter.gon)
+    presenter_and_gon('Developer')
     render 'approvals'
   end
 
   def friends
-    @presenter = ::Users::ApprovalsPresenter.new(current_user, 'User')
-    gon.push(@presenter.gon)
+    presenter_and_gon('User')
     render 'approvals'
   end
 
@@ -48,28 +31,20 @@ class Users::ApprovalsController < ApplicationController
     approval = Approval.find_by(id: params[:id], user: current_user)
     approvable_type = approval.approvable_type
     Approval.accept(current_user, approval.approvable, approvable_type)
-    @presenter = ::Users::ApprovalsPresenter.new(current_user, approvable_type)
-    gon.push(@presenter.gon)
-    respond_to do |format|
-      format.html { redirect_to user_approvals_path }
-      format.js
-    end
+    presenter_and_gon(approvable_type)
   end
 
   def reject
     approval = Approval.find_by(id: params[:id], user: current_user)
     approvable_type = approval.approvable_type
-    current_user.destroy_permissions_for(approval.approvable)
+    approvable = approval.approvable
+    current_user.destroy_permissions_for(approvable)
     if approvable_type == 'User'
-      Approval.find_by(user: approval.approvable, approvable: approval.user, approvable_type: 'User').destroy
+      Approval.destroy_all(user: approvable, approvable: current_user, approvable_type: 'User')
     end
     approval.destroy
-    @presenter = ::Users::ApprovalsPresenter.new(current_user, approvable_type)
-    gon.push(@presenter.gon)
-    respond_to do |format|
-      format.html { redirect_to user_approvals_path }
-      format.js { render 'approve' }
-    end
+    presenter_and_gon(approvable_type)
+    render 'approve'
   end
 
   private
@@ -78,11 +53,19 @@ class Users::ApprovalsController < ApplicationController
     params.require(:approval).permit(:approvable, :approvable_type)
   end
 
-  def approvable(type)
-    if type == 'Developer'
-      Developer.find_by(company_name: allowed_params[:approvable])
-    elsif type == 'User'
-      User.find_by(email: allowed_params[:approvable])
+  def approval_created?(user, approval)
+    return true if user && approval.save
+    if user.present?
+      redirect_to new_user_approval_path(approvable_type: 'User'), alert: "Error: #{approval.errors.get(:base).first}"
+    else
+      UserMailer.invite_email(allowed_params[:approvable]).deliver_now
+      redirect_to user_dashboard_path, notice: 'User not signed up with Coposition, invite email sent!'
     end
+    false
+  end
+
+  def presenter_and_gon(type)
+    @presenter = ::Users::ApprovalsPresenter.new(current_user, type)
+    gon.push(@presenter.gon)
   end
 end
