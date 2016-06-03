@@ -8,4 +8,9 @@ class ApplicationController < ActionController::Base
   def record_not_found(exception)
     redirect_to root_path, alert: exception.message
   end
+
+  def presenter_and_gon(type)
+    @presenter = ::Users::ApprovalsPresenter.new(current_user, type)
+    gon.push(@presenter.gon)
+  end
 end

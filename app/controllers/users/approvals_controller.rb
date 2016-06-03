@@ -63,9 +63,4 @@ class Users::ApprovalsController < ApplicationController
     end
     false
   end
-
-  def presenter_and_gon(type)
-    @presenter = ::Users::ApprovalsPresenter.new(current_user, type)
-    gon.push(@presenter.gon)
-  end
 end

@@ -4,11 +4,10 @@ class Users::CreateDevApprovalsController < ApplicationController
   def create
     developer = Developer.find_by(company_name: allowed_params[:approvable])
     approval = Approval.add_developer(current_user, developer) if developer
-    if approval_created?(developer, approval)
-      @presenter = ::Users::ApprovalsPresenter.new(current_user, 'Developer')
-      gon.push(@presenter.gon)
-      redirect_to(user_apps_path, notice: 'Developer approved')
-    end
+    return unless approval_created?(developer, approval)
+    presenter_and_gon('Developer')
+    developer.notify_if_subscribed('new_approval', zapier_data(approval))
+    redirect_to(user_apps_path, notice: 'Developer approved')
   end
 
   private
@@ -22,5 +21,9 @@ class Users::CreateDevApprovalsController < ApplicationController
     errors = approval ? approval.errors.get(:base).first : 'Developer not found'
     redirect_to new_user_approval_path(approvable_type: 'Developer'), alert: "Error: #{errors}"
     false
+  end
+
+  def zapier_data(approval)
+    [current_user.public_info, approval]
   end
 end

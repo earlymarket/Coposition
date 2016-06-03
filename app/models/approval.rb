@@ -25,7 +25,7 @@ class Approval < ActiveRecord::Base
     if user.request_from?(friend)
       approval = Approval.accept(user, friend, 'User')
     else
-      UserMailer.add_user_email(user, approvable, false).deliver_now unless approval.errors.messages.present?
+      UserMailer.add_user_email(user, friend, false).deliver_now unless approval.errors.messages.present?
     end
     approval
   end
