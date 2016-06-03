@@ -23,9 +23,6 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     app
   end
   let(:user_params) { { user_id: user.id } }
-  let(:dev_approval_create_params) do
-    user_params.merge(approval: { approvable: developer.company_name, approvable_type: 'Developer' })
-  end
   let(:friend_approval_create_params) do
     user_params.merge(approval: { approvable: friend.email, approvable_type: 'User' })
   end
@@ -42,24 +39,6 @@ RSpec.describe Users::ApprovalsController, type: :controller do
   end
 
   describe 'POST #create' do
-    context 'when adding a developer' do
-      it 'should create an accepted approval between user and developer' do
-        post :create, dev_approval_create_params
-        expect(Approval.last.approvable_id).to eq developer.id
-        expect(Approval.last.status).to eq 'accepted'
-        expect(Approval.last.user).to eq user
-      end
-
-      it 'should confirm an existing developer approval request' do
-        approval.update(status: 'developer-requested', approvable_id: developer.id, approvable_type: 'Developer')
-        count = Approval.count
-        post :create, dev_approval_create_params
-        expect(Approval.count).to eq count
-        expect(Approval.last).to eq approval
-        expect(Approval.last.status).to eq 'accepted'
-      end
-    end
-
     context 'when adding a friend' do
       it 'should create a pending approval, friend request and send an email' do
         count = ActionMailer::Base.deliveries.count
@@ -85,13 +64,6 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     end
 
     context 'when an incorrect name is provided' do
-      it 'should not create an approval if Developer does not exist' do
-        dev_approval_create_params[:approval][:approvable] = 'does not exist'
-        post :create, dev_approval_create_params
-        expect(Approval.count).to eq 0
-        expect(flash[:alert]).to match 'not found'
-      end
-
       it 'should not create or approve an approval if trying to add self' do
         friend_approval_create_params[:approval][:approvable] = user.email
         post :create, friend_approval_create_params
@@ -99,7 +71,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         expect(Approval.count).to eq 0
       end
 
-      it 'should not create/approve if trying to add an exisiting friend/dev' do
+      it 'should not create/approve if trying to add an exisiting friend' do
         approval.update(status: 'accepted', approvable_id: friend.id, approvable_type: 'User')
         approval_two.update(status: 'accepted', approvable_id: user.id, approvable_type: 'User')
         post :create, friend_approval_create_params

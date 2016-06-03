@@ -1,7 +1,7 @@
 <br>
 Enter the <%= @approval.approvable_type %> you would like to add.
 <br>
-<%= form_for @approval, url: user_approvals_path do |f| %>
+<%= form_for @approval, url: create_approval_url(@approval.approvable_type) do |f| %>
   <div class="row">
     <div class="col s12 input-field search">
       <%= f.text_field :approvable, approvals_input(@approval.approvable_type) %>
