@@ -59,4 +59,12 @@ RSpec.describe ApprovalsHelper, type: :helper do
       expect(helper.approvals_friends_device_link('Developer', user) { 'blah' }).to match 'blah'
     end
   end
+
+  describe '#create_approval_url' do
+    it 'should return a different path for user approvals and for developers' do
+      allow(helper).to receive(:current_user) { user }
+      expect(helper.create_approval_url('Developer')).to match 'create_dev_approvals'
+      expect(helper.create_approval_url('User')).to match 'approvals'
+    end
+  end
 end

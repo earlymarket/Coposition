@@ -81,6 +81,7 @@ Rails.application.routes.draw do
         post 'reject'
       end
     end
+    resource :create_dev_approvals, only: :create
     resources :friends, only: [:show] do
       member do
         get 'show_device'

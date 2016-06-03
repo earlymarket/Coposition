@@ -12,12 +12,20 @@ class Approval < ActiveRecord::Base
     end
   end
 
-  def self.construct(user, approvable, approvable_type)
-    approval = Approval.link(user, approvable, approvable_type)
-    if (approvable_type == 'Developer') || user.friend_requests.include?(approvable)
-      approval = Approval.accept(user, approvable, approvable_type)
+  def self.add_developer(user, developer)
+    approval = Approval.link(user, developer, 'Developer')
+    if user.request_from?(developer) || approval.errors.empty?
+      approval = Approval.accept(user, developer, 'Developer')
+    end
+    approval
+  end
+
+  def self.add_friend(user, friend)
+    approval = Approval.link(user, friend, 'User')
+    if user.request_from?(friend)
+      approval = Approval.accept(user, friend, 'User')
     else
-      UserMailer.add_friend_email(user, approvable).deliver_now unless approval.errors.messages.present?
+      UserMailer.add_friend_email(user, friend).deliver_now unless approval.errors.messages.present?
     end
     approval
   end

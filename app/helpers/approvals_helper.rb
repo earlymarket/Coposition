@@ -34,4 +34,12 @@ module ApprovalsHelper
     end
     string
   end
+
+  def create_approval_url(type)
+    if type == 'Developer'
+      user_create_dev_approvals_path(current_user.url_id)
+    elsif type == 'User'
+      user_approvals_path(current_user.url_id)
+    end
+  end
 end
