@@ -16,15 +16,19 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
 
   def update
     approval = Approval.find_by(id: params[:id], user: @user)
-    if approval_exists? approval
-      if allowed_params[:status] == 'accepted'
-        Approval.accept(@user, approval.approvable, approval.approvable_type)
-        render json: approval.reload
-      else
-        approval.destroy
-        render status: 200, json: { message: 'Approval Destroyed' }
-      end
-    end
+    return unless approval_exists? approval
+    approvable = approval.approvable
+    type = approval.approvable_type
+    Approval.accept(@user, approvable, type)
+    render json: approval.reload
+    approvable.notify_if_subscribed('new_approval', [@user.public_info, approval]) if type == 'Developer'
+  end
+
+  def destroy
+    approval = Approval.find_by(id: params[:id], user: @user)
+    return unless approval_exists? approval
+    approval.destroy
+    render status: 200, json: { message: 'Approval Destroyed' }
   end
 
   def index
