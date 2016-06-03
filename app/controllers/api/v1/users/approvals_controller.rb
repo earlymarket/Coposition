@@ -6,22 +6,16 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   before_action :check_user, only: :update
 
   def create
-    if req_from_coposition_app?
-      resource_exists?(approvable_type, approvable)
-      Approval.link(@user, approvable, approvable_type)
-      if @user.request_from?(approvable) || approvable_type == 'Developer'
-        Approval.accept(@user, approvable, approvable_type)
-      end
-      approval = @user.approval_for(approvable)
-    else
-      Approval.link(@user, @dev, 'Developer')
-      approval = @user.approval_for(@dev)
-    end
+    resource_exists?(approvable_type, approvable)
+    Approval.link(@user, approvable, approvable_type)
+    accept_if_friend_request_or_adding_developer if req_from_coposition_app?
+    approval = @user.approval_for(approvable)
+    @dev.notify_if_subscribed('new_approval', [@user.public_info, approval])
     render json: approval
   end
 
   def update
-    approval = Approval.where(id: params[:id], user: @user).first
+    approval = Approval.find_by(id: params[:id], user: @user)
     if approval_exists? approval
       if allowed_params[:status] == 'accepted'
         Approval.accept(@user, approval.approvable, approval.approvable_type)
@@ -52,14 +46,20 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   end
 
   def approvable_type
-    allowed_params[:approvable_type]
+    req_from_coposition_app? ? allowed_params[:approvable_type] : 'Developer'
   end
 
   def approvable
-    model_find(approvable_type).find(allowed_params[:approvable])
+    req_from_coposition_app? ? model_find(approvable_type).find(allowed_params[:approvable]) : @dev
   end
 
   def model_find(type)
     [User, Developer].find { |model| model.name == type.titleize }
+  end
+
+  def accept_if_friend_request_or_adding_developer
+    if @user.request_from?(approvable) || approvable_type == 'Developer'
+      Approval.accept(@user, approvable, approvable_type)
+    end
   end
 end
