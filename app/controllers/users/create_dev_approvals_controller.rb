@@ -22,8 +22,4 @@ class Users::CreateDevApprovalsController < ApplicationController
     redirect_to new_user_approval_path(approvable_type: 'Developer'), alert: "Error: #{errors}"
     false
   end
-
-  def zapier_data(approval)
-    [current_user.public_info, approval]
-  end
 end

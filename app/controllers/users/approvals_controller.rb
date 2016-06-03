@@ -30,8 +30,10 @@ class Users::ApprovalsController < ApplicationController
   def approve
     approval = Approval.find_by(id: params[:id], user: current_user)
     approvable_type = approval.approvable_type
-    Approval.accept(current_user, approval.approvable, approvable_type)
+    approvable = approval.approvable
+    Approval.accept(current_user, approvable, approvable_type)
     presenter_and_gon(approvable_type)
+    approvable.notify_if_subscribed('new_approval', zapier_data(approval)) if approvable_type == 'Developer'
   end
 
   def reject
