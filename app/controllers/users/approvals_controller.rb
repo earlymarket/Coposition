@@ -12,18 +12,18 @@ class Users::ApprovalsController < ApplicationController
     user = User.find_by(email: allowed_params[:approvable])
     approval = Approval.add_friend(current_user, user) if user
     if approval_created?(user, approval)
-      presenter_and_gon('User')
+      approvals_presenter_and_gon('User')
       redirect_to(user_friends_path, notice: 'Friend request sent')
     end
   end
 
   def apps
-    presenter_and_gon('Developer')
+    approvals_presenter_and_gon('Developer')
     render 'approvals'
   end
 
   def friends
-    presenter_and_gon('User')
+    approvals_presenter_and_gon('User')
     render 'approvals'
   end
 
@@ -32,8 +32,8 @@ class Users::ApprovalsController < ApplicationController
     approvable_type = approval.approvable_type
     approvable = approval.approvable
     Approval.accept(current_user, approvable, approvable_type)
-    presenter_and_gon(approvable_type)
-    approvable.notify_if_subscribed('new_approval', zapier_data(approval)) if approvable_type == 'Developer'
+    approvals_presenter_and_gon(approvable_type)
+    approvable.notify_if_subscribed('new_approval', approval_zapier_data(approval)) if approvable_type == 'Developer'
   end
 
   def reject
@@ -45,7 +45,7 @@ class Users::ApprovalsController < ApplicationController
       Approval.destroy_all(user: approvable, approvable: current_user, approvable_type: 'User')
     end
     approval.destroy
-    presenter_and_gon(approvable_type)
+    approvals_presenter_and_gon(approvable_type)
     render 'approve'
   end
 

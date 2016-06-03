@@ -9,12 +9,12 @@ class ApplicationController < ActionController::Base
     redirect_to root_path, alert: exception.message
   end
 
-  def presenter_and_gon(type)
+  def approvals_presenter_and_gon(type)
     @presenter = ::Users::ApprovalsPresenter.new(current_user, type)
     gon.push(@presenter.gon)
   end
 
-  def zapier_data(approval)
+  def approval_zapier_data(approval)
     [current_user.public_info, approval]
   end
 end
