@@ -18,7 +18,8 @@ class Api::V1::CheckinsController < Api::ApiController
         type: params[:type],
         action: action_name
       })
-      # paginated_response_headers(metadata)
+      unsanitized_checkins = @user.get_user_checkins_for(@permissible).paginate(page: params[:page], per_page: per_page)
+      paginated_response_headers(unsanitized_checkins)
     end
     render json: checkins
   end
@@ -33,7 +34,6 @@ class Api::V1::CheckinsController < Api::ApiController
         type: params[:type],
         action: action_name
       })
-      # checkin = checkin.resolve_address(@permissible, params[:type]) if checkin
     end
     render json: checkin
   end
