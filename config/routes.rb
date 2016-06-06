@@ -37,7 +37,7 @@ Rails.application.routes.draw do
         collection do
           get :auth
         end
-        resources :approvals, only: [:create, :index, :update], module: :users do
+        resources :approvals, only: [:create, :index, :update, :destroy], module: :users do
           collection do
             get :status
           end
