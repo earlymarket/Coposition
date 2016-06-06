@@ -12,7 +12,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     device
   end
   let(:checkin) { FactoryGirl.create :checkin, device: device }
-  let(:subscription) { FactoryGirl.create :subscription, user: user }
+  let(:subscription) { FactoryGirl.create :subscription, subscriber: user }
   let(:create_headers) { request.headers['X-UUID'] = device.uuid }
   let(:address) { 'The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK' }
   let(:params) { { user_id: user.id, device_id: device.id } }
