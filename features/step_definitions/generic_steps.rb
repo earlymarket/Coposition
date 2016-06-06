@@ -3,7 +3,7 @@ Given(/^I am using a large screen$/) do
 end
 
 Given(/^I am on the homepage$/) do
-  visit "/"
+  visit '/'
 end
 
 Given(/^I click "(.*?)"$/) do |target|

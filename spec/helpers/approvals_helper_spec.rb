@@ -1,21 +1,20 @@
 require 'rails_helper'
 
-RSpec.describe ApprovalsHelper, :type => :helper do
+RSpec.describe ApprovalsHelper, type: :helper do
   let(:user) do
-    user = FactoryGirl::create(:user)
-    user.pending_friends << [FactoryGirl::create(:user), FactoryGirl::create(:user)]
+    user = FactoryGirl.create(:user)
+    user.pending_friends << [FactoryGirl.create(:user), FactoryGirl.create(:user)]
     user
   end
+  let(:user_approvals_input) { helper.approvals_input('User') }
+  let(:developer_approvals_input) { helper.approvals_input('Developer') }
 
   describe '#approvals_input' do
-    it 'should assign placeholder key a string' do
-      expect(helper.approvals_input('Developer')[:placeholder]).to match 'name'
-      expect(helper.approvals_input('User')[:placeholder]).to match 'email@email.com'
-    end
-
-    it 'should assign class key' do
-      expect(helper.approvals_input('User')[:class]).to match 'validate'
-      expect(helper.approvals_input('Developer')[:class]).to match 'devs'
+    it 'should assign placeholder and class key a string' do
+      expect(developer_approvals_input[:placeholder]).to match 'name'
+      expect(user_approvals_input[:placeholder]).to match 'email@email.com'
+      expect(user_approvals_input[:class]).to match 'validate'
+      expect(developer_approvals_input[:class]).to match 'devs_typeahead'
     end
   end
 
@@ -27,7 +26,7 @@ RSpec.describe ApprovalsHelper, :type => :helper do
     end
 
     it 'should use commas if the user has more than 2 pending friends' do
-      friend = FactoryGirl::create(:user)
+      friend = FactoryGirl.create(:user)
       user.pending_friends << friend
       expect(helper.approvals_pending_friends(user)).to match ','
       expect(helper.approvals_pending_friends(user)).to match 'and'
@@ -37,13 +36,13 @@ RSpec.describe ApprovalsHelper, :type => :helper do
 
   describe '#approvals_approvable_name' do
     it "should convert a friend's email if their username is empty" do
-      friend = FactoryGirl::create(:user, username: '')
+      friend = FactoryGirl.create(:user, username: '')
       expect(friend.email).to include(helper.approvals_approvable_name(friend))
       expect(helper.approvals_approvable_name(friend).length < friend.email.length).to be
     end
 
     it 'should give a company name if passed a developer' do
-      dev = FactoryGirl::create(:developer)
+      dev = FactoryGirl.create(:developer)
       expect(helper.approvals_approvable_name(dev)).to be dev.company_name
     end
   end
@@ -61,4 +60,11 @@ RSpec.describe ApprovalsHelper, :type => :helper do
     end
   end
 
+  describe '#create_approval_url' do
+    it 'should return a different path for user approvals and for developers' do
+      allow(helper).to receive(:current_user) { user }
+      expect(helper.create_approval_url('Developer')).to match 'create_dev_approvals'
+      expect(helper.create_approval_url('User')).to match 'approvals'
+    end
+  end
 end

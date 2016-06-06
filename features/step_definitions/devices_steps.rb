@@ -1,21 +1,21 @@
 Given(/^there's a device in the database with the UUID "(.*?)"$/) do |uuid|
-  @dev = FactoryGirl::create :device
+  @dev = FactoryGirl.create :device
   @dev.uuid = uuid
   @dev.save!
 end
 
 Given(/^the device has checkins$/) do
-  @dev.checkins << FactoryGirl::create(:checkin)
+  @dev.checkins << FactoryGirl.create(:checkin)
   @dev.save!
 end
 
 Given(/^I enter UUID "(.*?)" and a friendly name "(.*?)"$/) do |uuid, name|
-  fill_in "device[uuid]", with: uuid
-  fill_in "device[name]", with: name
+  fill_in 'device[uuid]', with: uuid
+  fill_in 'device[name]', with: name
 end
 
 Then(/^I should not have a device$/) do
-  expect(page).to have_selector("div.card", count: 0)
+  expect(page).to have_selector('div.card', count: 0)
 end
 
 Then(/^I should have a fogged device$/) do

@@ -1,6 +1,5 @@
 module Users
   class DashboardsPresenter
-
     attr_reader :most_frequent_areas
     attr_reader :percent_change
     attr_reader :weeks_checkins_count
@@ -22,7 +21,7 @@ module Users
 
     def last_countries
       @checkins.select('distinct(country_code)', 'id', 'created_at').sort.reverse.uniq(&:country_code).first(10)
-      .map do |checkin|
+               .map do |checkin|
         {
           country_code: checkin.country_code,
           last_visited: checkin.created_at
@@ -36,45 +35,43 @@ module Users
         current_user: current_user_info,
         friends: friends,
         weeks_checkins: weeks_checkins,
-        months_checkins: months_checkins,
+        months_checkins: months_checkins
       }
     end
 
     private
-    # Private methods act as a black box. Therefore we don't need to test them.
 
-      def fogged_area_count
-        @checkins.hash_group_and_count_by(:fogged_area)
-      end
+    def fogged_area_count
+      @checkins.hash_group_and_count_by(:fogged_area)
+    end
 
-      def device_checkins_count
-        @checkins.hash_group_and_count_by(:device_id)
-      end
+    def device_checkins_count
+      @checkins.hash_group_and_count_by(:device_id)
+    end
 
-      def friends
-        friends = @user.friends.includes(:devices)
-        friends.map do |friend|
-          {
-            userinfo: friend.public_info_hash,
-            lastCheckin: friend.get_user_checkins_for(@user).first
-          }
-        end
-      end
-
-      def weeks_checkins
-        @checkins.where(created_at: 1.week.ago..Time.now)
-      end
-
-      def months_checkins
-        @checkins.where(created_at: 1.month.ago..Time.now)
-      end
-
-      def current_user_info
+    def friends
+      friends = @user.friends.includes(:devices)
+      friends.map do |friend|
         {
-          userinfo: @user.public_info_hash,
-          lastCheckin: @user.checkins.first
+          userinfo: friend.public_info_hash,
+          lastCheckin: friend.get_user_checkins_for(@user).first
         }
       end
+    end
 
+    def weeks_checkins
+      @checkins.where(created_at: 1.week.ago..Time.now)
+    end
+
+    def months_checkins
+      @checkins.where(created_at: 1.month.ago..Time.now)
+    end
+
+    def current_user_info
+      {
+        userinfo: @user.public_info_hash,
+        lastCheckin: @user.checkins.first
+      }
+    end
   end
 end

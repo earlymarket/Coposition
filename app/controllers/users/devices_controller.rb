@@ -1,5 +1,4 @@
 class Users::DevicesController < ApplicationController
-
   before_action :authenticate_user!, except: :shared
   before_action :published?, only: :shared
   before_action :require_ownership, only: [:show, :destroy, :update]
@@ -16,11 +15,10 @@ class Users::DevicesController < ApplicationController
   def show
     @device = Device.find(params[:id])
     gon.checkins = @device.checkins
-    flash[:notice] = "Right click on the map to checkin"
     gon.current_user_id = current_user.id
     respond_to do |format|
-      format.html
-      format.csv { send_data @device.checkins.to_csv, filename: "device-#{@device.id}-checkins-#{Date.today}.csv"}
+      format.html { flash[:notice] = 'Right click on the map to checkin' }
+      format.csv { send_data @device.checkins.to_csv, filename: "device-#{@device.id}-checkins-#{Date.today}.csv" }
     end
   end
 
@@ -56,14 +54,14 @@ class Users::DevicesController < ApplicationController
   def destroy
     Checkin.where(device: params[:id]).delete_all
     Device.find(params[:id]).destroy
-    flash[:notice] = "Device deleted"
+    flash[:notice] = 'Device deleted'
     redirect_to user_devices_path
   end
 
   def update
     @device = Device.find(params[:id])
     if params[:delayed]
-      @device.set_delay(params[:delayed])
+      @device.update_delay(params[:delayed])
       flash[:notice] = @device.humanize_delay
     elsif params[:published]
       @device.update(published: !@device.published)
@@ -76,29 +74,25 @@ class Users::DevicesController < ApplicationController
 
   private
 
-    def allowed_params
-      params.require(:device).permit(:uuid,:name,:delayed)
-    end
+  def allowed_params
+    params.require(:device).permit(:uuid, :name, :delayed)
+  end
 
-    def checkin_params
-      { lng: params[:location].split(",").first, lat: params[:location].split(",").last }
-    end
+  def checkin_params
+    { lng: params[:location].split(',').first, lat: params[:location].split(',').last }
+  end
 
-    def require_ownership
-      unless user_owns_device?
-        flash[:notice] = "You do not own that device"
-        redirect_to root_path
-      end
-    end
+  def require_ownership
+    return if user_owns_device?
+    flash[:notice] = 'You do not own that device'
+    redirect_to root_path
+  end
 
-    def published?
-      unless Device.find(params[:id]).published?
-        redirect_to root_path, notice: "Device is not shared"
-      end
-    end
+  def published?
+    redirect_to root_path, notice: 'Device is not shared' unless Device.find(params[:id]).published?
+  end
 
-    def boolean_to_state(boolean)
-      boolean ? "on" : "off"
-    end
-
+  def boolean_to_state(boolean)
+    boolean ? 'on' : 'off'
+  end
 end

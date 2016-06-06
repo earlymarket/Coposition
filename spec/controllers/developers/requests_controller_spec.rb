@@ -5,7 +5,7 @@ RSpec.describe Developers::RequestsController, type: :controller do
 
   let(:developer) { create_developer }
   let(:request) do
-    req = FactoryGirl::create :request
+    req = FactoryGirl.create :request
     developer.requests << req
     req
   end

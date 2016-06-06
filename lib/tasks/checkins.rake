@@ -1,11 +1,10 @@
 namespace :checkins do
-
-  desc "Creates a random checkin"
+  desc 'Creates a random checkin'
   task :random_checkin, [:num] => :environment do |_t, args|
-    args.with_defaults(:num => 1)
+    args.with_defaults(num: 1)
     i = 0
     Checkin.transaction do
-      puts "Began creating checkins"
+      puts 'Began creating checkins'
       args[:num].to_i.times do
         Device.all.sample.checkins.create(lat: rand(-90.0..90.0), lng: rand(-180.0..180.0))
         i += 1
@@ -15,14 +14,14 @@ namespace :checkins do
     end
   end
 
-  desc "Creates a random checkin near a city"
-  task :create_near_cities, [:count,:device_id] => :environment do |_t, args|
-    args.with_defaults(:count => 1, :device_id => nil)
+  desc 'Creates a random checkin near a city'
+  task :create_near_cities, [:count, :device_id] => :environment do |_t, args|
+    args.with_defaults(count: 1, device_id: nil)
     selected_device = Device.find(args[:device_id]) if args[:device_id]
     i = 0
     start_time = Time.now
     Checkin.transaction do
-      puts "Began creating checkins"
+      puts 'Began creating checkins'
       args[:count].to_i.times do
         city = City.offset(rand(City.count)).first
         coords = Geocoder::Calculations.random_point_near(city, 20)
@@ -38,5 +37,4 @@ namespace :checkins do
       puts "\nFinished. #{i} checkins created."
     end
   end
-
 end

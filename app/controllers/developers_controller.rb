@@ -1,5 +1,4 @@
 class DevelopersController < ApplicationController
-
   before_action :authenticate_developer!
 
   def edit
@@ -14,5 +13,4 @@ class DevelopersController < ApplicationController
   def allowed_params
     params.require(:developer).permit([:company_name, :avatar, :redirect_url, :tagline])
   end
-
 end

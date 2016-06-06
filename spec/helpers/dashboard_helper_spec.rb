@@ -1,14 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe DashboardHelper, :type => :helper do
-
+RSpec.describe DashboardHelper, type: :helper do
   describe '#dashboard_country_name' do
     it "turns 'gb' to 'United Kingdom' regardless of case" do
-      examples = ['gb', 'gB', 'Gb', 'GB']
-      examples.each {|e| expect(helper.dashboard_country_name(e)).to eq 'United Kingdom'}
+      examples = %w(gb gB Gb GB)
+      examples.each { |e| expect(helper.dashboard_country_name(e)).to eq 'United Kingdom' }
     end
 
-    it "returns unknown codes" do
+    it 'returns unknown codes' do
       expect(helper.dashboard_country_name('NO CODE')).to eq 'NO CODE'
     end
   end
@@ -34,5 +33,4 @@ RSpec.describe DashboardHelper, :type => :helper do
       expect(helper.dashboard_visited_countries_title(11)).to match 'Countries Visited'
     end
   end
-
 end

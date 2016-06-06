@@ -14,16 +14,15 @@ class Api::V1::Users::DevicesController < Api::ApiController
   def create
     device = Device.new
     device = Device.find_by uuid: device_params[:uuid] if device_params[:uuid].present?
-    if device
-      if device.user.nil?
-        device.construct(@user, device_params[:name])
+    if device && device.user.nil?
+      if device.construct(@user, device_params[:name])
         device.notify_subscribers('new_device', device)
         render json: device
       else
-        render status: 400, json: { message: 'This device has already been assigned to a user' }
+        render status: 400, json: { message: "You already have a device with the name #{device_params[:name]}" }
       end
     else
-      render status: 400, json: { message: 'The UUID provided does not match an existing device' }
+      render status: 400, json: { message: 'Invalid UUID provided' }
     end
   end
 
@@ -35,23 +34,18 @@ class Api::V1::Users::DevicesController < Api::ApiController
 
   def update
     device = @user.devices.where(id: params[:id]).first
-    if device_exists? device
-      device.update(device_params)
-      render json: device
-    end
+    return unless device_exists? device
+    device.update(device_params)
+    render json: device
   end
 
   private
 
-    def check_user
-      unless current_user?(params[:user_id])
-        render status: 403, json: { message: 'User does not own device' }
-      end
-    end
+  def check_user
+    render status: 403, json: { message: 'User does not own device' } unless current_user?(params[:user_id])
+  end
 
-    def device_params
-      params.require(:device).permit(:name, :uuid, :fogged, :delayed, :alias)
-    end
-
+  def device_params
+    params.require(:device).permit(:name, :uuid, :fogged, :delayed, :alias)
+  end
 end
-

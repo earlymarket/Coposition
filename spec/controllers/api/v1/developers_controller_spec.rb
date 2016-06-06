@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Api::V1::DevelopersController, type: :controller do
   include ControllerMacros
 
-  let(:dev) { FactoryGirl::create :developer }
+  let(:dev) { FactoryGirl.create :developer }
 
   before do
     request.headers['X-Api-Key'] = dev.api_key
@@ -12,15 +12,14 @@ RSpec.describe Api::V1::DevelopersController, type: :controller do
   describe '#index' do
     it 'should return a list of developers (id, company name, email)' do
       get :index, format: :json
-      expect(res_hash.first.keys).to eq ["id", "email", "company_name"]
+      expect(res_hash.first.keys).to eq %w(id email company_name)
     end
   end
 
   describe '#show' do
     it 'should return a developers public info' do
-      get :show, { id: dev.id, format: :json }
+      get :show, id: dev.id, format: :json
       expect(res_hash.keys).to eq dev.public_info.attributes.keys.map(&:to_sym)
     end
   end
 end
-

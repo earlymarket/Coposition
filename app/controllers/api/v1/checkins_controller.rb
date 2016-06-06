@@ -50,19 +50,19 @@ class Api::V1::CheckinsController < Api::ApiController
 
   private
 
-    def device_exists?
-      if (@device = Device.find_by(uuid: request.headers['X-UUID'])).nil?
-        render status: 400, json: { message: 'You must provide a valid uuid' }
-      end
+  def device_exists?
+    if (@device = Device.find_by(uuid: request.headers['X-UUID'])).nil?
+      render status: 400, json: { message: 'You must provide a valid uuid' }
     end
+  end
 
-    def allowed_params
-      params.require(:checkin).permit(:lat, :lng, :created_at, :fogged)
-    end
+  def allowed_params
+    params.require(:checkin).permit(:lat, :lng, :created_at, :fogged)
+  end
 
-    def find_device
-      if params[:device_id] then @device = Device.find(params[:device_id]) end
-    end
+  def find_device
+    @device = Device.find(params[:device_id]) if params[:device_id]
+  end
 
     def copo_app_checkins
       checkins = @device ? @device.checkins : @user.checkins

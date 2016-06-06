@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-
-  root to: "welcome#index"
+  root to: 'welcome#index'
 
   # Specified routes
 
@@ -18,13 +17,14 @@ Rails.application.routes.draw do
   }
 
   # Attachinary
-  mount Attachinary::Engine => "/attachinary"
+  mount Attachinary::Engine => '/attachinary'
 
   # API
 
-  namespace :api, path: '', constraints: {subdomain: 'api'}, defaults: {format: 'json'} do
+  namespace :api, path: '', constraints: { subdomain: 'api' }, defaults: { format: 'json' } do
     namespace :v1 do
       resources :subscriptions, only: [:create, :destroy]
+      resources :configs, only: [:index, :show, :update]
       resource :uuid, only: [:show]
       resources :checkins, only: [:create]
       resources :developers, only: [:index, :show]
@@ -38,7 +38,7 @@ Rails.application.routes.draw do
         collection do
           get :auth
         end
-        resources :approvals, only: [:create, :index, :update], module: :users do
+        resources :approvals, only: [:create, :index, :update, :destroy], module: :users do
           collection do
             get :status
           end
@@ -64,8 +64,6 @@ Rails.application.routes.draw do
     end
   end
 
-
-
   # Users
 
   resources :users, only: [:show], module: :users do
@@ -83,6 +81,7 @@ Rails.application.routes.draw do
         post 'reject'
       end
     end
+    resource :create_dev_approvals, only: :create
     resources :friends, only: [:show] do
       member do
         get 'show_device'
@@ -92,8 +91,6 @@ Rails.application.routes.draw do
     get '/apps', to: 'approvals#apps'
     get '/friends', to: 'approvals#friends'
   end
-
-
 
   # Devs
   resources :developers, only: [:edit, :update]

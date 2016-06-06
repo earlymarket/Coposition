@@ -1,3 +1,5 @@
+/*eslint no-unused-expressions: [2, { allowTernary: true }]*/
+
 window.COPO = window.COPO || {};
 window.COPO.charts = {
   drawBarChart: function(checkins, height, page) {
@@ -106,8 +108,7 @@ window.COPO.charts = {
       data.addColumn('string');
       checkins.forEach(function(checkin){
         var humanizedDate = moment(checkin.created_at).format('LLL');
-        var foggedClass;
-        checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
+        var foggedClass = checkin.fogged ?  'fogged enabled-icon' : ' disabled-icon';
         var delete_button = COPO.utility.deleteCheckinLink(checkin);
         var fogging_button = COPO.utility.fogCheckinLink(checkin, foggedClass, 'tableFog');
         tableData.push([
