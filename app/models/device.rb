@@ -3,6 +3,8 @@ class Device < ActiveRecord::Base
   include SwitchFogging
 
   belongs_to :user
+  has_one :config
+  has_one :configurer, through: :configs, source: :developer
   has_many :checkins, dependent: :destroy
   has_many :permissions, dependent: :destroy
   has_many :developers, through: :permissions, source: :permissible, source_type: 'Developer'

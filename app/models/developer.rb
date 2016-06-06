@@ -14,6 +14,8 @@ class Developer < ActiveRecord::Base
   has_many :approvals, as: :approvable, dependent: :destroy
   has_many :pending_requests, -> { where "status = 'developer-requested'" }, through: :approvals, source: :user
   has_many :users, -> { where "status = 'accepted'" }, through: :approvals
+  has_many :configs
+  has_many :configurable_devices, through: :configs, source: :device
 
   before_create do |dev|
     dev.api_key = SecureRandom.uuid
