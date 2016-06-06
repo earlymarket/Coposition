@@ -34,7 +34,7 @@ RSpec.describe Users::DevicesController, type: :controller do
   describe 'GET #index' do
     it 'should assign current_user.devices to @devices' do
       get :index, user_param
-      expect(assigns(:devices)).to eq(user.devices)
+      expect(assigns(:presenter).devices).to eq(user.devices)
     end
   end
 

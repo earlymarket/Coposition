@@ -6,7 +6,7 @@ class Users::PermissionsController < ApplicationController
     @permission.update(allowed_params)
     devices = current_user.devices.order(:id).includes(:permissions)
     if current_user.checkins.exists?
-      gon.checkins = current_user.checkins.since(current_user.checkins.first.created_at.beginning_of_year)
+      gon.checkins = current_user.checkins.calendar_data
     end
     gon.permissions = devices.map(&:permissions).inject(:+)
     gon.current_user_id = current_user.id

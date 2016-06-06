@@ -91,4 +91,8 @@ class Device < ActiveRecord::Base
   def self.public_info
     select([:id, :user_id, :name, :alias, :published])
   end
+
+  def self.geocode_last_checkins
+    all.each { |device| device.checkins.first.reverse_geocode! if device.checkins.exists? }
+  end
 end

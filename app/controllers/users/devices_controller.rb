@@ -4,21 +4,17 @@ class Users::DevicesController < ApplicationController
   before_action :require_ownership, only: [:show, :destroy, :update]
 
   def index
-    @devices = current_user.devices.order(:id).includes(:developers, :permitted_users, :permissions)
-    @devices.each { |device| device.checkins.first.reverse_geocode! if device.checkins.exists? }
-    gon.checkins = current_user.checkins.calendar_data if current_user.checkins.exists?
-    gon.current_user_id = current_user.id
-    gon.devices = @devices
-    gon.permissions = @devices.map(&:permissions).inject(:+)
+    @presenter = ::Users::DevicesPresenter.new(current_user, params, 'index')
+    gon.push(@presenter.gon)
+    @presenter.devices.geocode_last_checkins
   end
 
   def show
-    @device = Device.find(params[:id])
-    gon.checkins = @device.checkins
-    gon.current_user_id = current_user.id
+    @presenter = ::Users::DevicesPresenter.new(current_user, params, 'show')
+    gon.push(@presenter.show_gon)
     respond_to do |format|
       format.html { flash[:notice] = 'Right click on the map to checkin' }
-      format.csv { send_data @device.checkins.to_csv, filename: "device-#{@device.id}-checkins-#{Date.today}.csv" }
+      format.csv { send_data @presenter.checkins, filename: @presenter.filename }
     end
   end
 
