@@ -8,7 +8,8 @@ class Device < ActiveRecord::Base
   has_many :checkins, dependent: :destroy
   has_many :permissions, dependent: :destroy
   has_many :developers, through: :permissions, source: :permissible, source_type: 'Developer'
-  has_many :permitted_users, through: :permissions, source: :permissible, source_type: 'User'
+  has_many :allowed_user_permissions, -> { where.not privilege: 0 }, class_name: 'Permission'
+  has_many :permitted_users, through: :allowed_user_permissions, source: :permissible, source_type: 'User'
 
   validates :name, uniqueness: { scope: :user_id }, if: :user_id
 
@@ -23,18 +24,36 @@ class Device < ActiveRecord::Base
     end
   end
 
+  def safe_checkin_info_for(args)
+    sanitized = permitted_history_for(args[:permissible]).limit_returned_checkins(args)
+    sanitized = sanitized.map(&:reverse_geocode!) if args[:type] == 'address'
+    sanitized = sanitized.map(&:replace_foggable_attributes) unless can_bypass_fogging?(args[:permissible])
+    sanitized.map(&:public_info)
+  end
+
   def permitted_history_for(permissible)
-    return Checkin.none if permission_for(permissible).privilege == 'disallowed'
-    if permission_for(permissible).privilege == 'last_only'
-      if can_bypass_delay?(permissible)
-        Checkin.where(id: checkins.first.id)
-      elsif checkins.before(delayed.to_i.minutes.ago).present?
-        Checkin.where(id: checkins.before(delayed.to_i.minutes.ago).first.id)
-      else
-        Checkin.none
-      end
+    resolve_privilege(delayed_checkins_for(permissible), permissible)
+  end
+
+  def resolve_privilege(unresolved_checkins, permissible)
+    return Checkin.none if privilege_for(permissible) == 'disallowed'
+    return unresolved_checkins if unresolved_checkins.empty?
+    if privilege_for(permissible) == 'last_only'
+      Checkin.where(id: unresolved_checkins.first.id)
     else
-      can_bypass_delay?(permissible) ? checkins : checkins.before(delayed.to_i.minutes.ago)
+      unresolved_checkins
+    end
+  end
+
+  def privilege_for(permissible)
+    permission_for(permissible).privilege
+  end
+
+  def delayed_checkins_for(permissible)
+    if can_bypass_delay?(permissible)
+      checkins
+    else
+      checkins.before(delayed.to_i.minutes.ago)
     end
   end
 

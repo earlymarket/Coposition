@@ -78,15 +78,30 @@ class User < ActiveRecord::Base
 
   ## Checkins
 
+  def safe_checkin_info(args)
+    args[:device] ? args[:device].safe_checkin_info_for(args) : safe_checkin_info_for(args)
+  end
+
+  def safe_checkin_info_for(args)
+    args[:multiple_devices] = true
+    safe_checkins = devices.flat_map { |device| device.safe_checkin_info_for(args) }
+                           .sort_by  { |key| key[:created_at] }
+    if args[:action] == 'index'
+      safe_checkins.paginate(page: args[:page], per_page: args[:per_page])
+    else
+      safe_checkins.slice(0, 1)
+    end
+  end
+
   def get_checkins(permissible, device)
     device ? device.permitted_history_for(permissible) : get_user_checkins_for(permissible)
   end
 
   def get_user_checkins_for(permissible)
-    checkins_ids = devices.inject([]) do |result, device|
-      result + device.permitted_history_for(permissible).pluck(:id)
+    subqueries = devices.map do |device|
+      Checkin.arel_table[:id].in(device.permitted_history_for(permissible).ids)
     end
-    Checkin.where(id: checkins_ids)
+    Checkin.where(subqueries.inject(&:or))
   end
 
   ##############
