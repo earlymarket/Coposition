@@ -5,7 +5,7 @@ class Users::DevicesController < ApplicationController
 
   def index
     @presenter = ::Users::DevicesPresenter.new(current_user, params, 'index')
-    gon.push(@presenter.gon)
+    gon.push(@presenter.index_gon)
     @presenter.devices.geocode_last_checkins
   end
 

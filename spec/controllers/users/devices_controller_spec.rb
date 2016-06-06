@@ -41,13 +41,13 @@ RSpec.describe Users::DevicesController, type: :controller do
   describe 'GET #show' do
     it 'should assign :id.device to @device if user owns device' do
       get :show, params
-      expect(assigns(:device)).to eq(Device.find(device.id))
+      expect(assigns(:presenter).device).to eq(Device.find(device.id))
     end
 
     it 'should not assign to @device if user does not own device' do
       get :show, params.merge(user_id: new_user.username)
       expect(response).to redirect_to(root_path)
-      expect(assigns(:device)).to eq(nil)
+      expect(assigns(:presenter)).to eq(nil)
     end
 
     it 'should redirect to root path and render error message if device doesnt exist' do

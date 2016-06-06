@@ -11,6 +11,16 @@ module Users
       send action
     end
 
+    def index
+      @devices = @user.devices.order(:id).includes(:developers, :permitted_users, :permissions)
+    end
+
+    def show
+      @device = Device.find(@params[:id])
+      @checkins = @device.checkins.to_csv
+      @filename = "device-#{@device.id}-checkins-#{Date.today}.csv"
+    end
+
     def index_gon
       {
         checkins: gon_index_checkins,
@@ -25,20 +35,6 @@ module Users
         checkins: @device.checkins,
         current_user_id: @user.id
       }
-    end
-
-    def index
-      @devices = @user.devices.order(:id).includes(:developers, :permitted_users, :permissions)
-    end
-
-    def show
-      @device = Device.find(@params[:id])
-      @checkins = @device.checkins.to_csv
-      @filename = "device-#{@device.id}-checkins-#{Date.today}.csv"
-    end
-
-    def download_checkins
-      send_data @device.checkins.to_csv, filename: "device-#{@device.id}-checkins-#{Date.today}.csv"
     end
 
     private
