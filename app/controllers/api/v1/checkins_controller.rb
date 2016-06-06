@@ -10,21 +10,32 @@ class Api::V1::CheckinsController < Api::ApiController
       checkins = copo_app_checkins
     else
       per_page = params[:per_page].to_i <= 1000 ? params[:per_page] : 1000
-      checkins = @user.get_checkins(@permissible, @device).paginate(page: params[:page], per_page: per_page)
-      paginated_response_headers(checkins)
-      checkins = checkins.resolve_address(@permissible, params[:type])
+      checkins = @user.safe_checkin_info(
+        permissible: @permissible,
+        device: @device,
+        page: params[:page],
+        per_page: per_page,
+        type: params[:type],
+        action: action_name
+      )
+      unsanitized_checkins = @user.get_user_checkins_for(@permissible).paginate(page: params[:page], per_page: per_page)
+      paginated_response_headers(unsanitized_checkins)
     end
     render json: checkins
   end
 
   def last
     if req_from_coposition_app?
-      checkin = copo_app_checkin
+      checkin = copo_app_checkins
     else
-      checkin = @user.get_checkins(@permissible, @device).first
-      checkin = checkin.resolve_address(@permissible, params[:type]) if checkin
+      checkin = @user.safe_checkin_info(
+        permissible: @permissible,
+        device: @device,
+        type: params[:type],
+        action: action_name
+      )
     end
-    checkin ? (render json: [checkin]) : (render json: [])
+    render json: checkin
   end
 
   def create
@@ -55,14 +66,7 @@ class Api::V1::CheckinsController < Api::ApiController
 
   def copo_app_checkins
     checkins = @device ? @device.checkins : @user.checkins
-    checkins = checkins.includes(:device).map(&:reverse_geocode!) if params[:type] == 'address'
-    checkins
-  end
-
-  def copo_app_checkin
-    checkins = @device ? @device.checkins : @user.checkins
-    return unless checkins
-    checkin = checkins.first
-    params[:type] == 'address' ? checkin.reverse_geocode! : checkin
+    checkins = checkins.limit(1) if action_name == 'last'
+    params[:type] == 'address' ? checkins.map(&:reverse_geocode!) : checkins
   end
 end
