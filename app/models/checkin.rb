@@ -33,8 +33,18 @@ class Checkin < ActiveRecord::Base
     end
   end
 
+  def self.limit_returned_checkins(args)
+    if args[:action] == 'index' && args[:multiple_devices]
+      limit(args[:per_page])
+    elsif args[:action] == 'index' && !args[:multiple_devices]
+      paginate(page: args[:page], per_page: args[:per_page])
+    else
+      limit(1)
+    end
+  end
+
   def replace_foggable_attributes
-    if fogged? || device.fogged?
+    if device.fogged? || fogged?
       fogged_checkin = Checkin.new(attributes.delete_if { |key, _v| key =~ /city|postal/ })
       fogged_checkin.assign_attributes(address: fogged_area, lat: fogged_lat, lng: fogged_lng)
       return fogged_checkin
@@ -80,18 +90,6 @@ class Checkin < ActiveRecord::Base
     self.fogged_area ||= nearest_city.name
     self.country_code ||= nearest_city.country_code
     save
-  end
-
-  def resolve_address(permissible, type)
-    reverse_geocode! if type == 'address'
-    return replace_foggable_attributes.public_info unless device.can_bypass_fogging?(permissible)
-    public_info
-  end
-
-  def self.resolve_address(permissible, type)
-    includes(:device).map do |checkin|
-      checkin.resolve_address(permissible, type)
-    end
   end
 
   def self.hash_group_and_count_by(attribute)

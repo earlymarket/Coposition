@@ -40,10 +40,9 @@ gem 'mustache-js-rails', '~> 2.0.3'
 gem 'sprockets', '>= 3.0.0'
 gem 'sprockets-es6'
 
-# Use Unicorn as the app server
-
 group :production do
-  gem 'unicorn'
+  gem 'puma'
+  gem 'rack-timeout'
   gem 'rails_12factor'
 end
 
