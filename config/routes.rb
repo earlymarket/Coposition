@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   namespace :api, path: '', constraints: { subdomain: 'api' }, defaults: { format: 'json' } do
     namespace :v1 do
       resources :subscriptions, only: [:create, :destroy]
+      resources :configs, only: [:index, :show, :update]
       resource :uuid, only: [:show]
       resources :checkins, only: [:create]
       resources :developers, only: [:index, :show]
@@ -37,7 +38,7 @@ Rails.application.routes.draw do
         collection do
           get :auth
         end
-        resources :approvals, only: [:create, :index, :update], module: :users do
+        resources :approvals, only: [:create, :index, :update, :destroy], module: :users do
           collection do
             get :status
           end

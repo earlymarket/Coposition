@@ -15,9 +15,8 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
   let(:friend_approval_create_params) do
     params.merge(approval: { approvable: second_user.id, approvable_type: 'User' })
   end
-  let(:approval_update_params) do
-    params.merge(id: apprvl.id, approval: { status: 'accepted' })
-  end
+  let(:approval_destroy_params) { params.merge(id: apprvl.id) }
+  let(:approval_update_params) { approval_destroy_params.merge(approval: { status: 'accepted' }) }
 
   before do
     request.headers['X-Api-Key'] = developer.api_key
@@ -112,7 +111,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
       end
     end
 
-    context 'when posting to #update' do
+    context 'making a request to #update' do
       it 'should be able to approve a developer approval request' do
         put :update, approval_update_params
         expect(user.approved?(developer)).to be true
@@ -140,10 +139,11 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
         expect(response.status).to be 404
         expect(user.approved?(developer)).to be false
       end
+    end
 
+    context 'making a request to #destroy' do
       it 'should be able to reject an approval' do
-        approval_update_params[:approval][:status] = 'rejected'
-        put :update, approval_update_params
+        delete :destroy, approval_destroy_params
         expect(Approval.count).to eq 0
         expect(user.approved?(developer)).to be false
       end

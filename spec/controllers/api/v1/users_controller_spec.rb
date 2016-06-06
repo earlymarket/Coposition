@@ -43,7 +43,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   describe '#auth' do
     context 'with a valid webhook key in header' do
       it 'should return status 204 and json message "success"' do
-        request.headers['X-Webhook-Key'] = user.webhook_key
+        request.headers['X-Authentication-Key'] = user.webhook_key
         get :auth
         expect(response.status).to eq 204
         expect(res_hash[:message]).to eq 'Success'

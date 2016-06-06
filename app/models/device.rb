@@ -3,6 +3,8 @@ class Device < ActiveRecord::Base
   include SwitchFogging
 
   belongs_to :user
+  has_one :config
+  has_one :configurer, through: :configs, source: :developer
   has_many :checkins, dependent: :destroy
   has_many :permissions, dependent: :destroy
   has_many :developers, through: :permissions, source: :permissible, source_type: 'Developer'
@@ -76,7 +78,7 @@ class Device < ActiveRecord::Base
   end
 
   def subscriptions(event)
-    Subscription.where(event: event).where(user_id: user_id)
+    Subscription.where(event: event).where(subscriber_id: user_id)
   end
 
   def notify_subscribers(event, data)
