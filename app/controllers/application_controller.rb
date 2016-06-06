@@ -15,6 +15,6 @@ class ApplicationController < ActionController::Base
   end
 
   def approval_zapier_data(approval)
-    [current_user.public_info, approval]
+    [current_user.public_info.as_json.merge(approval.as_json)]
   end
 end
