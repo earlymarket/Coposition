@@ -4,6 +4,8 @@ class Api::V1::UuidsController < Api::ApiController
   skip_before_filter :find_user
 
   def show
-    respond_with uuid: Device.create.uuid
+    device = Device.create
+    @dev.configs.create(device_id: device.id)
+    respond_with uuid: device.uuid
   end
 end

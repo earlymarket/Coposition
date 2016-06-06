@@ -4,12 +4,12 @@ RSpec.describe Api::V1::SubscriptionsController, type: :controller do
   include ControllerMacros
 
   let(:user) { FactoryGirl.create :user }
-  let(:subscription) { FactoryGirl.create :subscription, user: user }
+  let(:subscription) { FactoryGirl.create :subscription, subscriber: user }
   let(:params) { { target_url: "http://#{Faker::Internet.domain_name}/", event: 'new_checkin' } }
   let(:destroy_params) { params.merge(id: subscription.id) }
 
   before do
-    request.headers['X-Webhook-Key'] = user.webhook_key
+    request.headers['X-Authentication-Key'] = user.webhook_key
   end
 
   describe '#create' do
