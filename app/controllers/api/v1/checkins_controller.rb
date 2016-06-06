@@ -10,14 +10,14 @@ class Api::V1::CheckinsController < Api::ApiController
       checkins = copo_app_checkins
     else
       per_page = params[:per_page].to_i <= 1000 ? params[:per_page] : 1000
-      checkins = @user.safe_checkin_info({
+      checkins = @user.safe_checkin_info(
         permissible: @permissible,
         device: @device,
         page: params[:page],
         per_page: per_page,
         type: params[:type],
         action: action_name
-      })
+      )
       unsanitized_checkins = @user.get_user_checkins_for(@permissible).paginate(page: params[:page], per_page: per_page)
       paginated_response_headers(unsanitized_checkins)
     end
@@ -28,12 +28,12 @@ class Api::V1::CheckinsController < Api::ApiController
     if req_from_coposition_app?
       checkin = copo_app_checkins
     else
-      checkin = @user.safe_checkin_info({
+      checkin = @user.safe_checkin_info(
         permissible: @permissible,
         device: @device,
         type: params[:type],
         action: action_name
-      })
+      )
     end
     render json: checkin
   end
@@ -64,9 +64,9 @@ class Api::V1::CheckinsController < Api::ApiController
     @device = Device.find(params[:device_id]) if params[:device_id]
   end
 
-    def copo_app_checkins
-      checkins = @device ? @device.checkins : @user.checkins
-      checkins = checkins.limit(1) if action_name == 'last'
-      params[:type] == 'address' ? checkins.map(&:reverse_geocode!) : checkins
-    end
+  def copo_app_checkins
+    checkins = @device ? @device.checkins : @user.checkins
+    checkins = checkins.limit(1) if action_name == 'last'
+    params[:type] == 'address' ? checkins.map(&:reverse_geocode!) : checkins
+  end
 end

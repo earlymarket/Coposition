@@ -7,9 +7,9 @@ class Device < ActiveRecord::Base
   has_one :configurer, through: :configs, source: :developer
   has_many :checkins, dependent: :destroy
   has_many :permissions, dependent: :destroy
-  has_many :developers, through: :permissions, source: :permissible, :source_type => 'Developer'
-  has_many :allowed_user_permissions, ->  { where.not privilege: 0 }, class_name: 'Permission'
-  has_many :permitted_users, through: :allowed_user_permissions, source: :permissible, :source_type => 'User'
+  has_many :developers, through: :permissions, source: :permissible, source_type: 'Developer'
+  has_many :allowed_user_permissions, -> { where.not privilege: 0 }, class_name: 'Permission'
+  has_many :permitted_users, through: :allowed_user_permissions, source: :permissible, source_type: 'User'
 
   validates :name, uniqueness: { scope: :user_id }, if: :user_id
 
@@ -28,7 +28,7 @@ class Device < ActiveRecord::Base
     sanitized = permitted_history_for(args[:permissible]).limit_returned_checkins(args)
     sanitized = sanitized.map(&:reverse_geocode!) if args[:type] == 'address'
     sanitized = sanitized.map(&:replace_foggable_attributes) unless can_bypass_fogging?(args[:permissible])
-    sanitized = sanitized.map(&:public_info)
+    sanitized.map(&:public_info)
   end
 
   def permitted_history_for(permissible)
@@ -37,8 +37,8 @@ class Device < ActiveRecord::Base
 
   def resolve_privilege(unresolved_checkins, permissible)
     return Checkin.none if privilege_for(permissible) == 'disallowed'
+    return unresolved_checkins if unresolved_checkins.empty?
     if privilege_for(permissible) == 'last_only'
-      return Checkin.none if unresolved_checkins.empty?
       Checkin.where(id: unresolved_checkins.first.id)
     else
       unresolved_checkins

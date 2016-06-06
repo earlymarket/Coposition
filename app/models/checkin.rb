@@ -34,9 +34,9 @@ class Checkin < ActiveRecord::Base
   end
 
   def self.limit_returned_checkins(args)
-    if args[:action] == "index" && args[:multiple_devices]
+    if args[:action] == 'index' && args[:multiple_devices]
       limit(args[:per_page])
-    elsif args[:action] == "index" && !args[:multiple_devices]
+    elsif args[:action] == 'index' && !args[:multiple_devices]
       paginate(page: args[:page], per_page: args[:per_page])
     else
       limit(1)

@@ -84,12 +84,12 @@ class User < ActiveRecord::Base
 
   def safe_checkin_info_for(args)
     args[:multiple_devices] = true
-    safe_checkins = devices.flat_map { |device| device.safe_checkin_info_for(args)}
-    .sort_by { |key| key[:created_at]}
+    safe_checkins = devices.flat_map { |device| device.safe_checkin_info_for(args) }
+                           .sort_by  { |key| key[:created_at] }
     if args[:action] == 'index'
       safe_checkins.paginate(page: args[:page], per_page: args[:per_page])
     else
-      safe_checkins.slice(0,1)
+      safe_checkins.slice(0, 1)
     end
   end
 
