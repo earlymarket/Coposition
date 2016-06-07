@@ -21,6 +21,11 @@ module Users
       @filename = "device-#{@device.id}-checkins-#{Date.today}.csv"
     end
 
+    def shared
+      @device = Device.find(@params[:id])
+      @checkin = @device.checkins.first
+    end
+
     def index_gon
       {
         checkins: gon_index_checkins,
@@ -37,10 +42,22 @@ module Users
       }
     end
 
+    def shared_gon
+      {
+        device: @device.public_info,
+        user: @device.user.public_info_hash,
+        checkin: gon_shared_checkin
+      }
+    end
+
     private
 
     def gon_index_checkins
       @user.checkins.calendar_data if @user.checkins.exists?
+    end
+
+    def gon_shared_checkin
+      @checkin.reverse_geocode!.replace_foggable_attributes.public_info if @checkin
     end
   end
 end
