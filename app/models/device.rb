@@ -101,15 +101,19 @@ class Device < ActiveRecord::Base
   end
 
   def notify_subscribers(event, data)
-    zapier_data = [data]
-    zapier_data << public_info unless data.model_name == 'Device'
-    zapier_data << user.public_info if user
+    data = data.as_json
+    data.merge!(public_info.as_json) unless data[:model_name] == 'Device'
+    data.merge!(user.public_info.as_json) if user
     subscriptions(event).each do |subscription|
-      subscription.send_data(zapier_data)
-    end unless subscriptions(event).empty?
+      subscription.send_data([data])
+    end
   end
 
   def self.public_info
     select([:id, :user_id, :name, :alias, :published])
+  end
+
+  def self.geocode_last_checkins
+    all.each { |device| device.checkins.first.reverse_geocode! if device.checkins.exists? }
   end
 end

@@ -7,13 +7,17 @@ RSpec.describe ApplicationHelper, type: :helper do
   let(:developer) { FactoryGirl.create(:developer) }
   let(:checkin) { FactoryGirl.create(:checkin) }
 
-  describe '#humanize_date' do
+  describe '#humanize_date and #humanize_date_and_time' do
     it 'should accept a date' do
-      expect { helper.humanize_date(Faker::Date.forward(30)) }.not_to raise_error
+      [:humanize_date, :humanize_date_and_time].each do |humanize|
+        expect { helper.send(humanize, Faker::Date.forward(30)) }.not_to raise_error
+      end
     end
 
     it 'should return a string' do
-      expect(helper.humanize_date(Faker::Date.forward(30)).class).to eq(String)
+      [:humanize_date, :humanize_date_and_time].each do |humanize|
+        expect(helper.send(humanize, Faker::Date.forward(30)).class).to eq(String)
+      end
     end
   end
 

@@ -24,4 +24,8 @@ module ApiApplicationMixin
   def req_from_coposition_app?
     request.headers['X-Secret-App-Key'] == Rails.application.secrets.mobile_app_key
   end
+
+  def approval_zapier_data(approval)
+    [approval.user.public_info.as_json.merge(approval.as_json)]
+  end
 end
