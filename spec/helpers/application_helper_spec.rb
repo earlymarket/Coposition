@@ -17,6 +17,16 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
   end
 
+  describe '#humanize_date_and_time' do
+    it 'should accept a date' do
+      expect { helper.humanize_date_and_time(Faker::Date.forward(30)) }.not_to raise_error
+    end
+
+    it 'should return a string' do
+      expect(helper.humanize_date_and_time(Faker::Date.forward(30)).class).to eq(String)
+    end
+  end
+
   describe '#fogged_icon' do
     it 'returns different icons depending on a boolean input' do
       expect(helper.fogged_icon(true) && helper.fogged_icon(false)).to match('icon')

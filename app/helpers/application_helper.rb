@@ -8,6 +8,10 @@ module ApplicationHelper
   end
 
   def humanize_date(date)
+    date.strftime("%A #{date.day.ordinalize} %B")
+  end
+
+  def humanize_date_and_time(date)
     date.strftime("%a #{date.day.ordinalize} %b %T")
   end
 
