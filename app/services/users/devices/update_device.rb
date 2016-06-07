@@ -15,6 +15,7 @@ module Users::Devices
       else
         @device.switch_fog
       end
+      @device
     end
 
     def notice
