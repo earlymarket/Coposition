@@ -29,18 +29,14 @@ class Users::DevicesController < ApplicationController
   end
 
   def create
-    @device = Device.new
-    @device = Device.find_by uuid: allowed_params[:uuid] if allowed_params[:uuid].present?
-    if @device && @device.user.nil?
-      if @device.construct(current_user, allowed_params[:name])
-        gon.checkins = @device.checkins.create(checkin_params) if params[:create_checkin].present?
-        @device.notify_subscribers('new_device', @device)
-        redirect_to user_device_path(id: @device.id)
-      else
-        redirect_to new_user_device_path, notice: "You already have a device with the name #{allowed_params[:name]}"
-      end
+    result = CreateDevice.new(current_user, allowed_params)
+    if result.save?
+      @device = result.device
+      gon.checkins = create_checkin(@device)
+      @device.notify_subscribers('new_device', @device)
+      redirect_to user_device_path(id: @device.id)
     else
-      redirect_to new_user_device_path, notice: 'Invalid UUID provided'
+      redirect_to new_user_device_path, notice: result.error
     end
   end
 
@@ -69,6 +65,10 @@ class Users::DevicesController < ApplicationController
 
   def allowed_params
     params.require(:device).permit(:uuid, :name, :delayed)
+  end
+
+  def create_checkin(device)
+    device.checkins.create(checkin_params) if params[:create_checkin].present?
   end
 
   def checkin_params

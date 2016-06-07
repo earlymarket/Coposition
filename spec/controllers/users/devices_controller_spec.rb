@@ -120,6 +120,7 @@ RSpec.describe Users::DevicesController, type: :controller do
     it 'should fail to to create a device with an invalid UUID' do
       count = user.devices.count
       post :create, user_param.merge(device: { uuid: 123 })
+      expect(flash[:notice]).to match 'does not match'
       expect(response).to redirect_to(new_user_device_path)
       expect(user.devices.count).to be count
     end
@@ -129,6 +130,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       taken_uuid = user.devices.last.uuid
       post :create, user_param.merge(device: { uuid: taken_uuid })
       expect(response).to redirect_to(new_user_device_path)
+      expect(flash[:notice]).to match 'registered to another'
       expect(user.devices.count).to be count
     end
 
@@ -138,6 +140,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       post :create, user_param.merge(device: { name: taken_name })
       expect(user.devices.count).to be count
       expect(response).to redirect_to(new_user_device_path)
+      expect(flash[:notice]).to match taken_name
     end
   end
 
