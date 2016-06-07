@@ -2,15 +2,9 @@ class Users::PermissionsController < ApplicationController
   before_action :authenticate_user!, :require_ownership
 
   def update
-    @permission = Permission.find(params[:id])
-    @permission.update(allowed_params)
-    devices = current_user.devices.order(:id).includes(:permissions)
-    if current_user.checkins.exists?
-      gon.checkins = current_user.checkins.calendar_data
-    end
-    gon.permissions = devices.map(&:permissions).inject(:+)
-    gon.current_user_id = current_user.id
-    gon.devices = devices
+    presenter = ::Users::PermissionsPresenter.new(current_user, params)
+    presenter.permission.update(allowed_params)
+    gon.push(presenter.gon)
     respond_to do |format|
       format.js
     end
