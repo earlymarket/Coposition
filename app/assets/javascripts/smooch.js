@@ -1,7 +1,7 @@
 window.COPO = window.COPO || {};
 window.COPO.smooch = {
   initSmooch: function(user){
-    if(Smooch.appToken){
+    if(Smooch.appToken && $('#sk-holder').length === 0){
       Smooch.render()
     } else {
       Smooch.init({
