@@ -29,7 +29,7 @@ class Users::DevicesController < ApplicationController
   end
 
   def create
-    result = CreateDevice.new(current_user, allowed_params)
+    result = Users::Devices::CreateDevice.new(current_user, allowed_params)
     if result.save?
       @device = result.device
       gon.checkins = create_checkin(@device)
@@ -48,17 +48,9 @@ class Users::DevicesController < ApplicationController
   end
 
   def update
-    @device = Device.find(params[:id])
-    if params[:delayed]
-      @device.update_delay(params[:delayed])
-      flash[:notice] = @device.humanize_delay
-    elsif params[:published]
-      @device.update(published: !@device.published)
-      flash[:notice] = "Location sharing is #{boolean_to_state(@device.published)}."
-    else
-      @device.switch_fog
-      flash[:notice] = "Location fogging is #{boolean_to_state(@device.fogged)}."
-    end
+    result = Users::Devices::UpdateDevice.new(params)
+    @device = result.update_device
+    flash[:notice] = result.notice
   end
 
   private
@@ -83,9 +75,5 @@ class Users::DevicesController < ApplicationController
 
   def published?
     redirect_to root_path, notice: 'Device is not shared' unless Device.find(params[:id]).published?
-  end
-
-  def boolean_to_state(boolean)
-    boolean ? 'on' : 'off'
   end
 end
