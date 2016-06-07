@@ -85,10 +85,11 @@ class Checkin < ActiveRecord::Base
   end
 
   def add_fogged_info
-    self.fogged_lat ||= nearest_city.latitude || lat + rand(-0.5..0.5)
-    self.fogged_lng ||= nearest_city.longitude || lng + rand(-0.5..0.5)
-    self.fogged_area ||= nearest_city.name
-    self.country_code ||= nearest_city.country_code
+    random_distance = rand(-0.5..0.5)
+    self.fogged_lat = nearest_city.latitude || lat + random_distance
+    self.fogged_lng = nearest_city.longitude || lng + random_distance
+    self.fogged_area = nearest_city.name
+    self.country_code = nearest_city.country_code
     save
   end
 
@@ -100,6 +101,7 @@ class Checkin < ActiveRecord::Base
   end
 
   def self.percentage_increase(time_range)
+    one_time_range_ago = 1.send(time_range).ago
     recent_checkins_count = count(created_at: 1.send(time_range).ago..Time.now).to_f
     older_checkins_count = count(created_at: 2.send(time_range).ago..1.send(time_range).ago).to_f
     if recent_checkins_count > 0 && older_checkins_count > 0
