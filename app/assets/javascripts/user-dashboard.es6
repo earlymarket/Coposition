@@ -5,7 +5,7 @@ $(document).on('page:change', function () {
     const SL = window.COPO.slides;
     U.gonFix();
     M.initMap();
-    M.initControls(['locate', 'w3w', 'layers']);
+    M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
     COPO.smooch.initSmooch(gon.current_user.userinfo);
 
     // Persistent map feature declarations

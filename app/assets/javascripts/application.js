@@ -38,6 +38,7 @@
 //= require mapbox
 //= require leaflet.markercluster
 //= require L.Control.Locate.min
+//= require Leaflet.fullscreen.min
 //= require control.w3w
 
 // -- Run every page
