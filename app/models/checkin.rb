@@ -102,8 +102,8 @@ class Checkin < ActiveRecord::Base
 
   def self.percentage_increase(time_range)
     one_time_range_ago = 1.send(time_range).ago
-    recent_checkins_count = count(created_at: 1.send(time_range).ago..Time.now).to_f
-    older_checkins_count = count(created_at: 2.send(time_range).ago..1.send(time_range).ago).to_f
+    recent_checkins_count = count(created_at: one_time_range_ago..Time.now).to_f
+    older_checkins_count = count(created_at: 2.send(time_range).ago..one_time_range_ago).to_f
     if recent_checkins_count > 0 && older_checkins_count > 0
       (((recent_checkins_count / older_checkins_count) - 1) * 100).round(2)
     end
