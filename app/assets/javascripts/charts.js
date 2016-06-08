@@ -15,7 +15,7 @@ window.COPO.charts = {
       }
       // Instantiate and draw the chart.
       var table = new google.visualization.Table(table_div);
-      var cssClassNames = { 'headerRow' : 'primary-color' }
+      var cssClassNames = { 'headerRow' : 'white' }
       var options = { width: '100%', allowHtml: true, cssClassNames: cssClassNames }
       table.draw(data, options);
     }
