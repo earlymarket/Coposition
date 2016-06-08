@@ -57,6 +57,7 @@ $(document).on('page:change', function() {
           }
         });
       };
+      $target.text($target.text());
       $target.attr('contenteditable', false);
       $target.next().toggleClass('hide', false);
       U.deselect();
