@@ -12,7 +12,7 @@ $(document).on('page:change', function() {
       makeEditable($(this).prev(), handleEdited);
     });
 
-    function makeEditable($target, handler) {
+    var makeEditable = function ($target, handler) {
       var original = $target.text();
       $target.attr('contenteditable', true);
       $target.focus();
@@ -29,9 +29,9 @@ $(document).on('page:change', function() {
         e.preventDefault();
       });
       return $target;
-    };
+    }
 
-    function handleEdited(original, $target) {
+    var handleEdited = function (original, $target) {
       var newName = $target.text()
       if(original !== newName) {
         console.log('Name optimistically set to: ' + $target.text());
@@ -55,14 +55,14 @@ $(document).on('page:change', function() {
             console.log(error);
             Materialize.toast('Error changing names', 3000, 'red');
           }
-        });
-      };
+        })
+      }
       $target.text($target.text());
       $target.attr('contenteditable', false);
       $target.next().toggleClass('hide', false);
       U.deselect();
       $target.off();
-    };
+    }
 
     window.initPage = function(){
       $('.clip_button').off();
