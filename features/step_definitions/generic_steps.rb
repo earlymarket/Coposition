@@ -25,7 +25,7 @@ end
 Given(/^I confirm "(.*?)"$/) do |target|
   begin
     page.driver.browser.switch_to.alert
-  rescue
+  rescue Selenium::WebDriver::Error::NoSuchAlertError
     click_link(target, match: :first)
   end
   a = page.driver.browser.switch_to.alert
