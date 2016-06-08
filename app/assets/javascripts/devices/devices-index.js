@@ -32,8 +32,30 @@ $(document).on('page:change', function() {
     };
 
     function handleEdited(original, $target) {
-      if(original !== $target.text()) {
-        console.log($target.text());
+      var newName = $target.text()
+      if(original !== newName) {
+        console.log('Name optimistically set to: ' + $target.text());
+        var url = $target.parents('a').attr('href');
+        var request = $.ajax({
+          url: url,
+          type: 'PUT',
+          data: { name: newName }
+        });
+
+        request
+        .done(function (response) {
+          console.log('Server processed the request');
+        })
+        .fail(function (error) {
+          $target.text(original);
+          try {
+            Materialize.toast('Name: ' + JSON.parse(error.responseText).name, 3000, 'red');
+          }
+          catch (e) {
+            console.log(error);
+            Materialize.toast('Error changing names', 3000, 'red');
+          }
+        });
       };
       $target.attr('contenteditable', false);
       $target.next().toggleClass('hide', false);
