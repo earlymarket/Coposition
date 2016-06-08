@@ -12,17 +12,13 @@ class Api::V1::Users::DevicesController < Api::ApiController
   end
 
   def create
-    device = Device.new
-    device = Device.find_by uuid: device_params[:uuid] if device_params[:uuid].present?
-    if device && device.user.nil?
-      if device.construct(@user, device_params[:name])
-        device.notify_subscribers('new_device', device)
-        render json: device
-      else
-        render status: 400, json: { message: "You already have a device with the name #{device_params[:name]}" }
-      end
+    result = ::Users::Devices::CreateDevice.new(@user, device_params)
+    if result.save?
+      device = result.device
+      device.notify_subscribers('new_device', device)
+      render json: device
     else
-      render status: 400, json: { message: 'Invalid UUID provided' }
+      render status: 400, json: { message: result.error }
     end
   end
 

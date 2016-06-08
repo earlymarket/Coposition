@@ -1,6 +1,7 @@
 class Device < ActiveRecord::Base
   include SlackNotifiable
   include SwitchFogging
+  include HumanizeMinutes
 
   belongs_to :user
   has_one :config
@@ -81,13 +82,8 @@ class Device < ActiveRecord::Base
   def humanize_delay
     if delayed.nil?
       "#{name} is not delayed."
-    elsif delayed < 60
-      "#{name} delayed by #{delayed} #{'minute'.pluralize(delayed)}."
-    elsif delayed < 1440
-      "#{name} delayed by #{delayed / 60} #{'hour'.pluralize(delayed / 60)}"\
-      " and #{delayed % 60} #{'minutes'.pluralize(delayed % 60)}."
     else
-      "#{name} delayed by #{delayed / 1440} #{'day'.pluralize(delayed / 1440)}."
+      "#{name} delayed by #{humanize_minutes(delayed)}."
     end
   end
 
