@@ -23,23 +23,15 @@ module ApplicationHelper
   def render_flash
     output = ''
 
-    if alert
-      output << "Materialize.toast('#{j alert}', 3000, 'red');"
-      flash.discard(:alert)
-    end
+    output << "Materialize.toast('#{j alert}', 3000, 'red');" if alert
 
-    if notice
-      output << "Materialize.toast('#{j notice}', 3000);"
-      flash.discard(:notice)
-    end
+    output << "Materialize.toast('#{j notice}', 3000);" if notice
 
-    if flash[:errors]
-      flash['errors'].each do |error|
-        output << "Materialize.toast('#{j error}', 5000, 'red');"
-      end
-      flash.discard(:errors)
-    end
+    flash['errors'].each do |error|
+      output << "Materialize.toast('#{j error}', 5000, 'red');"
+    end if flash[:errors]
 
+    flash.keys.each { |flash_type| flash.send('discard', flash_type) }
     output
   end
 

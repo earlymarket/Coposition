@@ -1,4 +1,5 @@
 class Checkin < ActiveRecord::Base
+  include SwitchFogging
   validates :lat, presence: :true
   validates :lng, presence: :true
   belongs_to :device
@@ -99,11 +100,10 @@ class Checkin < ActiveRecord::Base
 
   def self.percentage_increase(time_range)
     one_time_range_ago = 1.send(time_range).ago
-    recent_checkins_count = count(created_at: one_time_range_ago..Time.now).to_f
-    older_checkins_count = count(created_at: 2.send(time_range).ago..one_time_range_ago).to_f
-    if [recent_checkins_count, older_checkins_count].all? { |count| count > 0 }
-      (((recent_checkins_count / older_checkins_count) - 1) * 100).round(2)
-    end
+    recent_checkins_count = where(created_at: one_time_range_ago..Time.now).count.to_f
+    older_checkins_count = where(created_at: 2.send(time_range).ago..one_time_range_ago).count.to_f
+    return unless [recent_checkins_count, older_checkins_count].all? { |count| count > 0 }
+    (((recent_checkins_count / older_checkins_count) - 1) * 100).round(2)
   end
 
   def self.to_csv
