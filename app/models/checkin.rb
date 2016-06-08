@@ -1,6 +1,4 @@
 class Checkin < ActiveRecord::Base
-  include SwitchFogging
-
   validates :lat, presence: :true
   validates :lng, presence: :true
   belongs_to :device
@@ -25,7 +23,6 @@ class Checkin < ActiveRecord::Base
     if device
       self.uuid = device.uuid
       self.fogged ||= device.fogged
-      device.checkins << self
       reverse_geocode! if device.checkins.count == 1
       add_fogged_info
     else
@@ -104,7 +101,7 @@ class Checkin < ActiveRecord::Base
     one_time_range_ago = 1.send(time_range).ago
     recent_checkins_count = count(created_at: one_time_range_ago..Time.now).to_f
     older_checkins_count = count(created_at: 2.send(time_range).ago..one_time_range_ago).to_f
-    if recent_checkins_count > 0 && older_checkins_count > 0
+    if [recent_checkins_count, older_checkins_count].all? { |count| count > 0 }
       (((recent_checkins_count / older_checkins_count) - 1) * 100).round(2)
     end
   end
