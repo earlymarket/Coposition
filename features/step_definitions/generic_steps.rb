@@ -22,7 +22,12 @@ Then(/^I should see "(.*?)"$/) do |text|
   expect(page).to have_content(text)
 end
 
-Given(/^I confirm$/) do
+Given(/^I confirm "(.*?)"$/) do |target|
+  begin
+    page.driver.browser.switch_to.alert
+  rescue
+    click_link(target, match: :first)
+  end
   a = page.driver.browser.switch_to.alert
   a.accept
 end
