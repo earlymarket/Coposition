@@ -12,10 +12,10 @@ module Users::Devices
         @device.update_delay(@params[:delayed])
       elsif @params[:published]
         @device.update(published: !@device.published)
-      elsif @params[:fogged]
-        @device.switch_fog
       elsif @params[:name]
         @device.update(name: @params[:name])
+      else
+        @device.switch_fog
       end
       @device
     end
@@ -27,8 +27,6 @@ module Users::Devices
         "Location sharing is #{boolean_to_state(@device.published)}."
       elsif @params[:fogged]
         "Location fogging is #{boolean_to_state(@device.fogged)}."
-      else
-        nil
       end
     end
 
