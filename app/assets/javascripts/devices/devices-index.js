@@ -37,6 +37,7 @@ $(document).on('page:change', function() {
         console.log('Name optimistically set to: ' + $target.text());
         var url = $target.parents('a').attr('href');
         var request = $.ajax({
+          dataType: 'json',
           url: url,
           type: 'PUT',
           data: { name: newName }
