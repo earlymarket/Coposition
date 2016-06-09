@@ -152,19 +152,14 @@ RSpec.describe Users::DevicesController, type: :controller do
 
       device.reload
       expect(device.fogged?).to be true
-
-      request.accept = 'text/javascript'
-      put :update, params
-
-      device.reload
-      expect(device.fogged?).to be false
+      expect(flash[:notice]).to match 'Location fogging is'
     end
 
     it 'should switch published status' do
       expect(device.published?).to be false
       request.accept = 'text/javascript'
       put :update, params.merge(published: true)
-
+      expect(flash[:notice]).to match 'Location sharing is'
       device.reload
       expect(device.published?).to be true
     end
@@ -187,6 +182,20 @@ RSpec.describe Users::DevicesController, type: :controller do
 
       device.reload
       expect(device.delayed).to be nil
+    end
+
+    it 'should update device name' do
+      request.accept = 'text/javascript'
+      put :update, params.merge(name: 'Computer')
+      expect(device.reload.name).to eq 'Computer'
+    end
+
+    it 'should fail to update device name if taken' do
+      other = user.devices.create(name: 'Computer')
+      request.accept = 'text/javascript'
+      put :update, params.merge(name: other.name)
+      expect(device.reload.name).to_not eq 'Computer'
+      expect(response.body).to match 'already been taken'
     end
   end
 
