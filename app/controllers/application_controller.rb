@@ -13,8 +13,4 @@ class ApplicationController < ActionController::Base
     @presenter = ::Users::ApprovalsPresenter.new(current_user, type)
     gon.push(@presenter.gon)
   end
-
-  def approval_zapier_data(approval)
-    [current_user.public_info, approval]
-  end
 end

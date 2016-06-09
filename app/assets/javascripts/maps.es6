@@ -134,13 +134,17 @@ window.COPO.maps = {
   initControls(controls) {
     // When giving custom controls, I recommend adding layers last
     // This is because it expands downwards
-    controls = controls || ['geocoder', 'locate', 'w3w', 'layers'];
+    controls = controls || ['geocoder', 'locate', 'w3w', 'fullscreen', 'layers'];
     controls.forEach((control) => {
       let fn = this[control + 'ControlInit']
       if (typeof(fn) === 'function') {
         fn();
       }
     })
+  },
+
+  fullscreenControlInit() {
+    L.control.fullscreen().addTo(window.map);
   },
 
   layersControlInit() {

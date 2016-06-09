@@ -10,7 +10,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
     Approval.link(@user, approvable, approvable_type)
     accept_if_friend_request_or_adding_developer if req_from_coposition_app?
     approval = @user.approval_for(approvable)
-    @dev.notify_if_subscribed('new_approval', [@user.public_info, approval])
+    @dev.notify_if_subscribed('new_approval', approval_zapier_data(approval))
     render json: approval
   end
 
@@ -21,7 +21,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
     type = approval.approvable_type
     Approval.accept(@user, approvable, type)
     render json: approval.reload
-    approvable.notify_if_subscribed('new_approval', [@user.public_info, approval]) if type == 'Developer'
+    approvable.notify_if_subscribed('new_approval', approval_zapier_data(approval)) if type == 'Developer'
   end
 
   def destroy

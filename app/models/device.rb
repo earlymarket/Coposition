@@ -1,6 +1,7 @@
 class Device < ActiveRecord::Base
   include SlackNotifiable
   include SwitchFogging
+  include HumanizeMinutes
 
   belongs_to :user
   has_one :config
@@ -8,8 +9,9 @@ class Device < ActiveRecord::Base
   has_many :checkins, dependent: :destroy
   has_many :permissions, dependent: :destroy
   has_many :developers, through: :permissions, source: :permissible, source_type: 'Developer'
+  has_many :permitted_users, through: :permissions, source: :permissible, source_type: 'User'
   has_many :allowed_user_permissions, -> { where.not privilege: 0 }, class_name: 'Permission'
-  has_many :permitted_users, through: :allowed_user_permissions, source: :permissible, source_type: 'User'
+  has_many :allowed_users, through: :allowed_user_permissions, source: :permissible, source_type: 'User'
 
   validates :name, uniqueness: { scope: :user_id }, if: :user_id
 
@@ -80,13 +82,8 @@ class Device < ActiveRecord::Base
   def humanize_delay
     if delayed.nil?
       "#{name} is not delayed."
-    elsif delayed < 60
-      "#{name} delayed by #{delayed} #{'minute'.pluralize(delayed)}."
-    elsif delayed < 1440
-      "#{name} delayed by #{delayed / 60} #{'hour'.pluralize(delayed / 60)}"\
-      " and #{delayed % 60} #{'minutes'.pluralize(delayed % 60)}."
     else
-      "#{name} delayed by #{delayed / 1440} #{'day'.pluralize(delayed / 1440)}."
+      "#{name} delayed by #{humanize_minutes(delayed)}."
     end
   end
 
@@ -101,15 +98,19 @@ class Device < ActiveRecord::Base
   end
 
   def notify_subscribers(event, data)
-    zapier_data = [data]
-    zapier_data << public_info unless data.model_name == 'Device'
-    zapier_data << user.public_info if user
+    data = data.as_json
+    data.merge!(public_info.as_json) unless data[:model_name] == 'Device'
+    data.merge!(user.public_info.as_json) if user
     subscriptions(event).each do |subscription|
-      subscription.send_data(zapier_data)
-    end unless subscriptions(event).empty?
+      subscription.send_data([data])
+    end
   end
 
   def self.public_info
     select([:id, :user_id, :name, :alias, :published])
+  end
+
+  def self.geocode_last_checkins
+    all.each { |device| device.checkins.first.reverse_geocode! if device.checkins.exists? }
   end
 end

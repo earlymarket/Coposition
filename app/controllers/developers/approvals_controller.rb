@@ -26,8 +26,8 @@ class Developers::ApprovalsController < ApplicationController
   end
 
   def zapier_data(email, user)
-    zapier_data = [email: email]
-    return zapier_data unless user
-    zapier_data.push(user.public_info, user.approval_for(current_developer))
+    return [{ email: email, message: 'User not registered with Coposition' }] unless user
+    approval = user.approval_for(current_developer)
+    approval_zapier_data(approval)
   end
 end

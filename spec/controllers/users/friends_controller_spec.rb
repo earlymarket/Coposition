@@ -29,11 +29,10 @@ RSpec.describe Users::FriendsController, type: :controller do
   end
 
   describe 'GET #show_device' do
-    it 'should assign friend, device and checkins' do
+    it 'should render the show device page' do
       approval
       get :show_device, params
-      expect(assigns(:friend)).to eq(second_user)
-      expect(assigns(:device)).to eq(device)
+      expect(response.code).to eq '200'
     end
   end
 end

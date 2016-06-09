@@ -5,7 +5,7 @@ $(document).on('page:change', function () {
     const SL = window.COPO.slides;
     U.gonFix();
     M.initMap();
-    M.initControls(['locate', 'w3w', 'layers']);
+    M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
     COPO.smooch.initSmooch(gon.current_user.userinfo);
 
     // Persistent map feature declarations
@@ -189,7 +189,5 @@ $(document).on('page:change', function () {
     const timer = new SL.Timer(5000);
     DECK.init();
     window.deck = DECK;
-    google.charts.setOnLoadCallback(() => {COPO.charts.drawBarChart(gon.weeks_checkins, '270')});
-    $(window).resize(() => {COPO.charts.drawBarChart(gon.weeks_checkins, '270')});
   }
 });

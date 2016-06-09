@@ -18,7 +18,7 @@ Feature: map
         When I click the link "cloud"
       Then I should have a fogged last checkin
       And I click the link "delete_forever"
-      And I confirm
+      And I confirm "delete_forever"
         Then I have 0 checkins on the map
 
     @javascript

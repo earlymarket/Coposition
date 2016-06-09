@@ -39,7 +39,7 @@ RSpec.describe Api::V1::ConfigsController, type: :controller do
 
     it 'should return a message if config does not exist' do
       put :update, update_params.merge(id: 0)
-      expect(res_hash[:message]).to match 'Config does not exist'
+      expect(res_hash[:error]).to match "Couldn't find Config"
     end
   end
 end
