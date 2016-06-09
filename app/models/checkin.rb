@@ -1,6 +1,5 @@
 class Checkin < ActiveRecord::Base
   include SwitchFogging
-
   validates :lat, presence: :true
   validates :lng, presence: :true
   belongs_to :device
@@ -25,7 +24,6 @@ class Checkin < ActiveRecord::Base
     if device
       self.uuid = device.uuid
       self.fogged ||= device.fogged
-      device.checkins << self
       reverse_geocode! if device.checkins.count == 1
       add_fogged_info
     else
@@ -85,10 +83,11 @@ class Checkin < ActiveRecord::Base
   end
 
   def add_fogged_info
-    self.fogged_lat ||= nearest_city.latitude || lat + rand(-0.5..0.5)
-    self.fogged_lng ||= nearest_city.longitude || lng + rand(-0.5..0.5)
-    self.fogged_area ||= nearest_city.name
-    self.country_code ||= nearest_city.country_code
+    random_distance = rand(-0.5..0.5)
+    self.fogged_lat = nearest_city.latitude || lat + random_distance
+    self.fogged_lng = nearest_city.longitude || lng + random_distance
+    self.fogged_area = nearest_city.name
+    self.country_code = nearest_city.country_code
     save
   end
 
@@ -100,11 +99,11 @@ class Checkin < ActiveRecord::Base
   end
 
   def self.percentage_increase(time_range)
-    recent_checkins_count = count(created_at: 1.send(time_range).ago..Time.now).to_f
-    older_checkins_count = count(created_at: 2.send(time_range).ago..1.send(time_range).ago).to_f
-    if recent_checkins_count > 0 && older_checkins_count > 0
-      (((recent_checkins_count / older_checkins_count) - 1) * 100).round(2)
-    end
+    one_time_range_ago = 1.send(time_range).ago
+    recent_checkins_count = where(created_at: one_time_range_ago..Time.now).count.to_f
+    older_checkins_count = where(created_at: 2.send(time_range).ago..one_time_range_ago).count.to_f
+    return unless [recent_checkins_count, older_checkins_count].all? { |count| count > 0 }
+    (((recent_checkins_count / older_checkins_count) - 1) * 100).round(2)
   end
 
   def self.to_csv
