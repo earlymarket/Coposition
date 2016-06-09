@@ -185,15 +185,13 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
 
     it 'should update device name' do
-      request.accept = 'text/javascript'
-      put :update, params.merge(name: 'Computer')
+      put :update, params.merge(name: 'Computer', format: :json)
       expect(device.reload.name).to eq 'Computer'
     end
 
     it 'should fail to update device name if taken' do
       other = user.devices.create(name: 'Computer')
-      request.accept = 'text/javascript'
-      put :update, params.merge(name: other.name)
+      put :update, params.merge(name: other.name, format: :json)
       expect(device.reload.name).to_not eq 'Computer'
       expect(response.body).to match 'already been taken'
     end
