@@ -1,0 +1,8 @@
+{
+  "name": "dsl-generated dependencies",
+  "dependencies": {
+    "mapbox.js": "latest",
+    "leaflet-fullscreen": "latest",
+    "moment": "latest"
+  }
+}

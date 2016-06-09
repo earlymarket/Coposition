@@ -33,12 +33,13 @@
 //= require zeroclipboard
 //= require nouislider.min.js
 //= require ion.rangeSlider.min.js
+//= require moment/moment
 
 // -- Mapbox stuff --
-//= require mapbox
+//= require mapbox.js/mapbox
 //= require leaflet.markercluster
 //= require L.Control.Locate.min
-//= require Leaflet.fullscreen.min
+//= require leaflet-fullscreen/dist/Leaflet.fullscreen.min
 //= require control.w3w
 
 // -- Run every page
