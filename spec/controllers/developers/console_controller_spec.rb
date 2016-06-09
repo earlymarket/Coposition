@@ -21,8 +21,8 @@ RSpec.describe Developers::ConsolesController, type: :controller do
   describe '#key' do
     it 'should generate a new api key' do
       request.accept = 'text/javascript'
-      get :key, developer_params
-      expect(assigns(:uuid)).to eq developer.reload..uuid
+      post :key, developer_params
+      expect(assigns(:api_key)).to eq developer.reload.api_key
     end
   end
 end

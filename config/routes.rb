@@ -97,7 +97,7 @@ Rails.application.routes.draw do
   namespace :developers do
     get '/', to: 'consoles#show'
     resource :console, only: [:show] do
-      collection { get 'key' }
+      collection { post 'key' }
     end
     resources :approvals, only: [:index, :new, :create, :destroy]
     # For cool API usage stats in the future

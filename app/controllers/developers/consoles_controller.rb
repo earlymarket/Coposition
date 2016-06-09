@@ -12,7 +12,7 @@ class Developers::ConsolesController < ApplicationController
   end
 
   def key
-    @uuid = SecureRandom.uuid
-    current_developer.update(api_key: @uuid)
+    @api_key = SecureRandom.uuid
+    current_developer.update(api_key: @api_key)
   end
 end

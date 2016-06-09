@@ -9,7 +9,7 @@
   <br>
   You've made <span id="unpaid"><%= pluralize(@requests_today, 'request') %></span> since you last paid.
 </p>
-<%= link_to('Generate new api_key', key_developers_console_path, class: 'btn waves-effect waves-light', remote: true) %>
+<%= link_to('Generate new api_key', key_developers_console_path, class: 'btn waves-effect waves-light', method: 'post', remote: true) %>
 <%= link_to('Pay now', pay_developers_requests_path, class: 'btn waves-effect waves-light', method: 'put', remote: true) %>
 <%= link_to('Refresh', developers_console_path, class: 'btn waves-effect waves-light', remote: true) %>
 <hr>

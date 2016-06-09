@@ -17,7 +17,7 @@ RSpec.describe Developers::ApprovalsController, type: :controller do
     developer_params.merge(approval: { user: user.email, approvable_type: 'Developer' })
   end
   let(:approval_destroy_params) do
-    developer_params.merge(approval: { id: approval.id })
+    developer_params.merge(id: approval.id)
   end
 
   describe '#index' do
@@ -63,9 +63,10 @@ RSpec.describe Developers::ApprovalsController, type: :controller do
 
   describe '#destroy' do
     it 'should destroy an approval between user and developer' do
+      request.accept = 'text/javascript'
       delete :destroy, approval_destroy_params
       expect(Approval.count).to eq 0
-      expect(user.approval_for(developer)).to eq nil
+      expect(user.approval_for(developer).class).to eq NoApproval
     end
   end
 end

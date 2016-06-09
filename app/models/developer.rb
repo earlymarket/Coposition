@@ -37,8 +37,4 @@ class Developer < ActiveRecord::Base
     return unless (sub = subscribed_to? event)
     sub.send_data(data)
   end
-
-  def approval_for(user)
-    approvals.find_by(user_id: user.id)
-  end
 end

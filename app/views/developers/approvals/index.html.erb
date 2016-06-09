@@ -19,7 +19,7 @@
         <h6 class='collection-heading'><%= user.email %></h6>
       </div>
       <div class='col s4'>
-        <%= button_to "Remove User", developers_approval_path(current_developer.approval_for(user)), remote: true, method: :delete, class: "btn-flat right", data: { confirm: "Are you sure? You will no longer have access to any of their data" } %>
+        <%= button_to "Remove User", developers_approval_path(current_developer.approvals.find_by(user_id: user.id)), remote: true, method: :delete, class: "btn-flat right", data: { confirm: "Are you sure? You will no longer have access to any of their data" } %>
       </div>
     </div>
   <% end %>
