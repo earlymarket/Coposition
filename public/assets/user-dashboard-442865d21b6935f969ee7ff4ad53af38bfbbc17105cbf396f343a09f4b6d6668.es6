@@ -189,7 +189,5 @@ $(document).on('page:change', function () {
     const timer = new SL.Timer(5000);
     DECK.init();
     window.deck = DECK;
-    google.charts.setOnLoadCallback(() => {COPO.charts.drawBarChart(gon.weeks_checkins, '270')});
-    $(window).resize(() => {COPO.charts.drawBarChart(gon.weeks_checkins, '270')});
   }
 });

@@ -53888,12 +53888,6 @@ $(document).on('page:change', function () {
       var timer = new SL.Timer(5000);
       DECK.init();
       window.deck = DECK;
-      google.charts.setOnLoadCallback(function () {
-        COPO.charts.drawBarChart(gon.weeks_checkins, '270');
-      });
-      $(window).resize(function () {
-        COPO.charts.drawBarChart(gon.weeks_checkins, '270');
-      });
     })();
   }
 });
