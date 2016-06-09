@@ -52381,6 +52381,21 @@ L.Control.w3w = L.Control.extend({
 window.COPO = window.COPO || {};
 
 COPO.utility = {
+
+  deselect: function deselect() {
+    if (window.getSelection) {
+      if (window.getSelection().empty) {
+        // Chrome
+        window.getSelection().empty();
+      } else if (window.getSelection().removeAllRanges) {
+        // Firefox
+        window.getSelection().removeAllRanges();
+      }
+    } else if (document.selection) {
+      // IE?
+      document.selection.empty();
+    }
+  },
   urlParam: function urlParam(name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     if (!results) return null;
@@ -53419,13 +53434,73 @@ $(document).on('page:change', function() {
 ;
 $(document).on('page:change', function() {
   if ($(".c-devices.a-index").length === 1) {
-    COPO.utility.gonFix();
+    var U = COPO.utility;
+    U.gonFix();
     COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions)
     COPO.delaySlider.initSliders(gon.devices);
     google.charts.setOnLoadCallback(function(){ COPO.calendar.refreshCalendar(gon.checkins) });
+
+    $('body').on('click', '.edit-button', function (e) {
+      e.preventDefault();
+      $(this).toggleClass('hide', true);
+      makeEditable($(this).prev(), handleEdited);
+    });
+
+    var makeEditable = function ($target, handler) {
+      var original = $target.text();
+      $target.attr('contenteditable', true);
+      $target.focus();
+      document.execCommand('selectAll', false, null);
+      $target.on('blur', function () {
+        handler(original, $target);
+      });
+      $target.on('keydown', function (e) {
+        if(e.which === 27 || e.which === 13 ) {
+          handler(original, $target);
+        }
+      });
+      $target.on('click', function (e) {
+        e.preventDefault();
+      });
+      return $target;
+    }
+
+    var handleEdited = function (original, $target) {
+      var newName = $target.text()
+      if(original !== newName) {
+        console.log('Name optimistically set to: ' + $target.text());
+        var url = $target.parents('a').attr('href');
+        var request = $.ajax({
+          url: url,
+          type: 'PUT',
+          data: { name: newName }
+        });
+
+        request
+        .done(function (response) {
+          console.log('Server processed the request');
+        })
+        .fail(function (error) {
+          $target.text(original);
+          try {
+            Materialize.toast('Name: ' + JSON.parse(error.responseText).name, 3000, 'red');
+          }
+          catch (e) {
+            console.log(error);
+            Materialize.toast('Error changing names', 3000, 'red');
+          }
+        })
+      }
+      $target.text($target.text());
+      $target.attr('contenteditable', false);
+      $target.next().toggleClass('hide', false);
+      U.deselect();
+      $target.off();
+    }
+
     window.initPage = function(){
       $('.clip_button').off();
-      COPO.utility.initClipboard();
+      U.initClipboard();
       $('.tooltipped').tooltip('remove');
       $('.tooltipped').tooltip({delay: 50});
       $('.linkbox').off('touchstart click');
@@ -53453,6 +53528,7 @@ $(document).on('page:change', function() {
     $(document).on('page:before-unload', function(){
       COPO.permissions.switchesOff();
       $(window).off("resize");
+      $('body').off('click', '.edit-button');
     })
   }
 })
@@ -53689,12 +53765,16 @@ $(document).on('ready page:change', function() {
 window.COPO = window.COPO || {};
 window.COPO.smooch = {
   initSmooch: function(user){
-    Smooch.init({
-      appToken: "48zalrms2pp1raaolssv7dry8",
-      userId: user.id.toString(),
-      email: user.email,
-      givenName: user.username
-    });
+    if(Smooch.appToken && $('#sk-holder').length === 0){
+      Smooch.render()
+    } else {
+      Smooch.init({
+        appToken: "48zalrms2pp1raaolssv7dry8",
+        userId: user.id.toString(),
+        email: user.email,
+        givenName: user.username
+      });
+    }
   }
 }
 ;
