@@ -52295,6 +52295,7 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
 !function(a,b){"function"==typeof define&&define.amd?define(["leaflet"],a):"object"==typeof exports&&(module.exports=a("undefined"!=typeof b&&b.L?L:require("leaflet"))),"undefined"!=typeof b&&b.L&&(b.L.Locate=a(L))}(function(a){return a.Control.Locate=a.Control.extend({options:{position:"topleft",drawCircle:!0,follow:!1,stopFollowingOnDrag:!1,remainActive:!1,markerClass:a.circleMarker,circleStyle:{color:"#136AEC",fillColor:"#136AEC",fillOpacity:.15,weight:2,opacity:.5},markerStyle:{color:"#136AEC",fillColor:"#2A93EE",fillOpacity:.7,weight:2,opacity:.9,radius:5},followCircleStyle:{},followMarkerStyle:{},icon:"fa fa-map-marker",iconLoading:"fa fa-spinner fa-spin",circlePadding:[0,0],metric:!0,onLocationError:function(a){alert(a.message)},onLocationOutsideMapBounds:function(a){a.stop(),alert(a.options.strings.outsideMapBoundsMsg)},setView:!0,keepCurrentZoomLevel:!1,showPopup:!0,strings:{title:"Show me where I am",popup:"You are within {distance} {unit} from this point",outsideMapBoundsMsg:"You seem located outside the boundaries of the map"},locateOptions:{maxZoom:1/0,watch:!0}},initialize:function(b){a.Map.addInitHook(function(){this.options.locateControl&&this.addControl(this)});for(var c in b)"object"==typeof this.options[c]?a.extend(this.options[c],b[c]):this.options[c]=b[c];a.extend(this.options.locateOptions,{setView:!1})},_activate:function(){this.options.setView&&(this._locateOnNextLocationFound=!0),this._active||this._map.locate(this.options.locateOptions),this._active=!0,this.options.follow&&this._startFollowing(this._map)},_deactivate:function(){this._map.stopLocate(),this._map.off("dragstart",this._stopFollowing),this.options.follow&&this._following&&this._stopFollowing(this._map)},drawMarker:function(b){void 0===this._event.accuracy&&(this._event.accuracy=0);var c=this._event.accuracy;this._locateOnNextLocationFound&&(this._isOutsideMapBounds()?this.options.onLocationOutsideMapBounds(this):this.options.keepCurrentZoomLevel||!this.options.drawCircle?b.panTo([this._event.latitude,this._event.longitude]):b.fitBounds(this._event.bounds,{padding:this.options.circlePadding,maxZoom:this.options.keepCurrentZoomLevel?b.getZoom():this.options.locateOptions.maxZoom}),this._locateOnNextLocationFound=!1);var d,e;if(this.options.drawCircle)if(d=this._following?this.options.followCircleStyle:this.options.circleStyle,this._circle){this._circle.setLatLng(this._event.latlng).setRadius(c);for(e in d)this._circle.options[e]=d[e]}else this._circle=a.circle(this._event.latlng,c,d).addTo(this._layer);var f,g;this.options.metric?(f=c.toFixed(0),g="meters"):(f=(3.2808399*c).toFixed(0),g="feet");var h;h=this._following?this.options.followMarkerStyle:this.options.markerStyle,this._marker?this.updateMarker(this._event.latlng,h):this._marker=this.createMarker(this._event.latlng,h).addTo(this._layer);var i=this.options.strings.popup;this.options.showPopup&&i&&this._marker.bindPopup(a.Util.template(i,{distance:f,unit:g}))._popup.setLatLng(this._event.latlng),this._toggleContainerStyle()},createMarker:function(a,b){return this.options.markerClass(a,b)},updateMarker:function(a,b){this._marker.setLatLng(a);for(var c in b)this._marker.options[c]=b[c]},removeMarker:function(){this._layer.clearLayers(),this._marker=void 0,this._circle=void 0},onAdd:function(b){var c=a.DomUtil.create("div","leaflet-control-locate leaflet-bar leaflet-control");this._layer=new a.LayerGroup,this._layer.addTo(b),this._event=void 0;var d={};return a.extend(d,this.options.markerStyle,this.options.followMarkerStyle),this.options.followMarkerStyle=d,d={},a.extend(d,this.options.circleStyle,this.options.followCircleStyle),this.options.followCircleStyle=d,this._link=a.DomUtil.create("a","leaflet-bar-part leaflet-bar-part-single",c),this._link.href="#",this._link.title=this.options.strings.title,this._icon=a.DomUtil.create("span",this.options.icon,this._link),a.DomEvent.on(this._link,"click",a.DomEvent.stopPropagation).on(this._link,"click",a.DomEvent.preventDefault).on(this._link,"click",function(){var a=void 0===this._event||this._map.getBounds().contains(this._event.latlng)||!this.options.setView||this._isOutsideMapBounds();!this.options.remainActive&&this._active&&a?this.stop():this.start()},this).on(this._link,"dblclick",a.DomEvent.stopPropagation),this._resetVariables(),this.bindEvents(b),c},bindEvents:function(a){a.on("locationfound",this._onLocationFound,this),a.on("locationerror",this._onLocationError,this),a.on("unload",this.stop,this)},start:function(){this._activate(),this._event?this.drawMarker(this._map):this._setClasses("requesting")},stop:function(){this._deactivate(),this._cleanClasses(),this._resetVariables(),this.removeMarker()},_onLocationError:function(a){3==a.code&&this.options.locateOptions.watch||(this.stop(),this.options.onLocationError(a))},_onLocationFound:function(a){this._event&&this._event.latlng.lat===a.latlng.lat&&this._event.latlng.lng===a.latlng.lng&&this._event.accuracy===a.accuracy||this._active&&(this._event=a,this.options.follow&&this._following&&(this._locateOnNextLocationFound=!0),this.drawMarker(this._map))},_startFollowing:function(){this._map.fire("startfollowing",this),this._following=!0,this.options.stopFollowingOnDrag&&this._map.on("dragstart",this._stopFollowing,this)},_stopFollowing:function(){this._map.fire("stopfollowing",this),this._following=!1,this.options.stopFollowingOnDrag&&this._map.off("dragstart",this._stopFollowing),this._toggleContainerStyle()},_isOutsideMapBounds:function(){return void 0===this._event?!1:this._map.options.maxBounds&&!this._map.options.maxBounds.contains(this._event.latlng)},_toggleContainerStyle:function(){this._container&&this._setClasses(this._following?"following":"active")},_setClasses:function(b){"requesting"==b?(a.DomUtil.removeClasses(this._container,"active following"),a.DomUtil.addClasses(this._container,"requesting"),a.DomUtil.removeClasses(this._icon,this.options.icon),a.DomUtil.addClasses(this._icon,this.options.iconLoading)):"active"==b?(a.DomUtil.removeClasses(this._container,"requesting following"),a.DomUtil.addClasses(this._container,"active"),a.DomUtil.removeClasses(this._icon,this.options.iconLoading),a.DomUtil.addClasses(this._icon,this.options.icon)):"following"==b&&(a.DomUtil.removeClasses(this._container,"requesting"),a.DomUtil.addClasses(this._container,"active following"),a.DomUtil.removeClasses(this._icon,this.options.iconLoading),a.DomUtil.addClasses(this._icon,this.options.icon))},_cleanClasses:function(){a.DomUtil.removeClass(this._container,"requesting"),a.DomUtil.removeClass(this._container,"active"),a.DomUtil.removeClass(this._container,"following"),a.DomUtil.removeClasses(this._icon,this.options.iconLoading),a.DomUtil.addClasses(this._icon,this.options.icon)},_resetVariables:function(){this._active=!1,this._locateOnNextLocationFound=this.options.setView,this._following=!1}}),a.control.locate=function(b){return new a.Control.Locate(b)},function(){var b=function(b,c,d){d=d.split(" "),d.forEach(function(d){a.DomUtil[b].call(this,c,d)})};a.DomUtil.addClasses=function(a,c){b("addClass",a,c)},a.DomUtil.removeClasses=function(a,c){b("removeClass",a,c)}}(),a.Control.Locate},window);
 //# sourceMappingURL=L.Control.Locate.min.js.map
 ;
+L.Control.Fullscreen=L.Control.extend({options:{position:"topleft",title:{"false":"View Fullscreen","true":"Exit Fullscreen"}},onAdd:function(map){var container=L.DomUtil.create("div","leaflet-control-fullscreen leaflet-bar leaflet-control");this.link=L.DomUtil.create("a","leaflet-control-fullscreen-button leaflet-bar-part",container);this.link.href="#";this._map=map;this._map.on("fullscreenchange",this._toggleTitle,this);this._toggleTitle();L.DomEvent.on(this.link,"click",this._click,this);return container},_click:function(e){L.DomEvent.stopPropagation(e);L.DomEvent.preventDefault(e);this._map.toggleFullscreen(this.options)},_toggleTitle:function(){this.link.title=this.options.title[this._map.isFullscreen()]}});L.Map.include({isFullscreen:function(){return this._isFullscreen||false},toggleFullscreen:function(options){var container=this.getContainer();if(this.isFullscreen()){if(options&&options.pseudoFullscreen){this._disablePseudoFullscreen(container)}else if(document.exitFullscreen){document.exitFullscreen()}else if(document.mozCancelFullScreen){document.mozCancelFullScreen()}else if(document.webkitCancelFullScreen){document.webkitCancelFullScreen()}else if(document.msExitFullscreen){document.msExitFullscreen()}else{this._disablePseudoFullscreen(container)}}else{if(options&&options.pseudoFullscreen){this._enablePseudoFullscreen(container)}else if(container.requestFullscreen){container.requestFullscreen()}else if(container.mozRequestFullScreen){container.mozRequestFullScreen()}else if(container.webkitRequestFullscreen){container.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT)}else if(container.msRequestFullscreen){container.msRequestFullscreen()}else{this._enablePseudoFullscreen(container)}}},_enablePseudoFullscreen:function(container){L.DomUtil.addClass(container,"leaflet-pseudo-fullscreen");this._setFullscreen(true);this.invalidateSize();this.fire("fullscreenchange")},_disablePseudoFullscreen:function(container){L.DomUtil.removeClass(container,"leaflet-pseudo-fullscreen");this._setFullscreen(false);this.invalidateSize();this.fire("fullscreenchange")},_setFullscreen:function(fullscreen){this._isFullscreen=fullscreen;var container=this.getContainer();if(fullscreen){L.DomUtil.addClass(container,"leaflet-fullscreen-on")}else{L.DomUtil.removeClass(container,"leaflet-fullscreen-on")}},_onFullscreenChange:function(e){var fullscreenElement=document.fullscreenElement||document.mozFullScreenElement||document.webkitFullscreenElement||document.msFullscreenElement;if(fullscreenElement===this.getContainer()&&!this._isFullscreen){this._setFullscreen(true);this.fire("fullscreenchange")}else if(fullscreenElement!==this.getContainer()&&this._isFullscreen){this._setFullscreen(false);this.fire("fullscreenchange")}}});L.Map.mergeOptions({fullscreenControl:false});L.Map.addInitHook(function(){if(this.options.fullscreenControl){this.fullscreenControl=new L.Control.Fullscreen(this.options.fullscreenControl);this.addControl(this.fullscreenControl)}var fullscreenchange;if("onfullscreenchange"in document){fullscreenchange="fullscreenchange"}else if("onmozfullscreenchange"in document){fullscreenchange="mozfullscreenchange"}else if("onwebkitfullscreenchange"in document){fullscreenchange="webkitfullscreenchange"}else if("onmsfullscreenchange"in document){fullscreenchange="MSFullscreenChange"}if(fullscreenchange){var onFullscreenChange=L.bind(this._onFullscreenChange,this);this.whenReady(function(){L.DomEvent.on(document,fullscreenchange,onFullscreenChange)});this.on("unload",function(){L.DomEvent.off(document,fullscreenchange,onFullscreenChange)})}});L.control.fullscreen=function(options){return new L.Control.Fullscreen(options)};
 L.Control.w3w = L.Control.extend({
 	options: {
 		position: 'bottomleft',
@@ -52380,6 +52381,21 @@ L.Control.w3w = L.Control.extend({
 window.COPO = window.COPO || {};
 
 COPO.utility = {
+
+  deselect: function deselect() {
+    if (window.getSelection) {
+      if (window.getSelection().empty) {
+        // Chrome
+        window.getSelection().empty();
+      } else if (window.getSelection().removeAllRanges) {
+        // Firefox
+        window.getSelection().removeAllRanges();
+      }
+    } else if (document.selection) {
+      // IE?
+      document.selection.empty();
+    }
+  },
   urlParam: function urlParam(name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     if (!results) return null;
@@ -52620,90 +52636,6 @@ $(document).on('page:before-unload', function() {
 
 window.COPO = window.COPO || {};
 window.COPO.charts = {
-  drawBarChart: function(checkins, height, page) {
-    // Define the data for the chart.
-    var chart_div = document.getElementById('bar-chart');
-    if (chart_div){
-      var chart = new google.charts.Bar(chart_div);
-      barChartData = new google.visualization.DataTable();
-      barChartData.addColumn('string', 'created_at');
-      barChartData.addColumn('number', 'Checkins');
-      if (checkins.length > 0){
-        var rowData = countCheckinsByDate();
-        barChartData.addRows(rowData);
-      }
-      var options = {
-        hAxis: { title: '' },
-        vAxis: { title: 'Checkins' },
-        colors: '#47b8e0',
-        legend: {position: 'none'},
-        height: height
-      };
-
-      // Listen for the 'select' event, and call my function selectHandler() when
-      // the user selects something on the chart.
-      chart.draw(barChartData, google.charts.Bar.convertOptions(options));
-      google.visualization.events.addListener(chart, 'select', selectHandler);
-    }
-
-    function countCheckinsByDate() {
-      var createdAt = _.map(checkins, 'created_at');
-      var firstDate = moment(checkins[checkins.length-1].created_at).startOf('day');
-      var daysDiff = moment(checkins[0].created_at).endOf('day').diff(firstDate, 'days');
-      var monthsDiff = moment(checkins[0].created_at).endOf('day').diff(firstDate, 'months');
-      var createdAtArr = []
-      if (monthsDiff > 2){ // by month
-        createdAtArr = createdAtArray({diff: monthsDiff, firstDate: firstDate, format: 'YYYY-MM',
-                                           increment: 'months', createdAt: createdAt})
-      } else{ // by day
-        createdAtArr = createdAtArray({diff: daysDiff, firstDate: firstDate, format: 'YYYY-MM-DD',
-                                           increment: 'days', createdAt: createdAt})
-      }
-      var countedDates = _.toPairs(_.countBy(createdAtArr));
-      countedDates = _.map(countedDates, function(n){ return [n[0], _.subtract(n[1],1)] });
-      return countedDates;
-    }
-
-    function createdAtArray(args) {
-      createdAtArr = [];
-      _.times(args.diff+1, function(){
-        createdAtArr.push(args.firstDate.format(args.format));
-        args.firstDate = args.firstDate.add(1, args.increment);
-      });
-      _(args.createdAt).each(function(checkin){
-        createdAtArr.push(moment(checkin).format(args.format));
-      });
-      return createdAtArr;
-    }
-
-    function selectHandler() {
-      var table_checkins = [];
-      if (chart.getSelection().length === 0){
-        table_checkins = checkins;
-      } else {
-        var selectedItem = chart.getSelection()[0];
-        var columnDate = barChartData.getValue(selectedItem.row, 0);
-        if (columnDate.length === 10){
-          table_checkins = checkins_for_table(columnDate, 'YYYY-MM-DD');
-        } else if (columnDate.length === 7) {
-          table_checkins = checkins_for_table(columnDate, 'YYYY-MM');
-        }
-      }
-      COPO.charts.drawTable(table_checkins, page);
-    }
-
-    function checkins_for_table(columnDate, format) {
-      var table_checkins = [];
-      checkins.forEach(function(checkin){
-        var date = moment(checkin.created_at).format(format);
-        if (date === columnDate){
-          table_checkins.push(checkin);
-        }
-      })
-      return table_checkins;
-    }
-  },
-
   drawTable: function(checkins, page) {
     // Define the data for table to be drawn.
     var table_div = document.getElementById('table-chart');
@@ -52717,7 +52649,7 @@ window.COPO.charts = {
       }
       // Instantiate and draw the chart.
       var table = new google.visualization.Table(table_div);
-      var cssClassNames = { 'headerRow' : 'primary-color' }
+      var cssClassNames = { 'headerRow' : 'white' }
       var options = { width: '100%', allowHtml: true, cssClassNames: cssClassNames }
       table.draw(data, options);
     }
@@ -52753,7 +52685,6 @@ window.COPO.charts = {
   },
 
   refreshCharts: function(checkins, page){
-    COPO.charts.drawBarChart(checkins, null, page);
     COPO.charts.drawTable(checkins, page);
   }
 }
@@ -52898,13 +52829,17 @@ window.COPO.maps = {
 
     // When giving custom controls, I recommend adding layers last
     // This is because it expands downwards
-    controls = controls || ['geocoder', 'locate', 'w3w', 'layers'];
+    controls = controls || ['geocoder', 'locate', 'w3w', 'fullscreen', 'layers'];
     controls.forEach(function (control) {
       var fn = _this[control + 'ControlInit'];
       if (typeof fn === 'function') {
         fn();
       }
     });
+  },
+
+  fullscreenControlInit: function fullscreenControlInit() {
+    L.control.fullscreen().addTo(window.map);
   },
 
   layersControlInit: function layersControlInit() {
@@ -53414,13 +53349,74 @@ $(document).on('page:change', function() {
 ;
 $(document).on('page:change', function() {
   if ($(".c-devices.a-index").length === 1) {
-    COPO.utility.gonFix();
+    var U = COPO.utility;
+    U.gonFix();
     COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions)
     COPO.delaySlider.initSliders(gon.devices);
     google.charts.setOnLoadCallback(function(){ COPO.calendar.refreshCalendar(gon.checkins) });
+
+    $('body').on('click', '.edit-button', function (e) {
+      e.preventDefault();
+      $(this).toggleClass('hide', true);
+      makeEditable($(this).prev(), handleEdited);
+    });
+
+    var makeEditable = function ($target, handler) {
+      var original = $target.text();
+      $target.attr('contenteditable', true);
+      $target.focus();
+      document.execCommand('selectAll', false, null);
+      $target.on('blur', function () {
+        handler(original, $target);
+      });
+      $target.on('keydown', function (e) {
+        if(e.which === 27 || e.which === 13 ) {
+          handler(original, $target);
+        }
+      });
+      $target.on('click', function (e) {
+        e.preventDefault();
+      });
+      return $target;
+    }
+
+    var handleEdited = function (original, $target) {
+      var newName = $target.text()
+      if(original !== newName) {
+        console.log('Name optimistically set to: ' + $target.text());
+        var url = $target.parents('a').attr('href');
+        var request = $.ajax({
+          dataType: 'json',
+          url: url,
+          type: 'PUT',
+          data: { name: newName }
+        });
+
+        request
+        .done(function (response) {
+          console.log('Server processed the request');
+        })
+        .fail(function (error) {
+          $target.text(original);
+          try {
+            Materialize.toast('Name: ' + JSON.parse(error.responseText).name, 3000, 'red');
+          }
+          catch (e) {
+            console.log(error);
+            Materialize.toast('Error changing names', 3000, 'red');
+          }
+        })
+      }
+      $target.text($target.text());
+      $target.attr('contenteditable', false);
+      $target.next().toggleClass('hide', false);
+      U.deselect();
+      $target.off();
+    }
+
     window.initPage = function(){
       $('.clip_button').off();
-      COPO.utility.initClipboard();
+      U.initClipboard();
       $('.tooltipped').tooltip('remove');
       $('.tooltipped').tooltip({delay: 50});
       $('.linkbox').off('touchstart click');
@@ -53448,6 +53444,7 @@ $(document).on('page:change', function() {
     $(document).on('page:before-unload', function(){
       COPO.permissions.switchesOff();
       $(window).off("resize");
+      $('body').off('click', '.edit-button');
     })
   }
 })
@@ -53597,7 +53594,7 @@ $(document).on('page:change', function() {
     $('li.tab').on('click', function(event) {
       var tab = event.target.textContent
       setTimeout(function() {
-        if (tab ==='Chart'){
+        if (tab ==='Table'){
           COPO.charts.refreshCharts(COPO.dateRange.currentCheckins(gon.checkins), page);
         } else {
           map.invalidateSize();
@@ -53684,12 +53681,16 @@ $(document).on('ready page:change', function() {
 window.COPO = window.COPO || {};
 window.COPO.smooch = {
   initSmooch: function(user){
-    Smooch.init({
-      appToken: "48zalrms2pp1raaolssv7dry8",
-      userId: user.id.toString(),
-      email: user.email,
-      givenName: user.username
-    });
+    if(Smooch.appToken && $('#sk-holder').length === 0){
+      Smooch.render()
+    } else {
+      Smooch.init({
+        appToken: "48zalrms2pp1raaolssv7dry8",
+        userId: user.id.toString(),
+        email: user.email,
+        givenName: user.username
+      });
+    }
   }
 }
 ;
@@ -53705,7 +53706,7 @@ $(document).on('page:change', function () {
       var SL = window.COPO.slides;
       U.gonFix();
       M.initMap();
-      M.initControls(['locate', 'w3w', 'layers']);
+      M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
       COPO.smooch.initSmooch(gon.current_user.userinfo);
 
       // Persistent map feature declarations
@@ -53887,12 +53888,6 @@ $(document).on('page:change', function () {
       var timer = new SL.Timer(5000);
       DECK.init();
       window.deck = DECK;
-      google.charts.setOnLoadCallback(function () {
-        COPO.charts.drawBarChart(gon.weeks_checkins, '270');
-      });
-      $(window).resize(function () {
-        COPO.charts.drawBarChart(gon.weeks_checkins, '270');
-      });
     })();
   }
 });
@@ -53933,6 +53928,7 @@ $(document).on('page:change', function () {
 
 
 // -- Mapbox stuff --
+
 
 
 
