@@ -20940,17 +20940,11 @@ a[data-maitre-status]:hover {
   width: 100%;
 }
 /* line 28, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show #bar-chart, .c-friends.a-show_device #bar-chart {
-  margin-top: 20px;
-  margin-left: 40px;
-  margin-right: 40px;
-  height: 40vh;
-}
-/* line 35, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
 .c-devices.a-show #table-chart, .c-friends.a-show_device #table-chart {
-  margin-top: 10px;
+  margin-top: 40px;
+  height: 70vh;
 }
-/* line 39, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+/* line 33, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
 .c-devices.a-show .bottom-panel, .c-friends.a-show_device .bottom-panel {
   position: absolute;
   bottom: 0px;
@@ -20959,32 +20953,28 @@ a[data-maitre-status]:hover {
   text-align: center;
   background: white;
 }
-/* line 48, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+/* line 42, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
 .c-devices.a-show .bottom-panel *, .c-friends.a-show_device .bottom-panel * {
   margin: 0;
 }
-/* line 52, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+/* line 46, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
 .c-devices.a-show .buttons, .c-friends.a-show_device .buttons {
   margin: 10px;
 }
-/* line 56, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+/* line 50, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
 .c-devices.a-show .disabled-icon, .c-friends.a-show_device .disabled-icon {
   color: rgba(0, 0, 0, 0.12);
 }
-/* line 65, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+/* line 59, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
 .c-devices.a-show .fogged, .c-friends.a-show_device .fogged {
   color: #2196f3;
 }
 
-/* line 72, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+/* line 66, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
 .c-devices.a-show #map {
   bottom: 120px;
 }
-/* line 76, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
-.c-devices.a-show #table-chart {
-  height: 30vh;
-}
-/* line 80, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
+/* line 70, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss */
 .c-devices.a-show .bottom-panel {
   height: 120px;
 }
@@ -21036,10 +21026,6 @@ a[data-maitre-status]:hover {
   bottom: 80px;
 }
 /* line 7, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/friends-device-show.scss */
-.c-friends.a-show_device #table-chart {
-  height: 35vh;
-}
-/* line 11, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/friends-device-show.scss */
 .c-friends.a-show_device .bottom-panel {
   height: 80px;
 }

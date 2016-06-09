@@ -52636,90 +52636,6 @@ $(document).on('page:before-unload', function() {
 
 window.COPO = window.COPO || {};
 window.COPO.charts = {
-  drawBarChart: function(checkins, height, page) {
-    // Define the data for the chart.
-    var chart_div = document.getElementById('bar-chart');
-    if (chart_div){
-      var chart = new google.charts.Bar(chart_div);
-      barChartData = new google.visualization.DataTable();
-      barChartData.addColumn('string', 'created_at');
-      barChartData.addColumn('number', 'Checkins');
-      if (checkins.length > 0){
-        var rowData = countCheckinsByDate();
-        barChartData.addRows(rowData);
-      }
-      var options = {
-        hAxis: { title: '' },
-        vAxis: { title: 'Checkins' },
-        colors: '#47b8e0',
-        legend: {position: 'none'},
-        height: height
-      };
-
-      // Listen for the 'select' event, and call my function selectHandler() when
-      // the user selects something on the chart.
-      chart.draw(barChartData, google.charts.Bar.convertOptions(options));
-      google.visualization.events.addListener(chart, 'select', selectHandler);
-    }
-
-    function countCheckinsByDate() {
-      var createdAt = _.map(checkins, 'created_at');
-      var firstDate = moment(checkins[checkins.length-1].created_at).startOf('day');
-      var daysDiff = moment(checkins[0].created_at).endOf('day').diff(firstDate, 'days');
-      var monthsDiff = moment(checkins[0].created_at).endOf('day').diff(firstDate, 'months');
-      var createdAtArr = []
-      if (monthsDiff > 2){ // by month
-        createdAtArr = createdAtArray({diff: monthsDiff, firstDate: firstDate, format: 'YYYY-MM',
-                                           increment: 'months', createdAt: createdAt})
-      } else{ // by day
-        createdAtArr = createdAtArray({diff: daysDiff, firstDate: firstDate, format: 'YYYY-MM-DD',
-                                           increment: 'days', createdAt: createdAt})
-      }
-      var countedDates = _.toPairs(_.countBy(createdAtArr));
-      countedDates = _.map(countedDates, function(n){ return [n[0], _.subtract(n[1],1)] });
-      return countedDates;
-    }
-
-    function createdAtArray(args) {
-      createdAtArr = [];
-      _.times(args.diff+1, function(){
-        createdAtArr.push(args.firstDate.format(args.format));
-        args.firstDate = args.firstDate.add(1, args.increment);
-      });
-      _(args.createdAt).each(function(checkin){
-        createdAtArr.push(moment(checkin).format(args.format));
-      });
-      return createdAtArr;
-    }
-
-    function selectHandler() {
-      var table_checkins = [];
-      if (chart.getSelection().length === 0){
-        table_checkins = checkins;
-      } else {
-        var selectedItem = chart.getSelection()[0];
-        var columnDate = barChartData.getValue(selectedItem.row, 0);
-        if (columnDate.length === 10){
-          table_checkins = checkins_for_table(columnDate, 'YYYY-MM-DD');
-        } else if (columnDate.length === 7) {
-          table_checkins = checkins_for_table(columnDate, 'YYYY-MM');
-        }
-      }
-      COPO.charts.drawTable(table_checkins, page);
-    }
-
-    function checkins_for_table(columnDate, format) {
-      var table_checkins = [];
-      checkins.forEach(function(checkin){
-        var date = moment(checkin.created_at).format(format);
-        if (date === columnDate){
-          table_checkins.push(checkin);
-        }
-      })
-      return table_checkins;
-    }
-  },
-
   drawTable: function(checkins, page) {
     // Define the data for table to be drawn.
     var table_div = document.getElementById('table-chart');
@@ -52733,7 +52649,7 @@ window.COPO.charts = {
       }
       // Instantiate and draw the chart.
       var table = new google.visualization.Table(table_div);
-      var cssClassNames = { 'headerRow' : 'primary-color' }
+      var cssClassNames = { 'headerRow' : 'white' }
       var options = { width: '100%', allowHtml: true, cssClassNames: cssClassNames }
       table.draw(data, options);
     }
@@ -52769,7 +52685,6 @@ window.COPO.charts = {
   },
 
   refreshCharts: function(checkins, page){
-    COPO.charts.drawBarChart(checkins, null, page);
     COPO.charts.drawTable(checkins, page);
   }
 }
@@ -53471,6 +53386,7 @@ $(document).on('page:change', function() {
         console.log('Name optimistically set to: ' + $target.text());
         var url = $target.parents('a').attr('href');
         var request = $.ajax({
+          dataType: 'json',
           url: url,
           type: 'PUT',
           data: { name: newName }
@@ -53678,7 +53594,7 @@ $(document).on('page:change', function() {
     $('li.tab').on('click', function(event) {
       var tab = event.target.textContent
       setTimeout(function() {
-        if (tab ==='Chart'){
+        if (tab ==='Table'){
           COPO.charts.refreshCharts(COPO.dateRange.currentCheckins(gon.checkins), page);
         } else {
           map.invalidateSize();
