@@ -35,9 +35,10 @@
 @import 'MarkerCluster';
 @import 'MarkerCluster.Default';
 @import 'leaflet-fullscreen/dist/leaflet.fullscreen';
-@import 'nouislider';
-@import 'ion.rangeSlider';
-@import 'ion.rangeSlider.skinFlat';
+@import 'leaflet.locatecontrol/dist/L.Control.Locate.min';
+@import 'nouislider/distribute/nouislider.min';
+@import 'ion.rangeSlider/css/ion.rangeSlider';
+@import 'ion.rangeSlider/css/ion.rangeSlider.skinFlat';
 
 // Page/feature specific
 @import 'placeholder';

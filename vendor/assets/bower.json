@@ -3,6 +3,10 @@
   "dependencies": {
     "mapbox.js": "latest",
     "leaflet-fullscreen": "latest",
-    "moment": "latest"
+    "moment": "latest",
+    "leaflet.locatecontrol": "latest",
+    "ion.rangeSlider": "latest",
+    "nouislider": "latest",
+    "lodash": "latest"
   }
 }
