@@ -50,7 +50,12 @@ class Users::DevicesController < ApplicationController
   def update
     result = ::Users::Devices::UpdateDevice.new(params)
     @device = result.update_device
-    render status: 400, json: @device.errors.messages if @device.errors.any?
+    is_json = request.format.json?
+    if @device.errors.any? && is_json
+      render status: 400, json: @device.errors.messages
+    elsif is_json
+      render status: 200, json: {}
+    end
     flash[:notice] = result.notice
   end
 
