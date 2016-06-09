@@ -3,16 +3,20 @@
 <br>
 
 <p>
-  Your <%= current_developer.company_name %> API key is <code><%= current_developer.api_key %></code>
+  Your <%= current_developer.company_name %> API key is <code id="key"><%= current_developer.api_key %></code>
   <br>
   You've made <span id="requests-today"><%= pluralize(@requests_today, 'request') %></span> in the last day.
   <br>
   You've made <span id="unpaid"><%= pluralize(@requests_today, 'request') %></span> since you last paid.
 </p>
-
+<%= link_to('Generate new api_key', key_developers_console_path, class: 'btn waves-effect waves-light', remote: true) %>
 <%= link_to('Pay now', pay_developers_requests_path, class: 'btn waves-effect waves-light', method: 'put', remote: true) %>
 <%= link_to('Refresh', developers_console_path, class: 'btn waves-effect waves-light', remote: true) %>
-
+<hr>
+<p>
+  See your
+  <%= link_to('request history', developers_requests_path, class: 'waves-effect waves-light') %>
+</p>
 <hr>
 
 <p>
