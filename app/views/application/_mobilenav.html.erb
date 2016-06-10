@@ -44,7 +44,7 @@
     <% end %>
   <% elsif developer_signed_in? %>
     <li>
-      <%= link_to("Developer Console", developers_console_path) %>
+      <%= link_to("Developer console", developers_console_path) %>
     </li>
     <li>
       <%= link_to("Developer log out", destroy_developer_session_path, method: :delete) %>

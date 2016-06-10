@@ -1,7 +1,7 @@
 Given(/^I am signed in as developer$/) do
   steps %(
     Given I am on the homepage
-      And I click "Developers"
+      And I click "Developer log in"
       Then I click the link "Sign up!"
     When I fill in the form with my "developer" details
       And I click "Sign up"
