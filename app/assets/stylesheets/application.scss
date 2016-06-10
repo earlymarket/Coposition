@@ -34,10 +34,12 @@
 @import 'control.w3w';
 @import 'MarkerCluster';
 @import 'MarkerCluster.Default';
-@import 'leaflet.fullscreen';
+@import 'leaflet-fullscreen/dist/leaflet.fullscreen';
+@import 'leaflet.locatecontrol/dist/L.Control.Locate.min';
+// This is a more up to date materialize version of nouislider than the one in the gem...
 @import 'nouislider';
-@import 'ion.rangeSlider';
-@import 'ion.rangeSlider.skinFlat';
+@import 'ion.rangeSlider/css/ion.rangeSlider';
+@import 'ion.rangeSlider/css/ion.rangeSlider.skinFlat';
 
 // Page/feature specific
 @import 'placeholder';
