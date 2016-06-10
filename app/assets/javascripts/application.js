@@ -30,7 +30,7 @@
 //= require cloudinary
 //= require attachinary
 //= require zeroclipboard
-//= require materialize/extras/nouislider.min
+//= require nouislider.min
 //= require ion.rangeSlider/js/ion.rangeSlider.min
 
 // -- Mapbox stuff --
