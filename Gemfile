@@ -34,11 +34,11 @@ gem 'twitter-typeahead-rails'
 gem 'cloudinary', '~> 1.1.3'
 gem 'attachinary', '~> 1.3.1'
 gem 'lodash-rails'
-gem 'momentjs-rails'
 gem 'zeroclipboard-rails'
 gem 'mustache-js-rails', '~> 2.0.3'
 gem 'sprockets', '>= 3.0.0'
 gem 'sprockets-es6'
+gem 'bower-rails', '~> 0.10.0'
 
 group :production do
   gem 'puma'

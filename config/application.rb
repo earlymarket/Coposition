@@ -20,6 +20,7 @@ Bundler.require(*Rails.groups)
 
 module Coposition
   class Application < Rails::Application
+    # config.assets.paths << Rails.root.join('vendor', 'assets', 'bower_components')
     config.middleware.insert_before 0, 'Rack::Cors' do
       allow do
         origins '*'

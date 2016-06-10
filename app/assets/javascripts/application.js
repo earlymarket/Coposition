@@ -20,25 +20,24 @@
 
 //= require materialize
 //= require twitter/typeahead
-//= require lodash
-//= require moment
+//= require lodash/dist/lodash
+//= require moment/moment
 
 // -- Misc vendor libs --
 
 //= require mustache
 //= require jquery.mustache
-//= require animateCSS.min.js
 //= require cloudinary
 //= require attachinary
 //= require zeroclipboard
-//= require nouislider.min.js
-//= require ion.rangeSlider.min.js
+//= require nouislider.min
+//= require ion.rangeSlider/js/ion.rangeSlider.min
 
 // -- Mapbox stuff --
-//= require mapbox
+//= require mapbox.js/mapbox
 //= require leaflet.markercluster
-//= require L.Control.Locate.min
-//= require Leaflet.fullscreen.min
+//= require leaflet.locatecontrol/dist/L.Control.Locate.min
+//= require leaflet-fullscreen/dist/Leaflet.fullscreen.min
 //= require control.w3w
 
 // -- Run every page
