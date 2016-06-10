@@ -1,8 +1,13 @@
 <h1>Users</h1>
+<div class="center">
+    <%= link_to(new_developers_approval_path, class: "btn-floating btn-large waves-effect waves-light primary-color") do %>
+      <i class="material-icons">add</i>
+    <% end %>
+  </div>
 <p>
 	<% if @pending.present? %>
 
-	  You have <%= @pending.length %> pending.
+	  You have <%= pluralize(@pending.length, 'request') %> pending approval.
 
 	<% else %>
 
@@ -11,7 +16,6 @@
 	<% end %>
 </p>
 
-<%= link_to("New user", new_developers_approval_path, class: "btn") %>
 <div class='collection'>
   <% @users.each do |user| %>
     <div class='collection-item row' id="user<%=user.id%>">
