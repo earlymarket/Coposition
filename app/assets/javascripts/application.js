@@ -18,23 +18,26 @@
 
 // -- Libs from gems --
 
-//= require materialize
-//= require twitter/typeahead
-//= require lodash/dist/lodash
-//= require moment/moment
-
-// -- Misc vendor libs --
-
-//= require mustache
-//= require jquery.mustache
 //= require cloudinary
 //= require attachinary
 //= require zeroclipboard
-//= require nouislider.min
+
+// -- Misc vendor libs --
+
+//= require lodash/dist/lodash
+//= require moment/moment
+//= require jquery-Mustache/jquery.mustache
+//= require mustache.js/mustache.min
+//= require materialize/dist/js/materialize.min
+//= require typeahead.js/dist/typeahead.bundle.min
 //= require ion.rangeSlider/js/ion.rangeSlider.min
+
+// STILL more up to date version
+//= require nouislider.min
 
 // -- Mapbox stuff --
 //= require mapbox.js/mapbox
+//= require leaflet.markercluster/dist/leaflet.markercluster.js
 //= require leaflet.markercluster
 //= require leaflet.locatecontrol/dist/L.Control.Locate.min
 //= require leaflet-fullscreen/dist/Leaflet.fullscreen.min
