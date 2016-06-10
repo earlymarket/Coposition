@@ -42,8 +42,8 @@ class Api::V1::CheckinsController < Api::ApiController
     checkin = @device.checkins.create(allowed_params)
     if checkin.save
       @device.notify_subscribers('new_checkin', checkin)
-      config = @dev.configs.find_by(id: @device.id)
-      render json: [checkin, config]
+      config = @dev.configs.find_by(device_id: @device.id)
+      config ? render(json: [checkin, config]) : render(json: [checkin])
     else
       render status: 400, json: { message: 'You must provide a lat and lng' }
     end
