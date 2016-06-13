@@ -12,7 +12,7 @@ RSpec.describe RequestsHelper, type: :helper do
     end
 
     it 'should return nil if request has no user' do
-      expect(helper.requests_user(request)).to eq nil
+      expect(helper.requests_user(request)).to eq 'n/a'
     end
   end
 end
