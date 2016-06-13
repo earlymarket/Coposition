@@ -12,7 +12,7 @@
    See your
   <%= link_to('request history', developers_requests_path, class: 'waves-effect waves-light') %>.
 </p>
-<%= link_to('Generate new api_key', key_developers_console_path, class: 'btn waves-effect waves-light', method: 'post', remote: true) %>
+<%= link_to('Generate new api_key', key_developers_console_path, class: 'btn waves-effect waves-light', method: 'post', remote: true, data: { confirm: "Are you sure? You will need to replace any instances of your old api key with the newly generated key." })%>
 <%= link_to('Pay now', pay_developers_requests_path, class: 'btn waves-effect waves-light', method: 'put', remote: true) %>
 <%= link_to('Refresh', developers_console_path, class: 'btn waves-effect waves-light', remote: true) %>
 
