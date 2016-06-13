@@ -87,7 +87,7 @@ class Users::DevicesController < ApplicationController
   end
 
   def default_developer
-    return Developer.first if Rails.env.test?
+    return FactoryGirl.create(:developer) if Rails.env.test?
     Developer.find_by(api_key: Rails.application.secrets.coposition_api_key)
   end
 end
