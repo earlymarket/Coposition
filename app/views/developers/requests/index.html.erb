@@ -13,7 +13,7 @@
     <tr>
       <td><%= request.paid %></td>
       <td><%= request.action %></td>
-      <td><%= request.controller %></td>
+      <td><%= request.controller.split("/").last %></td>
       <td><%= humanize_date_and_time request.created_at %></td>
     </tr>
   <% end %>
