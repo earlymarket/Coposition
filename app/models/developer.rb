@@ -38,7 +38,7 @@ class Developer < ActiveRecord::Base
     sub.send_data(data)
   end
 
-  def owns_device?(device)
+  def configures_device?(device)
     configs.where(device: device).present?
   end
 end
