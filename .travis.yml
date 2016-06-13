@@ -11,6 +11,7 @@ install:
 
 script:
   - source /opt/qt55/bin/qt55-env.sh
+  - bundle exec rake
 
 language: ruby
 cache: bundler
