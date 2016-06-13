@@ -24,7 +24,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
 
   def show
     device = @user.devices.where(id: params[:id])
-    device = device.public_info unless req_from_coposition_app?
+    device = device.public_info unless req_from_coposition_app? || @dev.owns_device?(device)
     render json: device
   end
 
