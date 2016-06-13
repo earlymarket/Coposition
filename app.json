@@ -32,6 +32,9 @@
     "MOBILE_APP_KEY":{
       "required":true
     },
+    "COPOSITION_API_KEY":{
+      "required":true
+    },
     "GOOGLE_MAPS_API_KEY":{
       "required":true
     }

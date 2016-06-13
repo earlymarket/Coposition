@@ -12,10 +12,9 @@ class Api::V1::Users::DevicesController < Api::ApiController
   end
 
   def create
-    result = ::Users::Devices::CreateDevice.new(@user, device_params)
+    result = ::Users::Devices::CreateDevice.new(@user, @dev, device_params)
     if result.save?
       device = result.device
-      device.notify_subscribers('new_device', device)
       render json: device
     else
       render status: 400, json: { message: result.error }

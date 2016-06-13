@@ -7,6 +7,10 @@
       <%= devices_last_checkin(device) %>
     </a>
 
+    <%= link_to info_user_device_path(current_user.url_id, device.id), class: 'left tooltipped', data: { tooltip: 'Additional device information' } do %>
+      <i class='material-icons valign'>perm_device_info</i>
+    <% end %>
+
     <% if device.developers.exists? || device.permitted_users.exists? %>
       <a class="modal-trigger left tooltipped" data-tooltip='Detailed Permissions' href="#perm<%=device.id%>"><i class="material-icons">lock</i></a>
 
@@ -61,6 +65,8 @@
     </div>
 
     <%= link_to(fogged_icon(device.fogged), user_device_path(current_user.url_id, device.id), { method: :put, id:"fogButton#{device.id}", remote: true, class: 'left tooltipped', data: { fogged: device.fogged?, tooltip:'Fogging' } })%>
+
+
 
     <a class="left tooltipped" data-tooltip="Download checkins (.csv)" href="<%= user_device_path(current_user.url_id, device) %>.csv"><i class="material-icons">file_download</i></a>
 

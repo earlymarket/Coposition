@@ -4,6 +4,7 @@ module Users
     attr_reader :device
     attr_reader :checkins
     attr_reader :filename
+    attr_reader :config
 
     def initialize(user, params, action)
       @user = user
@@ -24,6 +25,11 @@ module Users
     def shared
       @device = Device.find(@params[:id])
       @checkin = @device.checkins.first
+    end
+
+    def info
+      @device = Device.find(@params[:id])
+      @config = @device.config
     end
 
     def index_gon
