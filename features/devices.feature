@@ -15,8 +15,7 @@ Feature: Devices
         And I click the link "Devices"
       Then I should see "Denham"
         When I click "Denham"
-      When I click "Delete device"
-      And I confirm "Delete device"
+      When I click and confirm "Delete device"
       Then I should see "Device deleted"
         And I should not have a device
 

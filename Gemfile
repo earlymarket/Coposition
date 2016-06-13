@@ -68,7 +68,8 @@ end
 
 group :test do
   gem 'codeclimate-test-reporter', require: nil
-  gem 'selenium-webdriver', '~> 2.53'
+  # gem 'selenium-webdriver', '~> 2.53'
+  gem 'capybara-webkit', '~> 1.11.1'
   gem 'cucumber-rails', require: false
   gem 'launchy'
   gem 'database_cleaner'

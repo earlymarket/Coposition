@@ -17,8 +17,7 @@ Feature: map
       And I click on my last checkin
         When I click the link "cloud"
       Then I should have a fogged last checkin
-      And I click the link "delete_forever"
-      And I confirm "delete_forever"
+      And I click and confirm "delete_forever"
         Then I have 0 checkins on the map
 
     @javascript
@@ -27,7 +26,7 @@ Feature: map
         When I right click on the "map"
         And I click "Create checkin here"
         Then I have 1 checkins on the map
-      When I click on the "chartTab"
+      When I switch to the table view
         Then I have 1 checkins in the table
 
     @javascript
