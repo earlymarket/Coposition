@@ -7,6 +7,11 @@ before_install:
 
 install:
   - sudo apt-get -y install qt55[QTPACKAGE]
+  - export PATH="/opt/qt55/bin:$PATH" && qt55-env.sh
+  - export QMAKE="/opt/qt55/bin/qmake"
+  - qmake -v
+  - which qmake
+  - bundle install
 
 language: ruby
 cache: bundler
@@ -19,10 +24,6 @@ before_script:
 - cp config/database.yml.travis config/database.yml
 - RAILS_ENV=test bundle exec rake db:create
 - RAILS_ENV=test bundle exec rake db:migrate
-- export PATH="/opt/qt55/bin:$PATH" && qt55-env.sh
-- qmake -v
-- which qmake
-- bundle install
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
 
