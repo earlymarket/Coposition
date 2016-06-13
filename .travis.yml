@@ -24,7 +24,7 @@ before_script:
 - sh -e /etc/init.d/xvfb start
 
 script:
-  - QTDIR="/opt/qt55/" && PATH="$QTDIR/bin:$PATH" && qt55-env.sh
+  - export PATH="/opt/qt55/bin:$PATH" && qt55-env.sh
   - bundle exec rake
 
 addons:
