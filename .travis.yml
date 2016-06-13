@@ -21,4 +21,6 @@ env:
   - secure: nlPXv03+m0/JfJp6olSxA7JP4BZSqtx+Rz1hFh8yPMRnD1UAW7G1IPpaJR+oDT9yKHSrqtVvFHC8L5ytfueh6/iP9pGqCqY6cbGcJiRUS3oJV0es1BkvQcKkfiqHjlZr6lmLfkNSGnQtNS+Z0dNVM9Bz7QAE+Gf3P8m/3WR88ZqCOekLjU3ZpbukiipzpAQ/uzx9wsar9NcKplentYTyDBLcf5rNk+ZgfObuS23zsJDyrJoMGmb4JvQfhYeeX181aapScc1EwoDVApZqWXR29BdIc8RV91MjpaZHTwWDUNzlwdbtuXAslDaaYu/3Ck5ldWPqKbthGbf0P0gurmNThqNahis1XBMfJY+bMgFExq/T2DBak8ov3q5jnI3MoKXqrsHzdxZPjGsPDg2eAzz2/ewZQ5+Rf/jTICTM5BZ86SthBMQNuTt/bvr4UI8XXmSn+LJeKkTsu2Y0GFWX0Rk+H5O1tAF22loMDISBcxyMIGYNDwaOq69xJLCZ7UidQoM8AXs6dOKlnoMbQYqVoim01E24oIz6u3oW4/Vv4SOc1KePyua83hrBdSxgWvBD+mjd7aMDdsSPHpgsw9iYqxy9foThxeULLPOGcpDUn4UKOcFrtJueMAJx6r3bSZYi2rK3Lo9mCMwxt5/keqKKJapr7FC1/X3CuS6cr+LLiISgZH8=
 
 before_install:
+  - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
+  - sudo apt-get update -qq
   - sudo apt-get install qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
