@@ -5,10 +5,10 @@ Feature: Developer
 
     @javascript
     Scenario: Developer asks user for approval
-      Given I click the "Developers" link in the "footer"
+      Given I click the "Developer console" link in the "footer"
         And I click "users"
       Then I should see "no approvals pending"
-      When I click "New user"
+      When I click the link "add"
         And I fill in an existing "user"'s email in the "approval_user" field
         And I click "Request"
       Then I should see "Successfully sent"
@@ -16,7 +16,7 @@ Feature: Developer
     @javascript
     Scenario: Developer pays and refreshes
       Given I have an unpaid request
-        Given I click the "Developers" link in the "footer"
+        And I click the "Developer console" link in the "footer"
         Then I should see "1 request since"
         And I should see "1 request in"
       When I click "Pay now"

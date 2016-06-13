@@ -2,7 +2,7 @@ Given(/^I am signed in as developer$/) do
   steps %(
     Given I am using a large screen
     And I am on the homepage
-      When I click the "Developers" link in the "footer"
+      When I click the "Developer log in" link in the "footer"
       And I click the link "Sign up!"
     When I fill in the form with my "developer" details
       And I click "Sign up"

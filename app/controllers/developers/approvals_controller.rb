@@ -19,6 +19,13 @@ class Developers::ApprovalsController < ApplicationController
     redirect_to new_developers_approval_path
   end
 
+  def destroy
+    @approval = current_developer.approvals.find(params[:id])
+    user = @approval.user
+    user.destroy_permissions_for(current_developer)
+    @approval.destroy
+  end
+
   private
 
   def allowed_params
