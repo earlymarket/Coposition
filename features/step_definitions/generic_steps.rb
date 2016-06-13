@@ -10,6 +10,10 @@ Given(/^I click "(.*?)"$/) do |target|
   click_on target
 end
 
+Given(/^I click the "(.*?)" link in the "(.*?)"$/) do |target, outer_selector|
+  within(outer_selector) { click_link(target) }
+end
+
 Given(/^I click the link "(.*?)"$/) do |target|
   click_link(target, match: :first)
 end

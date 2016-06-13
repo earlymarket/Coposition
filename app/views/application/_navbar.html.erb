@@ -22,14 +22,6 @@
       <li>
         <%= link_to(inline_svg('log-out.svg', class: 'svg-btn valign'), destroy_user_session_path, method: :delete, class: 'valign-wrapper', title: 'Log Out') %>
       </li>
-
-    <% elsif developer_signed_in? %>
-      <li>
-        <%= link_to(inline_svg('log-out.svg', class: 'svg-btn valign'), destroy_user_session_path, method: :delete, class: 'valign-wrapper', title: 'Log Out') %>
-      </li>
-      <li>
-        <%= link_to(inline_svg('log-in.svg', class: 'svg-btn valign'), new_user_session_path, class: 'valign-wrapper', title: 'User Log In') %>
-      </li>
     <% else %>
       <li>
         <%= link_to(inline_svg('log-in.svg', class: 'svg-btn valign'), new_user_session_path, class: 'valign-wrapper', title: 'User Log In') %>

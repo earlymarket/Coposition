@@ -16,6 +16,9 @@ RSpec.describe Developers::ApprovalsController, type: :controller do
   let(:approval_create_params) do
     developer_params.merge(approval: { user: user.email, approvable_type: 'Developer' })
   end
+  let(:approval_destroy_params) do
+    developer_params.merge(id: approval.id)
+  end
 
   describe '#index' do
     it 'should show amount of pending users and show approved users' do
@@ -55,6 +58,15 @@ RSpec.describe Developers::ApprovalsController, type: :controller do
       post :create, approval_create_params
       expect(flash[:alert]).to match 'Error creating approval'
       expect(Approval.count).to eq 0
+    end
+  end
+
+  describe '#destroy' do
+    it 'should destroy an approval between user and developer' do
+      request.accept = 'text/javascript'
+      delete :destroy, approval_destroy_params
+      expect(Approval.count).to eq 0
+      expect(user.approval_for(developer).class).to eq NoApproval
     end
   end
 end
