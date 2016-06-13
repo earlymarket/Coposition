@@ -1,7 +1,13 @@
+<h1>Users</h1>
+<div class="center">
+    <%= link_to(new_developers_approval_path, class: "btn-floating btn-large waves-effect waves-light primary-color") do %>
+      <i class="material-icons">add</i>
+    <% end %>
+  </div>
 <p>
 	<% if @pending.present? %>
 
-	  You have <%= @pending.length %> pending.
+	  You have <%= pluralize(@pending.length, 'request') %> pending approval.
 
 	<% else %>
 
@@ -10,13 +16,15 @@
 	<% end %>
 </p>
 
-<%= link_to("New user", new_developers_approval_path, class: "btn") %>
-
-<h3 class="">Users</h3>
 <div class='collection'>
   <% @users.each do |user| %>
-    <div class='collection-item'>
-      <h6 class='collection-heading'><%= user.email %></h6>
+    <div class='collection-item row' id="user<%=user.id%>">
+      <div class='col s8'>
+        <h6 class='collection-heading'><%= user.email %></h6>
+      </div>
+      <div class='col s4'>
+        <%= button_to "Remove User", developers_approval_path(current_developer.approvals.find_by(user_id: user.id)), remote: true, method: :delete, class: "btn-flat right", data: { confirm: "Are you sure? You will no longer have access to any of their data" } %>
+      </div>
     </div>
   <% end %>
 </div>

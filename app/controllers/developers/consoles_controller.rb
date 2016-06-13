@@ -10,4 +10,9 @@ class Developers::ConsolesController < ApplicationController
       format.js
     end
   end
+
+  def key
+    @api_key = SecureRandom.uuid
+    current_developer.update(api_key: @api_key)
+  end
 end

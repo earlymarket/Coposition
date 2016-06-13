@@ -1,6 +1,4 @@
 <ul class="side-nav" id="mobile-nav">
-  <li><%= link_to("Developers", developers_console_path) %></li>
-
   <li>
     <ul class="collapsible">
       <li>
@@ -34,17 +32,30 @@
       <%= link_to('Edit account', edit_user_registration_path) %>
     </li>
     <li>
-      <%= link_to("Log out", destroy_user_session_path, method: :delete) %>
+      <%= link_to("User log out", destroy_user_session_path, method: :delete) %>
     </li>
-
+    <li>
+      <%= link_to("Developers", developers_console_path) %>
+    </li>
+    <% if developer_signed_in? %>
+      <li>
+        <%= link_to("Developer log out", destroy_developer_session_path, method: :delete) %>
+      </li>
+    <% end %>
   <% elsif developer_signed_in? %>
     <li>
-      <%= link_to("Developer log out", destroy_user_session_path, method: :delete) %>
+      <%= link_to("Developer console", developers_console_path) %>
+    </li>
+    <li>
+      <%= link_to("Developer log out", destroy_developer_session_path, method: :delete) %>
     </li>
     <li>
       <%= link_to("User log in", new_user_session_path) %>
     </li>
   <% else %>
+    <li>
+      <%= link_to("Developers", new_developer_session_path) %>
+    </li>
     <li>
       <%= link_to("User log in", new_user_session_path) %>
     </li>
