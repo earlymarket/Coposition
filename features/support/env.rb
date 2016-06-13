@@ -62,11 +62,11 @@ end
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
-Capybara.default_max_wait_time = 5
+Capybara.default_max_wait_time = 10
 Capybara.javascript_driver = :webkit
 
 Capybara::Webkit.configure do |config|
   config.allow_unknown_urls
-  config.timeout = 10
+  # config.timeout = 10
   config.ignore_ssl_errors
 end
