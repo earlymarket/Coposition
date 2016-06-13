@@ -61,9 +61,9 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   describe 'POST' do
     it 'should create a device with a UUID provided' do
       create_params[:device] = { uuid: empty_device.uuid }
-      config_count = Config.count
+      config_count = developer.configs.count
       post :create, create_params
-      expect(Config.count).to be config_count + 1
+      expect(developer.configs.count).to be config_count + 1
       expect(res_hash[:user_id]).to be user.id
       expect(res_hash[:uuid]).to eq empty_device.uuid
     end
