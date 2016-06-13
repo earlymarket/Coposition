@@ -191,7 +191,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       count = user.checkins.count
       create_headers
       post :create, create_params
-      expect(res_hash.first['uuid']).to eq device.uuid
+      expect(res_hash[:data].first['uuid']).to eq device.uuid
       expect(user.checkins.count).to be(count + 1)
       expect(checkin.device).to be device
     end

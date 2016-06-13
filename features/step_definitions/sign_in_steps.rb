@@ -1,8 +1,9 @@
 Given(/^I am signed in as developer$/) do
   steps %(
-    Given I am on the homepage
-      And I click "Developer log in"
-      Then I click the link "Sign up!"
+    Given I am using a large screen
+    And I am on the homepage
+      When I click the "Developer log in" link in the "footer"
+      And I click the link "Sign up!"
     When I fill in the form with my "developer" details
       And I click "Sign up"
     Then I should see "You have signed up successfully."

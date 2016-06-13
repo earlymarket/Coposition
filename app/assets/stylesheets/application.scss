@@ -14,11 +14,11 @@
  */
 
 // Import materialize gem's palette
-@import 'materialize/components/color';
+@import 'materialize/sass/components/color';
 // Set the scss color variables we want to override
 @import 'custom_color';
 // Import the rest of Materialize. It will ignore anything that is already set
-@import 'materialize';
+@import 'materialize/sass/materialize';
 // css selectors/classes needs to be overriden after
 @import 'custom_class';
 
@@ -32,12 +32,14 @@
 @import 'maitre';
 @import 'twitter-typeahead';
 @import 'control.w3w';
-@import 'MarkerCluster';
-@import 'MarkerCluster.Default';
-@import 'leaflet.fullscreen';
+@import 'leaflet.markercluster/dist/MarkerCluster';
+@import 'leaflet.markercluster/dist/MarkerCluster.Default';
+@import 'leaflet-fullscreen/dist/leaflet.fullscreen';
+@import 'leaflet.locatecontrol/dist/L.Control.Locate.min';
+// STILL more up to date version
 @import 'nouislider';
-@import 'ion.rangeSlider';
-@import 'ion.rangeSlider.skinFlat';
+@import 'ion.rangeSlider/css/ion.rangeSlider';
+@import 'ion.rangeSlider/css/ion.rangeSlider.skinFlat';
 
 // Page/feature specific
 @import 'placeholder';
