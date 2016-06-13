@@ -1,4 +1,26 @@
 .c-devices.a-show, .c-friends.a-show_device {
+
+// ion.rangeSlider override stuff
+
+  .irs-line-mid,
+  .irs-line-left,
+  .irs-line-right,
+  .irs-bar,
+  .irs-bar-edge,
+  .irs-slider {
+      background-image: url(<%= asset_path 'sprite-skin-flat-custom.png' %>);
+  }
+
+  .irs-from, .irs-to, .irs-single {
+    color: #fff;
+    background: $primary-color-darker;
+  }
+  .irs-from:after, .irs-to:after, .irs-single:after {
+    border-top-color: $primary-color-darker;
+  }
+
+// end of override stuff
+
   .date-select {
     background: #fff;
     position: absolute;

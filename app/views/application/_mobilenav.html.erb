@@ -1,5 +1,5 @@
 <ul class="side-nav" id="mobile-nav">
-  <li><%= link_to("Developers", developers_console_path) %></li>
+  <li><%= link_to("Developers", signed_in? ? developers_console_path : new_developer_session_path) %></li>
 
   <li>
     <ul class="collapsible">

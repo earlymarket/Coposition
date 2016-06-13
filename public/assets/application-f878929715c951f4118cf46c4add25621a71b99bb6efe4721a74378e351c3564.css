@@ -16993,7 +16993,30 @@ a[data-maitre-status]:hover {
   transform: rotate(45deg);
 }
 
-/* line 2, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss */
+/* line 3, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+.c-devices.a-show .irs-line-mid,
+.c-devices.a-show .irs-line-left,
+.c-devices.a-show .irs-line-right,
+.c-devices.a-show .irs-bar,
+.c-devices.a-show .irs-bar-edge,
+.c-devices.a-show .irs-slider, .c-friends.a-show_device .irs-line-mid,
+.c-friends.a-show_device .irs-line-left,
+.c-friends.a-show_device .irs-line-right,
+.c-friends.a-show_device .irs-bar,
+.c-friends.a-show_device .irs-bar-edge,
+.c-friends.a-show_device .irs-slider {
+  background: url(/assets/sprite-skin-flat-custom-a20044d80b1cc662d8f43e5c34b63ddbad852e40dd49d848f97fb43c04345b0a.png) repeat-x;
+}
+/* line 12, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+.c-devices.a-show .irs-from, .c-devices.a-show .irs-to, .c-devices.a-show .irs-single, .c-friends.a-show_device .irs-from, .c-friends.a-show_device .irs-to, .c-friends.a-show_device .irs-single {
+  color: #fff;
+  background: #2092bb;
+}
+/* line 16, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+.c-devices.a-show .irs-from:after, .c-devices.a-show .irs-to:after, .c-devices.a-show .irs-single:after, .c-friends.a-show_device .irs-from:after, .c-friends.a-show_device .irs-to:after, .c-friends.a-show_device .irs-single:after {
+  border-top-color: #2092bb;
+}
+/* line 20, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .date-select, .c-friends.a-show_device .date-select {
   background: #fff;
   position: absolute;
@@ -17003,28 +17026,28 @@ a[data-maitre-status]:hover {
   z-index: 9;
   padding-left: 5px;
 }
-/* line 12, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss */
+/* line 30, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .tabs, .c-friends.a-show_device .tabs {
   overflow: hidden;
 }
-/* line 16, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss */
+/* line 34, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show #map, .c-friends.a-show_device #map {
   width: 100%;
   position: absolute !important;
   top: 64px;
   margin-top: 48px;
 }
-/* line 23, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss */
+/* line 41, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show #chart, .c-friends.a-show_device #chart {
   height: 70vh;
   width: 100%;
 }
-/* line 28, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss */
+/* line 46, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show #table-chart, .c-friends.a-show_device #table-chart {
   margin-top: 40px;
   height: 70vh;
 }
-/* line 33, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss */
+/* line 51, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .bottom-panel, .c-friends.a-show_device .bottom-panel {
   position: absolute;
   bottom: 0px;
@@ -17033,28 +17056,28 @@ a[data-maitre-status]:hover {
   text-align: center;
   background: white;
 }
-/* line 42, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss */
+/* line 60, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .bottom-panel *, .c-friends.a-show_device .bottom-panel * {
   margin: 0;
 }
-/* line 46, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss */
+/* line 64, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .buttons, .c-friends.a-show_device .buttons {
   margin: 10px;
 }
-/* line 50, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss */
+/* line 68, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .disabled-icon, .c-friends.a-show_device .disabled-icon {
   color: rgba(0, 0, 0, 0.12);
 }
-/* line 59, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss */
+/* line 77, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .fogged, .c-friends.a-show_device .fogged {
   color: #2196f3;
 }
 
-/* line 66, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss */
+/* line 84, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show #map {
   bottom: 120px;
 }
-/* line 70, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss */
+/* line 88, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .bottom-panel {
   height: 120px;
 }
