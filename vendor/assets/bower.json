@@ -6,6 +6,11 @@
     "moment": "latest",
     "leaflet.locatecontrol": "latest",
     "ion.rangeSlider": "latest",
-    "lodash": "latest"
+    "lodash": "latest",
+    "materialize": "latest",
+    "typeahead.js": "latest",
+    "mustache.js": "latest",
+    "jquery-Mustache": "latest",
+    "leaflet.markercluster": "latest"
   }
 }
