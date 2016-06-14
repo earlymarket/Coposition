@@ -4,7 +4,14 @@ end
 
 Then(/^I have (\d+) checkins in the table$/) do |number|
   # +1 as the table headers count as another tr
-  expect(page).to have_selector('tr', count: number.to_i + 1)
+  retries = 5
+  begin
+    expect(page).to have_selector('tr', count: number.to_i + 1)
+  rescue RSpec::Expectations::ExpectationNotMetError
+    sleep 0.5
+    retries = retries -1
+    retry if retries > 0
+  end
 end
 
 Given(/^I click on my last checkin$/) do
