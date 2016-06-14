@@ -94,8 +94,8 @@ RSpec.describe Users::DevicesController, type: :controller do
   describe 'GET #info' do
     it 'should render info page' do
       get :info, params
-      expect(assigns(:presenter).device).to eq device
-      expect(assigns(:presenter).config).to eq device.config
+      expect(assigns(:device)).to eq device
+      expect(assigns(:config)).to eq device.config
       expect(response).to render_template('info')
     end
   end

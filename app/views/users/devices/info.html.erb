@@ -1,35 +1,26 @@
-<h1><%=@presenter.device.name%></h1>
+<h1><%=@device.name%></h1>
+
 <table>
   <tbody>
     <tr>
       <td>UUID</td>
-      <td><%=@presenter.device.uuid%></td>
+      <td><%=@device.uuid%></td>
     </tr>
     <tr>
       <td>Created at</td>
-      <td><%=@presenter.config.created_at%></td>
+      <td><%=@config.created_at%></td>
     </tr>
   </tbody>
 </table>
 
 <h4>Device configuration</h3>
+
 <table>
   <tbody>
     <tr>
       <td>Developer</td>
-      <td><%=@presenter.config.developer.company_name%></td>
+      <td><%=@config.developer.company_name%></td>
     </tr>
-  <% if @presenter.config.custom.present? %>
-    <% @presenter.config.custom.each do |key, value| %>
-      <tr>
-        <td><%=key%></td>
-        <td><%=value%></td>
-      </tr>
-    <% end %>
-  <% else %>
-    <tr>
-      <td><i>No additional config</i></td>
-    </tr>
-  <% end %>
+    <%= devices_config_rows(@config) %>
   </tbody>
 </table>
