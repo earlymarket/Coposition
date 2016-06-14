@@ -12,7 +12,7 @@ RSpec.describe DevicesHelper, type: :helper do
   end
   let(:config) { developer.configs.create(device_id: device.id) }
   let(:custom_config) do
-    config.update(custom: { type: 'herds' })
+    config.update(custom: { type: 'herds', mode: 'power-saving' })
     config
   end
   let(:other) { Device.update(device.id, published: true) }
