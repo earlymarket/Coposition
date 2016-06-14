@@ -70,10 +70,14 @@ RSpec.describe DevicesHelper, type: :helper do
 
   describe '#devices_config_row' do
     it 'returns one row if no custom' do
-      expect(helper.devices_config_rows(config)).to match 'No additional config'
+      output = helper.devices_config_rows(config)
+      expect(output).to match 'No additional config'
+      expect(output.scan(/<tr>/).count).to eq 1
     end
     it 'returns each attribute and value of custom in a new row' do
-      expect(helper.devices_config_rows(custom_config)).to match 'type'
+      output = helper.devices_config_rows(custom_config)
+      expect(output).to match custom_config.custom.keys.first.to_s
+      expect(output.scan(/<tr>/).count).to eq custom_config.custom.count
     end
   end
 end
