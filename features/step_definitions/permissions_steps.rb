@@ -18,13 +18,11 @@ Given(/^I click the switch "(.*?)"$/) do |target|
 end
 
 Given(/^I should have "(.*?)" enabled$/) do |attribute|
-  sleep 0.5
-  expect(Permission.last[attribute]).to be true
+  wait_until { Permission.last[attribute] == true }
 end
 
 Given(/^I should have privilege set to "(.*?)"$/) do |value|
-  sleep 0.5
-  expect(Permission.last.privilege).to eq value
+  wait_until { Permission.last.privilege == value }
 end
 
 Given(/^I change my permissions$/) do
