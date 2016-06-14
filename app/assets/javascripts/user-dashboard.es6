@@ -81,7 +81,7 @@ $(document).on('page:change', function () {
             bounds:   this.bounds()
           });
           caller.hasContent = true;
-        } else if (caller.hasContent) {
+        } else if (this.hasFriends() && caller.hasContent) {
           let whereAreMyFriends = `
           <blockquote>
             <h4>Where are my friends?</h4>
@@ -90,6 +90,14 @@ $(document).on('page:change', function () {
             They'll appear on the map once they share their location.
           </blockquote>`
           $('#map-wrapper').after(whereAreMyFriends);
+        } else if (caller.hasContent) {
+          let getSomeFriends = `
+          <blockquote>
+            <h4>Why is this map empty?</h4>
+            You haven't got any friends yet, check if you have any friend requests or add a new friend from the friends page.
+            They'll appear on the map once they share their location.
+          </blockquote>`
+          $('#map-wrapper').after(getSomeFriends);
         }
       }
     }
