@@ -1,5 +1,5 @@
 Then(/^I have (\d+) checkins on the map$/) do |number|
-  wait_until { page.has_selector?('img.leaflet-marker-icon', count: number.to_i)}
+  wait_until { page.has_selector?('img.leaflet-marker-icon', count: number.to_i) }
 end
 
 Then(/^I have (\d+) checkins in the table$/) do |number|

@@ -34,7 +34,6 @@ Feature: map
     @javascript
     Scenario: User views their published page
       Given I right click on the "map"
-      Then I should see "Create checkin here"
         And I click "Create checkin here"
       When I click the link "Devices"
         And I click the link "visibility"

@@ -32,11 +32,6 @@ When(/^I click and confirm "([^"]*)"$/) do |target|
   end
 end
 
-Given(/^the toast goes away$/) do
-  find('div .toast')
-  page.execute_script("$('div .toast').click();")
-end
-
 Given(/^I right click on the "(.*?)"$/) do |target|
   find(:id, target).right_click
 end

@@ -8,7 +8,6 @@ Feature: chart
       And I click "add"
       And I enter UUID "123456789123" and a friendly name "G-RALA"
       And I click "Add"
-      And the toast goes away
       And I switch to the table view
 
     @javascript
