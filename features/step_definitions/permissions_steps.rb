@@ -29,7 +29,8 @@ end
 
 Given(/^I change my permissions$/) do
   steps %(
-    Given I click the link "lock"
+    Given I should see a link that says "lock"
+      And I click the link "lock"
       And I click the switch "bypass-fogging"
       And I click the switch "bypass-delay"
       And I click the switch "last-only"
