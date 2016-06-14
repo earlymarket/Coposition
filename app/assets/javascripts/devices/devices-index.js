@@ -9,7 +9,7 @@ $(document).on('page:change', function() {
     $('body').on('click', '.edit-button', function (e) {
       e.preventDefault();
       $(this).toggleClass('hide', true);
-      makeEditable($(this).prev(), handleEdited);
+      makeEditable($(this).prev('span'), handleEdited);
     });
 
     var makeEditable = function ($target, handler) {

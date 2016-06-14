@@ -2,10 +2,11 @@
 
   <div class="col s12">
 
-    <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>">
-      <h4><span class="editable"><%= device.name %></span> <i class="material-icons grey-text edit-button">mode_edit</i>&nbsp;</h4>
+
+    <h4>
+      <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>"><span class="editable"><%= device.name %></span> <i class="material-icons grey-text edit-button">mode_edit</i>&nbsp;</a>
+    </h4>
       <%= devices_last_checkin(device) %>
-    </a>
 
     <% if device.developers.exists? || device.permitted_users.exists? %>
       <a class="modal-trigger left tooltipped" data-tooltip='Detailed Permissions' href="#perm<%=device.id%>"><i class="material-icons">lock</i></a>

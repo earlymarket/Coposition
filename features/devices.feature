@@ -13,8 +13,8 @@ Feature: Devices
       When I click "Add"
       Then I should see "Right click on the map to checkin"
         And I click the link "Devices"
-      Then I should see "Denham"
-        When I click "Denham"
+      Then I should see "G-RALA"
+        When I click "G-RALA"
       When I click and confirm "Delete device"
       Then I should see "Device deleted"
         And I should not have a device

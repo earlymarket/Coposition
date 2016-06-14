@@ -1,5 +1,5 @@
 Given(/^I am using a large screen$/) do
-  # Capybara.current_session.driver.browser.manage.window.resize_to(1200, 800)
+  Capybara.current_session.current_window.resize_to(1200, 800)
 end
 
 Given(/^I am on the homepage$/) do
@@ -33,6 +33,7 @@ When(/^I click and confirm "([^"]*)"$/) do |target|
 end
 
 Given(/^the toast goes away$/) do
+  find('div .toast')
   page.execute_script("$('div .toast').click();")
 end
 
