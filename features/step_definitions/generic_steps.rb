@@ -41,10 +41,6 @@ Given(/^I right click on the "(.*?)"$/) do |target|
   find(:id, target).right_click
 end
 
-Given(/^I click on the "(.*?)"$/) do |target|
-  page.find(:id, target).click
-end
-
 Given(/^I switch to the table view$/) do
   find('#chartTab')
   page.execute_script("$('#chartTab a').click();")
