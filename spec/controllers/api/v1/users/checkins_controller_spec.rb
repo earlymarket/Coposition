@@ -67,7 +67,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       it 'should fetch the last reported location (public attributes only)' do
         get :last, params
         expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
-        expect(res_hash.first.keys).not_to include private_checkin_attributes
+        expect(res_hash.first.keys).not_to include(*private_checkin_attributes)
       end
 
       it 'should fetch the last reported location for a friend' do
@@ -89,7 +89,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         expect(res_hash.first['address']).to eq 'Denham'
         expect(res_hash.first['lat']).to eq(51.57471)
         expect(res_hash.first['lng']).to eq(-0.50626)
-        expect(res_hash.first.keys).not_to include private_and_foggable_checkin_attributes
+        expect(res_hash.first.keys).not_to include(*private_and_foggable_checkin_attributes)
       end
 
       it 'should bypass fogging if bypass_fogging is true' do

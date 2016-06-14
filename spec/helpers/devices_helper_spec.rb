@@ -10,6 +10,11 @@ RSpec.describe DevicesHelper, type: :helper do
     device.permitted_users << user
     device
   end
+  let(:config) { developer.configs.create(device_id: device.id) }
+  let(:custom_config) do
+    config.update(custom: { type: 'herds', mode: 'power-saving' })
+    config
+  end
   let(:other) { Device.update(device.id, published: true) }
 
   describe '#devices_permitted_actors_for' do
@@ -60,6 +65,19 @@ RSpec.describe DevicesHelper, type: :helper do
       # http://test.host/users/1/devices/5/shared
       expect(helper.devices_shared_link(other))
         .to match(%r{http://.+/users/#{device.user_id}/devices/#{device.id}/shared*+})
+    end
+  end
+
+  describe '#devices_config_row' do
+    it 'returns one row if no custom' do
+      output = helper.devices_config_rows(config)
+      expect(output).to match 'No additional config'
+      expect(output.scan(/<tr>/).count).to eq 1
+    end
+    it 'returns each attribute and value of custom in a new row' do
+      output = helper.devices_config_rows(custom_config)
+      expect(output).to match custom_config.custom.keys.first.to_s
+      expect(output.scan(/<tr>/).count).to eq custom_config.custom.count
     end
   end
 end
