@@ -86,7 +86,7 @@ $(document).on('page:change', function () {
           <blockquote id="whereFriends">
             <h4>Where are my friends?</h4>
             You have ${gon.friends.length} ${U.pluralize('friend', gon.friends.length)} signed up but they haven't checked in yet
-            (or they haven't shared thier location with you).
+            (or they haven't shared their location with you).
             They'll appear on the map once they share their location.
           </blockquote>`
           $('#map-wrapper').after(whereAreMyFriends);

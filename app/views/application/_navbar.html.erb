@@ -27,7 +27,7 @@
 
         <ul id='friends-drop' class='dropdown-content'>
           <% current_user.friends.each do |friend| %>
-            <li><%= link_to(friend.username, user_friend_path(current_user.url_id, friend))%></li>
+            <li><%= link_to(name_or_email_name(friend), user_friend_path(current_user.url_id, friend))%></li>
           <% end %>
         </ul>
       </li>
