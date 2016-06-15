@@ -11,9 +11,9 @@
       <li><%= link_to("Dashboard", user_dashboard_path(current_user.url_id)) %></li>
 
       <li>
-        <a class='dropdown-button' href="<%=user_devices_path(current_user.url_id)%>" data-activates='devices_drop'>Devices</a>
+        <%= link_to('Devices', user_devices_path(current_user.url_id), class: "dropdown-button", data: { activates: 'devices-drop' }) %>
 
-        <ul id='devices_drop' class='dropdown-content'>
+        <ul id='devices-drop' class='dropdown-content'>
           <% current_user.devices.each do |device| %>
             <li><%= link_to(device.name, user_device_path(current_user.url_id, device))%></li>
           <% end %>
@@ -21,7 +21,15 @@
       </li>
 
       <li><%= link_to(navbar_indicator('Apps', current_user.developer_requests.count), user_apps_path(current_user.url_id)) %></li>
-      <li><%= link_to(navbar_indicator('Friends', current_user.friend_requests.count), user_friends_path(current_user.url_id)) %></li>
+      <li>
+        <%= link_to(navbar_indicator('Friends', current_user.friend_requests.count), user_friends_path(current_user.url_id), class: "dropdown-button", data: { activates: 'friends-drop' }) %>
+
+        <ul id='friends-drop' class='dropdown-content'>
+          <% current_user.friends.each do |friend| %>
+            <li><%= link_to(friend.username, user_friend_path(current_user.url_id, friend))%></li>
+          <% end %>
+        </ul>
+      </li>
 
       <li>
         <%= link_to(edit_user_registration_path, class: 'settings-icon valign-wrapper') do %>
