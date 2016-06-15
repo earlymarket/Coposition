@@ -3,7 +3,7 @@ class Users::FriendsController < ApplicationController
 
   def show
     @friend = User.find(params[:id]).public_info
-    @devices = @friend.devices.includes(:checkins)
+    @devices = @friend.devices
     checkins = @friend.get_user_checkins_for(current_user)
     gon.checkins = checkins.calendar_data if checkins.exists?
   end
