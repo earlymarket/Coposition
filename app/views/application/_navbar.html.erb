@@ -13,7 +13,7 @@
       <li>
         <%= link_to('Devices', user_devices_path(current_user.url_id), class: "dropdown-button", data: { activates: 'devices-drop' }) %>
 
-        <ul id='devices-drop' class='dropdown-content'>
+        <ul id='devices-drop' class='dropdown-content transparent'>
           <% current_user.devices.each do |device| %>
             <li><%= link_to(device.name, user_device_path(current_user.url_id, device))%></li>
           <% end %>
@@ -25,7 +25,7 @@
       <li>
         <%= link_to(navbar_indicator('Friends', current_user.friend_requests.count), user_friends_path(current_user.url_id), class: "dropdown-button", data: { activates: 'friends-drop' }) %>
 
-        <ul id='friends-drop' class='dropdown-content'>
+        <ul id='friends-drop' class='dropdown-content transparent'>
           <% current_user.friends.each do |friend| %>
             <li><%= link_to(name_or_email_name(friend), user_friend_path(current_user.url_id, friend))%></li>
           <% end %>
