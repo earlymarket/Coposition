@@ -14,7 +14,7 @@ Given(/^I accept the approval request$/) do
 end
 
 Given(/^I click the switch "(.*?)"$/) do |target|
-  find_by_id("#{@developer.id}-#{target}").click
+  find(:id, "#{@developer.id}-#{target}").click
 end
 
 Given(/^I should have "(.*?)" enabled$/) do |attribute|
