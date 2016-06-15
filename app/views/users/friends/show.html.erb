@@ -10,7 +10,7 @@
     </div>
 <% end %>
 <script>
-  COPO.calendar.refreshCalendar(gon.checkins);
+  google.charts.setOnLoadCallback(function(){ COPO.calendar.refreshCalendar(gon.checkins) });
   $(window).resize(function(){
     COPO.calendar.refreshCalendar(gon.checkins);
   });
