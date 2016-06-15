@@ -21,6 +21,7 @@
       </li>
 
       <li><%= link_to(navbar_indicator('Apps', current_user.developer_requests.count), user_apps_path(current_user.url_id)) %></li>
+
       <li>
         <%= link_to(navbar_indicator('Friends', current_user.friend_requests.count), user_friends_path(current_user.url_id), class: "dropdown-button", data: { activates: 'friends-drop' }) %>
 
