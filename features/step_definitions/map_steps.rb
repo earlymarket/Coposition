@@ -5,5 +5,6 @@ Given(/^I right click on the map when it's ready$/) do
     expect(page).to have_content('Create checkin here')
   rescue RSpec::Expectations::ExpectationNotMetError
     retry if Time.now - start_time < Capybara.default_max_wait_time
+    raise RSpec::Expectations::ExpectationNotMetError
   end
 end
