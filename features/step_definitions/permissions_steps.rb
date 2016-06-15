@@ -14,7 +14,18 @@ Given(/^I accept the approval request$/) do
 end
 
 Given(/^I click the switch "(.*?)"$/) do |target|
-  find(:id, "#{@developer.id}-#{target}").click
+  switch = find(:id, "#{@developer.id}-#{target}")
+  switch.click
+  checkbox = if target == 'bypass-delay'
+               find(:id, 'bypass_delay', match: :first)
+             elsif target == 'bypass-fogging'
+               find(:id, 'bypass_fogging', match: :first)
+             elsif target == 'last-only'
+               find(:id, 'last_only', match: :first)
+             else
+               find(:id, 'privilege', match: :first)
+             end
+  switch.click unless checkbox.checked?
 end
 
 Given(/^I should have "(.*?)" enabled$/) do |attribute|
