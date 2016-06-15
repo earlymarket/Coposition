@@ -64,7 +64,7 @@
     }
   }
 
-
+  // Styling the devices dropdown
   .dropdown-content li {
     background-color: $primary-color;
     a {
@@ -79,6 +79,7 @@
     background-color: rgba(0, 0, 0, 0.1);
   }
 
+  // Notification of new app/friend request
   .indicator {
     background: $secondary-color;
     border-radius: 50%;
