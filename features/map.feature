@@ -23,7 +23,7 @@ Feature: map
     @javascript
     Scenario: User creates a checkin then switches to chart page
       Given I have 0 checkins on the map
-        When I right click on the map when it's ready
+        When I right click on the map
         And I click "Create checkin here"
         Then I have 1 checkins on the map
       When I switch to the table view
@@ -31,7 +31,7 @@ Feature: map
 
     @javascript
     Scenario: User views their published page
-      Given I right click on the map when it's ready
+      Given I right click on the map
         And I click "Create checkin here"
       When I click the link "Devices"
         And I click the link "visibility"
