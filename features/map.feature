@@ -2,6 +2,7 @@ Feature: map
 
   Background: There are some devices
     Given I am signed in as a user
+      And I am using a large screen
       And I click the link "Devices"
       And there's a device in the database with the UUID "123456789123"
       And I click "add"
