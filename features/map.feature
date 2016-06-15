@@ -11,7 +11,7 @@ Feature: map
     @javascript
     Scenario: User creates and fogs checkin
     Given I have 0 checkins on the map
-      When I right click on the map when it's ready
+      When I right click on the map
       And I click "Create checkin here"
         Then I have 1 checkins on the map
       And I click on my last checkin
