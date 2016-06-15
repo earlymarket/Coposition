@@ -46,4 +46,12 @@ module DevicesHelper
                           })
     output
   end
+
+  def devices_config_rows(config)
+    return '<tr><td><i>No additional config</i></td></tr>'.html_safe unless config.custom.present?
+    output = config.custom.map do |key, value|
+      "<tr><td>#{key}</td><td>#{value}</td></tr>"
+    end
+    output.join.html_safe
+  end
 end

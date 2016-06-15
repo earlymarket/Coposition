@@ -37,4 +37,8 @@ class Developer < ActiveRecord::Base
     return unless (sub = subscribed_to? event)
     sub.send_data(data)
   end
+
+  def configures_device?(device)
+    configs.where(device: device).present?
+  end
 end
