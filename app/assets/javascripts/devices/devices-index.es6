@@ -79,10 +79,6 @@ $(document).on('page:change', function() {
         this.select()
       })
 
-      $(window).resize(function(){
-        COPO.calendar.refreshCalendar(gon.checkins);
-      });
-
       //backup for iOS
       $('.linkbox').on('touchstart', function(){
         this.focus();
