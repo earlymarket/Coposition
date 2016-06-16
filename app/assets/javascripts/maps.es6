@@ -113,6 +113,7 @@ window.COPO.maps = {
 
   buildMarkerPopup(checkin) {
     var checkinTemp = {};
+    checkinTemp.device = checkin.device
     checkinTemp.id = checkin.id
     checkinTemp.lat = checkin.lat.toFixed(6);
     checkinTemp.lng = checkin.lng.toFixed(6);

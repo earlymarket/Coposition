@@ -1,10 +1,14 @@
 $(document).on('page:change', function() {
   if ($(".c-devices.a-index").length === 1) {
     var U = COPO.utility;
+    const M  = window.COPO.maps;
+    M.initMap();
+    M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
     U.gonFix();
     COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions)
     COPO.delaySlider.initSliders(gon.devices);
-    google.charts.setOnLoadCallback(function(){ COPO.calendar.refreshCalendar(gon.checkins) });
+    COPO.maps.initMarkers(gon.checkins)
+
 
     $('body').on('click', '.edit-button', function (e) {
       e.preventDefault();
