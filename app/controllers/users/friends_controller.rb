@@ -5,7 +5,7 @@ class Users::FriendsController < ApplicationController
     @friend = User.find(params[:id]).public_info
     @devices = @friend.devices.includes(:checkins)
     gon.checkins = @devices.map do |device|
-      checkins = @friend.get_checkins(current_user, device)
+      checkins = device.safe_checkin_info_for(permissible: current_user)
       checkins.first.as_json.merge(device: device.name) if checkins.present?
     end.compact
   end
