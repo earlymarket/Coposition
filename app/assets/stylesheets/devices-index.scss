@@ -54,16 +54,7 @@
   }
   #map {
     width:100%;
-    height: 300px;
-
-    .leaflet-marker-icon {
-      cursor: inherit;
-      outline: 0;
-
-      &.leaflet-clickable {
-        cursor: pointer;
-      }
-    }
+    height: 400px;
   }
 
   #map-status {
