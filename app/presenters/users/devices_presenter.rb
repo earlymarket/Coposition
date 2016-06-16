@@ -14,6 +14,7 @@ module Users
 
     def index
       @devices = @user.devices.order(:id).includes(:developers, :permitted_users, :permissions)
+                      .paginate(page: @params[:page], per_page: 5)
     end
 
     def show
