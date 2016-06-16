@@ -126,7 +126,12 @@ window.COPO.maps = {
       }
     }
     checkinTemp.devicebutton = function(){
-      return `<a href="./devices/${checkin.device_id}" title="Device map">${checkin.device}</a>`
+      if ($(".c-devices.a-show").length === 1) {
+        return `<a href="./devices/${checkin.device_id}" title="Device map">${checkin.device}</a>`
+      } else {
+        return `<a href="${window.location.pathname}/show_device?device_id=${checkin.device_id}" title="Device map">${checkin.device}</a>`
+      }
+
     }
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
