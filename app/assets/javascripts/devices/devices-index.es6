@@ -9,7 +9,6 @@ $(document).on('page:change', function() {
     COPO.delaySlider.initSliders(gon.devices);
     COPO.maps.initMarkers(gon.checkins)
 
-
     $('body').on('click', '.edit-button', function (e) {
       e.preventDefault();
       $(this).toggleClass('hide', true);

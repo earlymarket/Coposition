@@ -113,7 +113,6 @@ window.COPO.maps = {
 
   buildMarkerPopup(checkin) {
     var checkinTemp = {};
-    checkinTemp.device = checkin.device
     checkinTemp.id = checkin.id
     checkinTemp.lat = checkin.lat.toFixed(6);
     checkinTemp.lng = checkin.lng.toFixed(6);
@@ -125,6 +124,9 @@ window.COPO.maps = {
       if(checkin.fogged) {
         return '<li class="foggedAddress">Fogged address: ' + checkin.fogged_area + '</li>'
       }
+    }
+    checkinTemp.devicebutton = function(){
+      return `<a href="./devices/${checkin.device_id}" title="Device map">${checkin.device}</a>`
     }
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
