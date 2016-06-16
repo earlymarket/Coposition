@@ -111,6 +111,6 @@ class Device < ActiveRecord::Base
   end
 
   def self.geocode_last_checkins
-    all.each { |device| device.checkins.first.reverse_geocode! if device.checkins.exists? }
+    all.each { |device| device.checkins.last.reverse_geocode! if device.checkins.exists? }
   end
 end
