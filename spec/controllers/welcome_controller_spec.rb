@@ -22,10 +22,10 @@ RSpec.describe WelcomeController, type: :controller do
     end
   end
 
-  describe '#faq' do
+  describe '#help' do
     it 'should render the FAQ page' do
-      get :faq
-      expect(response).to render_template('faq')
+      get :help
+      expect(response).to render_template('help')
     end
   end
 end

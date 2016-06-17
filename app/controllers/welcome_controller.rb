@@ -6,7 +6,7 @@ class WelcomeController < ApplicationController
   def api
   end
 
-  def faq
+  def help
     gon.userinfo = current_user.public_info_hash if current_user
   end
 end
