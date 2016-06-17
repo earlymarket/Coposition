@@ -28,7 +28,7 @@
       a {
         font-size: 1rem;
         background-color: transparent;
-        color: black;
+        color: $dark-text-color;
       }
       a:hover {
         transition: background-color .3s;
@@ -75,11 +75,11 @@
 
   // Styling the devices dropdown
   .dropdown-content li {
-    background-color: $primary-color;
+    background-color: white;
     a {
       font-size: 1rem;
       background-color: transparent;
-      color: white;
+      color: $dark-text-color;
     }
     a:hover {
       transition: background-color .3s;
