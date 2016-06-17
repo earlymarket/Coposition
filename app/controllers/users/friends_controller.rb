@@ -12,7 +12,7 @@ class Users::FriendsController < ApplicationController
     friend = User.find(params[:id])
     device = friend.devices.find(params[:device_id])
     checkins = friend.get_checkins(current_user, device)
-    checkins.replace_foggable_attributes unless device.can_bypass_fogging?(current_user)
+    checkins = checkins.replace_foggable_attributes unless device.can_bypass_fogging?(current_user)
     gon.checkins = checkins.map(&:public_info)
   end
 
