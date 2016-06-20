@@ -17,10 +17,16 @@ RSpec.describe Users::PermissionsController, type: :controller do
     Permission.last
   end
 
-  describe 'update' do
-    before do
-      request.accept = 'text/javascript'
+  describe 'index' do
+    it 'should assign device and device permissions' do
+      xhr :get, :index, user_id: user.id, device_id: device.id
+      expect(assigns(:device)).to eq device
+      expect(assigns(:permissions)).to eq device.permissions
     end
+  end
+
+  describe 'update' do
+    before { request.accept = 'text/javascript' }
 
     it 'should update the privilege level, bypass_fogging and bypass_delay attributes' do
       put :update,
