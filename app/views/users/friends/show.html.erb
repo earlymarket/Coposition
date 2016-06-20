@@ -1,17 +1,24 @@
 <div id='gonvariables'><%= Gon::Base.render_data %></div>
 <h1><%=name_or_email_name(@friend)%>'s devices</h1>
 <div id='calendar'></div>
-<% @devices.each do |device| %>
-    <div class="card row">
-      <%= link_to show_device_user_friend_path(current_user.url_id, @friend, device_id: device.id), class:"col s12" do %>
-        <h5><%= device.name %></h5>
-        <%= friends_last_checkin(@friend.get_checkins(current_user, device)) %>
-      <% end %>
-    </div>
+<% if @devices.present? %>
+  <% @devices.each do |device| %>
+      <div class="card row">
+        <%= link_to show_device_user_friend_path(current_user.url_id, @friend, device_id: device.id), class:"col s12" do %>
+          <h5><%= device.name %></h5>
+          <%= friends_last_checkin(@friend.get_checkins(current_user, device)) %>
+        <% end %>
+      </div>
+  <% end %>
+<% else %>
+  <blockquote>
+    <h4>Why is this page empty?</h4>
+    This user has not created any devices or shared any devices with you yet.
+  </blockquote>
 <% end %>
 <div class="center"><%= will_paginate @devices %><div>
 <script>
-  COPO.calendar.refreshCalendar(gon.checkins);
+  google.charts.setOnLoadCallback(function(){ COPO.calendar.refreshCalendar(gon.checkins) });
   $(window).resize(function(){
     COPO.calendar.refreshCalendar(gon.checkins);
   });

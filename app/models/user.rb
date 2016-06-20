@@ -88,7 +88,7 @@ class User < ActiveRecord::Base
                            .sort_by  { |key| key[:created_at] }
     if args[:action] == 'index'
       safe_checkins.paginate(page: args[:page], per_page: args[:per_page])
-    else
+    elsif args[:action] == 'last'
       safe_checkins.slice(0, 1)
     end
   end
@@ -101,7 +101,7 @@ class User < ActiveRecord::Base
     subqueries = devices.map do |device|
       Checkin.arel_table[:id].in(device.permitted_history_for(permissible).ids)
     end
-    Checkin.where(subqueries.inject(&:or))
+    subqueries.present? ? Checkin.where(subqueries.inject(&:or)) : Checkin.none
   end
 
   ##############
