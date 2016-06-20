@@ -3,7 +3,9 @@ class Users::FriendsController < ApplicationController
 
   def show
     @friend = User.find(params[:id]).public_info
-    @devices = @friend.devices.includes(:checkins)
+    devices = @friend.devices.includes(:checkins).joins(:checkins).order('checkins.created_at')
+    devices += @friend.devices
+    @devices = devices.uniq.paginate(page: params[:page], per_page: 5)
     checkins = @friend.get_user_checkins_for(current_user)
     gon.checkins = checkins.calendar_data if checkins.exists?
   end
