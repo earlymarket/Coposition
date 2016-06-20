@@ -11,7 +11,11 @@ module PermissionsHelper
   end
 
   def permissions_control_class(permissionable)
-    'master-switches' if permissionable.class != Permission
+    if permissionable.class != Permission
+      " master-switches permissionable-id-#{permissionable.id}"
+    else
+      " normal-switches permissionable-id-#{permissionable.id}"
+    end
   end
 
   def permissions_switch_class(permissionable)
@@ -33,6 +37,6 @@ module PermissionsHelper
   end
 
   def permissions_for_all(permissionable)
-    'for all' if permissionable.class != Permission
+    ' for all' unless permissionable.class == Permission
   end
 end
