@@ -11,25 +11,15 @@
       <li><%= link_to("Dashboard", user_dashboard_path(current_user.url_id)) %></li>
 
       <li>
-        <%= link_to(navbar_dropdown('Devices', current_user.devices.count), user_devices_path(current_user.url_id), class: "dropdown-button", data: { activates: 'devices-drop' }) %>
-
-        <ul id='devices-drop' class='dropdown-content transparent'>
-          <% current_user.devices.each do |device| %>
-            <li><%= link_to(device.name, user_device_path(current_user.url_id, device))%></li>
-          <% end %>
-        </ul>
+        <%= link_to('Devices', user_devices_path(current_user.url_id)) %>
       </li>
 
-      <li><%= link_to(navbar_indicator('Apps', current_user.developer_requests.count), user_apps_path(current_user.url_id)) %></li>
+      <li>
+        <%= link_to(navbar_indicator('Apps', current_user.developer_requests.count), user_apps_path(current_user.url_id)) %>
+      </li>
 
       <li>
-        <%= link_to(navbar_indicator(navbar_dropdown('Friends', current_user.friends.count), current_user.friend_requests.count), user_friends_path(current_user.url_id), class: "dropdown-button", data: { activates: 'friends-drop' }) %>
-
-        <ul id='friends-drop' class='dropdown-content transparent'>
-          <% current_user.friends.each do |friend| %>
-            <li><%= link_to(name_or_email_name(friend), user_friend_path(current_user.url_id, friend))%></li>
-          <% end %>
-        </ul>
+        <%= link_to(navbar_indicator('Friends', current_user.friend_requests.count), user_friends_path(current_user.url_id)) %>
       </li>
 
       <li>

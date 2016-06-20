@@ -24,16 +24,7 @@
     }
 
     .dropdown-content li {
-      background-color: transparent;
-      a {
-        font-size: 1rem;
-        background-color: transparent;
-        color: $dark-text-color;
-      }
-      a:hover {
-        transition: background-color .3s;
-        background-color: rgba(0, 0, 0, 0.1);
-      }
+      background-color: rgba(255,255,255,0.9);
     }
 
     svg {
@@ -73,21 +64,6 @@
     }
   }
 
-  // Styling the devices dropdown
-  .dropdown-content li {
-    background-color: white;
-    a {
-      font-size: 1rem;
-      background-color: transparent;
-      color: $dark-text-color;
-    }
-    a:hover {
-      transition: background-color .3s;
-      background-color: rgba(0, 0, 0, 0.1);
-    }
-  }
-
-  // Notification of new app/friend request
   .indicator {
     background: $secondary-color;
     border-radius: 50%;
@@ -96,12 +72,6 @@
     height: 9px;
     padding: 0;
     margin: 1px 0 7px 0;
-  }
-
-  .dropdown-arrow {
-    margin-right: 0rem;
-    margin-left: 0rem;
-    margin-top: 0.2rem;
   }
 }
 
