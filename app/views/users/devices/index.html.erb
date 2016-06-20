@@ -17,18 +17,14 @@
 <script>
   $('.modal-trigger').leanModal({
     ready: function() {
-      var device_id = $(this.ready.caller.arguments[0][0].children[0].children[1]).data().device
-      var $list = $('#perm'+device_id).find('ul');
+      var $list = $(this.ready.caller.arguments[0][0]).find('ul');
       if($list.children().length===1) {
-        $list.append(`
-         <div class="progress">
-            <div class="indeterminate"></div>
-        </div>
-        `)
+        var device_id = $list.data().device;
+        $list.append(`<div class="progress"><div class="indeterminate"></div></div>`);
         $.get({
           url: window.location.href+"/"+device_id+"/permissions",
           dataType: "script"
-        })
+        });
       }
     }
   });
