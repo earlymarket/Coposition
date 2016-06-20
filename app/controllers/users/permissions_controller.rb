@@ -4,7 +4,7 @@ class Users::PermissionsController < ApplicationController
 
   def index
     @device = Device.find(params[:device_id])
-    @permissions = @device.permissions.includes(:permissible)
+    @permissions = @device.permissions.includes(:permissible).order(:permissible_type, :id)
     respond_to do |format|
       format.js
     end
