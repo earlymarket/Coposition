@@ -13,7 +13,7 @@ module Users
     end
 
     def index
-      @devices = @user.devices.order(:id).includes(:developers, :permitted_users, :permissions)
+      @devices = @user.devices.order(:id).includes(:permissions)
     end
 
     def show

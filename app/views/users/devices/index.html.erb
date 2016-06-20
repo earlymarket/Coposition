@@ -15,5 +15,21 @@
 </div>
 
 <script>
-  $('.modal-trigger').leanModal();
+  $('.modal-trigger').leanModal({
+    ready: function() {
+      var device_id = $(this.ready.caller.arguments[0][0].children[0].children[1]).data().device
+      var $list = $('#perm'+device_id).find('ul');
+      if($list.children().length===1) {
+        $list.append(`
+         <div class="progress">
+            <div class="indeterminate"></div>
+        </div>
+        `)
+        $.get({
+          url: window.location.href+"/"+device_id+"/permissions",
+          dataType: "script"
+        })
+      }
+    }
+  });
 </script>

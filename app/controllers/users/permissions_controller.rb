@@ -1,5 +1,14 @@
 class Users::PermissionsController < ApplicationController
-  before_action :authenticate_user!, :require_ownership
+  before_action :authenticate_user!
+  before_action :require_ownership, only: :update
+
+  def index
+    @device = Device.find(params[:device_id])
+    @permissions = @device.permissions.includes(:permissible)
+    respond_to do |format|
+      format.js
+    end
+  end
 
   def update
     presenter = ::Users::PermissionsPresenter.new(current_user, params)
