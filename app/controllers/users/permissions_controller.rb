@@ -3,8 +3,18 @@ class Users::PermissionsController < ApplicationController
   before_action :require_ownership, only: :update
 
   def index
-    @device = Device.find(params[:device_id])
-    @permissions = @device.permissions.includes(:permissible).order(:permissible_type, :id)
+    if params[:from] == 'devices'
+      @device = Device.find(params[:device_id])
+      @permissions = @device.permissions.includes(:permissible).order(:permissible_type, :id)
+    elsif params[:from] == 'apps'
+      device_ids = current_user.devices.select(:id)
+      @permissible = Developer.find(params[:device_id])
+      @permissions = Permission.where(device_id: device_ids, permissible_id: @permissible.id, permissible_type: 'Developer')
+    else
+      device_ids = current_user.devices.select(:id)
+      @permissible = User.find(params[:device_id])
+      @permissions = Permission.where(device_id: device_ids, permissible_id: @permissible.id, permissible_type: 'User')
+    end
     respond_to do |format|
       format.js
     end
