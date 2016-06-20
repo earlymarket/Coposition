@@ -16,6 +16,7 @@
     This user has not created any devices or shared any devices with you yet.
   </blockquote>
 <% end %>
+<div class="center"><%= will_paginate @devices %><div>
 <script>
   google.charts.setOnLoadCallback(function(){ COPO.calendar.refreshCalendar(gon.checkins) });
   $(window).resize(function(){

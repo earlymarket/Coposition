@@ -171,15 +171,15 @@ window.COPO.maps = {
     COPO.maps.lc = L.control.locate({
       follow: false,
       setView: true,
-      markerClass: L.marker,
-      markerStyle: {
-        icon: L.mapbox.marker.icon({
-          'marker-size': 'large',
-          'marker-symbol': 'star',
-          'marker-color': '#01579B'
-        }),
-        riseOnHover: true
-      },
+      markerClass: L.CircleMarker,
+      //markerStyle: {
+      //  icon: L.mapbox.marker.icon({
+      //    'marker-size': 'large',
+      //    'marker-symbol': 'star',
+      //    'marker-color': '#01579B'
+      //  }),
+      //  riseOnHover: true
+      //},
       strings: {
         title: 'Your current location',
         popup: 'Your current location within {distance} {unit}.<br><a href="#" id="current-location"></a>'
