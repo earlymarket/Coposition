@@ -2,6 +2,7 @@ class Users::FriendsController < ApplicationController
   before_action :friends?
 
   def show
+    @friend = User.find(params[:id])
     @devices = @friend.devices
     gon.checkins = @devices.map do |device|
       checkins = device.safe_checkin_info_for(permissible: current_user)
