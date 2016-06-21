@@ -62,7 +62,9 @@ module Users
     private
 
     def gon_index_checkins
-      @user.checkins.calendar_data if @user.checkins.exists?
+      @user.devices.map do |device|
+        device.checkins.first.as_json.merge(device: device.name) if device.checkins.present?
+      end.compact
     end
 
     def gon_shared_checkin

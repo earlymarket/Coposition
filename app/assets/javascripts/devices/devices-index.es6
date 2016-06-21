@@ -1,10 +1,13 @@
 $(document).on('page:change', function() {
   if ($(".c-devices.a-index").length === 1) {
     var U = COPO.utility;
+    const M  = window.COPO.maps;
+    M.initMap();
+    M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
     U.gonFix();
     COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions)
     COPO.delaySlider.initSliders(gon.devices);
-    google.charts.setOnLoadCallback(function(){ COPO.calendar.refreshCalendar(gon.checkins) });
+    gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');
 
     $('body').on('click', '.edit-button', function (e) {
       e.preventDefault();
@@ -75,10 +78,6 @@ $(document).on('page:change', function() {
       $('.linkbox').on('click', function(e){
         this.select()
       })
-
-      $(window).resize(function(){
-        COPO.calendar.refreshCalendar(gon.checkins);
-      });
 
       //backup for iOS
       $('.linkbox').on('touchstart', function(){

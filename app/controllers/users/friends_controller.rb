@@ -3,9 +3,11 @@ class Users::FriendsController < ApplicationController
 
   def show
     @friend = User.find(params[:id])
-    @devices = @friend.devices.ordered_by_checkins.paginate(page: params[:page], per_page: 5)
-    checkins = @friend.get_user_checkins_for(current_user)
-    gon.checkins = checkins.calendar_data if checkins.exists?
+    @devices = @friend.devices
+    gon.checkins = @devices.map do |device|
+      checkins = device.safe_checkin_info_for(permissible: current_user)
+      checkins.first.as_json.merge(device: device.name) if checkins.present?
+    end.compact
   end
 
   def show_device
