@@ -64,8 +64,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    childprocess (0.5.9)
-      ffi (~> 1.0, >= 1.0.11)
+    capybara-webkit (1.11.1)
+      capybara (>= 2.3.0, < 2.8.0)
+      json
     cloudinary (1.1.3)
       aws_cf_signer
       rest-client
@@ -296,7 +297,6 @@ GEM
       rspec-mocks (~> 3.4.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
-    rubyzip (1.2.0)
     sass (3.4.21)
     sass-rails (5.0.4)
       railties (>= 4.0.0, < 5.0)
@@ -307,10 +307,6 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
-    selenium-webdriver (2.53.0)
-      childprocess (~> 0.5)
-      rubyzip (~> 1.0)
-      websocket (~> 1.0)
     shellany (0.0.1)
     simple_token_authentication (1.12.0)
       actionmailer (>= 3.2.6, < 5)
@@ -356,7 +352,6 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
-    websocket (1.2.3)
     will_paginate (3.0.7)
     will_paginate-materialize (0.1.2)
       will_paginate (~> 3.0.6)
@@ -373,6 +368,7 @@ DEPENDENCIES
   bower-rails (~> 0.10.0)
   bullet
   byebug
+  capybara-webkit (~> 1.11.1)
   cloudinary (~> 1.1.3)
   codeclimate-test-reporter
   coffee-rails (~> 4.1.0)
@@ -409,7 +405,6 @@ DEPENDENCIES
   rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
-  selenium-webdriver (~> 2.53)
   simple_token_authentication
   simplecov
   slack-notifier

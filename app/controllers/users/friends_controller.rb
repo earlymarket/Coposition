@@ -2,10 +2,12 @@ class Users::FriendsController < ApplicationController
   before_action :friends?
 
   def show
-    @friend = User.find(params[:id]).public_info
+    @friend = User.find(params[:id])
     @devices = @friend.devices
-    checkins = @friend.get_user_checkins_for(current_user)
-    gon.checkins = checkins.calendar_data if checkins.exists?
+    gon.checkins = @devices.map do |device|
+      checkins = device.safe_checkin_info_for(permissible: current_user)
+      checkins.first.as_json.merge(device: device.name) if checkins.present?
+    end.compact
   end
 
   def show_device

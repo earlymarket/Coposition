@@ -33,7 +33,7 @@ class LocalSwitch extends PermissionSwitch {
       url: `/users/${this.user}/devices/${this.permission['device_id']}/permissions/${this.id}`,
       type: 'PUT',
       dataType: 'script',
-      data: { permission: this.permission, page: this.page }
+      data: { permission: this.permission, from: this.page }
     });
   }
 

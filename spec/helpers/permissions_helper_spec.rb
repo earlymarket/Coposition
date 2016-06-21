@@ -27,12 +27,27 @@ RSpec.describe DevicesHelper, type: :helper do
     end
   end
 
-  describe '#permissions_control_class and #permissions_for_all' do
+  describe '#permissions_for_all' do
     it 'should return a string if permissionable is not a Permission' do
-      [%w(permissions_control_class master), %w(permissions_for_all for all)].each do |method, output|
-        expect(helper.send(method, developer).class).to eq(String)
-        expect(helper.send(method, developer)).to include(output)
-      end
+      expect(helper.permissions_for_all(developer)).to be_a(String)
+    end
+    it 'should not return anything if permissionable is a Permission' do
+      expect(helper.permissions_for_all(permission)).to be_nil
+    end
+  end
+
+  describe '#permissions_control_class' do
+    it 'should return a string with the permissionable id' do
+      expect(helper.permissions_control_class(developer)).to include(developer.id.to_s)
+      expect(helper.permissions_control_class(developer)).to be_a(String)
+      expect(helper.permissions_control_class(developer)).to include(developer.id.to_s)
+      expect(helper.permissions_control_class(developer)).to be_a(String)
+    end
+    it "should return a string with 'normal-switches' if given a Permission" do
+      expect(helper.permissions_control_class(permission)).to include('normal-switches')
+    end
+    it "should return a string with 'master-switches' if given something else" do
+      expect(helper.permissions_control_class(developer)).to include('master-switches')
     end
   end
 

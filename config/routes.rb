@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   # Specified routes
 
   get '/api', to: 'welcome#api'
+  get '/help', to: 'welcome#help'
 
   # Devise
 

@@ -1,17 +1,17 @@
-<% if @device.present? %>
+<% if @presenter.device.present? %>
   var page = 'devices'
-  var $list = $('#perm<%=@device.id%>').find('ul');
+  var $list = $('#perm<%=@presenter.device.id%>').find('ul');
 <% else %>
   var page = ($(".c-approvals.a-apps").length === 1 ? 'apps' : 'friends')
-  var $list = $('#perm<%=@permissible.id%>').find('ul');
+  var $list = $('#perm<%=@presenter.permissible.id%>').find('ul');
 <% end %>
 $('.progress').remove()
 if($list.children().length===1) {
   $list.append(`
-    <% @permissions.each do |permission| %>
+    <% @presenter.permissions.each do |permission| %>
       <li class="collection-item row valign-wrapper">
         <div class='valign col s5'>
-        <% if @device.present? %>
+        <% if @presenter.device.present? %>
           <%= permissible_title(permission.permissible) %>
         <% else %>
           <%= permission.device.name %>

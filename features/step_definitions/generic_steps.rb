@@ -1,5 +1,5 @@
 Given(/^I am using a large screen$/) do
-  Capybara.current_session.driver.browser.manage.window.resize_to(1200, 800)
+  Capybara.current_session.current_window.resize_to(1200, 800)
 end
 
 Given(/^I am on the homepage$/) do
@@ -26,20 +26,19 @@ Then(/^I should see "(.*?)"$/) do |text|
   expect(page).to have_content(text)
 end
 
-Given(/^I confirm "(.*?)"$/) do |target|
-  begin
-    page.driver.browser.switch_to.alert
-  rescue Selenium::WebDriver::Error::NoSuchAlertError
-    click_link(target, match: :first)
+When(/^I click and confirm "([^"]*)"$/) do |target|
+  page.accept_confirm do
+    click_on target
   end
-  a = page.driver.browser.switch_to.alert
-  a.accept
 end
 
-Given(/^I right click on the "(.*?)"$/) do |target|
-  find(:id, target).right_click
+Given(/^I switch to the table view$/) do
+  find('#chartTab')
+  page.execute_script("$('#chartTab a').click();")
 end
 
-Given(/^I click on the "(.*?)"$/) do |target|
-  find(:id, target).click
+Given(/^I switch to the map view$/) do
+  find('#mapTab')
+  page.execute_script("$('#mapTab a').click();")
 end
+

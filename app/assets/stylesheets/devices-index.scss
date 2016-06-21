@@ -1,4 +1,7 @@
 .c-devices.a-index {
+  .editable {
+    color: $dark-text-color;
+  }
   .linkbox {
     width: auto;
     height: inherit;
@@ -39,4 +42,25 @@
     }
   }
 
+  #map-overlay {
+    position: absolute;
+    z-index: 1500;
+    width: 100%;
+    background: white;
+    height: 100%;
+    opacity: 0.85;
+    padding: 1rem;
+
+    div {
+      width: 100%;
+    }
+  }
+  #map {
+    width:100%;
+    height: 400px;
+  }
+
+  #map-status {
+    // font-size: 1.4rem;
+  }
 }
