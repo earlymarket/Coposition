@@ -19,9 +19,9 @@ RSpec.describe Users::PermissionsController, type: :controller do
 
   describe 'index' do
     it 'should assign device and device permissions' do
-      xhr :get, :index, user_id: user.id, device_id: device.id
-      expect(assigns(:device)).to eq device
-      expect(assigns(:permissions)).to eq device.permissions
+      xhr :get, :index, user_id: user.id, device_id: device.id, from: 'devices'
+      expect(assigns(:presenter).device).to eq device
+      expect(assigns(:presenter).permissions).to eq device.permissions
     end
   end
 
@@ -33,6 +33,7 @@ RSpec.describe Users::PermissionsController, type: :controller do
           user_id: user.id,
           device_id: device.id,
           id: permission.id,
+          from: 'devices',
           permission: {
             privilege: 'disallowed',
             bypass_fogging: true,
@@ -48,6 +49,7 @@ RSpec.describe Users::PermissionsController, type: :controller do
           user_id: second_user.id,
           device_id: device.id,
           id: permission.id,
+          from: 'devices',
           permission: {
             privilege: 'last_only'
           }
