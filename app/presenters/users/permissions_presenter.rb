@@ -7,7 +7,7 @@ module Users
 
     def initialize(user, params, action)
       @user = user
-      @devices = user.devices
+      @devices = user.devices.includes(:permissions)
       @params = params
       if action == 'index'
         params[:from] == 'devices' ? devices_index : approvals_index(params[:from])
@@ -27,6 +27,7 @@ module Users
       @permissible = model.find(@params[:device_id]) # device_id = user_id/developer_id, permissions for friend/dev
       @permissions = Permission.where(device_id: device_ids,
                                       permissible_id: @permissible.id, permissible_type: model.to_s)
+                               .includes(:permissible, :device)
     end
 
     def update

@@ -15,7 +15,7 @@ module Users
     def index
       devices = @user.devices.includes(:checkins).joins(:checkins).order('checkins.created_at')
       devices.geocode_last_checkins
-      devices += @user.devices.includes(:developers, :permitted_users, :permissions)
+      devices += @user.devices.includes(:permissions, :checkins)
       @devices = devices.uniq.paginate(page: @params[:page], per_page: 5)
     end
 
