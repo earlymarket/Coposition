@@ -16,10 +16,11 @@ class PermissionSwitch {
 }
 
 class LocalSwitch extends PermissionSwitch {
-  constructor(user, domElement, permissions) {
+  constructor(user, domElement, permissions, page) {
     super(user, domElement);
     this.permission = _.find(permissions, _.matchesProperty('id', this.id));
     this.attributeState = this.permission[this.attribute];
+    this.page = page;
   }
 
   toggleSwitch() {
@@ -32,7 +33,7 @@ class LocalSwitch extends PermissionSwitch {
       url: `/users/${this.user}/devices/${this.permission['device_id']}/permissions/${this.id}`,
       type: 'PUT',
       dataType: 'script',
-      data: { permission: this.permission }
+      data: { permission: this.permission, page: this.page }
     });
   }
 
@@ -52,15 +53,16 @@ class LocalSwitch extends PermissionSwitch {
 }
 
 class MasterSwitch extends PermissionSwitch {
-  constructor(user, domElement, permissions, idType) {
+  constructor(user, domElement, permissions, idType, page) {
     super(user, domElement);
     this.permissions = permissions.filter(_.matchesProperty(idType, this.id));
+    this.page = page;
   }
 
   toggleSwitch() {
     this.permissions.forEach(function(permission) {
       const P_DOM_ELEMENT = $(`div[data-id=${permission.id}][data-switchtype=${this.switchtype}].permission-switch`);
-      const P_SWITCH = new LocalSwitch(this.user, P_DOM_ELEMENT, this.permissions);
+      const P_SWITCH = new LocalSwitch(this.user, P_DOM_ELEMENT, this.permissions, this.page);
       if ((P_SWITCH.disabled && P_SWITCH.switchtype === 'last_only')){
         this.inputDomElement.prop("checked", false)
       } else if (this.checked !== P_SWITCH.checked) {

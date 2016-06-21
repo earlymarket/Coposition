@@ -18,9 +18,9 @@
       if($list.children().length===1) {
         var device_id = $list.data().friend;
         if(window.location.pathname.match('apps')){
-          var originator = { from: 'apps' }
+          var originator = { page: 'apps' }
         } else {
-          var originator = { from: 'friends' }
+          var originator = { page: 'friends' }
         }
         $list.append(`<div class="progress"><div class="indeterminate"></div></div>`);
         $.get({

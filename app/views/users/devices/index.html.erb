@@ -20,7 +20,7 @@
       var $list = $(this.ready.caller.arguments[0][0]).find('ul');
       if($list.children().length===1) {
         var device_id = $list.data().device;
-        var originator = { from: 'devices' }
+        var originator = { page: 'devices' }
         $list.append(`<div class="progress"><div class="indeterminate"></div></div>`);
         $.get({
           url: window.location.href+"/"+device_id+"/permissions",

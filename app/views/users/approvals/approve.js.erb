@@ -13,4 +13,5 @@ $('#approved').html("<%= j (render partial: 'approved', locals: {approved: @pres
 $('.modal-trigger').leanModal();
 $(".button-collapse").sideNav();
 $(document).unbind('scroll');
-COPO.permissions.initSwitches('approved',gon.current_user_id, gon.permissions);
+var page = ($(".c-approvals.a-apps").length === 1 ? 'apps' : 'friends')
+COPO.permissions.initSwitches(page, gon.current_user_id, gon.permissions);

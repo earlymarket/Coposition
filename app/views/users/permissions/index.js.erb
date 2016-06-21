@@ -2,7 +2,7 @@
   var page = 'devices'
   var $list = $('#perm<%=@device.id%>').find('ul');
 <% else %>
-  var page = 'approved'
+  var page = ($(".c-approvals.a-apps").length === 1 ? 'apps' : 'friends')
   var $list = $('#perm<%=@permissible.id%>').find('ul');
 <% end %>
 $('.progress').remove()
@@ -32,6 +32,7 @@ if($list.children().length===1) {
       </li>
     <% end %>
   `);
-  COPO.permissions.initSwitches(page, gon.current_user_id, gon.permissions)
+  COPO.permissions.switchesOff();
+  COPO.permissions.initSwitches(page, gon.current_user_id, gon.permissions);
 }
 

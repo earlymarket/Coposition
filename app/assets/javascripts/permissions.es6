@@ -1,9 +1,9 @@
 window.COPO = window.COPO || {};
 window.COPO.permissions = {
-  initSwitches: function(permissionableType, user, permissions){
-    COPO.permissions.setMasters(permissionableType, user, permissions);
-    COPO.permissions.masterChange(permissionableType, user, permissions);
-    COPO.permissions.switchChange(permissionableType, user, permissions);
+  initSwitches: function(page, user, permissions){
+    COPO.permissions.setMasters(page, user, permissions);
+    COPO.permissions.masterChange(page, user, permissions);
+    COPO.permissions.switchChange(page, user, permissions);
     COPO.permissions.checkDisabled(user);
     COPO.permissions.checkBypass(user);
   },
@@ -39,30 +39,31 @@ window.COPO.permissions = {
     })
   },
 
-  setMasters: function(permissionableType, user, gonPermissions){
-    if (gon[permissionableType]) {
-      gon[permissionableType].forEach(function(permissionable){
-        const ID_TYPE = (permissionableType === 'devices' ? 'device_id' : 'permissible_id')
+  setMasters: function(page, user, gonPermissions){
+    const gonType = (page === 'devices' ? 'devices' : 'approved')
+    if (gon[gonType]) {
+      gon[gonType].forEach(function(permissionable){
+        const ID_TYPE = (page === 'devices' ? 'device_id' : 'permissible_id')
         $(`div[data-id=${permissionable.id}].master`).each(function(){
-          const M_SWITCH = new MasterSwitch(user, $(this), gonPermissions, ID_TYPE)
+          const M_SWITCH = new MasterSwitch(user, $(this), gonPermissions, ID_TYPE, page)
           M_SWITCH.setState();
         })
       })
     }
   },
 
-  switchChange:function(permissionableType, user, gonPermissions){
+  switchChange:function(page, user, gonPermissions){
     $(".permission-switch").change(function() {
-      const P_SWITCH = new LocalSwitch(user, $(this), gonPermissions)
+      const P_SWITCH = new LocalSwitch(user, $(this), gonPermissions, page)
       P_SWITCH.toggleSwitch();
-      COPO.permissions.setMasters(permissionableType, user, gonPermissions);
+      COPO.permissions.setMasters(page, user, gonPermissions);
     })
   },
 
-  masterChange:function(permissionableType, user, gonPermissions){
+  masterChange:function(page, user, gonPermissions){
     $(".master").change(function() {
-      const ID_TYPE = (permissionableType === 'devices' ? 'device_id' : 'permissible_id')
-      const M_SWITCH = new MasterSwitch(user, $(this), gonPermissions, ID_TYPE)
+      const ID_TYPE = (page === 'devices' ? 'device_id' : 'permissible_id')
+      const M_SWITCH = new MasterSwitch(user, $(this), gonPermissions, ID_TYPE, page)
       M_SWITCH.toggleSwitch();
       M_SWITCH.setState();
     })
