@@ -14,17 +14,14 @@ $(".button-collapse").sideNav();
 $(document).unbind('scroll');
 var page = ($(".c-approvals.a-apps").length === 1 ? 'apps' : 'friends')
 COPO.permissions.initSwitches(page, gon.current_user_id, gon.permissions);
-$('.modal-trigger').leanModal({
+
+$('.permissions-trigger').leanModal({
   ready: function() {
     var $list = $(this.ready.caller.arguments[0][0]).find('ul');
     if($list.children().length===1) {
       var device_id = $list.data().friend;
-      if(window.location.pathname.match('apps')){
-        var originator = { from: 'apps' }
-      } else {
-        var originator = { from: 'friends' }
-      }
-      $list.append(`<div class="progress"><div class="indeterminate"></div></div>`);
+      var originator = { from: page }
+      $list.append('<div class="progress"><div class="indeterminate"></div></div>');
       $.get({
         url: "devices/"+device_id+"/permissions",
         data: originator,
@@ -33,3 +30,4 @@ $('.modal-trigger').leanModal({
     }
   }
 });
+

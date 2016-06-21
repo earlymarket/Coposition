@@ -12,7 +12,7 @@
 <%= render partial: "pending", locals: {pending: @presenter.pending} if @presenter.pending.present? %>
 
 <script>
-  $('.modal-trigger').leanModal({
+  $('.permissions-trigger').leanModal({
     ready: function() {
       var $list = $(this.ready.caller.arguments[0][0]).find('ul');
       if($list.children().length===1) {

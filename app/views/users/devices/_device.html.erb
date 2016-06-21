@@ -13,7 +13,7 @@
     <% end %>
 
     <% if device.developers.exists? || device.permitted_users.exists? %>
-      <a class="modal-trigger left tooltipped" data-tooltip='Detailed Permissions' href="#perm<%=device.id%>"><i class="material-icons">lock</i></a>
+      <a class="permissions-trigger left tooltipped" data-tooltip='Detailed Permissions' href="#perm<%=device.id%>"><i class="material-icons">lock</i></a>
 
       <div id="perm<%=device.id%>" class="modal">
         <div class="modal-content">
