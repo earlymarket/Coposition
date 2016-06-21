@@ -4,14 +4,14 @@ class Users::PermissionsController < ApplicationController
 
   def index
     @presenter = ::Users::PermissionsPresenter.new(current_user, params, 'index')
-    gon.push(@presenter.send("#{params[:from]}_gon"))
+    gon.push(@presenter.gon(params[:from]))
     respond_to { |format| format.js }
   end
 
   def update
     @presenter = ::Users::PermissionsPresenter.new(current_user, params, 'update')
     @presenter.permission.update(allowed_params)
-    gon.push(@presenter.send("#{params[:from]}_gon"))
+    gon.push(@presenter.gon(params[:from]))
     respond_to { |format| format.js }
   end
 

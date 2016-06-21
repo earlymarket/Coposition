@@ -15,6 +15,8 @@ $(document).on('page:change', function() {
       makeEditable($(this).prev('span'), handleEdited);
     });
 
+    $('.modal-trigger').leanModal();
+
     var makeEditable = function ($target, handler) {
       var original = $target.text();
       $target.attr('contenteditable', true);

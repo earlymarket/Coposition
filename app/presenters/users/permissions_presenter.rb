@@ -9,7 +9,11 @@ module Users
       @user = user
       @devices = user.devices
       @params = params
-      send "#{params[:from]}_#{action}"
+      if action == 'index'
+        params[:from] == 'devices' ? devices_index : approvals_index(params[:from])
+      else
+        update
+      end
     end
 
     def devices_index
@@ -17,29 +21,24 @@ module Users
       @permissions = @device.permissions.includes(:permissible).order(:permissible_type, :id)
     end
 
-    def apps_index
+    def approvals_index(from)
       device_ids = @devices.select(:id)
-      @permissible = Developer.find(@params[:device_id]) #  device_id = developer_id, permissions for app
+      model = from == 'friends' ? User : Developer
+      @permissible = model.find(@params[:device_id]) # device_id = user_id/developer_id, permissions for friend/dev
       @permissions = Permission.where(device_id: device_ids,
-                                      permissible_id: @permissible.id, permissible_type: 'Developer')
+                                      permissible_id: @permissible.id, permissible_type: model.to_s)
     end
 
-    def friends_index
-      device_ids = @devices.select(:id)
-      @permissible = User.find(@params[:device_id]) # device_id = user_id, permissions for friend
-      @permissions = Permission.where(device_id: device_ids, permissible_id: @permissible.id, permissible_type: 'User')
-    end
-
-    def devices_update
+    def update
       @permission = Permission.find(@params[:id])
     end
 
-    def apps_update
-      @permission = Permission.find(@params[:id])
-    end
-
-    def friends_update
-      @permission = Permission.find(@params[:id])
+    def gon(from)
+      case from
+      when 'devices' then devices_gon
+      when 'apps' then apps_gon
+      when 'friends' then friends_gon
+      end
     end
 
     def devices_gon
