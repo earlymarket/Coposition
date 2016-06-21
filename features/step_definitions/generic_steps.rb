@@ -36,3 +36,9 @@ Given(/^I switch to the table view$/) do
   find('#chartTab')
   page.execute_script("$('#chartTab a').click();")
 end
+
+Given(/^I switch to the table view$/) do
+  find('#mapTab')
+  page.execute_script("$('#mapTab a').click();")
+end
+

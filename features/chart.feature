@@ -20,5 +20,5 @@ Feature: chart
     Scenario: User deletes a checkin
     When I click and confirm "delete_forever"
       Then I should have 0 checkins in the table
-    And I click "Map"
+    And I switch to the map view
       Then I should have 0 checkins on the map
