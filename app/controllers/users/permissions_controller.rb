@@ -4,7 +4,6 @@ class Users::PermissionsController < ApplicationController
 
   def index
     @presenter = ::Users::PermissionsPresenter.new(current_user, params, 'index')
-    gon.push(@presenter.gon(params[:from]))
     respond_to { |format| format.js }
   end
 
