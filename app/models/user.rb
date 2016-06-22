@@ -116,6 +116,10 @@ class User < ActiveRecord::Base
     User.select([:id, :username, :slug, :email]).find(id)
   end
 
+  def self.public_info
+    all.select([:id, :username, :slug, :email])
+  end
+
   def public_info_hash
     # Converts to hash and attaches avatar
     public_info.attributes.merge(avatar: avatar || { public_id: 'no_avatar' })

@@ -19,7 +19,7 @@
         </div>
 
         <div class="col s4">
-          <a class="waves-effect waves-light btn-flat modal-trigger right" href="#perm<%=approvable.id%>"><i class="material-icons right">lock</i>Permissions</a>
+          <a class="waves-effect waves-light btn-flat permissions-trigger right" href="#perm<%=approvable.id%>"><i class="material-icons right">lock</i>Permissions</a>
           <div id="perm<%=approvable.id%>" class="modal">
             <div class="modal-content">
               <h4 class="modal-content">Permissions controls for <%=approvals_approvable_name(approvable)%></h4>
@@ -30,25 +30,6 @@
                   </div>
                   <%= render partial: "users/permissions/controls", object: approvable, as: 'permissionable' %>
                 </li>
-                <% devices.each do |device| %>
-                  <% permission =  device.permission_for(approvable) %>
-                  <li class="collection-item row valign-wrapper">
-                    <h5 class="valign col s5"><%= device.name %></h5>
-                    <div class='col s2'>
-                      <span id='fogIcon<%=permission.id%>' class='fogIcon<%=device.id%> tooltipped' data-tooltip="<%=approvals_approvable_name(approvable)%> can only see fogged data for this device">
-                        <%= fogged_icon(device.fogged) if device.fogged %>
-                      </span>
-                      <span id='delayIcon<%=permission.id%>' class='delayIcon<%=device.id%> tooltipped' data-tooltip="<%=approvals_approvable_name(approvable)%> can only see your data after a delay for this device">
-                        <%= devices_delay_icon(device.delayed) if device.delayed %>
-                      </span>
-                      <span id='accessIcon<%=permission.id%>' class='tooltipped' data-tooltip="<%=approvals_approvable_name(approvable)%> can't see any data from this device">
-                        <%= devices_access_icon  %>
-                      </span>
-                    </div>
-                    <%= render partial: "users/permissions/controls", object: permission, as: 'permissionable' %>
-                  </li>
-                <% end %>
-
               </ul>
             </div>
           </div>

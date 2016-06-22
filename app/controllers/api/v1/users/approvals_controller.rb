@@ -27,6 +27,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   def destroy
     approval = Approval.find_by(id: params[:id], user: @user)
     return unless approval_exists? approval
+    @user.destroy_permissions_for(approval.approvable)
     approval.destroy
     render status: 200, json: { message: 'Approval Destroyed' }
   end
