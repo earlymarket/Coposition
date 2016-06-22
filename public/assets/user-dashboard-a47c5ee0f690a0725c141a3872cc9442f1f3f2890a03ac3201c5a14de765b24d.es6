@@ -81,15 +81,23 @@ $(document).on('page:change', function () {
             bounds:   this.bounds()
           });
           caller.hasContent = true;
-        } else if (caller.hasContent) {
+        } else if (this.hasFriends() && caller.hasContent && !$('#whereFriends').length) {
           let whereAreMyFriends = `
-          <blockquote>
+          <blockquote id="whereFriends">
             <h4>Where are my friends?</h4>
             You have ${gon.friends.length} ${U.pluralize('friend', gon.friends.length)} signed up but they haven't checked in yet
-            (or they haven't shared thier location with you).
+            (or they haven't shared their location with you).
             They'll appear on the map once they share their location.
           </blockquote>`
           $('#map-wrapper').after(whereAreMyFriends);
+        } else if (caller.hasContent && !$('#whyEmpty').length) {
+          let getSomeFriends = `
+          <blockquote id="whyEmpty">
+            <h4>Why is this map empty?</h4>
+            You haven't got any friends yet, check if you have any friend requests or add a new friend from the friends page.
+            They'll appear on the map once they share their location.
+          </blockquote>`
+          $('#map-wrapper').after(getSomeFriends);
         }
       }
     }
