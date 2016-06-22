@@ -45802,6 +45802,8 @@ $(document).on('ready page:change', function() {
     $('.collapsible').collapsible();
   }());
 
+  $('.scrollspy').scrollSpy();
+
 });
 
 
@@ -46040,6 +46042,13 @@ window.COPO.maps = {
         return '<li class="foggedAddress">Fogged address: ' + checkin.fogged_area + '</li>';
       }
     };
+    checkinTemp.devicebutton = function () {
+      if ($(".c-devices.a-index").length === 1) {
+        return '<a href="./devices/' + checkin.device_id + '" title="Device map">' + checkin.device + '</a>';
+      } else {
+        return '<a href="' + window.location.pathname + '/show_device?device_id=' + checkin.device_id + '" title="Device map">' + checkin.device + '</a>';
+      }
+    };
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
     var template = $('#markerPopupTmpl').html();
@@ -46086,15 +46095,15 @@ window.COPO.maps = {
     COPO.maps.lc = L.control.locate({
       follow: false,
       setView: true,
-      markerClass: L.marker,
-      markerStyle: {
-        icon: L.mapbox.marker.icon({
-          'marker-size': 'large',
-          'marker-symbol': 'star',
-          'marker-color': '#01579B'
-        }),
-        riseOnHover: true
-      },
+      markerClass: L.CircleMarker,
+      //markerStyle: {
+      //  icon: L.mapbox.marker.icon({
+      //    'marker-size': 'large',
+      //    'marker-symbol': 'star',
+      //    'marker-color': '#01579B'
+      //  }),
+      //  riseOnHover: true
+      //},
       strings: {
         title: 'Your current location',
         popup: 'Your current location within {distance} {unit}.<br><a href="#" id="current-location"></a>'
@@ -46569,21 +46578,26 @@ $(document).on('page:change', function() {
   }
 })
 ;
-$(document).on('page:change', function() {
+'use strict';
+
+$(document).on('page:change', function () {
   if ($(".c-devices.a-index").length === 1) {
     var U = COPO.utility;
+    var M = window.COPO.maps;
+    M.initMap();
+    M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
     U.gonFix();
-    COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions)
+    COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions);
     COPO.delaySlider.initSliders(gon.devices);
-    google.charts.setOnLoadCallback(function(){ COPO.calendar.refreshCalendar(gon.checkins) });
+    gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');
 
     $('body').on('click', '.edit-button', function (e) {
       e.preventDefault();
       $(this).toggleClass('hide', true);
-      makeEditable($(this).prev(), handleEdited);
+      makeEditable($(this).prev('span'), handleEdited);
     });
 
-    var makeEditable = function ($target, handler) {
+    var makeEditable = function makeEditable($target, handler) {
       var original = $target.text();
       $target.attr('contenteditable', true);
       $target.focus();
@@ -46592,7 +46606,7 @@ $(document).on('page:change', function() {
         handler(original, $target);
       });
       $target.on('keydown', function (e) {
-        if(e.which === 27 || e.which === 13 ) {
+        if (e.which === 27 || e.which === 13) {
           handler(original, $target);
         }
       });
@@ -46600,11 +46614,11 @@ $(document).on('page:change', function() {
         e.preventDefault();
       });
       return $target;
-    }
+    };
 
-    var handleEdited = function (original, $target) {
-      var newName = $target.text()
-      if(original !== newName) {
+    var handleEdited = function handleEdited(original, $target) {
+      var newName = $target.text();
+      if (original !== newName) {
         console.log('Name optimistically set to: ' + $target.text());
         var url = $target.parents('a').attr('href');
         var request = $.ajax({
@@ -46614,63 +46628,55 @@ $(document).on('page:change', function() {
           data: { name: newName }
         });
 
-        request
-        .done(function (response) {
+        request.done(function (response) {
           console.log('Server processed the request');
-        })
-        .fail(function (error) {
+        }).fail(function (error) {
           $target.text(original);
           try {
             Materialize.toast('Name: ' + JSON.parse(error.responseText).name, 3000, 'red');
-          }
-          catch (e) {
+          } catch (e) {
             console.log(error);
             Materialize.toast('Error changing names', 3000, 'red');
           }
-        })
+        });
       }
       $target.text($target.text());
       $target.attr('contenteditable', false);
       $target.next().toggleClass('hide', false);
       U.deselect();
       $target.off();
-    }
+    };
 
-    window.initPage = function(){
+    window.initPage = function () {
       $('.clip_button').off();
       U.initClipboard();
       $('.tooltipped').tooltip('remove');
-      $('.tooltipped').tooltip({delay: 50});
+      $('.tooltipped').tooltip({ delay: 50 });
       $('.linkbox').off('touchstart click');
 
-      $('.linkbox').on('click', function(e){
-        this.select()
-      })
-
-      $(window).resize(function(){
-        COPO.calendar.refreshCalendar(gon.checkins);
+      $('.linkbox').on('click', function (e) {
+        this.select();
       });
 
       //backup for iOS
-      $('.linkbox').on('touchstart', function(){
+      $('.linkbox').on('touchstart', function () {
         this.focus();
         this.setSelectionRange(0, $(this).val().length);
-      })
+      });
 
-      $('.linkbox').each(function(i,linkbox){
-        $(linkbox).attr('size', $(linkbox).val().length)
-      })
-    }
+      $('.linkbox').each(function (i, linkbox) {
+        $(linkbox).attr('size', $(linkbox).val().length);
+      });
+    };
     initPage();
 
-    $(document).on('page:before-unload', function(){
+    $(document).on('page:before-unload', function () {
       COPO.permissions.switchesOff();
       $(window).off("resize");
       $('body').off('click', '.edit-button');
-    })
+    });
   }
-})
-;
+});
 'use strict';
 
 $(document).on('page:change', function () {
@@ -46852,6 +46858,16 @@ $(document).on('page:change', function() {
   }
 });
 
+'use strict';
+
+$(document).on('page:change', function () {
+  if ($(".c-friends.a-show").length === 1) {
+    COPO.utility.gonFix();
+    COPO.maps.initMap();
+    COPO.maps.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
+    gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');
+  }
+});
 $(document).on('ready page:change', function() {
   if ($(".c-welcome.a-index").length > 0) {
     $("main").css('padding-top', '0');
@@ -47000,9 +47016,12 @@ $(document).on('page:change', function () {
               bounds: this.bounds()
             });
             caller.hasContent = true;
-          } else if (caller.hasContent) {
-            var whereAreMyFriends = '\n          <blockquote>\n            <h4>Where are my friends?</h4>\n            You have ' + gon.friends.length + ' ' + U.pluralize('friend', gon.friends.length) + ' signed up but they haven\'t checked in yet\n            (or they haven\'t shared thier location with you).\n            They\'ll appear on the map once they share their location.\n          </blockquote>';
+          } else if (this.hasFriends() && caller.hasContent && !$('#whereFriends').length) {
+            var whereAreMyFriends = '\n          <blockquote id="whereFriends">\n            <h4>Where are my friends?</h4>\n            You have ' + gon.friends.length + ' ' + U.pluralize('friend', gon.friends.length) + ' signed up but they haven\'t checked in yet\n            (or they haven\'t shared their location with you).\n            They\'ll appear on the map once they share their location.\n          </blockquote>';
             $('#map-wrapper').after(whereAreMyFriends);
+          } else if (caller.hasContent && !$('#whyEmpty').length) {
+            var getSomeFriends = '\n          <blockquote id="whyEmpty">\n            <h4>Why is this map empty?</h4>\n            You haven\'t got any friends yet, check if you have any friend requests or add a new friend from the friends page.\n            They\'ll appear on the map once they share their location.\n          </blockquote>';
+            $('#map-wrapper').after(getSomeFriends);
           }
         }
       };
