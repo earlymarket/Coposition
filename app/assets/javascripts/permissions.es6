@@ -40,9 +40,9 @@ window.COPO.permissions = {
   },
 
   setMasters: function(page, user, gonPermissions){
-    const gonType = (page === 'devices' ? 'devices' : 'approved')
-    if (gon[gonType]) {
-      gon[gonType].forEach(function(permissionable){
+    const gonVariable = (page === 'devices' ? 'devices' : 'approved')
+    if (gon[gonVariable]) {
+      gon[gonVariable].forEach(function(permissionable){
         const ID_TYPE = (page === 'devices' ? 'device_id' : 'permissible_id')
         $(`div[data-id=${permissionable.id}].master`).each(function(){
           const M_SWITCH = new MasterSwitch(user, $(this), gonPermissions, ID_TYPE, page)
