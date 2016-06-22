@@ -12,22 +12,7 @@ $('#approved').html("<%= j (render partial: 'approved', locals: {approved: @pres
 <% end %>
 $(".button-collapse").sideNav();
 $(document).unbind('scroll');
-var page = ($(".c-approvals.a-apps").length === 1 ? 'apps' : 'friends')
+var page = ($(".c-approvals.a-apps").length === 1 ? 'apps' : 'friends');
+COPO.permissionsTrigger.initTrigger(page);
 COPO.permissions.initSwitches(page, gon.current_user_id, gon.permissions);
-
-$('.permissions-trigger').leanModal({
-  ready: function() {
-    var $list = $(this.ready.caller.arguments[0][0]).find('ul');
-    if($list.children().length===1) {
-      var device_id = $list.data().friend;
-      var originator = { from: page }
-      $list.append('<div class="progress"><div class="indeterminate"></div></div>');
-      $.get({
-        url: "devices/"+device_id+"/permissions",
-        data: originator,
-        dataType: "script"
-      });
-    }
-  }
-});
 

@@ -3,6 +3,7 @@ $(document).on('page:change', function() {
     $('.tooltipped').tooltip({delay: 50});
     COPO.utility.gonFix();
     var page = ($(".c-approvals.a-apps").length === 1 ? 'apps' : 'friends')
+    COPO.permissionsTrigger.initTrigger(page)
     COPO.permissions.initSwitches(page, gon.current_user_id, gon.permissions)
 
     $(document).on('page:before-unload', function(){

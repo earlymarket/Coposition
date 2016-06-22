@@ -2,9 +2,11 @@ $(document).on('page:change', function() {
   if ($(".c-devices.a-index").length === 1) {
     var U = COPO.utility;
     const M  = window.COPO.maps;
+    const P = window.COPO.permissionsTrigger;
     M.initMap();
     M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
     U.gonFix();
+    P.initTrigger('devices');
     COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions)
     COPO.delaySlider.initSliders(gon.devices);
     gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');
