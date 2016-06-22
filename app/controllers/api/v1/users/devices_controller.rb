@@ -12,10 +12,9 @@ class Api::V1::Users::DevicesController < Api::ApiController
   end
 
   def create
-    result = ::Users::Devices::CreateDevice.new(@user, device_params)
+    result = ::Users::Devices::CreateDevice.new(@user, @dev, device_params)
     if result.save?
       device = result.device
-      device.notify_subscribers('new_device', device)
       render json: device
     else
       render status: 400, json: { message: result.error }
@@ -24,7 +23,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
 
   def show
     device = @user.devices.where(id: params[:id])
-    device = device.public_info unless req_from_coposition_app?
+    device = device.public_info unless req_from_coposition_app? || @dev.configures_device?(device)
     render json: device
   end
 

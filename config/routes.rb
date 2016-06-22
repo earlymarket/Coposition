@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   # Specified routes
 
   get '/api', to: 'welcome#api'
+  get '/help', to: 'welcome#help'
 
   # Devise
 
@@ -69,7 +70,7 @@ Rails.application.routes.draw do
   resources :users, only: [:show], module: :users do
     resource :dashboard, only: [:show]
     resources :devices, except: :edit do
-      member { get :shared }
+      member { get :shared, :info }
       resources :checkins, only: [:show, :create, :new, :update]
       delete '/checkins/', to: 'checkins#destroy_all'
       delete '/checkins/:id', to: 'checkins#destroy'

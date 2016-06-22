@@ -26,6 +26,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   let(:params) { { user_id: user.id, format: :json } }
   let(:device_params) { params.merge(id: device.id) }
   let(:create_params) { params.merge(device: { name: 'new' }) }
+  let(:private_device_info) { %w(uuid fogged delayed) }
 
   before do
     api_request_headers(developer, user)
@@ -43,16 +44,26 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       expect(developer.requests.count).to be 1
     end
 
-    it 'should GET information on a specific device for a specific user' do
+    it 'should return filtered information on a device belonging to a user' do
       get :show, device_params
       expect(res_hash.first['id']).to be device.id
+      expect(res_hash.first.keys).to_not include(*private_device_info)
+    end
+
+    it 'should return full info if request is from copo app or from developer with control' do
+      developer.configs.create(device: device)
+      get :show, device_params
+      expect(res_hash.first['uuid']).to eq device.uuid
+      expect(res_hash.first.keys).to include(*private_device_info)
     end
   end
 
   describe 'POST' do
     it 'should create a device with a UUID provided' do
       create_params[:device] = { uuid: empty_device.uuid }
+      config_count = developer.configs.count
       post :create, create_params
+      expect(developer.configs.count).to be config_count + 1
       expect(res_hash[:user_id]).to be user.id
       expect(res_hash[:uuid]).to eq empty_device.uuid
     end

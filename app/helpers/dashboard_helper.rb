@@ -149,7 +149,7 @@ module DashboardHelper
       'LB': 'Lebanon',
       'LS': 'Lesotho',
       'LR': 'Liberia',
-      'LY': 'Libyan Arab Jamahiriya',
+      'LY': 'Libya',
       'LI': 'Liechtenstein',
       'LT': 'Lithuania',
       'LU': 'Luxembourg',

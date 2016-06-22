@@ -6,7 +6,6 @@ class Users::DevicesController < ApplicationController
   def index
     @presenter = ::Users::DevicesPresenter.new(current_user, params, 'index')
     gon.push(@presenter.index_gon)
-    @presenter.devices.geocode_last_checkins
   end
 
   def show
@@ -28,13 +27,18 @@ class Users::DevicesController < ApplicationController
     gon.push(presenter.shared_gon)
   end
 
+  def info
+    presenter = ::Users::DevicesPresenter.new(current_user, params, 'info')
+    @device = presenter.device
+    @config = presenter.config
+  end
+
   def create
-    result = Users::Devices::CreateDevice.new(current_user, allowed_params)
+    result = Users::Devices::CreateDevice.new(current_user, default_developer, allowed_params)
     if result.save?
-      @device = result.device
-      gon.checkins = create_checkin(@device)
-      @device.notify_subscribers('new_device', @device)
-      redirect_to user_device_path(id: @device.id)
+      device = result.device
+      gon.checkins = create_checkin(device)
+      redirect_to user_device_path(id: device.id)
     else
       redirect_to new_user_device_path, notice: result.error
     end
@@ -81,5 +85,10 @@ class Users::DevicesController < ApplicationController
 
   def published?
     redirect_to root_path, notice: 'Device is not shared' unless Device.find(params[:id]).published?
+  end
+
+  def default_developer
+    return FactoryGirl.create(:developer) if Rails.env.test?
+    Developer.find_by(api_key: Rails.application.secrets.coposition_api_key)
   end
 end
