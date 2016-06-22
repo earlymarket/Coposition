@@ -29,6 +29,10 @@ class Developer < ActiveRecord::Base
     Developer.select([:id, :email, :company_name, :tagline, :redirect_url]).find(id)
   end
 
+  def self.public_info
+    all.select([:id, :email, :company_name, :tagline, :redirect_url])
+  end
+
   def subscribed_to?(event)
     subscriptions.find_by(event: event)
   end

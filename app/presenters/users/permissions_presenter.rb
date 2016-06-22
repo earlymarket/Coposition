@@ -27,6 +27,7 @@ module Users
       @permissible = model.find(@params[:device_id]) # device_id = user_id/developer_id, permissions for friend/dev
       @permissions = Permission.where(device_id: device_ids,
                                       permissible_id: @permissible.id, permissible_type: model.to_s)
+                               .order(:device_id)
                                .includes(:permissible, :device)
     end
 
@@ -54,7 +55,7 @@ module Users
       {
         permissions: approvals_permissions('Developer'),
         current_user_id: @user.id,
-        approved: @user.developers
+        approved: @user.developers.public_info
       }
     end
 
@@ -62,7 +63,7 @@ module Users
       {
         permissions: approvals_permissions('User'),
         current_user_id: @user.id,
-        approved: @user.friends
+        approved: @user.friends.public_info
       }
     end
 

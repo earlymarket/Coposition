@@ -16,7 +16,6 @@ module Users
     def gon
       {
         approved: @approved,
-        devices: @devices,
         permissions: permissions,
         current_user_id: @user.id
       }
@@ -29,7 +28,7 @@ module Users
     end
 
     def users_approved
-      @approvable_type == 'Developer' ? @user.developers : @user.friends
+      @approvable_type == 'Developer' ? @user.developers.public_info : @user.friends.public_info
     end
 
     def users_requests
