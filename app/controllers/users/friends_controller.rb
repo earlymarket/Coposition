@@ -3,7 +3,7 @@ class Users::FriendsController < ApplicationController
 
   def show
     @friend = User.find(params[:id])
-    @devices = @friend.devices
+    @devices = @friend.devices.ordered_by_checkins.paginate(page: params[:page], per_page: 5)
     gon.checkins = @devices.map do |device|
       checkins = device.safe_checkin_info_for(permissible: current_user)
       checkins.first.as_json.merge(device: device.name) if checkins.present?

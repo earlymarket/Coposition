@@ -60,12 +60,6 @@ class Checkin < ActiveRecord::Base
     attributes.delete_if { |key, value| key =~ /fogged|uuid/ || value.nil? }
   end
 
-  def self.calendar_data
-    since(first.created_at.beginning_of_year)
-      .unscope(:order).group("date_trunc('day', created_at)")
-      .count.to_a.sort
-  end
-
   def reverse_geocode!
     unless reverse_geocoded?
       reverse_geocode

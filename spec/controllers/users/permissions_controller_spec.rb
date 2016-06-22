@@ -11,17 +11,37 @@ RSpec.describe Users::PermissionsController, type: :controller do
     u
   end
   let(:second_user) { create_user }
+  let(:friend) { FactoryGirl.create :user }
   let(:developer) { FactoryGirl.create :developer }
   let(:permission) do
     device.developers << developer
-    Permission.last
+    device.permitted_users << friend
+    Permission.first
   end
 
   describe 'index' do
-    it 'should assign device and device permissions' do
-      xhr :get, :index, user_id: user.id, device_id: device.id, from: 'devices'
-      expect(assigns(:presenter).device).to eq device
-      expect(assigns(:presenter).permissions).to eq device.permissions
+    before { permission }
+
+    context 'from devices page' do
+      it 'should assign device and device permissions' do
+        xhr :get, :index, user_id: user.id, device_id: device.id, from: 'devices'
+        expect(assigns(:presenter).device).to eq device
+        expect(assigns(:presenter).permissions).to eq device.permissions
+      end
+    end
+    context 'from apps page' do
+      it 'should assign device and device permissions' do
+        xhr :get, :index, user_id: user.id, device_id: developer.id, from: 'apps'
+        expect(assigns(:presenter).permissible).to eq developer
+        expect(assigns(:presenter).permissions).to eq device.permissions.where(permissible_id: developer.id)
+      end
+    end
+    context 'from friends page' do
+      it 'should assign device and device permissions' do
+        xhr :get, :index, user_id: user.id, device_id: friend.id, from: 'friends'
+        expect(assigns(:presenter).permissible).to eq friend
+        expect(assigns(:presenter).permissions).to eq device.permissions.where(permissible_id: friend.id)
+      end
     end
   end
 
@@ -39,9 +59,9 @@ RSpec.describe Users::PermissionsController, type: :controller do
             bypass_fogging: true,
             bypass_delay: true
           }
-      expect(Permission.last.privilege).to eq 'disallowed'
-      expect(Permission.last.bypass_fogging).to eq true
-      expect(Permission.last.bypass_delay).to eq true
+      expect(Permission.find(permission.id).privilege).to eq 'disallowed'
+      expect(Permission.find(permission.id).bypass_fogging).to eq true
+      expect(Permission.find(permission.id).bypass_delay).to eq true
     end
 
     it 'should fail to update permission user does not control' do
@@ -53,7 +73,7 @@ RSpec.describe Users::PermissionsController, type: :controller do
           permission: {
             privilege: 'last_only'
           }
-      expect(Permission.last.privilege).to eq 'complete'
+      expect(Permission.find(permission.id).privilege).to eq 'complete'
       expect(response).to redirect_to(root_path)
     end
   end
