@@ -10,7 +10,3 @@
 </br>
 <%= render partial: "approved", locals: {approved: @presenter.approved, devices: @presenter.devices, approvable_type: @presenter.approvable_type} %>
 <%= render partial: "pending", locals: {pending: @presenter.pending} if @presenter.pending.present? %>
-
-<script>
-  $('.modal-trigger').leanModal();
-</script>

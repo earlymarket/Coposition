@@ -41,4 +41,3 @@ Given(/^I switch to the map view$/) do
   find('#mapTab')
   page.execute_script("$('#mapTab a').click();")
 end
-

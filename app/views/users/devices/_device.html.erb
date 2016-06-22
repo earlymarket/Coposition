@@ -13,7 +13,7 @@
     <% end %>
 
     <% if device.developers.exists? || device.permitted_users.exists? %>
-      <a class="modal-trigger left tooltipped" data-tooltip='Detailed Permissions' href="#perm<%=device.id%>"><i class="material-icons">lock</i></a>
+      <a class="permissions-trigger left tooltipped" data-tooltip='Detailed Permissions' href="#perm<%=device.id%>"><i class="material-icons">lock</i></a>
 
       <div id="perm<%=device.id%>" class="modal">
         <div class="modal-content">
@@ -27,29 +27,6 @@
               </div>
               <%= render partial: "users/permissions/controls", object: device, as: 'permissionable' %>
             </li>
-
-            <% devices_permitted_actors_for(device).each do |permitted| %>
-              <% permission =  device.permission_for(permitted) %>
-              <li class="collection-item row valign-wrapper">
-
-                <div class='valign col s5'>
-                  <%= permissible_title(permitted) %>
-                </div>
-                <div class='col s2'>
-                  <span id='fogIcon<%=permission.id%>' class='fogIcon<%=device.id%> tooltipped' data-tooltip="<%=approvals_approvable_name(permitted)%> can only see fogged data for this device">
-                    <%= fogged_icon(device.fogged) if device.fogged %>
-                  </span>
-                  <span id='delayIcon<%=permission.id%>' class='delayIcon<%=device.id%> tooltipped' data-tooltip="<%=approvals_approvable_name(permitted)%> can only see your data after a delay for this device">
-                    <%= devices_delay_icon(device.delayed) if device.delayed %>
-                  </span>
-                  <span id='accessIcon<%=permission.id%>' class='tooltipped' data-tooltip="<%=approvals_approvable_name(permitted)%> can't see any data from this device">
-                    <%= devices_access_icon  %>
-                  </span>
-                </div>
-                <%= render partial: "users/permissions/controls", object: permission, as: 'permissionable' %>
-
-              </li>
-            <% end %>
 
           </ul>
         </div>

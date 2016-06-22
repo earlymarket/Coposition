@@ -1,13 +1,17 @@
 class Users::PermissionsController < ApplicationController
-  before_action :authenticate_user!, :require_ownership
+  before_action :authenticate_user!
+  before_action :require_ownership, only: :update
+
+  def index
+    @presenter = ::Users::PermissionsPresenter.new(current_user, params, 'index')
+    respond_to { |format| format.js }
+  end
 
   def update
-    presenter = ::Users::PermissionsPresenter.new(current_user, params)
-    presenter.permission.update(allowed_params)
-    gon.push(presenter.gon)
-    respond_to do |format|
-      format.js
-    end
+    @presenter = ::Users::PermissionsPresenter.new(current_user, params, 'update')
+    @presenter.permission.update(allowed_params)
+    gon.push(@presenter.gon(params[:from]))
+    respond_to { |format| format.js }
   end
 
   private

@@ -2,20 +2,15 @@ class Users::FriendsController < ApplicationController
   before_action :friends?
 
   def show
-    @friend = User.find(params[:id])
-    @devices = @friend.devices
-    gon.checkins = @devices.map do |device|
-      checkins = device.safe_checkin_info_for(permissible: current_user)
-      checkins.first.as_json.merge(device: device.name) if checkins.present?
-    end.compact
+    presenter = ::Users::FriendsPresenter.new(current_user, params, 'show')
+    @friend = presenter.friend
+    @devices = presenter.devices
+    gon.push(presenter.index_gon)
   end
 
   def show_device
-    friend = User.find(params[:id])
-    device = friend.devices.find(params[:device_id])
-    checkins = friend.get_checkins(current_user, device)
-    checkins = checkins.replace_foggable_attributes unless device.can_bypass_fogging?(current_user)
-    gon.checkins = checkins.map(&:public_info)
+    presenter = ::Users::FriendsPresenter.new(current_user, params, '')
+    gon.push(presenter.show_device_gon)
   end
 
   private
