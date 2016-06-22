@@ -45,6 +45,7 @@ module Users
 
     def devices_gon
       {
+        checkins: devices_index_checkins,
         permissions: @devices.map(&:permissions).inject(:+),
         current_user_id: @user.id,
         devices: @user.devices
@@ -68,6 +69,12 @@ module Users
     end
 
     private
+
+    def devices_index_checkins
+      @devices.includes(:checkins).map do |device|
+        device.checkins.first.as_json.merge(device: device.name) if device.checkins.present?
+      end.compact
+    end
 
     def approvals_permissions(type)
       @devices.map { |device| device.permissions.where(permissible_type: type) }.inject(:+)
