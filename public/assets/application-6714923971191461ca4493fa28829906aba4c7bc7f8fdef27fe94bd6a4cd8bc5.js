@@ -45802,6 +45802,8 @@ $(document).on('ready page:change', function() {
     $('.collapsible').collapsible();
   }());
 
+  $('.scrollspy').scrollSpy();
+
 });
 
 
@@ -46040,6 +46042,13 @@ window.COPO.maps = {
         return '<li class="foggedAddress">Fogged address: ' + checkin.fogged_area + '</li>';
       }
     };
+    checkinTemp.devicebutton = function () {
+      if ($(".c-devices.a-index").length === 1) {
+        return '<a href="./devices/' + checkin.device_id + '" title="Device map">' + checkin.device + '</a>';
+      } else {
+        return '<a href="' + window.location.pathname + '/show_device?device_id=' + checkin.device_id + '" title="Device map">' + checkin.device + '</a>';
+      }
+    };
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
     var template = $('#markerPopupTmpl').html();
@@ -46086,15 +46095,15 @@ window.COPO.maps = {
     COPO.maps.lc = L.control.locate({
       follow: false,
       setView: true,
-      markerClass: L.marker,
-      markerStyle: {
-        icon: L.mapbox.marker.icon({
-          'marker-size': 'large',
-          'marker-symbol': 'star',
-          'marker-color': '#01579B'
-        }),
-        riseOnHover: true
-      },
+      markerClass: L.CircleMarker,
+      //markerStyle: {
+      //  icon: L.mapbox.marker.icon({
+      //    'marker-size': 'large',
+      //    'marker-symbol': 'star',
+      //    'marker-color': '#01579B'
+      //  }),
+      //  riseOnHover: true
+      //},
       strings: {
         title: 'Your current location',
         popup: 'Your current location within {distance} {unit}.<br><a href="#" id="current-location"></a>'
@@ -46177,10 +46186,10 @@ window.COPO.maps = {
 
 window.COPO = window.COPO || {};
 window.COPO.permissions = {
-  initSwitches: function initSwitches(permissionableType, user, permissions) {
-    COPO.permissions.setMasters(permissionableType, user, permissions);
-    COPO.permissions.masterChange(permissionableType, user, permissions);
-    COPO.permissions.switchChange(permissionableType, user, permissions);
+  initSwitches: function initSwitches(page, user, permissions) {
+    COPO.permissions.setMasters(page, user, permissions);
+    COPO.permissions.masterChange(page, user, permissions);
+    COPO.permissions.switchChange(page, user, permissions);
     COPO.permissions.checkDisabled(user);
     COPO.permissions.checkBypass(user);
   },
@@ -46216,30 +46225,31 @@ window.COPO.permissions = {
     });
   },
 
-  setMasters: function setMasters(permissionableType, user, gonPermissions) {
-    if (gon[permissionableType]) {
-      gon[permissionableType].forEach(function (permissionable) {
-        var ID_TYPE = permissionableType === 'devices' ? 'device_id' : 'permissible_id';
+  setMasters: function setMasters(page, user, gonPermissions) {
+    var gonVariable = page === 'devices' ? 'devices' : 'approved';
+    if (gon[gonVariable]) {
+      gon[gonVariable].forEach(function (permissionable) {
+        var ID_TYPE = page === 'devices' ? 'device_id' : 'permissible_id';
         $("div[data-id=" + permissionable.id + "].master").each(function () {
-          var M_SWITCH = new MasterSwitch(user, $(this), gonPermissions, ID_TYPE);
+          var M_SWITCH = new MasterSwitch(user, $(this), gonPermissions, ID_TYPE, page);
           M_SWITCH.setState();
         });
       });
     }
   },
 
-  switchChange: function switchChange(permissionableType, user, gonPermissions) {
+  switchChange: function switchChange(page, user, gonPermissions) {
     $(".permission-switch").change(function () {
-      var P_SWITCH = new LocalSwitch(user, $(this), gonPermissions);
+      var P_SWITCH = new LocalSwitch(user, $(this), gonPermissions, page);
       P_SWITCH.toggleSwitch();
-      COPO.permissions.setMasters(permissionableType, user, gonPermissions);
+      COPO.permissions.setMasters(page, user, gonPermissions);
     });
   },
 
-  masterChange: function masterChange(permissionableType, user, gonPermissions) {
+  masterChange: function masterChange(page, user, gonPermissions) {
     $(".master").change(function () {
-      var ID_TYPE = permissionableType === 'devices' ? 'device_id' : 'permissible_id';
-      var M_SWITCH = new MasterSwitch(user, $(this), gonPermissions, ID_TYPE);
+      var ID_TYPE = page === 'devices' ? 'device_id' : 'permissible_id';
+      var M_SWITCH = new MasterSwitch(user, $(this), gonPermissions, ID_TYPE, page);
       M_SWITCH.toggleSwitch();
       M_SWITCH.setState();
     });
@@ -46467,12 +46477,13 @@ var PermissionSwitch = (function () {
 var LocalSwitch = (function (_PermissionSwitch) {
   _inherits(LocalSwitch, _PermissionSwitch);
 
-  function LocalSwitch(user, domElement, permissions) {
+  function LocalSwitch(user, domElement, permissions, page) {
     _classCallCheck(this, LocalSwitch);
 
     _get(Object.getPrototypeOf(LocalSwitch.prototype), 'constructor', this).call(this, user, domElement);
     this.permission = _.find(permissions, _.matchesProperty('id', this.id));
     this.attributeState = this.permission[this.attribute];
+    this.page = page;
   }
 
   _createClass(LocalSwitch, [{
@@ -46487,7 +46498,7 @@ var LocalSwitch = (function (_PermissionSwitch) {
         url: '/users/' + this.user + '/devices/' + this.permission['device_id'] + '/permissions/' + this.id,
         type: 'PUT',
         dataType: 'script',
-        data: { permission: this.permission }
+        data: { permission: this.permission, from: this.page }
       });
     }
   }, {
@@ -46513,11 +46524,12 @@ var LocalSwitch = (function (_PermissionSwitch) {
 var MasterSwitch = (function (_PermissionSwitch2) {
   _inherits(MasterSwitch, _PermissionSwitch2);
 
-  function MasterSwitch(user, domElement, permissions, idType) {
+  function MasterSwitch(user, domElement, permissions, idType, page) {
     _classCallCheck(this, MasterSwitch);
 
     _get(Object.getPrototypeOf(MasterSwitch.prototype), 'constructor', this).call(this, user, domElement);
     this.permissions = permissions.filter(_.matchesProperty(idType, this.id));
+    this.page = page;
   }
 
   _createClass(MasterSwitch, [{
@@ -46525,7 +46537,7 @@ var MasterSwitch = (function (_PermissionSwitch2) {
     value: function toggleSwitch() {
       this.permissions.forEach(function (permission) {
         var P_DOM_ELEMENT = $('div[data-id=' + permission.id + '][data-switchtype=' + this.switchtype + '].permission-switch');
-        var P_SWITCH = new LocalSwitch(this.user, P_DOM_ELEMENT, this.permissions);
+        var P_SWITCH = new LocalSwitch(this.user, P_DOM_ELEMENT, this.permissions, this.page);
         if (P_SWITCH.disabled && P_SWITCH.switchtype === 'last_only') {
           this.inputDomElement.prop("checked", false);
         } else if (this.checked !== P_SWITCH.checked) {
@@ -46561,7 +46573,9 @@ $(document).on('page:change', function() {
   if (($(".c-approvals.a-apps").length === 1) || ($(".c-approvals.a-friends").length === 1)) {
     $('.tooltipped').tooltip({delay: 50});
     COPO.utility.gonFix();
-    COPO.permissions.initSwitches('approved', gon.current_user_id, gon.permissions)
+    var page = ($(".c-approvals.a-apps").length === 1 ? 'apps' : 'friends')
+    COPO.permissionsTrigger.initTrigger(page)
+    COPO.permissions.initSwitches(page, gon.current_user_id, gon.permissions)
 
     $(document).on('page:before-unload', function(){
       COPO.permissions.switchesOff();
@@ -46569,21 +46583,30 @@ $(document).on('page:change', function() {
   }
 })
 ;
-$(document).on('page:change', function() {
+'use strict';
+
+$(document).on('page:change', function () {
   if ($(".c-devices.a-index").length === 1) {
     var U = COPO.utility;
+    var M = window.COPO.maps;
+    var P = window.COPO.permissionsTrigger;
+    M.initMap();
+    M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
     U.gonFix();
-    COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions)
+    P.initTrigger('devices');
+    COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions);
     COPO.delaySlider.initSliders(gon.devices);
-    google.charts.setOnLoadCallback(function(){ COPO.calendar.refreshCalendar(gon.checkins) });
+    gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');
 
     $('body').on('click', '.edit-button', function (e) {
       e.preventDefault();
       $(this).toggleClass('hide', true);
-      makeEditable($(this).prev(), handleEdited);
+      makeEditable($(this).prev('span'), handleEdited);
     });
 
-    var makeEditable = function ($target, handler) {
+    $('.modal-trigger').leanModal();
+
+    var makeEditable = function makeEditable($target, handler) {
       var original = $target.text();
       $target.attr('contenteditable', true);
       $target.focus();
@@ -46592,7 +46615,7 @@ $(document).on('page:change', function() {
         handler(original, $target);
       });
       $target.on('keydown', function (e) {
-        if(e.which === 27 || e.which === 13 ) {
+        if (e.which === 27 || e.which === 13) {
           handler(original, $target);
         }
       });
@@ -46600,11 +46623,11 @@ $(document).on('page:change', function() {
         e.preventDefault();
       });
       return $target;
-    }
+    };
 
-    var handleEdited = function (original, $target) {
-      var newName = $target.text()
-      if(original !== newName) {
+    var handleEdited = function handleEdited(original, $target) {
+      var newName = $target.text();
+      if (original !== newName) {
         console.log('Name optimistically set to: ' + $target.text());
         var url = $target.parents('a').attr('href');
         var request = $.ajax({
@@ -46614,63 +46637,55 @@ $(document).on('page:change', function() {
           data: { name: newName }
         });
 
-        request
-        .done(function (response) {
+        request.done(function (response) {
           console.log('Server processed the request');
-        })
-        .fail(function (error) {
+        }).fail(function (error) {
           $target.text(original);
           try {
             Materialize.toast('Name: ' + JSON.parse(error.responseText).name, 3000, 'red');
-          }
-          catch (e) {
+          } catch (e) {
             console.log(error);
             Materialize.toast('Error changing names', 3000, 'red');
           }
-        })
+        });
       }
       $target.text($target.text());
       $target.attr('contenteditable', false);
       $target.next().toggleClass('hide', false);
       U.deselect();
       $target.off();
-    }
+    };
 
-    window.initPage = function(){
+    window.initPage = function () {
       $('.clip_button').off();
       U.initClipboard();
       $('.tooltipped').tooltip('remove');
-      $('.tooltipped').tooltip({delay: 50});
+      $('.tooltipped').tooltip({ delay: 50 });
       $('.linkbox').off('touchstart click');
 
-      $('.linkbox').on('click', function(e){
-        this.select()
-      })
-
-      $(window).resize(function(){
-        COPO.calendar.refreshCalendar(gon.checkins);
+      $('.linkbox').on('click', function (e) {
+        this.select();
       });
 
       //backup for iOS
-      $('.linkbox').on('touchstart', function(){
+      $('.linkbox').on('touchstart', function () {
         this.focus();
         this.setSelectionRange(0, $(this).val().length);
-      })
+      });
 
-      $('.linkbox').each(function(i,linkbox){
-        $(linkbox).attr('size', $(linkbox).val().length)
-      })
-    }
+      $('.linkbox').each(function (i, linkbox) {
+        $(linkbox).attr('size', $(linkbox).val().length);
+      });
+    };
     initPage();
 
-    $(document).on('page:before-unload', function(){
+    $(document).on('page:before-unload', function () {
       COPO.permissions.switchesOff();
       $(window).off("resize");
       $('body').off('click', '.edit-button');
-    })
+    });
   }
-})
-;
+});
 'use strict';
 
 $(document).on('page:change', function () {
@@ -46852,6 +46867,16 @@ $(document).on('page:change', function() {
   }
 });
 
+'use strict';
+
+$(document).on('page:change', function () {
+  if ($(".c-friends.a-show").length === 1) {
+    COPO.utility.gonFix();
+    COPO.maps.initMap();
+    COPO.maps.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
+    gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');
+  }
+});
 $(document).on('ready page:change', function() {
   if ($(".c-welcome.a-index").length > 0) {
     $("main").css('padding-top', '0');
@@ -46900,6 +46925,27 @@ $(document).on('ready page:change', function() {
     $("main").css('padding-top', '64px');
   }
 });
+'use strict';
+
+window.COPO = window.COPO || {};
+window.COPO.permissionsTrigger = {
+  initTrigger: function initTrigger(page) {
+    $('.permissions-trigger').leanModal();
+    $('.permissions-trigger').on('click touchstart', function () {
+      var $LIST = $(this.parentElement).find('.permissions');
+      if ($LIST.children().length === 1) {
+        var DEVICE_ID = page === 'devices' ? $LIST.data().device : $LIST.data().friend;
+        var FROM = { from: page };
+        $LIST.append('<div class="progress"><div class="indeterminate"></div></div>');
+        $.get({
+          url: 'devices/' + DEVICE_ID + '/permissions',
+          data: FROM,
+          dataType: "script"
+        });
+      }
+    });
+  }
+};
 window.COPO = window.COPO || {};
 window.COPO.smooch = {
   initSmooch: function(user){
@@ -47000,9 +47046,12 @@ $(document).on('page:change', function () {
               bounds: this.bounds()
             });
             caller.hasContent = true;
-          } else if (caller.hasContent) {
-            var whereAreMyFriends = '\n          <blockquote>\n            <h4>Where are my friends?</h4>\n            You have ' + gon.friends.length + ' ' + U.pluralize('friend', gon.friends.length) + ' signed up but they haven\'t checked in yet\n            (or they haven\'t shared thier location with you).\n            They\'ll appear on the map once they share their location.\n          </blockquote>';
+          } else if (this.hasFriends() && caller.hasContent && !$('#whereFriends').length) {
+            var whereAreMyFriends = '\n          <blockquote id="whereFriends">\n            <h4>Where are my friends?</h4>\n            You have ' + gon.friends.length + ' ' + U.pluralize('friend', gon.friends.length) + ' signed up but they haven\'t checked in yet\n            (or they haven\'t shared their location with you).\n            They\'ll appear on the map once they share their location.\n          </blockquote>';
             $('#map-wrapper').after(whereAreMyFriends);
+          } else if (caller.hasContent && !$('#whyEmpty').length) {
+            var getSomeFriends = '\n          <blockquote id="whyEmpty">\n            <h4>Why is this map empty?</h4>\n            You haven\'t got any friends yet, check if you have any friend requests or add a new friend from the friends page.\n            They\'ll appear on the map once they share their location.\n          </blockquote>';
+            $('#map-wrapper').after(getSomeFriends);
           }
         }
       };

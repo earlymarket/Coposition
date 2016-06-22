@@ -125,6 +125,14 @@ window.COPO.maps = {
         return '<li class="foggedAddress">Fogged address: ' + checkin.fogged_area + '</li>'
       }
     }
+    checkinTemp.devicebutton = function(){
+      if ($(".c-devices.a-index").length === 1) {
+        return `<a href="./devices/${checkin.device_id}" title="Device map">${checkin.device}</a>`
+      } else {
+        return `<a href="${window.location.pathname}/show_device?device_id=${checkin.device_id}" title="Device map">${checkin.device}</a>`
+      }
+
+    }
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
     var template = $('#markerPopupTmpl').html();
@@ -171,15 +179,15 @@ window.COPO.maps = {
     COPO.maps.lc = L.control.locate({
       follow: false,
       setView: true,
-      markerClass: L.marker,
-      markerStyle: {
-        icon: L.mapbox.marker.icon({
-          'marker-size': 'large',
-          'marker-symbol': 'star',
-          'marker-color': '#01579B'
-        }),
-        riseOnHover: true
-      },
+      markerClass: L.CircleMarker,
+      //markerStyle: {
+      //  icon: L.mapbox.marker.icon({
+      //    'marker-size': 'large',
+      //    'marker-symbol': 'star',
+      //    'marker-color': '#01579B'
+      //  }),
+      //  riseOnHover: true
+      //},
       strings: {
         title: 'Your current location',
         popup: 'Your current location within {distance} {unit}.<br><a href="#" id="current-location"></a>'
