@@ -3,3 +3,32 @@
   <h4>Hello <%= current_user.username %></h4>
 </section>
 
+<section class="dashboard row">
+  <div class="col s12">
+    <div id="map-wrapper" style="position: relative;">
+      <p id="map-status"></p>
+      <div id="map-overlay" class="valign-wrapper z-depth-1 hide">
+        <div>
+          <h5 style="text-align: center;">Nothing here yet</h5>
+          <p>Here you will be shown your check-ins this month and your friend's last check-ins on a map. But you don't have any at the moment!</p>
+          <p>To add a check-in, go to the <%= link_to('devices', user_devices_path) %> page and select/create a device.</p>
+          <p>To add a friend, go to your <%= link_to('friends', user_friends_path) %> page and send them an invite.</p>
+        </div>
+      </div>
+      <div id="map"></div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+<p>
+  You checked in <%= @presenter.weeks_checkins_count || 0 %> times this week.
+  <% if @presenter.percent_change.present? %>
+    <br />
+    That is an <%= @presenter.percent_change > 0 ? 'increase' : 'decrease' %> of <%= @presenter.percent_change %>% from last week.
+  <% end %>
+
+  <% if @presenter.most_used_device.present? %>
+      Your most used device is <%= @presenter.most_used_device.name %>.
+  <% end %>
