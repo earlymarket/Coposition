@@ -10,7 +10,11 @@ RSpec.describe Users::DevicesController, type: :controller do
     dev.checkins << [checkin, FactoryGirl.create(:checkin)]
     dev
   end
-  let(:developer) { FactoryGirl.create :developer }
+  let(:developer) do
+    dev = FactoryGirl.create :developer
+    dev.configs.create(device: device)
+    dev
+  end
   let(:user) do
     user = create_user
     user.devices << device
@@ -59,7 +63,7 @@ RSpec.describe Users::DevicesController, type: :controller do
     it 'should create a CSV file if .csv appended to url' do
       get :show, params.merge(format: :csv)
       expect(response.header['Content-Type']).to include 'text/csv'
-      expect(response.body).to include(checkin.attributes.keys.join(','))
+      expect(response.body).to include(*checkin.attributes.keys)
       expect(response.body).to include(checkin.attributes.values.join(','))
     end
   end
@@ -87,12 +91,23 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
   end
 
+  describe 'GET #info' do
+    it 'should render info page' do
+      get :info, params
+      expect(assigns(:device)).to eq device
+      expect(assigns(:config)).to eq device.config
+      expect(response).to render_template('info')
+    end
+  end
+
   describe 'POST #create' do
-    it 'should create a new device' do
-      count = user.devices.count
+    it 'should create a new device and config' do
+      device_count = user.devices.count
+      config_count = Config.count
       post :create, user_param.merge(device: { name: 'New Device' })
       expect(response.code).to eq '302'
-      expect(user.devices.count).to be count + 1
+      expect(Config.count).to be config_count + 1
+      expect(user.devices.count).to be device_count + 1
       expect(user.devices.all.last.name).to eq 'New Device'
     end
 

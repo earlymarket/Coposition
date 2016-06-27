@@ -111,6 +111,12 @@ class Device < ActiveRecord::Base
   end
 
   def self.geocode_last_checkins
-    all.each { |device| device.checkins.first.reverse_geocode! if device.checkins.exists? }
+    all.each { |device| device.checkins.last.reverse_geocode! if device.checkins.exists? }
+  end
+
+  def self.ordered_by_checkins
+    devices = includes(:checkins).joins(:checkins).order('checkins.created_at')
+    devices += all
+    devices.uniq
   end
 end

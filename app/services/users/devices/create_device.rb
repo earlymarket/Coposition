@@ -2,8 +2,9 @@ module Users::Devices
   class CreateDevice
     attr_reader :device
 
-    def initialize(user, params)
+    def initialize(user, developer, params)
       @user = user
+      @developer = developer
       @name = params[:name]
       @uuid = params[:uuid]
       @device = if @uuid.present?
@@ -14,7 +15,11 @@ module Users::Devices
     end
 
     def save?
-      @device && @device.user.nil? && @device.construct(@user, @name)
+      if @device && @device.user.nil? && @device.construct(@user, @name)
+        @developer.configs.create(device: @device) unless @device.config
+        @device.notify_subscribers('new_device', @device)
+        true
+      end
     end
 
     def error

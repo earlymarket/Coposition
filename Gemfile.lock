@@ -50,6 +50,7 @@ GEM
     benchmark-ips (2.5.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bower-rails (0.10.0)
     builder (3.2.2)
     bullet (5.0.0)
       activesupport (>= 3.0.0)
@@ -63,8 +64,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    childprocess (0.5.9)
-      ffi (~> 1.0, >= 1.0.11)
+    capybara-webkit (1.11.1)
+      capybara (>= 2.3.0, < 2.8.0)
+      json
     cloudinary (1.1.3)
       aws_cf_signer
       rest-client
@@ -190,15 +192,11 @@ GEM
     listen (3.0.6)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9.7)
-    lodash-rails (4.6.1)
-      railties (>= 3.1)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     lumberjack (1.0.10)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
-    materialize-sass (0.97.5)
-      sass (~> 3.3)
     memory_profiler (0.9.6)
     meta_request (0.4.0)
       callsite (~> 0.0, >= 0.0.11)
@@ -208,12 +206,8 @@ GEM
     mime-types (2.99.1)
     mini_portile2 (2.0.0)
     minitest (5.8.4)
-    momentjs-rails (2.11.0)
-      railties (>= 3.1)
     multi_json (1.11.2)
     multi_test (0.1.2)
-    mustache-js-rails (2.0.3)
-      railties (>= 3.1, <= 5.0)
     nenv (0.3.0)
     netrc (0.11.0)
     newrelic_rpm (3.15.0.314)
@@ -303,7 +297,6 @@ GEM
       rspec-mocks (~> 3.4.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
-    rubyzip (1.2.0)
     sass (3.4.21)
     sass-rails (5.0.4)
       railties (>= 4.0.0, < 5.0)
@@ -314,10 +307,6 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
-    selenium-webdriver (2.53.0)
-      childprocess (~> 0.5)
-      rubyzip (~> 1.0)
-      websocket (~> 1.0)
     shellany (0.0.1)
     simple_token_authentication (1.12.0)
       actionmailer (>= 3.2.6, < 5)
@@ -347,10 +336,6 @@ GEM
     tilt (2.0.2)
     turbolinks (2.5.3)
       coffee-rails
-    twitter-typeahead-rails (0.11.1)
-      actionpack (>= 3.1)
-      jquery-rails
-      railties (>= 3.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.7.2)
@@ -367,7 +352,6 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
-    websocket (1.2.3)
     will_paginate (3.0.7)
     will_paginate-materialize (0.1.2)
       will_paginate (~> 3.0.6)
@@ -381,8 +365,10 @@ PLATFORMS
 
 DEPENDENCIES
   attachinary (~> 1.3.1)
+  bower-rails (~> 0.10.0)
   bullet
   byebug
+  capybara-webkit (~> 1.11.1)
   cloudinary (~> 1.1.3)
   codeclimate-test-reporter
   coffee-rails (~> 4.1.0)
@@ -403,11 +389,7 @@ DEPENDENCIES
   jquery-validation-rails
   launchy
   letter_opener
-  lodash-rails
-  materialize-sass
   meta_request
-  momentjs-rails
-  mustache-js-rails (~> 2.0.3)
   newrelic_rpm
   pg
   pry
@@ -423,7 +405,6 @@ DEPENDENCIES
   rspec-rails
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
-  selenium-webdriver (~> 2.53)
   simple_token_authentication
   simplecov
   slack-notifier
@@ -431,7 +412,6 @@ DEPENDENCIES
   sprockets (>= 3.0.0)
   sprockets-es6
   turbolinks
-  twitter-typeahead-rails
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
   will_paginate-materialize

@@ -3,10 +3,18 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   let(:developer) { FactoryGirl.create(:developer) }
   let(:device) { FactoryGirl.create(:device) }
+  let(:checkin) { FactoryGirl.create(:checkin, device_id: device.id) }
   let(:user) do
     us = FactoryGirl.create(:user)
     us.devices << device
     us
+  end
+  let(:empty_user) { FactoryGirl.create(:user) }
+  let(:approved) do
+    Approval.link(user, developer, 'Developer')
+    Approval.link(empty_user, developer, 'Developer')
+    Approval.accept(user, developer, 'Developer')
+    Approval.accept(empty_user, developer, 'Developer')
   end
 
   describe 'relationships' do
@@ -68,6 +76,23 @@ RSpec.describe User, type: :model do
   describe 'slack' do
     it 'should generate a helpful message for slack' do
       expect(user.slack_message).to match "id: #{user.id}, name: #{user.username}"
+    end
+  end
+
+  describe 'get_user_checkins_for' do
+    before do
+      checkin
+      approved
+    end
+    context 'user with checkins' do
+      it "should return the user's checkins" do
+        expect(user.get_user_checkins_for(developer)).to eq [checkin]
+      end
+    end
+    context 'user without checkins' do
+      it 'should return no checkins' do
+        expect(empty_user.get_user_checkins_for(developer)).to eq Checkin.none
+      end
     end
   end
 end

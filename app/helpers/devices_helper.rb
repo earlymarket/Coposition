@@ -5,7 +5,7 @@ module DevicesHelper
 
   def devices_last_checkin(device)
     if device.checkins.exists?
-      last_checkin = device.checkins.first
+      last_checkin = device.checkins.last
       postcode = last_checkin.postal_code
       last_checkin.address = last_checkin.address.gsub(' ' + postcode, '') if postcode
       "<p>Last reported in #{last_checkin.address} on #{humanize_date_and_time(last_checkin.created_at)}</p>".html_safe
@@ -45,5 +45,13 @@ module DevicesHelper
                             tooltip: 'Click to copy', position: 'right'
                           })
     output
+  end
+
+  def devices_config_rows(config)
+    return '<tr><td><i>No additional config</i></td></tr>'.html_safe unless config.custom.present?
+    output = config.custom.map do |key, value|
+      "<tr><td>#{key}</td><td>#{value}</td></tr>"
+    end
+    output.join.html_safe
   end
 end

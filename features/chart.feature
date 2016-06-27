@@ -8,15 +8,17 @@ Feature: chart
       And I click "add"
       And I enter UUID "123456789123" and a friendly name "G-RALA"
       And I click "Add"
-      And I click on the "chartTab"
+      And I switch to the table view
+      Then I should have 1 checkins in the table
 
     @javascript
-    Scenario: User fogs and deletes a checkin
-    Given I have 1 checkins in the table
+    Scenario: User fogs a checkin
       When I click the link "cloud"
       Then I should have a fogged last checkin
-    When I click the link "delete_forever"
-    And I confirm "delete_forever"
-      Then I have 0 checkins in the table
-    And I click "Map"
-      Then I have 0 checkins on the map
+
+    @javascript
+    Scenario: User deletes a checkin
+    When I click and confirm "delete_forever"
+      Then I should have 0 checkins in the table
+    And I switch to the map view
+      Then I should have 0 checkins on the map

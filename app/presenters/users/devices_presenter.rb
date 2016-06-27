@@ -4,6 +4,7 @@ module Users
     attr_reader :device
     attr_reader :checkins
     attr_reader :filename
+    attr_reader :config
 
     def initialize(user, params, action)
       @user = user
@@ -12,7 +13,10 @@ module Users
     end
 
     def index
-      @devices = @user.devices.order(:id).includes(:developers, :permitted_users, :permissions)
+      devices = @user.devices.includes(:checkins).joins(:checkins).order('checkins.created_at')
+      devices.geocode_last_checkins
+      devices += @user.devices.includes(:permissions, :checkins)
+      @devices = devices.uniq.paginate(page: @params[:page], per_page: 5)
     end
 
     def show
@@ -24,6 +28,11 @@ module Users
     def shared
       @device = Device.find(@params[:id])
       @checkin = @device.checkins.first
+    end
+
+    def info
+      @device = Device.find(@params[:id])
+      @config = @device.config
     end
 
     def index_gon
@@ -53,7 +62,9 @@ module Users
     private
 
     def gon_index_checkins
-      @user.checkins.calendar_data if @user.checkins.exists?
+      @user.devices.map do |device|
+        device.checkins.first.as_json.merge(device: device.name) if device.checkins.present?
+      end.compact
     end
 
     def gon_shared_checkin

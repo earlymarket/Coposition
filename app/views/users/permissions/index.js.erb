@@ -1,0 +1,38 @@
+<% if @presenter.device.present? %>
+  var page = 'devices'
+  var $list = $('#perm<%=@presenter.device.id%>').find('ul');
+<% else %>
+  var page = ($(".c-approvals.a-apps").length === 1 ? 'apps' : 'friends')
+  var $list = $('#perm<%=@presenter.permissible.id%>').find('ul');
+<% end %>
+$('.progress').remove()
+if($list.children().length===1) {
+  $list.append(`
+    <% @presenter.permissions.each do |permission| %>
+      <li class="collection-item row valign-wrapper">
+        <div class='valign col s5'>
+        <% if @presenter.device.present? %>
+          <%= permissible_title(permission.permissible) %>
+        <% else %>
+          <%= permission.device.name %>
+        <% end %>
+        </div>
+        <div class='col s2'>
+          <span id='fogIcon<%=permission.id%>' class='fogIcon<%=permission.device.id%> tooltipped' data-tooltip="<%=approvals_approvable_name(permission.permissible)%> can only see fogged data for this device">
+            <%= fogged_icon(permission.device.fogged) if permission.device.fogged %>
+          </span>
+          <span id='delayIcon<%=permission.id%>' class='delayIcon<%=permission.device.id%> tooltipped' data-tooltip="<%=approvals_approvable_name(permission.permissible)%> can only see your data after a delay for this device">
+            <%= devices_delay_icon(permission.device.delayed) if permission.device.delayed %>
+          </span>
+          <span id='accessIcon<%=permission.id%>' class='tooltipped' data-tooltip="<%=approvals_approvable_name(permission.permissible)%> can't see any data from this device">
+            <%= devices_access_icon  %>
+          </span>
+        </div>
+        <%= render partial: "users/permissions/controls", object: permission, as: 'permissionable' %>
+      </li>
+    <% end %>
+  `);
+  COPO.permissions.switchesOff();
+  COPO.permissions.initSwitches(page, gon.current_user_id, gon.permissions);
+}
+

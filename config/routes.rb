@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   # Specified routes
 
   get '/api', to: 'welcome#api'
+  get '/help', to: 'welcome#help'
 
   # Devise
 
@@ -69,11 +70,11 @@ Rails.application.routes.draw do
   resources :users, only: [:show], module: :users do
     resource :dashboard, only: [:show]
     resources :devices, except: :edit do
-      member { get :shared }
+      member { get :shared, :info }
       resources :checkins, only: [:show, :create, :new, :update]
       delete '/checkins/', to: 'checkins#destroy_all'
       delete '/checkins/:id', to: 'checkins#destroy'
-      resources :permissions, only: [:update]
+      resources :permissions, only: [:update, :index]
     end
     resources :approvals, only: [:new, :create] do
       member do
@@ -96,8 +97,10 @@ Rails.application.routes.draw do
 
   namespace :developers do
     get '/', to: 'consoles#show'
-    resource :console, only: [:show]
-    resources :approvals, only: [:index, :new, :create]
+    resource :console, only: [:show] do
+      collection { post 'key' }
+    end
+    resources :approvals, only: [:index, :new, :create, :destroy]
     # For cool API usage stats in the future
     resources :requests, only: [:index] do
       collection do

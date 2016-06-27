@@ -3,7 +3,7 @@ Feature: Sign up and log in
 @javascript
   Scenario: Developer login
     Given I am on the homepage
-      And I click "Developers"
+      And I click the "Developer log in" link in the "footer"
       Then I click the link "Sign up!"
     When I fill in the form with my "developer" details
       And I click "Sign up"

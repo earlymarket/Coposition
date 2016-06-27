@@ -55,6 +55,8 @@ $(document).on('ready page:change', function() {
     $('.collapsible').collapsible();
   }());
 
+  $('.scrollspy').scrollSpy();
+
 });
 
 
