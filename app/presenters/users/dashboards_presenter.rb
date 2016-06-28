@@ -35,7 +35,6 @@ module Users
       {
         current_user: current_user_info,
         friends: friends,
-        weeks_checkins: weeks_checkins,
         months_checkins: months_checkins
       }
     end
@@ -65,7 +64,7 @@ module Users
     end
 
     def months_checkins
-      @checkins.where(created_at: 1.month.ago..Time.now)
+      @checkins.where(created_at: 1.month.ago..Time.now).limit(200).sample(100)
     end
 
     def current_user_info
