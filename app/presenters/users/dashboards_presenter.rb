@@ -30,15 +30,15 @@ module Users
       end
     end
 
-    def gon
-      # gon converts these using #each_pair into seperate gon variables
-      {
-        current_user: current_user_info,
-        friends: friends,
-        weeks_checkins: weeks_checkins,
-        months_checkins: months_checkins
-      }
-    end
+    # def gon
+    #   # gon converts these using #each_pair into seperate gon variables
+    #   {
+    #     current_user: current_user_info,
+    #     friends: friends,
+    #     weeks_checkins: weeks_checkins,
+    #     months_checkins: months_checkins
+    #   }
+    # end
 
     private
 

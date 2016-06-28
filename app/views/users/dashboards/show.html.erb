@@ -24,6 +24,10 @@
 <div class="divider"></div>
 <p>
   You checked in <%= @presenter.weeks_checkins_count || 0 %> times this week.
+  <% if @presenter.percent_change.present? %>
+    <br />
+    That is an <%= @presenter.percent_change > 0 ? 'increase' : 'decrease' %> of <%= @presenter.percent_change %>% from last week.
+  <% end %>
   <% if @presenter.most_used_device.present? %>
       Your most used device is <%= @presenter.most_used_device.name %>.
   <% end %>
