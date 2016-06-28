@@ -23,8 +23,12 @@ class User < ActiveRecord::Base
   has_many :subscriptions, as: :subscriber, dependent: :destroy
   has_many :developers, -> { where "status = 'accepted'" },
            through: :approvals, source: :approvable, source_type: 'Developer'
+  has_many :developer_approvals, -> { where(status: 'accepted', approvable_type: 'Developer') },
+           class_name: 'Approval'
   has_many :friends, -> { where "status = 'accepted'" },
            through: :approvals, source: :approvable, source_type: 'User'
+  has_many :friend_approvals, -> { where(status: 'accepted', approvable_type: 'User') },
+           class_name: 'Approval'
   has_many :pending_friends, -> { where "status = 'pending'" },
            through: :approvals, source: :approvable, source_type: 'User'
   has_many :friend_requests, -> { where "status = 'requested'" },
