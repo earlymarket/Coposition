@@ -123,7 +123,7 @@ $(document).on('page:change', function () {
           gon.months_checkins.map(checkin => L.latLng(checkin.lat, checkin.lng))
         );
       },
-      status: `Some of your last month's check-ins (random sample). <a href='./devices'>(More details)</a>`,
+      status: `A random sample of your last month's checkins <a href='./devices'>(more details)</a>`,
       init (caller) {
         if (this.hasCheckins()) {
           caller.slides.push({
