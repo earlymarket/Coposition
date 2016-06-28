@@ -47079,7 +47079,7 @@ $(document).on('page:change', function () {
             return L.latLng(checkin.lat, checkin.lng);
           }));
         },
-        status: 'Your last month\'s check-ins <a href=\'./devices\'>(more details)</a>',
+        status: 'Some of your last month\'s check-ins (random sample). <a href=\'./devices\'>(Fore details)</a>',
         init: function init(caller) {
           if (this.hasCheckins()) {
             caller.slides.push({
