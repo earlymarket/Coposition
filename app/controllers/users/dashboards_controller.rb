@@ -3,6 +3,6 @@ class Users::DashboardsController < ApplicationController
 
   def show
     @presenter = ::Users::DashboardsPresenter.new(current_user)
-    # gon.push(@presenter.gon)
+    gon.push(@presenter.gon)
   end
 end
