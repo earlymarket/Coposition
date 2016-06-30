@@ -151,11 +151,23 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
   end
 
   describe 'get #index' do
-    it 'should get a list of a users approvals' do
+    before do
       Approval.link(user, developer, 'Developer')
+      Approval.link(user, second_user, 'User')
+      Approval.accept(user, second_user, 'User')
+    end
+
+    it 'should get a list of a users approvals' do
       get :index, params
-      expect(res_hash.length).to eq 1
+      expect(res_hash.length).to eq 2
       expect(res_hash.first['user_id']).to eq user.id
+    end
+
+    it 'should get a list of a users accepted friend approvals' do
+      get :index, params.merge(type: 'friends')
+      expect(res_hash.length).to eq 1
+      expect(res_hash.first['status']).to eq 'accepted'
+      expect(res_hash.first['approvable_type']).to eq 'User'
     end
   end
 end

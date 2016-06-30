@@ -13,16 +13,20 @@ module Users
     end
 
     def index
-      devices = @user.devices.includes(:checkins).joins(:checkins).order('checkins.created_at')
+      devices = @user.devices
       devices.geocode_last_checkins
-      devices += @user.devices.includes(:permissions, :checkins)
+      device_ids = devices.last_checkins.map { |checkin| checkin['device_id'] }
+      devices = devices.index_by(&:id).values_at(*device_ids)
+      devices += @user.devices.includes(:permissions)
       @devices = devices.uniq.paginate(page: @params[:page], per_page: 5)
     end
 
     def show
       @device = Device.find(@params[:id])
-      @checkins = @device.checkins.to_csv
-      @filename = "device-#{@device.id}-checkins-#{Date.today}.csv"
+      if @params[:download]
+        @checkins = @device.checkins.to_csv
+        @filename = "device-#{@device.id}-checkins-#{Date.today}.csv"
+      end
     end
 
     def shared
@@ -46,7 +50,7 @@ module Users
 
     def show_gon
       {
-        checkins: @device.checkins,
+        checkins: show_checkins,
         current_user_id: @user.id
       }
     end
@@ -63,12 +67,16 @@ module Users
 
     def gon_index_checkins
       @user.devices.map do |device|
-        device.checkins.first.as_json.merge(device: device.name) if device.checkins.present?
+        device.checkins.first.as_json.merge(device: device.name) if device.checkins.exists?
       end.compact
     end
 
     def gon_shared_checkin
       @checkin.reverse_geocode!.replace_foggable_attributes.public_info if @checkin
+    end
+
+    def show_checkins
+      @device.checkins.select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_area)
     end
   end
 end

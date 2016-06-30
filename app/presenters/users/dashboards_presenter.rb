@@ -3,6 +3,8 @@ module Users
     attr_reader :most_frequent_areas
     attr_reader :percent_change
     attr_reader :weeks_checkins_count
+    attr_reader :last_countries_loaded
+    attr_reader :most_used
 
     def initialize(user)
       # No attr_readers for these values so they're private
@@ -13,6 +15,8 @@ module Users
       @most_frequent_areas = fogged_area_count.first(5)
       @percent_change = @checkins.percentage_increase('week')
       @weeks_checkins_count = weeks_checkins.count
+      @last_countries_loaded = last_countries
+      @most_used = most_used_device
     end
 
     def most_used_device
@@ -70,7 +74,7 @@ module Users
     def current_user_info
       {
         userinfo: @user.public_info_hash,
-        lastCheckin: @user.checkins.first
+        lastCheckin: @checkins.first
       }
     end
   end

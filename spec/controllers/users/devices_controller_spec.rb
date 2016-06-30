@@ -61,7 +61,7 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
 
     it 'should create a CSV file if .csv appended to url' do
-      get :show, params.merge(format: :csv)
+      get :show, params.merge(format: :csv, download: true)
       expect(response.header['Content-Type']).to include 'text/csv'
       expect(response.body).to include(*checkin.attributes.keys)
       expect(response.body).to include(checkin.attributes.values.join(','))

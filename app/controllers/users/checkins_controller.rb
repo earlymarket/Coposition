@@ -60,7 +60,7 @@ class Users::CheckinsController < ApplicationController
   end
 
   def reload_gon_variables
-    gon.checkins = @checkin.device.checkins
+    gon.checkins = @checkin.device.checkins.select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_area)
     gon.current_user_id = current_user.id
   end
 end
