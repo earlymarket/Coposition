@@ -15,7 +15,7 @@ module Users
     def index
       devices = @user.devices
       devices.geocode_last_checkins
-      device_ids = gon_index_checkins.map { |checkin| checkin['device_id'] }
+      device_ids = devices.last_checkins.map { |checkin| checkin['device_id'] }
       devices = devices.index_by(&:id).values_at(*device_ids)
       devices += @user.devices.includes(:permissions)
       @devices = devices.uniq.paginate(page: @params[:page], per_page: 5)

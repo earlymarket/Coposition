@@ -110,13 +110,20 @@ class Device < ActiveRecord::Base
     select([:id, :user_id, :name, :alias, :published])
   end
 
+  def self.last_checkins
+    all.map do |device|
+      device.checkins.first if device.checkins.exists?
+    end.compact
+  end
+
   def self.geocode_last_checkins
-    all.each { |device| device.checkins.last.reverse_geocode! if device.checkins.exists? }
+    all.each { |device| device.checkins.first.reverse_geocode! if device.checkins.exists? }
   end
 
   def self.ordered_by_checkins
-    devices = includes(:checkins).joins(:checkins).order('checkins.created_at')
-    devices += all
-    devices.uniq
+    device_ids = last_checkins.map { |checkin| checkin['device_id'] }
+    ordered_devices = all.index_by(&:id).values_at(*device_ids)
+    ordered_devices += all
+    ordered_devices.uniq
   end
 end
