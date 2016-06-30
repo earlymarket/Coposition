@@ -88,7 +88,7 @@ class Device < ActiveRecord::Base
   end
 
   def public_info
-    # Clears out any potentially sensitive attributes
+    # Clears out any potentially sensitive attributes, returns a normal ActiveRecord relation
     # Returns a normal ActiveRecord relation
     Device.select([:id, :user_id, :name, :alias, :published]).find(id)
   end
@@ -101,22 +101,25 @@ class Device < ActiveRecord::Base
     data = data.as_json
     data.merge!(public_info.as_json) unless data[:model_name] == 'Device'
     data.merge!(user.public_info.as_json) if user
-    subscriptions(event).each do |subscription|
-      subscription.send_data([data])
-    end
+    subscriptions(event).each { |subscription| subscription.send_data([data]) }
   end
 
   def self.public_info
     select([:id, :user_id, :name, :alias, :published])
   end
 
+  def self.last_checkins
+    all.map { |device| device.checkins.first if device.checkins.exists? }.compact
+  end
+
   def self.geocode_last_checkins
-    all.each { |device| device.checkins.last.reverse_geocode! if device.checkins.exists? }
+    all.each { |device| device.checkins.first.reverse_geocode! if device.checkins.exists? }
   end
 
   def self.ordered_by_checkins
-    devices = includes(:checkins).joins(:checkins).order('checkins.created_at')
-    devices += all
-    devices.uniq
+    device_ids = last_checkins.map { |checkin| checkin['device_id'] }
+    ordered_devices = all.index_by(&:id).values_at(*device_ids)
+    ordered_devices += all
+    ordered_devices.uniq
   end
 end
