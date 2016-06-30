@@ -50,7 +50,7 @@ module Users
 
     def show_gon
       {
-        checkins: @device.checkins,
+        checkins: show_checkins,
         current_user_id: @user.id
       }
     end
@@ -73,6 +73,10 @@ module Users
 
     def gon_shared_checkin
       @checkin.reverse_geocode!.replace_foggable_attributes.public_info if @checkin
+    end
+
+    def show_checkins
+      @device.checkins.select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_area)
     end
   end
 end
