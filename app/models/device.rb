@@ -109,7 +109,7 @@ class Device < ActiveRecord::Base
   end
 
   def self.last_checkins
-    all.map { |device| device.checkins.first if device.checkins.exists? }.compact
+    all.map { |device| device.checkins.first if device.checkins.exists? }.compact.sort_by(&:created_at).reverse
   end
 
   def self.geocode_last_checkins
