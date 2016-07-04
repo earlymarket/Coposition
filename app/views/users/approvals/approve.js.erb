@@ -16,3 +16,11 @@ var page = ($(".c-approvals.a-apps").length === 1 ? 'apps' : 'friends');
 COPO.permissionsTrigger.initTrigger(page);
 COPO.permissions.initSwitches(page, gon.current_user_id, gon.permissions);
 
+if(gon.friends.some(friend => friend.lastCheckin)) {
+  $('#map-overlay').addClass('hide');
+  COPO.maps.refreshFriendMarkers(gon.friends);
+} else if(gon.friends){
+  if(COPO.maps.friendMarkers){ map.removeLayer(COPO.maps.friendMarkers) }
+  $('#map-overlay').removeClass('hide');
+}
+

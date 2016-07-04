@@ -9,28 +9,11 @@ $(document).on('page:change', function() {
     COPO.permissionsTrigger.initTrigger(PAGE)
     COPO.permissions.initSwitches(PAGE, gon.current_user_id, gon.permissions)
 
-    if(gon.friends.some(friend => friend.lastCheckin)) {
+    if(gon.friends && gon.friends.some(friend => friend.lastCheckin)) {
       $('.friends-index').removeClass('hide');
       M.initMap();
       M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
-      let clusters = M.arrayToCluster(gon.friends, M.makeMapPin);
-      clusters.eachLayer((marker) => {
-        marker.on('click', function (e) {
-          M.panAndW3w.call(this, e)
-        });
-        marker.on('mouseover', (e) => {
-          if(!marker._popup) {
-            M.friendPopup(marker);
-          }
-          COPO.maps.w3w.setCoordinates(e);
-          marker.openPopup();
-        });
-      });
-      map.addLayer(clusters);
-      const BOUNDS = L.latLngBounds(
-          _.compact(gon.friends.map(friend => friend.lastCheckin))
-          .map(friend => L.latLng(friend.lat, friend.lng)))
-      map.fitBounds(BOUNDS, {padding: [40, 40]})
+      M.addFriendMarkers(gon.friends)
     } else if(gon.friends){
       $('.friends-index').removeClass('hide');
       M.initMap();

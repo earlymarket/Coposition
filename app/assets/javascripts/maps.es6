@@ -240,6 +240,32 @@ window.COPO.maps = {
     }
   },
 
+  addFriendMarkers(checkins){
+    COPO.maps.friendMarkers = COPO.maps.arrayToCluster(checkins, COPO.maps.makeMapPin);
+    COPO.maps.friendMarkers.eachLayer((marker) => {
+      marker.on('click', function (e) {
+        COPO.maps.panAndW3w.call(this, e)
+      });
+      marker.on('mouseover', (e) => {
+        if(!marker._popup) {
+          COPO.maps.friendPopup(marker);
+        }
+        COPO.maps.w3w.setCoordinates(e);
+        marker.openPopup();
+      });
+    });
+    map.addLayer(COPO.maps.friendMarkers);
+    const BOUNDS = L.latLngBounds(
+        _.compact(checkins.map(friend => friend.lastCheckin))
+        .map(friend => L.latLng(friend.lat, friend.lng)))
+    map.fitBounds(BOUNDS, {padding: [40, 40]})
+  },
+
+  refreshFriendMarkers(checkins){
+    if(COPO.maps.friendMarkers){ map.removeLayer(COPO.maps.friendMarkers) }
+    COPO.maps.addFriendMarkers(checkins);
+  },
+
   friendPopup(marker) {
     let user    = marker.options.user;
     let name    = COPO.utility.friendsName(user);
