@@ -40,7 +40,7 @@ $(document).on('page:change', function() {
       var marker = L.marker([checkin.lat, checkin.lng], {
         icon: L.mapbox.marker.icon({
           'marker-size': 'large',
-          'marker-symbol': 'heliport',
+          'marker-symbol': 'circle',
           'marker-color': '#ff6900'
         })
       })
