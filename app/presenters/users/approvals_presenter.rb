@@ -37,12 +37,14 @@ module Users
     end
 
     def friends_checkins
-      friends = @user.friends.includes(:devices)
-      friends.map do |friend|
-        {
-          userinfo: friend.public_info_hash,
-          lastCheckin: friend.get_user_checkins_for(@user).limit(1).first
-        }
+      if @approvable_type == 'User'
+        friends = @user.friends.includes(:devices)
+        friends.map do |friend|
+          {
+            userinfo: friend.public_info_hash,
+            lastCheckin: friend.get_user_checkins_for(@user).limit(1).first
+          }
+        end
       end
     end
   end

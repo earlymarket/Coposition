@@ -8,10 +8,11 @@ $(document).on('page:change', function() {
     var page = ($(".c-approvals.a-apps").length === 1 ? 'apps' : 'friends')
     COPO.permissionsTrigger.initTrigger(page)
     COPO.permissions.initSwitches(page, gon.current_user_id, gon.permissions)
-    M.initMap();
-    M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
 
     if(gon.friends.length){
+      $('.friends-index').removeClass('hide');
+      M.initMap();
+      M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
       let clusters = M.arrayToCluster(gon.friends, M.makeMapPin);
       clusters.eachLayer((marker) => {
         marker.on('click', function (e) {
