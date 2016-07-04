@@ -66,9 +66,10 @@ module Users
     private
 
     def gon_index_checkins
-      @user.devices.map do |device|
+      checkins = @user.devices.map do |device|
         device.checkins.first.as_json.merge(device: device.name) if device.checkins.exists?
       end.compact
+      checkins.sort_by { |checkin| checkin['created_at'] }.reverse
     end
 
     def gon_shared_checkin
