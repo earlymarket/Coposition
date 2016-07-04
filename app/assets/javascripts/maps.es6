@@ -240,6 +240,20 @@ window.COPO.maps = {
     }
   },
 
+  friendPopup(marker) {
+    let user    = marker.options.user;
+    let name    = COPO.utility.friendsName(user);
+    let date    = new Date(marker.options.lastCheckin.created_at).toUTCString();
+    let address = COPO.utility.commaToNewline(marker.options.lastCheckin.address) || marker.options.lastCheckin.fogged_area;
+    let content = `
+    <h2>${ name } <a href="./friends/${user.slug}" title="Device info">
+      <i class="material-icons tiny">perm_device_information</i>
+      </a></h2>
+    <div class="address">${ address }</div>
+    Checked in: ${ date }`
+    marker.bindPopup(content, { offset: [0, -38] } );
+  },
+
   makeMarker(checkin, markerOptions) {
     let defaults = {
       icon: L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#ff6900' }),
