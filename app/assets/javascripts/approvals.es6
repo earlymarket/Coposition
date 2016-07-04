@@ -9,7 +9,7 @@ $(document).on('page:change', function() {
     COPO.permissionsTrigger.initTrigger(PAGE)
     COPO.permissions.initSwitches(PAGE, gon.current_user_id, gon.permissions)
 
-    if(gon.friends && gon.friends.length){
+    if(gon.friends.some(friend => friend.lastCheckin)) {
       $('.friends-index').removeClass('hide');
       M.initMap();
       M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
@@ -31,7 +31,9 @@ $(document).on('page:change', function() {
           _.compact(gon.friends.map(friend => friend.lastCheckin))
           .map(friend => L.latLng(friend.lat, friend.lng)))
       map.fitBounds(BOUNDS, {padding: [40, 40]})
-    } else {
+    } else if(gon.friends){
+      $('.friends-index').removeClass('hide');
+      M.initMap();
       $('#map-overlay').removeClass('hide');
     }
 
