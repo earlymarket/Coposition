@@ -49,14 +49,14 @@ RSpec.describe Developers::ApprovalsController, type: :controller do
     it 'should fail to create an approval if request exists' do
       approval
       post :create, approval_create_params
-      expect(flash[:alert]).to match 'Error creating approval'
+      expect(flash[:alert]).to match 'Approval already exists'
       expect(Approval.count).to eq 1
     end
 
     it 'should fail to create an approval if user does not exist' do
       approval_create_params[:approval][:user] = 'does not exist'
       post :create, approval_create_params
-      expect(flash[:alert]).to match 'Error creating approval'
+      expect(flash[:alert]).to match 'User does not exist'
       expect(Approval.count).to eq 0
     end
   end
