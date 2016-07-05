@@ -17210,6 +17210,34 @@ a[data-maitre-status]:hover {
 .c-approvals .card-panel .row {
   margin: 0;
 }
+/* line 30, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
+.c-approvals #map-overlay {
+  position: absolute;
+  z-index: 1500;
+  width: 100%;
+  background: white;
+  height: 100%;
+  opacity: 0.85;
+  padding: 1rem;
+}
+/* line 39, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
+.c-approvals #map-overlay div {
+  width: 100%;
+}
+/* line 43, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
+.c-approvals #map {
+  width: 100%;
+  height: 300px;
+}
+/* line 47, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
+.c-approvals #map .leaflet-marker-icon {
+  cursor: inherit;
+  outline: 0;
+}
+/* line 51, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
+.c-approvals #map .leaflet-marker-icon.leaflet-clickable {
+  cursor: pointer;
+}
 
 /* line 2, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/permissions.scss */
 .permissions .master-permissions {

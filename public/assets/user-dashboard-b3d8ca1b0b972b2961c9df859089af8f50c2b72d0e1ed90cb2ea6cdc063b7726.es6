@@ -37,35 +37,6 @@ $(document).on('page:change', function () {
       hasFriendsWithCheckins () {
         return this.hasFriends() && gon.friends.filter(friend => friend.lastCheckin).length > 0;
       },
-      layers () {
-        let clusters = M.arrayToCluster(gon.friends, M.makeMapPin);
-        clusters.eachLayer((marker) => {
-          marker.on('click', function (e) {
-            M.panAndW3w.call(this, e)
-          });
-          marker.on('mouseover', (e) => {
-            if(!marker._popup) {
-              this.addPopup(marker);
-            }
-            COPO.maps.w3w.setCoordinates(e);
-            marker.openPopup();
-          });
-        });
-        return clusters;
-      },
-      addPopup (marker) {
-        let user    = marker.options.user;
-        let name    = U.friendsName(user);
-        let date    = new Date(marker.options.lastCheckin.created_at).toUTCString();
-        let address = U.commaToNewline(marker.options.lastCheckin.address) || marker.options.lastCheckin.fogged_area;
-        let content = `
-        <h2>${ name } <a href="./friends/${user.slug}" title="Device info">
-          <i class="material-icons tiny">perm_device_information</i>
-          </a></h2>
-        <div class="address">${ address }</div>
-        Checked in: ${ date }`
-        marker.bindPopup(content, { offset: [0, -38] } );
-      },
       bounds () {
         return L.latLngBounds(
           _.compact(gon.friends.map(friend => friend.lastCheckin))
@@ -77,7 +48,7 @@ $(document).on('page:change', function () {
         if (this.hasFriendsWithCheckins()) {
           caller.slides.push({
             status:   this.status,
-            layers: this.layers(),
+            layers:   M.bindFriendMarkers(gon.friends, M.makeMapPin),
             bounds:   this.bounds()
           });
           caller.hasContent = true;
