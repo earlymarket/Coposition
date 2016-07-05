@@ -64,13 +64,13 @@ window.COPO.maps = {
     for (var i = 0; i < checkins.length; i++) {
       var checkin = checkins[i]
       var markerObject = {
-        icon: L.mapbox.marker.icon({ 'marker-symbol' : 'circle', 'marker-color' : '#ff6900' }),
+        icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#ff6900' }),
         title: 'ID: ' + checkin.id,
         alt: 'checkin',
         checkin: checkin
       }
       if (i === 0) {
-        markerObject.icon = L.mapbox.marker.icon({ 'marker-symbol' : 'circle', 'marker-color' : '#47b8e0' })
+        markerObject.icon = L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#47b8e0' })
         markerObject.title = 'ID: ' + checkin.id + ' - Most recent'
         markerObject.alt = 'lastCheckin'
       }
@@ -282,7 +282,7 @@ window.COPO.maps = {
 
   makeMarker(checkin, markerOptions) {
     let defaults = {
-      icon: L.mapbox.marker.icon({ 'marker-symbol' : 'circle', 'marker-color' : '#ff6900' }),
+      icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#ff6900' }),
       title: 'ID: ' + checkin.id,
       alt: 'ID: ' + checkin.id,
       checkin: checkin
