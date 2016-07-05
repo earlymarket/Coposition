@@ -64,13 +64,13 @@ window.COPO.maps = {
     for (var i = 0; i < checkins.length; i++) {
       var checkin = checkins[i]
       var markerObject = {
-        icon: L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#ff6900' }),
+        icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#ff6900' }),
         title: 'ID: ' + checkin.id,
         alt: 'checkin',
         checkin: checkin
       }
       if (i === 0) {
-        markerObject.icon = L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#47b8e0' })
+        markerObject.icon = L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#47b8e0' })
         markerObject.title = 'ID: ' + checkin.id + ' - Most recent'
         markerObject.alt = 'lastCheckin'
       }
@@ -240,9 +240,54 @@ window.COPO.maps = {
     }
   },
 
+  addFriendMarkers(checkins){
+    COPO.maps.friendMarkers = COPO.maps.bindFriendMarkers(checkins);
+    map.addLayer(COPO.maps.friendMarkers);
+    const BOUNDS = L.latLngBounds(
+        _.compact(checkins.map(friend => friend.lastCheckin))
+        .map(friend => L.latLng(friend.lat, friend.lng)))
+    map.fitBounds(BOUNDS, {padding: [40, 40]})
+  },
+
+  bindFriendMarkers(checkins){
+    let markers = COPO.maps.arrayToCluster(checkins, COPO.maps.makeMapPin);
+    markers.eachLayer((marker) => {
+      marker.on('click', function (e) {
+        COPO.maps.panAndW3w.call(this, e)
+      });
+      marker.on('mouseover', (e) => {
+        if(!marker._popup) {
+          COPO.maps.friendPopup(marker);
+        }
+        COPO.maps.w3w.setCoordinates(e);
+        marker.openPopup();
+      });
+    });
+    return markers
+  },
+
+  refreshFriendMarkers(checkins){
+    if(COPO.maps.friendMarkers){ map.removeLayer(COPO.maps.friendMarkers) }
+    COPO.maps.addFriendMarkers(checkins);
+  },
+
+  friendPopup(marker) {
+    let user    = marker.options.user;
+    let name    = COPO.utility.friendsName(user);
+    let date    = new Date(marker.options.lastCheckin.created_at).toUTCString();
+    let address = COPO.utility.commaToNewline(marker.options.lastCheckin.address) || marker.options.lastCheckin.fogged_area;
+    let content = `
+    <h2>${ name } <a href="./friends/${user.slug}" title="Device info">
+      <i class="material-icons tiny">perm_device_information</i>
+      </a></h2>
+    <div class="address">${ address }</div>
+    Checked in: ${ date }`
+    marker.bindPopup(content, { offset: [0, -38] } );
+  },
+
   makeMarker(checkin, markerOptions) {
     let defaults = {
-      icon: L.mapbox.marker.icon({ 'marker-symbol' : 'heliport', 'marker-color' : '#ff6900' }),
+      icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#ff6900' }),
       title: 'ID: ' + checkin.id,
       alt: 'ID: ' + checkin.id,
       checkin: checkin

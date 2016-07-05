@@ -45981,13 +45981,13 @@ window.COPO.maps = {
     for (var i = 0; i < checkins.length; i++) {
       var checkin = checkins[i];
       var markerObject = {
-        icon: L.mapbox.marker.icon({ 'marker-symbol': 'heliport', 'marker-color': '#ff6900' }),
+        icon: L.mapbox.marker.icon({ 'marker-symbol': 'marker', 'marker-color': '#ff6900' }),
         title: 'ID: ' + checkin.id,
         alt: 'checkin',
         checkin: checkin
       };
       if (i === 0) {
-        markerObject.icon = L.mapbox.marker.icon({ 'marker-symbol': 'heliport', 'marker-color': '#47b8e0' });
+        markerObject.icon = L.mapbox.marker.icon({ 'marker-symbol': 'marker', 'marker-color': '#47b8e0' });
         markerObject.title = 'ID: ' + checkin.id + ' - Most recent';
         markerObject.alt = 'lastCheckin';
       }
@@ -46159,9 +46159,48 @@ window.COPO.maps = {
     }
   },
 
+  addFriendMarkers: function addFriendMarkers(checkins) {
+    COPO.maps.friendMarkers = COPO.maps.arrayToCluster(checkins, COPO.maps.makeMapPin);
+    COPO.maps.friendMarkers.eachLayer(function (marker) {
+      marker.on('click', function (e) {
+        COPO.maps.panAndW3w.call(this, e);
+      });
+      marker.on('mouseover', function (e) {
+        if (!marker._popup) {
+          COPO.maps.friendPopup(marker);
+        }
+        COPO.maps.w3w.setCoordinates(e);
+        marker.openPopup();
+      });
+    });
+    map.addLayer(COPO.maps.friendMarkers);
+    var BOUNDS = L.latLngBounds(_.compact(checkins.map(function (friend) {
+      return friend.lastCheckin;
+    })).map(function (friend) {
+      return L.latLng(friend.lat, friend.lng);
+    }));
+    map.fitBounds(BOUNDS, { padding: [40, 40] });
+  },
+
+  refreshFriendMarkers: function refreshFriendMarkers(checkins) {
+    if (COPO.maps.friendMarkers) {
+      map.removeLayer(COPO.maps.friendMarkers);
+    }
+    COPO.maps.addFriendMarkers(checkins);
+  },
+
+  friendPopup: function friendPopup(marker) {
+    var user = marker.options.user;
+    var name = COPO.utility.friendsName(user);
+    var date = new Date(marker.options.lastCheckin.created_at).toUTCString();
+    var address = COPO.utility.commaToNewline(marker.options.lastCheckin.address) || marker.options.lastCheckin.fogged_area;
+    var content = '\n    <h2>' + name + ' <a href="./friends/' + user.slug + '" title="Device info">\n      <i class="material-icons tiny">perm_device_information</i>\n      </a></h2>\n    <div class="address">' + address + '</div>\n    Checked in: ' + date;
+    marker.bindPopup(content, { offset: [0, -38] });
+  },
+
   makeMarker: function makeMarker(checkin, markerOptions) {
     var defaults = {
-      icon: L.mapbox.marker.icon({ 'marker-symbol': 'heliport', 'marker-color': '#ff6900' }),
+      icon: L.mapbox.marker.icon({ 'marker-symbol': 'marker', 'marker-color': '#ff6900' }),
       title: 'ID: ' + checkin.id,
       alt: 'ID: ' + checkin.id,
       checkin: checkin
@@ -46569,20 +46608,37 @@ var MasterSwitch = (function (_PermissionSwitch2) {
 
   return MasterSwitch;
 })(PermissionSwitch);
-$(document).on('page:change', function() {
-  if (($(".c-approvals.a-apps").length === 1) || ($(".c-approvals.a-friends").length === 1)) {
-    $('.tooltipped').tooltip({delay: 50});
-    COPO.utility.gonFix();
-    var page = ($(".c-approvals.a-apps").length === 1 ? 'apps' : 'friends')
-    COPO.permissionsTrigger.initTrigger(page)
-    COPO.permissions.initSwitches(page, gon.current_user_id, gon.permissions)
+"use strict";
 
-    $(document).on('page:before-unload', function(){
+$(document).on('page:change', function () {
+  if ($(".c-approvals.a-apps").length === 1 || $(".c-approvals.a-friends").length === 1) {
+    var U = window.COPO.utility;
+    var M = window.COPO.maps;
+
+    $('.tooltipped').tooltip({ delay: 50 });
+    U.gonFix();
+    var PAGE = $(".c-approvals.a-apps").length === 1 ? 'apps' : 'friends';
+    COPO.permissionsTrigger.initTrigger(PAGE);
+    COPO.permissions.initSwitches(PAGE, gon.current_user_id, gon.permissions);
+
+    if (gon.friends && gon.friends.some(function (friend) {
+      return friend.lastCheckin;
+    })) {
+      $('.friends-index').removeClass('hide');
+      M.initMap();
+      M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
+      M.addFriendMarkers(gon.friends);
+    } else if (gon.friends) {
+      $('.friends-index').removeClass('hide');
+      M.initMap();
+      $('#map-overlay').removeClass('hide');
+    }
+
+    $(document).on('page:before-unload', function () {
       COPO.permissions.switchesOff();
-    })
+    });
   }
-})
-;
+});
 'use strict';
 
 $(document).on('page:change', function () {
@@ -46802,7 +46858,7 @@ $(document).on('page:change', function() {
       var marker = L.marker([checkin.lat, checkin.lng], {
         icon: L.mapbox.marker.icon({
           'marker-size': 'large',
-          'marker-symbol': 'heliport',
+          'marker-symbol': 'marker',
           'marker-color': '#ff6900'
         })
       })
@@ -47005,8 +47061,6 @@ $(document).on('page:change', function () {
           }).length > 0;
         },
         layers: function layers() {
-          var _this = this;
-
           var clusters = M.arrayToCluster(gon.friends, M.makeMapPin);
           clusters.eachLayer(function (marker) {
             marker.on('click', function (e) {
@@ -47014,21 +47068,13 @@ $(document).on('page:change', function () {
             });
             marker.on('mouseover', function (e) {
               if (!marker._popup) {
-                _this.addPopup(marker);
+                M.friendPopup(marker);
               }
               COPO.maps.w3w.setCoordinates(e);
               marker.openPopup();
             });
           });
           return clusters;
-        },
-        addPopup: function addPopup(marker) {
-          var user = marker.options.user;
-          var name = U.friendsName(user);
-          var date = new Date(marker.options.lastCheckin.created_at).toUTCString();
-          var address = U.commaToNewline(marker.options.lastCheckin.address) || marker.options.lastCheckin.fogged_area;
-          var content = '\n        <h2>' + name + ' <a href="./friends/' + user.slug + '" title="Device info">\n          <i class="material-icons tiny">perm_device_information</i>\n          </a></h2>\n        <div class="address">' + address + '</div>\n        Checked in: ' + date;
-          marker.bindPopup(content, { offset: [0, -38] });
         },
         bounds: function bounds() {
           return L.latLngBounds(_.compact(gon.friends.map(function (friend) {
@@ -47143,14 +47189,14 @@ $(document).on('page:change', function () {
           };
         },
         init: function init() {
-          var _this2 = this;
+          var _this = this;
 
           this.paused = false;
           this.persistent.forEach(function (feature) {
-            return feature.init(_this2);
+            return feature.init(_this);
           });
           this.slideTypes.forEach(function (slide) {
-            return slide.init(_this2);
+            return slide.init(_this);
           });
           this.initTimerHandler();
           if (!this.hasContent) this.showNullState();
