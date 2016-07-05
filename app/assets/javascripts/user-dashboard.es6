@@ -37,22 +37,6 @@ $(document).on('page:change', function () {
       hasFriendsWithCheckins () {
         return this.hasFriends() && gon.friends.filter(friend => friend.lastCheckin).length > 0;
       },
-      layers () {
-        let clusters = M.arrayToCluster(gon.friends, M.makeMapPin);
-        clusters.eachLayer((marker) => {
-          marker.on('click', function (e) {
-            M.panAndW3w.call(this, e)
-          });
-          marker.on('mouseover', (e) => {
-            if(!marker._popup) {
-               M.friendPopup(marker);
-            }
-            COPO.maps.w3w.setCoordinates(e);
-            marker.openPopup();
-          });
-        });
-        return clusters;
-      },
       bounds () {
         return L.latLngBounds(
           _.compact(gon.friends.map(friend => friend.lastCheckin))
@@ -64,7 +48,7 @@ $(document).on('page:change', function () {
         if (this.hasFriendsWithCheckins()) {
           caller.slides.push({
             status:   this.status,
-            layers: this.layers(),
+            layers:   M.bindFriendMarkers(gon.friends, M.makeMapPin),
             bounds:   this.bounds()
           });
           caller.hasContent = true;

@@ -241,8 +241,17 @@ window.COPO.maps = {
   },
 
   addFriendMarkers(checkins){
-    COPO.maps.friendMarkers = COPO.maps.arrayToCluster(checkins, COPO.maps.makeMapPin);
-    COPO.maps.friendMarkers.eachLayer((marker) => {
+    COPO.maps.friendMarkers = COPO.maps.bindFriendMarkers(checkins);
+    map.addLayer(COPO.maps.friendMarkers);
+    const BOUNDS = L.latLngBounds(
+        _.compact(checkins.map(friend => friend.lastCheckin))
+        .map(friend => L.latLng(friend.lat, friend.lng)))
+    map.fitBounds(BOUNDS, {padding: [40, 40]})
+  },
+
+  bindFriendMarkers(checkins){
+    let markers = COPO.maps.arrayToCluster(checkins, COPO.maps.makeMapPin);
+    markers.eachLayer((marker) => {
       marker.on('click', function (e) {
         COPO.maps.panAndW3w.call(this, e)
       });
@@ -254,11 +263,7 @@ window.COPO.maps = {
         marker.openPopup();
       });
     });
-    map.addLayer(COPO.maps.friendMarkers);
-    const BOUNDS = L.latLngBounds(
-        _.compact(checkins.map(friend => friend.lastCheckin))
-        .map(friend => L.latLng(friend.lat, friend.lng)))
-    map.fitBounds(BOUNDS, {padding: [40, 40]})
+    return markers
   },
 
   refreshFriendMarkers(checkins){
