@@ -17238,6 +17238,12 @@ a[data-maitre-status]:hover {
 .c-approvals #map .leaflet-marker-icon.leaflet-clickable {
   cursor: pointer;
 }
+/* line 57, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
+.c-approvals .address {
+  font: 0.7rem Fira Mono;
+  margin-bottom: 1em;
+  white-space: pre;
+}
 
 /* line 2, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/permissions.scss */
 .permissions .master-permissions {
