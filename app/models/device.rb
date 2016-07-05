@@ -109,7 +109,7 @@ class Device < ActiveRecord::Base
   end
 
   def self.last_checkins
-    all.map { |device| device.checkins.first if device.checkins.exists? }.compact
+    all.map { |device| device.checkins.first if device.checkins.exists? }.compact.sort_by(&:created_at).reverse
   end
 
   def self.geocode_last_checkins
@@ -117,7 +117,7 @@ class Device < ActiveRecord::Base
   end
 
   def self.ordered_by_checkins
-    device_ids = last_checkins.map { |checkin| checkin['device_id'] }
+    device_ids = last_checkins.map(&:device_id)
     ordered_devices = all.index_by(&:id).values_at(*device_ids)
     ordered_devices += all
     ordered_devices.uniq
