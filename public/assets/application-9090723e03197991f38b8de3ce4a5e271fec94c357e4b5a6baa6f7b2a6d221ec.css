@@ -17019,7 +17019,7 @@ a[data-maitre-status]:hover {
 /* line 58, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index #map {
   width: 100%;
-  height: 400px;
+  height: 300px;
 }
 
 /* line 5, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss.erb */
@@ -17179,7 +17179,7 @@ a[data-maitre-status]:hover {
 /* line 15, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/friends-device-index.scss */
 .c-friends.a-show #map {
   width: 100%;
-  height: 400px;
+  height: 300px;
 }
 
 /* line 3, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
