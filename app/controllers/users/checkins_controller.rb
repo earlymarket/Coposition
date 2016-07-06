@@ -1,11 +1,17 @@
 class Users::CheckinsController < ApplicationController
   before_action :authenticate_user!
-  before_action :require_checkin_ownership, except: [:new, :create, :destroy_all]
-  before_action :require_device_ownership, only: [:new, :create, :destroy_all]
+  before_action :require_checkin_ownership, except: [:index, :new, :create, :destroy_all]
+  before_action :require_device_ownership, only: [:index, :new, :create, :destroy_all]
 
   def new
     @device = Device.find(params[:device_id])
     @checkin = Device.find(params[:device_id]).checkins.new
+  end
+
+  def index
+    @device = Device.find(params[:device_id])
+    per_page = params[:per_page].to_i <= 1000 ? params[:per_page] : 1000
+    render json: @device.checkins.paginate(page: params[:page], per_page: per_page)
   end
 
   def create

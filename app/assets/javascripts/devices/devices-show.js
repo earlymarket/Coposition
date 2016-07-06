@@ -9,7 +9,7 @@ $(document).on('page:change', function() {
 
     $('li.tab').on('click', function(event) {
       var tab = event.target.textContent
-      setTimeout(function() {
+      setTimeout (function() {
         if (tab ==='Table'){
           COPO.charts.refreshCharts(COPO.dateRange.currentCheckins(gon.checkins), page);
         } else {
