@@ -11,7 +11,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       it 'should render status 401 with message' do
         get :show, id: user.id, format: :json
         expect(response.status).to eq 401
-        expect(res_hash[:message]).to eq 'No valid API Key'
+        expect(res_hash[:error]).to eq 'No valid API Key'
       end
     end
 
@@ -53,7 +53,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       it 'should return status 400 and json message "Invalid webhook key supplied"' do
         get :auth
         expect(response.status).to eq 400
-        expect(res_hash[:message]).to eq 'Invalid webhook key supplied'
+        expect(res_hash[:error]).to eq 'Invalid webhook key supplied'
       end
     end
   end

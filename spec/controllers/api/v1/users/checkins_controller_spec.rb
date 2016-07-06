@@ -45,7 +45,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     context 'without developer approval' do
       it "shouldn't fetch the last reported location", :skip_before do
         get :last, params
-        expect(res_hash[:approval_status]).to be nil
+        expect(res_hash[:error]).to eq 'Approval_status: No Approval'
       end
     end
 
@@ -55,7 +55,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         Approval.link(user, developer, 'Developer')
         Approval.accept(user, developer, 'Developer')
         get :last, params.merge(permissible_id: second_user.id)
-        expect(res_hash[:approval_status]).to be nil
+        expect(res_hash[:error]).to eq 'Approval_status: No Approval'
       end
     end
 
@@ -200,14 +200,14 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       create_headers
       post :create, checkin: { lat: Faker::Address.latitude }
       expect(response.status).to eq(400)
-      expect(res_hash[:message]).to eq('You must provide a lat and lng')
+      expect(res_hash[:error]).to eq('You must provide a lat and lng')
     end
 
     it 'should return 400 if you POST a checkin with invalid uuid' do
       request.headers['X-UUID'] = 'thisdevicedoesntexist'
       post :create, create_params
       expect(response.status).to eq(400)
-      expect(res_hash[:message]).to eq('You must provide a valid uuid')
+      expect(res_hash[:error]).to eq('You must provide a valid uuid')
     end
   end
 end
