@@ -12,6 +12,7 @@ class Users::CheckinsController < ApplicationController
     @device = Device.find(params[:device_id])
     per_page = params[:per_page].to_i <= 1000 ? params[:per_page] : 1000
     render json: @device.checkins.paginate(page: params[:page], per_page: per_page)
+      .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_area)
   end
 
   def create
