@@ -52,7 +52,8 @@ module Users
     def show_gon
       {
         checkins: show_checkins,
-        current_user_id: @user.id
+        current_user_id: @user.id,
+        total: @device.checkins.count
       }
     end
 
@@ -78,7 +79,7 @@ module Users
     end
 
     def show_checkins
-      @device.checkins.select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_area)
+      @device.checkins.paginate(page: 1, per_page: 1000).select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_area)
     end
   end
 end
