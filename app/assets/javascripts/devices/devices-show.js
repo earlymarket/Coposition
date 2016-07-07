@@ -4,7 +4,7 @@ $(document).on('page:change', function() {
     COPO.utility.gonFix();
     COPO.maps.initMap();
     COPO.dateRange.initDateRange(gon.checkins, page);
-    COPO.maps.initMarkers(COPO.dateRange.currentCheckins(gon.checkins));
+    COPO.maps.initMarkers(COPO.dateRange.currentCheckins(gon.checkins), gon.total);
     COPO.maps.initControls();
 
     $('li.tab').on('click', function(event) {
