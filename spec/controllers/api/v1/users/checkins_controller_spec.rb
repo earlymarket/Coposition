@@ -45,7 +45,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     context 'without developer approval' do
       it "shouldn't fetch the last reported location", :skip_before do
         get :last, params
-        expect(res_hash[:error]).to eq 'Approval_status: No Approval'
+        expect(res_hash[:error]).to eq 'approval_status: No Approval'
       end
     end
 
@@ -55,7 +55,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         Approval.link(user, developer, 'Developer')
         Approval.accept(user, developer, 'Developer')
         get :last, params.merge(permissible_id: second_user.id)
-        expect(res_hash[:error]).to eq 'Approval_status: No Approval'
+        expect(res_hash[:error]).to eq 'approval_status: No Approval'
       end
     end
 
