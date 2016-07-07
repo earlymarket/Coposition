@@ -52,7 +52,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   end
 
   def check_user
-    render status: 403, json: { message: 'Incorrect User' } unless current_user?(params[:user_id])
+    render status: 403, json: { error: 'Incorrect User' } unless current_user?(params[:user_id])
   end
 
   def approvable_type

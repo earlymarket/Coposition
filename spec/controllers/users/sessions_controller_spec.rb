@@ -43,9 +43,9 @@ RSpec.describe Users::Devise::SessionsController, type: :controller do
         request.headers['X-User-Token'] = 'invalid token'
         request.env['devise.mapping'] = Devise.mappings[:user]
         post :destroy, params
-        expect(res_hash[:message]).to eq 'Invalid token.'
+        expect(res_hash[:error]).to eq 'Invalid token.'
         post :create, params.delete('password')
-        expect(res_hash[:message]).to eq 'The request MUST contain the user email and password.'
+        expect(res_hash[:error]).to eq 'The request MUST contain the user email and password.'
       end
     end
   end

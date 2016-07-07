@@ -17,7 +17,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
       device = result.device
       render json: device
     else
-      render status: 400, json: { message: result.error }
+      render status: 400, json: { error: result.error }
     end
   end
 
@@ -37,7 +37,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
   private
 
   def check_user
-    render status: 403, json: { message: 'User does not own device' } unless current_user?(params[:user_id])
+    render status: 403, json: { error: 'User does not own device' } unless current_user?(params[:user_id])
   end
 
   def device_params
