@@ -76,6 +76,7 @@ window.COPO.maps = {
   },
 
   addLastCheckinMarker(checkins) {
+    if(!checkins.length) return;
     COPO.maps.last = COPO.maps.makeMarker(checkins[0], {
       icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#47b8e0' }),
       title: 'ID: ' + checkins[0].id + ' - Most recent',
