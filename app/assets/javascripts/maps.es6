@@ -61,6 +61,8 @@ window.COPO.maps = {
     map.closePopup();
     if(COPO.maps.markers){
       map.removeLayer(COPO.maps.markers);
+    }
+    if(COPO.maps.last){
       map.removeLayer(COPO.maps.last);
     }
     COPO.maps.renderAllMarkers(checkins);
