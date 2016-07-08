@@ -57,9 +57,12 @@ window.COPO.maps = {
 
   refreshMarkers(checkins) {
     map.removeEventListener('popupclose');
+    map.removeEventListener('zoomstart');
     map.closePopup();
-    map.removeLayer(COPO.maps.markers);
-    map.removeLayer(COPO.maps.last);
+    if(COPO.maps.markers){
+      map.removeLayer(COPO.maps.markers);
+      map.removeLayer(COPO.maps.last);
+    }
     COPO.maps.renderAllMarkers(checkins);
     COPO.maps.bindMarkerListeners(checkins);
   },
