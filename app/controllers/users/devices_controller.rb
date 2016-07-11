@@ -12,7 +12,7 @@ class Users::DevicesController < ApplicationController
     @presenter = ::Users::DevicesPresenter.new(current_user, params, 'show')
     gon.push(@presenter.show_gon)
     respond_to do |format|
-      format.html { flash[:notice] = 'Right click on the map to checkin' }
+      format.html { flash[:notice] = 'Right click on the map to check-in' }
       format.csv { send_data @presenter.checkins, filename: @presenter.filename }
     end
   end
