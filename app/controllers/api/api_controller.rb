@@ -1,7 +1,7 @@
 class Api::ApiController < ActionController::Base
   include ApiApplicationMixin
   rescue_from ::ActiveRecord::RecordNotFound, with: :render_404_and_error
-  rescue_from ::ActionController::ParameterMissing, with: :render_404_and_error
+  rescue_from ::ActionController::ParameterMissing, with: :render_400_and_error
 
   before_action :find_user, :authenticate
 
@@ -67,5 +67,9 @@ class Api::ApiController < ActionController::Base
 
   def render_404_and_error(exception)
     render status: 404, json: { error: exception.message }
+  end
+
+  def render_400_and_error(exception)
+    render status: 400, json: { error: exception.message }
   end
 end

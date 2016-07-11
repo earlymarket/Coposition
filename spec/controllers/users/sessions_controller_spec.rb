@@ -24,7 +24,7 @@ RSpec.describe Users::Devise::SessionsController, type: :controller do
       request.env['devise.mapping'] = Devise.mappings[:user]
       params[:user][:password] = 'incorrect'
       post :create, params
-      expect(response.status).to be 401
+      expect(response.status).to be 400
       expect(res_hash[:email]).to be nil
       expect(res_hash[:authentication_token]).to be nil
     end
