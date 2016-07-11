@@ -36,9 +36,7 @@ window.COPO.maps = {
       return;
     } else {
       console.log('Still more checkins to load');
-      // if (total > 1000) COPO.refreshMarkers();
       Materialize.toast('Loading additional check-ins', 3000);
-      // debugger;
       var reqArr = [];
       for (var page = 2; page <= Math.ceil(gon.total / 1000); page++ ) {
         console.log('Loading page ' + page);
