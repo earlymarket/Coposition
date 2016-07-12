@@ -42,7 +42,7 @@
       </div>
     </div>
 
-    <%= link_to(fogged_icon(device.fogged), user_device_path(current_user.url_id, device.id), { method: :put, id:"fogButton#{device.id}", remote: true, class: 'left tooltipped', data: { fogged: device.fogged?, tooltip:'Fogging' } })%>
+    <%= link_to(fogged_icon(device.fogged), user_device_path(current_user.url_id, device.id), { method: :put, id:"fogButton#{device.id}", remote: true, class: 'left tooltipped fogButton', data: { confirm: "Are you sure? Turning fogging off will allow you friends/apps to see your precise location", fogged: device.fogged?, tooltip:'Fogging' } })%>
 
     <a class="left tooltipped" data-tooltip="Download checkins (.csv)" href="<%= user_device_path(current_user.url_id, device) %>.csv?download=true"><i class="material-icons">file_download</i></a>
 
