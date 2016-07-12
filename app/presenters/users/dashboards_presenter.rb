@@ -25,7 +25,7 @@ module Users
 
     def last_countries
       @checkins.select('distinct(country_code)', 'id', 'created_at').sort.reverse.uniq(&:country_code)
-      .select {|c| c.country_code != "No Country" }.first(10)
+               .select { |c| c.country_code != 'No Country' }.first(10)
                .sort_by(&:created_at).reverse
                .map do |checkin|
         {
