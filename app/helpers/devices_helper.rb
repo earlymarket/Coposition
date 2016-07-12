@@ -54,4 +54,11 @@ module DevicesHelper
     end
     output.join.html_safe
   end
+
+  def devices_label(presenter)
+    label = ''
+    label << "Friend: #{approvals_approvable_name(presenter.friend)} <br>" if presenter.class == Users::FriendsPresenter
+    label << "Device: #{presenter.device.name}"
+    label.html_safe
+  end
 end

@@ -5,7 +5,7 @@ RSpec.describe DevicesHelper, type: :helper do
   let(:developer) { FactoryGirl.create :developer }
   let(:user) { FactoryGirl.create :user }
   let(:device) do
-    device = FactoryGirl.create(:device, user_id: 1)
+    device = FactoryGirl.create(:device, user_id: user.id)
     device.developers << developer
     device.permitted_users << user
     device
@@ -16,6 +16,9 @@ RSpec.describe DevicesHelper, type: :helper do
     config
   end
   let(:other) { Device.update(device.id, published: true) }
+  let(:friend) { FactoryGirl.create :user }
+  let(:friendPresenter) { ::Users::FriendsPresenter.new(friend, { id: user.id, device_id: device.id }, 'show_device') }
+  let(:devicesPresenter) { ::Users::DevicesPresenter.new(user, { id: device.id }, 'show') }
 
   describe '#devices_permitted_actors_for' do
     it 'returns the devices developers and permitted users' do
@@ -78,6 +81,23 @@ RSpec.describe DevicesHelper, type: :helper do
       output = helper.devices_config_rows(custom_config)
       expect(output).to match custom_config.custom.keys.first.to_s
       expect(output.scan(/<tr>/).count).to eq custom_config.custom.count
+    end
+  end
+
+  describe '#devices_label' do
+    context 'on friends page' do
+      it 'contains friend name and device name' do
+        output = helper.devices_label(friendPresenter)
+        expect(output).to match device.name
+        expect(output).to match helper.approvals_approvable_name(user)
+      end
+    end
+    context 'on personal page' do
+      it 'contains device name' do
+        output = helper.devices_label(devicesPresenter)
+        expect(output).to match device.name
+        expect(output).to_not match helper.approvals_approvable_name(user)
+      end
     end
   end
 end
