@@ -3,16 +3,14 @@ $(document).on('page:change', function() {
     var page = $(".c-devices.a-show").length === 1 ? 'user' : 'friend'
     COPO.utility.gonFix();
     COPO.maps.initMap();
-    // COPO.dateRange.initDateRange(gon.checkins, page);
-    // COPO.maps.initMarkers(COPO.dateRange.currentCheckins(gon.checkins), gon.total);
-    COPO.maps.initMarkers(gon.checkins, gon.total);
+    COPO.maps.initMarkers(COPO.dateRange.currentCheckins(gon.checkins), gon.total);
     COPO.maps.initControls();
 
     $('li.tab').on('click', function(event) {
       var tab = event.target.textContent
       setTimeout (function() {
         if (tab ==='Table'){
-          // COPO.charts.refreshCharts(COPO.dateRange.currentCheckins(gon.checkins), page);
+          COPO.charts.refreshCharts(COPO.dateRange.currentCheckins(gon.checkins), page);
           COPO.charts.refreshCharts(gon.checkins, page);
         } else {
           map.invalidateSize();
@@ -21,7 +19,7 @@ $(document).on('page:change', function() {
     });
 
     $(window).resize(function(){
-      // COPO.charts.refreshCharts(COPO.dateRange.currentCheckins(gon.checkins), page);
+      COPO.charts.refreshCharts(COPO.dateRange.currentCheckins(gon.checkins), page);
       COPO.charts.refreshCharts(gon.checkins, page);
     });
 
