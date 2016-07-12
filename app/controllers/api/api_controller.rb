@@ -1,6 +1,7 @@
 class Api::ApiController < ActionController::Base
   include ApiApplicationMixin
-  rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from ::ActiveRecord::RecordNotFound, with: :render_404_and_error
+  rescue_from ::ActionController::ParameterMissing, with: :render_404_and_error
 
   before_action :find_user, :authenticate
 
@@ -20,7 +21,7 @@ class Api::ApiController < ActionController::Base
     if @dev
       create_request
     else
-      render status: 401, json: { message: 'No valid API Key' }
+      render status: 401, json: { error: 'No valid API Key' }
     end
   end
 
@@ -36,9 +37,9 @@ class Api::ApiController < ActionController::Base
     @permissible = find_permissible
     return if req_from_coposition_app?
     if !@user.approved?(@dev)
-      render status: 401, json: { "approval status": @user.approval_for(@dev).status }
+      render status: 401, json: { error: "approval_status: #{@user.approval_for(@dev).status}" }
     elsif !@user.approved?(@permissible)
-      render status: 401, json: { "approval status": @user.approval_for(@permissible).status }
+      render status: 401, json: { error: "approval_status: #{@user.approval_for(@permissible).status}" }
     end
   end
 
@@ -60,11 +61,11 @@ class Api::ApiController < ActionController::Base
 
   def resource_exists?(resource, arguments)
     model = resource.titleize.constantize
-    render status: 404, json: { message: "#{model} does not exist" } unless arguments
+    render status: 404, json: { error: "#{model} does not exist" } unless arguments
     arguments
   end
 
-  def record_not_found(exception)
-    render json: { error: exception.message }.to_json, status: 404
+  def render_404_and_error(exception)
+    render status: 404, json: { error: exception.message }
   end
 end
