@@ -30,6 +30,10 @@ window.COPO.dateRange = {
         COPO.charts.refreshCharts(CHECKINS, page);
       },
     });
+    window.COPO.dateRange._loaded = true;
+    $(document).one('page:before-unload', function () {
+      window.COPO.dateRange._loaded = false;
+    });
   },
 
   filteredCheckins(checkins, FROM, TO) {
@@ -45,6 +49,7 @@ window.COPO.dateRange = {
   },
 
   currentCheckins(checkins){
+    if(!COPO.dateRange.loaded) return checkins;
     const slider = $("#dateRange").data("ionRangeSlider");
     return COPO.dateRange.filteredCheckins(checkins, moment(slider.old_from, "X"), moment(slider.old_to, "X"))
   }
