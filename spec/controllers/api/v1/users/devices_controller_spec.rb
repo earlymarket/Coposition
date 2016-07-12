@@ -73,13 +73,13 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       count = user.devices.count
       post :create, create_params
       expect(user.devices.count).to be count
-      expect(res_hash[:message]).to match 'registered to another user'
+      expect(res_hash[:error]).to match 'registered to another user'
     end
 
     it 'should fail to to create a device with a taken name' do
       create_params[:device] = { name: device.name }
       post :create, create_params
-      expect(res_hash[:message]).to match device.name
+      expect(res_hash[:error]).to match device.name
     end
   end
 
@@ -95,13 +95,13 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     it 'should reject non-existant device ids' do
       put :update, device_params.merge(id: 9999999, device: { fogged: true })
       expect(response.status).to eq(404)
-      expect(res_hash[:message]).to eq('Device does not exist')
+      expect(res_hash[:error]).to eq('Device does not exist')
     end
 
     it 'should not allow you to update someone elses device' do
       put :update, user_id: second_user.id, id: second_user.devices.last.id, device: { fogged: true }, format: :json
       expect(response.status).to eq(403)
-      expect(res_hash[:message]).to eq('User does not own device')
+      expect(res_hash[:error]).to eq('User does not own device')
     end
   end
 end

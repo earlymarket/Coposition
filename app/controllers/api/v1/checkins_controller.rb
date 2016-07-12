@@ -45,7 +45,7 @@ class Api::V1::CheckinsController < Api::ApiController
       config = @dev.configs.find_by(device_id: @device.id)
       render json: { data: [checkin], config: config }
     else
-      render status: 400, json: { message: 'You must provide a lat and lng' }
+      render status: 400, json: { error: 'You must provide a lat and lng' }
     end
   end
 
@@ -53,7 +53,7 @@ class Api::V1::CheckinsController < Api::ApiController
 
   def device_exists?
     if (@device = Device.find_by(uuid: request.headers['X-UUID'])).nil?
-      render status: 400, json: { message: 'You must provide a valid uuid' }
+      render status: 400, json: { error: 'You must provide a valid uuid' }
     end
   end
 

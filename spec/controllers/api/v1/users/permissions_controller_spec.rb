@@ -58,7 +58,7 @@ RSpec.describe Api::V1::Users::PermissionsController, type: :controller do
           device_id: second_device.id,
           id: permission.id
       expect(response.status).to be 403
-      expect(res_hash[:message]).to eq 'You do not control that permission'
+      expect(res_hash[:error]).to eq 'You do not control that permission'
     end
   end
 
@@ -79,7 +79,7 @@ RSpec.describe Api::V1::Users::PermissionsController, type: :controller do
       put :update_all,
           device_id: second_device.id,
           user_id: user.id
-      expect(res_hash[:message]).to eq 'You do not control that device'
+      expect(res_hash[:error]).to eq 'You do not control that device'
     end
   end
 end

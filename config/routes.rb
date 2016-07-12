@@ -63,6 +63,7 @@ Rails.application.routes.draw do
         resources :sessions, only: [:create, :destroy]
       end
     end
+    match '*path', to: -> (_env) { [404, {}, ['{"error": "route_not_found"}']] }, via: :all
   end
 
   # Users
