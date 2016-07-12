@@ -95,8 +95,8 @@ RSpec.describe DevicesHelper, type: :helper do
     context 'on personal page' do
       it 'contains device name' do
         output = helper.devices_label(devicesPresenter)
+        expect(output).to_not match 'Friend:'
         expect(output).to match device.name
-        expect(output).to_not match helper.approvals_approvable_name(user)
       end
     end
   end
