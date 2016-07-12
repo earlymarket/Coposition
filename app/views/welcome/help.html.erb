@@ -5,7 +5,7 @@
     <div id="checkin" class="section scrollspy">
       <h4><i class="material-icons">pin_drop</i> Checking in</h4>
       <p>
-        You can start checking in either via the Coposition website, the Coposition app or an app that is using Coposition. You can find a list of apps using coposition here: /link/.</br></br>
+        You can start checking in either via the Coposition website, the Coposition app or an app that is using Coposition.</br></br>
         You can create a checkin on the coposition website by selecting a device from your
         <%= current_user ? link_to('devices', user_devices_path(current_user.url_id)) : 'devices' %>
         and then either right clicking on the map or clicking on the marker in the control panel to the left hand side of the map and then selecting the blue starred marker that appears on the map which indicates your current location.</br></br>
@@ -41,7 +41,7 @@
       <div id="uuid" class="section scrollspy">
         <h5><i class="material-icons">perm_device_information</i> Device UUID</h5>
         <p>
-          Device UUID is primarily used in the developer API. However, some apps may request a device UUID to sync this device to their app.
+          Device UUID is a unique identifier for existing Coposition devices and is primarily used in the developer API. Some apps may request a device UUID to sync this device to their app or some hardware (eg. a tracking device) may come pre-packaged with a Coposition UUID that you can use to sync the hardware to your coposition account.
         </p>
       </div>
       <div id="configuration" class="section scrollspy">
