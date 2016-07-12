@@ -1,5 +1,7 @@
 <div id='gonvariables'><%= Gon::Base.render_data %></div>
-
+<div id='device-name'class="valign-wrapper">
+  <%=devices_label(@presenter)%>
+</div>
 <ul class="tabs row">
   <li class="tab map col s6" id="mapTab"><a href="#map">Map</a></li>
   <li class="tab chart col s6" id="chartTab"><a href="#chart">Table</a></li>
@@ -11,6 +13,4 @@
   </div>
 </div>
 
-<div id='map'>
-  <div id='device-name' class='left'><%=devices_label(@presenter)%></div>
-</div>
+<div id='map'></div>
