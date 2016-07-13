@@ -2,16 +2,21 @@ module Users
   class FriendsPresenter
     attr_reader :friend
     attr_reader :devices
+    attr_reader :device
 
     def initialize(user, params, action)
       @user = user
       @friend = User.find(params[:id])
       @params = params
-      send action if action.present?
+      send action
     end
 
     def show
       @devices = @friend.devices.ordered_by_checkins.paginate(page: @params[:page], per_page: 5)
+    end
+
+    def show_device
+      @device = @friend.devices.find(@params[:device_id])
     end
 
     def index_gon
