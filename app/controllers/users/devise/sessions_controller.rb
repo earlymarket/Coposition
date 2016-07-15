@@ -43,7 +43,7 @@ class Users::Devise::SessionsController < Devise::SessionsController
     if (@user = User.find_by(email: email)) && @user.valid_password?(password)
       @user
     else
-      render status: 401, json: { error: 'The request MUST contain the user email and password.' }
+      render status: 400, json: { error: 'The request MUST contain the user email and password.' }
       return false
     end
   end

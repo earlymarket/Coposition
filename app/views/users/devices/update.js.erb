@@ -1,6 +1,11 @@
 <%= raw render_flash %>
 var fog = $('#fogButton<%=@device.id%>');
 fog.html("<%=j fogged_icon(@device.fogged)%>");
+<% if @device.fogged %>
+  fog.data('confirm', 'Are you sure? Turning off fogging will allow your friends/apps to see your precise location')
+<% else %>
+  fog.removeData('confirm').removeAttr('data-confirm')
+<% end %>
 
 var delay = $('#delayButton<%=@device.id%>');
 delay.html("<%=j devices_delay_icon(@device.delayed)%>");

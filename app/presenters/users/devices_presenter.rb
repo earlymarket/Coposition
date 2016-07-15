@@ -1,5 +1,6 @@
 module Users
   class DevicesPresenter
+    attr_reader :user
     attr_reader :devices
     attr_reader :device
     attr_reader :checkins

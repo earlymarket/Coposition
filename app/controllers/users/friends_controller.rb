@@ -9,8 +9,8 @@ class Users::FriendsController < ApplicationController
   end
 
   def show_device
-    presenter = ::Users::FriendsPresenter.new(current_user, params, '')
-    gon.push(presenter.show_device_gon)
+    @presenter = ::Users::FriendsPresenter.new(current_user, params, 'show_device')
+    gon.push(@presenter.show_device_gon)
   end
 
   private
