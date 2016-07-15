@@ -16939,7 +16939,7 @@ a[data-maitre-status]:hover {
 /* line 3, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-new.scss */
 .c-devices.a-new .rectangle-map {
   top: 10px;
-  border: 1px solid black;
+  border: 2px solid #2092bb;
   border-radius: 10px;
   z-index: 1;
   width: 100%;
@@ -16986,11 +16986,16 @@ a[data-maitre-status]:hover {
   width: 98%;
 }
 /* line 28, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
+.c-devices.a-index .card-panel {
+  padding: 5px;
+  margin: 0.25rem 0 0 0;
+}
+/* line 33, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index .disabled-icon {
   color: rgba(0, 0, 0, 0.2);
   position: relative;
 }
-/* line 31, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
+/* line 36, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index .disabled-icon:after {
   content: " ";
   height: 4px;
@@ -17002,7 +17007,7 @@ a[data-maitre-status]:hover {
   left: 0;
   transform: rotate(45deg);
 }
-/* line 45, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
+/* line 50, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index #map-overlay {
   position: absolute;
   z-index: 1500;
@@ -17012,14 +17017,17 @@ a[data-maitre-status]:hover {
   opacity: 0.85;
   padding: 1rem;
 }
-/* line 54, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
+/* line 59, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index #map-overlay div {
   width: 100%;
 }
-/* line 58, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
+/* line 63, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index #map {
   width: 100%;
   height: 300px;
+  border: 2px solid #2092bb;
+  border-radius: 10px;
+  z-index: 1;
 }
 
 /* line 5, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss.erb */
@@ -17064,7 +17072,7 @@ a[data-maitre-status]:hover {
   width: 100%;
   position: absolute !important;
   top: 64px;
-  margin-top: 48px;
+  margin-top: 103px;
 }
 /* line 45, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show #chart, .c-friends.a-show_device #chart {
@@ -17101,12 +17109,20 @@ a[data-maitre-status]:hover {
 .c-devices.a-show .fogged, .c-friends.a-show_device .fogged {
   color: #2196f3;
 }
+/* line 85, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss.erb */
+.c-devices.a-show #device-name, .c-friends.a-show_device #device-name {
+  height: 55px;
+  justify-content: center;
+  padding-top: 15px;
+  background: white;
+  font-size: 1.5rem;
+}
 
-/* line 88, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss.erb */
+/* line 96, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show #map {
   bottom: 120px;
 }
-/* line 92, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss.erb */
+/* line 100, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .bottom-panel {
   height: 120px;
 }
@@ -17180,6 +17196,14 @@ a[data-maitre-status]:hover {
 .c-friends.a-show #map {
   width: 100%;
   height: 300px;
+  border: 2px solid #2092bb;
+  border-radius: 10px;
+  z-index: 1;
+}
+/* line 23, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/friends-device-index.scss */
+.c-friends.a-show .card-panel {
+  padding: 5px;
+  margin: 0.25rem 0 0 0;
 }
 
 /* line 3, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
@@ -17228,17 +17252,20 @@ a[data-maitre-status]:hover {
 .c-approvals #map {
   width: 100%;
   height: 300px;
+  border: 2px solid #2092bb;
+  border-radius: 10px;
+  z-index: 1;
 }
-/* line 47, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
+/* line 50, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
 .c-approvals #map .leaflet-marker-icon {
   cursor: inherit;
   outline: 0;
 }
-/* line 51, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
+/* line 54, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
 .c-approvals #map .leaflet-marker-icon.leaflet-clickable {
   cursor: pointer;
 }
-/* line 57, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
+/* line 60, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/approvals.scss */
 .c-approvals .address {
   font: 0.7rem Fira Mono;
   margin-bottom: 1em;

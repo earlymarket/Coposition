@@ -46659,6 +46659,12 @@ $(document).on('page:change', function () {
     COPO.delaySlider.initSliders(gon.devices);
     gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');
 
+    $('.fogButton').each(function (index, fogButton) {
+      if (!$(fogButton).data('fogged')) {
+        $(fogButton).removeData('confirm').removeAttr('data-confirm');
+      }
+    });
+
     $('body').on('click', '.edit-button', function (e) {
       e.preventDefault();
       $(this).toggleClass('hide', true);
