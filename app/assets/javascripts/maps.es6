@@ -31,27 +31,20 @@ window.COPO.maps = {
 
   loadAllCheckins(checkins, total) {
     if (typeof (total) === 'undefined') return;
-    if (total <= checkins.length) {
-      console.log('You got all the check-ins');
-      return;
-    } else {
-      console.log('Still more checkins to load');
-      Materialize.toast('Loading additional check-ins', 3000);
-      var reqArr = [];
-      for (var page = 2; page <= Math.ceil(gon.total / 1000); page++ ) {
-        console.log('Loading page ' + page);
-        reqArr.push($.getJSON(`${window.location.href}/checkins?page=${page}&per_page=1000`))
-      }
-      $.when.apply($, reqArr).done(
-        function () {
-          for (var i = 0; i < arguments.length; i++) {
-            checkins = checkins.concat(arguments[i][0].checkins);
-          }
-          window.gon.checkins = checkins;
-          COPO.maps.refreshMarkers(window.gon.checkins);
-          Materialize.toast('All check-ins loaded', 3000);
-        }
-      )
+    loadCheckins(2);
+    function loadCheckins(page) {
+      if (total > gon.checkins.length) {
+        $.getJSON(`${window.location.href}/checkins?page=${page}&per_page=1000`) .then(function(data) {
+          console.log('Loading more checkins!');
+          gon.checkins = gon.checkins.concat(data.checkins);
+          COPO.maps.refreshMarkers(gon.checkins);
+          page++;
+          loadCheckins(page);
+        });
+      } else {
+        console.log('All done!');
+        Materialize.toast('All check-ins loaded', 3000);
+      };
     }
   },
 
