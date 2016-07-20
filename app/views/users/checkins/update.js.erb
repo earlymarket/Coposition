@@ -14,6 +14,5 @@ if(<%= @checkin.fogged %>){
 }
 
 //refresh the state of all markers
-var checkins = COPO.dateRange.currentCheckins(gon.checkins)
-COPO.charts.refreshCharts(checkins, 'user');
-COPO.maps.queueRefresh(checkins);
+COPO.charts.refreshCharts(gon.checkins, 'user');
+COPO.maps.queueRefresh(gon.checkins);

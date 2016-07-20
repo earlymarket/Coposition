@@ -31,10 +31,8 @@ window.COPO.maps = {
 
   loadAllCheckins(checkins, total) {
     if (typeof (total) === 'undefined') return;
-    var page = $(".c-devices.a-show").length === 1 ? 'user' : 'friend';
     if (total <= checkins.length) {
       console.log('You got all the check-ins');
-      COPO.dateRange.initDateRange(window.gon.checkins, page);
       return;
     } else {
       console.log('Still more checkins to load');
@@ -52,7 +50,6 @@ window.COPO.maps = {
           window.gon.checkins = checkins;
           COPO.maps.refreshMarkers(window.gon.checkins);
           Materialize.toast('All check-ins loaded', 3000);
-          COPO.dateRange.initDateRange(window.gon.checkins, page);
         }
       )
     }
