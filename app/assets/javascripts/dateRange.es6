@@ -18,11 +18,6 @@ window.COPO.dateRange = {
       prettify(num) {
         return moment(num, "X").format("LL");
       },
-      onChange(num) {
-        //const CHECKINS = COPO.dateRange.filteredCheckins(checkins, moment(num.from, "X"), moment(num.to, "X"));
-        //COPO.maps.refreshMarkers(CHECKINS);
-        //COPO.charts.refreshCharts(CHECKINS, page);
-      },
       onFinish(num) {
         const CHECKINS = COPO.dateRange.filteredCheckins(checkins, moment(num.from, "X"), moment(num.to, "X"));
         COPO.maps.refreshMarkers(CHECKINS);
@@ -49,7 +44,9 @@ window.COPO.dateRange = {
   },
 
   currentCheckins(checkins){
-    if(!COPO.dateRange.loaded) return checkins;
+    if (!COPO.dateRange.loaded) {
+      return checkins;
+    }
     const slider = $("#dateRange").data("ionRangeSlider");
     return COPO.dateRange.filteredCheckins(checkins, moment(slider.old_from, "X"), moment(slider.old_to, "X"))
   }
