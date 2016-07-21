@@ -52,7 +52,6 @@
 //= require charts
 //= require maps
 //= require permissions
-//= require dateRange
 //= require calendar
 //= require delay-slider
 //= require slides
