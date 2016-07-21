@@ -11,7 +11,6 @@ $(document).on('page:change', function() {
       setTimeout (function() {
         if (tab ==='Table'){
           COPO.charts.refreshCharts(gon.checkins, page);
-          COPO.charts.refreshCharts(gon.checkins, page);
         } else {
           map.invalidateSize();
         }
@@ -19,7 +18,6 @@ $(document).on('page:change', function() {
     });
 
     $(window).resize(function(){
-      COPO.charts.refreshCharts(gon.checkins, page);
       COPO.charts.refreshCharts(gon.checkins, page);
     });
 

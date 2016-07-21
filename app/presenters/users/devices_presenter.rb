@@ -79,7 +79,8 @@ module Users
     end
 
     def show_checkins
-      @device.checkins.paginate(page: 1, per_page: 1000).select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_area)
+      @device.checkins.paginate(page: 1, per_page: 1000)
+             .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_area)
     end
   end
 end
