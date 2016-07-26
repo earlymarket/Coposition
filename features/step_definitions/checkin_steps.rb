@@ -3,7 +3,7 @@ Then(/^I(?: should)? have (\d+) checkins on the map$/) do |number|
 end
 
 Then(/^I(?: should)? have (\d+) checkins in the table$/) do |number|
-  wait_until { page.has_selector?('tr', count: number.to_i + 1) }
+  page.has_selector?('tr', count: number.to_i + 1)
 end
 
 Given(/^I click on my last checkin$/) do
