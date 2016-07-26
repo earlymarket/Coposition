@@ -17120,11 +17120,11 @@ a[data-maitre-status]:hover {
 
 /* line 96, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show #map {
-  bottom: 120px;
+  bottom: 60px;
 }
 /* line 100, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .bottom-panel {
-  height: 120px;
+  height: 60px;
 }
 
 /* line 2, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/devices-shared.scss */
