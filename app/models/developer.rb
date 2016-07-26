@@ -1,6 +1,5 @@
 class Developer < ActiveRecord::Base
-  include ApprovalMethods
-  include SlackNotifiable
+  include ApprovalMethods, SlackNotifiable
 
   has_attachment :avatar
 
@@ -44,5 +43,15 @@ class Developer < ActiveRecord::Base
 
   def configures_device?(device)
     configs.where(device: device).present?
+  end
+
+  def self.coposition
+    return FactoryGirl.create(:developer) if Rails.env.test?
+    find_by(api_key: Rails.application.secrets.coposition_api_key)
+  end
+
+  def self.mobile_app
+    return FactoryGirl.create(:developer) if Rails.env.test?
+    find_by(api_key: Rails.application.secrets.mobile_app_api_key)
   end
 end

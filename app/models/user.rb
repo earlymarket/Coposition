@@ -1,7 +1,6 @@
 class User < ActiveRecord::Base
   extend FriendlyId
-  include ApprovalMethods
-  include SlackNotifiable
+  include ApprovalMethods, SlackNotifiable
 
   acts_as_token_authenticatable
 
@@ -40,6 +39,8 @@ class User < ActiveRecord::Base
 
   before_create :generate_token, unless: :webhook_key?
 
+  after_create :approve_coposition
+
   has_attachment :avatar
   ## Pathing
 
@@ -48,6 +49,10 @@ class User < ActiveRecord::Base
   end
 
   ## Approvals
+
+  def approve_coposition
+    Approval.add_developer(self, Developer.mobile_app)
+  end
 
   def approved?(permissible)
     developers.include?(permissible) || friends.include?(permissible)
