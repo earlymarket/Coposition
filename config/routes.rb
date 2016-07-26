@@ -72,7 +72,7 @@ Rails.application.routes.draw do
     resource :dashboard, only: [:show]
     resources :devices, except: :edit do
       member { get :shared, :info }
-      resources :checkins, only: [:show, :create, :new, :update]
+      resources :checkins, only: [:index, :show, :create, :new, :update]
       delete '/checkins/', to: 'checkins#destroy_all'
       delete '/checkins/:id', to: 'checkins#destroy'
       resources :permissions, only: [:update, :index]
