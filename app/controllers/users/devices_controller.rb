@@ -34,7 +34,7 @@ class Users::DevicesController < ApplicationController
   end
 
   def create
-    result = Users::Devices::CreateDevice.new(current_user, Developer.coposition, allowed_params)
+    result = Users::Devices::CreateDevice.new(current_user, Developer.default(coposition: true), allowed_params)
     if result.save?
       device = result.device
       gon.checkins = create_checkin(device)

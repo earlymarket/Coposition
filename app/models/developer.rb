@@ -45,13 +45,9 @@ class Developer < ActiveRecord::Base
     configs.where(device: device).present?
   end
 
-  def self.coposition
+  def self.default(type)
     return FactoryGirl.create(:developer) if Rails.env.test?
-    find_by(api_key: Rails.application.secrets.coposition_api_key)
-  end
-
-  def self.mobile_app
-    return FactoryGirl.create(:developer) if Rails.env.test?
-    find_by(api_key: Rails.application.secrets.mobile_app_api_key)
+    key = type.coposition ? Rails.application.secrets.coposition_api_key : Rails.application.secrets.mobile_app_api_key
+    find_by(api_key: key)
   end
 end
