@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
 
   before_create :generate_token, unless: :webhook_key?
 
-  after_create :approve_coposition
+  after_create :approve_coposition_mobile_app
 
   has_attachment :avatar
   ## Pathing
@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
 
   ## Approvals
 
-  def approve_coposition
+  def approve_coposition_mobile_app
     Approval.add_developer(self, Developer.default(mobile_app: true))
   end
 
