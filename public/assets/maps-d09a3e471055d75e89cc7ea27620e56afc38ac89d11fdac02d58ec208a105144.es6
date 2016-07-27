@@ -1,7 +1,7 @@
 window.COPO = window.COPO || {};
 window.COPO.maps = {
   initMap(customOptions) {
-    if(document.getElementById('map')._leaflet) return;
+    if (document.getElementById('map')._leaflet) return;
     L.mapbox.accessToken = 'pk.eyJ1IjoiZ2FyeXNpdSIsImEiOiJjaWxjZjN3MTMwMDZhdnNtMnhsYmh4N3lpIn0.RAGGQ0OaM81HVe0OiAKE0w';
 
     var defaultOptions = {
@@ -14,18 +14,38 @@ window.COPO.maps = {
     $(document).one('page:before-unload', COPO.maps.removeMap);
   },
 
-  initMarkers(checkins) {
+  initMarkers(checkins, total) {
     map.once('ready', function() {
-      COPO.maps.renderMarkers(checkins);
+      COPO.maps.renderAllMarkers(checkins);
       COPO.maps.bindMarkerListeners(checkins);
-      if(COPO.maps.allMarkers.getLayers().length) {
-        map.fitBounds(COPO.maps.allMarkers.getBounds())
+      COPO.maps.loadAllCheckins(checkins, total);
+      if (COPO.maps.allMarkers.getLayers().length) {
+        map.fitBounds(COPO.maps.allMarkers.getBounds());
       } else {
         map.once('locationfound', function(e) {
           map.panTo(e.latlng);
         })
       }
     });
+  },
+
+  loadAllCheckins(checkins, total) {
+    if (typeof (total) === 'undefined') return;
+    loadCheckins(2);
+    function loadCheckins(page) {
+      if (total > gon.checkins.length) {
+        $.getJSON(`${window.location.href}/checkins?page=${page}&per_page=1000`) .then(function(data) {
+          console.log('Loading more checkins!');
+          gon.checkins = gon.checkins.concat(data.checkins);
+          COPO.maps.refreshMarkers(gon.checkins);
+          page++;
+          loadCheckins(page);
+        });
+      } else {
+        console.log('All done!');
+        Materialize.toast('All check-ins loaded', 3000);
+      };
+    }
   },
 
   removeMap() {
@@ -50,39 +70,37 @@ window.COPO.maps = {
 
   refreshMarkers(checkins) {
     map.removeEventListener('popupclose');
+    map.removeEventListener('zoomstart');
     map.closePopup();
-    map.removeLayer(COPO.maps.markers);
-    map.removeLayer(COPO.maps.last);
-    COPO.maps.renderMarkers(checkins);
+    if(COPO.maps.markers){
+      map.removeLayer(COPO.maps.markers);
+    }
+    if(COPO.maps.last){
+      map.removeLayer(COPO.maps.last);
+    }
+    COPO.maps.renderAllMarkers(checkins);
     COPO.maps.bindMarkerListeners(checkins);
   },
 
-  renderMarkers(checkins) {
-    COPO.maps.allMarkers = new L.MarkerClusterGroup();
-    COPO.maps.markers = new L.MarkerClusterGroup();
-    COPO.maps.last = new L.MarkerClusterGroup();
-    for (var i = 0; i < checkins.length; i++) {
-      var checkin = checkins[i]
-      var markerObject = {
-        icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#ff6900' }),
-        title: 'ID: ' + checkin.id,
-        alt: 'checkin',
-        checkin: checkin
-      }
-      if (i === 0) {
-        markerObject.icon = L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#47b8e0' })
-        markerObject.title = 'ID: ' + checkin.id + ' - Most recent'
-        markerObject.alt = 'lastCheckin'
-      }
-      var marker = L.marker(new L.LatLng(checkin.lat, checkin.lng), markerObject);
-      COPO.maps.allMarkers.addLayer(marker);
-      if (i === 0) {
-        COPO.maps.last.addLayer(marker);
-      } else {
-        COPO.maps.markers.addLayer(marker);
-      }
-    }
+  renderAllMarkers(checkins) {
+    let markers = checkins.slice(1).map(checkin => COPO.maps.makeMarker(checkin));
+    // allMarkers is used for calculating bounds
+    COPO.maps.allMarkers = L.markerClusterGroup().addLayers(markers);
+    COPO.maps.addLastCheckinMarker(checkins);
+    // markers and last are distinct because we want the last checkin
+    // to always be displayed unclustered
+    COPO.maps.markers = L.markerClusterGroup().addLayers(markers, { chunkedLoading: true });
     map.addLayer(COPO.maps.markers);
+  },
+
+  addLastCheckinMarker(checkins) {
+    if(!checkins.length) return;
+    COPO.maps.last = COPO.maps.makeMarker(checkins[0], {
+      icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#47b8e0' }),
+      title: 'ID: ' + checkins[0].id + ' - Most recent',
+      alt: 'lastCheckin'
+    });
+    COPO.maps.allMarkers.addLayer(COPO.maps.last);
     map.addLayer(COPO.maps.last);
   },
 
@@ -112,12 +130,14 @@ window.COPO.maps = {
   },
 
   buildMarkerPopup(checkin) {
-    var checkinTemp = {};
-    checkinTemp.id = checkin.id
-    checkinTemp.lat = checkin.lat.toFixed(6);
-    checkinTemp.lng = checkin.lng.toFixed(6);
-    checkinTemp.created_at = new Date(checkin.created_at).toUTCString();
-    checkinTemp.address = checkin.address;
+    var checkinTemp = {
+      id: checkin.id,
+      lat: checkin.lat.toFixed(6),
+      lng: checkin.lng.toFixed(6),
+      created_at: (new Date(checkin.created_at)).toUTCString(),
+      address: checkin.address,
+    };
+
     var foggedClass;
     checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
     checkinTemp.foggedAddress = function() {
@@ -241,8 +261,17 @@ window.COPO.maps = {
   },
 
   addFriendMarkers(checkins){
-    COPO.maps.friendMarkers = COPO.maps.arrayToCluster(checkins, COPO.maps.makeMapPin);
-    COPO.maps.friendMarkers.eachLayer((marker) => {
+    COPO.maps.friendMarkers = COPO.maps.bindFriendMarkers(checkins);
+    map.addLayer(COPO.maps.friendMarkers);
+    const BOUNDS = L.latLngBounds(
+        _.compact(checkins.map(friend => friend.lastCheckin))
+        .map(friend => L.latLng(friend.lat, friend.lng)))
+    map.fitBounds(BOUNDS, {padding: [40, 40]})
+  },
+
+  bindFriendMarkers(checkins){
+    let markers = COPO.maps.arrayToCluster(checkins, COPO.maps.makeMapPin);
+    markers.eachLayer((marker) => {
       marker.on('click', function (e) {
         COPO.maps.panAndW3w.call(this, e)
       });
@@ -254,11 +283,7 @@ window.COPO.maps = {
         marker.openPopup();
       });
     });
-    map.addLayer(COPO.maps.friendMarkers);
-    const BOUNDS = L.latLngBounds(
-        _.compact(checkins.map(friend => friend.lastCheckin))
-        .map(friend => L.latLng(friend.lat, friend.lng)))
-    map.fitBounds(BOUNDS, {padding: [40, 40]})
+    return markers
   },
 
   refreshFriendMarkers(checkins){
