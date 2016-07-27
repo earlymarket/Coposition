@@ -6,14 +6,11 @@ class User < ActiveRecord::Base
 
   friendly_id :username, use: [:slugged, :finders]
 
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable,
          authentication_keys: { username: false, email: true }
 
-  validates :username, uniqueness: true,
-                       allow_blank: true,
-                       format: { with: /\A[-a-zA-Z_]+\z/,
-                                 message: 'only allows letters, underscores and dashes' }
+  validates :username, uniqueness: true, allow_blank: true,
+                       format: { with: /\A[-a-zA-Z_]+\z/, message: 'only allows letters, underscores and dashes' }
 
   has_many :devices, dependent: :destroy
   has_many :checkins, through: :devices

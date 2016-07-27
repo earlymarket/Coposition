@@ -75,7 +75,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
     context 'when post to create' do
       it 'should be able to create a developer approval' do
         post :create, dev_approval_create_params
-        expect(Approval.where(user: user, approvable: developer, status: 'accepted')).to exist
+        expect(Approval.where(approvable: developer, status: 'accepted', user: user)).to exist
       end
 
       it 'should be able to create a user approval request' do
