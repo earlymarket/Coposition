@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
   ## Approvals
 
   def approve_coposition_mobile_app
-    Approval.add_developer(self, Developer.default(mobile_app: true))
+    Approval.add_developer(self, Developer.default(mobile: true))
   end
 
   def approved?(permissible)

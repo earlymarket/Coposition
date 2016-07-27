@@ -47,7 +47,7 @@ class Developer < ActiveRecord::Base
 
   def self.default(type)
     return FactoryGirl.create(:developer) if Rails.env.test?
-    key = type.coposition ? Rails.application.secrets.coposition_api_key : Rails.application.secrets.mobile_app_api_key
-    find_by(api_key: key)
+    key = type[:coposition] ? 'coposition_api_key' : 'mobile_app_api_key'
+    find_by(api_key: Rails.application.secrets[key])
   end
 end
