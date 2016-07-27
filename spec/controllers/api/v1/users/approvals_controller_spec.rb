@@ -25,23 +25,26 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
   describe 'a developer' do
     it 'should be able to submit an approval request' do
       post :create, dev_approval_create_params
-      expect(Approval.first.status).to eq 'developer-requested'
+      expect(Approval.where(user: user, approvable: developer, status: 'developer-requested')).to exist
       expect(user.pending_approvals.count).to be 1
     end
 
     it 'should be not be able to submit another request to same user' do
+      dev_approval_create_params
       Approval.link(user, developer, 'Developer')
+      approval_count = Approval.count
       post :create, dev_approval_create_params
-      expect(Approval.count).to eq 1
-      expect(Approval.first.status).to eq 'developer-requested'
+      expect(Approval.count).to eq approval_count
       expect(user.pending_approvals.count).to be 1
     end
 
     it 'should be not be able to submit an approval request for another user' do
+      friend_approval_create_params
       Approval.link(user, developer, 'Developer')
+      approval_count = Approval.count
       post :create, friend_approval_create_params
-      expect(Approval.count).to_not be 2
-      expect(Approval.first.approvable).to_not be second_user
+      expect(Approval.count).to be approval_count
+      expect(Approval.where(approvable: second_user)).to_not exist
     end
 
     it 'should be told if the approval is still pending' do
@@ -72,33 +75,31 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
     context 'when post to create' do
       it 'should be able to create a developer approval' do
         post :create, dev_approval_create_params
-        expect(Approval.last.user).to eq user
-        expect(Approval.last.approvable_id).to eq developer.id
-        expect(Approval.last.status).to eq 'accepted'
+        expect(Approval.where(approvable: developer, status: 'accepted', user: user)).to exist
       end
 
       it 'should be able to create a user approval request' do
+        friend_approval_create_params
+        approval_count = Approval.count
         post :create, friend_approval_create_params
-        expect(Approval.count).to eq 2
-        expect(Approval.last.user).to eq second_user
-        expect(Approval.last.approvable_id).to eq user.id
-        expect(Approval.last.status).to eq 'requested'
+        expect(Approval.count).to eq approval_count + 2
+        expect(Approval.where(user: second_user, approvable: user, status: 'requested')).to exist
       end
 
       it 'should be not be able to submit another request to same user' do
         Approval.link(user, second_user, 'User')
+        approval_count = Approval.count
         post :create, friend_approval_create_params
-        expect(Approval.count).to eq 2
-        expect(Approval.first.status).to eq 'pending'
-        expect(Approval.last.status).to eq 'requested'
+        expect(Approval.count).to eq approval_count
+        expect(Approval.where(approvable_type: 'User', status: 'accepted')).to_not exist
       end
 
       it 'should approve a developer request' do
         request.headers['X-Secret-App-Key'] = 'this-is-a-mobile-app'
         Approval.link(user, developer, 'Developer')
-        expect(Approval.last.status).to eq 'developer-requested'
+        expect(Approval.where(user: user, approvable: developer, status: 'developer-requested')).to exist
         post :create, dev_approval_create_params
-        expect(Approval.last.status).to eq 'accepted'
+        expect(Approval.where(user: user, approvable: developer, status: 'accepted')).to exist
       end
 
       it 'should approve a friend request' do
@@ -120,7 +121,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
       it 'should be able to approve a user approval request' do
         Approval.link(user, second_user, 'User')
         expect(user.friends.include?(second_user)).to be false
-        put :update, approval_update_params.merge(id: Approval.first)
+        put :update, approval_update_params.merge(id: Approval.find_by(user: user, approvable_type: 'User').id)
         expect(second_user.friends.include?(user)).to be true
         expect(user.friends.include?(second_user)).to be true
       end
@@ -143,8 +144,10 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
 
     context 'making a request to #destroy' do
       it 'should be able to reject an approval' do
+        approval_destroy_params
+        approval_count = Approval.count
         delete :destroy, approval_destroy_params
-        expect(Approval.count).to eq 0
+        expect(Approval.count).to eq approval_count - 1
         expect(user.approved?(developer)).to be false
       end
     end
@@ -159,13 +162,13 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
 
     it 'should get a list of a users approvals' do
       get :index, params
-      expect(res_hash.length).to eq 2
+      expect(res_hash.length).to eq Approval.where(user: user).count
       expect(res_hash.first['user_id']).to eq user.id
     end
 
     it 'should get a list of a users accepted friend approvals' do
       get :index, params.merge(type: 'friends')
-      expect(res_hash.length).to eq 1
+      expect(res_hash.length).to eq Approval.where(user: user, approvable_type: 'User').count
       expect(res_hash.first['status']).to eq 'accepted'
       expect(res_hash.first['approvable_type']).to eq 'User'
     end

@@ -42,41 +42,39 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     context 'when adding a friend' do
       it 'should create a pending approval, friend request and send an email' do
         count = ActionMailer::Base.deliveries.count
+        approval_count = Approval.where(approvable_type: 'User').count
         post :create, friend_approval_create_params
         expect(ActionMailer::Base.deliveries.count).to be(count + 1)
-        expect(Approval.count).to eq 2
-        expect(Approval.first.user).to eq user
-        expect(Approval.first.approvable_id).to eq friend.id
-        expect(Approval.first.status).to eq 'pending'
-        expect(Approval.last.status).to eq 'requested'
+        expect(Approval.where(approvable_type: 'User').count).to eq approval_count + 2
+        expect(Approval.where(user: user, approvable: friend, status: 'pending')).to exist
+        expect(Approval.where(user: friend, approvable: user, status: 'requested')).to exist
       end
 
       it 'should confirm an existing user friend request' do
         approval.update(status: 'requested', approvable_id: friend.id, approvable_type: 'User')
         approval_two.update(status: 'pending', approvable_id: user.id, approvable_type: 'User')
         post :create, friend_approval_create_params
-        expect(Approval.count).to eq 2
-        expect(Approval.first.user).to eq user
-        expect(Approval.first.approvable_id).to eq friend.id
-        expect(Approval.first.status).to eq 'accepted'
-        expect(Approval.last.status).to eq 'accepted'
+        expect(Approval.where(user: user, approvable: friend, status: 'accepted')).to exist
+        expect(Approval.where(user: friend, approvable: user, status: 'accepted')).to exist
       end
     end
 
     context 'when an incorrect name is provided' do
       it 'should not create or approve an approval if trying to add self' do
+        approval_count = Approval.where(approvable_type: 'User').count
         friend_approval_create_params[:approval][:approvable] = user.email
         post :create, friend_approval_create_params
         expect(flash[:alert]).to match 'Adding self'
-        expect(Approval.count).to eq 0
+        expect(Approval.where(approvable_type: 'User').count).to eq approval_count
       end
 
       it 'should not create/approve if trying to add an exisiting friend' do
         approval.update(status: 'accepted', approvable_id: friend.id, approvable_type: 'User')
         approval_two.update(status: 'accepted', approvable_id: user.id, approvable_type: 'User')
+        approval_count = Approval.count
         post :create, friend_approval_create_params
         expect(flash[:alert]).to match 'exists'
-        expect(Approval.count).to eq 2
+        expect(Approval.count).to eq approval_count
       end
     end
 
@@ -121,29 +119,28 @@ RSpec.describe Users::ApprovalsController, type: :controller do
   describe 'POST #reject' do
     it 'should reject and destroy a developer approval request' do
       approval.update(status: 'developer-requested', approvable_id: developer.id, approvable_type: 'Developer')
-      expect(Approval.count).to eq 1
+      approval_count = Approval.count
       request.accept = 'text/javascript'
       post :reject, approve_reject_params
-      expect(Approval.count).to eq 0
+      expect(Approval.count).to eq approval_count - 1
     end
 
     it 'should reject and destroy both sides of a user approval' do
       approval.update(status: 'requested', approvable_id: friend.id, approvable_type: 'User')
       approval_two.update(status: 'pending', approvable_id: user.id, approvable_type: 'User')
-      expect(Approval.count).to eq 2
+      approval_count = Approval.count
       request.accept = 'text/javascript'
       post :reject, approve_reject_params
-      expect(Approval.count).to eq 0
+      expect(Approval.count).to eq approval_count - 2
     end
 
     it 'should destroy an existing approval and permissions' do
       approval.update(status: 'developer-requested', approvable_id: developer.id, approvable_type: 'Developer')
       approval.approve!
-      expect(Permission.count).to eq 1
+      permission_count = Permission.count
       request.accept = 'text/javascript'
       post :reject, approve_reject_params
-      expect(Permission.count).to eq 0
-      expect(Approval.count).to eq 0
+      expect(Permission.count).to eq permission_count - 1
     end
   end
 end
