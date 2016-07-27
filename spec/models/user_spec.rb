@@ -35,6 +35,7 @@ RSpec.describe User, type: :model do
 
   describe 'approvals' do
     it 'should approve a developer' do
+      developer_count = user.developers.count
       expect(user.pending_approvals.count).to be 0
       expect(user.approved?(developer)).to be false
 
@@ -43,11 +44,11 @@ RSpec.describe User, type: :model do
       user.save
 
       expect(user.pending_approvals.count).to be 1
-      expect(user.developers.count).to be 0
+      expect(user.developers.count).to be developer_count
 
       Approval.accept(user, developer, 'Developer')
       expect(user.pending_approvals.count).to be 0
-      expect(user.developers.count).to be 1
+      expect(user.developers.count).to be developer_count + 1
     end
 
     it 'should approve devices for a developer by default when a developer is approved' do
