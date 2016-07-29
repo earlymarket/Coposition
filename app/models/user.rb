@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   extend FriendlyId
-  include ApprovalMethods, SlackNotifiable
+  include ApprovalMethods, SlackNotifiable, RemoveId
 
   acts_as_token_authenticatable
 
