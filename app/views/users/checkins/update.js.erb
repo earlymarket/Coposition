@@ -1,5 +1,6 @@
 <%= raw render_flash %>
-$('#gonvariables').html("<%= j Gon::Base.render_data %>")
+var checkin = _.find(gon.checkins, _.matchesProperty('id',<%= @checkin.id %>));
+checkin.fogged = <%= @checkin.fogged %>
 //change open popups
 
 if(<%= @checkin.fogged %>){
@@ -14,5 +15,5 @@ if(<%= @checkin.fogged %>){
 }
 
 //refresh the state of all markers
-COPO.charts.refreshCharts(gon.checkins, 'user');
-COPO.maps.queueRefresh(gon.checkins);
+//COPO.charts.refreshCharts(gon.checkins, 'user');
+if(!COPO.maps.queueCalled) { COPO.maps.queueRefresh(gon.checkins) }
