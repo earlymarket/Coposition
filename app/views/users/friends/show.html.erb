@@ -15,7 +15,7 @@
   </div>
 </section>
 <% @devices.each do |device| %>
-    <div class="card row">
+    <div class="card-panel row">
       <%= link_to show_device_user_friend_path(current_user.url_id, @friend, device_id: device.id), class:"col s12" do %>
         <h5><%= device.name %></h5>
         <%= friends_last_checkin(@friend.get_checkins(current_user, device)) %>

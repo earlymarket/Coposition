@@ -12,7 +12,7 @@ class Users::DevicesController < ApplicationController
     @presenter = ::Users::DevicesPresenter.new(current_user, params, 'show')
     gon.push(@presenter.show_gon)
     respond_to do |format|
-      format.html { flash[:notice] = 'Right click on the map to checkin' }
+      format.html { flash[:notice] = 'Right click on the map to check-in' }
       format.csv { send_data @presenter.checkins, filename: @presenter.filename }
     end
   end
@@ -34,7 +34,7 @@ class Users::DevicesController < ApplicationController
   end
 
   def create
-    result = Users::Devices::CreateDevice.new(current_user, default_developer, allowed_params)
+    result = Users::Devices::CreateDevice.new(current_user, Developer.default(coposition: true), allowed_params)
     if result.save?
       device = result.device
       gon.checkins = create_checkin(device)
@@ -85,10 +85,5 @@ class Users::DevicesController < ApplicationController
 
   def published?
     redirect_to root_path, notice: 'Device is not shared' unless Device.find(params[:id]).published?
-  end
-
-  def default_developer
-    return FactoryGirl.create(:developer) if Rails.env.test?
-    Developer.find_by(api_key: Rails.application.secrets.coposition_api_key)
   end
 end

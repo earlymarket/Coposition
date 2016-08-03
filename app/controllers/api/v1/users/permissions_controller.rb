@@ -30,10 +30,10 @@ class Api::V1::Users::PermissionsController < Api::ApiController
 
   def require_ownership
     if params[:id]
-      render status: 403, json: { message: 'You do not control that permission' } unless user_owns_permission?
+      render status: 403, json: { error: 'You do not control that permission' } unless user_owns_permission?
     else
       params[:id] = params[:device_id]
-      render status: 403, json: { message: 'You do not control that device' } unless user_owns_device?
+      render status: 403, json: { error: 'You do not control that device' } unless user_owns_device?
     end
   end
 end

@@ -1,20 +1,16 @@
 class User < ActiveRecord::Base
   extend FriendlyId
-  include ApprovalMethods
-  include SlackNotifiable
+  include ApprovalMethods, SlackNotifiable, RemoveId
 
   acts_as_token_authenticatable
 
   friendly_id :username, use: [:slugged, :finders]
 
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable,
          authentication_keys: { username: false, email: true }
 
-  validates :username, uniqueness: true,
-                       allow_blank: true,
-                       format: { with: /\A[-a-zA-Z_]+\z/,
-                                 message: 'only allows letters, underscores and dashes' }
+  validates :username, uniqueness: true, allow_blank: true,
+                       format: { with: /\A[-a-zA-Z_]+\z/, message: 'only allows letters, underscores and dashes' }
 
   has_many :devices, dependent: :destroy
   has_many :checkins, through: :devices
@@ -40,6 +36,8 @@ class User < ActiveRecord::Base
 
   before_create :generate_token, unless: :webhook_key?
 
+  after_create :approve_coposition_mobile_app
+
   has_attachment :avatar
   ## Pathing
 
@@ -48,6 +46,10 @@ class User < ActiveRecord::Base
   end
 
   ## Approvals
+
+  def approve_coposition_mobile_app
+    Approval.add_developer(self, Developer.default(mobile: true))
+  end
 
   def approved?(permissible)
     developers.include?(permissible) || friends.include?(permissible)
@@ -89,7 +91,7 @@ class User < ActiveRecord::Base
   def safe_checkin_info_for(args)
     args[:multiple_devices] = true
     safe_checkins = devices.flat_map { |device| device.safe_checkin_info_for(args) }
-                           .sort_by  { |key| key[:created_at] }
+                           .sort_by  { |key| key['created_at'] }.reverse
     if args[:action] == 'index'
       safe_checkins.paginate(page: args[:page], per_page: args[:per_page])
     elsif args[:action] == 'last'

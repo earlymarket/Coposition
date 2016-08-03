@@ -35,6 +35,9 @@
     "COPOSITION_API_KEY":{
       "required":true
     },
+    "MOBILE_APP_API_KEY":{
+      "required":true
+    },
     "GOOGLE_MAPS_API_KEY":{
       "required":true
     }

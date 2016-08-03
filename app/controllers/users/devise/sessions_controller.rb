@@ -31,7 +31,7 @@ class Users::Devise::SessionsController < Devise::SessionsController
     user = User.find_by(authentication_token: request.headers['X-User-Token'])
 
     if user.nil?
-      render status: 404, json: { message: 'Invalid token.' }
+      render status: 404, json: { error: 'Invalid token.' }
     else
       user.authentication_token = nil
       user.save!
@@ -43,7 +43,7 @@ class Users::Devise::SessionsController < Devise::SessionsController
     if (@user = User.find_by(email: email)) && @user.valid_password?(password)
       @user
     else
-      render status: 401, json: { message: 'The request MUST contain the user email and password.' }
+      render status: 400, json: { error: 'The request MUST contain the user email and password.' }
       return false
     end
   end

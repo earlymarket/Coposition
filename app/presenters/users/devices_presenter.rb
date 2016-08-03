@@ -1,5 +1,6 @@
 module Users
   class DevicesPresenter
+    attr_reader :user
     attr_reader :devices
     attr_reader :device
     attr_reader :checkins
@@ -51,7 +52,8 @@ module Users
     def show_gon
       {
         checkins: show_checkins,
-        current_user_id: @user.id
+        current_user_id: @user.id,
+        total: @device.checkins.count
       }
     end
 
@@ -66,9 +68,10 @@ module Users
     private
 
     def gon_index_checkins
-      @user.devices.map do |device|
+      checkins = @user.devices.map do |device|
         device.checkins.first.as_json.merge(device: device.name) if device.checkins.exists?
       end.compact
+      checkins.sort_by { |checkin| checkin['created_at'] }.reverse
     end
 
     def gon_shared_checkin
@@ -76,7 +79,8 @@ module Users
     end
 
     def show_checkins
-      @device.checkins.select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_area)
+      @device.checkins.paginate(page: 1, per_page: 1000)
+             .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_area)
     end
   end
 end

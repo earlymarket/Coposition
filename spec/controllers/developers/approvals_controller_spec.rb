@@ -40,32 +40,34 @@ RSpec.describe Developers::ApprovalsController, type: :controller do
     it 'should create an approval between user and developer' do
       subscription
       post :create, approval_create_params
-      expect(Approval.last.approvable_id).to eq developer.id
-      expect(Approval.last.status).to eq 'developer-requested'
-      expect(Approval.last.user).to eq user
+      expect(Approval.where(user: user, approvable: developer, status: 'developer-requested')).to exist
       expect(flash[:notice]).to match 'Successfully sent'
     end
 
     it 'should fail to create an approval if request exists' do
       approval
+      approval_count = Approval.count
       post :create, approval_create_params
-      expect(flash[:alert]).to match 'Error creating approval'
-      expect(Approval.count).to eq 1
+      expect(flash[:alert]).to match 'Approval already exists'
+      expect(Approval.count).to eq approval_count
     end
 
     it 'should fail to create an approval if user does not exist' do
       approval_create_params[:approval][:user] = 'does not exist'
+      approval_count = Approval.count
       post :create, approval_create_params
-      expect(flash[:alert]).to match 'Error creating approval'
-      expect(Approval.count).to eq 0
+      expect(flash[:alert]).to match 'User does not exist'
+      expect(Approval.count).to eq approval_count
     end
   end
 
   describe '#destroy' do
     it 'should destroy an approval between user and developer' do
+      approval
+      approval_count = Approval.count
       request.accept = 'text/javascript'
       delete :destroy, approval_destroy_params
-      expect(Approval.count).to eq 0
+      expect(Approval.count).to eq approval_count - 1
       expect(user.approval_for(developer).class).to eq NoApproval
     end
   end

@@ -2,6 +2,5 @@ $('#gonvariables').html("<%= j Gon::Base.render_data %>")
 
 var $geocodedAddress = '<li class="address">Address: <%= j @checkin.address %></li>'
 $('.address').replaceWith($geocodedAddress);
-var checkins = COPO.dateRange.currentCheckins(gon.checkins)
-COPO.maps.queueRefresh(checkins);
-COPO.charts.refreshCharts(checkins, 'user');
+COPO.maps.queueRefresh(gon.checkins);
+COPO.charts.refreshCharts(gon.checkins, 'user');

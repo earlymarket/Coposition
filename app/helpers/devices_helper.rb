@@ -54,4 +54,12 @@ module DevicesHelper
     end
     output.join.html_safe
   end
+
+  def devices_label(presenter)
+    label = ''
+    user = (presenter.class == Users::FriendsPresenter) ? presenter.friend : presenter.user
+    label << avatar_for(user, title: name_or_email_name(user), width: 40, height: 40)
+    label << '&nbsp' + presenter.device.name
+    label.html_safe
+  end
 end
