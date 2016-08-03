@@ -6,21 +6,6 @@ $(document).on('page:change', function() {
     COPO.maps.initMarkers(gon.checkins, gon.total);
     COPO.maps.initControls();
 
-    $('li.tab').on('click', function(event) {
-      var tab = event.target.textContent
-      setTimeout (function() {
-        if (tab ==='Table'){
-          COPO.charts.refreshCharts(gon.checkins, page);
-        } else {
-          map.invalidateSize();
-        }
-      });
-    });
-
-    $(window).resize(function(){
-      COPO.charts.refreshCharts(gon.checkins, page);
-    });
-
     if (page === 'user') {
       map.on('contextmenu', function(e){
         var coords = {

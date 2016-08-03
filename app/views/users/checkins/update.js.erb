@@ -15,5 +15,4 @@ if(<%= @checkin.fogged %>){
 }
 
 //refresh the state of all markers
-//COPO.charts.refreshCharts(gon.checkins, 'user');
 if(!COPO.maps.queueCalled) { COPO.maps.queueRefresh(gon.checkins) }
