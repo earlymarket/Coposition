@@ -1,7 +1,5 @@
 class Device < ActiveRecord::Base
-  include SlackNotifiable
-  include SwitchFogging
-  include HumanizeMinutes
+  include SlackNotifiable, SwitchFogging, HumanizeMinutes, RemoveId
 
   belongs_to :user
   has_one :config
@@ -99,8 +97,8 @@ class Device < ActiveRecord::Base
 
   def notify_subscribers(event, data)
     data = data.as_json
-    data.merge!(public_info.as_json) unless data[:model_name] == 'Device'
-    data.merge!(user.public_info.as_json) if user
+    data.merge!(remove_id.as_json)
+    data.merge!(user.public_info.remove_id.as_json) if user
     subscriptions(event).each { |subscription| subscription.send_data([data]) }
   end
 
