@@ -51,7 +51,6 @@
 //= require cleanup
 //= require maps
 //= require permissions
-//= require calendar
 //= require delay-slider
 //= require slides
 
