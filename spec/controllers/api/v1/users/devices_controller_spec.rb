@@ -54,6 +54,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       developer.configs.create(device: device)
       get :show, device_params
       expect(res_hash[:data]['uuid']).to eq device.uuid
+      expect(res_hash[:config]['id']).to eq developer.configs.find_by(device: device).id
       expect(res_hash[:data].keys).to include(*private_device_info)
     end
   end
