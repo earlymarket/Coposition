@@ -24,7 +24,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
   def show
     device = @user.devices.where(id: params[:id])
     device = device.public_info unless req_from_coposition_app? || @dev.configures_device?(device)
-    render json: device
+    render json: { data: device, config: configuration(device) }
   end
 
   def update
@@ -42,5 +42,14 @@ class Api::V1::Users::DevicesController < Api::ApiController
 
   def device_params
     params.require(:device).permit(:name, :uuid, :fogged, :delayed, :alias)
+  end
+
+  def configuration(device)
+    return unless device
+    if req_from_coposition_app?
+      device.config
+    else
+      @dev.configs.find_by(device_id: params[:id])
+    end
   end
 end
