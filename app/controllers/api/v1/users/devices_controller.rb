@@ -15,14 +15,14 @@ class Api::V1::Users::DevicesController < Api::ApiController
     result = ::Users::Devices::CreateDevice.new(@user, @dev, device_params)
     if result.save?
       device = result.device
-      render json: device
+      render json: { data: device, config: configuration(device) }
     else
       render status: 400, json: { error: result.error }
     end
   end
 
   def show
-    device = @user.devices.where(id: params[:id])
+    device = @user.devices.where(id: params[:id]).first
     device = device.public_info unless req_from_coposition_app? || @dev.configures_device?(device)
     render json: { data: device, config: configuration(device) }
   end

@@ -46,15 +46,15 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
 
     it 'should return filtered information on a device belonging to a user' do
       get :show, device_params
-      expect(res_hash[:data].first['id']).to be device.id
-      expect(res_hash[:data].first.keys).to_not include(*private_device_info)
+      expect(res_hash[:data]['id']).to be device.id
+      expect(res_hash[:data].keys).to_not include(*private_device_info)
     end
 
     it 'should return full info if request is from copo app or from developer with control' do
       developer.configs.create(device: device)
       get :show, device_params
-      expect(res_hash[:data].first['uuid']).to eq device.uuid
-      expect(res_hash[:data].first.keys).to include(*private_device_info)
+      expect(res_hash[:data]['uuid']).to eq device.uuid
+      expect(res_hash[:data].keys).to include(*private_device_info)
     end
   end
 
@@ -64,8 +64,8 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       config_count = developer.configs.count
       post :create, create_params
       expect(developer.configs.count).to be config_count + 1
-      expect(res_hash[:user_id]).to be user.id
-      expect(res_hash[:uuid]).to eq empty_device.uuid
+      expect(res_hash[:data]['user_id']).to be user.id
+      expect(res_hash[:data]['uuid']).to eq empty_device.uuid
     end
 
     it 'should fail to to create a device with a taken UUID' do
