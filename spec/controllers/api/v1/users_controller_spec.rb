@@ -40,6 +40,19 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     end
   end
 
+  describe '#index' do
+    before do
+      request.headers['X-Api-Key'] = dev.api_key
+      Approval.link(user, dev, 'Developer')
+      Approval.accept(user, dev, 'Developer')
+    end
+
+    it 'should return a list of a developers approved users' do
+      get :index, format: :json
+      expect(assigns(:users)).to eq([User.find(user.id)])
+    end
+  end
+
   describe '#auth' do
     context 'with a valid webhook key in header' do
       it 'should return status 204 and json message "success"' do

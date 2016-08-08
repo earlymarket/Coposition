@@ -36,7 +36,7 @@ Rails.application.routes.draw do
           get :demo_user_approves_demo_dev
         end
       end
-      resources :users, only: [:show] do
+      resources :users, only: [:show, :index] do
         collection do
           get :auth
         end

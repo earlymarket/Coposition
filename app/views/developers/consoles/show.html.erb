@@ -3,7 +3,7 @@
 <br>
 
 <p>
-  Your <%= current_developer.company_name %> API key is <code id="key"><%= current_developer.api_key %></code>
+  ID: <%= current_developer.id %> -- API key: <code id="key"><%= current_developer.api_key %></code>
   <br>
   You've made <span id="requests-today"><%= pluralize(@requests_today, 'request') %></span> in the last day.
   <br>
