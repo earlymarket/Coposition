@@ -9,4 +9,7 @@ class WelcomeController < ApplicationController
   def help
     gon.userinfo = current_user.public_info_hash if current_user
   end
+
+  def getting_started
+  end
 end
