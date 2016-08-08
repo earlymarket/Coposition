@@ -4,7 +4,11 @@
     <div id="approval" class="section scrollspy">
       <h4>Asking for approval</h4>
       <p>
-        To begin with, you'll want to ask for approval from a user. You can do this from your developer console or by using the API. From the console, click 'New user' and enter the email of the user you would like to add. Alternatively, you can use the API, for which detailed documentation can be found at <%= link_to('API', 'https://earlymarket.github.io/copo-docs/') %>
+        To begin with, you'll want to ask for approval from a user. You can do this from your developer console or by using the API. From the console, click 'New user' and enter the email of the user you would like to add. Alternatively, you can use the API.
+        <h5>API documentation reference</h5>
+        <blockquote>
+          <%= link_to('Asking for approval', 'https://earlymarket.github.io/copo-docs/#asking-for-approval') %>
+        </blockquote>
       </p>
     </div>
 
@@ -13,7 +17,13 @@
     <div id="checkins" class="section scrollspy">
       <h4>Getting checkins</h4>
       <p>
-        Once you have approval from a user, you can use the API to request their checkins. You'll need the User ID and optionally the ID of a specific device belonging to the user. Using the API You can find a list of your approved users and a list of devices belonging to each user. You can then choose to request the most recent checkin or up to 1000 checkins, either belonging to the user, or for a specific device belonging to the user.
+        Once you have approval from a user, you can use the API to request their checkins. You'll need the User ID and optionally the ID of a specific device belonging to the user. You can find a list of your approved users and a list of devices belonging to each user using the API. You can then choose to request the most recent checkin or up to 1000 checkins, either belonging to the user, or for a specific device belonging to the user.
+        <h5>API documentation reference</h5>
+        <blockquote>
+          <%= link_to('List of users', 'https://earlymarket.github.io/copo-docs/#asking-for-approval') %></br>
+          <%= link_to('List of devices', 'https://earlymarket.github.io/copo-docs/#get-a-list-of-user-39-s-devices') %></br>
+          <%= link_to('Getting checkins', 'https://earlymarket.github.io/copo-docs/#check-ins') %>
+        </blockquote>
       </p>
     </div>
 
@@ -24,6 +34,11 @@
       <p>
         To allow a user to create checkins via your app, you will need to ask for the UUID of an existing device, or request a UUID and provide this to the user. The latter is recommended if you anticipate that you will want to add extra device settings that may not already be included for devices. You will need to ask the user to then log in and claim the device on Coposition.
         Once you have a UUID, a latitude and longitude are all that is needed to create a checkin.
+        <h5>API documentation reference</h5>
+        <blockquote>
+          <%= link_to('Requesting a UUID', 'https://earlymarket.github.io/copo-docs/#uuid') %></br>
+          <%= link_to('Creating a checkin', 'https://earlymarket.github.io/copo-docs/#create-a-new-check-in') %>
+        </blockquote>
       </p>
     </div>
 
@@ -33,6 +48,10 @@
       <h4>Additional device settings</h4>
       <p>
         You can add additional, custom settings to any devices created from a UUID you have requested. Each device has an associated config, on which you can set any additional attributes under the custom attribute. The config can be updated and viewed using the API, the user can also view their device config on the coposition website.
+        <h5>API documentation reference</h5>
+        <blockquote>
+          <%= link_to('Updating device config', 'https://earlymarket.github.io/copo-docs/#updating-a-specific-config') %>
+        </blockquote>
       </p>
     </div>
   </div>
