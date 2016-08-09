@@ -8,19 +8,25 @@ class Api::V1::ConfigsController < Api::ApiController
   end
 
   def show
-    config = @dev.configs.find(params[:id])
-    render json: config
+    render json: configuration
   end
 
   def update
-    config = @dev.configs.find(params[:id])
-    config.update(custom: custom_params)
-    render json: config
+    configuration.update(custom: custom_params)
+    render json: configuration
   end
 
   private
 
   def custom_params
     params[:config][:custom]
+  end
+
+  def configuration
+    if req_from_coposition_app?
+      Config.find(params[:id])
+    else
+      @dev.configs.find(params[:id])
+    end
   end
 end
