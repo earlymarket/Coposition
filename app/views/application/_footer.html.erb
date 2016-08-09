@@ -12,6 +12,7 @@
         <ul>
           <% if developer_signed_in? %>
             <li><%= link_to('Developer console', developers_console_path) %><li>
+            <li><%= link_to('Getting Started', getting_started_path) %></li>
             <li><%= link_to('Log out', destroy_developer_session_path, method: :delete) %><li>
           <% else %>
             <li><%= link_to('Developer log in', new_developer_session_path) %><li>
