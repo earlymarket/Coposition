@@ -1,12 +1,12 @@
-$('#gonvariables').html("<%= j Gon::Base.render_data %>")
+$('#gonvariables').html("<%= j Gon::Base.render_data %>");
 
 if (COPO.utility.urlParam("redirect")) {
   window.location.replace(COPO.utility.urlParam("redirect"));
 }
 $('nav').replaceWith("<%= j (render partial: 'navbar') %>");
-$('#approved').html("<%= j (render partial: 'approved', locals: {approved: @presenter.approved, devices: @presenter.devices, approvable_type: @presenter.approvable_type}) %>")
+$('#approved').html("<%= j (render partial: 'approved', locals: {approved: @presenter.approved, devices: @presenter.devices, approvable_type: @presenter.approvable_type}) %>");
 <% if @presenter.pending.present? %>
-  $('#pending').html("<%= j (render partial: 'pending', locals: {pending: @presenter.pending}) %>")
+  $('#pending').html("<%= j (render partial: 'pending', locals: {pending: @presenter.pending}) %>");
 <% else %>
   $('#pending').remove();
 <% end %>
@@ -23,4 +23,3 @@ if(gon.friends && gon.friends.some(function(friend){ friend.lastCheckin })) {
   if(COPO.maps.friendMarkers){ map.removeLayer(COPO.maps.friendMarkers) }
   $('#map-overlay').removeClass('hide');
 }
-

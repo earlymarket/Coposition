@@ -49,10 +49,8 @@
 //= require navbar
 //= require init
 //= require cleanup
-//= require charts
 //= require maps
 //= require permissions
-//= require calendar
 //= require delay-slider
 //= require slides
 

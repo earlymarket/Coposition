@@ -22,7 +22,6 @@ class Users::CheckinsController < ApplicationController
   def create
     @device = Device.find(params[:device_id])
     @checkin = @device.checkins.create(allowed_params)
-    reload_gon_variables
     @device.notify_subscribers('new_checkin', @checkin)
     flash[:notice] = 'Checked in.'
   end
@@ -30,19 +29,16 @@ class Users::CheckinsController < ApplicationController
   def show
     @checkin = Checkin.find(params[:id])
     @checkin.reverse_geocode!
-    reload_gon_variables
   end
 
   def update
     @checkin = Checkin.find(params[:id])
     @checkin.switch_fog
-    reload_gon_variables
     flash[:notice] = 'Check-in fogging changed.'
   end
 
   def destroy
     @checkin = Checkin.find_by(id: params[:id]).delete
-    reload_gon_variables
     flash[:notice] = 'Check-in deleted.'
   end
 
@@ -68,10 +64,5 @@ class Users::CheckinsController < ApplicationController
     return if current_user.devices.exists?(params[:device_id])
     flash[:alert] = 'You do not own this device.'
     redirect_to root_path
-  end
-
-  def reload_gon_variables
-    gon.checkins = @checkin.device.checkins.select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_area)
-    gon.current_user_id = current_user.id
   end
 end

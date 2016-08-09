@@ -22,15 +22,6 @@ Feature: map
         Then I have 0 checkins on the map
 
     @javascript
-    Scenario: User creates a checkin then switches to chart page
-      Given I have 0 checkins on the map
-        When I right click on the map
-        And I click "Create checkin here"
-        Then I have 1 checkins on the map
-      When I switch to the table view
-        Then I have 1 checkins in the table
-
-    @javascript
     Scenario: User views their published page
       Given I right click on the map
         And I click "Create checkin here"
