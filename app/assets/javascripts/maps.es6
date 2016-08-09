@@ -32,11 +32,12 @@ window.COPO.maps = {
   },
 
   loadAllCheckins(checkins, total) {
-    if (typeof (total) === 'undefined') return;
+    if (total === undefined) return;
     loadCheckins(2);
     function loadCheckins(page) {
       if (total > gon.checkins.length) {
-        $.getJSON(`${window.location.href}/checkins?page=${page}&per_page=1000`) .then(function(data) {
+        $.getJSON(`${window.location.href}/checkins?page=${page}&per_page=1000`).then(function(data) {
+          if(window.gon.total === undefined) return;
           console.log('Loading more checkins!');
           gon.checkins = gon.checkins.concat(data.checkins);
           COPO.maps.refreshMarkers(gon.checkins);
@@ -46,6 +47,7 @@ window.COPO.maps = {
       } else {
         console.log('All done!');
         Materialize.toast('All check-ins loaded', 3000);
+        window.COPO.maps.fitBounds();
       };
     }
   },
@@ -204,14 +206,6 @@ window.COPO.maps = {
       follow: false,
       setView: true,
       markerClass: L.CircleMarker,
-      //markerStyle: {
-      //  icon: L.mapbox.marker.icon({
-      //    'marker-size': 'large',
-      //    'marker-symbol': 'star',
-      //    'marker-color': '#01579B'
-      //  }),
-      //  riseOnHover: true
-      //},
       strings: {
         title: 'Your current location',
         popup: 'Your current location within {distance} {unit}.<br><a href="#" id="current-location"></a>'
@@ -332,4 +326,3 @@ window.COPO.maps = {
     COPO.maps.w3w.setCoordinates(e);
   }
 }
-
