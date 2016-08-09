@@ -26,6 +26,10 @@ Then(/^I should see "(.*?)"$/) do |text|
   expect(page).to have_content(text)
 end
 
+Then(/^I should not see "(.*?)"$/) do |text|
+  expect(page).to_not have_content(text)
+end
+
 When(/^I click and confirm "([^"]*)"$/) do |target|
   page.accept_confirm do
     click_on target
