@@ -8,11 +8,11 @@ Feature: Approvals
       And I click the link "Apps"
 
     Scenario: User accepts requests
-      When I click "Approve"
+      When I click "Revoke Approval"
+      And I click "Approve"
         Then I should have an approved app
       And I click the link "Friends"
       When I click "Approve"
-        Then I should not see "Approve"
         Then I should have an approved friend
 
     Scenario: User rejects requests
