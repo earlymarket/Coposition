@@ -1,5 +1,7 @@
 window.COPO = window.COPO || {};
 window.COPO.maps = {
+  queueCalled: false,
+
   initMap(customOptions) {
     if (document.getElementById('map')._leaflet) return;
     L.mapbox.accessToken = 'pk.eyJ1IjoiZ2FyeXNpdSIsImEiOiJjaWxjZjN3MTMwMDZhdnNtMnhsYmh4N3lpIn0.RAGGQ0OaM81HVe0OiAKE0w';
@@ -59,6 +61,7 @@ window.COPO.maps = {
   },
 
   queueRefresh(checkins) {
+    COPO.maps.queueCalled = true;
     map.once('zoomstart', function(e) {
       map.removeEventListener('popupclose');
       COPO.maps.refreshMarkers(checkins);
@@ -80,6 +83,7 @@ window.COPO.maps = {
     }
     COPO.maps.renderAllMarkers(checkins);
     COPO.maps.bindMarkerListeners(checkins);
+    COPO.maps.queueCalled = false;
   },
 
   renderAllMarkers(checkins) {
