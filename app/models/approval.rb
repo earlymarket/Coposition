@@ -1,14 +1,14 @@
-class Approval < ActiveRecord::Base
+class Approval < ApplicationRecord
   belongs_to :user
   belongs_to :approvable, polymorphic: true
 
   before_create do
     if approvable_type == 'User' && user == approvable
       errors.add(:base, 'Adding self')
-      false
+      throw(:abort)
     elsif Approval.exists?(user: user, approvable: approvable, approvable_type: approvable_type)
       errors.add(:base, 'Approval/Request exists')
-      false
+      throw(:abort)
     end
   end
 
