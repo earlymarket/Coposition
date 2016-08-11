@@ -8,15 +8,23 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
   let(:second_user) { FactoryGirl.create :user }
   let(:apprvl) { FactoryGirl.create(:approval, user: user, approvable_id: developer.id, approvable_type: 'Developer') }
 
-  let(:params) { { user_id: user.id, format: :json } }
+  let(:params) { { params: { user_id: user.id, format: :json } } }
   let(:dev_approval_create_params) do
-    params.merge(approval: { approvable: developer.id, approvable_type: 'Developer' })
+    params[:params][:approval] = { approvable: developer.id, approvable_type: 'Developer' }
+    params
   end
   let(:friend_approval_create_params) do
-    params.merge(approval: { approvable: second_user.id, approvable_type: 'User' })
+    params[:params][:approval] = { approvable: second_user.id, approvable_type: 'User' }
+    params
   end
-  let(:approval_destroy_params) { params.merge(id: apprvl.id) }
-  let(:approval_update_params) { approval_destroy_params.merge(approval: { status: 'accepted' }) }
+  let(:approval_destroy_params) do
+    params[:params][:id] = apprvl.id
+    params
+  end
+  let(:approval_update_params) do
+    approval_destroy_params[:params][:approval] = { status: 'accepted' }
+    approval_destroy_params
+  end
 
   before do
     request.headers['X-Api-Key'] = developer.api_key
@@ -121,13 +129,15 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
       it 'should be able to approve a user approval request' do
         Approval.link(user, second_user, 'User')
         expect(user.friends.include?(second_user)).to be false
-        put :update, approval_update_params.merge(id: Approval.find_by(user: user, approvable_type: 'User').id)
+        approval_update_params[:params][:id] = Approval.find_by(user: user, approvable_type: 'User').id
+        put :update, approval_update_params
         expect(second_user.friends.include?(user)).to be true
         expect(user.friends.include?(second_user)).to be true
       end
 
       it 'should not be able to approve if not signed in user' do
-        put :update, approval_update_params.merge(user_id: second_user.id)
+        approval_update_params[:params][:user_id] = second_user.id
+        put :update, approval_update_params
         expect(res_hash[:error]).to match('Incorrect User')
         expect(response.status).to be 403
         expect(user.approved?(developer)).to be false
@@ -135,7 +145,8 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
 
       it 'should not be able to approve an approval that does not belong to you' do
         second_user.approvals.create(approvable_id: developer.id)
-        put :update, approval_update_params.merge(id: second_user.approvals.last.id)
+        approval_update_params[:params][:id] = second_user.approvals.last.id
+        put :update, approval_update_params
         expect(res_hash[:error]).to match('does not exist')
         expect(response.status).to be 404
         expect(user.approved?(developer)).to be false
@@ -167,7 +178,8 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
     end
 
     it 'should get a list of a users accepted friend approvals' do
-      get :index, params.merge(type: 'friends')
+      params[:params][:type] = 'friends'
+      get :index, params
       expect(res_hash.length).to eq Approval.where(user: user, approvable_type: 'User').count
       expect(res_hash.first['status']).to eq 'accepted'
       expect(res_hash.first['approvable_type']).to eq 'User'

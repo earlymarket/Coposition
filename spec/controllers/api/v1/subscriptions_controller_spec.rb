@@ -5,8 +5,10 @@ RSpec.describe Api::V1::SubscriptionsController, type: :controller do
 
   let(:user) { FactoryGirl.create :user }
   let(:subscription) { FactoryGirl.create :subscription, subscriber: user }
-  let(:params) { { target_url: "http://#{Faker::Internet.domain_name}/", event: 'new_checkin' } }
-  let(:destroy_params) { params.merge(id: subscription.id) }
+  let(:params) { { params: { target_url: "http://#{Faker::Internet.domain_name}/", event: 'new_checkin' } } }
+  let(:destroy_params) do
+    { params: { id: subscription.id, target_url: "http://#{Faker::Internet.domain_name}/", event: 'new_checkin' } }
+  end
 
   before do
     request.headers['X-Authentication-Key'] = user.webhook_key

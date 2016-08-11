@@ -23,9 +23,9 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     us.devices << FactoryGirl.create(:device)
     us
   end
-  let(:params) { { user_id: user.id, format: :json } }
-  let(:device_params) { params.merge(id: device.id) }
-  let(:create_params) { params.merge(device: { name: 'new' }) }
+  let(:params) { { params: { user_id: user.id, format: :json } } }
+  let(:device_params) { { params: { id: device.id, user_id: user.id, format: :json } } }
+  let(:create_params) { { params: { device: { name: 'new' }, user_id: user.id, format: :json } } }
   let(:private_device_info) { %w(uuid fogged delayed) }
 
   before do
@@ -61,7 +61,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
 
   describe 'POST' do
     it 'should create a device with a UUID provided' do
-      create_params[:device] = { uuid: empty_device.uuid }
+      create_params[:params][:device][:uuid] = empty_device.uuid
       config_count = developer.configs.count
       post :create, create_params
       expect(developer.configs.count).to be config_count + 1
@@ -70,7 +70,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     end
 
     it 'should fail to to create a device with a taken UUID' do
-      create_params[:device] = { uuid: device.uuid }
+      create_params[:params][:device][:uuid] = device.uuid
       count = user.devices.count
       post :create, create_params
       expect(user.devices.count).to be count
@@ -78,7 +78,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     end
 
     it 'should fail to to create a device with a taken name' do
-      create_params[:device] = { name: device.name }
+      create_params[:params][:device][:name] = device.name
       post :create, create_params
       expect(res_hash[:error]).to match device.name
     end
@@ -86,15 +86,18 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
 
   describe 'PUT' do
     it 'should update settings' do
-      put :update, device_params.merge(device: { fogged: true })
+      device_params[:params][:device] = { fogged: true }
+      put :update, device_params
       expect(res_hash[:fogged]).to eq(true)
-      put :update, device_params.merge(device: { fogged: false })
+      device_params[:params][:device] = { fogged: false }
+      put :update, device_params
       device.reload
       expect(res_hash[:fogged]).to eq(false)
     end
 
     it 'should reject non-existant device ids' do
-      put :update, device_params.merge(id: 9999999, device: { fogged: true })
+      device_params[:params].merge!(id: 9999999, device: { fogged: true })
+      put :update, device_params
       expect(response.status).to eq(404)
       expect(res_hash[:error]).to eq('Device does not exist')
     end

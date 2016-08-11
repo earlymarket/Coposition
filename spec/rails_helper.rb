@@ -74,6 +74,6 @@ RSpec.configure do |config|
       Bullet.end_request
     end
   end
-  config.include Devise::TestHelpers, type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :controller
   config.extend ControllerMacros, type: :controller
 end

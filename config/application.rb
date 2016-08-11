@@ -21,7 +21,7 @@ Bundler.require(*Rails.groups)
 module Coposition
   class Application < Rails::Application
     # config.assets.paths << Rails.root.join('vendor', 'assets', 'bower_components')
-    config.middleware.insert_before 0, 'Rack::Cors' do
+    config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'
         resource '*', headers: :any, methods: [:get, :post, :options]
@@ -40,7 +40,7 @@ module Coposition
     # config.i18n.default_locale = :de
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
-    config.active_record.raise_in_transactional_callbacks = true
+    # config.active_record.raise_in_transactional_callbacks = true
 
     config.autoload_paths << Rails.root.join('lib')
   end

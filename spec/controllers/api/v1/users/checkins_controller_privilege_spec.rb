@@ -11,7 +11,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     ad = user.approval_for(developer).approval_date
     FactoryGirl.create :checkin, device_id: device.id, created_at: ad - 1.day
   end
-  let(:params) { { user_id: user.id, device_id: device.id } }
+  let(:params) { { params: { user_id: user.id, device_id: device.id } } }
 
   before do
     request.headers['X-Api-Key'] = developer.api_key
