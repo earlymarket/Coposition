@@ -103,7 +103,11 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     end
 
     it 'should not allow you to update someone elses device' do
-      put :update, user_id: second_user.id, id: second_user.devices.last.id, device: { fogged: true }, format: :json
+      put :update, params: {
+        user_id: second_user.id,
+        id: second_user.devices.last.id,
+        device: { fogged: true }, format: :json
+      }
       expect(response.status).to eq(403)
       expect(res_hash[:error]).to eq('User does not own device')
     end

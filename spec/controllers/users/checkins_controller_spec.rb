@@ -11,7 +11,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
 
   describe 'GET #new' do
     it 'should assign a device with a matching :device_id to @device and a new checkin to @checkin' do
-      get :new, params
+      get :new, params: params
       expect(assigns(:checkin)).to be_a_new(Checkin)
       expect(assigns(:device)).to eq(Device.find(device.id))
     end
@@ -22,13 +22,14 @@ RSpec.describe Users::CheckinsController, type: :controller do
       checkin
       count = device.checkins.count
       request.accept = 'text/javascript'
-      post :create,
-           user_id: user.username,
-           device_id: device.id,
-           checkin: {
-             lat: checkin.lat,
-             lng: checkin.lng
-           }
+      post :create, params: {
+        user_id: user.username,
+        device_id: device.id,
+        checkin: {
+          lat: checkin.lat,
+          lng: checkin.lng
+        }
+      }
       expect(assigns(:device)).to eq(Device.find(device.id))
       expect(device.checkins.count).to eq count + 1
       expect(assigns(:checkin)).to eq(device.checkins.first)
@@ -37,13 +38,15 @@ RSpec.describe Users::CheckinsController, type: :controller do
 
   describe 'GET #show' do
     it 'should assign :id.checkin to @checkin if user owns device which owns checkin' do
-      xhr :get, :show, params
+      request.accept = 'text/javascript'
+      get :show, params: params
       expect(assigns(:checkin)).to eq(Checkin.find(checkin.id))
     end
 
     it 'should not assign :id.checkin if user does not own device which owns checkin' do
       user
-      xhr :get, :show, params.merge(user_id: new_user.username)
+      request.accept = 'text/javascript'
+      get :show, params: params.merge(user_id: new_user.username)
       expect(response).to redirect_to(root_path)
       expect(assigns(:checkin)).to eq nil
     end
@@ -53,9 +56,9 @@ RSpec.describe Users::CheckinsController, type: :controller do
     it 'should switch fogging' do
       checkin.update(fogged: false)
       request.accept = 'text/javascript'
-      put :update, params
+      put :update, params: params
       expect(Checkin.find(checkin.id).fogged).to be true
-      put :update, params
+      put :update, params: params
       expect(Checkin.find(checkin.id).fogged).to be false
     end
   end
@@ -64,18 +67,20 @@ RSpec.describe Users::CheckinsController, type: :controller do
     it 'should delete all checkins belonging to a device if user owns device' do
       count = checkin.device.checkins.count
       expect(count).to be > 0
-      delete :destroy_all,
-             user_id: user.username,
-             device_id: device.id
+      delete :destroy_all, params: {
+        user_id: user.username,
+        device_id: device.id
+      }
       expect(device.checkins.count).to eq 0
     end
 
     it 'should not delete all checkins if user does not own device' do
       count = checkin.device.checkins.count
       expect(count).to be > 0
-      delete :destroy_all,
-             user_id: new_user.username,
-             device_id: device.id
+      delete :destroy_all, params: {
+        user_id: new_user.username,
+        device_id: device.id
+      }
       expect(response).to redirect_to(root_path)
       expect(device.checkins.count).to eq count
     end
@@ -86,7 +91,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
       count = checkin.device.checkins.count
       expect(count).to be > 0
       request.accept = 'text/javascript'
-      delete :destroy, params
+      delete :destroy, params: params
       expect(device.checkins.count).to eq(count - 1)
     end
 
@@ -94,7 +99,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
       count = checkin.device.checkins.count
       expect(count).to be > 0
       request.accept = 'text/javascript'
-      delete :destroy, params.merge(user_id: new_user.username)
+      delete :destroy, params: params.merge(user_id: new_user.username)
       expect(response).to redirect_to(root_path)
       expect(device.checkins.count).to eq count
     end

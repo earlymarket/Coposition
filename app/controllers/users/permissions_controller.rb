@@ -1,4 +1,5 @@
 class Users::PermissionsController < ApplicationController
+  protect_from_forgery except: :index
   before_action :authenticate_user!
   before_action :require_ownership, only: :update
 

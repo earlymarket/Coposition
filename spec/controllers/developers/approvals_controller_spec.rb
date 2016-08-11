@@ -12,12 +12,12 @@ RSpec.describe Developers::ApprovalsController, type: :controller do
     app
   end
   let(:subscription) { FactoryGirl.create :subscription, event: 'new_approval', subscriber: developer }
-  let(:developer_params) { { developer_id: developer.id } }
+  let(:developer_params) { { params: { developer_id: developer.id } } }
   let(:approval_create_params) do
-    developer_params.merge(approval: { user: user.email, approvable_type: 'Developer' })
+    { params: { developer_id: developer.id, approval: { user: user.email, approvable_type: 'Developer' } } }
   end
   let(:approval_destroy_params) do
-    developer_params.merge(id: approval.id)
+    { params: { developer_id: developer.id, id: approval.id } }
   end
 
   describe '#index' do
@@ -53,7 +53,7 @@ RSpec.describe Developers::ApprovalsController, type: :controller do
     end
 
     it 'should fail to create an approval if user does not exist' do
-      approval_create_params[:approval][:user] = 'does not exist'
+      approval_create_params[:params][:approval][:user] = 'does not exist'
       approval_count = Approval.count
       post :create, approval_create_params
       expect(flash[:alert]).to match 'User does not exist'

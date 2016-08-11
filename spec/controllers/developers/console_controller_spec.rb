@@ -8,7 +8,7 @@ RSpec.describe Developers::ConsolesController, type: :controller do
     dev.requests << FactoryGirl.create(:request)
     dev
   end
-  let(:developer_params) { { developer_id: developer.id } }
+  let(:developer_params) { { params: { developer_id: developer.id } } }
 
   describe '#show' do
     it 'should assign requests today and unpaid requests' do
