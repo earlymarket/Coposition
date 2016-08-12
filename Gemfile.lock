@@ -145,7 +145,7 @@ GEM
     gherkin (4.0.0)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
-    gon (6.0.1)
+    gon (6.1.0)
       actionpack (>= 3.0)
       json
       multi_json
@@ -391,7 +391,7 @@ DEPENDENCIES
   faker
   friendly_id (~> 5.1.0)
   geocoder
-  gon (~> 6.0.1)
+  gon (~> 6.1.0)
   guard-livereload (~> 2.4)
   inline_svg
   jbuilder (~> 2.0)
