@@ -4,7 +4,7 @@ class User < ApplicationRecord
 
   acts_as_token_authenticatable
 
-  friendly_id :username, use: [:slugged, :finders]
+  friendly_id :username, use: [:finders, :slugged]
 
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable,
          authentication_keys: { username: false, email: true }
