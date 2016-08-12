@@ -12,18 +12,18 @@ RSpec.describe Developers::ApprovalsController, type: :controller do
     app
   end
   let(:subscription) { FactoryGirl.create :subscription, event: 'new_approval', subscriber: developer }
-  let(:developer_params) { { params: { developer_id: developer.id } } }
+  let(:developer_params) { { developer_id: developer.id } }
   let(:approval_create_params) do
-    { params: { developer_id: developer.id, approval: { user: user.email, approvable_type: 'Developer' } } }
+    developer_params.merge(approval: { user: user.email, approvable_type: 'Developer' })
   end
   let(:approval_destroy_params) do
-    { params: { developer_id: developer.id, id: approval.id } }
+    developer_params.merge(id: approval.id)
   end
 
   describe '#index' do
     it 'should show amount of pending users and show approved users' do
       approval
-      get :index, developer_params
+      get :index, params: developer_params
       expect(assigns(:pending)).to eq developer.pending_approvals
       expect(assigns(:users)).to eq developer.users
     end
@@ -31,7 +31,7 @@ RSpec.describe Developers::ApprovalsController, type: :controller do
 
   describe '#new' do
     it 'should assign an approval' do
-      get :new, developer_params
+      get :new, params: developer_params
       expect((assigns :approval).class).to eq Approval.new.class
     end
   end
@@ -39,7 +39,7 @@ RSpec.describe Developers::ApprovalsController, type: :controller do
   describe '#create' do
     it 'should create an approval between user and developer' do
       subscription
-      post :create, approval_create_params
+      post :create, params: approval_create_params
       expect(Approval.where(user: user, approvable: developer, status: 'developer-requested')).to exist
       expect(flash[:notice]).to match 'Successfully sent'
     end
@@ -47,15 +47,15 @@ RSpec.describe Developers::ApprovalsController, type: :controller do
     it 'should fail to create an approval if request exists' do
       approval
       approval_count = Approval.count
-      post :create, approval_create_params
+      post :create, params: approval_create_params
       expect(flash[:alert]).to match 'Approval already exists'
       expect(Approval.count).to eq approval_count
     end
 
     it 'should fail to create an approval if user does not exist' do
-      approval_create_params[:params][:approval][:user] = 'does not exist'
+      approval_create_params[:approval][:user] = 'does not exist'
       approval_count = Approval.count
-      post :create, approval_create_params
+      post :create, params: approval_create_params
       expect(flash[:alert]).to match 'User does not exist'
       expect(Approval.count).to eq approval_count
     end
@@ -66,7 +66,7 @@ RSpec.describe Developers::ApprovalsController, type: :controller do
       approval
       approval_count = Approval.count
       request.accept = 'text/javascript'
-      delete :destroy, approval_destroy_params
+      delete :destroy, params: approval_destroy_params
       expect(Approval.count).to eq approval_count - 1
       expect(user.approval_for(developer).class).to eq NoApproval
     end

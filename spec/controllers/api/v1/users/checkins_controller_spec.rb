@@ -15,12 +15,9 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
   let(:subscription) { FactoryGirl.create :subscription, subscriber: user }
   let(:create_headers) { request.headers['X-UUID'] = device.uuid }
   let(:address) { 'The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK' }
-  let(:params) { { params: { user_id: user.id, device_id: device.id } } }
-  let(:geocode_params) do
-    params[:params][:type] = 'address'
-    params
-  end
-  let(:create_params) { { params: { checkin: { lat: Faker::Address.latitude, lng: Faker::Address.longitude } } } }
+  let(:params) { { user_id: user.id, device_id: device.id } }
+  let(:geocode_params) { params.merge(type: 'address') }
+  let(:create_params) { { checkin: { lat: Faker::Address.latitude, lng: Faker::Address.longitude } } }
   let(:foggable_checkin_attributes) { %w(city postal_code) }
   let(:private_checkin_attributes) { %w(uuid fogged fogged_lat fogged_lng fogged_area) }
   let(:private_and_foggable_checkin_attributes) { private_checkin_attributes + foggable_checkin_attributes }
@@ -47,7 +44,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
   describe 'GET #last' do
     context 'without developer approval' do
       it "shouldn't fetch the last reported location", :skip_before do
-        get :last, params
+        get :last, params: params
         expect(res_hash[:error]).to eq 'approval_status: No Approval'
       end
     end
@@ -57,8 +54,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         device
         Approval.link(user, developer, 'Developer')
         Approval.accept(user, developer, 'Developer')
-        params[:params][:permissible_id] = second_user.id
-        get :last, params
+        get :last, params: params.merge(permissible_id: second_user.id)
         expect(res_hash[:error]).to eq 'approval_status: No Approval'
       end
     end
@@ -69,19 +65,18 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       end
 
       it 'should fetch the last reported location (public attributes only)' do
-        get :last, params
+        get :last, params: params
         expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
         expect(res_hash.first.keys).not_to include(*private_checkin_attributes)
       end
 
       it 'should fetch the last reported location for a friend' do
-        params[:params][:permissible_id] = second_user.id
-        get :last, params
+        get :last, params: params.merge(permissible_id: second_user.id)
         expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
       end
 
       it "should fetch the last reported location's address in full by default" do
-        get :last, geocode_params
+        get :last, params: geocode_params
         expect(res_hash.first['address']).to eq address
         expect(res_hash.first['lat']).to eq checkin.lat
         expect(res_hash.first['lng']).to eq checkin.lng
@@ -90,7 +85,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       it "should fog the last reported location's address if fogged" do
         device.switch_fog
         device.checkins.create(lat: 51.57471, lng: -0.50626)
-        get :last, geocode_params
+        get :last, params: geocode_params
         expect(res_hash.first['address']).to eq 'Denham'
         expect(res_hash.first['lat']).to eq(51.57471)
         expect(res_hash.first['lng']).to eq(-0.50626)
@@ -102,7 +97,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         device.switch_fog
         device.checkins.create(lat: 51.57471, lng: -0.50626)
         Permission.last.update(bypass_fogging: true)
-        get :last, geocode_params
+        get :last, params: geocode_params
         expect(res_hash.first['address']).to eq address
         expect((foggable_checkin_attributes - res_hash.first.keys).empty?).to be true
       end
@@ -120,13 +115,13 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       include_context 'from copo app'
 
       it "should fetch the user's last device checkin with all attributes" do
-        get :last, params
+        get :last, params: params
         expect(res_hash.first['id']).to be checkin.id
         expect(res_hash.first.keys).to eq checkin.attributes.keys
       end
 
       it 'should geocode last checkin if type param provided' do
-        get :last, geocode_params
+        get :last, params: geocode_params
         expect(res_hash.first['city']).to eq 'Denham'
       end
     end
@@ -142,7 +137,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
     context 'with no page param given' do
       it 'should fetch the most recent checkins (up to 30 checkins)' do
-        get :index, params
+        get :index, params: params
         expect(res_hash.first['id']).to be device.checkins.first.id
         expect(response.header['X-Next-Page']).to eq '2'
         expect(response.header['X-Current-Page']).to eq '1'
@@ -155,16 +150,14 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     context 'with page param' do
       it 'should fetch the checkins on that page if they exist' do
         page = 2
-        params[:params][:page] = page
-        get :index, params
+        get :index, params: params.merge(page: page)
         expect(res_hash.first['id']).to be device.checkins.last.id
         expect(response.header['X-Current-Page']).to eq page.to_s
         expect(response.header['X-Next-Page']).to eq 'null'
       end
 
       it 'should not get any checkins if page does not exist' do
-        params[:params][:page] = 3
-        get :index, params
+        get :index, params: params.merge(page: 3)
         expect(response.body).to eq '[]'
       end
     end
@@ -180,13 +173,13 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       include_context 'from copo app'
 
       it "should fetch all the user's device checkins" do
-        get :index, params
+        get :index, params: params
         expect(res_hash.first.keys).to eq checkin.attributes.keys
         expect(res_hash.first['id']).to be checkin.id
       end
 
       it 'should geocode all checkins with type address' do
-        get :index, geocode_params
+        get :index, params: geocode_params
         expect(res_hash.first['address']).to match 'The Pilot Centre'
       end
     end
@@ -197,7 +190,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       subscription
       count = user.checkins.count
       create_headers
-      post :create, create_params
+      post :create, params: create_params
       expect(res_hash[:data].first['uuid']).to eq device.uuid
       expect(user.checkins.count).to be(count + 1)
       expect(checkin.device).to be device
@@ -212,7 +205,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
     it 'should return 400 if you POST a checkin with invalid uuid' do
       request.headers['X-UUID'] = 'thisdevicedoesntexist'
-      post :create, create_params
+      post :create, params: create_params
       expect(response.status).to eq(400)
       expect(res_hash[:error]).to eq('You must provide a valid uuid')
     end

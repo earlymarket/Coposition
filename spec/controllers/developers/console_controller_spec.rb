@@ -8,11 +8,11 @@ RSpec.describe Developers::ConsolesController, type: :controller do
     dev.requests << FactoryGirl.create(:request)
     dev
   end
-  let(:developer_params) { { params: { developer_id: developer.id } } }
+  let(:developer_params) { { developer_id: developer.id } }
 
   describe '#show' do
     it 'should assign requests today and unpaid requests' do
-      get :show, developer_params
+      get :show, params: developer_params
       expect(assigns(:requests_today)).to eq developer.requests.recent(1.day.ago).count
       expect(assigns(:unpaid)).to eq developer.requests.where(paid: false).count
     end
@@ -21,7 +21,7 @@ RSpec.describe Developers::ConsolesController, type: :controller do
   describe '#key' do
     it 'should generate a new api key' do
       request.accept = 'text/javascript'
-      post :key, developer_params
+      post :key, params: developer_params
       expect(assigns(:api_key)).to eq developer.reload.api_key
     end
   end

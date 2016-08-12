@@ -9,9 +9,9 @@ RSpec.describe Api::V1::ConfigsController, type: :controller do
     developer
   end
   let(:device) { FactoryGirl.create :device }
-  let(:params) { { params: { id: device.id } } }
-  let(:custom_params) { { params: { type: 'tracker', freq: '1000' } } }
-  let(:update_params) { { params: { id: device.id, config: { custom: custom_params } } } }
+  let(:params) { { id: device.id } }
+  let(:custom_params) { { type: 'tracker', freq: '1000' } }
+  let(:update_params) { params.merge(config: { custom: custom_params }) }
 
   before do
     request.headers['X-Api-Key'] = developer.api_key
@@ -26,20 +26,19 @@ RSpec.describe Api::V1::ConfigsController, type: :controller do
 
   describe '#show' do
     it 'should return a config for the specified device' do
-      get :show, params
+      get :show, params: params
       expect(res_hash[:device_id]).to eq device.id
     end
   end
 
   describe '#update' do
     it 'should update a config for the specified device' do
-      put :update, update_params
+      put :update, params: update_params
       expect(res_hash[:custom]).to eq custom_params.as_json
     end
 
     it 'should return a message if config does not exist' do
-      update_params[:params][:id] = 0
-      put :update, update_params
+      put :update, params: update_params.merge(id: 0)
       expect(res_hash[:error]).to match "Couldn't find Config"
     end
   end
