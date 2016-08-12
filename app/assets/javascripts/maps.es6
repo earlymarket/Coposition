@@ -34,9 +34,20 @@ window.COPO.maps = {
   loadAllCheckins(checkins, total) {
     if (total === undefined) return;
     loadCheckins(2);
+
+    function getCheckinData(page) {
+      if ($('.c-devices.a-show').length !== 0) {
+        return $.getJSON(`${window.location.href}/checkins?page=${page}&per_page=1000`)
+      } else if($('.c-friends.a-show_device').length !== 0) {
+        return $.getJSON(`${window.location.href}&page=${page}&per_page=1000`)
+      } else {
+        console.log('Page not recognised. No incremental loading.');
+      }
+    };
+
     function loadCheckins(page) {
       if (total > gon.checkins.length) {
-        $.getJSON(`${window.location.href}/checkins?page=${page}&per_page=1000`).then(function(data) {
+        getCheckinData(page).then(function(data) {
           if(window.gon.total === undefined) return;
           console.log('Loading more checkins!');
           gon.checkins = gon.checkins.concat(data.checkins);
