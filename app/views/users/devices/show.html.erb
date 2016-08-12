@@ -4,6 +4,7 @@
   <div class="bottom-panel valign-wrapper">
     <div class="buttons">
       <%= link_to("Delete history", user_device_checkins_path(current_user.url_id, @presenter.device.id), { method: :delete, class: "btn red white-text", data: { confirm: 'Delete all checkins for this device?' } })%>
+      <a id="checkinNow" class="btn green white-text">Checkin now</a>
       <%= link_to("Delete device", user_device_path(current_user.url_id, @presenter.device), { method: :delete, class: "btn red white-text", data: { confirm: 'Are you sure?' } })%>
     </div>
   </div>

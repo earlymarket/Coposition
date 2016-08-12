@@ -26,6 +26,19 @@ $(document).on('page:change', function() {
           $('#current-location').replaceWith($createCheckinLink);
         }
       })
+
+      $('#checkinNow').on('click', function(){
+        navigator.geolocation.getCurrentPosition(postLocation, COPO.utility.geoLocationError);
+      })
+    }
+
+    function postLocation(position){
+      $.ajax({
+        url: `/users/${gon.current_user_id}/devices/${gon.device}/checkins/`,
+        type: 'POST',
+        dataType: 'script',
+        data: { checkin: { lat: position.coords.latitude, lng: position.coords.longitude } }
+      });
     }
   }
 });

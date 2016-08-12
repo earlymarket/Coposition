@@ -52,6 +52,7 @@ module Users
     def show_gon
       {
         checkins: show_checkins,
+        device: @device.id,
         current_user_id: @user.id,
         total: @device.checkins.count
       }
