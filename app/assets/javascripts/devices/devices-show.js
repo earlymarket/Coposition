@@ -34,7 +34,7 @@ $(document).on('page:change', function() {
 
     function postLocation(position){
       $.ajax({
-        url: `/users/${gon.current_user_id}/devices/${gon.device}/checkins/`,
+        url: '/users/'+gon.current_user_id+'/devices/'+gon.device+'/checkins/',
         type: 'POST',
         dataType: 'script',
         data: { checkin: { lat: position.coords.latitude, lng: position.coords.longitude } }
