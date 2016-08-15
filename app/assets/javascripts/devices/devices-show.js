@@ -28,7 +28,7 @@ $(document).on('page:change', function() {
       })
 
       $('#checkinNow').on('click', function(){
-        navigator.geolocation.getCurrentPosition(postLocation, COPO.utility.geoLocationError);
+        navigator.geolocation.getCurrentPosition(postLocation, COPO.utility.geoLocationError, { timeout: 3000 });
       })
     }
 
