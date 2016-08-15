@@ -1,4 +1,4 @@
-class Request < ActiveRecord::Base
+class Request < ApplicationRecord
   include SlackNotifiable
   belongs_to :developer
   scope :recent, ->(time) { where('created_at > ?', time) }

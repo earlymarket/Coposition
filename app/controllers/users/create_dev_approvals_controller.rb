@@ -18,7 +18,7 @@ class Users::CreateDevApprovalsController < ApplicationController
 
   def approval_created?(developer, approval)
     return true if developer && approval.save
-    errors = approval ? approval.errors.get(:base).first : 'Developer not found'
+    errors = approval ? approval.errors[:base].first : 'Developer not found'
     redirect_to new_user_approval_path(approvable_type: 'Developer'), alert: "Error: #{errors}"
     false
   end

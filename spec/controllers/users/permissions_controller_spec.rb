@@ -20,25 +20,28 @@ RSpec.describe Users::PermissionsController, type: :controller do
   end
 
   describe 'index' do
-    before { permission }
+    before do
+      permission
+      request.accept = 'text/javascript'
+    end
 
     context 'from devices page' do
       it 'should assign device and device permissions' do
-        xhr :get, :index, user_id: user.id, device_id: device.id, from: 'devices'
+        get :index, params: { user_id: user.id, device_id: device.id, from: 'devices' }
         expect(assigns(:presenter).device).to eq device
         expect(assigns(:presenter).permissions).to eq device.permissions
       end
     end
     context 'from apps page' do
       it 'should assign developer to permissible and developer devices permissions' do
-        xhr :get, :index, from: 'apps', device_id: developer.id, user_id: user.id
+        get :index, params: { from: 'apps', device_id: developer.id, user_id: user.id }
         expect(assigns(:presenter).permissions).to eq device.permissions.where(permissible_id: developer.id)
         expect(assigns(:presenter).permissible).to eq developer
       end
     end
     context 'from friends page' do
       it 'should assign friend as permissible and permissions between devices and friend' do
-        xhr :get, :index, user_id: user.id, device_id: friend.id, from: 'friends'
+        get :index, params: { user_id: user.id, device_id: friend.id, from: 'friends' }
         expect(assigns(:presenter).permissible).to eq friend
         expect(assigns(:presenter).permissions).to eq device.permissions.where(permissible_id: friend.id)
       end
@@ -49,30 +52,32 @@ RSpec.describe Users::PermissionsController, type: :controller do
     before { request.accept = 'text/javascript' }
 
     it 'should update the privilege level, bypass_fogging and bypass_delay attributes' do
-      put :update,
-          user_id: user.id,
-          device_id: device.id,
-          id: permission.id,
-          from: 'devices',
-          permission: {
-            privilege: 'disallowed',
-            bypass_fogging: true,
-            bypass_delay: true
-          }
+      put :update, params: {
+        user_id: user.id,
+        device_id: device.id,
+        id: permission.id,
+        from: 'devices',
+        permission: {
+          privilege: 'disallowed',
+          bypass_fogging: true,
+          bypass_delay: true
+        }
+      }
       expect(Permission.find(permission.id).privilege).to eq 'disallowed'
       expect(Permission.find(permission.id).bypass_fogging).to eq true
       expect(Permission.find(permission.id).bypass_delay).to eq true
     end
 
     it 'should fail to update permission user does not control' do
-      put :update,
-          user_id: second_user.id,
-          device_id: device.id,
-          id: permission.id,
-          from: 'devices',
-          permission: {
-            privilege: 'last_only'
-          }
+      put :update, params: {
+        user_id: second_user.id,
+        device_id: device.id,
+        id: permission.id,
+        from: 'devices',
+        permission: {
+          privilege: 'last_only'
+        }
+      }
       expect(Permission.find(permission.id).privilege).to eq 'complete'
       expect(response).to redirect_to(root_path)
     end

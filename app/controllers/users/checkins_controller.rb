@@ -1,4 +1,5 @@
 class Users::CheckinsController < ApplicationController
+  protect_from_forgery except: :show
   before_action :authenticate_user!
   before_action :require_checkin_ownership, except: [:index, :new, :create, :destroy_all]
   before_action :require_device_ownership, only: [:index, :new, :create, :destroy_all]

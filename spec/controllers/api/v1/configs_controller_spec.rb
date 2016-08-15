@@ -26,19 +26,19 @@ RSpec.describe Api::V1::ConfigsController, type: :controller do
 
   describe '#show' do
     it 'should return a config for the specified device' do
-      get :show, params
+      get :show, params: params
       expect(res_hash[:device_id]).to eq device.id
     end
   end
 
   describe '#update' do
     it 'should update a config for the specified device' do
-      put :update, update_params
+      put :update, params: update_params
       expect(res_hash[:custom]).to eq custom_params.as_json
     end
 
     it 'should return a message if config does not exist' do
-      put :update, update_params.merge(id: 0)
+      put :update, params: update_params.merge(id: 0)
       expect(res_hash[:error]).to match "Couldn't find Config"
     end
   end

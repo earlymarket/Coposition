@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe DevicesHelper, type: :helper do
+RSpec.describe PermissionsHelper, type: :helper do
   let(:safebuffer) { ActiveSupport::SafeBuffer }
   let(:user) { FactoryGirl.create(:user) }
   let(:developer) { FactoryGirl.create(:developer) }

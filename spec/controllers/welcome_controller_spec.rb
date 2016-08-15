@@ -16,7 +16,7 @@ RSpec.describe WelcomeController, type: :controller do
 
     it 'should let you bypass the placeholder if you set something on admin' do
       Rails.env = 'production'
-      get :index, admin: 'true'
+      get :index, params: { admin: 'true' }
       Rails.env = 'test'
       expect(response).to render_template('index')
     end

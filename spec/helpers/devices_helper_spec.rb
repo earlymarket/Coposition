@@ -89,7 +89,7 @@ RSpec.describe DevicesHelper, type: :helper do
       it 'contains friend name and device name' do
         output = helper.devices_label(friendPresenter)
         expect(output).to match device.name
-        expect(output).to match helper.approvals_approvable_name(user)
+        expect(output).to match helper.name_or_email_name(user)
       end
     end
     context 'on personal page' do

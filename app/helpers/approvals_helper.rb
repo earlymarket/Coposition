@@ -18,7 +18,7 @@ module ApprovalsHelper
   def approvals_friends_device_link(approvable_type, approvable, &block)
     return capture(&block) unless approvable_type == 'User'
     str = '<a href="'
-    str << user_friend_path(current_user.url_id, approvable)
+    str << Rails.application.routes.url_helpers.user_friend_path(current_user.url_id, approvable)
     str << '" class="black-text">'
     str << capture(&block)
     str << '</a>'
@@ -37,9 +37,9 @@ module ApprovalsHelper
 
   def create_approval_url(type)
     if type == 'Developer'
-      user_create_dev_approvals_path(current_user.url_id)
+      Rails.application.routes.url_helpers.user_create_dev_approvals_path(current_user.url_id)
     elsif type == 'User'
-      user_approvals_path(current_user.url_id)
+      Rails.application.routes.url_helpers.user_approvals_path(current_user.url_id)
     end
   end
 end

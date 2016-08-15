@@ -12,12 +12,13 @@ RSpec.describe Users::Devise::RegistrationsController, type: :controller do
   describe 'create' do
     context 'with a valid email and password' do
       it 'should create a new user' do
-        post :create,
-             user: {
-               email: 'test@email.com',
-               password: 'password',
-               username: 'test'
-             }
+        post :create, params: {
+          user: {
+            email: 'test@email.com',
+            password: 'password',
+            username: 'test'
+          }
+        }
         expect(res_hash[:email]).to eq 'test@email.com'
         expect(User.count).to eq 1
       end
@@ -25,12 +26,13 @@ RSpec.describe Users::Devise::RegistrationsController, type: :controller do
 
     context 'with an invalid email and/or password' do
       it 'should not create a new user' do
-        post :create,
-             user: {
-               email: 'fail-email.com',
-               password: 'pasword',
-               username: 'fail'
-             }
+        post :create, params: {
+          user: {
+            email: 'fail-email.com',
+            password: 'pasword',
+            username: 'fail'
+          }
+        }
         expect(res_hash[:email]).to eq ['is invalid']
         expect(res_hash[:password]).to eq ['is too short (minimum is 8 characters)']
         expect(User.count).to eq 0
@@ -42,10 +44,7 @@ RSpec.describe Users::Devise::RegistrationsController, type: :controller do
     context 'with a password' do
       it 'should destroy the user' do
         user
-        delete :destroy,
-               user: {
-                 password: user.password
-               }
+        delete :destroy, params: { user: { password: user.password } }
         expect(flash[:notice]).to match 'successfully cancelled'
         expect(User.count).to eq 0
       end
@@ -54,10 +53,7 @@ RSpec.describe Users::Devise::RegistrationsController, type: :controller do
     context 'with an invalid password' do
       it 'should not destroy the user' do
         user
-        delete :destroy,
-               user: {
-                 password: 'wrong'
-               }
+        delete :destroy, params: { user: { password: 'wrong' } }
         expect(flash[:notice]).to match 'invalid'
         expect(User.count).to eq 1
       end

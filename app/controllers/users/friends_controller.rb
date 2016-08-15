@@ -20,7 +20,7 @@ class Users::FriendsController < ApplicationController
   private
 
   def friends?
-    friend = User.find(params[:id])
+    friend = User.friendly.find(params[:id])
     unless friend.approved?(current_user)
       flash[:notice] = 'You are not friends with that user'
       redirect_to user_friends_path(current_user)
