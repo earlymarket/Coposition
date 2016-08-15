@@ -96,6 +96,7 @@ class Device < ActiveRecord::Base
   end
 
   def notify_subscribers(event, data)
+    return unless subscriptions(event)
     data = data.as_json
     data.merge!(remove_id.as_json)
     data.merge!(user.public_info.remove_id.as_json) if user
