@@ -3,7 +3,6 @@ $(document).on('page:change', function() {
     const U  = window.COPO.utility;
     const M  = window.COPO.maps;
 
-    $('.tooltipped').tooltip({delay: 50});
     U.gonFix();
     const PAGE = ($(".c-approvals.a-apps").length === 1 ? 'apps' : 'friends')
     COPO.permissionsTrigger.initTrigger(PAGE)

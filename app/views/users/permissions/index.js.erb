@@ -18,13 +18,13 @@ if($list.children().length===1) {
         <% end %>
         </div>
         <div class='col s2'>
-          <span id='fogIcon<%=permission.id%>' class='fogIcon<%=permission.device.id%> tooltipped' data-tooltip="<%=approvals_approvable_name(permission.permissible)%> can only see fogged data for this device">
+          <span id='fogIcon<%=permission.id%>' class='fogIcon<%=permission.device.id%> tipped' data-tooltip="<%=approvals_approvable_name(permission.permissible)%> can only see fogged data for this device">
             <%= fogged_icon(permission.device.fogged) if permission.device.fogged %>
           </span>
-          <span id='delayIcon<%=permission.id%>' class='delayIcon<%=permission.device.id%> tooltipped' data-tooltip="<%=approvals_approvable_name(permission.permissible)%> can only see your data after a delay for this device">
+          <span id='delayIcon<%=permission.id%>' class='delayIcon<%=permission.device.id%> tipped' data-tooltip="<%=approvals_approvable_name(permission.permissible)%> can only see your data after a delay for this device">
             <%= devices_delay_icon(permission.device.delayed) if permission.device.delayed %>
           </span>
-          <span id='accessIcon<%=permission.id%>' class='tooltipped' data-tooltip="<%=approvals_approvable_name(permission.permissible)%> can't see any data from this device">
+          <span id='accessIcon<%=permission.id%>' class='tipped' data-tooltip="<%=approvals_approvable_name(permission.permissible)%> can't see any data from this device">
             <%= devices_access_icon  %>
           </span>
         </div>
@@ -34,6 +34,6 @@ if($list.children().length===1) {
   `);
   COPO.permissions.switchesOff();
   COPO.permissions.initSwitches(page, gon.current_user_id, gon.permissions);
-  $('.tooltipped').tooltip({delay: 50});
+  $('.tipped').tooltip({delay: 50});
 }
 
