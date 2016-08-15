@@ -17,13 +17,13 @@ RSpec.describe Users::FriendsController, type: :controller do
   describe 'GET #show' do
     it 'should assign @friend and friends devices if friends' do
       approval
-      get :show, params
+      get :show, params: params
       expect(assigns(:friend)).to eq(second_user)
       expect(assigns(:devices)).to eq(second_user.devices)
     end
 
     it 'should say that you are not friends with user' do
-      get :show, params
+      get :show, params: params
       expect(flash[:notice]).to match 'not friends'
     end
   end
@@ -31,7 +31,7 @@ RSpec.describe Users::FriendsController, type: :controller do
   describe 'GET #show_device' do
     it 'should render the show device page' do
       approval
-      get :show_device, params
+      get :show_device, params: params
       expect(response.code).to eq '200'
     end
   end

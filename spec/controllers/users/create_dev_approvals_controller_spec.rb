@@ -12,14 +12,14 @@ RSpec.describe Users::CreateDevApprovalsController, type: :controller do
   describe 'POST #create' do
     context 'when adding a developer' do
       it 'should create an accepted approval between user and developer' do
-        post :create, approval_create_params
+        post :create, params: approval_create_params
         expect(Approval.where(user: user, approvable: developer, status: 'accepted')).to exist
       end
 
       it 'should confirm an existing developer approval request' do
         approval.update(status: 'developer-requested', approvable_id: developer.id, approvable_type: 'Developer')
         count = Approval.count
-        post :create, approval_create_params
+        post :create, params: approval_create_params
         expect(Approval.count).to eq count
         expect(Approval.where(user: user, approvable: developer, status: 'accepted')).to exist
       end
@@ -27,7 +27,7 @@ RSpec.describe Users::CreateDevApprovalsController, type: :controller do
       it 'should not create an approval if Developer does not exist' do
         approval_create_params[:approval][:approvable] = 'does not exist'
         approval_count = Approval.count
-        post :create, approval_create_params
+        post :create, params: approval_create_params
         expect(Approval.count).to eq approval_count
         expect(flash[:alert]).to match 'not found'
       end
@@ -35,7 +35,7 @@ RSpec.describe Users::CreateDevApprovalsController, type: :controller do
       it 'should not approve if trying to add an already approved developer' do
         approval.update(status: 'accepted', approvable_id: developer.id, approvable_type: 'Developer')
         approval_count = Approval.count
-        post :create, approval_create_params
+        post :create, params: approval_create_params
         expect(flash[:alert]).to match 'exists'
         expect(Approval.count).to eq approval_count
       end

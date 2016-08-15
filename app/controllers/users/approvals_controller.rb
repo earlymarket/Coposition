@@ -42,7 +42,7 @@ class Users::ApprovalsController < ApplicationController
     approvable = approval.approvable
     current_user.destroy_permissions_for(approvable)
     if approvable_type == 'User'
-      Approval.destroy_all(user: approvable, approvable: current_user, approvable_type: 'User')
+      Approval.where(user: approvable, approvable: current_user, approvable_type: 'User').destroy_all
     end
     approval.destroy
     approvals_presenter_and_gon(approvable_type)
@@ -58,7 +58,7 @@ class Users::ApprovalsController < ApplicationController
   def approval_created?(user, approval)
     return true if user && approval.save
     if user.present?
-      redirect_to new_user_approval_path(approvable_type: 'User'), alert: "Error: #{approval.errors.get(:base).first}"
+      redirect_to new_user_approval_path(approvable_type: 'User'), alert: "Error: #{approval.errors[:base].first}"
     else
       UserMailer.invite_email(allowed_params[:approvable]).deliver_now
       redirect_to user_dashboard_path, notice: 'User not signed up with Coposition, invite email sent!'

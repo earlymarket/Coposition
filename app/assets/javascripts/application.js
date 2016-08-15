@@ -15,6 +15,7 @@
 //= require jquery.validate
 //= require jquery.validate.additional-methods
 //= require turbolinks
+//= require turbolinks-compatibility
 
 // -- Libs from gems --
 

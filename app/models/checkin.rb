@@ -1,4 +1,4 @@
-class Checkin < ActiveRecord::Base
+class Checkin < ApplicationRecord
   include SwitchFogging
   validates :lat, presence: :true
   validates :lng, presence: :true

@@ -1,7 +1,7 @@
 class Api::V1::UuidsController < Api::ApiController
   respond_to :json
 
-  skip_before_filter :find_user
+  skip_before_action :find_user
 
   def show
     device = Device.create
