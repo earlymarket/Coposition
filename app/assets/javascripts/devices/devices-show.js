@@ -5,6 +5,9 @@ $(document).on('page:change', function() {
     COPO.maps.initMap();
     COPO.maps.initMarkers(gon.checkins, gon.total);
     COPO.maps.initControls();
+    var currentCoords;
+
+    map.on('locationfound', onLocationFound);
 
     if (page === 'user') {
       map.on('contextmenu', function(e){
@@ -28,7 +31,12 @@ $(document).on('page:change', function() {
       })
 
       $('#checkinNow').on('click', function(){
-        navigator.geolocation.getCurrentPosition(postLocation, COPO.utility.geoLocationError, { timeout: 3000 });
+        if(currentCoords){
+          var position = { coords: { latitude: currentCoords.lat, longitude: currentCoords.lng } }
+          postLocation(position)
+        } else {
+          navigator.geolocation.getCurrentPosition(postLocation, COPO.utility.geoLocationError, { timeout: 3000 });
+        }
       })
     }
   }
@@ -39,5 +47,9 @@ $(document).on('page:change', function() {
       dataType: 'script',
       data: { checkin: { lat: position.coords.latitude, lng: position.coords.longitude } }
     });
+  }
+
+  function onLocationFound(p){
+    currentCoords = p.latlng;
   }
 });

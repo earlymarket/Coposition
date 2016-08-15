@@ -215,13 +215,13 @@ window.COPO.maps = {
   locateControlInit() {
     COPO.maps.lc = L.control.locate({
       follow: false,
+      watch: true,
       setView: true,
       markerClass: L.CircleMarker,
       strings: {
         title: 'Your current location',
         popup: 'Your current location within {distance} {unit}.<br><a href="#" id="current-location"></a>'
       }
-
     }).addTo(map);
   },
 
