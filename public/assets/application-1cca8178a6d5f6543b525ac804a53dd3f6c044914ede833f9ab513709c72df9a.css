@@ -14818,3 +14818,7 @@ a[data-maitre-status] {
 /* line 2, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-help.scss */
 .c-welcome.a-help .table-of-contents {
   position: fixed; }
+
+/* line 2, /home/earlymarket/Documents/CoPosition/app/assets/stylesheets/welcome-getting_started.scss */
+.c-welcome.a-getting_started .table-of-contents {
+  position: fixed; }
