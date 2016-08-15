@@ -10,7 +10,11 @@ class Users::FriendsController < ApplicationController
 
   def show_device
     @presenter = ::Users::FriendsPresenter.new(current_user, params, 'show_device')
-    gon.push(@presenter.show_device_gon)
+    if params[:per_page] && params[:page]
+      render json: @presenter.show_checkins(params).as_json
+    else
+      gon.push(@presenter.show_device_gon)
+    end
   end
 
   private
