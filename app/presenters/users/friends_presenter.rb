@@ -3,10 +3,11 @@ module Users
     attr_reader :friend
     attr_reader :devices
     attr_reader :device
+    attr_reader :show_checkins
 
     def initialize(user, params, action)
       @user = user
-      @friend = User.find(params[:id])
+      @friend = User.friendly.find(params[:id])
       @params = params
       send action
     end
@@ -26,8 +27,16 @@ module Users
     end
 
     def show_device_gon
+      checkins = device_checkins
       {
-        checkins: device_checkins
+        checkins: checkins.paginate(page: 1, per_page: 1000),
+        total: checkins.count
+      }
+    end
+
+    def show_checkins(params)
+      {
+        checkins: device_checkins.paginate(page: params[:page], per_page: params[:per_page])
       }
     end
 

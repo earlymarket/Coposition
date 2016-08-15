@@ -9,7 +9,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   describe '#show' do
     context 'without an API key' do
       it 'should render status 401 with message' do
-        get :show, id: user.id, format: :json
+        get :show, params: { id: user.id, format: :json }
         expect(response.status).to eq 401
         expect(res_hash[:error]).to eq 'No valid API Key'
       end
@@ -21,19 +21,19 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       end
 
       it 'should reject an unapproved user' do
-        get :show, id: user.id, format: :json
+        get :show, params: { id: user.id, format: :json }
         expect(response.status).to eq 401
       end
 
       it 'should assign User.id(:id) to @user if the developer is approved' do
         Approval.link(user, dev, 'Developer')
         Approval.accept(user, dev, 'Developer')
-        get :show, id: user.id, format: :json
+        get :show, params: { id: user.id, format: :json }
         expect(assigns(:user)).to eq(User.find(user.id))
       end
 
       it 'should return 404 and an error message if user does not exist' do
-        get :show, id: 1000, format: :json
+        get :show, params: { id: 1000, format: :json }
         expect(response.status).to eq 404
         expect(res_hash[:error]).to eq "Couldn't find User with 'id'=1000"
       end
@@ -48,7 +48,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     end
 
     it 'should return a list of a developers approved users' do
-      get :index, format: :json
+      get :index, params: { format: :json }
       expect(assigns(:users)).to eq([User.find(user.id)])
     end
   end

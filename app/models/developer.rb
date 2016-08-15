@@ -1,4 +1,4 @@
-class Developer < ActiveRecord::Base
+class Developer < ApplicationRecord
   include ApprovalMethods, SlackNotifiable
 
   has_attachment :avatar

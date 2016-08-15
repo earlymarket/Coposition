@@ -1,4 +1,4 @@
-class Subscription < ActiveRecord::Base
+class Subscription < ApplicationRecord
   require 'net/http'
 
   belongs_to :subscriber, polymorphic: true

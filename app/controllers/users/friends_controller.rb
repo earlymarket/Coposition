@@ -10,13 +10,17 @@ class Users::FriendsController < ApplicationController
 
   def show_device
     @presenter = ::Users::FriendsPresenter.new(current_user, params, 'show_device')
-    gon.push(@presenter.show_device_gon)
+    if params[:per_page] && params[:page]
+      render json: @presenter.show_checkins(params).as_json
+    else
+      gon.push(@presenter.show_device_gon)
+    end
   end
 
   private
 
   def friends?
-    friend = User.find(params[:id])
+    friend = User.friendly.find(params[:id])
     unless friend.approved?(current_user)
       flash[:notice] = 'You are not friends with that user'
       redirect_to user_friends_path(current_user)

@@ -14,7 +14,7 @@ RSpec.describe Users::Devise::SessionsController, type: :controller do
     it 'should be able to sign in' do
       request.headers['X-Secret-App-Key'] = 'this-is-a-mobile-app'
       request.env['devise.mapping'] = Devise.mappings[:user]
-      post :create, params
+      post :create, params: params
       expect(res_hash[:email]).to eq user.email
       expect(res_hash[:authentication_token]).to eq user.authentication_token
     end
@@ -23,7 +23,7 @@ RSpec.describe Users::Devise::SessionsController, type: :controller do
       request.headers['X-Secret-App-Key'] = 'this-is-a-mobile-app'
       request.env['devise.mapping'] = Devise.mappings[:user]
       params[:user][:password] = 'incorrect'
-      post :create, params
+      post :create, params: params
       expect(response.status).to be 400
       expect(res_hash[:email]).to be nil
       expect(res_hash[:authentication_token]).to be nil
@@ -33,7 +33,7 @@ RSpec.describe Users::Devise::SessionsController, type: :controller do
       request.headers['X-Secret-App-Key'] = 'this-is-a-mobile-app'
       request.headers['X-User-Token'] = user.authentication_token
       request.env['devise.mapping'] = Devise.mappings[:user]
-      post :destroy, params
+      post :destroy, params: params
       expect(res_hash[:message]).to eq 'Signed out'
     end
 
@@ -42,7 +42,7 @@ RSpec.describe Users::Devise::SessionsController, type: :controller do
         request.headers['X-Secret-App-Key'] = 'this-is-a-mobile-app'
         request.headers['X-User-Token'] = 'invalid token'
         request.env['devise.mapping'] = Devise.mappings[:user]
-        post :destroy, params
+        post :destroy, params: params
         expect(res_hash[:error]).to eq 'Invalid token.'
         post :create, params.delete('password')
         expect(res_hash[:error]).to eq 'The request MUST contain the user email and password.'
