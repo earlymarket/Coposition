@@ -31,15 +31,13 @@ $(document).on('page:change', function() {
         navigator.geolocation.getCurrentPosition(postLocation, COPO.utility.geoLocationError, { timeout: 3000 });
       })
     }
-
-    function postLocation(position){
-      $.ajax({
-        url: '/users/'+gon.current_user_id+'/devices/'+gon.device+'/checkins/',
-        type: 'POST',
-        dataType: 'script',
-        data: { checkin: { lat: position.coords.latitude, lng: position.coords.longitude } }
-      });
-    }
+  }
+  function postLocation(position){
+    $.ajax({
+      url: '/users/'+gon.current_user_id+'/devices/'+gon.device+'/checkins/',
+      type: 'POST',
+      dataType: 'script',
+      data: { checkin: { lat: position.coords.latitude, lng: position.coords.longitude } }
+    });
   }
 });
-
