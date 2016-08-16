@@ -36,12 +36,11 @@ module DevicesHelper
 
   def devices_shared_link(device)
     return nil unless device.published?
-    link = Rails.application.routes.url_helpers.shared_user_device_url(host: 'coposition.com',
-                                                                       id: device.id, user_id: device.user_id)
+    link = Rails.application.routes.url_helpers.shared_user_device_url(id: device.id, user_id: device.user_id)
     output = text_field_tag(nil, link, class: 'linkbox', id: "linkbox#{device.id}")
-    output << content_tag(:i, 'assignment', class: 'material-icons tooltipped clip_button hide',
+    output << content_tag(:i, 'assignment', class: 'material-icons tooltipped clip_button',
                                             data: {
-                                              'clipboard-target': "linkbox#{device.id}",
+                                              'clipboard-target': "#linkbox#{device.id}",
                                               tooltip: 'Click to copy', position: 'right'
                                             })
     output

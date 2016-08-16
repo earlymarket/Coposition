@@ -21,7 +21,6 @@
 
 //= require cloudinary
 //= require attachinary
-//= require zeroclipboard
 
 // -- Misc vendor libs --
 
@@ -32,6 +31,7 @@
 //= require materialize/dist/js/materialize.min
 //= require typeahead.js/dist/typeahead.bundle.min
 //= require ion.rangeSlider/js/ion.rangeSlider.min
+//= require clipboard/dist/clipboard.min
 
 // STILL more up to date version
 //= require nouislider.min
