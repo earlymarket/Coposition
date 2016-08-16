@@ -5,6 +5,7 @@
 
     <h4>
       <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>"><span class="editable"><%= device.name %></span> <i class="material-icons grey-text edit-button">mode_edit</i>&nbsp;</a>
+      <i data-device='<%=device.id%>' class='locate material-icons'>my_location</i>
     </h4>
       <%= devices_last_checkin(device) %>
 

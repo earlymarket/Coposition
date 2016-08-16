@@ -335,5 +335,9 @@ window.COPO.maps = {
   panAndW3w(e) {
     map.panTo(this.getLatLng());
     COPO.maps.w3w.setCoordinates(e);
+  },
+
+  centerMapOn(lat, lng){
+    map.panTo(L.latLng(lat, lng));
   }
 }
