@@ -25,6 +25,12 @@ $(document).on('page:change', function() {
 
     $('.modal-trigger').leanModal();
 
+    $('.locate').on('click', function() {
+      const device_id = this.dataset.device;
+      const checkin = gon.checkins.find((checkin) => checkin.device_id.toString() === device_id);
+      if(checkin) M.centerMapOn(checkin.lat, checkin.lng);
+    });
+
     var makeEditable = function ($target, handler) {
       var original = $target.text();
       $target.attr('contenteditable', true);
