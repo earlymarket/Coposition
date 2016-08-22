@@ -338,6 +338,6 @@ window.COPO.maps = {
   },
 
   centerMapOn(lat, lng){
-    map.setView(L.latLng(lat, lng), 8);
+    map.setView(L.latLng(lat, lng), 18);
   }
 }
