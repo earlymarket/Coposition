@@ -135,5 +135,11 @@ COPO.utility = {
   pluralize(noun, count) {
     if(count > 1) return noun + 's';
     return noun;
+  },
+
+  scrollTo(selector, speed) {
+    $('html, body').animate({
+      scrollTop: $(selector).offset().top
+    }, speed);
   }
 };

@@ -11,11 +11,14 @@
         <div class="col s8 row valign-wrapper">
           <%= approvals_friends_device_link(approvable_type, approvable) do %>
             <div class="ib valign col s2 avatar"><%= avatar_for(approvable) %></div>
+          <% end %>
             <div class="ib col s9">
-              <h5 class="ib"><%= approvals_approvable_name(approvable) %></h5><div class="tagline"><%= approvable.try(:tagline) %></div>
+              <h5 class="ib"><%= approvals_friends_device_link(approvable_type, approvable) do %><%= approvals_approvable_name(approvable) %><% end %>
+              <%= approvals_friends_locator(approvable_type, approvable) %></h5>
+              <div class="tagline"><%= approvable.try(:tagline) %></div>
               <div>Approved since <%= humanize_date(current_user.approval_for(approvable).approval_date) %></div>
             </div>
-          <% end %>
+
         </div>
 
         <div class="col s4">

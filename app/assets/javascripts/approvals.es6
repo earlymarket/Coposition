@@ -10,6 +10,19 @@ $(document).on('page:change', function() {
 
     if(gon.friends && gon.friends.some(friend => friend.lastCheckin)) {
       $('.friends-index').removeClass('hide');
+      gon.friends.forEach(friend => {
+        if (!friend.lastCheckin) {
+          console.log(friend);
+          $('i[data-friend="'+ friend.userinfo.id+'"]').remove();
+        }
+      });
+      $('.center-map').on('click', function() {
+        const friend_id = this.dataset.friend;
+        const friend = gon.friends.find(friend => friend.userinfo.id.toString() === friend_id);
+        const checkin = friend.lastCheckin;
+        U.scrollTo('#top', 200);
+        setTimeout(() => M.centerMapOn(checkin.lat, checkin.lng), 200);
+      });
       M.initMap();
       M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
       M.addFriendMarkers(gon.friends)
@@ -24,3 +37,5 @@ $(document).on('page:change', function() {
     })
   }
 })
+
+
