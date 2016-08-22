@@ -138,6 +138,7 @@ COPO.utility = {
   },
 
   scrollTo(selector, speed) {
+    speed = speed || 200;
     $('html, body').animate({
       scrollTop: $(selector).offset().top
     }, speed);
