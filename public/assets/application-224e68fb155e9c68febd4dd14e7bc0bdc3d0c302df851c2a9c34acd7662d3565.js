@@ -44972,6 +44972,12 @@ COPO.utility = {
   pluralize: function pluralize(noun, count) {
     if (count > 1) return noun + 's';
     return noun;
+  },
+
+  scrollTo: function scrollTo(selector, speed) {
+    $('html, body').animate({
+      scrollTop: $(selector).offset().top
+    }, speed);
   }
 };
 $(document).on('page:change', function() {
@@ -45096,7 +45102,7 @@ function responsiveVideo() {
 }
 ;
 $(document).on('page:before-unload', function() {
-  if($('#sidenav-overlay')) $("#sidenav-overlay").trigger("click");
+  if($('#sidenav-overlay')) $("#sidenav-overlay").remove();
 })
 ;
 'use strict';
@@ -45441,6 +45447,10 @@ window.COPO.maps = {
   panAndW3w: function panAndW3w(e) {
     map.panTo(this.getLatLng());
     COPO.maps.w3w.setCoordinates(e);
+  },
+
+  centerMapOn: function centerMapOn(lat, lng) {
+    map.panTo(L.latLng(lat, lng));
   }
 };
 "use strict";
@@ -45737,140 +45747,167 @@ var MasterSwitch = (function (_PermissionSwitch2) {
 
 $(document).on('page:change', function () {
   if ($(".c-approvals.a-apps").length === 1 || $(".c-approvals.a-friends").length === 1) {
-    var U = window.COPO.utility;
-    var M = window.COPO.maps;
+    (function () {
+      var U = window.COPO.utility;
+      var M = window.COPO.maps;
 
-    $('.tooltipped').tooltip({ delay: 50 });
-    U.gonFix();
-    var PAGE = $(".c-approvals.a-apps").length === 1 ? 'apps' : 'friends';
-    COPO.permissionsTrigger.initTrigger(PAGE);
-    COPO.permissions.initSwitches(PAGE, gon.current_user_id, gon.permissions);
+      U.gonFix();
+      var PAGE = $(".c-approvals.a-apps").length === 1 ? 'apps' : 'friends';
+      COPO.permissionsTrigger.initTrigger(PAGE);
+      COPO.permissions.initSwitches(PAGE, gon.current_user_id, gon.permissions);
 
-    if (gon.friends && gon.friends.some(function (friend) {
-      return friend.lastCheckin;
-    })) {
-      $('.friends-index').removeClass('hide');
-      M.initMap();
-      M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
-      M.addFriendMarkers(gon.friends);
-    } else if (gon.friends) {
-      $('.friends-index').removeClass('hide');
-      M.initMap();
-      $('#map-overlay').removeClass('hide');
-    }
+      if (gon.friends && gon.friends.some(function (friend) {
+        return friend.lastCheckin;
+      })) {
+        $('.friends-index').removeClass('hide');
+        gon.friends.forEach(function (friend) {
+          if (!friend.lastCheckin) {
+            console.log(friend);
+            $('i[data-friend="' + friend.userinfo.id + '"]').remove();
+          }
+        });
+        $('.center-map').on('click', function () {
+          var friend_id = this.dataset.friend;
+          var friend = gon.friends.find(function (friend) {
+            return friend.userinfo.id.toString() === friend_id;
+          });
+          var checkin = friend.lastCheckin;
+          U.scrollTo('#top', 200);
+          setTimeout(function () {
+            return M.centerMapOn(checkin.lat, checkin.lng);
+          }, 200);
+        });
+        M.initMap();
+        M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
+        M.addFriendMarkers(gon.friends);
+      } else if (gon.friends) {
+        $('.friends-index').removeClass('hide');
+        M.initMap();
+        $('#map-overlay').removeClass('hide');
+      }
 
-    $(document).on('page:before-unload', function () {
-      COPO.permissions.switchesOff();
-    });
+      $(document).on('page:before-unload', function () {
+        COPO.permissions.switchesOff();
+      });
+    })();
   }
 });
 'use strict';
 
 $(document).on('page:change', function () {
   if ($(".c-devices.a-index").length === 1) {
-    var U = COPO.utility;
-    var M = window.COPO.maps;
-    var P = window.COPO.permissionsTrigger;
-    M.initMap();
-    M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
-    U.gonFix();
-    P.initTrigger('devices');
-    COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions);
-    COPO.delaySlider.initSliders(gon.devices);
-    gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');
-
-    $('.fogButton').each(function (index, fogButton) {
-      if (!$(fogButton).data('fogged')) {
-        $(fogButton).removeData('confirm').removeAttr('data-confirm');
-      }
-    });
-
-    $('body').on('click', '.edit-button', function (e) {
-      e.preventDefault();
-      $(this).toggleClass('hide', true);
-      makeEditable($(this).prev('span'), handleEdited);
-    });
-
-    $('.modal-trigger').leanModal();
-
-    var makeEditable = function makeEditable($target, handler) {
-      var original = $target.text();
-      $target.attr('contenteditable', true);
-      $target.focus();
-      document.execCommand('selectAll', false, null);
-      $target.on('blur', function () {
-        handler(original, $target);
-      });
-      $target.on('keydown', function (e) {
-        if (e.which === 27 || e.which === 13) {
+    (function () {
+      var makeEditable = function makeEditable($target, handler) {
+        var original = $target.text();
+        $target.attr('contenteditable', true);
+        $target.focus();
+        document.execCommand('selectAll', false, null);
+        $target.on('blur', function () {
           handler(original, $target);
-        }
-      });
-      $target.on('click', function (e) {
-        e.preventDefault();
-      });
-      return $target;
-    };
-
-    var handleEdited = function handleEdited(original, $target) {
-      var newName = $target.text();
-      if (original !== newName) {
-        console.log('Name optimistically set to: ' + $target.text());
-        var url = $target.parents('a').attr('href');
-        var request = $.ajax({
-          dataType: 'json',
-          url: url,
-          type: 'PUT',
-          data: { name: newName }
         });
-
-        request.done(function (response) {
-          console.log('Server processed the request');
-        }).fail(function (error) {
-          $target.text(original);
-          try {
-            Materialize.toast('Name: ' + JSON.parse(error.responseText).name, 3000, 'red');
-          } catch (e) {
-            console.log(error);
-            Materialize.toast('Error changing names', 3000, 'red');
+        $target.on('keydown', function (e) {
+          if (e.which === 27 || e.which === 13) {
+            handler(original, $target);
           }
         });
-      }
-      $target.text($target.text());
-      $target.attr('contenteditable', false);
-      $target.next().toggleClass('hide', false);
-      U.deselect();
-      $target.off();
-    };
+        $target.on('click', function (e) {
+          e.preventDefault();
+        });
+        return $target;
+      };
 
-    window.initPage = function () {
-      $('.clip_button').off();
-      U.initClipboard();
-      $('.tooltipped').tooltip('remove');
-      $('.tooltipped').tooltip({ delay: 50 });
-      $('.linkbox').off('touchstart click');
+      var handleEdited = function handleEdited(original, $target) {
+        var newName = $target.text();
+        if (original !== newName) {
+          // console.log('Name optimistically set to: ' + $target.text());
+          var url = $target.parents('a').attr('href');
+          var request = $.ajax({
+            dataType: 'json',
+            url: url,
+            type: 'PUT',
+            data: { name: newName }
+          });
+          request.done(function (response) {
+            // console.log('Server processed the request');
+          }).fail(function (error) {
+            $target.text(original);
+            Materialize.toast('Name: ' + JSON.parse(error.responseText).name, 3000, 'red');
+          });
+        }
+        $target.text($target.text());
+        $target.attr('contenteditable', false);
+        $target.next().toggleClass('hide', false);
+        U.deselect();
+        $target.off();
+      };
 
-      $('.linkbox').on('click', function (e) {
-        this.select();
+      var U = window.COPO.utility;
+      var M = window.COPO.maps;
+      var P = window.COPO.permissionsTrigger;
+      M.initMap();
+      M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
+      U.gonFix();
+      P.initTrigger('devices');
+      COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions);
+      COPO.delaySlider.initSliders(gon.devices);
+      gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');
+
+      $('.fogButton').each(function (index, fogButton) {
+        if (!$(fogButton).data('fogged')) {
+          $(fogButton).removeData('confirm').removeAttr('data-confirm');
+        }
       });
 
-      //backup for iOS
-      $('.linkbox').on('touchstart', function () {
-        this.focus();
-        this.setSelectionRange(0, $(this).val().length);
+      $('body').on('click', '.edit-button', function (e) {
+        e.preventDefault();
+        $(this).toggleClass('hide', true);
+        makeEditable($(this).prev('span'), handleEdited);
       });
 
-      $('.linkbox').each(function (i, linkbox) {
-        $(linkbox).attr('size', $(linkbox).val().length);
-      });
-    };
-    initPage();
+      $('.modal-trigger').leanModal();
 
-    $(document).on('page:before-unload', function () {
-      COPO.permissions.switchesOff();
-      $(window).off("resize");
-      $('body').off('click', '.edit-button');
-    });
+      $('.center-map').on('click', function () {
+        var device_id = this.dataset.device;
+        var checkin = gon.checkins.find(function (checkin) {
+          return checkin.device_id.toString() === device_id;
+        });
+        if (checkin) {
+          U.scrollTo('#top', 200);
+          setTimeout(function () {
+            return M.centerMapOn(checkin.lat, checkin.lng);
+          }, 200);
+        }
+      });
+
+      window.initPage = function () {
+        $('.clip_button').off();
+        U.initClipboard();
+        $('.tooltipped').tooltip('remove');
+        $('.tooltipped').tooltip({ delay: 50 });
+        $('.linkbox').off('touchstart click');
+
+        $('.linkbox').on('click', function (e) {
+          this.select();
+        });
+
+        //backup for iOS
+        $('.linkbox').on('touchstart', function () {
+          this.focus();
+          this.setSelectionRange(0, $(this).val().length);
+        });
+
+        $('.linkbox').each(function (i, linkbox) {
+          $(linkbox).attr('size', $(linkbox).val().length);
+        });
+      };
+      initPage();
+
+      $(document).on('page:before-unload', function () {
+        COPO.permissions.switchesOff();
+        $(window).off("resize");
+        $('body').off('click', '.edit-button');
+      });
+    })();
   }
 });
 'use strict';
@@ -46013,6 +46050,9 @@ $(document).on('page:change', function() {
     COPO.maps.initMap();
     COPO.maps.initMarkers(gon.checkins, gon.total);
     COPO.maps.initControls();
+    var currentCoords;
+
+    map.on('locationfound', onLocationFound);
 
     if (page === 'user') {
       map.on('contextmenu', function(e){
@@ -46034,10 +46074,30 @@ $(document).on('page:change', function() {
           $('#current-location').replaceWith($createCheckinLink);
         }
       })
+
+      $('#checkinNow').on('click', function(){
+        if(currentCoords){
+          var position = { coords: { latitude: currentCoords.lat, longitude: currentCoords.lng } }
+          postLocation(position)
+        } else {
+          navigator.geolocation.getCurrentPosition(postLocation, COPO.utility.geoLocationError, { timeout: 3000 });
+        }
+      })
     }
   }
-});
+  function postLocation(position){
+    $.ajax({
+      url: '/users/'+gon.current_user_id+'/devices/'+gon.device+'/checkins/',
+      type: 'POST',
+      dataType: 'script',
+      data: { checkin: { lat: position.coords.latitude, lng: position.coords.longitude } }
+    });
+  }
 
+  function onLocationFound(p){
+    currentCoords = p.latlng;
+  }
+});
 'use strict';
 
 $(document).on('page:change', function () {

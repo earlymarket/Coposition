@@ -1,6 +1,6 @@
 $(document).on('page:change', function() {
   if ($(".c-devices.a-index").length === 1) {
-    var U = COPO.utility;
+    const U = window.COPO.utility;
     const M  = window.COPO.maps;
     const P = window.COPO.permissionsTrigger;
     M.initMap();
@@ -25,14 +25,17 @@ $(document).on('page:change', function() {
 
     $('.modal-trigger').leanModal();
 
-    $('.locate').on('click', function() {
+    $('.center-map').on('click', function() {
       const device_id = this.dataset.device;
       const checkin = gon.checkins.find((checkin) => checkin.device_id.toString() === device_id);
-      if(checkin) M.centerMapOn(checkin.lat, checkin.lng);
+      if(checkin) {
+        U.scrollTo('#top', 200);
+        setTimeout(() => M.centerMapOn(checkin.lat, checkin.lng), 200);
+      }
     });
 
-    var makeEditable = function ($target, handler) {
-      var original = $target.text();
+    function makeEditable ($target, handler) {
+      let original = $target.text();
       $target.attr('contenteditable', true);
       $target.focus();
       document.execCommand('selectAll', false, null);
@@ -50,10 +53,10 @@ $(document).on('page:change', function() {
       return $target;
     }
 
-    var handleEdited = function (original, $target) {
+    function handleEdited (original, $target) {
       var newName = $target.text()
       if(original !== newName) {
-        console.log('Name optimistically set to: ' + $target.text());
+        // console.log('Name optimistically set to: ' + $target.text());
         var url = $target.parents('a').attr('href');
         var request = $.ajax({
           dataType: 'json',
@@ -61,20 +64,13 @@ $(document).on('page:change', function() {
           type: 'PUT',
           data: { name: newName }
         });
-
         request
         .done(function (response) {
-          console.log('Server processed the request');
+          // console.log('Server processed the request');
         })
         .fail(function (error) {
           $target.text(original);
-          try {
-            Materialize.toast('Name: ' + JSON.parse(error.responseText).name, 3000, 'red');
-          }
-          catch (e) {
-            console.log(error);
-            Materialize.toast('Error changing names', 3000, 'red');
-          }
+          Materialize.toast('Name: ' + JSON.parse(error.responseText).name, 3000, 'red');
         })
       }
       $target.text($target.text());

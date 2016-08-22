@@ -25,6 +25,11 @@ module ApprovalsHelper
     raw str
   end
 
+  def approvals_friends_locator(approvable_type, approvable)
+    return unless approvable_type == 'User'
+    "<i data-friend='#{approvable.id}' class='center-map material-icons'>my_location</i>".html_safe
+  end
+
   def approvals_pending_friends(user)
     string = ''
     user.pending_friends.each_with_index do |friend, index|
