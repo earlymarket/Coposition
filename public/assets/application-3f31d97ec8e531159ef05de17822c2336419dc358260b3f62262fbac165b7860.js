@@ -42870,7 +42870,7 @@ window.COPO.maps = {
   },
 
   centerMapOn: function centerMapOn(lat, lng) {
-    map.setView(L.latLng(lat, lng), 8);
+    map.setView(L.latLng(lat, lng), 18);
   }
 };
 "use strict";
