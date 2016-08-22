@@ -11,6 +11,7 @@
     "typeahead.js": "latest",
     "mustache.js": "latest",
     "jquery-Mustache": "latest",
-    "leaflet.markercluster": "latest"
+    "leaflet.markercluster": "latest",
+    "clipboard": "latest"
   }
 }

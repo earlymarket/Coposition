@@ -25,6 +25,7 @@ parts
 tmp
 .sass-cache
 node_modules
+vendor/assets/bower_components
 
 src/website/settingslocal.py
 stunnel.log
