@@ -15,6 +15,8 @@ Feature: map
       When I right click on the map
       And I click "Create checkin here"
         Then I have 1 checkins on the map
+      When I click "Checkin now"
+        Then I have 2 checkins on the map
       And I click on my last checkin
         When I click the link "cloud"
       Then I should have a fogged last checkin

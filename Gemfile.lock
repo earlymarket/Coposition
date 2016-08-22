@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/t-harps/will_paginate-materialize
+  revision: 67cecd1d53bb70dacee9663bd6746cac50240a8f
+  specs:
+    will_paginate-materialize (0.2.0)
+      will_paginate (~> 3.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -364,7 +371,6 @@ GEM
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
     will_paginate (3.1.0)
-    will_paginate-materialize (0.1.0)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -423,8 +429,7 @@ DEPENDENCIES
   turbolinks
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
-  will_paginate (~> 3.1.0)
-  will_paginate-materialize
+  will_paginate-materialize!
 
 RUBY VERSION
    ruby 2.3.0p0
