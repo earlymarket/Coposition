@@ -96,10 +96,9 @@ class Device < ApplicationRecord
   end
 
   def notify_friends(data)
-    user.friends.each do |friend|
-      next unless (sub = Subscription.where(event: 'friend_new_checkin').find_by(subscriber_id: friend.id))
+    Subscription.where(event: 'friend_new_checkin').where(subscriber_id: user.friends).each do |sub|
       checkin = safe_checkin_info_for(
-        permissible: friend,
+        permissible: sub.subscriber,
         type: 'address',
         action: 'last'
       )

@@ -13,6 +13,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
   end
   let(:checkin) { FactoryGirl.create :checkin, device: device }
   let(:subscription) { FactoryGirl.create :subscription, subscriber: user }
+  let(:friend_sub) { FactoryGirl.create :subscription, subscriber: second_user, event: 'friend_new_checkin' }
   let(:create_headers) { request.headers['X-UUID'] = device.uuid }
   let(:address) { 'The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK' }
   let(:params) { { user_id: user.id, device_id: device.id } }
@@ -188,6 +189,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
   describe 'POST #create' do
     it 'should create a checkin when there is a pre-existing device' do
       subscription
+      friend_sub
       count = user.checkins.count
       create_headers
       post :create, params: create_params
