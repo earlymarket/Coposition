@@ -99,17 +99,18 @@ class Device < ApplicationRecord
     Subscription.where(event: 'friend_new_checkin').where(subscriber_id: user.friends).each do |sub|
       checkin = safe_checkin_info_for(permissible: sub.subscriber, type: 'address', action: 'last')[0]
       next unless checkin && checkin['id'] == data['id']
+      checkin.merge!(user.public_info.remove_id.as_json)
       sub.send_data([checkin])
     end
   end
 
   def notify_subscribers(event, data)
     notify_friends(data) if event == 'new_checkin'
-    return unless subscriptions(event)
+    return unless (subs = subscriptions(event))
     data = data.as_json
     data.merge!(remove_id.as_json)
     data.merge!(user.public_info.remove_id.as_json) if user
-    subscriptions(event).each { |subscription| subscription.send_data([data]) }
+    subs.each { |subscription| subscription.send_data([data]) }
   end
 
   def self.public_info
