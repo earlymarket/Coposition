@@ -87,10 +87,10 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   describe 'PUT' do
     it 'should update settings' do
       put :update, params: device_params.merge(device: { fogged: true })
-      expect(res_hash[:fogged]).to eq(true)
+      expect(res_hash[:data]['fogged']).to eq(true)
       put :update, params: device_params.merge(device: { fogged: false })
       device.reload
-      expect(res_hash[:fogged]).to eq(false)
+      expect(res_hash[:data]['fogged']).to eq(false)
     end
 
     it 'should reject non-existant device ids' do
