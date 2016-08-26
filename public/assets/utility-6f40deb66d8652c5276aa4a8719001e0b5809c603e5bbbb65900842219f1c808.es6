@@ -91,32 +91,28 @@ COPO.utility = {
 
   avatarDefaults: {"transformation":["60x60cAvatar"],"format":"png"},
 
-  initClipboard(selector, callback) {
+  initClipboard() {
+    let clipboard = new Clipboard('.clip_button');
 
-    selector = selector || '.clip_button';
-    var client = new ZeroClipboard( $(selector) );
-
-    client.on( 'ready', function(event) {
-      // console.log( 'movie is loaded' );
-      $('.clip_button').removeClass('hide');
-
-      client.on( 'copy', function(event) {
-        event.clipboardData.setData('text/plain', event.target.value);
-      });
-
-      callback = callback || function(event) {
-        $('.material-tooltip').children('span').text('Copied');
-      }
-
-      client.on( 'aftercopy', function(event) {
-        callback(event);
-      });
-
+    clipboard.on('success', function(e) {
+      $('.material-tooltip').children('span').text('Copied');
+      e.clearSelection();
     });
 
-    client.on( 'error', function(event) {
-      console.log( 'ZeroClipboard error of type "' + event.name + '": ' + event.message );
-      ZeroClipboard.destroy();
+    clipboard.on('error', function(e) {
+      let  action = e.action;
+      let  actionMsg = '';
+      let  actionKey = (action === 'cut' ? 'X' : 'C');
+      if (/iPhone|iPad/i.test(navigator.userAgent)) {
+        actionMsg = 'Touch the copy button above the keyboard';
+      } else if (/Mac/i.test(navigator.userAgent)) {
+        actionMsg = 'Press ⌘-' + actionKey + ' to ' + action;
+      } else {
+        actionMsg = 'Press Ctrl-' + actionKey + ' to ' + action;
+      }
+      $('.material-tooltip').children('span').text(actionMsg);
+      // console.error('Action:', e.action);
+      // console.error('Trigger:', e.trigger);
     });
   },
 
@@ -136,5 +132,12 @@ COPO.utility = {
   pluralize(noun, count) {
     if(count > 1) return noun + 's';
     return noun;
+  },
+
+  scrollTo(selector, speed) {
+    speed = speed || 200;
+    $('html, body').animate({
+      scrollTop: $(selector).offset().top
+    }, speed);
   }
 };

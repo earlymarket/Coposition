@@ -1,5 +1,5 @@
 module FriendsHelper
-  def friends_last_checkin(checkins)
+  def friends_device_last_checkin(checkins)
     if checkins.present?
       "<p>Last available reported area: #{checkins.first.fogged_area}</p>".html_safe
     else

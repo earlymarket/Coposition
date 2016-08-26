@@ -1,8 +1,8 @@
 class Users::Devise::RegistrationsController < Devise::RegistrationsController
   protect_from_forgery with: :exception, unless: :req_from_coposition_app?
   respond_to :json
-  before_filter :configure_sign_up_params, only: [:create]
-  before_filter :configure_account_update_params, only: [:update]
+  before_action :configure_sign_up_params, only: [:create]
+  before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
   # def new
@@ -58,12 +58,12 @@ class Users::Devise::RegistrationsController < Devise::RegistrationsController
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.for(:sign_up) << [:username, :avatar]
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:username, :avatar])
   end
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_account_update_params
-    devise_parameter_sanitizer.for(:account_update) << [:username, :avatar]
+    devise_parameter_sanitizer.permit(:account_update, keys: [:username, :avatar])
   end
 
   def user_api_params

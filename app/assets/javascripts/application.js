@@ -15,12 +15,12 @@
 //= require jquery.validate
 //= require jquery.validate.additional-methods
 //= require turbolinks
+//= require turbolinks-compatibility
 
 // -- Libs from gems --
 
 //= require cloudinary
 //= require attachinary
-//= require zeroclipboard
 
 // -- Misc vendor libs --
 
@@ -31,6 +31,7 @@
 //= require materialize/dist/js/materialize.min
 //= require typeahead.js/dist/typeahead.bundle.min
 //= require ion.rangeSlider/js/ion.rangeSlider.min
+//= require clipboard/dist/clipboard.min
 
 // STILL more up to date version
 //= require nouislider.min

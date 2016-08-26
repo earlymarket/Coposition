@@ -1,7 +1,7 @@
 module CheckinsSpecHelpers
   def call_checkin_action(method, priv, delay, number, checkin)
     update_permissions(priv, delay)
-    get method.to_sym, params
+    get method.to_sym, params: params
     check_response_hash(number, checkin)
   end
 

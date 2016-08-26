@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -24,10 +23,9 @@ ActiveRecord::Schema.define(version: 20160602144328) do
     t.datetime "updated_at",      null: false
     t.string   "status"
     t.string   "approvable_type"
+    t.index ["approvable_id"], name: "index_approvals_on_approvable_id", using: :btree
+    t.index ["user_id"], name: "index_approvals_on_user_id", using: :btree
   end
-
-  add_index "approvals", ["approvable_id"], name: "index_approvals_on_approvable_id", using: :btree
-  add_index "approvals", ["user_id"], name: "index_approvals_on_user_id", using: :btree
 
   create_table "attachinary_files", force: :cascade do |t|
     t.integer  "attachinariable_id"
@@ -41,9 +39,8 @@ ActiveRecord::Schema.define(version: 20160602144328) do
     t.string   "resource_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["attachinariable_type", "attachinariable_id", "scope"], name: "by_scoped_parent", using: :btree
   end
-
-  add_index "attachinary_files", ["attachinariable_type", "attachinariable_id", "scope"], name: "by_scoped_parent", using: :btree
 
   create_table "checkins", force: :cascade do |t|
     t.float    "lat"
@@ -60,18 +57,16 @@ ActiveRecord::Schema.define(version: 20160602144328) do
     t.float    "fogged_lat"
     t.float    "fogged_lng"
     t.string   "fogged_area"
+    t.index ["device_id"], name: "index_checkins_on_device_id", using: :btree
   end
-
-  add_index "checkins", ["device_id"], name: "index_checkins_on_device_id", using: :btree
 
   create_table "cities", force: :cascade do |t|
     t.string "name"
     t.float  "latitude"
     t.float  "longitude"
     t.string "country_code"
+    t.index ["latitude", "longitude"], name: "index_cities_on_latitude_and_longitude", using: :btree
   end
-
-  add_index "cities", ["latitude", "longitude"], name: "index_cities_on_latitude_and_longitude", using: :btree
 
   create_table "configs", force: :cascade do |t|
     t.integer  "developer_id"
@@ -98,10 +93,9 @@ ActiveRecord::Schema.define(version: 20160602144328) do
     t.string   "company_name",                        null: false
     t.string   "tagline"
     t.string   "redirect_url"
+    t.index ["email"], name: "index_developers_on_email", unique: true, using: :btree
+    t.index ["reset_password_token"], name: "index_developers_on_reset_password_token", unique: true, using: :btree
   end
-
-  add_index "developers", ["email"], name: "index_developers_on_email", unique: true, using: :btree
-  add_index "developers", ["reset_password_token"], name: "index_developers_on_reset_password_token", unique: true, using: :btree
 
   create_table "devices", force: :cascade do |t|
     t.string  "uuid"
@@ -111,9 +105,8 @@ ActiveRecord::Schema.define(version: 20160602144328) do
     t.integer "delayed"
     t.string  "alias"
     t.boolean "published", default: false
+    t.index ["uuid"], name: "index_devices_on_uuid", using: :btree
   end
-
-  add_index "devices", ["uuid"], name: "index_devices_on_uuid", using: :btree
 
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string   "slug",                      null: false
@@ -121,12 +114,11 @@ ActiveRecord::Schema.define(version: 20160602144328) do
     t.string   "sluggable_type", limit: 50
     t.string   "scope"
     t.datetime "created_at"
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true, using: :btree
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", using: :btree
+    t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
+    t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
   end
-
-  add_index "friendly_id_slugs", ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true, using: :btree
-  add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", using: :btree
-  add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
-  add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
 
   create_table "permissions", force: :cascade do |t|
     t.integer "permissible_id"
@@ -173,12 +165,11 @@ ActiveRecord::Schema.define(version: 20160602144328) do
     t.string   "slug"
     t.string   "authentication_token"
     t.string   "webhook_key"
+    t.index ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+    t.index ["slug"], name: "index_users_on_slug", unique: true, using: :btree
+    t.index ["webhook_key"], name: "index_users_on_webhook_key", unique: true, using: :btree
   end
-
-  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
-  add_index "users", ["slug"], name: "index_users_on_slug", unique: true, using: :btree
-  add_index "users", ["webhook_key"], name: "index_users_on_webhook_key", unique: true, using: :btree
 
 end

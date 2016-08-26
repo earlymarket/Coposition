@@ -1,4 +1,4 @@
-class Permission < ActiveRecord::Base
+class Permission < ApplicationRecord
   belongs_to :device
   belongs_to :permissible, polymorphic: true
 

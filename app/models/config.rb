@@ -1,4 +1,4 @@
-class Config < ActiveRecord::Base
+class Config < ApplicationRecord
   belongs_to :developer
   belongs_to :device
 

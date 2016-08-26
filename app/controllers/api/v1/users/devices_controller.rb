@@ -31,7 +31,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
     device = @user.devices.where(id: params[:id]).first
     return unless device_exists? device
     device.update(device_params)
-    render json: device
+    render json: { data: device, config: configuration(device) }
   end
 
   private

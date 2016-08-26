@@ -10,7 +10,7 @@ namespace :cities do
     log_city_transaction do
       quote_chars = %w(" | ~ ^ & * ` ')
       i = 0
-      1..3.each do |x|
+      (1..3).each do |x|
         begin
           CSV.foreach("db/cities/#{x}.txt", col_sep: "\t", quote_char: quote_chars.shift) do |row|
             break if i.to_s == args[:num]

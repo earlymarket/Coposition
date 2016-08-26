@@ -1,4 +1,4 @@
-class Device < ActiveRecord::Base
+class Device < ApplicationRecord
   include SlackNotifiable, SwitchFogging, HumanizeMinutes, RemoveId
 
   belongs_to :user
