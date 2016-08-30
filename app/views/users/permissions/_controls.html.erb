@@ -24,7 +24,7 @@
     <label id="<%=permissions_label_id(permissionable, 'last-only')%>">
       <%= check_box_tag 'last_only','', permissions_check_box_value(permissionable, 'complete') %>
       <span class="lever"></span>
-      Last only/All checkins<%= permissions_for_all(permissionable) %>
+      Last checkin only/Full history<%= permissions_for_all(permissionable) %>
     </label>
   </div>
 </div>
