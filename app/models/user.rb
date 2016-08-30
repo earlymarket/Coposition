@@ -17,20 +17,17 @@ class User < ApplicationRecord
   has_many :requests
   has_many :approvals, dependent: :destroy
   has_many :subscriptions, as: :subscriber, dependent: :destroy
-  has_many :developers, -> { where "status = 'accepted'" },
-           through: :approvals, source: :approvable, source_type: 'Developer'
-  has_many :developer_approvals, -> { where(status: 'accepted', approvable_type: 'Developer') },
-           class_name: 'Approval'
-  has_many :friends, -> { where "status = 'accepted'" },
-           through: :approvals, source: :approvable, source_type: 'User'
-  has_many :friend_approvals, -> { where(status: 'accepted', approvable_type: 'User') },
-           class_name: 'Approval'
-  has_many :pending_friends, -> { where "status = 'pending'" },
-           through: :approvals, source: :approvable, source_type: 'User'
-  has_many :friend_requests, -> { where "status = 'requested'" },
-           through: :approvals, source: :approvable, source_type: 'User'
-  has_many :developer_requests, -> { where "status = 'developer-requested'" },
-           through: :approvals, source: :approvable, source_type: 'Developer'
+  has_many :developers, -> { where "status = 'accepted'" }, through: :approvals, source: :approvable,
+                                                            source_type: 'Developer'
+  has_many :developer_approvals, -> { where(status: 'accepted', approvable_type: 'Developer') }, class_name: 'Approval'
+  has_many :friends, -> { where "status = 'accepted'" }, through: :approvals, source: :approvable, source_type: 'User'
+  has_many :friend_approvals, -> { where(status: 'accepted', approvable_type: 'User') }, class_name: 'Approval'
+  has_many :pending_friends, -> { where "status = 'pending'" }, through: :approvals, source: :approvable,
+                                                                source_type: 'User'
+  has_many :friend_requests, -> { where "status = 'requested'" }, through: :approvals, source: :approvable,
+                                                                  source_type: 'User'
+  has_many :developer_requests, -> { where "status = 'developer-requested'" }, through: :approvals, source: :approvable,
+                                                                               source_type: 'Developer'
   has_many :permissions, as: :permissible, dependent: :destroy
   has_many :permitted_devices, through: :permissions, source: :permissible, source_type: 'Device'
 
@@ -113,6 +110,7 @@ class User < ApplicationRecord
   def changed_location?
     most_recent = checkins[0]
     second_most_recent = checkins[1]
+    return true unless second_most_recent
     lat_diff = (most_recent.lat - second_most_recent.lat).abs
     lng_diff = (most_recent.lng - second_most_recent.lng).abs
     lat_diff > 0.001 || lng_diff > 0.001
