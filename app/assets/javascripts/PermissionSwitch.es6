@@ -28,6 +28,14 @@ class LocalSwitch extends PermissionSwitch {
     if (this.switchtype === "disallowed") {
       this.changeDisableSwitches(this.checked);
     }
+    if (this.switchtype === "last_only" && this.attributeState === "last_only") {
+      let result = confirm("WARNING: once you turn this on, it may be possible for your entire location history to be copied before you are able to turn it off again.\
+        Only share your history with highly trusted parties. Click OK to continue anyway.");
+      if(!result){
+        this.inputDomElement.prop("checked", !this.checked);
+        return;
+      }
+    }
     this.permission[this.attribute] = this.nextState();
     $.ajax({
       url: `/users/${this.user}/devices/${this.permission['device_id']}/permissions/${this.id}`,
