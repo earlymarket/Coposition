@@ -57,6 +57,12 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       expect(res_hash[:config]['id']).to eq developer.configs.find_by(device: device).id
       expect(res_hash[:data].keys).to include(*private_device_info)
     end
+
+    it 'should return an error message if device does not exist' do
+      get :show, params: device_params.merge(id: 9999999)
+      expect(res_hash[:error]).to eq('Device does not exist')
+      expect(response.status).to eq 404
+    end
   end
 
   describe 'POST' do
