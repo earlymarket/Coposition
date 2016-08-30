@@ -131,6 +131,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     before do
       31.times do
         checkin = FactoryGirl.create :checkin
+        device.permission_for(developer).update(privilege: 'complete')
         device.checkins << checkin
       end
     end
