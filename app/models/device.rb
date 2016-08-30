@@ -99,6 +99,7 @@ class Device < ApplicationRecord
     Subscription.where(event: 'friend_new_checkin').where(subscriber_id: user.friends).each do |sub|
       checkin = safe_checkin_info_for(permissible: sub.subscriber, type: 'address', action: 'last').first
       next unless checkin && checkin['id'] == data['id'] && user.changed_location?
+      checkin.merge!(public_info.remove_id.as_json)
       checkin.merge!(user.public_info.remove_id.as_json)
       sub.send_data([checkin])
     end
