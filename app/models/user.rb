@@ -110,6 +110,14 @@ class User < ApplicationRecord
     subqueries.present? ? Checkin.where(subqueries.inject(&:or)) : Checkin.none
   end
 
+  def changed_location?
+    most_recent = checkins[0]
+    second_most_recent = checkins[1]
+    lat_diff = (most_recent.lat - second_most_recent.lat).abs
+    lng_diff = (most_recent.lng - second_most_recent.lng).abs
+    lat_diff > 0.001 || lng_diff > 0.001
+  end
+
   ##############
 
   def slack_message

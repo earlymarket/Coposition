@@ -74,7 +74,7 @@ class Device < ApplicationRecord
   end
 
   def update_delay(mins)
-    mins.to_i == 0 ? update(delayed: nil) : update(delayed: mins)
+    mins.to_i.zero? ? update(delayed: nil) : update(delayed: mins)
   end
 
   def humanize_delay
@@ -97,8 +97,8 @@ class Device < ApplicationRecord
 
   def notify_friends(data)
     Subscription.where(event: 'friend_new_checkin').where(subscriber_id: user.friends).each do |sub|
-      checkin = safe_checkin_info_for(permissible: sub.subscriber, type: 'address', action: 'last')[0]
-      next unless checkin && checkin['id'] == data['id']
+      checkin = safe_checkin_info_for(permissible: sub.subscriber, type: 'address', action: 'last').first
+      next unless checkin && checkin['id'] == data['id'] && user.changed_location?
       checkin.merge!(user.public_info.remove_id.as_json)
       sub.send_data([checkin])
     end
