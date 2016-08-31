@@ -26,7 +26,8 @@ class LocalSwitch extends PermissionSwitch {
   toggleSwitch() {
     COPO.permissions.iconToggle(this.switchtype, this.id);
     if (this.switchtype === "disallowed") {
-      this.changeDisableSwitches(this.checked);
+      const bool = (this.attributeState != 'disallowed')
+      this.changeDisableSwitches(bool);
     }
     if (this.switchtype === "last_only" && this.checked === true && this.attributeState === 'last_only') {
       let result = confirm("WARNING: once you turn this on, it may be possible for your entire location history to be copied before you are able to turn it off again.\
@@ -47,7 +48,7 @@ class LocalSwitch extends PermissionSwitch {
 
   nextState() {
     if(this.attributeState === "disallowed") {
-      return "complete"
+      return "last_only"
     } else if(this.switchtype === "disallowed") {
       return "disallowed"
     } else if(this.attributeState === "complete") {
