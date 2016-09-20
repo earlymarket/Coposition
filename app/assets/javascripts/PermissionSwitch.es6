@@ -26,7 +26,16 @@ class LocalSwitch extends PermissionSwitch {
   toggleSwitch() {
     COPO.permissions.iconToggle(this.switchtype, this.id);
     if (this.switchtype === "disallowed") {
-      this.changeDisableSwitches(this.checked);
+      const bool = (this.attributeState != 'disallowed')
+      this.changeDisableSwitches(bool);
+    }
+    if (this.switchtype === "last_only" && this.checked === true && this.attributeState === 'last_only') {
+      let result = confirm("WARNING: once you turn this on, it may be possible for your entire location history to be copied before you are able to turn it off again.\
+        Only share your history with highly trusted parties. Click OK to continue anyway.");
+      if(!result){
+        this.inputDomElement.prop("checked", !this.checked);
+        return;
+      }
     }
     this.permission[this.attribute] = this.nextState();
     $.ajax({
@@ -39,7 +48,7 @@ class LocalSwitch extends PermissionSwitch {
 
   nextState() {
     if(this.attributeState === "disallowed") {
-      return "complete"
+      return "last_only"
     } else if(this.switchtype === "disallowed") {
       return "disallowed"
     } else if(this.attributeState === "complete") {
@@ -60,15 +69,23 @@ class MasterSwitch extends PermissionSwitch {
   }
 
   toggleSwitch() {
+    if (this.switchtype === "last_only" && this.checked === true) {
+      let result = confirm("WARNING: once you turn this on, it may be possible for your entire location history to be copied before you are able to turn it off again.\
+        Only share your history with highly trusted parties. Click OK to continue anyway.");
+      if(!result){
+        this.inputDomElement.prop("checked", !this.checked);
+        return;
+      }
+    }
     this.permissions.forEach(function(permission) {
       const P_DOM_ELEMENT = $(`div[data-id=${permission.id}][data-switchtype=${this.switchtype}].permission-switch`);
       const P_SWITCH = new LocalSwitch(this.user, P_DOM_ELEMENT, this.permissions, this.page);
       if ((P_SWITCH.disabled && P_SWITCH.switchtype === 'last_only')){
         this.inputDomElement.prop("checked", false)
       } else if (this.checked !== P_SWITCH.checked) {
-        P_SWITCH.inputDomElement.prop("checked", this.checked);
-        P_SWITCH.checked = this.checked;
         P_SWITCH.toggleSwitch();
+        P_SWITCH.checked = this.checked;
+        P_SWITCH.inputDomElement.prop("checked", this.checked);
       }
     }, this);
   }

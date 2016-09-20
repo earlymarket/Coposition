@@ -22,9 +22,9 @@
   </div>
   <div class="<%=permissions_switch_class(permissionable)%> switch disable" data-id=<%=permissionable.id%> data-attribute="privilege" data-switchtype="last_only">
     <label id="<%=permissions_label_id(permissionable, 'last-only')%>">
-      <%= check_box_tag 'last_only','', permissions_check_box_value(permissionable, 'last_only') %>
+      <%= check_box_tag 'last_only','', permissions_check_box_value(permissionable, 'complete') %>
       <span class="lever"></span>
-      All checkins/Last only<%= permissions_for_all(permissionable) %>
+      Last checkin only/Full history<%= permissions_for_all(permissionable) %>
     </label>
   </div>
 </div>

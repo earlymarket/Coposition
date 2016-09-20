@@ -69,7 +69,7 @@ RSpec.describe PermissionsHelper, type: :helper do
     it 'should return a boolean value depending on if permissionable is a Permission depending on the type' do
       permission.update(privilege: 'disallowed', bypass_delay: false, bypass_fogging: true)
       expect(helper.permissions_check_box_value(permission, 'disallowed')).to eq true
-      expect(helper.permissions_check_box_value(permission, 'last_only')).to eq false
+      expect(helper.permissions_check_box_value(permission, 'complete')).to eq false
       expect(helper.permissions_check_box_value(permission, 'bypass_delay')).to eq false
       expect(helper.permissions_check_box_value(permission, 'bypass_fogging')).to eq true
     end
