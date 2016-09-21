@@ -7,6 +7,8 @@ class PermissionSwitch {
     this.inputDomElement = domElement.find('input');
     this.checked = this.inputDomElement.prop('checked');
     this.disabled = this.inputDomElement.prop('disabled');
+    this.fullHistWarning = "WARNING: once you turn this on, it may be possible for your entire location history to be copied before you are able to turn it off again. Only share your history with highly trusted parties. Click OK to continue anyway."
+
   }
 
   changeDisableSwitches(state) {
@@ -30,8 +32,7 @@ class LocalSwitch extends PermissionSwitch {
       this.changeDisableSwitches(bool);
     }
     if (this.switchtype === "last_only" && this.checked === true && this.attributeState === 'last_only') {
-      let result = confirm("WARNING: once you turn this on, it may be possible for your entire location history to be copied before you are able to turn it off again.\
-        Only share your history with highly trusted parties. Click OK to continue anyway.");
+      let result = confirm(this.fullHistWarning);
       if(!result){
         this.inputDomElement.prop("checked", !this.checked);
         return;
@@ -70,8 +71,7 @@ class MasterSwitch extends PermissionSwitch {
 
   toggleSwitch() {
     if (this.switchtype === "last_only" && this.checked === true) {
-      let result = confirm("WARNING: once you turn this on, it may be possible for your entire location history to be copied before you are able to turn it off again.\
-        Only share your history with highly trusted parties. Click OK to continue anyway.");
+      let result = confirm(this.fullHistWarning);
       if(!result){
         this.inputDomElement.prop("checked", !this.checked);
         return;
