@@ -19,7 +19,7 @@ class Api::V1::ConfigsController < Api::ApiController
   private
 
   def custom_params
-    params[:config][:custom]
+    params.require(:config).permit![:custom].as_json
   end
 
   def configuration
