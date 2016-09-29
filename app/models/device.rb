@@ -2,7 +2,7 @@ class Device < ApplicationRecord
   include SlackNotifiable, SwitchFogging, HumanizeMinutes, RemoveId
 
   belongs_to :user
-  has_one :config
+  has_one :config, dependent: :destroy
   has_one :configurer, through: :configs, source: :developer
   has_many :checkins, dependent: :destroy
   has_many :permissions, dependent: :destroy
