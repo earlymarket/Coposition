@@ -16686,6 +16686,10 @@ a[data-maitre-status]:hover {
   background-color: rgba(255, 255, 255, 0.5);
   width: 100%;
 }
+/* line 13, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss */
+.placeholder svg {
+  margin: 2em;
+}
 
 /* line 2, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/welcome-index.scss */
 .c-welcome.a-index .landing-section {

@@ -43055,6 +43055,7 @@ var PermissionSwitch = (function () {
     this.inputDomElement = domElement.find('input');
     this.checked = this.inputDomElement.prop('checked');
     this.disabled = this.inputDomElement.prop('disabled');
+    this.fullHistWarning = "WARNING: once you turn this on, it may be possible for your entire location history to be copied before you are able to turn it off again. Only share your history with highly trusted parties. Click OK to continue anyway.";
   }
 
   _createClass(PermissionSwitch, [{
@@ -43089,8 +43090,7 @@ var LocalSwitch = (function (_PermissionSwitch) {
         this.changeDisableSwitches(bool);
       }
       if (this.switchtype === "last_only" && this.checked === true && this.attributeState === 'last_only') {
-        var result = confirm("WARNING: once you turn this on, it may be possible for your entire location history to be copied before you are able to turn it off again.\
-        Only share your history with highly trusted parties. Click OK to continue anyway.");
+        var result = confirm(this.fullHistWarning);
         if (!result) {
           this.inputDomElement.prop("checked", !this.checked);
           return;
@@ -43139,8 +43139,7 @@ var MasterSwitch = (function (_PermissionSwitch2) {
     key: 'toggleSwitch',
     value: function toggleSwitch() {
       if (this.switchtype === "last_only" && this.checked === true) {
-        var result = confirm("WARNING: once you turn this on, it may be possible for your entire location history to be copied before you are able to turn it off again.\
-        Only share your history with highly trusted parties. Click OK to continue anyway.");
+        var result = confirm(this.fullHistWarning);
         if (!result) {
           this.inputDomElement.prop("checked", !this.checked);
           return;
