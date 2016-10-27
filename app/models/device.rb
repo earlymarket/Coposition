@@ -2,7 +2,7 @@ class Device < ApplicationRecord
   include SlackNotifiable, SwitchFogging, HumanizeMinutes, RemoveId
 
   belongs_to :user
-  has_one :config
+  has_one :config, dependent: :destroy
   has_one :configurer, through: :configs, source: :developer
   has_many :checkins, dependent: :destroy
   has_many :permissions, dependent: :destroy
@@ -74,7 +74,7 @@ class Device < ApplicationRecord
   end
 
   def update_delay(mins)
-    mins.to_i == 0 ? update(delayed: nil) : update(delayed: mins)
+    mins.to_i.zero? ? update(delayed: nil) : update(delayed: mins)
   end
 
   def humanize_delay
@@ -95,12 +95,23 @@ class Device < ApplicationRecord
     Subscription.where(event: event).where(subscriber_id: user_id)
   end
 
+  def notify_friends(data)
+    Subscription.where(event: 'friend_new_checkin').where(subscriber_id: user.friends).each do |sub|
+      checkin = safe_checkin_info_for(permissible: sub.subscriber, type: 'address', action: 'last').first
+      next unless checkin && checkin['id'] == data['id'] && user.changed_location?
+      checkin.merge!(public_info.remove_id.as_json)
+      checkin.merge!(user.public_info.remove_id.as_json)
+      sub.send_data([checkin])
+    end
+  end
+
   def notify_subscribers(event, data)
-    return unless subscriptions(event)
+    notify_friends(data) if event == 'new_checkin'
+    return unless (subs = subscriptions(event))
     data = data.as_json
     data.merge!(remove_id.as_json)
     data.merge!(user.public_info.remove_id.as_json) if user
-    subscriptions(event).each { |subscription| subscription.send_data([data]) }
+    subs.each { |subscription| subscription.send_data([data]) }
   end
 
   def self.public_info

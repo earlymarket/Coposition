@@ -22,7 +22,7 @@ RSpec.describe Device, type: :model do
   end
 
   it 'should get the privilege level for a developer' do
-    expect(device.permission_for(developer).privilege).to eq 'complete'
+    expect(device.permission_for(developer).privilege).to eq 'last_only'
   end
 
   describe 'slack' do

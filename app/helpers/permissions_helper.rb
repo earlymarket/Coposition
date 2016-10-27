@@ -28,7 +28,7 @@ module PermissionsHelper
 
   def permissions_check_box_value(permissionable, type)
     if permissionable.class == Permission
-      if %w(disallowed last_only).include? type
+      if %w(disallowed complete).include? type
         permissionable.privilege == type
       else
         permissionable[type]

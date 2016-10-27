@@ -78,7 +78,7 @@ RSpec.describe Users::PermissionsController, type: :controller do
           privilege: 'last_only'
         }
       }
-      expect(Permission.find(permission.id).privilege).to eq 'complete'
+      expect(Permission.find(permission.id).privilege).to eq 'last_only'
       expect(response).to redirect_to(root_path)
     end
   end

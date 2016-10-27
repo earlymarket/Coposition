@@ -57,7 +57,7 @@ RSpec.describe User, type: :model do
       Approval.accept(user, developer, 'Developer')
       expect(user.devices.first.developers.count).to be 1
       expect(user.devices.first.developers.first).to eq developer
-      expect(user.devices.first.permission_for(developer).privilege).to eq 'complete'
+      expect(user.devices.first.permission_for(developer).privilege).to eq 'last_only'
     end
   end
 
@@ -69,7 +69,7 @@ RSpec.describe User, type: :model do
       end
 
       it 'should have device privileges by default' do
-        expect(user.devices.first.permission_for(developer).privilege).to eq 'complete'
+        expect(user.devices.first.permission_for(developer).privilege).to eq 'last_only'
       end
     end
   end
