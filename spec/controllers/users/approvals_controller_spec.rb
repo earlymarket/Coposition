@@ -26,6 +26,9 @@ RSpec.describe Users::ApprovalsController, type: :controller do
   let(:friend_approval_create_params) do
     user_params.merge(approval: { approvable: friend.email, approvable_type: 'User' })
   end
+  let(:friend_approval_create_params_upcased) do
+    user_params.merge(approval: { approvable: friend.email.upcase, approvable_type: 'User' })
+  end
   let(:approve_reject_params) { user_params.merge(id: approval.id) }
   let(:invite_params) do
     user_params.merge(invite: '', approval: { approvable: 'new@email.com', approvable_type: 'User' })
@@ -44,6 +47,16 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         count = ActionMailer::Base.deliveries.count
         approval_count = Approval.where(approvable_type: 'User').count
         post :create, params: friend_approval_create_params
+        expect(ActionMailer::Base.deliveries.count).to be(count + 1)
+        expect(Approval.where(approvable_type: 'User').count).to eq approval_count + 2
+        expect(Approval.where(user: user, approvable: friend, status: 'pending')).to exist
+        expect(Approval.where(user: friend, approvable: user, status: 'requested')).to exist
+      end
+
+      it 'should be case insensitive' do
+        count = ActionMailer::Base.deliveries.count
+        approval_count = Approval.where(approvable_type: 'User').count
+        post :create, params: friend_approval_create_params_upcased
         expect(ActionMailer::Base.deliveries.count).to be(count + 1)
         expect(Approval.where(approvable_type: 'User').count).to eq approval_count + 2
         expect(Approval.where(user: user, approvable: friend, status: 'pending')).to exist
