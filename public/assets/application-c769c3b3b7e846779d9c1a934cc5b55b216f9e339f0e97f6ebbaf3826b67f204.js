@@ -43055,6 +43055,7 @@ var PermissionSwitch = (function () {
     this.inputDomElement = domElement.find('input');
     this.checked = this.inputDomElement.prop('checked');
     this.disabled = this.inputDomElement.prop('disabled');
+    this.fullHistWarning = "WARNING: once you turn this on, it may be possible for your entire location history to be copied before you are able to turn it off again. Only share your history with highly trusted parties. Click OK to continue anyway.";
   }
 
   _createClass(PermissionSwitch, [{
@@ -43085,7 +43086,15 @@ var LocalSwitch = (function (_PermissionSwitch) {
     value: function toggleSwitch() {
       COPO.permissions.iconToggle(this.switchtype, this.id);
       if (this.switchtype === "disallowed") {
-        this.changeDisableSwitches(this.checked);
+        var bool = this.attributeState != 'disallowed';
+        this.changeDisableSwitches(bool);
+      }
+      if (this.switchtype === "last_only" && this.checked === true && this.attributeState === 'last_only') {
+        var result = confirm(this.fullHistWarning);
+        if (!result) {
+          this.inputDomElement.prop("checked", !this.checked);
+          return;
+        }
       }
       this.permission[this.attribute] = this.nextState();
       $.ajax({
@@ -43099,7 +43108,7 @@ var LocalSwitch = (function (_PermissionSwitch) {
     key: 'nextState',
     value: function nextState() {
       if (this.attributeState === "disallowed") {
-        return "complete";
+        return "last_only";
       } else if (this.switchtype === "disallowed") {
         return "disallowed";
       } else if (this.attributeState === "complete") {
@@ -43129,15 +43138,22 @@ var MasterSwitch = (function (_PermissionSwitch2) {
   _createClass(MasterSwitch, [{
     key: 'toggleSwitch',
     value: function toggleSwitch() {
+      if (this.switchtype === "last_only" && this.checked === true) {
+        var result = confirm(this.fullHistWarning);
+        if (!result) {
+          this.inputDomElement.prop("checked", !this.checked);
+          return;
+        }
+      }
       this.permissions.forEach(function (permission) {
         var P_DOM_ELEMENT = $('div[data-id=' + permission.id + '][data-switchtype=' + this.switchtype + '].permission-switch');
         var P_SWITCH = new LocalSwitch(this.user, P_DOM_ELEMENT, this.permissions, this.page);
         if (P_SWITCH.disabled && P_SWITCH.switchtype === 'last_only') {
           this.inputDomElement.prop("checked", false);
         } else if (this.checked !== P_SWITCH.checked) {
-          P_SWITCH.inputDomElement.prop("checked", this.checked);
-          P_SWITCH.checked = this.checked;
           P_SWITCH.toggleSwitch();
+          P_SWITCH.checked = this.checked;
+          P_SWITCH.inputDomElement.prop("checked", this.checked);
         }
       }, this);
     }
