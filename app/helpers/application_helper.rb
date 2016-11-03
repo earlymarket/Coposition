@@ -12,7 +12,7 @@ module ApplicationHelper
   end
 
   def humanize_date_and_time(date)
-    date.strftime("%a #{date.day.ordinalize} %b %T")
+    date.strftime("%a #{date.day.ordinalize} %b %T %Z")
   end
 
   def avatar_for(resource, options = {})
