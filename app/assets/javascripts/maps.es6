@@ -303,7 +303,7 @@ window.COPO.maps = {
   friendPopup(marker) {
     let user    = marker.options.user;
     let name    = COPO.utility.friendsName(user);
-    let date    = new Date(marker.options.lastCheckin.created_at).toUTCString();
+    let date    = moment(marker.options.lastCheckin.created_at).fromNow();
     let address = COPO.utility.commaToNewline(marker.options.lastCheckin.address) || marker.options.lastCheckin.fogged_area;
     let content = `
     <h2>${ name } <a href="./friends/${user.slug}" title="Device info">
