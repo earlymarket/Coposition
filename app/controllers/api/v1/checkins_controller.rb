@@ -66,8 +66,10 @@ class Api::V1::CheckinsController < Api::ApiController
   end
 
   def copo_app_checkins
+    per_page = params[:per_page].to_i <= 1000 ? params[:per_page] : 1000
     checkins = @device ? @device.checkins : @user.checkins
     checkins = checkins.limit(1) if action_name == 'last'
-    params[:type] == 'address' ? checkins.map(&:reverse_geocode!) : checkins
+    checkins = params[:type] == 'address' ? checkins.map(&:reverse_geocode!) : checkins
+    checkins.paginate(page: params[:page], per_page: per_page)
   end
 end
