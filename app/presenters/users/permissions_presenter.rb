@@ -19,6 +19,10 @@ module Users
     def devices_index
       @device = Device.find(@params[:device_id])
       @permissions = @device.permissions.includes(:permissible).order(:permissible_type, :permissible_id).reverse
+      @permissions.delete_if do |permission|
+        coposition_developer? permission
+      end
+      @permissions
     end
 
     def approvals_index(from)
@@ -78,6 +82,12 @@ module Users
 
     def approvals_permissions(type)
       @devices.map { |device| device.permissions.where(permissible_type: type) }.inject(:+)
+    end
+
+    def coposition_developer?(permission)
+      return false unless permission.permissible_type == 'Developer'
+      key = Developer.find(permission.permissible_id).api_key
+      key == Rails.application.secrets['coposition_api_key'] || key == Rails.application.secrets['mobile_app_api_key']
     end
   end
 end

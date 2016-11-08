@@ -29,7 +29,7 @@ module Users
     end
 
     def users_approved
-      @approvable_type == 'Developer' ? @user.developers.public_info : @user.friends.public_info
+      @approvable_type == 'Developer' ? @user.not_coposition_developers.public_info : @user.friends.public_info
     end
 
     def users_requests
