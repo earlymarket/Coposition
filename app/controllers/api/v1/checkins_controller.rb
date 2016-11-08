@@ -69,7 +69,6 @@ class Api::V1::CheckinsController < Api::ApiController
     per_page = params[:per_page].to_i <= 1000 ? params[:per_page] : 1000
     checkins = @device ? @device.checkins : @user.checkins
     checkins = action_name == 'last' ? checkins.limit(1) : checkins.paginate(page: params[:page], per_page: per_page)
-    checkins = checkins.map(&:reverse_geocode!) if params[:type] == 'address'
-    checkins
+    params[:type] == 'address' ? checkins.map(&:reverse_geocode!) : checkins
   end
 end
