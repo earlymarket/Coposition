@@ -16,6 +16,8 @@ class Api::V1::CheckinsController < Api::ApiController
         page: params[:page],
         per_page: per_page,
         type: params[:type],
+        time_unit: params[:time_scale],
+        time_amount: params[:time_amount],
         action: action_name
       )
       unsanitized_checkins = @user.get_user_checkins_for(@permissible).paginate(page: params[:page], per_page: per_page)
