@@ -16,7 +16,7 @@ class Api::V1::CheckinsController < Api::ApiController
         page: params[:page],
         per_page: per_page,
         type: params[:type],
-        time_unit: params[:time_scale],
+        time_unit: params[:time_unit],
         time_amount: params[:time_amount],
         action: action_name
       )
