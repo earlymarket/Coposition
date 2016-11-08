@@ -25,15 +25,12 @@ class Device < ApplicationRecord
   end
 
   def safe_checkin_info_for(args)
-    if args[:copo_app]
-      sanitized = checkins.limit_returned_checkins(args)
-      args[:type] == 'address' ? sanitized.map(&:reverse_geocode!) : sanitized
-    else
-      sanitized = permitted_history_for(args[:permissible]).limit_returned_checkins(args)
-      sanitized = sanitized.map(&:reverse_geocode!) if args[:type] == 'address'
-      sanitized = sanitized.map(&:replace_foggable_attributes) unless can_bypass_fogging?(args[:permissible])
-      sanitized.map(&:public_info)
-    end
+    sanitized = args[:copo_app] ? checkins : permitted_history_for(args[:permissible])
+    sanitized = sanitized.limit_returned_checkins(args)
+    sanitized = sanitized.map(&:reverse_geocode!) if args[:type] == 'address'
+    return sanitized if args[:copo_app]
+    sanitized = sanitized.map(&:replace_foggable_attributes) unless can_bypass_fogging?(args[:permissible])
+    sanitized.map(&:public_info)
   end
 
   def permitted_history_for(permissible)
