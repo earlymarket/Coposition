@@ -8,7 +8,7 @@
 $('.progress').remove()
 if($list.children().length===1) {
   $list.append(`
-    <% @presenter.permissions.each do |permission| %>
+    <% @presenter.permissions.each_with_index do |permission, i| %>
       <li class="collection-item row valign-wrapper">
         <div class='valign col s5'>
         <% if @presenter.device.present? %>
@@ -30,6 +30,9 @@ if($list.children().length===1) {
         </div>
         <%= render partial: "users/permissions/controls", object: permission, as: 'permissionable' %>
       </li>
+      <% if @presenter.permissions[i+1] && permission.permissible_type != @presenter.permissions[i+1].permissible_type %>
+        <div class="permission-divider"></div>
+      <% end %>
     <% end %>
   `);
   COPO.permissions.switchesOff();

@@ -16,8 +16,8 @@ RSpec.describe PermissionsHelper, type: :helper do
       expect { helper.permissible_title(developer) }.not_to raise_error
     end
 
-    it "should return html with the user's email if it's a user" do
-      expect(helper.permissible_title(user)).to match(user.email)
+    it "should return html with the user's shortened email or name if it's a user" do
+      expect(helper.permissible_title(user)).to match(user.username)
       expect(helper.permissible_title(user).class).to eq(safebuffer)
     end
 

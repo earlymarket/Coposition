@@ -18,7 +18,7 @@ module Users
 
     def devices_index
       @device = Device.find(@params[:device_id])
-      @permissions = @device.permissions.includes(:permissible).order(:permissible_type, :id)
+      @permissions = @device.permissions.includes(:permissible).order(:permissible_type, :permissible_id).reverse
     end
 
     def approvals_index(from)
