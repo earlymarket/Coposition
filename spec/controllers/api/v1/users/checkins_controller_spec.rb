@@ -199,6 +199,30 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         expect(res_hash.size).to eq 0
       end
     end
+
+    context 'with date param' do
+      it 'should return checkins from the date provided' do
+        get :index, params: params.merge(date: Date.today)
+        expect(res_hash.size).to eq 30
+      end
+
+      it 'should not return any checkins if none on date' do
+        get :index, params: params.merge(near: Date.yesterday)
+        expect(res_hash.size).to eq 0
+      end
+    end
+
+    context 'with time scope params' do
+      it 'should return checkins in the time scope provided' do
+        get :index, params: params.merge(time_unit: 'hour', time_amount: 1)
+        expect(res_hash.size).to eq 30
+      end
+
+      it 'should not return any checkins if none in time scope' do
+        get :index, params: params.merge(time_unit: 'second', time_amount: 0)
+        expect(res_hash.size).to eq 0
+      end
+    end
   end
 
   describe 'GET #places when the device has 31 checkins' do
