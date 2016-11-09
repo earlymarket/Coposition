@@ -187,6 +187,18 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         expect(res_hash.first['address']).to match 'The Pilot Centre'
       end
     end
+
+    context 'with near param' do
+      it 'should return checkins near the lat lng provided' do
+        get :index, params: params.merge(near: '51.5,-0.5')
+        expect(res_hash.size).to eq 30
+      end
+
+      it 'should not return any checkins if none near' do
+        get :index, params: params.merge(near: '45,-0.5')
+        expect(res_hash.size).to eq 0
+      end
+    end
   end
 
   describe 'GET #places when the device has 31 checkins' do
