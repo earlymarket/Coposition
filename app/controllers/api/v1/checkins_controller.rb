@@ -16,6 +16,7 @@ class Api::V1::CheckinsController < Api::ApiController
       type: params[:type],
       time_unit: params[:time_unit],
       time_amount: params[:time_amount],
+      date: params[:date],
       near: params[:near],
       action: action_name
     )
@@ -29,6 +30,7 @@ class Api::V1::CheckinsController < Api::ApiController
       copo_app: req_from_coposition_app?,
       permissible: @permissible,
       device: @device,
+      date: params[:date],
       type: params[:type],
       near: params[:near],
       action: action_name
