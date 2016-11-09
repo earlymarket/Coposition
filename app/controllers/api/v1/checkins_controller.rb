@@ -16,6 +16,7 @@ class Api::V1::CheckinsController < Api::ApiController
       type: params[:type],
       time_unit: params[:time_unit],
       time_amount: params[:time_amount],
+      near: params[:near],
       action: action_name
     )
     unsanitized_checkins = @user.get_user_checkins_for(@permissible).paginate(page: params[:page], per_page: per_page)
@@ -29,6 +30,7 @@ class Api::V1::CheckinsController < Api::ApiController
       permissible: @permissible,
       device: @device,
       type: params[:type],
+      near: params[:near],
       action: action_name
     )
     render json: checkin
