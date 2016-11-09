@@ -7,6 +7,7 @@ class Api::V1::Users::PermissionsController < Api::ApiController
 
   def index
     permissions = Permission.where(device_id: params[:device_id])
+                            .where.not(permissible_id: Developer.coposition_developers.select(:id))
     render json: permissions
   end
 
@@ -18,6 +19,7 @@ class Api::V1::Users::PermissionsController < Api::ApiController
 
   def update_all
     permissions = Permission.where(device_id: params[:device_id])
+                            .where.not(permissible_id: Developer.coposition_developers.select(:id))
     permissions.update_all(allowed_params.to_h)
     render json: permissions
   end

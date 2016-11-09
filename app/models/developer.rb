@@ -50,4 +50,8 @@ class Developer < ApplicationRecord
     key = type[:coposition] ? 'coposition_api_key' : 'mobile_app_api_key'
     find_by(api_key: Rails.application.secrets[key])
   end
+
+  def self.coposition_developers
+    where(api_key: [Rails.application.secrets['coposition_api_key'], Rails.application.secrets['mobile_app_api_key']])
+  end
 end
