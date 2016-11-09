@@ -90,8 +90,7 @@ class User < ApplicationRecord
     safe_checkins = devices.flat_map { |device| device.safe_checkin_info_for(args) }
                            .sort_by  { |key| key['created_at'] }.reverse
     if args[:action] == 'index'
-      safe_checkins = safe_checkins.paginate(page: args[:page], per_page: args[:per_page])
-      safe_checkins.since(args[:time_amount].send(args[:time_unit]).ago) if args[:time_unit]
+      safe_checkins.paginate(page: args[:page], per_page: args[:per_page])
     elsif args[:action] == 'last'
       safe_checkins.slice(0, 1)
     end
