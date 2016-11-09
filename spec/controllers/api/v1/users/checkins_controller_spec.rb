@@ -189,6 +189,27 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     end
   end
 
+  describe 'GET #places when the device has 31 checkins' do
+    before do
+      31.times do
+        checkin = FactoryGirl.create :checkin
+        checkin.add_fogged_info
+        device.permission_for(developer).update(privilege: 'complete')
+        device.checkins << checkin
+      end
+    end
+
+    it 'should fetch the unique places' do
+      count = device.checkins.unscope(:order).select('DISTINCT fogged_area').count
+      get :places, params: params
+      expect(res_hash.first).to eq device.checkins.first.fogged_area
+      expect(response.header['X-Current-Page']).to eq '1'
+      expect(response.header['X-Next-Page']).to eq 'null'
+      expect(response.header['X-Total-Entries']).to eq count.to_s
+      expect(response.header['X-Per-Page']).to eq '30'
+    end
+  end
+
   describe 'POST #create' do
     it 'should create a checkin when there is a pre-existing device' do
       subscription

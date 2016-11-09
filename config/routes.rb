@@ -48,6 +48,7 @@ Rails.application.routes.draw do
         resources :checkins, only: [:index] do
           collection do
             get :last
+            get :places
           end
         end
         resources :requests, only: [:index], module: :users do

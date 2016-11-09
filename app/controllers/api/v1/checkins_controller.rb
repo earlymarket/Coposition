@@ -38,6 +38,20 @@ class Api::V1::CheckinsController < Api::ApiController
     render json: checkin
   end
 
+  def places
+    per_page = params[:per_page].to_i <= 1000 ? params[:per_page] : 1000
+    checkins = @user.get_user_checkins_for(@permissible)
+    places = checkins.unscope(:order)
+                     .select('DISTINCT ON (checkins.fogged_area) checkins.fogged_area, checkins.created_at')
+                     .map { |c| [c.created_at, c.fogged_area] }
+                     .sort_by { |item| item[0] }
+                     .reverse
+                     .map { |item| item[1] }
+                     .paginate(page: params[:page], per_page: per_page)
+    paginated_response_headers(places)
+    render json: places
+  end
+
   def create
     checkin = @device.checkins.create(allowed_params)
     if checkin.save
