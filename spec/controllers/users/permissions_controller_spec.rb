@@ -85,16 +85,16 @@ RSpec.describe Users::PermissionsController, type: :controller do
 
     it 'should fail to update permission user does not control' do
       put :update, params: {
-        user_id: second_user.id,
-        device_id: device.id,
         id: permission.id,
-        from: 'devices',
+        device_id: device.id,
         permission: {
-          privilege: 'last_only'
-        }
+          bypass_fogging: true
+        },
+        from: 'devices',
+        user_id: second_user.id
       }
-      expect(Permission.find(permission.id).privilege).to eq 'last_only'
       expect(response).to redirect_to(root_path)
+      expect(Permission.find(permission.id).bypass_fogging).to eq false
     end
   end
 end
