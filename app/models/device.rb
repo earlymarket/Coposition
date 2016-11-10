@@ -26,12 +26,9 @@ class Device < ApplicationRecord
 
   def safe_checkin_info_for(args)
     sanitized = args[:copo_app] ? checkins : permitted_history_for(args[:permissible])
-    sanitized = sanitized.since(args[:time_amount].to_i.send(args[:time_unit]).ago) if args[:time_unit] && args[:time_amount]
-    sanitized = sanitized.near(args[:near].split(',')[0].to_f, args[:near].split(',')[1].to_f) if args[:near]
-    if args[:date]
-      date = Date.parse(args[:date])
-      sanitized = sanitized.where(created_at: date.midnight..date.end_of_day)
-    end
+    sanitized = sanitized.since_time(args[:time_amount], args[:time_unit])
+    sanitized = sanitized.near_to(args[:near])
+    sanitized = sanitized.on_date(args[:date])
     sanitized = sanitized.limit_returned_checkins(args)
     sanitized = sanitized.map(&:reverse_geocode!) if args[:type] == 'address'
     return sanitized if args[:copo_app]

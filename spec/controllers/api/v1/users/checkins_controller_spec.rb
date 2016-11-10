@@ -207,7 +207,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       end
 
       it 'should not return any checkins if none on date' do
-        get :index, params: params.merge(near: Date.yesterday)
+        get :index, params: params.merge(date: Date.yesterday)
         expect(res_hash.size).to eq 0
       end
     end

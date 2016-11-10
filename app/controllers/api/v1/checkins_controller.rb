@@ -43,8 +43,8 @@ class Api::V1::CheckinsController < Api::ApiController
     checkins = @user.get_user_checkins_for(@permissible)
     places = checkins.unscope(:order)
                      .pluck('DISTINCT ON (checkins.fogged_area) checkins.fogged_area, checkins.created_at')
-                     .sort { |date, next_date| next_date[1] <=> date[1] }
-                     .map { |item| item[0] }
+                     .sort { |checkin, next_checkin| next_checkin[1] <=> checkin[1] }
+                     .map { |checkin| checkin[0] }
                      .paginate(page: params[:page], per_page: per_page)
     paginated_response_headers(places)
     render json: places
