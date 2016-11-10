@@ -29,6 +29,7 @@ class Device < ApplicationRecord
     sanitized = sanitized.since_time(args[:time_amount], args[:time_unit])
                          .near_to(args[:near])
                          .on_date(args[:date])
+                         .unique_places_only(args[:unique_places])
                          .limit_returned_checkins(args)
     sanitized = sanitized.map(&:reverse_geocode!) if args[:type] == 'address'
     return sanitized if args[:copo_app]

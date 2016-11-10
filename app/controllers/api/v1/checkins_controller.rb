@@ -18,6 +18,7 @@ class Api::V1::CheckinsController < Api::ApiController
       time_amount: params[:time_amount],
       date: params[:date],
       near: params[:near],
+      unique_places: params[:unique_places],
       action: action_name
     )
     unsanitized_checkins = @user.get_user_checkins_for(@permissible).paginate(page: params[:page], per_page: per_page)
@@ -36,18 +37,6 @@ class Api::V1::CheckinsController < Api::ApiController
       action: action_name
     )
     render json: checkin
-  end
-
-  def places
-    per_page = params[:per_page].to_i <= 1000 ? params[:per_page] : 1000
-    checkins = @user.get_user_checkins_for(@permissible)
-    places = checkins.unscope(:order)
-                     .pluck('DISTINCT ON (checkins.fogged_area) checkins.fogged_area, checkins.created_at')
-                     .sort { |checkin, next_checkin| next_checkin[1] <=> checkin[1] }
-                     .map { |checkin| checkin[0] }
-                     .paginate(page: params[:page], per_page: per_page)
-    paginated_response_headers(places)
-    render json: places
   end
 
   def create

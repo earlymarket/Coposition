@@ -104,6 +104,13 @@ class Checkin < ApplicationRecord
     where(created_at: date.midnight..date.end_of_day)
   end
 
+  def self.unique_places_only(unique_places)
+    return all unless unique_places
+    checkins = unscope(:order).select('DISTINCT ON (checkins.fogged_area) *')
+                              .sort { |checkin, next_checkin| next_checkin['created_at'] <=> checkin['created_at'] }
+    all.where(id: checkins.map(&:id))
+  end
+
   def self.hash_group_and_count_by(attribute)
     grouped_and_counted = select(&attribute)
                           .group_by(&attribute)
