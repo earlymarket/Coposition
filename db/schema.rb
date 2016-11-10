@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161108145938) do
+ActiveRecord::Schema.define(version: 20161110094836) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,8 +28,8 @@ ActiveRecord::Schema.define(version: 20161108145938) do
   end
 
   create_table "attachinary_files", force: :cascade do |t|
-    t.string   "attachinariable_type"
     t.integer  "attachinariable_id"
+    t.string   "attachinariable_type"
     t.string   "scope"
     t.string   "public_id"
     t.string   "version"
@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 20161108145938) do
     t.datetime "updated_at"
     t.string   "uuid"
     t.integer  "device_id"
-    t.string   "address",      default: "Not yet geocoded"
+    t.string   "address",             default: "Not yet geocoded"
     t.string   "city"
     t.string   "postal_code"
     t.string   "country_code"
@@ -57,6 +57,12 @@ ActiveRecord::Schema.define(version: 20161108145938) do
     t.float    "fogged_lat"
     t.float    "fogged_lng"
     t.string   "fogged_area"
+    t.float    "output_lat"
+    t.float    "output_lng"
+    t.string   "output_address"
+    t.string   "output_city"
+    t.string   "output_postal_code"
+    t.string   "output_country_code"
     t.index ["device_id"], name: "index_checkins_on_device_id", using: :btree
   end
 
