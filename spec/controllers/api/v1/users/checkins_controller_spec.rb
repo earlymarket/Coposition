@@ -62,6 +62,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
     context 'with approval' do
       before do
+        device.switch_fog
         checkin
       end
 
@@ -106,6 +107,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
     context 'on a user' do
       it 'should fetch the last reported location' do
+        device.switch_fog
         checkin
         get :last, params: { user_id: user.id }
         expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
