@@ -68,6 +68,20 @@ RSpec.describe Users::PermissionsController, type: :controller do
       expect(Permission.find(permission.id).bypass_delay).to eq true
     end
 
+    it 'should update the privilege level and return the correct permission from apps page' do
+      put :update, params: {
+        user_id: user.id,
+        device_id: device.id,
+        id: permission.id,
+        from: 'apps',
+        permission: {
+          privilege: 'complete'
+        }
+      }
+      expect(Permission.find(permission.id).privilege).to eq 'complete'
+      expect(assigns(:presenter).permission).to eq Permission.find(permission.id)
+    end
+
     it 'should fail to update permission user does not control' do
       put :update, params: {
         user_id: second_user.id,
