@@ -27,9 +27,9 @@ class Device < ApplicationRecord
   def safe_checkin_info_for(args)
     sanitized = args[:copo_app] ? checkins : permitted_history_for(args[:permissible])
     sanitized = sanitized.since_time(args[:time_amount], args[:time_unit])
-    sanitized = sanitized.near_to(args[:near])
-    sanitized = sanitized.on_date(args[:date])
-    sanitized = sanitized.limit_returned_checkins(args)
+                         .near_to(args[:near])
+                         .on_date(args[:date])
+                         .limit_returned_checkins(args)
     sanitized = sanitized.map(&:reverse_geocode!) if args[:type] == 'address'
     return sanitized if args[:copo_app]
     sanitized = sanitized.map(&:replace_foggable_attributes) unless can_bypass_fogging?(args[:permissible])
