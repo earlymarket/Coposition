@@ -6,8 +6,7 @@ class Api::V1::Users::PermissionsController < Api::ApiController
   before_action :require_ownership
 
   def index
-    permissions = Permission.where(device_id: params[:device_id])
-                            .where.not(permissible_id: Developer.coposition_developers.select(:id))
+    permissions = Permission.where(device_id: params[:device_id]).not_coposition_developers
     render json: permissions
   end
 
@@ -18,8 +17,7 @@ class Api::V1::Users::PermissionsController < Api::ApiController
   end
 
   def update_all
-    permissions = Permission.where(device_id: params[:device_id])
-                            .where.not(permissible_id: Developer.coposition_developers.select(:id))
+    permissions = Permission.where(device_id: params[:device_id]).not_coposition_developers
     permissions.update_all(allowed_params.to_h)
     render json: permissions
   end

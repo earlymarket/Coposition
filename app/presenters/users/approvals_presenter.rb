@@ -25,8 +25,7 @@ module Users
     private
 
     def permissions
-      @devices.map { |device| device.permissions.where(permissible_type: @approvable_type) }.inject(:+)
-              .to_a.delete_if(&:coposition_developer?)
+      @devices.map { |device| device.permissions.where(permissible_type: @approvable_type).not_coposition_developers }.inject(:+)
     end
 
     def users_approved

@@ -45,7 +45,7 @@ module Users
         checkins: gon_index_checkins,
         current_user_id: @user.id,
         devices: @devices,
-        permissions: @devices.map(&:permissions).inject(:+).to_a.delete_if(&:coposition_developer?)
+        permissions: @devices.map { |device| device.permissions.not_coposition_developers }.inject(:+)
       }
     end
 

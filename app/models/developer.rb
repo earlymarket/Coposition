@@ -52,6 +52,12 @@ class Developer < ApplicationRecord
   end
 
   def self.coposition_developers
-    where(api_key: [Rails.application.secrets['coposition_api_key'], Rails.application.secrets['mobile_app_api_key']])
+    secrets = Rails.application.secrets
+    where(api_key: [secrets['coposition_api_key'], secrets['mobile_app_api_key']])
+  end
+
+  def self.not_coposition_developers
+    secrets = Rails.application.secrets
+    where.not(api_key: [secrets['coposition_api_key'], secrets['mobile_app_api_key']])
   end
 end
