@@ -25,7 +25,9 @@ module Users
     private
 
     def permissions
-      @devices.map { |device| device.permissions.where(permissible_type: @approvable_type).not_coposition_developers }.inject(:+)
+      @devices.map do |device|
+        device.permissions.where(permissible_type: @approvable_type).not_coposition_developers
+      end.inject(:+)
     end
 
     def users_approved
