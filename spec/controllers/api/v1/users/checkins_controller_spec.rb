@@ -20,7 +20,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
   let(:geocode_params) { params.merge(type: 'address') }
   let(:create_params) { { checkin: { lat: Faker::Address.latitude, lng: Faker::Address.longitude } } }
   let(:foggable_checkin_attributes) { %w(city postal_code) }
-  let(:private_checkin_attributes) { %w(uuid fogged fogged_lat fogged_lng fogged_area) }
+  let(:private_checkin_attributes) { %w(uuid fogged fogged_lat fogged_lng fogged_city) }
   let(:private_and_foggable_checkin_attributes) { private_checkin_attributes + foggable_checkin_attributes }
 
   before do |example|

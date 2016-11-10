@@ -12,7 +12,7 @@ module Users
       @checkins = @user.checkins
 
       # These are public
-      @most_frequent_areas = fogged_area_count.first(5)
+      @most_frequent_areas = fogged_city_count.first(5)
       @percent_change = @checkins.percentage_increase('week')
       @weeks_checkins_count = weeks_checkins.count
       @last_countries_loaded = last_countries
@@ -46,8 +46,8 @@ module Users
 
     private
 
-    def fogged_area_count
-      @checkins.hash_group_and_count_by(:fogged_area)
+    def fogged_city_count
+      @checkins.hash_group_and_count_by(:fogged_city)
     end
 
     def device_checkins_count

@@ -160,7 +160,7 @@ window.COPO.maps = {
     checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
     checkinTemp.foggedAddress = function() {
       if(checkin.fogged) {
-        return '<li class="foggedAddress">Fogged address: ' + checkin.fogged_area + '</li>'
+        return '<li class="foggedAddress">Fogged address: ' + checkin.fogged_city + '</li>'
       }
     }
     checkinTemp.devicebutton = function(){
@@ -305,7 +305,7 @@ window.COPO.maps = {
     let user    = marker.options.user;
     let name    = COPO.utility.friendsName(user);
     let date    = moment(marker.options.lastCheckin.created_at).fromNow();
-    let address = COPO.utility.commaToNewline(marker.options.lastCheckin.address) || marker.options.lastCheckin.fogged_area;
+    let address = COPO.utility.commaToNewline(marker.options.lastCheckin.address) || marker.options.lastCheckin.fogged_city;
     let content = `
     <h2>${ name } <a href="./friends/${user.slug}" title="Device info">
       <i class="material-icons tiny">perm_device_information</i>

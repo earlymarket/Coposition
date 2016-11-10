@@ -14,6 +14,7 @@ class Checkin < ApplicationRecord
     if results.present?
       results.first.methods.each do |m|
         obj.send("#{m}=", results.first.send(m)) if column_names.include? m.to_s
+        obj.send("output_#{m}=", results.first.send(m)) if (column_names.include? m.to_s) && !obj.fogged
       end
     else
       obj.update(address: 'No address available')
@@ -22,10 +23,13 @@ class Checkin < ApplicationRecord
 
   after_create do
     if device
-      self.uuid = device.uuid
-      self.fogged ||= device.fogged
+      update({
+        uuid: device.uuid,
+        fogged: fogged ||= device.fogged
+      })
       reverse_geocode! if device.checkins.count == 1
-      add_fogged_info
+      init_fogged_info
+      fogged ? set_output_to_fogged : set_output_to_unfogged
     else
       raise 'Checkin is not assigned to a device.' unless Rails.env.test?
     end
@@ -44,7 +48,7 @@ class Checkin < ApplicationRecord
   def replace_foggable_attributes
     if device.fogged? || fogged?
       fogged_checkin = Checkin.new(attributes.delete_if { |key, _v| key =~ /city|postal/ })
-      fogged_checkin.assign_attributes(address: fogged_area, lat: fogged_lat, lng: fogged_lng)
+      fogged_checkin.assign_attributes(address: fogged_city, lat: fogged_lat, lng: fogged_lng)
       return fogged_checkin
     end
     self
@@ -56,7 +60,7 @@ class Checkin < ApplicationRecord
   end
 
   def public_info
-    assign_attributes(address: fogged_area) if address == 'Not yet geocoded'
+    assign_attributes(address: fogged_city) if address == 'Not yet geocoded'
     attributes.delete_if { |key, value| key =~ /fogged|uuid/ || value.nil? }
   end
 
@@ -76,13 +80,13 @@ class Checkin < ApplicationRecord
     City.near([lat, lng], 200).first || NoCity.new
   end
 
-  def add_fogged_info
-    random_distance = rand(-0.5..0.5)
-    self.fogged_lat = nearest_city.latitude || lat + random_distance
-    self.fogged_lng = nearest_city.longitude || lng + random_distance
-    self.fogged_area = nearest_city.name
-    self.country_code = nearest_city.country_code
-    save
+  def init_fogged_info
+    update({
+      fogged_lat: nearest_city.latitude || lat + rand(-0.5..0.5),
+      fogged_lng: nearest_city.longitude || lng + rand(-0.5..0.5),
+      fogged_city: nearest_city.name,
+      fogged_country_code: nearest_city.country_code
+    })
   end
 
   def self.hash_group_and_count_by(attribute)
@@ -109,4 +113,27 @@ class Checkin < ApplicationRecord
       end
     end
   end
+
+  def set_output_to_fogged
+    update({
+      output_lat: fogged_lat,
+      output_lng: fogged_lng,
+      output_address: nil,
+      output_city: fogged_city,
+      output_postal_code: nil,
+      output_country_code: fogged_country_code
+    })
+  end
+
+  def set_output_to_unfogged
+    update({
+      output_lat: lat,
+      output_lng: lng,
+      output_address: address,
+      output_city: city,
+      output_postal_code: postal_code,
+      output_country_code: country_code
+    })
+  end
+
 end
