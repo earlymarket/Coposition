@@ -104,10 +104,6 @@ class Checkin < ApplicationRecord
     where(created_at: date.midnight..date.end_of_day)
   end
 
-  def self.near(lat, lng)
-    where(lat: (lat - 0.5)..(lat + 0.5), lng: (lng - 0.5)..(lng + 0.5))
-  end
-
   def self.hash_group_and_count_by(attribute)
     grouped_and_counted = select(&attribute)
                           .group_by(&attribute)
