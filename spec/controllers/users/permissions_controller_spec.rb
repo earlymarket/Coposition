@@ -29,13 +29,14 @@ RSpec.describe Users::PermissionsController, type: :controller do
       it 'should assign device and device permissions' do
         get :index, params: { user_id: user.id, device_id: device.id, from: 'devices' }
         expect(assigns(:presenter).device).to eq device
-        expect(assigns(:presenter).permissions).to eq device.permissions
+        expect(assigns(:presenter).permissions).to match_array device.permissions.not_coposition_developers
       end
     end
     context 'from apps page' do
       it 'should assign developer to permissible and developer devices permissions' do
         get :index, params: { from: 'apps', device_id: developer.id, user_id: user.id }
-        expect(assigns(:presenter).permissions).to eq device.permissions.where(permissible_id: developer.id)
+        expect(assigns(:presenter).permissions).to eq device.permissions
+          .where(permissible_id: developer.id).not_coposition_developers
         expect(assigns(:presenter).permissible).to eq developer
       end
     end
@@ -68,18 +69,32 @@ RSpec.describe Users::PermissionsController, type: :controller do
       expect(Permission.find(permission.id).bypass_delay).to eq true
     end
 
-    it 'should fail to update permission user does not control' do
+    it 'should update the privilege level and return the correct permission from apps page' do
       put :update, params: {
-        user_id: second_user.id,
+        user_id: user.id,
         device_id: device.id,
         id: permission.id,
-        from: 'devices',
+        from: 'apps',
         permission: {
-          privilege: 'last_only'
+          privilege: 'complete'
         }
       }
-      expect(Permission.find(permission.id).privilege).to eq 'last_only'
+      expect(Permission.find(permission.id).privilege).to eq 'complete'
+      expect(assigns(:presenter).permission).to eq Permission.find(permission.id)
+    end
+
+    it 'should fail to update permission user does not control' do
+      put :update, params: {
+        id: permission.id,
+        device_id: device.id,
+        permission: {
+          bypass_fogging: true
+        },
+        from: 'devices',
+        user_id: second_user.id
+      }
       expect(response).to redirect_to(root_path)
+      expect(Permission.find(permission.id).bypass_fogging).to eq false
     end
   end
 end

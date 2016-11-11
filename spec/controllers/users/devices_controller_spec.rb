@@ -161,13 +161,13 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
 
   describe 'PUT #update' do
-    it 'should switch fogging status to true by default' do
-      expect(device.fogged?).to be false
+    it 'should switch fogging status by default' do
+      expect(device.fogged?).to be true
       request.accept = 'text/javascript'
       put :update, params: params
 
       device.reload
-      expect(device.fogged?).to be true
+      expect(device.fogged?).to be false
       expect(flash[:notice]).to match 'Location fogging is'
     end
 

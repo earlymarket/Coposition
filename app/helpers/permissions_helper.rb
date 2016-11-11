@@ -1,12 +1,9 @@
 module PermissionsHelper
+  include ApprovalsHelper
   def permissible_title(permissible)
     title_start = "<div class=\"valign-wrapper\">#{avatar_for(permissible)}"
     title_end = '</div>'
-    title = if permissible.class.to_s == 'Developer'
-              title_start + permissible.company_name.to_s + title_end
-            else
-              title_start + permissible.email.to_s + title_end
-            end
+    title = title_start + "<p class=\"permissible-name\">#{approvals_approvable_name(permissible)}</p>" + title_end
     title.html_safe
   end
 
