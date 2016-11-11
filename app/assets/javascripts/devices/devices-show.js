@@ -32,7 +32,16 @@ $(document).on('page:change', function() {
 
       $('#checkinNow').on('click', function(){
         if(currentCoords){
-          var position = { coords: { latitude: currentCoords.lat, longitude: currentCoords.lng } }
+          var position = { fogged: false, coords: { latitude: currentCoords.lat, longitude: currentCoords.lng } }
+          postLocation(position)
+        } else {
+          navigator.geolocation.getCurrentPosition(postLocation, COPO.utility.geoLocationError, { timeout: 3000 });
+        }
+      })
+
+      $('#checkinFoggedNow').on('click', function(){
+        if(currentCoords){
+          var position = { fogged: true, coords: { latitude: currentCoords.lat, longitude: currentCoords.lng } }
           postLocation(position)
         } else {
           navigator.geolocation.getCurrentPosition(postLocation, COPO.utility.geoLocationError, { timeout: 3000 });
@@ -45,7 +54,7 @@ $(document).on('page:change', function() {
       url: '/users/'+gon.current_user_id+'/devices/'+gon.device+'/checkins/',
       type: 'POST',
       dataType: 'script',
-      data: { checkin: { lat: position.coords.latitude, lng: position.coords.longitude } }
+      data: { checkin: { lat: position.coords.latitude, lng: position.coords.longitude, fogged: position.fogged } }
     });
   }
 
