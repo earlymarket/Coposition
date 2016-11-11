@@ -32,6 +32,7 @@ $(document).on('page:change', function() {
       })
 
       $('#checkinNow').on('click', function(){
+        fogged = false;
         getLocation();
       })
 
