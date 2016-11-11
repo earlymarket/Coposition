@@ -256,6 +256,9 @@ window.COPO.maps = {
   makeMapPin(user, color, markerOptions) {
     let checkin = user.lastCheckin;
     if(checkin) {
+      if(moment(checkin['created_at']).isAfter(moment().subtract(1, 'day'))){
+        color = 'blue'
+      }
       let public_id = user.userinfo.avatar.public_id;
       let defaults = {
         icon: COPO.maps.mapPinIcon(public_id, color),
