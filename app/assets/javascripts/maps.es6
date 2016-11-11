@@ -259,7 +259,7 @@ window.COPO.maps = {
   makeMapPin(user, color, markerOptions) {
     let checkin = user.lastCheckin;
     if(checkin) {
-      if(moment(checkin['created_at']).isAfter(moment().subtract(1, 'day'))){
+      if(!color && moment(checkin['created_at']).isAfter(moment().subtract(1, 'day'))){
         color = 'grey'
       }
       let public_id = user.userinfo.avatar.public_id;
