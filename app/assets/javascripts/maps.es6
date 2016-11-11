@@ -237,6 +237,9 @@ window.COPO.maps = {
     // 'map-pin-blue'
     var iconClass;
     color === 'blue' ? iconClass = 'map-pin-blue' : iconClass = 'map-pin'
+    if color === 'grey' {
+      iconClass = 'map-pin-grey'
+    }
     return L.icon({
       iconUrl: $.cloudinary.url(public_id, {format: 'png', transformation: iconClass}),
       iconSize: [36,52],
@@ -257,7 +260,7 @@ window.COPO.maps = {
     let checkin = user.lastCheckin;
     if(checkin) {
       if(moment(checkin['created_at']).isAfter(moment().subtract(1, 'day'))){
-        color = 'blue'
+        color = 'grey'
       }
       let public_id = user.userinfo.avatar.public_id;
       let defaults = {
