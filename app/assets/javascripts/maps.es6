@@ -233,13 +233,10 @@ window.COPO.maps = {
 
   mapPinIcon(public_id, color) {
     // The iconClass is a named Cloudinary transform
-    // At the moment there are only two: 'map-pin' and
-    // 'map-pin-blue'
+    // At the moment there are only three: 'map-pin' and
+    // 'map-pin-blue' and 'map-pin-grey'
     var iconClass;
-    color === 'blue' ? iconClass = 'map-pin-blue' : iconClass = 'map-pin'
-    if (color === 'grey') {
-      iconClass = 'map-pin-grey'
-    }
+    color ? iconClass = `map-pin-${ color }` : iconClass = 'map-pin'
     return L.icon({
       iconUrl: $.cloudinary.url(public_id, {format: 'png', transformation: iconClass}),
       iconSize: [36,52],
@@ -259,7 +256,7 @@ window.COPO.maps = {
   makeMapPin(user, color, markerOptions) {
     let checkin = user.lastCheckin;
     if(checkin) {
-      if(!color && moment(checkin['created_at']).isAfter(moment().subtract(1, 'day'))){
+      if(!color && moment(checkin['created_at']).isBefore(moment().subtract(1, 'day'))){
         color = 'grey'
       }
       let public_id = user.userinfo.avatar.public_id;
