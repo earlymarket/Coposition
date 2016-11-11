@@ -237,7 +237,7 @@ window.COPO.maps = {
     // 'map-pin-blue'
     var iconClass;
     color === 'blue' ? iconClass = 'map-pin-blue' : iconClass = 'map-pin'
-    if color === 'grey' {
+    if (color === 'grey') {
       iconClass = 'map-pin-grey'
     }
     return L.icon({
