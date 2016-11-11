@@ -13,4 +13,9 @@ class ApplicationController < ActionController::Base
     @presenter = ::Users::ApprovalsPresenter.new(current_user, type)
     gon.push(@presenter.gon)
   end
+
+  def correct_url_user?
+    return if User.friendly.find(params[:user_id]) == current_user
+    redirect_to controller: params[:controller], action: params[:action], user_id: current_user.friendly_id
+  end
 end
