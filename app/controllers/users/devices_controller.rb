@@ -1,5 +1,6 @@
 class Users::DevicesController < ApplicationController
   before_action :authenticate_user!, except: :shared
+  before_action :correct_url_user?
   before_action :published?, only: :shared
   before_action :require_ownership, only: [:show, :destroy, :update]
 
