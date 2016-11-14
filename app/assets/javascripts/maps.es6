@@ -217,6 +217,7 @@ window.COPO.maps = {
     COPO.maps.lc = L.control.locate({
       follow: false,
       setView: true,
+      maxZoom: 10,
       markerClass: L.CircleMarker,
       strings: {
         title: 'Your current location',
