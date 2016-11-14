@@ -21,7 +21,7 @@ class Api::V1::CheckinsController < Api::ApiController
       unique_places: params[:unique_places],
       action: action_name
     )
-    unsanitized_checkins = @user.get_user_checkins_for(@permissible).paginate(page: params[:page], per_page: per_page)
+    unsanitized_checkins = @user.get_checkins(@permissible, @device).paginate(page: params[:page], per_page: per_page)
     paginated_response_headers(unsanitized_checkins)
     render json: checkins
   end

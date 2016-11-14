@@ -33,7 +33,7 @@ class Checkin < ApplicationRecord
 
   def self.limit_returned_checkins(args)
     if args[:action] == 'index' && args[:multiple_devices]
-      limit(args[:per_page])
+      all
     elsif args[:action] == 'index' && !args[:multiple_devices]
       paginate(page: args[:page], per_page: args[:per_page])
     else

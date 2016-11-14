@@ -31,7 +31,8 @@ class Device < ApplicationRecord
                          .on_date(args[:date])
                          .unique_places_only(args[:unique_places])
                          .limit_returned_checkins(args)
-    sanitized = sanitized.map(&:reverse_geocode!) if args[:type] == 'address'
+    # can't geocode here as potentially too many checkins                  
+    # sanitized = sanitized.map(&:reverse_geocode!) if args[:type] == 'address'
     return sanitized if args[:copo_app]
     sanitized = sanitized.map(&:replace_foggable_attributes) unless can_bypass_fogging?(args[:permissible])
     sanitized.map(&:public_info)
