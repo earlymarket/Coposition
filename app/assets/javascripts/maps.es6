@@ -250,19 +250,19 @@ window.COPO.maps = {
     }
     let cluster = markerArr.map(marker => markerBuilderFn(marker))
       .filter(marker => marker);
-    return (new L.MarkerClusterGroup).addLayers(cluster)
+    return L.markerClusterGroup().addLayers(cluster)
   },
 
   friendsCheckinsToCluster: (markerArr) => {
     let cluster = markerArr.map(marker => {
       let color;
-      if(moment(checkin['created_at']).isBefore(moment().subtract(1, 'day'))){
+      if(moment(marker.lastCheckin['created_at']).isBefore(moment().subtract(1, 'day'))){
         color = 'grey';
       }
-      return makePapPin(marker, color);
+      return COPO.maps.makeMapPin(marker, color);
     }).filter(marker => marker);
-    return (new L.MarkerClusterGroup).addLayers(cluster)
-  }
+    return L.markerClusterGroup().addLayers(cluster)
+  },
 
   makeMapPin(user, color, markerOptions) {
     let checkin = user.lastCheckin;
