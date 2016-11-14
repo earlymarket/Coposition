@@ -28,7 +28,7 @@ class Api::V1::CheckinsController < Api::ApiController
   end
 
   def last
-    checkin = @user.safe_checkin_info(
+    args = {
       copo_app: req_from_coposition_app?,
       permissible: @permissible,
       device: @device,
@@ -36,7 +36,8 @@ class Api::V1::CheckinsController < Api::ApiController
       date: params[:date],
       near: params[:near],
       action: action_name
-    )
+    }
+    checkin = @device ? @device.sanitize_checkins(@user.filtered_checkins(args), args) : @user.filtered_checkins(args)
     render json: checkin
   end
 
