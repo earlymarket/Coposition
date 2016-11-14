@@ -85,6 +85,10 @@ class User < ApplicationRecord
     args[:device] ? args[:device].safe_checkin_info_for(args) : safe_checkin_info_for(args)
   end
 
+  def filtered_and_paginated_checkins(args)
+    args[:device] ? args[:device].paginated_checkin_info(args) : safe_checkin_info_for(args)
+  end
+
   def safe_checkin_info_for(args)
     args[:multiple_devices] = true
     safe_checkins = devices.flat_map { |device| device.safe_checkin_info_for(args) }

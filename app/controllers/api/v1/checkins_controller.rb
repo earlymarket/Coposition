@@ -7,7 +7,7 @@ class Api::V1::CheckinsController < Api::ApiController
 
   def index
     per_page = params[:per_page].to_i <= 1000 ? params[:per_page] : 1000
-    checkins = @user.safe_checkin_info(
+    args = {
       copo_app: req_from_coposition_app?,
       permissible: @permissible,
       device: @device,
@@ -20,9 +20,10 @@ class Api::V1::CheckinsController < Api::ApiController
       near: params[:near],
       unique_places: params[:unique_places],
       action: action_name
-    )
-    unsanitized_checkins = @user.get_checkins(@permissible, @device).paginate(page: params[:page], per_page: per_page)
-    paginated_response_headers(unsanitized_checkins)
+    }
+    paginated = @user.filtered_and_paginated_checkins(args)
+    checkins = @device ? @device.sanitize_checkins(paginated, args) : paginated
+    paginated_response_headers(paginated)
     render json: checkins
   end
 
