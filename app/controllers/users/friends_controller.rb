@@ -1,5 +1,6 @@
 class Users::FriendsController < ApplicationController
   before_action :friends?
+  before_action :correct_url_user?
 
   def show
     presenter = ::Users::FriendsPresenter.new(current_user, params, 'show')

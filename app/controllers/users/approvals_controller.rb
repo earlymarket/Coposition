@@ -1,5 +1,6 @@
 class Users::ApprovalsController < ApplicationController
   before_action :authenticate_user!
+  before_action :correct_url_user?
 
   def new
     @approval = Approval.new
