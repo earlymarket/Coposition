@@ -85,8 +85,8 @@ class User < ApplicationRecord
     args[:device] ? args[:device].safe_checkin_info_for(args) : safe_checkin_info_for(args)
   end
 
-  def filtered_and_paginated_checkins(args)
-    args[:device] ? args[:device].paginated_checkin_info(args) : safe_checkin_info_for(args)
+  def filtered_checkins(args)
+    args[:device] ? args[:device].filtered_checkins(args) : safe_checkin_info_for(args)
   end
 
   def safe_checkin_info_for(args)

@@ -24,7 +24,12 @@ class Device < ApplicationRecord
     end
   end
 
-  def paginated_checkin_info(args)
+  def safe_checkin_info_for(args)
+    sanitized = filtered_checkins(args)
+    sanitize_checkins(sanitized, args)
+  end
+
+  def filtered_checkins(args)
     sanitized = args[:copo_app] ? checkins : permitted_history_for(args[:permissible])
     sanitized.since_time(args[:time_amount], args[:time_unit])
              .near_to(args[:near])
@@ -33,24 +38,13 @@ class Device < ApplicationRecord
              .limit_returned_checkins(args)
   end
 
-  def safe_checkin_info_for(args)
-    checkins = args[:copo_app] ? checkins : permitted_history_for(args[:permissible])
-    checkins = checkins.since_time(args[:time_amount], args[:time_unit])
-                       .near_to(args[:near])
-                       .on_date(args[:date])
-                       .unique_places_only(args[:unique_places])
-                       .limit_returned_checkins(args)
-    # Only geocoding here if paginated
-    sanitize_checkins(checkins, args)
-  end
-
-  def sanitize_checkins(checkins, args)
+  def sanitize_checkins(sanitized, args)
     if args[:type] == 'address'
-      checkins = checkins.map(&:reverse_geocode!) unless args[:action] == 'index' && args[:multiple_devices]
+      sanitized = sanitized.map(&:reverse_geocode!) unless args[:action] == 'index' && args[:multiple_devices]
     end
-    return checkins if args[:copo_app]
-    checkins = checkins.map(&:replace_foggable_attributes) unless can_bypass_fogging?(args[:permissible])
-    checkins.map(&:public_info)
+    return sanitized if args[:copo_app]
+    sanitized = sanitized.map(&:replace_foggable_attributes) unless can_bypass_fogging?(args[:permissible])
+    sanitized.map(&:public_info)
   end
 
   def permitted_history_for(permissible)
