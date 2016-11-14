@@ -48,7 +48,7 @@ $(document).on('page:change', function () {
         if (this.hasFriendsWithCheckins()) {
           caller.slides.push({
             status:   this.status,
-            layers:   M.bindFriendMarkers(gon.friends, M.makeMapPin),
+            layers:   M.bindFriendMarkers(gon.friends),
             bounds:   this.bounds()
           });
           caller.hasContent = true;

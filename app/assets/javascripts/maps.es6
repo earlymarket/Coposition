@@ -253,12 +253,20 @@ window.COPO.maps = {
     return (new L.MarkerClusterGroup).addLayers(cluster)
   },
 
+  friendsCheckinsToCluster: (markerArr) => {
+    let cluster = markerArr.map(marker => {
+      let color;
+      if(moment(checkin['created_at']).isBefore(moment().subtract(1, 'day'))){
+        color = 'grey';
+      }
+      return makePapPin(marker, color);
+    }).filter(marker => marker);
+    return (new L.MarkerClusterGroup).addLayers(cluster)
+  }
+
   makeMapPin(user, color, markerOptions) {
     let checkin = user.lastCheckin;
     if(checkin) {
-      if(!color && moment(checkin['created_at']).isBefore(moment().subtract(1, 'day'))){
-        color = 'grey'
-      }
       let public_id = user.userinfo.avatar.public_id;
       let defaults = {
         icon: COPO.maps.mapPinIcon(public_id, color),
@@ -283,7 +291,7 @@ window.COPO.maps = {
   },
 
   bindFriendMarkers(checkins){
-    let markers = COPO.maps.arrayToCluster(checkins, COPO.maps.makeMapPin);
+    let markers = COPO.maps.friendsCheckinsToCluster(checkins);
     markers.eachLayer((marker) => {
       marker.on('click', function (e) {
         COPO.maps.panAndW3w.call(this, e)
