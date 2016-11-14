@@ -81,10 +81,12 @@ class User < ApplicationRecord
 
   ## Checkins
 
+  # returns sanitized + filtered checkins without pagination info if device present
   def safe_checkin_info(args)
     args[:device] ? args[:device].safe_checkin_info_for(args) : safe_checkin_info_for(args)
   end
 
+  # returns filtered checkins with pagination info, but not sanitized if device present
   def filtered_checkins(args)
     args[:device] ? args[:device].filtered_checkins(args) : safe_checkin_info_for(args)
   end
