@@ -111,7 +111,6 @@ class Checkin < ApplicationRecord
   end
 
   def self.to_gpx
-    require 'GPX'
     gpx = GPX::GPXFile.new
     route = GPX::Route.new
     all.each do |checkin|
