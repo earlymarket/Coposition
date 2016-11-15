@@ -109,4 +109,12 @@ class Checkin < ApplicationRecord
       end
     end
   end
+
+  def self.to_geo_json
+    geo_json_checkins = []
+    all.each do |checkin|
+      geo_json_checkins << GeoJsonCheckin.new(checkin)
+    end
+    geo_json_checkins.as_json
+  end
 end
