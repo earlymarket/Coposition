@@ -24,16 +24,9 @@ module Users
 
     def show
       @device = Device.find(@params[:id])
-      if @params[:download] == 'csv'
-        @checkins = @device.checkins.to_csv
-        @filename = "device-#{@device.id}-checkins-#{Date.today}.csv"
-      elsif @params[:download] == 'gpx'
-        @checkins = @device.checkins.to_gpx
-        @filename = "device-#{@device.id}-checkins-#{Date.today}.gpx"
-      elsif @params[:download] == 'geojson'
-        @checkins = @device.checkins.to_geo_json
-        @filename = "device-#{@device.id}-checkins-#{Date.today}.json"
-      end
+      return unless (download_format = @params[:download])
+      @filename = "device-#{@device.id}-checkins-#{Date.today}." + download_format
+      @checkins = @device.checkins.send('to_' + download_format)
     end
 
     def shared

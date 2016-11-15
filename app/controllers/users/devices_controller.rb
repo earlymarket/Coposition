@@ -14,9 +14,7 @@ class Users::DevicesController < ApplicationController
     gon.push(@presenter.show_gon)
     respond_to do |format|
       format.html { flash[:notice] = 'Right click on the map to check-in' }
-      format.csv { send_data @presenter.checkins, filename: @presenter.filename }
-      format.gpx { send_data @presenter.checkins, filename: @presenter.filename }
-      format.json { send_data @presenter.checkins, filename: @presenter.filename }
+      format.any(:csv, :gpx, :geojson) { send_data @presenter.checkins, filename: @presenter.filename }
     end
   end
 

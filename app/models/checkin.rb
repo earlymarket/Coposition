@@ -121,11 +121,11 @@ class Checkin < ApplicationRecord
     gpx.to_s
   end
 
-  def self.to_geo_json
-    geo_json_checkins = []
+  def self.to_geojson
+    geojson_checkins = []
     all.each do |checkin|
-      geo_json_checkins << GeoJsonCheckin.new(checkin)
+      geojson_checkins << GeoJsonCheckin.new(checkin)
     end
-    geo_json_checkins.as_json
+    geojson_checkins.as_json
   end
 end
