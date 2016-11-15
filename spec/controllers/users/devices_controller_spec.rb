@@ -62,10 +62,16 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
 
     it 'should create a CSV file if .csv appended to url' do
-      get :show, params: params.merge(format: :csv, download: true)
+      get :show, params: params.merge(format: :csv, download: 'csv')
       expect(response.header['Content-Type']).to include 'text/csv'
       expect(response.body).to include(*checkin.attributes.keys)
       expect(response.body).to include(checkin.attributes.values.join(','))
+    end
+
+    it 'should create a geo_json file if .json appended to url' do
+      get :show, params: params.merge(format: :json, download: 'geojson')
+      expect(response.header['Content-Type']).to include 'application/json'
+      expect(response.body).to include(device.checkins.to_geo_json.to_s)
     end
   end
 
