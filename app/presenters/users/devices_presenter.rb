@@ -30,6 +30,9 @@ module Users
       elsif @params[:download] == 'gpx'
         @checkins = @device.checkins.to_gpx
         @filename = "device-#{@device.id}-checkins-#{Date.today}.gpx"
+      elsif @params[:download] == 'geojson'
+        @checkins = @device.checkins.to_geo_json
+        @filename = "device-#{@device.id}-checkins-#{Date.today}.json"
       end
     end
 

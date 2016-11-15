@@ -73,6 +73,11 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(response.header['Content-Type']).to include 'application/gpx+xml'
       expect(response.body).to include(device.checkins.to_gpx)
     end
+    it 'should create a geo_json file if .json appended to url' do
+      get :show, params: params.merge(format: :json, download: 'geojson')
+      expect(response.header['Content-Type']).to include 'application/json'
+      expect(response.body).to include(device.checkins.to_geo_json.to_s)
+    end
   end
 
   describe 'GET #new' do

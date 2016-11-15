@@ -54,7 +54,7 @@
         <a class="btn green white-text" href="<%= user_device_path(current_user.url_id, device) %>.json?download=geojson">geojson</a>
       </div>
     </div>
-
+    
     <%= link_to(devices_shared_icon(device), user_device_path(current_user.url_id, device.id, published: device.published), { method: :put, id:"publishedButton#{device.id}", remote: true, class: 'left tooltipped', data: { published: device.published?, tooltip:'Device sharing' } })%>
     <div class="valign-wrapper" id="sharedLink<%= device.id %>">
       <%= devices_shared_link(device) if device.published %>
