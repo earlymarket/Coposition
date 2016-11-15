@@ -123,7 +123,7 @@ class Checkin < ApplicationRecord
   def self.to_geojson
     geojson_checkins = []
     all.each do |checkin|
-      geojson_checkins << GeoJsonCheckin.new(checkin)
+      geojson_checkins << GeojsonCheckin.new(checkin)
     end
     geojson_checkins.as_json
   end

@@ -1,4 +1,4 @@
-class GeoJsonCheckin
+class GeojsonCheckin
   def initialize(checkin)
     @type = 'Feature'
     @geometry = { 'type': 'Point', 'coordinates': [checkin.lat, checkin.lng] }
