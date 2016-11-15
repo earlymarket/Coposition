@@ -109,4 +109,15 @@ class Checkin < ApplicationRecord
       end
     end
   end
+
+  def self.to_gpx
+    require 'GPX'
+    gpx = GPX::GPXFile.new
+    route = GPX::Route.new
+    all.each do |checkin|
+      route.points << GPX::Point.new(elevation: 0, lat: checkin.lat, lon: checkin.lng, time: checkin.created_at)
+    end
+    gpx.routes << route
+    gpx.to_s
+  end
 end

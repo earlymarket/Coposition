@@ -24,9 +24,12 @@ module Users
 
     def show
       @device = Device.find(@params[:id])
-      if @params[:download]
+      if @params[:download] == 'csv'
         @checkins = @device.checkins.to_csv
         @filename = "device-#{@device.id}-checkins-#{Date.today}.csv"
+      elsif @params[:download] == 'gpx'
+        @checkins = @device.checkins.to_gpx
+        @filename = "device-#{@device.id}-checkins-#{Date.today}.gpx"
       end
     end
 
