@@ -52,7 +52,7 @@
         <div class='center-align'>
           <label>Download all the check-ins on this device in one of the following formats:</label></br></br>
           <a class="btn" href="<%= user_device_path(current_user.url_id, device) %>.csv?download=csv">csv</a></br></br>
-          <a class="btn" href="<%= user_device_path(current_user.url_id, device) %>.gpx?download=gpx">gpx</a></br></br>
+          <a class="btn" href="<%= user_device_path(current_user.url_id, device) %>.gpx?download=gpx">gpx (route)</a></br></br>
           <a class="btn" href="<%= user_device_path(current_user.url_id, device) %>.geojson?download=geojson">geojson</a>
         </div>
       </div>
