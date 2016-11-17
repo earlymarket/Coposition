@@ -8,7 +8,11 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     user.devices << FactoryGirl.create(:device)
     user
   end
-  let(:friend) { FactoryGirl.create :user }
+  let(:friend) do
+    friend = FactoryGirl.create :user
+    friend.devices << FactoryGirl.create(:device)
+    friend
+  end
   let(:developer) { FactoryGirl.create :developer }
   let(:approval) do
     app = FactoryGirl.create :approval
@@ -112,7 +116,9 @@ RSpec.describe Users::ApprovalsController, type: :controller do
 
   describe 'GET #friends' do
     it 'should assign current users friends' do
-      approval_two.update(user: user, status: 'accepted', approvable_id: friend.id, approvable_type: 'User')
+      approval.update(status: 'requested', approvable_id: friend.id, approvable_type: 'User')
+      approval_two.update(status: 'pending', approvable_id: user.id, approvable_type: 'User')
+      Approval.accept(user, friend, 'User')
       get :friends, params: user_params
       expect(assigns(:presenter).pending).to eq user.friend_requests
       expect(assigns(:presenter).approved).to eq user.friends
@@ -148,12 +154,13 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     end
 
     it 'should destroy an existing approval and permissions' do
-      approval.update(status: 'developer-requested', approvable_id: developer.id, approvable_type: 'Developer')
-      approval.approve!
+      approval.update(status: 'requested', approvable_id: friend.id, approvable_type: 'User')
+      approval_two.update(status: 'pending', approvable_id: user.id, approvable_type: 'User')
+      Approval.accept(user, friend, 'User')
       permission_count = Permission.count
       request.accept = 'text/javascript'
       post :reject, params: approve_reject_params
-      expect(Permission.count).to eq permission_count - 1
+      expect(Permission.count).to eq permission_count - 2
     end
   end
 end
