@@ -1,5 +1,6 @@
 class Users::ApprovalsController < ApplicationController
   before_action :authenticate_user!
+  before_action :correct_url_user?
 
   def new
     @approval = Approval.new
@@ -9,7 +10,7 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def create
-    user = User.find_by(email: allowed_params[:approvable])
+    user = User.find_by(email: allowed_params[:approvable].downcase)
     approval = Approval.add_friend(current_user, user) if user
     if approval_created?(user, approval)
       approvals_presenter_and_gon('User')

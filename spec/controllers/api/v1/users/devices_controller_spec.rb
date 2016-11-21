@@ -105,6 +105,13 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       expect(res_hash[:error]).to eq('Device does not exist')
     end
 
+    it 'should return an error if updating with same name as another device' do
+      user.devices << empty_device
+      put :update, params: device_params.merge(id: empty_device.id, device: { name: device.name })
+      expect(response.status).to eq(400)
+      expect(res_hash[:error]['name'][0]).to match 'already been taken'
+    end
+
     it 'should not allow you to update someone elses device' do
       put :update, params: {
         user_id: second_user.id, id: second_user.devices.last.id, device: { fogged: true }, format: :json

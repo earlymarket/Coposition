@@ -12,7 +12,6 @@ $(document).on('page:change', function() {
       $('.friends-index').removeClass('hide');
       gon.friends.forEach(friend => {
         if (!friend.lastCheckin) {
-          console.log(friend);
           $('i[data-friend="'+ friend.userinfo.id+'"]').remove();
         }
       });

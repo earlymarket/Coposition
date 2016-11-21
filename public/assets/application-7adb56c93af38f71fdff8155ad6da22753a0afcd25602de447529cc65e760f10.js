@@ -42646,7 +42646,8 @@ window.COPO.maps = {
     COPO.maps.last = COPO.maps.makeMarker(checkins[0], {
       icon: L.mapbox.marker.icon({ 'marker-symbol': 'marker', 'marker-color': '#47b8e0' }),
       title: 'ID: ' + checkins[0].id + ' - Most recent',
-      alt: 'lastCheckin'
+      alt: 'lastCheckin',
+      zIndexOffset: 1000
     });
     COPO.maps.allMarkers.addLayer(COPO.maps.last);
     map.addLayer(COPO.maps.last);
@@ -42745,13 +42746,12 @@ window.COPO.maps = {
   locateControlInit: function locateControlInit() {
     COPO.maps.lc = L.control.locate({
       follow: false,
-      setView: true,
+      setView: 'always',
       markerClass: L.CircleMarker,
       strings: {
         title: 'Your current location',
         popup: 'Your current location within {distance} {unit}.<br><a href="#" id="current-location"></a>'
       }
-
     }).addTo(map);
   },
 
@@ -42840,7 +42840,7 @@ window.COPO.maps = {
   friendPopup: function friendPopup(marker) {
     var user = marker.options.user;
     var name = COPO.utility.friendsName(user);
-    var date = new Date(marker.options.lastCheckin.created_at).toUTCString();
+    var date = moment(marker.options.lastCheckin.created_at).fromNow();
     var address = COPO.utility.commaToNewline(marker.options.lastCheckin.address) || marker.options.lastCheckin.fogged_area;
     var content = '\n    <h2>' + name + ' <a href="./friends/' + user.slug + '" title="Device info">\n      <i class="material-icons tiny">perm_device_information</i>\n      </a></h2>\n    <div class="address">' + address + '</div>\n    Checked in: ' + date;
     marker.bindPopup(content, { offset: [0, -38] });
@@ -43198,7 +43198,6 @@ $(document).on('page:change', function () {
         $('.friends-index').removeClass('hide');
         gon.friends.forEach(function (friend) {
           if (!friend.lastCheckin) {
-            console.log(friend);
             $('i[data-friend="' + friend.userinfo.id + '"]').remove();
           }
         });
@@ -43482,6 +43481,7 @@ $(document).on('page:change', function() {
 $(document).on('page:change', function() {
   if ($(".c-friends.a-show_device").length === 1 || $(".c-devices.a-show").length === 1) {
     var page = $(".c-devices.a-show").length === 1 ? 'user' : 'friend'
+    var fogged = false;
     COPO.utility.gonFix();
     COPO.maps.initMap();
     COPO.maps.initMarkers(gon.checkins, gon.total);
@@ -43512,26 +43512,37 @@ $(document).on('page:change', function() {
       })
 
       $('#checkinNow').on('click', function(){
-        if(currentCoords){
-          var position = { coords: { latitude: currentCoords.lat, longitude: currentCoords.lng } }
-          postLocation(position)
-        } else {
-          navigator.geolocation.getCurrentPosition(postLocation, COPO.utility.geoLocationError, { timeout: 3000 });
-        }
+        fogged = false;
+        getLocation();
+      })
+
+      $('#checkinFoggedNow').on('click', function(){
+        fogged = true;
+        getLocation();
       })
     }
-  }
-  function postLocation(position){
-    $.ajax({
-      url: '/users/'+gon.current_user_id+'/devices/'+gon.device+'/checkins/',
-      type: 'POST',
-      dataType: 'script',
-      data: { checkin: { lat: position.coords.latitude, lng: position.coords.longitude } }
-    });
-  }
 
-  function onLocationFound(p){
-    currentCoords = p.latlng;
+    function postLocation(position){
+      $.ajax({
+        url: '/users/'+gon.current_user_id+'/devices/'+gon.device+'/checkins/',
+        type: 'POST',
+        dataType: 'script',
+        data: { checkin: { lat: position.coords.latitude, lng: position.coords.longitude, fogged: fogged } }
+      });
+    }
+
+    function getLocation(fogged){
+      if(currentCoords){
+        var position = { coords: { latitude: currentCoords.lat, longitude: currentCoords.lng } }
+        postLocation(position)
+      } else {
+        navigator.geolocation.getCurrentPosition(postLocation, COPO.utility.geoLocationError, { timeout: 5000 });
+      }
+    }
+
+    function onLocationFound(p){
+      currentCoords = p.latlng;
+    }
   }
 });
 'use strict';
