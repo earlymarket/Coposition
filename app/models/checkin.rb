@@ -109,4 +109,22 @@ class Checkin < ApplicationRecord
       end
     end
   end
+
+  def self.to_gpx
+    gpx = GPX::GPXFile.new
+    route = GPX::Route.new
+    all.each do |checkin|
+      route.points << GPX::Point.new(elevation: 0, lat: checkin.lat, lon: checkin.lng, time: checkin.created_at)
+    end
+    gpx.routes << route
+    gpx.to_s
+  end
+
+  def self.to_geojson
+    geojson_checkins = []
+    all.each do |checkin|
+      geojson_checkins << GeojsonCheckin.new(checkin)
+    end
+    geojson_checkins.as_json
+  end
 end

@@ -24,10 +24,9 @@ module Users
 
     def show
       @device = Device.find(@params[:id])
-      if @params[:download]
-        @checkins = @device.checkins.to_csv
-        @filename = "device-#{@device.id}-checkins-#{Date.today}.csv"
-      end
+      return unless (download_format = @params[:download])
+      @filename = "device-#{@device.id}-checkins-#{Date.today}." + download_format
+      @checkins = @device.checkins.send('to_' + download_format)
     end
 
     def shared
