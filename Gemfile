@@ -34,6 +34,7 @@ gem 'attachinary', '~> 1.3.1'
 gem 'sprockets', '>= 3.0.0'
 gem 'sprockets-es6'
 gem 'bower-rails', '~> 0.10.0'
+gem 'gpx'
 
 group :production do
   gem 'puma'

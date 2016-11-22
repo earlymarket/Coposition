@@ -157,6 +157,9 @@ GEM
       json
       multi_json
       request_store (>= 1.0)
+    gpx (0.8.2)
+      nokogiri
+      rake
     guard (2.14.0)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
@@ -396,6 +399,7 @@ DEPENDENCIES
   friendly_id (~> 5.1.0)
   geocoder
   gon (~> 6.1.0)
+  gpx
   guard-livereload (~> 2.4)
   inline_svg
   jbuilder (~> 2.0)
@@ -435,4 +439,4 @@ RUBY VERSION
    ruby 2.3.0p0
 
 BUNDLED WITH
-   1.12.5
+   1.13.6
