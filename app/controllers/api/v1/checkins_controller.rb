@@ -21,6 +21,10 @@ class Api::V1::CheckinsController < Api::ApiController
       unique_places: params[:unique_places],
       action: action_name
     }
+    # Need paginated checkins for response headers when specific device provided
+    # If no device provided, checkins are sanitized then paginated
+    # If device provided, checkins must be paginated then sanitized (sanitizing removes pagination info)
+    # This is due to the limiting factor of reverse_geocoding checkins when from a single device
     paginated_checkins = @user.filtered_checkins(args)
     checkins = @device ? @device.sanitize_checkins(paginated_checkins, args) : paginated_checkins
     paginated_response_headers(paginated_checkins)
