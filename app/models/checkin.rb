@@ -7,8 +7,8 @@ class Checkin < ApplicationRecord
   delegate :user, to: :device
 
   default_scope { order(created_at: :desc) }
-  scope :since, -> (date) { where('created_at > ?', date) }
-  scope :before, -> (date) { where('created_at < ?', date) }
+  scope :since, ->(date) { where('created_at > ?', date) }
+  scope :before, ->(date) { where('created_at < ?', date) }
 
   reverse_geocoded_by :lat, :lng do |obj, results|
     if results.present?
@@ -28,6 +28,14 @@ class Checkin < ApplicationRecord
       add_fogged_info
     else
       raise 'Checkin is not assigned to a device.' unless Rails.env.test?
+    end
+  end
+
+  def self.batch_create(post_content)
+    Checkin.transaction do
+      JSON.parse(post_content).each do |checkin_hash|
+        Checkin.create!(checkin_hash)
+      end
     end
   end
 
