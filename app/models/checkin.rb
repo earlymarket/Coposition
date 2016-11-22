@@ -33,7 +33,7 @@ class Checkin < ApplicationRecord
 
   def self.limit_returned_checkins(args)
     if args[:action] == 'index' && args[:multiple_devices]
-      limit(args[:per_page])
+      all
     elsif args[:action] == 'index' && !args[:multiple_devices]
       paginate(page: args[:page], per_page: args[:per_page])
     else
@@ -83,6 +83,32 @@ class Checkin < ApplicationRecord
     self.fogged_area = nearest_city.name
     self.country_code = nearest_city.country_code
     save
+  end
+
+  def self.near_to(near)
+    return all unless near
+    near_array = near.split(',')
+    lat = near_array[0].to_f
+    lng = near_array[1].to_f
+    where(lat: (lat - 0.5)..(lat + 0.5), lng: (lng - 0.5)..(lng + 0.5))
+  end
+
+  def self.since_time(time_amount, time_unit)
+    return all unless time_unit && time_amount
+    since(time_amount.to_i.send(time_unit).ago)
+  end
+
+  def self.on_date(date)
+    return all unless date
+    date = Date.parse(date)
+    where(created_at: date.midnight..date.end_of_day)
+  end
+
+  def self.unique_places_only(unique_places)
+    return all unless unique_places
+    checkins = unscope(:order).select('DISTINCT ON (checkins.fogged_area) *')
+                              .sort { |checkin, next_checkin| next_checkin['created_at'] <=> checkin['created_at'] }
+    all.where(id: checkins.map(&:id))
   end
 
   def self.hash_group_and_count_by(attribute)

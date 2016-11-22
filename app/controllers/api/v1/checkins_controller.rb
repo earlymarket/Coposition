@@ -7,17 +7,27 @@ class Api::V1::CheckinsController < Api::ApiController
 
   def index
     per_page = params[:per_page].to_i <= 1000 ? params[:per_page] : 1000
-    checkins = @user.safe_checkin_info(
+    args = {
       copo_app: req_from_coposition_app?,
       permissible: @permissible,
       device: @device,
       page: params[:page],
       per_page: per_page,
       type: params[:type],
+      time_unit: params[:time_unit],
+      time_amount: params[:time_amount],
+      date: params[:date],
+      near: params[:near],
+      unique_places: params[:unique_places],
       action: action_name
-    )
-    unsanitized_checkins = @user.get_user_checkins_for(@permissible).paginate(page: params[:page], per_page: per_page)
-    paginated_response_headers(unsanitized_checkins)
+    }
+    # Need paginated checkins for response headers when specific device provided
+    # If no device provided, checkins are sanitized then paginated
+    # If device provided, checkins must be paginated then sanitized (sanitizing removes pagination info)
+    # This is due to the limiting factor of reverse_geocoding checkins when from a single device
+    paginated_checkins = @user.filtered_checkins(args)
+    checkins = @device ? @device.sanitize_checkins(paginated_checkins, args) : paginated_checkins
+    paginated_response_headers(paginated_checkins)
     render json: checkins
   end
 
@@ -27,6 +37,8 @@ class Api::V1::CheckinsController < Api::ApiController
       permissible: @permissible,
       device: @device,
       type: params[:type],
+      date: params[:date],
+      near: params[:near],
       action: action_name
     )
     render json: checkin

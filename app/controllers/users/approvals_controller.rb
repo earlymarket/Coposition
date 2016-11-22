@@ -43,6 +43,7 @@ class Users::ApprovalsController < ApplicationController
     approvable = approval.approvable
     current_user.destroy_permissions_for(approvable)
     if approvable_type == 'User'
+      approvable.destroy_permissions_for(current_user)
       Approval.where(user: approvable, approvable: current_user, approvable_type: 'User').destroy_all
     end
     approval.destroy
