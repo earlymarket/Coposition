@@ -46,9 +46,9 @@ class Api::V1::CheckinsController < Api::ApiController
   def batch_create
     success = @device.checkins.batch_create(request.raw_post)
     if success
-      render status: 200, json: { message: 'Checkins created' }
+      render json: { message: 'Checkins created' }, status: 200
     else
-      render status: 422, json: { error: 'Checkins not created' }
+      render json: { error: 'Checkins not created' }, status: 422
     end
   end
 
