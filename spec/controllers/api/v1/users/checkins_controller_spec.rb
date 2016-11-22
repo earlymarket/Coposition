@@ -18,7 +18,8 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
   let(:address) { 'The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK' }
   let(:params) { { user_id: user.id, device_id: device.id } }
   let(:geocode_params) { params.merge(type: 'address') }
-  let(:create_params) { { checkin: { lat: Faker::Address.latitude, lng: Faker::Address.longitude } } }
+  let(:lat_lng) { { lat: Faker::Address.latitude, lng: Faker::Address.longitude } }
+  let(:create_params) { { checkin: lat_lng } }
   let(:foggable_checkin_attributes) { %w(city postal_code) }
   let(:private_checkin_attributes) { %w(uuid fogged fogged_lat fogged_lng fogged_area) }
   let(:private_and_foggable_checkin_attributes) { private_checkin_attributes + foggable_checkin_attributes }
@@ -198,7 +199,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       post :create, params: create_params
       expect(res_hash[:data].first['uuid']).to eq device.uuid
       expect(user.checkins.count).to be(count + 1)
-      expect(checkin.device).to be device
+      expect(user.checkins.first.device).to eq device
     end
 
     it 'should return 400 if you POST a checkin with missing parameters' do
@@ -213,6 +214,32 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       post :create, params: create_params
       expect(response.status).to eq(400)
       expect(res_hash[:error]).to eq('You must provide a valid uuid')
+    end
+  end
+
+  describe 'POST #batch_create' do
+    it 'should create a batch of checkins when there is a pre-existing device' do
+      count = user.checkins.count
+      create_headers
+      post :batch_create, body: [lat_lng, lat_lng, lat_lng].to_json, format: :json
+      expect(res_hash[:message]).to eq('Checkins created')
+      expect(user.checkins.count).to be(count + 3)
+      expect(user.checkins.first.device).to eq device
+    end
+
+    it 'should return 422 if you POST a checkin with missing parameters' do
+      create_headers
+      post :batch_create, body: [{ lat: Faker::Address.latitude }].to_json, format: :json
+      expect(response.status).to eq(422)
+      expect(res_hash[:error]).to eq('Checkins not created')
+    end
+
+    it 'should return 422 if you POST a checkin with extra params' do
+      create_headers
+      post :batch_create, body: [lat_lng.merge(fogged_area: 'London'), lat_lng, lat_lng].to_json,
+                          format: :json
+      expect(res_hash[:error]).to eq('Checkins not created')
+      expect(response.status).to eq(422)
     end
   end
 end

@@ -35,7 +35,8 @@ class Checkin < ApplicationRecord
     Checkin.transaction do
       JSON.parse(post_content).each do |checkin_hash|
         raise ActiveRecord::Rollback unless (checkin_hash.keys - %w(lat lng created_at fogged)).empty?
-        Checkin.create!(checkin_hash)
+        checkin = Checkin.create(checkin_hash)
+        raise ActiveRecord::Rollback unless checkin.save
       end
     end
   end
