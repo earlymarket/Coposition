@@ -37,6 +37,7 @@ class Checkin < ApplicationRecord
         raise ActiveRecord::Rollback unless (checkin_hash.keys - %w(lat lng created_at fogged)).empty?
         checkin = Checkin.create(checkin_hash)
         raise ActiveRecord::Rollback unless checkin.save
+        checkin.device.notify_subscribers('new_checkin', checkin)
       end
     end
   end
