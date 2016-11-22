@@ -34,6 +34,7 @@ class Checkin < ApplicationRecord
   def self.batch_create(post_content)
     Checkin.transaction do
       JSON.parse(post_content).each do |checkin_hash|
+        raise ActiveRecord::Rollback unless (checkin_hash.keys - %w(lat lng created_at fogged)).empty?
         Checkin.create!(checkin_hash)
       end
     end
