@@ -35,21 +35,12 @@ class Checkin < ApplicationRecord
     end
   end
 
-  def limit_returned_checkins(args)
-    if args[:action] == 'index' && args[:multiple_devices]
-      limit(args[:per_page])
-    elsif args[:action] == 'index' && !args[:multiple_devices]
-      paginate(page: args[:page], per_page: args[:per_page])
-    else
-      limit(1)
-    end
-  end
-
   def self.limit_returned_checkins(args)
+    per_page = all.length > 1 ? args[:per_page] : 1
     if args[:action] == 'index' && args[:multiple_devices]
-      limit(args[:per_page])
+      limit(per_page)
     elsif args[:action] == 'index' && !args[:multiple_devices]
-      paginate(page: args[:page], per_page: args[:per_page])
+      paginate(page: args[:page], per_page: per_page)
     else
       limit(1)
     end

@@ -21,7 +21,6 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
   let(:create_params) { { checkin: { lat: Faker::Address.latitude, lng: Faker::Address.longitude } } }
   let(:foggable_checkin_attributes) { %w(city postal_code) }
   let(:private_checkin_attributes) { %w(uuid fogged fogged_lat fogged_lng fogged_city) }
-  let(:private_and_foggable_checkin_attributes) { private_checkin_attributes + foggable_checkin_attributes }
 
   before do |example|
     create_denhams
@@ -84,14 +83,14 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         expect(res_hash.first['lng']).to eq checkin.lng
       end
 
-      it "should fog the last reported location's address if fogged" do
+      it "should fog the last reported location's address and lat/lng if fogged" do
         device.switch_fog
-        device.checkins.create(lat: 51.57471, lng: -0.50626)
+        device.checkins.create(lat: 51.57123, lng: -0.50523)
         get :last, params: geocode_params
-        expect(res_hash.first['address']).to eq 'Denham'
-        expect(res_hash.first['lat']).to eq(51.57471)
-        expect(res_hash.first['lng']).to eq(-0.50626)
-        expect(res_hash.first.keys).not_to include(*private_and_foggable_checkin_attributes)
+        expect(res_hash.first['city']).to eq 'Denham'
+        expect(res_hash.first['lat']).not_to eq(51.57123)
+        expect(res_hash.first['lng']).not_to eq(-0.50523)
+        expect(res_hash.first.keys).not_to include(*private_checkin_attributes)
       end
 
       it 'should bypass fogging if bypass_fogging is true' do
