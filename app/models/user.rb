@@ -67,6 +67,11 @@ class User < ApplicationRecord
     end
   end
 
+  def not_coposition_developers
+    copo_keys = [Rails.application.secrets['coposition_api_key'], Rails.application.secrets['mobile_app_api_key']]
+    developers.where.not(api_key: copo_keys)
+  end
+
   ## Devices
 
   def approve_devices(permissible)
@@ -81,8 +86,14 @@ class User < ApplicationRecord
 
   ## Checkins
 
+  # returns sanitized + filtered checkins without pagination info if device present
   def safe_checkin_info(args)
     args[:device] ? args[:device].safe_checkin_info_for(args) : safe_checkin_info_for(args)
+  end
+
+  # returns filtered checkins with pagination info, but not sanitized if device present
+  def filtered_checkins(args)
+    args[:device] ? args[:device].filtered_checkins(args) : safe_checkin_info_for(args)
   end
 
   def safe_checkin_info_for(args)

@@ -18,7 +18,9 @@ module Users
 
     def devices_index
       @device = Device.find(@params[:device_id])
-      @permissions = @device.permissions.includes(:permissible).order(:permissible_type, :id)
+      @permissions = @device.permissions.includes(:permissible)
+                            .order(:permissible_type, :permissible_id).not_coposition_developers.reverse
+      @permissions
     end
 
     def approvals_index(from)
@@ -46,7 +48,7 @@ module Users
     def devices_gon
       {
         checkins: devices_index_checkins,
-        permissions: @devices.map(&:permissions).inject(:+),
+        permissions: @devices.map { |device| device.permissions.not_coposition_developers }.inject(:+),
         current_user_id: @user.id,
         devices: @user.devices
       }
@@ -56,7 +58,7 @@ module Users
       {
         permissions: approvals_permissions('Developer'),
         current_user_id: @user.id,
-        approved: @user.developers.public_info
+        approved: @user.not_coposition_developers.public_info
       }
     end
 
@@ -77,7 +79,8 @@ module Users
     end
 
     def approvals_permissions(type)
-      @devices.map { |device| device.permissions.where(permissible_type: type) }.inject(:+)
+      @devices.map { |device| device.permissions.where(permissible_type: type).not_coposition_developers }
+              .inject(:+)
     end
   end
 end

@@ -25,11 +25,25 @@ class Device < ApplicationRecord
   end
 
   def safe_checkin_info_for(args)
+    sanitized = filtered_checkins(args)
+    sanitize_checkins(sanitized, args)
+  end
+
+  def filtered_checkins(args)
     sanitized = args[:copo_app] ? checkins : permitted_history_for(args[:permissible])
-    sanitized = sanitized.limit_returned_checkins(args)
-    sanitized = sanitized.map(&:reverse_geocode!) if args[:type] == 'address'
-    # if only one checkin in relation geocoding would turn into array so needs to be converted back sometimes
-    sanitized = checkins.where(id: sanitized[0].id) if sanitized.class.to_s == 'Array'
+    sanitized.since_time(args[:time_amount], args[:time_unit])
+             .near_to(args[:near])
+             .on_date(args[:date])
+             .unique_places_only(args[:unique_places])
+             .limit_returned_checkins(args)
+  end
+
+  def sanitize_checkins(sanitized, args)
+    if args[:type] == 'address'
+      sanitized = sanitized.map(&:reverse_geocode!) unless args[:action] == 'index' && args[:multiple_devices]
+      # if only one checkin in relation geocoding would turn into array so needs to be converted back sometimes
+      sanitized = checkins.where(id: sanitized[0].id) if sanitized.class.to_s == 'Array'
+    end
     return sanitized if args[:copo_app]
     replace_checkin_attributes(args[:permissible], sanitized)
   end

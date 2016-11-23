@@ -186,6 +186,49 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         expect(res_hash.first['address']).to match 'The Pilot Centre'
       end
     end
+
+    context 'with near param' do
+      it 'should return checkins near the lat lng provided' do
+        get :index, params: params.merge(near: '51.5,-0.5')
+        expect(res_hash.size).to eq 30
+      end
+
+      it 'should not return any checkins if none near' do
+        get :index, params: params.merge(near: '45,-0.5')
+        expect(res_hash.size).to eq 0
+      end
+    end
+
+    context 'with date param' do
+      it 'should return checkins from the date provided' do
+        get :index, params: params.merge(date: Date.today)
+        expect(res_hash.size).to eq 30
+      end
+
+      it 'should not return any checkins if none on date' do
+        get :index, params: params.merge(date: Date.yesterday)
+        expect(res_hash.size).to eq 0
+      end
+    end
+
+    context 'with time scope params' do
+      it 'should return checkins in the time scope provided' do
+        get :index, params: params.merge(time_unit: 'hour', time_amount: 1)
+        expect(res_hash.size).to eq 30
+      end
+
+      it 'should not return any checkins if none in time scope' do
+        get :index, params: params.merge(time_unit: 'second', time_amount: 0)
+        expect(res_hash.size).to eq 0
+      end
+    end
+
+    context 'with unique places param' do
+      it 'should return only unique fogged area checkins' do
+        get :index, params: params.merge(unique_places: true)
+        expect(res_hash.size).to eq 1
+      end
+    end
   end
 
   describe 'POST #create' do

@@ -45,8 +45,19 @@
 
     <%= link_to(fogged_icon(device.fogged), user_device_path(current_user.url_id, device.id), { method: :put, id:"fogButton#{device.id}", remote: true, class: 'left tooltipped fogButton', data: { confirm: "Are you sure? Turning fogging off will allow you friends/apps to see your precise location", fogged: device.fogged?, tooltip:'Fogging' } })%>
 
-    <a class="left tooltipped" data-tooltip="Download checkins (.csv)" href="<%= user_device_path(current_user.url_id, device) %>.csv?download=true"><i class="material-icons">file_download</i></a>
-
+    <a class="modal-trigger left tooltipped" id='downloadButton<%=device.id%>' data-tooltip='Download checkins' href="#download<%=device.id%>"><i class="material-icons">file_download</i></a>
+    <div id="download<%=device.id%>" class="modal download-modal">
+      <div class="modal-content">
+        <h4 class='center-align'>Choose download format</h4>
+        <div class='center-align'>
+          <label>Download all the check-ins on this device in one of the following formats:</label></br></br>
+          <a class="btn" href="<%= user_device_path(current_user.url_id, device) %>.csv?download=csv">csv</a></br></br>
+          <a class="btn" href="<%= user_device_path(current_user.url_id, device) %>.gpx?download=gpx">gpx (route)</a></br></br>
+          <a class="btn" href="<%= user_device_path(current_user.url_id, device) %>.geojson?download=geojson">geojson</a>
+        </div>
+      </div>
+    </div>
+    
     <%= link_to(devices_shared_icon(device), user_device_path(current_user.url_id, device.id, published: device.published), { method: :put, id:"publishedButton#{device.id}", remote: true, class: 'left tooltipped', data: { published: device.published?, tooltip:'Device sharing' } })%>
     <div class="valign-wrapper" id="sharedLink<%= device.id %>">
       <%= devices_shared_link(device) if device.published %>

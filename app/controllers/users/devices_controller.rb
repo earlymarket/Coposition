@@ -1,5 +1,5 @@
 class Users::DevicesController < ApplicationController
-  before_action :authenticate_user!, except: :shared
+  before_action :authenticate_user!, :correct_url_user?, except: :shared
   before_action :published?, only: :shared
   before_action :require_ownership, only: [:show, :destroy, :update]
 
@@ -13,7 +13,7 @@ class Users::DevicesController < ApplicationController
     gon.push(@presenter.show_gon)
     respond_to do |format|
       format.html { flash[:notice] = 'Right click on the map to check-in' }
-      format.csv { send_data @presenter.checkins, filename: @presenter.filename }
+      format.any(:csv, :gpx, :geojson) { send_data @presenter.checkins, filename: @presenter.filename }
     end
   end
 
