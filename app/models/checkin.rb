@@ -45,25 +45,6 @@ class Checkin < ApplicationRecord
     end
   end
 
-  def replace_foggable_attributes
-    if device.fogged? || fogged?
-      fogged_checkin = Checkin.new(attributes.delete_if { |key, _v| key =~ /city|postal/ })
-      fogged_checkin.assign_attributes(address: fogged_city, lat: fogged_lat, lng: fogged_lng)
-      return fogged_checkin
-    end
-    self
-  end
-
-  def self.replace_foggable_attributes
-    # this will convert it to an array, paginate before use!
-    all.map(&:replace_foggable_attributes)
-  end
-
-  def public_info
-    assign_attributes(address: fogged_city) if address == 'Not yet geocoded'
-    attributes.delete_if { |key, value| key =~ /fogged|uuid/ || value.nil? }
-  end
-
   def reverse_geocode!
     unless reverse_geocoded?
       reverse_geocode

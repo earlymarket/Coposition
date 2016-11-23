@@ -28,6 +28,7 @@ class Device < ApplicationRecord
     sanitized = args[:copo_app] ? checkins : permitted_history_for(args[:permissible])
     sanitized = sanitized.limit_returned_checkins(args)
     sanitized = sanitized.map(&:reverse_geocode!) if args[:type] == 'address'
+    # if only one checkin in relation geocoding would turn into array so needs to be converted back sometimes
     sanitized = checkins.where(id: sanitized[0].id) if sanitized.class.to_s == 'Array'
     return sanitized if args[:copo_app]
     replace_checkin_attributes(args[:permissible], sanitized)
