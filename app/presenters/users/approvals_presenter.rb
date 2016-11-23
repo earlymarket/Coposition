@@ -42,7 +42,7 @@ module Users
         friends.map do |friend|
           {
             userinfo: friend.public_info_hash,
-            lastCheckin: friend.safe_checkin_info(permissible: @user, action: 'last')[0]
+            lastCheckin: friend.safe_checkin_info_for(permissible: @user, action: 'last')[0]
           }
         end
       end
