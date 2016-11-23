@@ -97,7 +97,6 @@ class Checkin < ApplicationRecord
       fogged_city: nearest_city.name,
       fogged_country_code: nearest_city.country_code
     })
-    update({address: fogged_city}) if address == 'Not yet geocoded'
   end
 
   def self.hash_group_and_count_by(attribute)
