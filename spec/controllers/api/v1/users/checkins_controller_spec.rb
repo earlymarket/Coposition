@@ -233,13 +233,5 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       expect(response.status).to eq(422)
       expect(res_hash[:error]).to eq('Checkins not created')
     end
-
-    it 'should return 422 if you POST a checkin with extra params' do
-      create_headers
-      post :batch_create, body: [lat_lng.merge(fogged_area: 'London'), lat_lng, lat_lng].to_json,
-                          format: :json
-      expect(res_hash[:error]).to eq('Checkins not created')
-      expect(response.status).to eq(422)
-    end
   end
 end
