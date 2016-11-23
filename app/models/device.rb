@@ -28,9 +28,21 @@ class Device < ApplicationRecord
     sanitized = args[:copo_app] ? checkins : permitted_history_for(args[:permissible])
     sanitized = sanitized.limit_returned_checkins(args)
     sanitized = sanitized.map(&:reverse_geocode!) if args[:type] == 'address'
+    sanitized = checkins.where(id: sanitized[0].id) if sanitized.class.to_s == 'Array'
     return sanitized if args[:copo_app]
-    sanitized = sanitized.map(&:replace_foggable_attributes) unless can_bypass_fogging?(args[:permissible])
-    sanitized.map(&:public_info)
+    sanitized = replace_checkin_attributes(args[:permissible], sanitized)
+    #sanitized.map(&:public_info)
+  end
+
+  def replace_checkin_attributes(permissible, sanitized)
+    if can_bypass_fogging?(permissible)
+      sanitized.select(:id, :created_at, :updated_at, :device_id, :lat, :lng, :address, :city, :postal_code, :country_code)
+    else
+      sanitized = sanitized.select(:id, :created_at, :updated_at, :device_id, :output_lat, :output_lng, :output_address, :output_city, :output_postal_code, :output_country_code)
+      sanitized.map do |checkin|
+        checkin.attributes.transform_keys {|k| k.sub(/output_/, '') }
+      end
+    end
   end
 
   def permitted_history_for(permissible)
@@ -41,7 +53,7 @@ class Device < ApplicationRecord
     return Checkin.none if privilege_for(permissible) == 'disallowed'
     return unresolved_checkins if unresolved_checkins.empty?
     if privilege_for(permissible) == 'last_only'
-      Checkin.where(id: unresolved_checkins.first.id)
+      unresolved_checkins.limit(1)
     else
       unresolved_checkins
     end

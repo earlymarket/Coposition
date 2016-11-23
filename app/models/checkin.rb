@@ -35,6 +35,16 @@ class Checkin < ApplicationRecord
     end
   end
 
+  def limit_returned_checkins(args)
+    if args[:action] == 'index' && args[:multiple_devices]
+      limit(args[:per_page])
+    elsif args[:action] == 'index' && !args[:multiple_devices]
+      paginate(page: args[:page], per_page: args[:per_page])
+    else
+      limit(1)
+    end
+  end
+
   def self.limit_returned_checkins(args)
     if args[:action] == 'index' && args[:multiple_devices]
       limit(args[:per_page])
@@ -87,6 +97,7 @@ class Checkin < ApplicationRecord
       fogged_city: nearest_city.name,
       fogged_country_code: nearest_city.country_code
     })
+    update({address: fogged_city}) if address == 'Not yet geocoded'
   end
 
   def self.hash_group_and_count_by(attribute)
