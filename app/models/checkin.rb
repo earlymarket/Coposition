@@ -97,6 +97,7 @@ class Checkin < ApplicationRecord
 
   def switch_fog
     update(fogged: !fogged)
+    return if device.fogged
     fogged ? set_output_to_fogged : set_output_to_unfogged
   end
 
