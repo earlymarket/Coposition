@@ -59,7 +59,7 @@ module Users
       friends.map do |friend|
         {
           userinfo: friend.public_info_hash,
-          lastCheckin: friend.get_user_checkins_for(@user).limit(1).first
+          lastCheckin: friend.safe_checkin_info(permissible: @user, action: 'last')[0]
         }
       end
     end

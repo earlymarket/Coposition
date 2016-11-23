@@ -1,5 +1,5 @@
 class Device < ApplicationRecord
-  include SlackNotifiable, SwitchFogging, HumanizeMinutes, RemoveId
+  include SlackNotifiable, HumanizeMinutes, RemoveId
 
   belongs_to :user
   has_one :config, dependent: :destroy
@@ -89,6 +89,15 @@ class Device < ApplicationRecord
 
   def update_delay(mins)
     mins.to_i.zero? ? update(delayed: nil) : update(delayed: mins)
+  end
+
+  def switch_fog
+    update(fogged: !fogged)
+    Checkin.transaction do
+      unfogged = checkins.where(fogged: false)
+      fogged ? unfogged.each(&:set_output_to_fogged) : unfogged.each(&:set_output_to_unfogged)
+    end
+    fogged
   end
 
   def humanize_delay

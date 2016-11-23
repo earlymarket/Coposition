@@ -148,12 +148,16 @@ window.COPO.maps = {
   },
 
   buildMarkerPopup(checkin) {
+    let address = checkin.city;
+    if(checkin.address){
+      address = COPO.utility.commaToNewline(checkin.address)
+    }
     var checkinTemp = {
       id: checkin.id,
       lat: checkin.lat.toFixed(6),
       lng: checkin.lng.toFixed(6),
       created_at: (new Date(checkin.created_at)).toUTCString(),
-      address: checkin.address,
+      address: address,
     };
 
     var foggedClass;
@@ -305,7 +309,10 @@ window.COPO.maps = {
     let user    = marker.options.user;
     let name    = COPO.utility.friendsName(user);
     let date    = moment(marker.options.lastCheckin.created_at).fromNow();
-    let address = COPO.utility.commaToNewline(marker.options.lastCheckin.address) || marker.options.lastCheckin.fogged_city;
+    let address = marker.options.lastCheckin.city;
+    if(marker.options.lastCheckin.address){
+      address = COPO.utility.commaToNewline(marker.options.lastCheckin.address)
+    }
     let content = `
     <h2>${ name } <a href="./friends/${user.slug}" title="Device info">
       <i class="material-icons tiny">perm_device_information</i>

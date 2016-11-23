@@ -1,5 +1,4 @@
 class Checkin < ApplicationRecord
-  include SwitchFogging
   validates :lat, presence: :true
   validates :lng, presence: :true
   belongs_to :device
@@ -113,6 +112,11 @@ class Checkin < ApplicationRecord
         csv << checkin.attributes.values_at(*attributes)
       end
     end
+  end
+
+  def switch_fog
+    update(fogged: !fogged)
+    fogged ? set_output_to_fogged : set_output_to_unfogged
   end
 
   def set_output_to_fogged
