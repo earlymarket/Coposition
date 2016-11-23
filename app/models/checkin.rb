@@ -66,6 +66,7 @@ class Checkin < ApplicationRecord
       fogged_lat: nearest_city.latitude || lat + rand(-0.5..0.5),
       fogged_lng: nearest_city.longitude || lng + rand(-0.5..0.5),
       fogged_city: nearest_city.name,
+      country_code: nearest_city.country_code,
       fogged_country_code: nearest_city.country_code
     )
   end
