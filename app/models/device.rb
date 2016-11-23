@@ -30,17 +30,18 @@ class Device < ApplicationRecord
     sanitized = sanitized.map(&:reverse_geocode!) if args[:type] == 'address'
     sanitized = checkins.where(id: sanitized[0].id) if sanitized.class.to_s == 'Array'
     return sanitized if args[:copo_app]
-    sanitized = replace_checkin_attributes(args[:permissible], sanitized)
-    #sanitized.map(&:public_info)
+    replace_checkin_attributes(args[:permissible], sanitized)
   end
 
   def replace_checkin_attributes(permissible, sanitized)
     if can_bypass_fogging?(permissible)
-      sanitized.select(:id, :created_at, :updated_at, :device_id, :lat, :lng, :address, :city, :postal_code, :country_code)
+      sanitized.select(:id, :created_at, :updated_at, :device_id, :lat,
+                       :lng, :address, :city, :postal_code, :country_code)
     else
-      sanitized = sanitized.select(:id, :created_at, :updated_at, :device_id, :output_lat, :output_lng, :output_address, :output_city, :output_postal_code, :output_country_code)
+      sanitized = sanitized.select(:id, :created_at, :updated_at, :device_id, :output_lat, :output_lng,
+                                   :output_address, :output_city, :output_postal_code, :output_country_code)
       sanitized.map do |checkin|
-        checkin.attributes.transform_keys {|k| k.sub(/output_/, '') }
+        checkin.attributes.transform_keys { |k| k.sub(/output_/, '') }
       end
     end
   end
