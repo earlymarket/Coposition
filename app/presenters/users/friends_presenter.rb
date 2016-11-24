@@ -30,7 +30,7 @@ module Users
       checkins = device_checkins
       {
         checkins: checkins.paginate(page: 1, per_page: 1000),
-        total: checkins.count
+        total: checkins.size
       }
     end
 
@@ -53,8 +53,7 @@ module Users
     def device_checkins
       device = @friend.devices.find(@params[:device_id])
       checkins = @friend.get_checkins(@user, device)
-      checkins = checkins.replace_foggable_attributes unless device.can_bypass_fogging?(@user)
-      checkins.map(&:public_info)
+      device.replace_checkin_attributes(@user, checkins)
     end
   end
 end

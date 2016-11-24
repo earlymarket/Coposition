@@ -75,12 +75,15 @@ module Users
     end
 
     def gon_shared_checkin
-      @checkin.reverse_geocode!.replace_foggable_attributes.public_info if @checkin
+      Checkin.where(id: @checkin.id)
+             .select('id', 'created_at', 'updated_at', 'device_id', 'output_lat AS lat', 'output_lng AS lng',
+                     'output_address AS address', 'output_city AS city', 'output_postal_code AS postal_code',
+                     'output_country_code AS country_code')[0]
     end
 
     def show_checkins
       @device.checkins.paginate(page: 1, per_page: 1000)
-             .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_area)
+             .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city)
     end
   end
 end

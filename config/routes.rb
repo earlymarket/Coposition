@@ -28,7 +28,11 @@ Rails.application.routes.draw do
       resources :subscriptions, only: [:create, :destroy]
       resources :configs, only: [:index, :show, :update]
       resource :uuid, only: [:show]
-      resources :checkins, only: [:create]
+      resources :checkins, only: [:create] do
+        collection do
+          post :batch_create
+        end
+      end
       resources :developers, only: [:index, :show]
       resources :demo do
         collection do
