@@ -6,8 +6,10 @@ module CheckinsSpecHelpers
   end
 
   def update_permissions(priv, delay)
-    device.permission_for(developer).update! privilege: priv
-    device.permission_for(developer).update! bypass_delay: delay
+    Device.all.each do |device|
+      device.permission_for(developer).update! privilege: priv
+      device.permission_for(developer).update! bypass_delay: delay
+    end
   end
 
   def check_response_hash(number, checkin)
