@@ -67,13 +67,13 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
       it 'should fetch the last reported location (public attributes only)' do
         get :last, params: params
-        expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
+        expect(res_hash.first['lat']).to be checkin.lat
         expect(res_hash.first.keys).not_to include(*private_checkin_attributes)
       end
 
       it 'should fetch the last reported location for a friend' do
         get :last, params: params.merge(permissible_id: second_user.id)
-        expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
+        expect(res_hash.first['lat']).to be checkin.lat
       end
 
       it "should fetch the last reported location's address in full by default" do
@@ -100,6 +100,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         Permission.last.update(bypass_fogging: true)
         get :last, params: geocode_params
         expect(res_hash.first['address']).to eq address
+        expect(res_hash.first['lat']).to eq(51.57471)
         expect((foggable_checkin_attributes - res_hash.first.keys).empty?).to be true
       end
     end
@@ -109,7 +110,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         device.switch_fog
         checkin
         get :last, params: { user_id: user.id }
-        expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
+        expect(res_hash.first['lat']).to be checkin.lat
       end
     end
 
@@ -125,6 +126,11 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       it 'should geocode last checkin if type param provided' do
         get :last, params: geocode_params
         expect(res_hash.first['city']).to eq 'Denham'
+      end
+
+      it 'should ignore fogging by default' do
+        get :last, params: params
+        expect(res_hash.first['lat']).to eq checkin.lat
       end
     end
   end
@@ -184,6 +190,11 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       it 'should geocode all checkins with type address' do
         get :index, params: geocode_params
         expect(res_hash.first['address']).to match 'The Pilot Centre'
+      end
+
+      it 'should ignore fogging by default' do
+        get :index, params: params
+        expect(res_hash.first['lng']).to be checkin.lng
       end
     end
 

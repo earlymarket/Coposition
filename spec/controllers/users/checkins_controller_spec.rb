@@ -54,12 +54,17 @@ RSpec.describe Users::CheckinsController, type: :controller do
 
   describe 'PUT #update' do
     it 'should switch fogging' do
+      device.update(fogged: false)
       checkin.update(fogged: false)
       request.accept = 'text/javascript'
       put :update, params: params
-      expect(Checkin.find(checkin.id).fogged).to be true
+      checkin.reload
+      expect(checkin.fogged).to be true
+      expect(checkin.output_lat).to be checkin.fogged_lat
       put :update, params: params
-      expect(Checkin.find(checkin.id).fogged).to be false
+      checkin.reload
+      expect(checkin.fogged).to be false
+      expect(checkin.output_lat).to be checkin.lat
     end
   end
 
