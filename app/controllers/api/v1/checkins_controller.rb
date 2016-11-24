@@ -1,9 +1,9 @@
 class Api::V1::CheckinsController < Api::ApiController
   respond_to :json
 
-  skip_before_action :find_user, only: :create
-  before_action :device_exists?, only: :create
-  before_action :check_user_approved_approvable, :find_device, except: :create
+  skip_before_action :find_user, only: [:create, :batch_create]
+  before_action :device_exists?, only: [:create, :batch_create]
+  before_action :check_user_approved_approvable, :find_device, except: [:create, :batch_create]
 
   def index
     per_page = params[:per_page].to_i <= 1000 ? params[:per_page] : 1000
@@ -52,6 +52,15 @@ class Api::V1::CheckinsController < Api::ApiController
       render json: { data: [checkin], config: config }
     else
       render status: 400, json: { error: 'You must provide a lat and lng' }
+    end
+  end
+
+  def batch_create
+    success = @device.checkins.batch_create(request.raw_post)
+    if success
+      render json: { message: 'Checkins created' }, status: 200
+    else
+      render json: { error: 'Checkins not created' }, status: 422
     end
   end
 
