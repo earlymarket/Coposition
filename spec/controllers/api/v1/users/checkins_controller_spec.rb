@@ -20,8 +20,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
   let(:geocode_params) { params.merge(type: 'address') }
   let(:create_params) { { checkin: { lat: Faker::Address.latitude, lng: Faker::Address.longitude } } }
   let(:foggable_checkin_attributes) { %w(city postal_code) }
-  let(:private_checkin_attributes) { %w(uuid fogged fogged_lat fogged_lng fogged_area) }
-  let(:private_and_foggable_checkin_attributes) { private_checkin_attributes + foggable_checkin_attributes }
+  let(:private_checkin_attributes) { %w(uuid fogged fogged_lat fogged_lng fogged_city) }
 
   before do |example|
     create_denhams
@@ -68,13 +67,13 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
       it 'should fetch the last reported location (public attributes only)' do
         get :last, params: params
-        expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
+        expect(res_hash.first['lat']).to be checkin.lat
         expect(res_hash.first.keys).not_to include(*private_checkin_attributes)
       end
 
       it 'should fetch the last reported location for a friend' do
         get :last, params: params.merge(permissible_id: second_user.id)
-        expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
+        expect(res_hash.first['lat']).to be checkin.lat
       end
 
       it "should fetch the last reported location's address in full by default" do
@@ -84,14 +83,14 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         expect(res_hash.first['lng']).to eq checkin.lng
       end
 
-      it "should fog the last reported location's address if fogged" do
+      it "should fog the last reported location's address and lat/lng if fogged" do
         device.switch_fog
-        device.checkins.create(lat: 51.57471, lng: -0.50626)
+        device.checkins.create(lat: 51.57123, lng: -0.50523)
         get :last, params: geocode_params
-        expect(res_hash.first['address']).to eq 'Denham'
-        expect(res_hash.first['lat']).to eq(51.57471)
-        expect(res_hash.first['lng']).to eq(-0.50626)
-        expect(res_hash.first.keys).not_to include(*private_and_foggable_checkin_attributes)
+        expect(res_hash.first['city']).to eq 'Denham'
+        expect(res_hash.first['lat']).not_to eq(51.57123)
+        expect(res_hash.first['lng']).not_to eq(-0.50523)
+        expect(res_hash.first.keys).not_to include(*private_checkin_attributes)
       end
 
       it 'should bypass fogging if bypass_fogging is true' do
@@ -101,6 +100,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         Permission.last.update(bypass_fogging: true)
         get :last, params: geocode_params
         expect(res_hash.first['address']).to eq address
+        expect(res_hash.first['lat']).to eq(51.57471)
         expect((foggable_checkin_attributes - res_hash.first.keys).empty?).to be true
       end
     end
@@ -110,7 +110,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         device.switch_fog
         checkin
         get :last, params: { user_id: user.id }
-        expect(res_hash.first['lat']).to be_within(0.00001).of(checkin.lat)
+        expect(res_hash.first['lat']).to be checkin.lat
       end
     end
 
@@ -126,6 +126,11 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       it 'should geocode last checkin if type param provided' do
         get :last, params: geocode_params
         expect(res_hash.first['city']).to eq 'Denham'
+      end
+
+      it 'should ignore fogging by default' do
+        get :last, params: params
+        expect(res_hash.first['lat']).to eq checkin.lat
       end
     end
   end
@@ -160,6 +165,14 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         expect(response.header['X-Next-Page']).to eq 'null'
       end
 
+      it 'should fetch the right amount of checkins with per page provided' do
+        page = 4
+        get :index, params: params.merge(page: page, per_page: 5)
+        expect(res_hash.size).to eq 5
+        expect(response.header['X-Next-Page']).to eq '5'
+        expect(response.header['X-Current-Page']).to eq page.to_s
+      end
+
       it 'should not get any checkins if page does not exist' do
         get :index, params: params.merge(page: 3)
         expect(response.body).to eq '[]'
@@ -186,11 +199,17 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         get :index, params: geocode_params
         expect(res_hash.first['address']).to match 'The Pilot Centre'
       end
+
+      it 'should ignore fogging by default' do
+        get :index, params: params
+        expect(res_hash.first['lng']).to be checkin.lng
+      end
     end
 
     context 'with near param' do
       it 'should return checkins near the lat lng provided' do
         get :index, params: params.merge(near: '51.5,-0.5')
+        expect(res_hash.all? { |checkin| 51.5 - Checkin.find(checkin['id']).lat < 0.5 }).to be true
         expect(res_hash.size).to eq 30
       end
 
@@ -202,7 +221,9 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
     context 'with date param' do
       it 'should return checkins from the date provided' do
-        get :index, params: params.merge(date: Date.today)
+        date = Date.today
+        get :index, params: params.merge(date: date)
+        expect(res_hash.all? { |checkin| Date.parse(checkin['created_at']) == date }).to be true
         expect(res_hash.size).to eq 30
       end
 
@@ -214,7 +235,9 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
     context 'with time scope params' do
       it 'should return checkins in the time scope provided' do
+        now = Time.now
         get :index, params: params.merge(time_unit: 'hour', time_amount: 1)
+        expect(res_hash.all? { |checkin| now - Time.parse(checkin['created_at']) < now - 1.hour.ago }).to be true
         expect(res_hash.size).to eq 30
       end
 
