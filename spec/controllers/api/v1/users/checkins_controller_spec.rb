@@ -165,6 +165,14 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         expect(response.header['X-Next-Page']).to eq 'null'
       end
 
+      it 'should fetch the right amount of checkins with per page provided' do
+        page = 4
+        get :index, params: params.merge(page: page, per_page: 5)
+        expect(res_hash.size).to eq 5
+        expect(response.header['X-Next-Page']).to eq '5'
+        expect(response.header['X-Current-Page']).to eq page.to_s
+      end
+
       it 'should not get any checkins if page does not exist' do
         get :index, params: params.merge(page: 3)
         expect(response.body).to eq '[]'
