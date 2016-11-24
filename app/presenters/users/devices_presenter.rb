@@ -75,10 +75,10 @@ module Users
     end
 
     def gon_shared_checkin
-      checkin = Checkin.where(id: @checkin.id)
-                       .select(:id, :created_at, :updated_at, :device_id, :output_lat, :output_lng, :output_address,
-                               :output_city, :output_postal_code, :output_country_code)[0]
-      checkin.attributes.transform_keys { |k| k.sub(/output_/, '') }
+      Checkin.where(id: @checkin.id)
+             .select('id', 'created_at', 'updated_at', 'device_id', 'output_lat AS lat', 'output_lng AS lng',
+                     'output_address AS address', 'output_city AS city', 'output_postal_code AS postal_code',
+                     'output_country_code AS country_code')[0]
     end
 
     def show_checkins
