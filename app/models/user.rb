@@ -98,6 +98,7 @@ class User < ApplicationRecord
 
   def safe_checkin_info_for(args)
     args[:multiple_devices] = true
+    # sort_by slows this query down A LOT
     safe_checkins = devices.flat_map { |device| device.safe_checkin_info_for(args) }
                            .sort_by  { |key| key['created_at'] }.reverse
     if args[:action] == 'index'
