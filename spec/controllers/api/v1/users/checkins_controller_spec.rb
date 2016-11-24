@@ -201,6 +201,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     context 'with near param' do
       it 'should return checkins near the lat lng provided' do
         get :index, params: params.merge(near: '51.5,-0.5')
+        expect(res_hash.all? { |checkin| 51.5 - Checkin.find(checkin['id']).lat < 0.5 }).to be true
         expect(res_hash.size).to eq 30
       end
 
@@ -212,7 +213,9 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
     context 'with date param' do
       it 'should return checkins from the date provided' do
-        get :index, params: params.merge(date: Date.today)
+        date = Date.today
+        get :index, params: params.merge(date: date)
+        expect(res_hash.all? { |checkin| Date.parse(checkin['created_at']) == date }).to be true
         expect(res_hash.size).to eq 30
       end
 
@@ -224,7 +227,9 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
     context 'with time scope params' do
       it 'should return checkins in the time scope provided' do
+        now = Time.now
         get :index, params: params.merge(time_unit: 'hour', time_amount: 1)
+        expect(res_hash.all? { |checkin| now - Time.parse(checkin['created_at']) < now - 1.hour.ago }).to be true
         expect(res_hash.size).to eq 30
       end
 
