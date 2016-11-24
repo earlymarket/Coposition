@@ -25,8 +25,9 @@ namespace :checkins do
       args[:count].to_i.times do
         city = City.offset(rand(City.count)).first
         coords = Geocoder::Calculations.random_point_near(city, 20)
+        time = rand(0..1000).hour.ago
         device = selected_device || Device.all.sample
-        device.checkins.create(lat: coords[0], lng: coords[1])
+        device.checkins.create(lat: coords[0], lng: coords[1], created_at: time)
         i += 1
         print "\rCreated #{i} checkins.".ljust(25)
         print "Current city: #{city.name}".ljust(60)

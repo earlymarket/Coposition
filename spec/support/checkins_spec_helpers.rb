@@ -1,15 +1,12 @@
 module CheckinsSpecHelpers
-  def call_checkin_action(method, priv, delay, number, checkin)
-    update_permissions(priv, delay)
+  def call_checkin_action(method, number, checkin)
     get method.to_sym, params: params
     check_response_hash(number, checkin)
   end
 
-  def update_permissions(priv, delay)
-    Device.all.each do |device|
-      device.permission_for(developer).update! privilege: priv
-      device.permission_for(developer).update! bypass_delay: delay
-    end
+  def update_permissions(device, priv, delay)
+    device.permission_for(developer).update! privilege: priv
+    device.permission_for(developer).update! bypass_delay: delay
   end
 
   def check_response_hash(number, checkin)
