@@ -42679,19 +42679,23 @@ window.COPO.maps = {
   },
 
   buildMarkerPopup: function buildMarkerPopup(checkin) {
+    var address = checkin.city;
+    if (checkin.address) {
+      address = COPO.utility.commaToNewline(checkin.address);
+    }
     var checkinTemp = {
       id: checkin.id,
       lat: checkin.lat.toFixed(6),
       lng: checkin.lng.toFixed(6),
       created_at: new Date(checkin.created_at).toUTCString(),
-      address: checkin.address
+      address: address
     };
 
     var foggedClass;
     checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
     checkinTemp.foggedAddress = function () {
       if (checkin.fogged) {
-        return '<li class="foggedAddress">Fogged address: ' + checkin.fogged_area + '</li>';
+        return '<li class="foggedAddress">Fogged address: ' + checkin.fogged_city + '</li>';
       }
     };
     checkinTemp.devicebutton = function () {
@@ -42841,7 +42845,10 @@ window.COPO.maps = {
     var user = marker.options.user;
     var name = COPO.utility.friendsName(user);
     var date = moment(marker.options.lastCheckin.created_at).fromNow();
-    var address = COPO.utility.commaToNewline(marker.options.lastCheckin.address) || marker.options.lastCheckin.fogged_area;
+    var address = marker.options.lastCheckin.city;
+    if (marker.options.lastCheckin.address) {
+      address = COPO.utility.commaToNewline(marker.options.lastCheckin.address);
+    }
     var content = '\n    <h2>' + name + ' <a href="./friends/' + user.slug + '" title="Device info">\n      <i class="material-icons tiny">perm_device_information</i>\n      </a></h2>\n    <div class="address">' + address + '</div>\n    Checked in: ' + date;
     marker.bindPopup(content, { offset: [0, -38] });
   },
