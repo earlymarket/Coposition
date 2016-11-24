@@ -53,11 +53,9 @@ class Device < ApplicationRecord
       sanitized.select(:id, :created_at, :updated_at, :device_id, :lat,
                        :lng, :address, :city, :postal_code, :country_code)
     else
-      sanitized = sanitized.select(:id, :created_at, :updated_at, :device_id, :output_lat, :output_lng,
-                                   :output_address, :output_city, :output_postal_code, :output_country_code)
-      sanitized.map do |checkin|
-        checkin.attributes.transform_keys { |k| k.sub(/output_/, '') }
-      end
+      sanitized.select('id', 'created_at', 'updated_at', 'device_id', 'output_lat AS lat', 'output_lng AS lng',
+                       'output_address AS address', 'output_city AS city', 'output_postal_code AS postal_code',
+                       'output_country_code AS country_code')
     end
   end
 
@@ -138,8 +136,6 @@ class Device < ApplicationRecord
     Subscription.where(event: 'friend_new_checkin').where(subscriber_id: user.friends).each do |sub|
       checkin = safe_checkin_info_for(permissible: sub.subscriber, type: 'address', action: 'last').first
       next unless checkin && checkin['id'] == data['id'] && user.changed_location?
-      checkin.merge!(public_info.remove_id.as_json)
-      checkin.merge!(user.public_info.remove_id.as_json)
       sub.send_data([checkin])
     end
   end
