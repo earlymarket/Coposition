@@ -31,16 +31,16 @@ module Users
 
     def show_device_gon
       checkins = device_checkins
-      per_page = checkins.size < 1000 ? checkins.size : 1000
       {
-        checkins: checkins.paginate(page: 1, per_page: per_page),
+        checkins: checkins.length > 1 ? checkins.paginate(page: 1, per_page: 1000) : checkins,
         total: checkins.size
       }
     end
 
     def show_checkins(params)
+      checkins = device_checkins
       {
-        checkins: device_checkins.paginate(page: params[:page], per_page: params[:per_page])
+        checkins: checkins.length > 1 ? checkins.paginate(page: params[:page], per_page: params[:per_page]) : checkins
       }
     end
 

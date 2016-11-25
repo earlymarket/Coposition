@@ -4,12 +4,9 @@ RSpec.describe Users::DevicesController, type: :controller do
   include ControllerMacros
 
   let(:empty_device) { FactoryGirl.create :device }
-  let(:device) do
-    dev = FactoryGirl.create :device
-    dev.checkins << FactoryGirl.create(:checkin, created_at: 1.hour.ago)
-    dev
-  end
-  let(:checkin) { FactoryGirl.create(:checkin, device: device) }
+  let(:device) { FactoryGirl.create :device, delayed: 10 }
+  let(:checkin) { FactoryGirl.create(:checkin, lat: 10.5, lng: 10.5, device: device) }
+  let(:older_checkin) { FactoryGirl.create(:checkin, created_at: 1.hour.ago, device: device) }
   let(:developer) do
     dev = FactoryGirl.create :developer
     dev.configs.create(device: device)
@@ -39,7 +36,7 @@ RSpec.describe Users::DevicesController, type: :controller do
     it 'should assign current_user.devices to @devices' do
       get :index, params: user_param
       expect(assigns(:presenter).devices).to eq(user.devices)
-      expect(assigns(:presenter).devices.first).to eq(user.checkins.first.device)
+      expect(assigns(:presenter).devices.first).to eq(device)
     end
   end
 
@@ -66,7 +63,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       get :show, params: params.merge(format: :csv, download: 'csv')
       expect(response.header['Content-Type']).to include 'text/csv'
       expect(response.body).to include(*checkin.attributes.keys)
-      expect(response.body).to include(checkin.attributes.values[1,10].join(','))
+      expect(response.body).to include(checkin.attributes.values[1, 5].join(','))
     end
 
     it 'should create a GPX file if .gpx appended to url' do
@@ -99,18 +96,20 @@ RSpec.describe Users::DevicesController, type: :controller do
 
     it 'should render page if published and checkin should be fogged' do
       checkin
+      older_checkin
       device.published = true
       get :shared, params: params
       expect(response).to render_template('shared')
-      expect(assigns(:presenter).shared_gon[:checkin]['lat'].round(6)).to eq checkin.fogged_lat.round(6)
+      expect(assigns(:presenter).shared_gon[:checkin]['lat'].round(6)).to eq older_checkin.fogged_lat.round(6)
     end
 
     it 'should render page if published and checkin should be fogged if unfogged' do
       device.published = true
       device.fogged = false
-      checkin.fogged = false
+      checkin
+      older_checkin.fogged = false
       get :shared, params: params
-      expect(assigns(:presenter).shared_gon[:checkin]['lat']).to eq checkin.lat
+      expect(assigns(:presenter).shared_gon[:checkin]['lat']).to eq older_checkin.lat
     end
   end
 
@@ -146,7 +145,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       devices_count = user.devices.count
       checkins_count = Checkin.count
       post :create, params: user_param.merge(
-        location: '51.588330,-0.513069',
+        location: '-0.513069, 51.588330',
         device: { name: 'New Device' },
         create_checkin: true
       )
