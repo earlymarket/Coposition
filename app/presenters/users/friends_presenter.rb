@@ -28,8 +28,9 @@ module Users
 
     def show_device_gon
       checkins = device_checkins
+      per_page = checkins.size < 1000 ? checkins.size : 1000
       {
-        checkins: checkins.paginate(page: 1, per_page: 1000),
+        checkins: checkins.paginate(page: 1, per_page: per_page),
         total: checkins.size
       }
     end
