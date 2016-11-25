@@ -38,9 +38,8 @@ module Users
     end
 
     def show_checkins(params)
-      checkins = device_checkins
       {
-        checkins: checkins.paginate(page: params[:page], per_page: params[:per_page])
+        checkins: device_checkins.paginate(page: params[:page], per_page: params[:per_page])
       }
     end
 
