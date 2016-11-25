@@ -16,7 +16,7 @@ class Checkin < ApplicationRecord
         obj.send("output_#{m}=", results.first.send(m)) if (column_names.include? m.to_s) && !obj.fogged
       end
     else
-      obj.update(address: 'No address available')
+      obj.update(address: 'Not yet geocoded')
     end
   end
 
@@ -48,8 +48,7 @@ class Checkin < ApplicationRecord
     if args[:action] == 'index' && args[:multiple_devices]
       all
     elsif args[:action] == 'index' && !args[:multiple_devices]
-      per_page = all.length > 1 ? args[:per_page] : 1
-      paginate(page: args[:page], per_page: per_page)
+      paginate(page: args[:page], per_page: args[:per_page])
     else
       limit(1)
     end
