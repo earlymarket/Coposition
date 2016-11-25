@@ -49,7 +49,7 @@ RSpec.describe Users::FriendsController, type: :controller do
     end
 
     context 'permission complete, bypass delay true, bypass fogging true' do
-      it 'should render two unfogged checkins' do
+      it 'should render one recent fogged checkin' do
         device.permission_for(user).update! privilege: 'complete', bypass_delay: true, bypass_fogging: true
         get :show, params: params
         expect((assigns :presenter).index_gon[:checkins][0]['lat'].round(6)).to eq checkin.lat.round(6)

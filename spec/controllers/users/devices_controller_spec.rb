@@ -4,12 +4,12 @@ RSpec.describe Users::DevicesController, type: :controller do
   include ControllerMacros
 
   let(:empty_device) { FactoryGirl.create :device }
-  let(:checkin) { FactoryGirl.create(:checkin, created_at: Date.yesterday) }
   let(:device) do
     dev = FactoryGirl.create :device
-    dev.checkins << [checkin, FactoryGirl.create(:checkin)]
+    dev.checkins << FactoryGirl.create(:checkin, created_at: 1.hour.ago)
     dev
   end
+  let(:checkin) { FactoryGirl.create(:checkin, device: device) }
   let(:developer) do
     dev = FactoryGirl.create :developer
     dev.configs.create(device: device)
@@ -62,10 +62,11 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
 
     it 'should create a CSV file if .csv appended to url' do
+      checkin
       get :show, params: params.merge(format: :csv, download: 'csv')
       expect(response.header['Content-Type']).to include 'text/csv'
       expect(response.body).to include(*checkin.attributes.keys)
-      expect(response.body).to include(checkin.attributes.values.join(','))
+      expect(response.body).to include(checkin.attributes.values[1,10].join(','))
     end
 
     it 'should create a GPX file if .gpx appended to url' do
@@ -96,10 +97,20 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(flash[:notice]).to match('not shared')
     end
 
-    it 'should render page if published' do
+    it 'should render page if published and checkin should be fogged' do
+      checkin
       device.published = true
       get :shared, params: params
       expect(response).to render_template('shared')
+      expect(assigns(:presenter).shared_gon[:checkin]['lat'].round(6)).to eq checkin.fogged_lat.round(6)
+    end
+
+    it 'should render page if published and checkin should be fogged if unfogged' do
+      device.published = true
+      device.fogged = false
+      checkin.fogged = false
+      get :shared, params: params
+      expect(assigns(:presenter).shared_gon[:checkin]['lat']).to eq checkin.lat
     end
   end
 
