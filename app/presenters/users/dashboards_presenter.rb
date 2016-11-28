@@ -15,7 +15,7 @@ module Users
       @most_frequent_areas = fogged_city_count.first(5)
       @percent_change = @checkins.percentage_increase('week')
       @weeks_checkins_count = weeks_checkins.count
-      @last_countries_loaded = last_countries
+      # @last_countries_loaded = last_countries
       @most_used = most_used_device
     end
 
@@ -24,13 +24,15 @@ module Users
     end
 
     def last_countries
-      @checkins.unscope(:order).select('distinct(country_code)', 'created_at').order('created_at DESC').first(10)
-               .map do |checkin|
-        {
-          country_code: checkin.country_code,
-          last_visited: checkin.created_at
-        }
-      end
+      # @checkins.select('distinct(country_code)', 'id', 'created_at').sort.reverse.uniq(&:country_code)
+      #          .select { |c| c.country_code != 'No Country' }.first(10)
+      #          .sort_by(&:created_at).reverse
+      #          .map do |checkin|
+      #   {
+      #     country_code: checkin.country_code,
+      #     last_visited: checkin.created_at
+      #   }
+      # end
     end
 
     def gon

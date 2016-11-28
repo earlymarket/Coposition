@@ -101,7 +101,8 @@ class Checkin < ApplicationRecord
   end
 
   def self.unique_places_only(unique_places)
-    return all unless unique_places
+    # doesn't work so making it always return all for now
+    return all # unless unique_places
     checkins = unscope(:order).select('DISTINCT ON (checkins.fogged_city) *')
                               .sort { |checkin, next_checkin| next_checkin['created_at'] <=> checkin['created_at'] }
     all.where(id: checkins.map(&:id))
