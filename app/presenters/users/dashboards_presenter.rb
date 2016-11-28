@@ -24,9 +24,7 @@ module Users
     end
 
     def last_countries
-      @checkins.select('distinct(country_code)', 'id', 'created_at').sort.reverse.uniq(&:country_code)
-               .select { |c| c.country_code != 'No Country' }.first(10)
-               .sort_by(&:created_at).reverse
+      @checkins.unscope(:order).select('distinct(country_code)', 'created_at').order('created_at DESC').first(10)
                .map do |checkin|
         {
           country_code: checkin.country_code,
@@ -55,8 +53,7 @@ module Users
     end
 
     def friends
-      friends = @user.friends.includes(:devices)
-      friends.map do |friend|
+      @user.friends.map do |friend|
         {
           userinfo: friend.public_info_hash,
           lastCheckin: friend.safe_checkin_info_for(permissible: @user, action: 'last')[0]
