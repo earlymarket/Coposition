@@ -4,6 +4,9 @@ module Users
     attr_reader :devices
     attr_reader :device
     attr_reader :show_checkins
+    # for tests, maybe a better way of doing this
+    attr_reader :show_device_gon
+    attr_reader :index_gon
 
     def initialize(user, params, action)
       @user = user
@@ -28,9 +31,8 @@ module Users
 
     def show_device_gon
       checkins = device_checkins
-      per_page = checkins.size < 1000 ? checkins.size : 1000
       {
-        checkins: checkins.paginate(page: 1, per_page: per_page),
+        checkins: checkins.paginate(page: 1, per_page: 1000),
         total: checkins.size
       }
     end

@@ -40,9 +40,7 @@ class Device < ApplicationRecord
 
   def sanitize_checkins(sanitized, args)
     if args[:type] == 'address'
-      sanitized = sanitized.map(&:reverse_geocode!) unless args[:action] == 'index' && args[:multiple_devices]
-      # if only one checkin in relation geocoding would turn into array so needs to be converted back sometimes
-      sanitized = checkins.where(id: sanitized[0].id) if sanitized.class.to_s == 'Array'
+      sanitized.map(&:reverse_geocode!) unless args[:action] == 'index' && args[:multiple_devices]
     end
     return sanitized if args[:copo_app]
     replace_checkin_attributes(args[:permissible], sanitized)
@@ -67,7 +65,7 @@ class Device < ApplicationRecord
     return Checkin.none if privilege_for(permissible) == 'disallowed'
     return unresolved_checkins if unresolved_checkins.empty?
     if privilege_for(permissible) == 'last_only'
-      unresolved_checkins.limit(1)
+      unresolved_checkins.where(id: unresolved_checkins.first.id)
     else
       unresolved_checkins
     end
