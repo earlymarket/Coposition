@@ -42766,10 +42766,10 @@ window.COPO.maps = {
 
   mapPinIcon: function mapPinIcon(public_id, color) {
     // The iconClass is a named Cloudinary transform
-    // At the moment there are only two: 'map-pin' and
-    // 'map-pin-blue'
+    // At the moment there are only three: 'map-pin' and
+    // 'map-pin-blue' and 'map-pin-grey'
     var iconClass;
-    color === 'blue' ? iconClass = 'map-pin-blue' : iconClass = 'map-pin';
+    color ? iconClass = 'map-pin-' + color : iconClass = 'map-pin';
     return L.icon({
       iconUrl: $.cloudinary.url(public_id, { format: 'png', transformation: iconClass }),
       iconSize: [36, 52],
@@ -42786,7 +42786,20 @@ window.COPO.maps = {
     }).filter(function (marker) {
       return marker;
     });
-    return new L.MarkerClusterGroup().addLayers(cluster);
+    return L.markerClusterGroup().addLayers(cluster);
+  },
+
+  friendsCheckinsToCluster: function friendsCheckinsToCluster(markerArr) {
+    var cluster = markerArr.map(function (marker) {
+      var color = undefined;
+      if (moment(marker.lastCheckin['created_at']).isBefore(moment().subtract(1, 'day'))) {
+        color = 'grey';
+      }
+      return COPO.maps.makeMapPin(marker, color);
+    }).filter(function (marker) {
+      return marker;
+    });
+    return L.markerClusterGroup().addLayers(cluster);
   },
 
   makeMapPin: function makeMapPin(user, color, markerOptions) {
@@ -42818,7 +42831,7 @@ window.COPO.maps = {
   },
 
   bindFriendMarkers: function bindFriendMarkers(checkins) {
-    var markers = COPO.maps.arrayToCluster(checkins, COPO.maps.makeMapPin);
+    var markers = COPO.maps.friendsCheckinsToCluster(checkins);
     markers.eachLayer(function (marker) {
       marker.on('click', function (e) {
         COPO.maps.panAndW3w.call(this, e);
@@ -43701,7 +43714,7 @@ $(document).on('page:change', function () {
           if (this.hasFriendsWithCheckins()) {
             caller.slides.push({
               status: this.status,
-              layers: M.bindFriendMarkers(gon.friends, M.makeMapPin),
+              layers: M.bindFriendMarkers(gon.friends),
               bounds: this.bounds()
             });
             caller.hasContent = true;
