@@ -15,8 +15,8 @@ module Users
       @most_frequent_areas = fogged_city_count.first(5)
       @percent_change = @checkins.percentage_increase('week')
       @weeks_checkins_count = weeks_checkins.count
-      @last_countries_loaded = last_countries
       @most_used = most_used_device
+      # @last_countries_loaded = last_countries
     end
 
     def most_used_device
@@ -24,6 +24,7 @@ module Users
     end
 
     def last_countries
+      # doesn't work currently, returns wrong countries.
       @checkins.select('distinct(country_code)', 'id', 'created_at').sort.reverse.uniq(&:country_code)
                .select { |c| c.country_code != 'No Country' }.first(10)
                .sort_by(&:created_at).reverse
@@ -55,8 +56,7 @@ module Users
     end
 
     def friends
-      friends = @user.friends.includes(:devices)
-      friends.map do |friend|
+      @user.friends.map do |friend|
         {
           userinfo: friend.public_info_hash,
           lastCheckin: friend.safe_checkin_info_for(permissible: @user, action: 'last')[0]

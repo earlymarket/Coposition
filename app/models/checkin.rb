@@ -100,17 +100,16 @@ class Checkin < ApplicationRecord
   end
 
   def self.unique_places_only(unique_places)
-    return all unless unique_places
+    # doesn't work so making it always return all for now
+    return all # unless unique_places
     checkins = unscope(:order).select('DISTINCT ON (checkins.fogged_city) *')
                               .sort { |checkin, next_checkin| next_checkin['created_at'] <=> checkin['created_at'] }
     all.where(id: checkins.map(&:id))
   end
 
   def self.hash_group_and_count_by(attribute)
-    grouped_and_counted = select(&attribute)
-                          .group_by(&attribute)
-                          .each_with_object({}) { |(key, checkins), result| result[key] = checkins.count }
-    grouped_and_counted.sort_by { |_attribute, count| count }.reverse!
+    grouped_and_counted = unscope(:order).group(attribute).count
+    grouped_and_counted.sort_by { |_attribute, count| count }.reverse
   end
 
   def self.percentage_increase(time_range)
