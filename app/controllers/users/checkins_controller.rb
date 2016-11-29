@@ -34,8 +34,10 @@ class Users::CheckinsController < ApplicationController
 
   def update
     @checkin = Checkin.find(params[:id])
-    @checkin.switch_fog
-    flash[:notice] = 'Check-in fogging changed.'
+    @checkin.switch_fog && return unless params[:checkin]
+    @checkin.update(allowed_params)
+    return render status: 200, json: @checkin unless @checkin.errors.any?
+    render status: 400, json: @checkin.errors.messages
   end
 
   def destroy
