@@ -23,8 +23,8 @@ class Users::DevicesController < ApplicationController
   end
 
   def shared
-    presenter = ::Users::DevicesPresenter.new(current_user, params, 'shared')
-    gon.push(presenter.shared_gon)
+    @presenter = ::Users::DevicesPresenter.new(current_user, params, 'shared')
+    gon.push(@presenter.shared_gon)
   end
 
   def info

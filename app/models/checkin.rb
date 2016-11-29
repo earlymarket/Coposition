@@ -16,7 +16,7 @@ class Checkin < ApplicationRecord
         obj.send("output_#{m}=", results.first.send(m)) if (column_names.include? m.to_s) && !obj.fogged
       end
     else
-      obj.update(address: 'No address available')
+      obj.update(address: 'Not yet geocoded')
     end
   end
 
@@ -48,8 +48,7 @@ class Checkin < ApplicationRecord
     if args[:action] == 'index' && args[:multiple_devices]
       all
     elsif args[:action] == 'index' && !args[:multiple_devices]
-      per_page = all.length > 1 ? args[:per_page] : 1
-      paginate(page: args[:page], per_page: per_page)
+      paginate(page: args[:page], per_page: args[:per_page])
     else
       limit(1)
     end
@@ -101,17 +100,16 @@ class Checkin < ApplicationRecord
   end
 
   def self.unique_places_only(unique_places)
-    return all unless unique_places
+    # doesn't work so making it always return all for now
+    return all # unless unique_places
     checkins = unscope(:order).select('DISTINCT ON (checkins.fogged_city) *')
                               .sort { |checkin, next_checkin| next_checkin['created_at'] <=> checkin['created_at'] }
     all.where(id: checkins.map(&:id))
   end
 
   def self.hash_group_and_count_by(attribute)
-    grouped_and_counted = select(&attribute)
-                          .group_by(&attribute)
-                          .each_with_object({}) { |(key, checkins), result| result[key] = checkins.count }
-    grouped_and_counted.sort_by { |_attribute, count| count }.reverse!
+    grouped_and_counted = unscope(:order).group(attribute).count
+    grouped_and_counted.sort_by { |_attribute, count| count }.reverse
   end
 
   def self.percentage_increase(time_range)

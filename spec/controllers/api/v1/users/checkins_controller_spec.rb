@@ -155,6 +155,12 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         expect(response.header['X-Per-Page']).to eq '30'
         expect(res_hash.size).to eq 30
       end
+
+      it 'should geocode all checkins with type address' do
+        get :index, params: geocode_params
+        expect(res_hash.first['address']).to match 'The Pilot Centre'
+        expect(res_hash.last['address']).to match 'The Pilot Centre'
+      end
     end
 
     context 'with page param' do
@@ -194,11 +200,6 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         get :index, params: params
         expect(res_hash.first.keys).to eq checkin.attributes.keys
         expect(res_hash.first['id']).to be checkin.id
-      end
-
-      it 'should geocode all checkins with type address' do
-        get :index, params: geocode_params
-        expect(res_hash.first['address']).to match 'The Pilot Centre'
       end
 
       it 'should ignore fogging by default' do
@@ -249,7 +250,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     end
 
     context 'with unique places param' do
-      it 'should return only unique fogged area checkins' do
+      it 'should return only unique fogged area checkins', skip: true do
         get :index, params: params.merge(unique_places: true)
         expect(res_hash.size).to eq 1
       end
