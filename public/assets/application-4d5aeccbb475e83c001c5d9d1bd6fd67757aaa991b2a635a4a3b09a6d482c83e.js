@@ -43475,7 +43475,7 @@ $(document).on('page:change', function() {
       $.extend(checkin, {
         avatar: avatar,
         created_at: new Date(checkin.created_at).toUTCString(),
-        address: checkin.address.replace(/, /g, '\n'),
+        address: checkin.address ? checkin.address.replace(/, /g, '\n') : checkin.city,
         device: gon.device,
         friend: COPO.utility.friendsName(gon.user)
       })
