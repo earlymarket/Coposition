@@ -42303,6 +42303,10 @@ COPO.utility = {
     return COPO.utility.ujsLink('put', '<i class="material-icons">cloud</i>', window.location.pathname + '/checkins/' + checkin.id).attr('id', fogId + checkin.id).attr('class', foggedClass).prop('outerHTML');
   },
 
+  updateCheckinSpan: function updateCheckinSpan(checkin, type) {
+    return $('<span href="' + window.location.pathname + '/checkins/' + checkin.id + '"><span class="editable">' + checkin[type] + '</span><i class="material-icons grey-text edit-' + type + '">mode_edit</i>&nbsp;</span>').prop('outerHTML');
+  },
+
   geocodeCheckinLink: function geocodeCheckinLink(checkin) {
     return COPO.utility.ujsLink('get', 'Get address', window.location.pathname + '/checkins/' + checkin.id).prop('outerHTML');
   },
@@ -42679,19 +42683,23 @@ window.COPO.maps = {
   },
 
   buildMarkerPopup: function buildMarkerPopup(checkin) {
+    var address = checkin.city;
+    if (checkin.address) {
+      address = COPO.utility.commaToNewline(checkin.address);
+    }
     var checkinTemp = {
       id: checkin.id,
       lat: checkin.lat.toFixed(6),
       lng: checkin.lng.toFixed(6),
       created_at: new Date(checkin.created_at).toUTCString(),
-      address: checkin.address
+      address: address
     };
 
     var foggedClass;
     checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
     checkinTemp.foggedAddress = function () {
       if (checkin.fogged) {
-        return '<li class="foggedAddress">Fogged address: ' + checkin.fogged_area + '</li>';
+        return '<li class="foggedAddress">Fogged address: ' + checkin.fogged_city + '</li>';
       }
     };
     checkinTemp.devicebutton = function () {
@@ -42701,6 +42709,8 @@ window.COPO.maps = {
         return '<a href="' + window.location.pathname + '/show_device?device_id=' + checkin.device_id + '" title="Device map">' + checkin.device + '</a>';
       }
     };
+    checkinTemp.inlineLat = COPO.utility.updateCheckinSpan(checkin, 'lat');
+    checkinTemp.inlineLng = COPO.utility.updateCheckinSpan(checkin, 'lng');
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
     var template = $('#markerPopupTmpl').html();
@@ -42762,10 +42772,10 @@ window.COPO.maps = {
 
   mapPinIcon: function mapPinIcon(public_id, color) {
     // The iconClass is a named Cloudinary transform
-    // At the moment there are only two: 'map-pin' and
-    // 'map-pin-blue'
+    // At the moment there are only three: 'map-pin' and
+    // 'map-pin-blue' and 'map-pin-grey'
     var iconClass;
-    color === 'blue' ? iconClass = 'map-pin-blue' : iconClass = 'map-pin';
+    color ? iconClass = 'map-pin-' + color : iconClass = 'map-pin';
     return L.icon({
       iconUrl: $.cloudinary.url(public_id, { format: 'png', transformation: iconClass }),
       iconSize: [36, 52],
@@ -42782,7 +42792,20 @@ window.COPO.maps = {
     }).filter(function (marker) {
       return marker;
     });
-    return new L.MarkerClusterGroup().addLayers(cluster);
+    return L.markerClusterGroup().addLayers(cluster);
+  },
+
+  friendsCheckinsToCluster: function friendsCheckinsToCluster(markerArr) {
+    var cluster = markerArr.map(function (marker) {
+      var color = undefined;
+      if (moment(marker.lastCheckin && marker.lastCheckin['created_at']).isBefore(moment().subtract(1, 'day'))) {
+        color = 'grey';
+      }
+      return COPO.maps.makeMapPin(marker, color);
+    }).filter(function (marker) {
+      return marker;
+    });
+    return L.markerClusterGroup().addLayers(cluster);
   },
 
   makeMapPin: function makeMapPin(user, color, markerOptions) {
@@ -42814,7 +42837,7 @@ window.COPO.maps = {
   },
 
   bindFriendMarkers: function bindFriendMarkers(checkins) {
-    var markers = COPO.maps.arrayToCluster(checkins, COPO.maps.makeMapPin);
+    var markers = COPO.maps.friendsCheckinsToCluster(checkins);
     markers.eachLayer(function (marker) {
       marker.on('click', function (e) {
         COPO.maps.panAndW3w.call(this, e);
@@ -42841,7 +42864,10 @@ window.COPO.maps = {
     var user = marker.options.user;
     var name = COPO.utility.friendsName(user);
     var date = moment(marker.options.lastCheckin.created_at).fromNow();
-    var address = COPO.utility.commaToNewline(marker.options.lastCheckin.address) || marker.options.lastCheckin.fogged_area;
+    var address = marker.options.lastCheckin.city;
+    if (marker.options.lastCheckin.address) {
+      address = COPO.utility.commaToNewline(marker.options.lastCheckin.address);
+    }
     var content = '\n    <h2>' + name + ' <a href="./friends/' + user.slug + '" title="Device info">\n      <i class="material-icons tiny">perm_device_information</i>\n      </a></h2>\n    <div class="address">' + address + '</div>\n    Checked in: ' + date;
     marker.bindPopup(content, { offset: [0, -38] });
   },
@@ -43449,7 +43475,7 @@ $(document).on('page:change', function() {
       $.extend(checkin, {
         avatar: avatar,
         created_at: new Date(checkin.created_at).toUTCString(),
-        address: checkin.address.replace(/, /g, '\n'),
+        address: checkin.address ? checkin.address.replace(/, /g, '\n') : checkin.city,
         device: gon.device,
         friend: COPO.utility.friendsName(gon.user)
       })
@@ -43482,10 +43508,12 @@ $(document).on('page:change', function() {
   if ($(".c-friends.a-show_device").length === 1 || $(".c-devices.a-show").length === 1) {
     var page = $(".c-devices.a-show").length === 1 ? 'user' : 'friend'
     var fogged = false;
-    COPO.utility.gonFix();
-    COPO.maps.initMap();
-    COPO.maps.initMarkers(gon.checkins, gon.total);
-    COPO.maps.initControls();
+    var U = window.COPO.utility;
+    var M = window.COPO.maps;
+    U.gonFix();
+    M.initMap();
+    M.initMarkers(gon.checkins, gon.total);
+    M.initControls();
     var currentCoords;
 
     map.on('locationfound', onLocationFound);
@@ -43495,7 +43523,7 @@ $(document).on('page:change', function() {
         var coords = {
           lat: e.latlng.lat.toFixed(6),
           lng: e.latlng.lng.toFixed(6),
-          checkinLink: COPO.utility.createCheckinLink(e.latlng)
+          checkinLink: U.createCheckinLink(e.latlng)
         };
         template = $('#createCheckinTmpl').html();
         var content = Mustache.render(template, coords);
@@ -43506,7 +43534,7 @@ $(document).on('page:change', function() {
       map.on('popupopen', function(e){
         var coords = e.popup.getLatLng()
         if($('#current-location').length){
-          $createCheckinLink = COPO.utility.createCheckinLink(coords);
+          $createCheckinLink = U.createCheckinLink(coords);
           $('#current-location').replaceWith($createCheckinLink);
         }
       })
@@ -43520,6 +43548,62 @@ $(document).on('page:change', function() {
         fogged = true;
         getLocation();
       })
+
+      $('body').on('click', '.edit-lat', function (e) {
+        $(this).toggleClass('hide', true);
+        makeEditable($(this).prev('span'), handleEdited, 'lat');
+      });
+
+      $('body').on('click', '.edit-lng', function (e) {
+        $(this).toggleClass('hide', true);
+        makeEditable($(this).prev('span'), handleEdited, 'lng');
+      });
+
+      function makeEditable ($target, handler, type) {
+        var original = $target.text();
+        $target.attr('contenteditable', true);
+        $target.focus();
+        document.execCommand('selectAll', false, null);
+        $target.on('blur', function () {
+          handler(original, $target, type);
+        });
+        $target.on('keydown', function (e) {
+          if(e.which === 27 || e.which === 13 ) {
+            handler(original, $target, type);
+          }
+        });
+        return $target;
+      }
+
+      function handleEdited (original, $target, type) {
+        var newCoord = $target.text()
+        var newCoordFloat = parseFloat(newCoord)
+        if(newCoordFloat && Math.abs(newCoordFloat) < 180 && original !== newCoord) {
+          var url = $target.parents('span').attr('href');
+          var data = { checkin: {} }
+          data.checkin[type] = newCoord;
+          var request = $.ajax({
+            dataType: 'json',
+            url: url,
+            type: 'PUT',
+            data: data
+          });
+          request
+          .done(function (response) {
+            _.find(gon.checkins, _.matchesProperty('id',response.id))[type] = parseFloat(newCoord);
+            M.queueRefresh(gon.checkins);
+          })
+          .fail(function (error) {
+            $target.text(original);
+          })
+        } else {
+          $target.text(original);
+        }
+        $target.attr('contenteditable', false);
+        $target.next().toggleClass('hide', false);
+        U.deselect();
+        $target.off();
+      }
     }
 
     function postLocation(position){
@@ -43536,7 +43620,7 @@ $(document).on('page:change', function() {
         var position = { coords: { latitude: currentCoords.lat, longitude: currentCoords.lng } }
         postLocation(position)
       } else {
-        navigator.geolocation.getCurrentPosition(postLocation, COPO.utility.geoLocationError, { timeout: 5000 });
+        navigator.geolocation.getCurrentPosition(postLocation, U.geoLocationError, { timeout: 5000 });
       }
     }
 
@@ -43694,7 +43778,7 @@ $(document).on('page:change', function () {
           if (this.hasFriendsWithCheckins()) {
             caller.slides.push({
               status: this.status,
-              layers: M.bindFriendMarkers(gon.friends, M.makeMapPin),
+              layers: M.bindFriendMarkers(gon.friends),
               bounds: this.bounds()
             });
             caller.hasContent = true;

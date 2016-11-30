@@ -148,19 +148,23 @@ window.COPO.maps = {
   },
 
   buildMarkerPopup(checkin) {
+    let address = checkin.city;
+    if(checkin.address){
+      address = COPO.utility.commaToNewline(checkin.address)
+    }
     var checkinTemp = {
       id: checkin.id,
       lat: checkin.lat.toFixed(6),
       lng: checkin.lng.toFixed(6),
       created_at: (new Date(checkin.created_at)).toUTCString(),
-      address: checkin.address,
+      address: address,
     };
 
     var foggedClass;
     checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
     checkinTemp.foggedAddress = function() {
       if(checkin.fogged) {
-        return '<li class="foggedAddress">Fogged address: ' + checkin.fogged_area + '</li>'
+        return '<li class="foggedAddress">Fogged address: ' + checkin.fogged_city + '</li>'
       }
     }
     checkinTemp.devicebutton = function(){
@@ -169,8 +173,9 @@ window.COPO.maps = {
       } else {
         return `<a href="${window.location.pathname}/show_device?device_id=${checkin.device_id}" title="Device map">${checkin.device}</a>`
       }
-
     }
+    checkinTemp.inlineLat = COPO.utility.updateCheckinSpan(checkin, 'lat');
+    checkinTemp.inlineLng = COPO.utility.updateCheckinSpan(checkin, 'lng');
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
     var template = $('#markerPopupTmpl').html();
@@ -232,10 +237,10 @@ window.COPO.maps = {
 
   mapPinIcon(public_id, color) {
     // The iconClass is a named Cloudinary transform
-    // At the moment there are only two: 'map-pin' and
-    // 'map-pin-blue'
+    // At the moment there are only three: 'map-pin' and
+    // 'map-pin-blue' and 'map-pin-grey'
     var iconClass;
-    color === 'blue' ? iconClass = 'map-pin-blue' : iconClass = 'map-pin'
+    color ? iconClass = `map-pin-${ color }` : iconClass = 'map-pin'
     return L.icon({
       iconUrl: $.cloudinary.url(public_id, {format: 'png', transformation: iconClass}),
       iconSize: [36,52],
@@ -249,7 +254,18 @@ window.COPO.maps = {
     }
     let cluster = markerArr.map(marker => markerBuilderFn(marker))
       .filter(marker => marker);
-    return (new L.MarkerClusterGroup).addLayers(cluster)
+    return L.markerClusterGroup().addLayers(cluster)
+  },
+
+  friendsCheckinsToCluster: (markerArr) => {
+    let cluster = markerArr.map(marker => {
+      let color;
+      if(moment(marker.lastCheckin && marker.lastCheckin['created_at']).isBefore(moment().subtract(1, 'day'))){
+        color = 'grey';
+      }
+      return COPO.maps.makeMapPin(marker, color);
+    }).filter(marker => marker);
+    return L.markerClusterGroup().addLayers(cluster)
   },
 
   makeMapPin(user, color, markerOptions) {
@@ -279,7 +295,7 @@ window.COPO.maps = {
   },
 
   bindFriendMarkers(checkins){
-    let markers = COPO.maps.arrayToCluster(checkins, COPO.maps.makeMapPin);
+    let markers = COPO.maps.friendsCheckinsToCluster(checkins);
     markers.eachLayer((marker) => {
       marker.on('click', function (e) {
         COPO.maps.panAndW3w.call(this, e)
@@ -304,7 +320,10 @@ window.COPO.maps = {
     let user    = marker.options.user;
     let name    = COPO.utility.friendsName(user);
     let date    = moment(marker.options.lastCheckin.created_at).fromNow();
-    let address = COPO.utility.commaToNewline(marker.options.lastCheckin.address) || marker.options.lastCheckin.fogged_area;
+    let address = marker.options.lastCheckin.city;
+    if(marker.options.lastCheckin.address){
+      address = COPO.utility.commaToNewline(marker.options.lastCheckin.address)
+    }
     let content = `
     <h2>${ name } <a href="./friends/${user.slug}" title="Device info">
       <i class="material-icons tiny">perm_device_information</i>
