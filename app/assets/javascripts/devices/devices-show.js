@@ -2,8 +2,8 @@ $(document).on('page:change', function() {
   if ($(".c-friends.a-show_device").length === 1 || $(".c-devices.a-show").length === 1) {
     var page = $(".c-devices.a-show").length === 1 ? 'user' : 'friend'
     var fogged = false;
-    const U = window.COPO.utility;
-    const M = window.COPO.maps;
+    var U = window.COPO.utility;
+    var M = window.COPO.maps;
     U.gonFix();
     M.initMap();
     M.initMarkers(gon.checkins, gon.total);
@@ -54,7 +54,7 @@ $(document).on('page:change', function() {
       });
 
       function makeEditable ($target, handler, type) {
-        let original = $target.text();
+        var original = $target.text();
         $target.attr('contenteditable', true);
         $target.focus();
         document.execCommand('selectAll', false, null);
@@ -72,9 +72,9 @@ $(document).on('page:change', function() {
       function handleEdited (original, $target, type) {
         var newCoord = $target.text()
         var newCoordFloat = parseFloat(newCoord)
-        if(newCoordFloat && Math.abs(newCoordFloat)<180 && original !== newCoord) {
+        if(newCoordFloat && Math.abs(newCoordFloat) < 180 && original !== newCoord) {
           var url = $target.parents('span').attr('href');
-          let data = { checkin: {} }
+          var data = { checkin: {} }
           data.checkin[type] = newCoord;
           var request = $.ajax({
             dataType: 'json',
