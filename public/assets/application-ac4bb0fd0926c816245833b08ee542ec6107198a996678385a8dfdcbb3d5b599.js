@@ -42303,6 +42303,10 @@ COPO.utility = {
     return COPO.utility.ujsLink('put', '<i class="material-icons">cloud</i>', window.location.pathname + '/checkins/' + checkin.id).attr('id', fogId + checkin.id).attr('class', foggedClass).prop('outerHTML');
   },
 
+  updateCheckinSpan: function updateCheckinSpan(checkin, type) {
+    return $('<span href="' + window.location.pathname + '/checkins/' + checkin.id + '"><span class="editable">' + checkin[type] + '</span><i class="material-icons grey-text edit-' + type + '">mode_edit</i>&nbsp;</span>').prop('outerHTML');
+  },
+
   geocodeCheckinLink: function geocodeCheckinLink(checkin) {
     return COPO.utility.ujsLink('get', 'Get address', window.location.pathname + '/checkins/' + checkin.id).prop('outerHTML');
   },
@@ -42705,6 +42709,8 @@ window.COPO.maps = {
         return '<a href="' + window.location.pathname + '/show_device?device_id=' + checkin.device_id + '" title="Device map">' + checkin.device + '</a>';
       }
     };
+    checkinTemp.inlineLat = COPO.utility.updateCheckinSpan(checkin, 'lat');
+    checkinTemp.inlineLng = COPO.utility.updateCheckinSpan(checkin, 'lng');
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
     var template = $('#markerPopupTmpl').html();
@@ -43502,10 +43508,12 @@ $(document).on('page:change', function() {
   if ($(".c-friends.a-show_device").length === 1 || $(".c-devices.a-show").length === 1) {
     var page = $(".c-devices.a-show").length === 1 ? 'user' : 'friend'
     var fogged = false;
-    COPO.utility.gonFix();
-    COPO.maps.initMap();
-    COPO.maps.initMarkers(gon.checkins, gon.total);
-    COPO.maps.initControls();
+    var U = window.COPO.utility;
+    var M = window.COPO.maps;
+    U.gonFix();
+    M.initMap();
+    M.initMarkers(gon.checkins, gon.total);
+    M.initControls();
     var currentCoords;
 
     map.on('locationfound', onLocationFound);
@@ -43515,7 +43523,7 @@ $(document).on('page:change', function() {
         var coords = {
           lat: e.latlng.lat.toFixed(6),
           lng: e.latlng.lng.toFixed(6),
-          checkinLink: COPO.utility.createCheckinLink(e.latlng)
+          checkinLink: U.createCheckinLink(e.latlng)
         };
         template = $('#createCheckinTmpl').html();
         var content = Mustache.render(template, coords);
@@ -43526,7 +43534,7 @@ $(document).on('page:change', function() {
       map.on('popupopen', function(e){
         var coords = e.popup.getLatLng()
         if($('#current-location').length){
-          $createCheckinLink = COPO.utility.createCheckinLink(coords);
+          $createCheckinLink = U.createCheckinLink(coords);
           $('#current-location').replaceWith($createCheckinLink);
         }
       })
@@ -43540,6 +43548,62 @@ $(document).on('page:change', function() {
         fogged = true;
         getLocation();
       })
+
+      $('body').on('click', '.edit-lat', function (e) {
+        $(this).toggleClass('hide', true);
+        makeEditable($(this).prev('span'), handleEdited, 'lat');
+      });
+
+      $('body').on('click', '.edit-lng', function (e) {
+        $(this).toggleClass('hide', true);
+        makeEditable($(this).prev('span'), handleEdited, 'lng');
+      });
+
+      function makeEditable ($target, handler, type) {
+        var original = $target.text();
+        $target.attr('contenteditable', true);
+        $target.focus();
+        document.execCommand('selectAll', false, null);
+        $target.on('blur', function () {
+          handler(original, $target, type);
+        });
+        $target.on('keydown', function (e) {
+          if(e.which === 27 || e.which === 13 ) {
+            handler(original, $target, type);
+          }
+        });
+        return $target;
+      }
+
+      function handleEdited (original, $target, type) {
+        var newCoord = $target.text()
+        var newCoordFloat = parseFloat(newCoord)
+        if(newCoordFloat && Math.abs(newCoordFloat) < 180 && original !== newCoord) {
+          var url = $target.parents('span').attr('href');
+          var data = { checkin: {} }
+          data.checkin[type] = newCoord;
+          var request = $.ajax({
+            dataType: 'json',
+            url: url,
+            type: 'PUT',
+            data: data
+          });
+          request
+          .done(function (response) {
+            _.find(gon.checkins, _.matchesProperty('id',response.id))[type] = parseFloat(newCoord);
+            M.queueRefresh(gon.checkins);
+          })
+          .fail(function (error) {
+            $target.text(original);
+          })
+        } else {
+          $target.text(original);
+        }
+        $target.attr('contenteditable', false);
+        $target.next().toggleClass('hide', false);
+        U.deselect();
+        $target.off();
+      }
     }
 
     function postLocation(position){
@@ -43556,7 +43620,7 @@ $(document).on('page:change', function() {
         var position = { coords: { latitude: currentCoords.lat, longitude: currentCoords.lng } }
         postLocation(position)
       } else {
-        navigator.geolocation.getCurrentPosition(postLocation, COPO.utility.geoLocationError, { timeout: 5000 });
+        navigator.geolocation.getCurrentPosition(postLocation, U.geoLocationError, { timeout: 5000 });
       }
     }
 
