@@ -105,10 +105,7 @@ class Device < ApplicationRecord
 
   def switch_fog
     update(fogged: !fogged)
-    Checkin.transaction do
-      unfogged = checkins.where(fogged: false)
-      fogged ? unfogged.each(&:set_output_to_fogged) : unfogged.each(&:set_output_to_unfogged)
-    end
+    system "rake checkins:update_output[#{id}] &"
     fogged
   end
 
