@@ -42792,7 +42792,7 @@ window.COPO.maps = {
   friendsCheckinsToCluster: function friendsCheckinsToCluster(markerArr) {
     var cluster = markerArr.map(function (marker) {
       var color = undefined;
-      if (moment(marker.lastCheckin['created_at']).isBefore(moment().subtract(1, 'day'))) {
+      if (moment(marker.lastCheckin && marker.lastCheckin['created_at']).isBefore(moment().subtract(1, 'day'))) {
         color = 'grey';
       }
       return COPO.maps.makeMapPin(marker, color);
