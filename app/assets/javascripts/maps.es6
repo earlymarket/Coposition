@@ -174,12 +174,8 @@ window.COPO.maps = {
         return `<a href="${window.location.pathname}/show_device?device_id=${checkin.device_id}" title="Device map">${checkin.device}</a>`
       }
     }
-    checkinTemp.inlineLat = function(){
-      return `<span href="${window.location.pathname}/checkins/${checkin.id}" ><span class="editable">${checkin.lat}</span><i class="material-icons grey-text edit-lat">mode_edit</i>&nbsp;</span>`
-    }
-    checkinTemp.inlineLng = function(){
-      return `<span href="${window.location.pathname}/checkins/${checkin.id}" ><span class="editable">${checkin.lng}</span><i class="material-icons grey-text edit-lng">mode_edit</i>&nbsp;</span>`
-    }
+    checkinTemp.inlineLat = COPO.utility.updateCheckinSpan(checkin, 'lat');
+    checkinTemp.inlineLng = COPO.utility.updateCheckinSpan(checkin, 'lng');
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
     var template = $('#markerPopupTmpl').html();

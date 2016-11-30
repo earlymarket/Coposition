@@ -40,6 +40,11 @@ COPO.utility = {
       .attr('id', fogId + checkin.id).attr('class', foggedClass).prop('outerHTML')
   },
 
+  updateCheckinSpan(checkin, type) {
+    var output = $('<span href="' + window.location.pathname + '/checkins/' + checkin.id + '"><span class="editable">' + checkin[type] + '</span><i class="material-icons grey-text edit-' + type + '">mode_edit</i>&nbsp;</span>').prop('outerHTML')
+    return output
+  },
+
   geocodeCheckinLink(checkin) {
     return COPO.utility.ujsLink('get',
       'Get address' ,
