@@ -13,7 +13,7 @@ class Users::DevicesController < ApplicationController
     gon.push(@presenter.show_gon)
     respond_to do |format|
       format.html { flash[:notice] = 'Right click on the map to check-in' }
-      format.csv { send_data @presenter.checkins, filename: @presenter.filename }
+      format.any(:csv, :gpx, :geojson) { send_data @presenter.checkins, filename: @presenter.filename }
     end
   end
 
@@ -23,8 +23,8 @@ class Users::DevicesController < ApplicationController
   end
 
   def shared
-    presenter = ::Users::DevicesPresenter.new(current_user, params, 'shared')
-    gon.push(presenter.shared_gon)
+    @presenter = ::Users::DevicesPresenter.new(current_user, params, 'shared')
+    gon.push(@presenter.shared_gon)
   end
 
   def info

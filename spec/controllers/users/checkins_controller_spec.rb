@@ -8,6 +8,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
   let(:new_user) { create_user }
   let(:checkin) { FactoryGirl.create :checkin, device: device }
   let(:params) { { user_id: user.username, device_id: device.id, id: checkin.id } }
+  let(:update_lat_params) { params.merge(checkin: { lat: 10 }) }
 
   describe 'GET #new' do
     it 'should assign a device with a matching :device_id to @device and a new checkin to @checkin' do
@@ -53,13 +54,25 @@ RSpec.describe Users::CheckinsController, type: :controller do
   end
 
   describe 'PUT #update' do
-    it 'should switch fogging' do
+    it 'should switch fogging if no extra params' do
+      device.update(fogged: false)
       checkin.update(fogged: false)
       request.accept = 'text/javascript'
       put :update, params: params
-      expect(Checkin.find(checkin.id).fogged).to be true
+      checkin.reload
+      expect(checkin.fogged).to be true
+      expect(checkin.output_lat).to be checkin.fogged_lat
       put :update, params: params
-      expect(Checkin.find(checkin.id).fogged).to be false
+      checkin.reload
+      expect(checkin.fogged).to be false
+      expect(checkin.output_lat).to be checkin.lat
+    end
+
+    it 'should update lat/lng if valid lat/lng provided' do
+      request.accept = 'text/javascript'
+      put :update, params: update_lat_params
+      checkin.reload
+      expect(checkin.lat).to eq 10
     end
   end
 

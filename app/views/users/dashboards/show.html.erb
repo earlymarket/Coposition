@@ -32,22 +32,24 @@
       Your most used device is <%= @presenter.most_used.name %>.
   <% end %>
 </p>
-<h5><%= dashboard_visited_countries_title(@presenter.last_countries_loaded.count) %></h5>
-<table>
-  <thead>
-    <tr>
-      <td></td><td>Country</td><td>Last Visited</td>
-    </tr>
-  </thead>
-  <tbody>
-  <% @presenter.last_countries_loaded.each do |country| %>
-    <tr>
-      <td><%= dashboard_flag(country[:country_code]) %></td><td ><%= dashboard_country_name(country[:country_code]) %></td><td><%= humanize_date(country[:last_visited]) %></td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
-<div class="divider"></div>
+<% if @presenter.last_countries_loaded %>
+  <h5><%= dashboard_visited_countries_title(@presenter.last_countries_loaded.count) %></h5>
+  <table>
+    <thead>
+      <tr>
+        <td></td><td>Country</td><td>Last Visited</td>
+      </tr>
+    </thead>
+    <tbody>
+    <% @presenter.last_countries_loaded.each do |country| %>
+      <tr>
+        <td><%= dashboard_flag(country[:country_code]) %></td><td ><%= dashboard_country_name(country[:country_code]) %></td><td><%= humanize_date(country[:last_visited]) %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <div class="divider"></div>
+<% end %>
 
 <section id="dashboard-quicklinks">
   <p>

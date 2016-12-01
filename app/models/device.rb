@@ -1,5 +1,5 @@
 class Device < ApplicationRecord
-  include SlackNotifiable, SwitchFogging, HumanizeMinutes, RemoveId
+  include SlackNotifiable, HumanizeMinutes, RemoveId
 
   belongs_to :user
   has_one :config, dependent: :destroy
@@ -25,12 +25,36 @@ class Device < ApplicationRecord
   end
 
   def safe_checkin_info_for(args)
+    sanitized = filtered_checkins(args)
+    sanitize_checkins(sanitized, args)
+  end
+
+  def filtered_checkins(args)
     sanitized = args[:copo_app] ? checkins : permitted_history_for(args[:permissible])
-    sanitized = sanitized.limit_returned_checkins(args)
-    sanitized = sanitized.map(&:reverse_geocode!) if args[:type] == 'address'
+    sanitized.since_time(args[:time_amount], args[:time_unit])
+             .near_to(args[:near])
+             .on_date(args[:date])
+             .unique_places_only(args[:unique_places])
+             .limit_returned_checkins(args)
+  end
+
+  def sanitize_checkins(sanitized, args)
+    if args[:type] == 'address'
+      sanitized.map(&:reverse_geocode!) unless args[:action] == 'index' && args[:multiple_devices]
+    end
     return sanitized if args[:copo_app]
-    sanitized = sanitized.map(&:replace_foggable_attributes) unless can_bypass_fogging?(args[:permissible])
-    sanitized.map(&:public_info)
+    replace_checkin_attributes(args[:permissible], sanitized)
+  end
+
+  def replace_checkin_attributes(permissible, sanitized)
+    if can_bypass_fogging?(permissible)
+      sanitized.select(:id, :created_at, :updated_at, :device_id, :lat,
+                       :lng, :address, :city, :postal_code, :country_code)
+    else
+      sanitized.select('id', 'created_at', 'updated_at', 'device_id', 'output_lat AS lat', 'output_lng AS lng',
+                       'output_address AS address', 'output_city AS city', 'output_postal_code AS postal_code',
+                       'output_country_code AS country_code')
+    end
   end
 
   def permitted_history_for(permissible)
@@ -41,7 +65,7 @@ class Device < ApplicationRecord
     return Checkin.none if privilege_for(permissible) == 'disallowed'
     return unresolved_checkins if unresolved_checkins.empty?
     if privilege_for(permissible) == 'last_only'
-      Checkin.where(id: unresolved_checkins.first.id)
+      unresolved_checkins.where(id: unresolved_checkins.first.id)
     else
       unresolved_checkins
     end
@@ -79,6 +103,12 @@ class Device < ApplicationRecord
     mins.to_i.zero? ? update(delayed: nil) : update(delayed: mins)
   end
 
+  def switch_fog
+    update(fogged: !fogged)
+    system "rake checkins:update_output[#{id}] &"
+    fogged
+  end
+
   def humanize_delay
     if delayed.nil?
       "#{name} is not delayed."
@@ -101,8 +131,6 @@ class Device < ApplicationRecord
     Subscription.where(event: 'friend_new_checkin').where(subscriber_id: user.friends).each do |sub|
       checkin = safe_checkin_info_for(permissible: sub.subscriber, type: 'address', action: 'last').first
       next unless checkin && checkin['id'] == data['id'] && user.changed_location?
-      checkin.merge!(public_info.remove_id.as_json)
-      checkin.merge!(user.public_info.remove_id.as_json)
       sub.send_data([checkin])
     end
   end

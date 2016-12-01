@@ -24,15 +24,14 @@ module Users
 
     def show
       @device = Device.find(@params[:id])
-      if @params[:download]
-        @checkins = @device.checkins.to_csv
-        @filename = "device-#{@device.id}-checkins-#{Date.today}.csv"
-      end
+      return unless (download_format = @params[:download])
+      @filename = "device-#{@device.id}-checkins-#{Date.today}." + download_format
+      @checkins = @device.checkins.send('to_' + download_format)
     end
 
     def shared
       @device = Device.find(@params[:id])
-      @checkin = @device.checkins.first
+      @checkin = @device.checkins.before(@device.delayed.to_i.minutes.ago).first
     end
 
     def info
@@ -76,12 +75,15 @@ module Users
     end
 
     def gon_shared_checkin
-      @checkin.reverse_geocode!.replace_foggable_attributes.public_info if @checkin
+      Checkin.where(id: @checkin.id)
+             .select('id', 'created_at', 'updated_at', 'device_id', 'output_lat AS lat', 'output_lng AS lng',
+                     'output_address AS address', 'output_city AS city', 'output_postal_code AS postal_code',
+                     'output_country_code AS country_code')[0]
     end
 
     def show_checkins
       @device.checkins.paginate(page: 1, per_page: 1000)
-             .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_area)
+             .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city)
     end
   end
 end

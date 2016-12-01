@@ -14,7 +14,7 @@ class Users::CheckinsController < ApplicationController
     per_page = params[:per_page].to_i <= 1000 ? params[:per_page] : 1000
     render json: {
       checkins: @device.checkins.paginate(page: params[:page], per_page: per_page)
-        .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_area, :device_id),
+        .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :device_id),
       current_user_id: current_user.id,
       total: @device.checkins.count
     }
@@ -34,8 +34,13 @@ class Users::CheckinsController < ApplicationController
 
   def update
     @checkin = Checkin.find(params[:id])
-    @checkin.switch_fog
-    flash[:notice] = 'Check-in fogging changed.'
+    if params[:checkin]
+      @checkin.update(allowed_params)
+      return render status: 200, json: @checkin unless @checkin.errors.any?
+      render status: 400, json: @checkin.errors.messages
+    else
+      @checkin.switch_fog
+    end
   end
 
   def destroy
