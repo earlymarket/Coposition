@@ -17,7 +17,8 @@ Feature: Approvals
 
     Scenario: User rejects requests
       When I click "Reject"
-        And I click "Revoke Approval"
+        Then I should not have any approval requests
+      And I click "Revoke Approval"
         Then I should not have any approved apps
       And I click the link "Friends"
       When I click "Reject"

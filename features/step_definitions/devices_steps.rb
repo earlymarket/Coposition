@@ -14,8 +14,12 @@ Given(/^I enter UUID "(.*?)" and a friendly name "(.*?)"$/) do |uuid, name|
   fill_in 'device[name]', with: name
 end
 
+Then(/^I should have a device$/) do
+  expect(page).to have_selector('div.card-panel', count: 1)
+end
+
 Then(/^I should not have a device$/) do
-  expect(page).to have_selector('div.card', count: 0)
+  expect(page).to have_selector('div.card-panel', count: 0)
 end
 
 Then(/^I should have an unfogged device$/) do

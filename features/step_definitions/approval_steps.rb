@@ -15,3 +15,7 @@ end
 Then(/^I should not have any approved (?:apps|friends)$/) do
   expect(page).to have_selector('div.card-panel', count: 0)
 end
+
+Then(/^I should not have any approval requests$/) do
+  expect(page).to have_select('div.collection-item', count: 0)
+end
