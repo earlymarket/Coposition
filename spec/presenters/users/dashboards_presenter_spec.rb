@@ -28,7 +28,7 @@ describe ::Users::DashboardsPresenter do
       last_countries = subject.last_countries
       expect(last_countries.length).to eq 2
       expect(last_countries[0]).to eq device.checkins.first
-      expect(last_countries[1].city).to eq 'Denham'
+      expect(last_countries[1].city).to eq device.checkins.second.city
     end
   end
 end
