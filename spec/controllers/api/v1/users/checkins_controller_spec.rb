@@ -139,10 +139,9 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
   describe 'GET #index when the device has 31 checkins' do
     before do
       31.times do
-        checkin = FactoryGirl.create :checkin
-        device.permission_for(developer).update(privilege: 'complete')
-        device.checkins << checkin
+        FactoryGirl.create :checkin, device: device
       end
+      device.permission_for(developer).update(privilege: 'complete')
     end
 
     context 'with no page param given' do
@@ -157,6 +156,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       end
 
       it 'should geocode all checkins with type address' do
+        device.permission_for(developer).update(bypass_fogging: true)
         get :index, params: geocode_params
         expect(res_hash.first['address']).to match 'The Pilot Centre'
         expect(res_hash.last['address']).to match 'The Pilot Centre'
@@ -251,8 +251,10 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
     context 'with unique places param' do
       it 'should return only unique fogged area checkins' do
+        device.checkins.second.update(fogged_city: 'London', output_city: 'London')
         get :index, params: params.merge(unique_places: true)
-        expect(res_hash.size).to eq 1
+        expect(res_hash.size).to eq 2
+        expect(res_hash[1]['city']).to eq device.checkins.second.fogged_city
       end
     end
   end
