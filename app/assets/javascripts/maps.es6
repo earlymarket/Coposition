@@ -391,13 +391,11 @@ window.COPO.maps = {
 
   refreshPath(checkins) {
     const path = COPO.maps.checkinPath;
+    COPO.maps.generatePath(checkins);
     if(path && path._map){
-      COPO.maps.generatePath(checkins);
       map.removeLayer(path);
       COPO.maps.checkinPath.addTo(map);
-    } else {
-      COPO.maps.generatePath(checkins);
-    }
+    }  
   },
 
   pathControlClick() {
