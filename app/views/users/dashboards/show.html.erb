@@ -43,7 +43,7 @@
     <tbody>
     <% @presenter.last_countries_loaded.each do |country| %>
       <tr>
-        <td><%= dashboard_flag(country[:country_code]) %></td><td ><%= dashboard_country_name(country[:country_code]) %></td><td><%= humanize_date(country[:last_visited]) %></td>
+        <td><%= dashboard_flag(country[:country_code]) %></td><td ><%= dashboard_country_name(country[:country_code]) %></td><td><%= humanize_date(country[:created_at]) %></td>
       </tr>
     <% end %>
     </tbody>
