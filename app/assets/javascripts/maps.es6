@@ -18,6 +18,7 @@ window.COPO.maps = {
 
   initMarkers(checkins, total) {
     map.once('ready', function() {
+      COPO.maps.generatePath(checkins);
       COPO.maps.renderAllMarkers(checkins);
       COPO.maps.bindMarkerListeners(checkins);
       COPO.maps.loadAllCheckins(checkins, total);
@@ -87,6 +88,7 @@ window.COPO.maps = {
   refreshMarkers(checkins) {
     map.removeEventListener('popupclose');
     map.removeEventListener('zoomstart');
+
     map.closePopup();
     if(COPO.maps.markers){
       map.removeLayer(COPO.maps.markers);
@@ -94,6 +96,7 @@ window.COPO.maps = {
     if(COPO.maps.last){
       map.removeLayer(COPO.maps.last);
     }
+    COPO.maps.refreshPath(checkins);
     COPO.maps.renderAllMarkers(checkins);
     COPO.maps.bindMarkerListeners(checkins);
     COPO.maps.queueCalled = false;
@@ -235,6 +238,31 @@ window.COPO.maps = {
     COPO.maps.w3w.addTo(map);
   },
 
+  pathControlInit() {
+    const pathControl = L.Control.extend({
+      options: {
+        position: 'topleft' 
+      },
+      onAdd: function (map) {
+        var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+        container.style.backgroundColor = 'white';
+        container.innerHTML = `
+        <a class="leaflet-control-path leaflet-bar-path" href="#" onclick="return false;" title="View path">
+          <i class="material-icons">timeline</i>
+        </a>
+        `
+        container.style.width = '27px';
+        container.style.height = '27px';
+        
+        container.onclick = function(){
+          COPO.maps.addPath();
+        }
+        return container;
+      },
+    });
+    map.addControl(new pathControl());
+  },
+
   mapPinIcon(public_id, color) {
     // The iconClass is a named Cloudinary transform
     // At the moment there are only three: 'map-pin' and
@@ -358,5 +386,29 @@ window.COPO.maps = {
 
   centerMapOn(lat, lng){
     map.setView(L.latLng(lat, lng), 18);
-  }
+  },
+
+  generatePath(checkins){
+    const latLngs = checkins.map((checkin) => [checkin.lat, checkin.lng]);
+    COPO.maps.checkinPath = L.polyline(latLngs, {color: 'red'});
+  },
+
+  refreshPath(checkins) {
+    const path = COPO.maps.checkinPath;
+    if(path && path._map){
+      COPO.maps.generatePath(checkins);
+      map.removeLayer(path);
+      COPO.maps.checkinPath.addTo(map);
+    } else {
+      COPO.maps.generatePath(checkins);
+    }
+  },
+
+  addPath() {
+    if(COPO.maps.checkinPath && COPO.maps.checkinPath._map){
+      map.removeLayer(COPO.maps.checkinPath);
+    } else {
+      COPO.maps.checkinPath.addTo(map);
+    }
+  },
 }
