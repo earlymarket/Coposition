@@ -400,10 +400,10 @@ window.COPO.maps = {
 
   pathControlClick() {
     if(COPO.maps.checkinPath && COPO.maps.checkinPath._map){
-      $('.path-icon').removeClass('active')
+      $('.path-icon').removeClass('path-active')
       map.removeLayer(COPO.maps.checkinPath);
     } else {
-      $('.path-icon').addClass('active')
+      $('.path-icon').addClass('path-active')
       COPO.maps.checkinPath.addTo(map);
     }
   },
