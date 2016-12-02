@@ -100,11 +100,8 @@ class Checkin < ApplicationRecord
   end
 
   def self.unique_places_only(unique_places)
-    # doesn't work so making it always return all for now
-    return all # unless unique_places
-    checkins = unscope(:order).select('DISTINCT ON (checkins.fogged_city) *')
-                              .sort { |checkin, next_checkin| next_checkin['created_at'] <=> checkin['created_at'] }
-    all.where(id: checkins.map(&:id))
+    return all unless unique_places
+    where('created_at IN(SELECT MAX(created_at) FROM checkins GROUP BY fogged_city)')
   end
 
   def self.hash_group_and_count_by(attribute)
@@ -174,5 +171,5 @@ class Checkin < ApplicationRecord
       geojson_checkins << GeojsonCheckin.new(checkin)
     end
     geojson_checkins.as_json
-  end
+  end    
 end
