@@ -245,17 +245,13 @@ window.COPO.maps = {
       },
       onAdd: function (map) {
         var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
-        container.style.backgroundColor = 'white';
         container.innerHTML = `
         <a class="leaflet-control-path leaflet-bar-path" href="#" onclick="return false;" title="View path">
           <i class="material-icons">timeline</i>
         </a>
         `
-        container.style.width = '27px';
-        container.style.height = '27px';
-        
         container.onclick = function(){
-          COPO.maps.addPath();
+          COPO.maps.pathControlClick();
         }
         return container;
       },
@@ -404,7 +400,7 @@ window.COPO.maps = {
     }
   },
 
-  addPath() {
+  pathControlClick() {
     if(COPO.maps.checkinPath && COPO.maps.checkinPath._map){
       map.removeLayer(COPO.maps.checkinPath);
     } else {
