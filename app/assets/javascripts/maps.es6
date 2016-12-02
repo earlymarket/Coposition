@@ -247,7 +247,7 @@ window.COPO.maps = {
         var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
         container.innerHTML = `
         <a class="leaflet-control-path leaflet-bar-path" href="#" onclick="return false;" title="View path">
-          <i class="material-icons">timeline</i>
+          <i class="material-icons path-icon">timeline</i>
         </a>
         `
         container.onclick = function(){
@@ -400,8 +400,10 @@ window.COPO.maps = {
 
   pathControlClick() {
     if(COPO.maps.checkinPath && COPO.maps.checkinPath._map){
+      $('.path-icon').removeClass('active')
       map.removeLayer(COPO.maps.checkinPath);
     } else {
+      $('.path-icon').addClass('active')
       COPO.maps.checkinPath.addTo(map);
     }
   },
