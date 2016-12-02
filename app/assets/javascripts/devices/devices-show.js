@@ -7,7 +7,7 @@ $(document).on('page:change', function() {
     U.gonFix();
     M.initMap();
     M.initMarkers(gon.checkins, gon.total);
-    M.initControls(['geocoder', 'locate', 'w3w', 'fullscreen', 'layers', 'path']);
+    M.initControls();
     var currentCoords;
 
     map.on('locationfound', onLocationFound);
