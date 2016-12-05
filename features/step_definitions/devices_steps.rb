@@ -9,9 +9,9 @@ Given(/^the device has checkins$/) do
   @dev.save!
 end
 
-Given(/^I enter UUID "(.*?)" and a friendly name "(.*?)"$/) do |uuid, name|
-  fill_in 'device[uuid]', with: uuid
-  fill_in 'device[name]', with: name
+Given(/^I enter UUID "(.*?)" and a friendly name "(.*?)"$/) do |uuid, device_name|
+  fill_in 'device_uuid', with: uuid
+  find('#device_name').set device_name
 end
 
 Then(/^I should have a device$/) do
