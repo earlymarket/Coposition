@@ -22,7 +22,7 @@
                   <% end %>
                   <%= approvals_friends_locator(approvable_type, approvable) %>
                 </h5><div class="tagline"><%= approvable.try(:tagline) %></div>
-                <div>Approved since <%= humanize_date(approval.approval_date) if approval %></div>
+                <div>Approved since <%= humanize_date(approval.approval_date) unless approval.nil? %></div>
               </div>
            </span>
          </div>
