@@ -10,16 +10,17 @@ Feature: Approvals
     Scenario: User accepts requests
       When I click "Revoke Approval"
       And I click "Approve"
-        Then I should have an approved app
+        Then I should see an approved app
       And I click the link "Friends"
+        Then I should see an approval request
       When I click "Approve"
-        Then I should have an approved friend
+        Then I should see an approved friend
 
     Scenario: User rejects requests
       When I click "Reject"
-        Then I should not have any approval requests
+        Then I should not see any approval requests
       And I click "Revoke Approval"
-        Then I should not have any approved apps
+        Then I should not see any approved apps
       And I click the link "Friends"
       When I click "Reject"
-        Then I should not have any approved friends
+        Then I should not see any approved friends
