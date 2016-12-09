@@ -13,7 +13,7 @@ Then(/^I should see an approved (?:app|friend)$/) do
 end
 
 Then(/^I should not see any approved (?:apps|friends)$/) do
-  expect(page).to have_selector('div.card-panel', count: 0)
+  expect(page).not_to have_selector('div.card-panel')
 end
 
 Then(/^I should see an approval request$/) do
@@ -21,5 +21,5 @@ Then(/^I should see an approval request$/) do
 end
 
 Then(/^I should not see any approval requests$/) do
-  expect(page).to have_selector('div.collection-item', count: 0)
+  expect(page).not_to have_selector('div.collection-item')
 end
