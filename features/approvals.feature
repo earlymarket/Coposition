@@ -12,7 +12,8 @@ Feature: Approvals
       And I click "Approve"
         Then I should see an approved app
       And I click the link "Friends"
-        Then I should see an approval request
+        Then I should not see any approved friends
+        And I should see an approval request
       When I click "Approve"
         Then I should see an approved friend
 
