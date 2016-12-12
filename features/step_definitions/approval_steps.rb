@@ -17,7 +17,7 @@ Then(/^I should not see any approved (?:apps|friends)$/) do
 end
 
 Then(/^I should see an approval request$/) do
-  expect(page).to have_selector('div.collection-item', count: 1)
+  expect(page).to have_selector('div.collection-item')
 end
 
 Then(/^I should not see any approval requests$/) do
