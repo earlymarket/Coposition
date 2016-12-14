@@ -42551,6 +42551,7 @@ window.COPO.maps = {
 
   initMarkers: function initMarkers(checkins, total) {
     map.once('ready', function () {
+      COPO.maps.generatePath(checkins);
       COPO.maps.renderAllMarkers(checkins);
       COPO.maps.bindMarkerListeners(checkins);
       COPO.maps.loadAllCheckins(checkins, total);
@@ -42620,6 +42621,7 @@ window.COPO.maps = {
   refreshMarkers: function refreshMarkers(checkins) {
     map.removeEventListener('popupclose');
     map.removeEventListener('zoomstart');
+
     map.closePopup();
     if (COPO.maps.markers) {
       map.removeLayer(COPO.maps.markers);
@@ -42627,6 +42629,7 @@ window.COPO.maps = {
     if (COPO.maps.last) {
       map.removeLayer(COPO.maps.last);
     }
+    COPO.maps.refreshPath(checkins);
     COPO.maps.renderAllMarkers(checkins);
     COPO.maps.bindMarkerListeners(checkins);
     COPO.maps.queueCalled = false;
@@ -42722,7 +42725,7 @@ window.COPO.maps = {
 
     // When giving custom controls, I recommend adding layers last
     // This is because it expands downwards
-    controls = controls || ['geocoder', 'locate', 'w3w', 'fullscreen', 'layers'];
+    controls = controls || ['geocoder', 'locate', 'w3w', 'fullscreen', 'path', 'layers'];
     controls.forEach(function (control) {
       var fn = _this[control + 'ControlInit'];
       if (typeof fn === 'function') {
@@ -42768,6 +42771,23 @@ window.COPO.maps = {
   w3wControlInit: function w3wControlInit() {
     COPO.maps.w3w = new L.Control.w3w({ apikey: '4AQOB5CT', position: 'topright' });
     COPO.maps.w3w.addTo(map);
+  },
+
+  pathControlInit: function pathControlInit() {
+    var pathControl = L.Control.extend({
+      options: {
+        position: 'topleft'
+      },
+      onAdd: function onAdd(map) {
+        var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+        container.innerHTML = '\n        <a class="leaflet-control-path leaflet-bar-path" href="#" onclick="return false;" title="View path">\n          <i class="material-icons path-icon">timeline</i>\n        </a>\n        ';
+        container.onclick = function () {
+          COPO.maps.pathControlClick();
+        };
+        return container;
+      }
+    });
+    map.addControl(new pathControl());
   },
 
   mapPinIcon: function mapPinIcon(public_id, color) {
@@ -42897,6 +42917,32 @@ window.COPO.maps = {
 
   centerMapOn: function centerMapOn(lat, lng) {
     map.setView(L.latLng(lat, lng), 18);
+  },
+
+  generatePath: function generatePath(checkins) {
+    var latLngs = checkins.map(function (checkin) {
+      return [checkin.lat, checkin.lng];
+    });
+    COPO.maps.checkinPath = L.polyline(latLngs, { color: 'red' });
+  },
+
+  refreshPath: function refreshPath(checkins) {
+    var path = COPO.maps.checkinPath;
+    COPO.maps.generatePath(checkins);
+    if (path && path._map) {
+      map.removeLayer(path);
+      COPO.maps.checkinPath.addTo(map);
+    }
+  },
+
+  pathControlClick: function pathControlClick() {
+    if (COPO.maps.checkinPath && COPO.maps.checkinPath._map) {
+      $('.path-icon').removeClass('path-active');
+      map.removeLayer(COPO.maps.checkinPath);
+    } else {
+      $('.path-icon').addClass('path-active');
+      COPO.maps.checkinPath.addTo(map);
+    }
   }
 };
 "use strict";
