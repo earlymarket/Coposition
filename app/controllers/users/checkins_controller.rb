@@ -36,6 +36,7 @@ class Users::CheckinsController < ApplicationController
     @checkin = Checkin.find(params[:id])
     if params[:checkin]
       @checkin.update(allowed_params)
+      @checkin.refresh
       return render status: 200, json: @checkin unless @checkin.errors.any?
       render status: 400, json: @checkin.errors.messages
     else
