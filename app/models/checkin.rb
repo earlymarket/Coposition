@@ -83,9 +83,12 @@ class Checkin < ApplicationRecord
 
   def init_local_time
     timezone = Timezone.lookup(lat, lng)
-    update(
-      local_time: timezone.utc_to_local(created_at)
-    )
+    Time.use_zone(timezone.name) do
+      local_time = Time.zone.parse(timezone.utc_to_local(created_at).to_s)
+      update(
+        local_time: local_time
+      )
+    end
   end
 
   def self.near_to(near)
