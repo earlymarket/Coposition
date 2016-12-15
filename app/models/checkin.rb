@@ -24,7 +24,7 @@ class Checkin < ApplicationRecord
     if device
       update(
         uuid: device.uuid,
-        fogged: fogged ||= device.fogged
+        fogged: self.fogged ||= device.fogged
       )
       reverse_geocode! if device.checkins.count == 1
       init_fogged_info
