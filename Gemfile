@@ -35,6 +35,7 @@ gem 'sprockets', '>= 3.0.0'
 gem 'sprockets-es6'
 gem 'bower-rails', '~> 0.10.0'
 gem 'gpx'
+gem 'timezone', '~> 1.0'
 
 group :production do
   gem 'puma'
