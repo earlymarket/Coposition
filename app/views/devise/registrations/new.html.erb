@@ -47,7 +47,7 @@
         <% if resource.respond_to? :username %>
           <div class="row">
             <div class="input-field col s12">
-              <%= f.label :username, "Optional username" %>
+              <%= f.label :username, "Optional username (4-20 characters)" %>
               <%= f.text_field :username, id: "#{resource.class.to_s.downcase}_username" %>
             </div>
           </div>
@@ -107,6 +107,14 @@
         '<%= resource_name %>[redirect_url]': {
           required: true,
           url: true
+        }
+      <% end %>
+      <% if resource.respond_to? :username %>
+      ,
+        '<%= resource_name %>[username]': {
+          required: false,
+          minlength: 4,
+          maxlength: 20
         }
       <% end %>
     },
