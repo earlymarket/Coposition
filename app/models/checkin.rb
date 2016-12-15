@@ -28,7 +28,6 @@ class Checkin < ApplicationRecord
       )
       reverse_geocode! if device.checkins.count == 1
       init_fogged_info
-      init_local_time
       fogged ? set_output_to_fogged : set_output_to_unfogged
     else
       raise 'Checkin is not assigned to a device.' unless Rails.env.test?
@@ -81,13 +80,10 @@ class Checkin < ApplicationRecord
     )
   end
 
-  def init_local_time
+  def local_time
     timezone = Timezone.lookup(lat, lng)
     Time.use_zone(timezone.name) do
-      local_time = Time.zone.parse(timezone.utc_to_local(created_at).to_s)
-      update(
-        local_time: local_time
-      )
+      created_at
     end
   end
 

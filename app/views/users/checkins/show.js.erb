@@ -3,3 +3,6 @@ checkin.address = '<%= j @checkin.address %>'
 
 var $geocodedAddress = '<li class="address">Address: <%= j @checkin.address %></li>'
 $('.address').replaceWith($geocodedAddress);
+
+var $localTime = '<li class="localTime">Created on: <%= j @checkin.local_time.strftime "%a, %e %b %Y %H:%M:%S %Z %z" %></li>'
+$('.localTime').replaceWith($localTime);
