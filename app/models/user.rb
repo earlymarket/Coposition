@@ -12,6 +12,8 @@ class User < ApplicationRecord
   validates :username, uniqueness: true, allow_blank: true,
                        format: { with: /\A[-a-zA-Z_]+\z/, message: 'only allows letters, underscores and dashes' }
 
+  validates :username, :length => { :maximum => 20, :minimum => 4 }
+
   has_many :devices, dependent: :destroy
   has_many :checkins, through: :devices
   has_many :requests
