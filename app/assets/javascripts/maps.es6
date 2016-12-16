@@ -364,6 +364,9 @@ window.COPO.maps = {
       alt: 'ID: ' + checkin.id,
       checkin: checkin
     }
+    if(checkin.center){
+      map.panTo([checkin.lat, checkin.lng]);
+    }
     markerOptions = $.extend({}, defaults, markerOptions)
     return L.marker([checkin.lat, checkin.lng], markerOptions)
   },
