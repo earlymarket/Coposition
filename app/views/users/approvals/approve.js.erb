@@ -12,6 +12,7 @@ $('#approved').html("<%= j (render partial: 'approved', locals: {approved: @pres
 <% end %>
 $(".button-collapse").sideNav();
 $(document).unbind('scroll');
+
 var page = ($(".c-approvals.a-apps").length === 1 ? 'apps' : 'friends');
 COPO.permissionsTrigger.initTrigger(page);
 COPO.permissions.initSwitches(page, gon.current_user_id, gon.permissions);
@@ -23,3 +24,18 @@ if(gon.friends && gon.friends.some(function(friend){ return friend.lastCheckin }
   if(COPO.maps.friendMarkers){ map.removeLayer(COPO.maps.friendMarkers) }
   $('#map-overlay').removeClass('hide');
 }
+
+$('.center-map').on('click', function() {
+  const friend_id = this.dataset.friend;
+  const friend = gon.friends.find(friend => friend.userinfo.id.toString() === friend_id);
+  const checkin = friend.lastCheckin;
+  COPO.utility.scrollTo('#top', 200);
+  setTimeout(() => COPO.maps.centerMapOn(checkin.lat, checkin.lng), 200);
+});
+
+gon.friends.forEach(function(friend) {
+  if (!friend.lastCheckin) {
+    $('i[data-friend="'+ friend.userinfo.id+'"]').remove();
+  }
+});
+
