@@ -177,6 +177,7 @@ window.COPO.maps = {
         return `<a href="${window.location.pathname}/show_device?device_id=${checkin.device_id}" title="Device map">${checkin.device}</a>`
       }
     }
+    checkinTemp.created_at = COPO.maps.dateToLocal(checkin);
     checkinTemp.inlineLat = COPO.utility.updateCheckinSpan(checkin, 'lat');
     checkinTemp.inlineLng = COPO.utility.updateCheckinSpan(checkin, 'lng');
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
@@ -184,6 +185,13 @@ window.COPO.maps = {
     var template = $('#markerPopupTmpl').html();
     return Mustache.render(template, checkinTemp);
   },
+
+  dateToLocal(checkin){
+    let created_at = checkin.created_at;
+    let coords = [checkin.lat, checkin.lng];
+    // do some stuff to figure out local date
+    return local_date;
+  }
 
   initControls(controls) {
     // When giving custom controls, I recommend adding layers last
