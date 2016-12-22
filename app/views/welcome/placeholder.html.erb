@@ -1,45 +1,130 @@
 <head>
   <title>Coposition</title>
-  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Lato:300|Material+Icons" rel="stylesheet">
+  <%= stylesheet_link_tag 'placeholder', media: 'all', 'data-turbolinks-track' => true %>
 </head>
 <body class="placeholder">
-  <%= render "application/video" %>
-
-  <div class="valign-wrapper bg-wrapper">
-    <div class="valign center-align center z-depth-3 bg-ribbon">
-      <%= inline_svg("copo-logo.svg") %>
-      <h1 class="brand" data-in-effect="bounceIn">coposition</h1>
-      <h5>Worry free location data management.</h5>
-      <p>
-
-      <script type="text/javascript">
-             window.Maitre = { uuid: "MFfa39989fd3" };
-      </script>
-      <script data-maitre src='https://maitreapp.co/widget.js' async></script>
-      <script type="text/javascript">
-        responsiveVideo();
-
-        function responsiveVideo() {
-          var ratio = 1920/1080;
-          // var h = $(".promo").height();
-          // var w = $(".promo").width();
-          var h = document.getElementsByClassName("promo")[0].clientHeight;
-          var w = document.getElementsByClassName("promo")[0].clientWidth;
-          var rRatio = w/h;
-
-          if(rRatio < ratio) {
-            // Aspect ratio is lower than 16:9
-            document.getElementsByTagName("video")[0].style.width = "auto";
-            document.getElementsByTagName("video")[0].style.height = "100%";
-          }else{
-            // Aspect ratio is higher than 16:9
-            document.getElementsByTagName("video")[0].style.width = "100%";
-            document.getElementsByTagName("video")[0].style.height = "auto";
-          }
-        }
-
-        window.onresize = responsiveVideo;
-      </script>
+  <nav>
+    <div id="quicklinks" class="pure-g"><!-- INLINE SPACE. DO NOT REMOVE.
+ --><div class="pure-u-1-14"></div><!--
+   --><div class="pure-u-6-14 items-left">
+        <a href="#">get started</a>
+        <a href="#">components</a>
+        <a href="#">showcase</a>
+        <a href="#">tutorial</a>
+      </div><!--
+     --><div class="pure-u-6-14 items-right">
+        <a href="#">documentation</a>
+        <a href="#">support</a>
+      </div>
+      <div class="pure-u-1-14"></div>
+    </div>
+    <div id="top-menu" class="pure-g">
+      <div class="pure-u-1-14"></div><!--
+   --><div class="pure-u-6-14 top-menu-left">
+        <%= inline_svg("copo-logo.svg", width: 40, height: 40) %>
+        <h1 class="brandname">Coposition</h1>
+      </div><!--
+   --><div class="pure-u-6-14 top-menu-right">
+        <a href="#">Features</a>
+        <a href="#">How it works</a>
+        <a href="#">Open Source</a>
+        <a href="#" class="btn btn-large btn-inverse">Sign In</a>
+      </div><!--
+   --><div class="pure-u-1-14"></div><!--
+ --></div>
+  </nav>
+  <div id="take-control" class="pure-g">
+    <%= image_tag('logo-rings-header', class: 'ringed-logo') %>
+    <div class="pure-u-7-14 phones">
+      <div class="valign-wrapper">
+        <%= image_tag('phones', height: 661, width: 382) %>
+      </div>
+    </div><!--
+ --><div class="pure-u-7-14 content">
+      <div class="l-wrapper">
+        <h2 class="title">Take control of your location data</h2>
+        <p class="pitch">With Coposition your location data is under your control. You can share it with friends and family, allow apps to use it or delete it altogether</p>
+        <a href="#" class="btn btn-large btn-primary">Create your account</a>
+      </div>
+    </div><!--
+ --><div class="pure-u-3-14"></div>
+  </div>
+  <div id="callouts" class="pure-g"><!--
+ --><div class="pure-u-1-14 cell"></div><!--
+ --><div class="pure-u-4-14 cell">
+      <h2 class="title">Coposition App</h2>
+      <p class="text">Share your location with friends and family. Allow apps to use it or delete it altogether.</p>
+    </div><!--
+ --><div class="pure-u-4-14 cell cell-contrast">
+      <h2 class="title">Get Developer Access</h2>
+      <p class="text">Start using the most powerful and accurate location framework availible anywhere.</p>
+      <a href="#" class="btn btn-inverse">Sign up</a>
+    </div><!--
+ --><div class="pure-u-4-14 cell">
+      <h2 class="title">We're Open Source</h2>
+      <p class="text">Our code is availible so anyone can inspect, modify and enhance it.</p>
+      <a href="#" class="btn btn-inverse">Take a look</a>
+    </div><!--
+ --><div class="pure-u-1-14 cell"></div>
+  </div>
+  <div id="location-map" class="pure-g"><!--
+ --><div class="pure-u-1-14"></div><!--
+ --><div class="pure-u-6-14 map"></div><!--
+ --><div class="pure-u-4-14">
+      <div class="valign-wrapper">
+        <div class="valign">
+          <h2 class="caption">Coposition is the secure, reliable and trusted way to manage location data</h2>
+          <a href="#" class="btn btn-large">Explore the documentation</a>
+        </div>
+      </div>
+    </div><!--
+ --><div class="pure-u-3-14"></div><!--
+--></div>
+  <div id="benefits" class="pure-g"><!--
+ --><h2>Coposition. <span class="tagline">Take back control of your location data</span></h2><!--
+ --><div class="pure-u-1-14"></div><!--
+ --><div class="pure-u-3-14 cell">
+      <h2 class="cell-title">Benefit 1</h2>
+      <p class="cell-description">Donec mollis est non purus sollicitudin molestie. Maecenas at ultricies erat. Phasellus vestibulum ligula non fermentum mollis.</p>
+    </div><!--
+ --><div class="pure-u-3-14 cell">
+      <h2 class="cell-title">Benefit 2</h2>
+      <p class="cell-description">Ded convallis, purus in vulputate ultricies, purus urna vulputate diam, ut fringilla nunc.</p>
+    </div><!--
+ --><div class="pure-u-3-14 cell">
+      <h2 class="cell-title">Benefit 3</h2>
+      <p class="cell-description">Maecenas suscipit efficitur nunc, quis consequat odio dignissim non. Uisque egestas ultricies tellus sit amet suscipit.</p>
+    </div><!--
+ --><div class="pure-u-3-14 cell">
+      <h2 class="cell-title">Benefit 4</h2>
+      <p class="cell-description">Ded sed ipsum pharetra, rhoncus eros non, interdum dui. Suspendisse eget nisl eget nulla cursus ultrices nec at sapien.</p>
+    </div><!--
+ --><div class="pure-u-1-14"></div><!--
+--></div>
+  <div id="get-enabled">
+    <div class="valign-wrapper">
+      <div class="card">
+        <h2 class="card-title">Get Coposition Enabled</h2>
+        <p class="card-pitch">Join a community of trusted developers and get your app enabled with Coposition.</p>
+        <p class="card-description">Once your app is enabled with Coposition your users will know their location data is under their control.</p>
+        <a href="#" class="btn btn-large blue">Get started</a>
+      </div>
     </div>
   </div>
+  <div id="bottom-callout">
+    <div class="wrapper">
+      <p class="wrapper-pitch">Start using the most powerful and accurate location framework availible anywhere.</p>
+      <p class="wrapper-description">Trust us, we know where to look.</p>
+      <a href="#" class="btn btn-large btn-primary">Create your account</a>
+    </div>
+  </div>
+  <div id="bottom-bar" class="pure-g"><!--
+ --><div class="pure-u-1-14"></div><!--
+ --><div class="pure-u-4-14 copy-notice">Copyright &copy; 2016 Coposition</div><!--
+ --><div class="pure-u-4-14">Github version forks</div><!--
+ --><div class="pure-u-4-14">Github Twitter</div><!--
+ --><div class="pure-u-1-14"></div><!--
+--></div>
 </body>
