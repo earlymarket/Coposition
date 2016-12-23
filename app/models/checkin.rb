@@ -57,6 +57,7 @@ class Checkin < ApplicationRecord
   def reverse_geocode!
     unless reverse_geocoded?
       reverse_geocode
+      update_output
       save
     end
     self
@@ -68,6 +69,13 @@ class Checkin < ApplicationRecord
 
   def nearest_city
     City.near([lat, lng], 200).first || NoCity.new
+  end
+
+  def refresh
+    reverse_geocode
+    save
+    init_fogged_info
+    fogged || device.fogged ? set_output_to_fogged : set_output_to_unfogged
   end
 
   def init_fogged_info
@@ -131,6 +139,14 @@ class Checkin < ApplicationRecord
     update(fogged: !fogged)
     return if device.fogged
     fogged ? set_output_to_fogged : set_output_to_unfogged
+  end
+
+  def update_output
+    if fogged || device.fogged
+      set_output_to_fogged
+    else
+      set_output_to_unfogged
+    end
   end
 
   def set_output_to_fogged
