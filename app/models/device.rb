@@ -105,7 +105,6 @@ class Device < ApplicationRecord
 
   def switch_fog
     update(fogged: !fogged)
-    system "rake checkins:update_output[#{id}] &"
     fogged
   end
 
