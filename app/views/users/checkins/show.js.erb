@@ -3,3 +3,6 @@ checkin.address = '<%= j @checkin.address %>'
 
 var $geocodedAddress = '<li class="address">Address: <%= j @checkin.address %></li>'
 $('.address').replaceWith($geocodedAddress);
+
+var $foggedAddress = '<li class="foggedAddress">Fogged address: <%= j @checkin.fogged_city %></li>'
+$('.foggedAddress').replaceWith($foggedAddress);

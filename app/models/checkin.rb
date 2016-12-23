@@ -70,6 +70,13 @@ class Checkin < ApplicationRecord
     City.near([lat, lng], 200).first || NoCity.new
   end
 
+  def refresh
+    reverse_geocode
+    save
+    init_fogged_info
+    fogged || device.fogged ? set_output_to_fogged : set_output_to_unfogged
+  end
+
   def init_fogged_info
     update(
       fogged_lat: nearest_city.latitude || lat + rand(-0.5..0.5),
