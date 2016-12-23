@@ -42304,7 +42304,7 @@ COPO.utility = {
   },
 
   updateCheckinSpan: function updateCheckinSpan(checkin, type) {
-    return $('<span href="' + window.location.pathname + '/checkins/' + checkin.id + '"><span class="editable">' + checkin[type] + '</span><i class="material-icons grey-text edit-' + type + '">mode_edit</i>&nbsp;</span>').prop('outerHTML');
+    return $('<span href="' + window.location.pathname + '/checkins/' + checkin.id + '"><span class="editable">' + checkin[type].toFixed(6) + '</span><i class="material-icons grey-text edit-' + type + '">mode_edit</i>&nbsp;</span>').prop('outerHTML');
   },
 
   geocodeCheckinLink: function geocodeCheckinLink(checkin) {
@@ -42899,6 +42899,9 @@ window.COPO.maps = {
       alt: 'ID: ' + checkin.id,
       checkin: checkin
     };
+    if (checkin.edited) {
+      map.panTo([checkin.lat, checkin.lng]);
+    }
     markerOptions = $.extend({}, defaults, markerOptions);
     return L.marker([checkin.lat, checkin.lng], markerOptions);
   },
@@ -43636,7 +43639,9 @@ $(document).on('page:change', function() {
           });
           request
           .done(function (response) {
-            _.find(gon.checkins, _.matchesProperty('id',response.id))[type] = parseFloat(newCoord);
+            checkin = _.find(gon.checkins, _.matchesProperty('id',response.id));
+            checkin[type] = parseFloat(newCoord);
+            checkin.edited = true;
             M.queueRefresh(gon.checkins);
           })
           .fail(function (error) {
