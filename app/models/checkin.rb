@@ -22,12 +22,18 @@ class Checkin < ApplicationRecord
 
   after_create do
     if device
+      city = nearest_city
       update(
         uuid: device.uuid,
-        fogged: self.fogged ||= device.fogged
+        fogged: self.fogged ||= device.fogged,
+        fogged_lat: city.latitude || lat + rand(-0.5..0.5),
+        fogged_lng: city.longitude || lng + rand(-0.5..0.5),
+        fogged_city: city.name,
+        country_code: city.country_code,
+        fogged_country_code: city.country_code
       )
       reverse_geocode! if device.checkins.count == 1
-      init_fogged_info
+      # init_fogged_info
       fogged ? set_output_to_fogged : set_output_to_unfogged
     else
       raise 'Checkin is not assigned to a device.' unless Rails.env.test?
