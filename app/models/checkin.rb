@@ -39,7 +39,7 @@ class Checkin < ApplicationRecord
       JSON.parse(post_content).each do |checkin_hash|
         checkin = Checkin.create(checkin_hash.slice('lat', 'lng', 'created_at', 'fogged'))
         raise ActiveRecord::Rollback unless checkin.save
-        checkin.device.notify_subscribers('new_checkin', checkin)
+        # checkin.device.notify_subscribers('new_checkin', checkin)
       end
     end
   end
@@ -79,12 +79,13 @@ class Checkin < ApplicationRecord
   end
 
   def init_fogged_info
+    city = nearest_city
     update(
-      fogged_lat: nearest_city.latitude || lat + rand(-0.5..0.5),
-      fogged_lng: nearest_city.longitude || lng + rand(-0.5..0.5),
-      fogged_city: nearest_city.name,
-      country_code: nearest_city.country_code,
-      fogged_country_code: nearest_city.country_code
+      fogged_lat: city.latitude || lat + rand(-0.5..0.5),
+      fogged_lng: city.longitude || lng + rand(-0.5..0.5),
+      fogged_city: city.name,
+      country_code: city.country_code,
+      fogged_country_code: city.country_code
     )
   end
 
