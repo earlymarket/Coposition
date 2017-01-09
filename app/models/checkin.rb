@@ -34,6 +34,10 @@ class Checkin < ApplicationRecord
     end
   end
 
+  def self.import(file)
+    system "rake checkins:import[#{file.path}] &"
+  end
+
   def self.batch_create(post_content)
     Checkin.transaction do
       JSON.parse(post_content).each do |checkin_hash|

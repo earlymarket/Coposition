@@ -57,6 +57,19 @@
         </div>
       </div>
     </div>
+
+    <a class="modal-trigger left tooltipped" id='downloadButton<%=device.id%>' data-tooltip='Upload checkins' href="#upload<%=device.id%>"><i class="material-icons">file_upload</i></a>
+    <div id="upload<%=device.id%>" class="modal upload-modal">
+      <div class="modal-content">
+        <h4 class='center-align'>Upload checkins</h4>
+        <div class='center-align'>
+          <%= form_tag import_user_device_checkins_path(device_id: device.id), multipart: :true do %>
+            <%= file_field_tag :file %>
+            <%= submit_tag "Import", class: "btn" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
     
     <%= link_to(devices_shared_icon(device), user_device_path(current_user.url_id, device.id, published: device.published), { method: :put, id:"publishedButton#{device.id}", remote: true, class: 'left tooltipped', data: { published: device.published?, tooltip:'Device sharing' } })%>
     <div class="valign-wrapper" id="sharedLink<%= device.id %>">

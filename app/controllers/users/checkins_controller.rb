@@ -1,7 +1,7 @@
 class Users::CheckinsController < ApplicationController
   protect_from_forgery except: :show
   before_action :authenticate_user!
-  before_action :require_checkin_ownership, except: [:index, :new, :create, :destroy_all]
+  before_action :require_checkin_ownership, except: [:index, :new, :create, :import, :destroy_all]
   before_action :require_device_ownership, only: [:index, :new, :create, :destroy_all]
 
   def new
@@ -25,6 +25,14 @@ class Users::CheckinsController < ApplicationController
     @checkin = @device.checkins.create(allowed_params)
     @device.notify_subscribers('new_checkin', @checkin)
     flash[:notice] = 'Checked in.'
+  end
+
+  def import
+    if params[:file]
+      Checkin.import(params[:file])
+      flash[:notice] = 'Imported'
+    end
+    redirect_to user_devices_path(current_user.url_id)
   end
 
   def show

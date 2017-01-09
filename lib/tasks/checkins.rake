@@ -48,4 +48,15 @@ namespace :checkins do
       end
     end
   end
+
+  desc 'Imports checkins from CSV'
+  task :import, [:filepath] => :environment do |_t, args|
+    Checkin.transaction do
+      CSV.foreach(args[:filepath], headers: true) do |row|
+        checkin = Checkin.find_by_id(row['id']) || Checkin.new
+        checkin.attributes = row.to_hash.slice('lat', 'lng', 'created_at', 'fogged', 'device_id')
+        checkin.save!
+      end
+    end
+  end
 end
