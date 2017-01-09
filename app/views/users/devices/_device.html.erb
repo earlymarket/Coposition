@@ -61,7 +61,8 @@
     <a class="modal-trigger left tooltipped" id='downloadButton<%=device.id%>' data-tooltip='Upload checkins' href="#upload<%=device.id%>"><i class="material-icons">file_upload</i></a>
     <div id="upload<%=device.id%>" class="modal upload-modal">
       <div class="modal-content">
-        <h4 class='center-align'>Upload checkins</h4>
+        <h4 class='center-align'>Upload checkins
+        <a class="right tooltipped" target="_blank" data-tooltip='Upload help' href="/help#download"><i class="material-icons">help</i></a></h4>
         <div class='center-align'>
           <%= form_tag import_user_device_checkins_path(device_id: device.id), multipart: :true do %>
             <%= file_field_tag :file %>
