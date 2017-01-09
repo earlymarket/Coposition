@@ -65,7 +65,7 @@
         <div class='center-align'>
           <%= form_tag import_user_device_checkins_path(device_id: device.id), multipart: :true do %>
             <%= file_field_tag :file %>
-            <%= submit_tag "Import", class: "btn" %>
+            <%= submit_tag "Import CSV", class: "btn" %>
           <% end %>
         </div>
       </div>
