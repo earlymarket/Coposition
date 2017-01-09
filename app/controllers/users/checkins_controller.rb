@@ -35,6 +35,7 @@ class Users::CheckinsController < ApplicationController
   def update
     @checkin = Checkin.find(params[:id])
     if params[:checkin]
+      @checkin.update(edited: true)
       @checkin.update(allowed_params)
       @checkin.refresh
       return render status: 200, json: @checkin unless @checkin.errors.any?
