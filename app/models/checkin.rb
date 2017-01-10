@@ -9,6 +9,8 @@ class Checkin < ApplicationRecord
   scope :since, ->(date) { where('created_at > ?', date) }
   scope :before, ->(date) { where('created_at < ?', date) }
 
+  before_update :set_edited, if: proc { lat_changed? || lng_changed? }
+
   reverse_geocoded_by :lat, :lng do |obj, results|
     if results.present?
       results.first.methods.each do |m|
@@ -187,5 +189,9 @@ class Checkin < ApplicationRecord
       geojson_checkins << GeojsonCheckin.new(checkin)
     end
     geojson_checkins.as_json
-  end    
+  end
+
+  def set_edited
+    write_attribute(:edited, true)
+  end
 end
