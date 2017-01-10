@@ -33,7 +33,6 @@ class Checkin < ApplicationRecord
         fogged_country_code: city.country_code
       )
       reverse_geocode! if device.checkins.count == 1
-      # init_fogged_info
       fogged ? set_output_to_fogged : set_output_to_unfogged
     else
       raise 'Checkin is not assigned to a device.' unless Rails.env.test?
