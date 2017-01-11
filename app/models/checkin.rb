@@ -187,5 +187,5 @@ class Checkin < ApplicationRecord
       geojson_checkins << GeojsonCheckin.new(checkin)
     end
     geojson_checkins.as_json
-  end    
+  end
 end
