@@ -87,6 +87,7 @@ $(document).on('page:change', function() {
             checkin = _.find(gon.checkins, _.matchesProperty('id',response.id));
             checkin[type] = parseFloat(newCoord);
             checkin.edited = true;
+            checkin.lastEdited = true;
             M.queueRefresh(gon.checkins);
           })
           .fail(function (error) {
