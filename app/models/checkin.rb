@@ -24,6 +24,7 @@ class Checkin < ApplicationRecord
 
   after_create do
     if device
+      reload
       city = nearest_city
       update(
         uuid: device.uuid,

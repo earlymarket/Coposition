@@ -34,6 +34,15 @@ RSpec.describe Users::CheckinsController, type: :controller do
       expect(assigns(:device)).to eq(Device.find(device.id))
       expect(device.checkins.count).to eq count + 1
       expect(assigns(:checkin)).to eq(device.checkins.first)
+      expect(assigns(:checkin).edited).to be false
+    end
+  end
+
+  describe 'POST #import' do
+    it 'should return alert if no file provided' do
+      post :import, params: { user_id: user.id, device_id: device.id }
+      expect(response).to redirect_to(user_devices_path(user.url_id))
+      expect(flash[:alert]).to match('Invalid file')
     end
   end
 
@@ -66,6 +75,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
       checkin.reload
       expect(checkin.fogged).to be false
       expect(checkin.output_lat).to be checkin.lat
+      expect(checkin.edited).to be false
     end
 
     it 'should update lat/lng if valid lat/lng provided' do
@@ -73,6 +83,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
       put :update, params: update_lat_params
       checkin.reload
       expect(checkin.lat).to eq 10
+      expect(checkin.edited).to be true
     end
   end
 
