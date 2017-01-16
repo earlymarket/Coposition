@@ -177,6 +177,7 @@ window.COPO.maps = {
         return `<a href="${window.location.pathname}/show_device?device_id=${checkin.device_id}" title="Device map">${checkin.device}</a>`
       }
     }
+    checkinTemp.edited = checkin.edited ? '(edited)' : ''
     checkinTemp.inlineLat = COPO.utility.updateCheckinSpan(checkin, 'lat');
     checkinTemp.inlineLng = COPO.utility.updateCheckinSpan(checkin, 'lng');
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
@@ -364,8 +365,9 @@ window.COPO.maps = {
       alt: 'ID: ' + checkin.id,
       checkin: checkin
     }
-    if(checkin.edited){
+    if(checkin.lastEdited){
       map.panTo([checkin.lat, checkin.lng]);
+      checkin.lastEdited = false;
     }
     markerOptions = $.extend({}, defaults, markerOptions)
     return L.marker([checkin.lat, checkin.lng], markerOptions)

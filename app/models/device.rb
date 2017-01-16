@@ -105,7 +105,6 @@ class Device < ApplicationRecord
 
   def switch_fog
     update(fogged: !fogged)
-    system "rake checkins:update_output[#{id}] &"
     fogged
   end
 
@@ -127,16 +126,7 @@ class Device < ApplicationRecord
     Subscription.where(event: event).where(subscriber_id: user_id)
   end
 
-  def notify_friends(data)
-    Subscription.where(event: 'friend_new_checkin').where(subscriber_id: user.friends).each do |sub|
-      checkin = safe_checkin_info_for(permissible: sub.subscriber, type: 'address', action: 'last').first
-      next unless checkin && checkin['id'] == data['id'] && user.changed_location?
-      sub.send_data([checkin])
-    end
-  end
-
   def notify_subscribers(event, data)
-    notify_friends(data) if event == 'new_checkin'
     return unless (subs = subscriptions(event))
     data = data.as_json
     data.merge!(remove_id.as_json)

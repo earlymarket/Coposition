@@ -43,6 +43,10 @@ class User < ApplicationRecord
     username.empty? ? id : username.downcase
   end
 
+  def should_generate_new_friendly_id?
+    slug.blank? || username_changed?
+  end
+
   ## Approvals
 
   def approve_coposition_mobile_app
