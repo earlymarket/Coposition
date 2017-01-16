@@ -28,9 +28,11 @@ class Users::CheckinsController < ApplicationController
   end
 
   def import
-    if params[:file]
+    if params[:file] && valid_file?
       Checkin.import(params[:file])
-      flash[:notice] = 'Imported'
+      flash[:notice] = 'Importing check-ins'
+    else
+      flash[:alert] = 'Invalid file'
     end
     redirect_to user_devices_path(current_user.url_id)
   end
@@ -67,6 +69,12 @@ class Users::CheckinsController < ApplicationController
 
   def allowed_params
     params.require(:checkin).permit(:lat, :lng, :device_id, :fogged)
+  end
+
+  def valid_file?
+    CSV.foreach(params[:file].path, headers: true) do |csv|
+      return csv.headers == Checkin.column_names
+    end
   end
 
   def require_checkin_ownership

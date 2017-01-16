@@ -67,7 +67,7 @@
         <div class='center-align'>
           <label>Upload previously downloaded check-ins to restore data.</label></br></br>
           <%= form_tag import_user_device_checkins_path(device_id: device.id), multipart: :true do %>
-            <%= file_field_tag :file %>
+            <%= file_field_tag :file, accept: 'text/csv'%>
             <%= submit_tag "Import CSV", class: "btn" %>
           <% end %>
         </div>
