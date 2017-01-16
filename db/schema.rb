@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161110113344) do
+ActiveRecord::Schema.define(version: 20170109132911) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 20161110113344) do
     t.string   "output_postal_code"
     t.string   "output_country_code"
     t.string   "fogged_country_code"
+    t.boolean  "edited",              default: false
     t.index ["device_id"], name: "index_checkins_on_device_id", using: :btree
   end
 
