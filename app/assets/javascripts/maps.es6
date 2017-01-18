@@ -134,6 +134,7 @@ window.COPO.maps = {
   markerClickListener(checkins, marker) {
     marker.on('click', function(e) {
       let checkin = this.options.checkin;
+      COPO.maps.dateToLocal(checkin);
       if(!marker._popup) {
         var template = COPO.maps.buildMarkerPopup(checkin);
         marker.bindPopup(L.Util.template(template, checkin));
@@ -151,7 +152,6 @@ window.COPO.maps = {
   },
 
   buildMarkerPopup(checkin) {
-    COPO.maps.dateToLocal(checkin);
     let address = checkin.city;
     if(checkin.address){
       address = COPO.utility.commaToNewline(checkin.address)
@@ -196,6 +196,7 @@ window.COPO.maps = {
         let date = moment((created_at + data.rawOffset)*1000).format("ddd, Do MMM YYYY, HH:mm:ss");
         let offsetStr = COPO.maps.formatOffset(data.rawOffset);
         let local_date = `${date} (${data.timeZoneName}) ${offsetStr}`;
+        checkin.created_at = local_date;
         $('#localTime').html(`Created at: ${local_date}`);
       }
     });
