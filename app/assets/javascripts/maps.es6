@@ -194,26 +194,31 @@ window.COPO.maps = {
     $.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${checkin.lat}, ${checkin.lng}&timestamp=${created_at}&key=AIzaSyCEjHZhLTdiy7jbRTDU3YADs8a1yXKTwqI`)
     .done((data) => {
       if(data.status=='OK'){
-        let date = moment((created_at + data.rawOffset)*1000).format("dddd, MMMM Do YYYY, h:mm:ss a");;
+        let date = moment((created_at + data.rawOffset)*1000).format("ddd, Do MMM YYYY, HH:mm:ss");;
         let offset = data.rawOffset;
         let time = offset/60;
         let hour = Math.floor(time / 60);
         let min = Math.abs(time % 60);
+        let minStr = `${min}`
         let hrStr = "";
+        let offsetStr = "";
         if (hour > 0 && hour < 10) {
           hrStr = `+0${hour}`;
         } else if (hour >= 10) {
           hrStr = `+${hour}`;
         } else if (hour < 0 && hour > -10) {
-          hrStr = `-0${hour[1]}`;
+          hrStr = `-0${Math.abs(hour)}`;
+        } else if (hour <= -10){
+          hrStr = `-${hour}`
         } else {
           hrStr = `${hour}`
         }
-        let minStr = `${min}`
         if (min < 10) {
           minStr = `0${time%60}`;
         }
-        let offsetStr = `${hrStr}:${minStr}`
+        if(hour !== 0 || min !== 0){
+          offsetStr = `${hrStr}:${minStr}`
+        }
         local_date = `${date} (${data.timeZoneName}) ${offsetStr}`
         $('#localTime').html(`Created at: ${local_date}`)
       }
