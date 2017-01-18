@@ -151,6 +151,7 @@ window.COPO.maps = {
   },
 
   buildMarkerPopup(checkin) {
+    COPO.maps.dateToLocal(checkin);
     let address = checkin.city;
     if(checkin.address){
       address = COPO.utility.commaToNewline(checkin.address)
@@ -177,7 +178,7 @@ window.COPO.maps = {
         return `<a href="${window.location.pathname}/show_device?device_id=${checkin.device_id}" title="Device map">${checkin.device}</a>`
       }
     }
-    checkinTemp.created_at = COPO.maps.dateToLocal(checkin);
+    checkinTemp.edited = checkin.edited ? '(edited)' : ''
     checkinTemp.inlineLat = COPO.utility.updateCheckinSpan(checkin, 'lat');
     checkinTemp.inlineLng = COPO.utility.updateCheckinSpan(checkin, 'lng');
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
@@ -187,11 +188,37 @@ window.COPO.maps = {
   },
 
   dateToLocal(checkin){
-    let created_at = checkin.created_at;
+    let created_at = Date.parse(checkin.created_at)/1000;
     let coords = [checkin.lat, checkin.lng];
-    // do some stuff to figure out local date
-    return local_date;
-  }
+    let local_date = '';
+    $.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${checkin.lat}, ${checkin.lng}&timestamp=${created_at}&key=AIzaSyCEjHZhLTdiy7jbRTDU3YADs8a1yXKTwqI`)
+    .done((data) => {
+      if(data.status=='OK'){
+        let date = moment((created_at + data.rawOffset)*1000).format("dddd, MMMM Do YYYY, h:mm:ss a");;
+        let offset = data.rawOffset;
+        let time = offset/60;
+        let hour = Math.floor(time / 60);
+        let min = Math.abs(time % 60);
+        let hrStr = "";
+        if (hour > 0 && hour < 10) {
+          hrStr = `+0${hour}`;
+        } else if (hour >= 10) {
+          hrStr = `+${hour}`;
+        } else if (hour < 0 && hour > -10) {
+          hrStr = `-0${hour[1]}`;
+        } else {
+          hrStr = `${hour}`
+        }
+        let minStr = `${min}`
+        if (min < 10) {
+          minStr = `0${time%60}`;
+        }
+        let offsetStr = `${hrStr}:${minStr}`
+        local_date = `${date} (${data.timeZoneName}) ${offsetStr}`
+        $('#localTime').html(`Created at: ${local_date}`)
+      }
+    });
+  },
 
   initControls(controls) {
     // When giving custom controls, I recommend adding layers last
@@ -371,6 +398,10 @@ window.COPO.maps = {
       title: 'ID: ' + checkin.id,
       alt: 'ID: ' + checkin.id,
       checkin: checkin
+    }
+    if(checkin.lastEdited){
+      map.panTo([checkin.lat, checkin.lng]);
+      checkin.lastEdited = false;
     }
     markerOptions = $.extend({}, defaults, markerOptions)
     return L.marker([checkin.lat, checkin.lng], markerOptions)

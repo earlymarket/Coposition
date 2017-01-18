@@ -84,7 +84,10 @@ $(document).on('page:change', function() {
           });
           request
           .done(function (response) {
-            _.find(gon.checkins, _.matchesProperty('id',response.id))[type] = parseFloat(newCoord);
+            checkin = _.find(gon.checkins, _.matchesProperty('id',response.id));
+            checkin[type] = parseFloat(newCoord);
+            checkin.edited = true;
+            checkin.lastEdited = true;
             M.queueRefresh(gon.checkins);
           })
           .fail(function (error) {

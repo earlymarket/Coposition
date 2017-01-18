@@ -9,6 +9,8 @@ class Checkin < ApplicationRecord
   scope :since, ->(date) { where('created_at > ?', date) }
   scope :before, ->(date) { where('created_at < ?', date) }
 
+  before_update :set_edited, if: proc { lat_changed? || lng_changed? }
+
   reverse_geocoded_by :lat, :lng do |obj, results|
     if results.present?
       results.first.methods.each do |m|
@@ -22,12 +24,17 @@ class Checkin < ApplicationRecord
 
   after_create do
     if device
+      city = nearest_city
       update(
         uuid: device.uuid,
-        fogged: self.fogged ||= device.fogged
+        fogged: self.fogged ||= device.fogged,
+        fogged_lat: city.latitude || lat + rand(-0.5..0.5),
+        fogged_lng: city.longitude || lng + rand(-0.5..0.5),
+        fogged_city: city.name,
+        country_code: city.country_code,
+        fogged_country_code: city.country_code
       )
       reverse_geocode! if device.checkins.count == 1
-      init_fogged_info
       fogged ? set_output_to_fogged : set_output_to_unfogged
     else
       raise 'Checkin is not assigned to a device.' unless Rails.env.test?
@@ -39,7 +46,7 @@ class Checkin < ApplicationRecord
       JSON.parse(post_content).each do |checkin_hash|
         checkin = Checkin.create(checkin_hash.slice('lat', 'lng', 'created_at', 'fogged'))
         raise ActiveRecord::Rollback unless checkin.save
-        checkin.device.notify_subscribers('new_checkin', checkin)
+        # checkin.device.notify_subscribers('new_checkin', checkin)
       end
     end
   end
@@ -57,6 +64,7 @@ class Checkin < ApplicationRecord
   def reverse_geocode!
     unless reverse_geocoded?
       reverse_geocode
+      update_output
       save
     end
     self
@@ -70,13 +78,21 @@ class Checkin < ApplicationRecord
     City.near([lat, lng], 200).first || NoCity.new
   end
 
+  def refresh
+    reverse_geocode
+    save
+    init_fogged_info
+    fogged || device.fogged ? set_output_to_fogged : set_output_to_unfogged
+  end
+
   def init_fogged_info
+    city = nearest_city
     update(
-      fogged_lat: nearest_city.latitude || lat + rand(-0.5..0.5),
-      fogged_lng: nearest_city.longitude || lng + rand(-0.5..0.5),
-      fogged_city: nearest_city.name,
-      country_code: nearest_city.country_code,
-      fogged_country_code: nearest_city.country_code
+      fogged_lat: city.latitude || lat + rand(-0.5..0.5),
+      fogged_lng: city.longitude || lng + rand(-0.5..0.5),
+      fogged_city: city.name,
+      country_code: city.country_code,
+      fogged_country_code: city.country_code
     )
   end
 
@@ -140,6 +156,14 @@ class Checkin < ApplicationRecord
     fogged ? set_output_to_fogged : set_output_to_unfogged
   end
 
+  def update_output
+    if fogged || device.fogged
+      set_output_to_fogged
+    else
+      set_output_to_unfogged
+    end
+  end
+
   def set_output_to_fogged
     update(
       output_lat: fogged_lat,
@@ -178,5 +202,10 @@ class Checkin < ApplicationRecord
       geojson_checkins << GeojsonCheckin.new(checkin)
     end
     geojson_checkins.as_json
-  end    
+  end
+
+  def set_edited
+    write_attribute(:edited, true)
+  end
+
 end
