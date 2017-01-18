@@ -15,3 +15,5 @@ developer = FactoryGirl.build :developer
 developer.save!
 developer.company_name = 'Demo developer account'
 developer.save!
+
+User.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')

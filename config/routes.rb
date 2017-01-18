@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  ActiveAdmin.routes(self)
   root to: 'welcome#index'
 
   # Specified routes
@@ -9,6 +10,7 @@ Rails.application.routes.draw do
 
   # Devise
 
+  # devise_for :users, ActiveAdmin::Devise.config
   devise_for :users, controllers: {
     registrations: 'users/devise/registrations',
     sessions: 'users/devise/sessions'
