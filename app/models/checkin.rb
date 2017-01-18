@@ -96,13 +96,6 @@ class Checkin < ApplicationRecord
     )
   end
 
-  def local_time
-    timezone = Timezone.lookup(lat, lng)
-    Time.use_zone(timezone.name) do
-      created_at
-    end
-  end
-
   def self.near_to(near)
     return all unless near
     near_array = near.split(',')
