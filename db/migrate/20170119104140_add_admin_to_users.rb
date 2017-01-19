@@ -6,7 +6,8 @@ class AddAdminToUsers < ActiveRecord::Migration[5.0]
       username: "admin_user",
       email: "admin@example.com",
       password: "password",
-      password_confirmation: "password"
+      password_confirmation: "password",
+      admin: true
     )
   end
 
