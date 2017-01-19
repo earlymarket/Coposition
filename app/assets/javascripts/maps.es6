@@ -178,7 +178,7 @@ window.COPO.maps = {
       }
     }
     checkinTemp.edited = checkin.edited ? '(edited)' : ''
-    checkinTemp.inlineCoords = COPO.utility.updateCheckinSpan(checkin, 'coords');
+    checkinTemp.inlineCoords = COPO.utility.updateCheckinSpan(checkin);
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
     var template = $('#markerPopupTmpl').html();
@@ -259,8 +259,8 @@ window.COPO.maps = {
     map.addControl(new pathControl());
   },
 
-  coordsControlInit(){
-    const mouseControl = L.Control.extend({
+  mousePositionControlInit(){
+    const mousePositionControl = L.Control.extend({
       options: {
         position: 'bottomleft',
       },
@@ -284,8 +284,8 @@ window.COPO.maps = {
         this._container.innerHTML = value;
       }
     });
-    COPO.maps.mouseControl = new mouseControl();
-    map.addControl(COPO.maps.mouseControl);
+    COPO.maps.mousePositionControl = new mousePositionControl();
+    map.addControl(COPO.maps.mousePositionControl);
   },
 
   mapPinIcon(public_id, color) {

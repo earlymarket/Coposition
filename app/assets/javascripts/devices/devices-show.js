@@ -44,7 +44,7 @@ $(document).on('page:change', function() {
       })
 
       $('body').on('click', '.edit-coords', function (e) {
-        M.coordsControlInit();
+        M.mousePositionControlInit();
         $(this).toggleClass('hide', true);
         var $target = $(this).prev('span');
         var original = $target.text();
@@ -97,8 +97,7 @@ $(document).on('page:change', function() {
         var r = confirm("Are you sure? Click ok to reposition check-in to new coordinates (" + e.latlng.lat.toFixed(6) + ", " + e.latlng.lng.toFixed(6) + ").");
         if (r == true) {
           var url = $target.parents('span').attr('href');
-          var coords = e.latlng
-          var data = { checkin: {lat: coords.lat, lng: coords.lng} }
+          var data = { checkin: {lat: e.latlng.lat, lng: e.latlng.lng} }
           postCheckin(url, data, M.refreshMarkers);
           removeEditable($target);
         } else {
@@ -127,7 +126,7 @@ $(document).on('page:change', function() {
       }
 
       function removeEditable($target){
-        map.removeControl(COPO.maps.mouseControl);
+        map.removeControl(COPO.maps.mousePositionControl);
         map.off('click');
         $('#map').css('cursor','auto');
         $target.parents('.leaflet-popup').off('click');
