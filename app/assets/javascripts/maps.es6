@@ -179,8 +179,6 @@ window.COPO.maps = {
     }
     checkinTemp.edited = checkin.edited ? '(edited)' : ''
     checkinTemp.inlineCoords = COPO.utility.updateCheckinSpan(checkin, 'coords');
-    checkinTemp.inlineLat = COPO.utility.updateCheckinSpan(checkin, 'lat');
-    checkinTemp.inlineLng = COPO.utility.updateCheckinSpan(checkin, 'lng');
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
     var template = $('#markerPopupTmpl').html();
