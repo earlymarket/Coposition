@@ -57,12 +57,12 @@ $(document).on('page:change', function() {
         });
         $('.leaflet-popup').on('click', function (e) {
           if(e.target.className !== 'editable'){
-            handleEdited(original, $target);
+            handleCoordsEdited(original, $target);
           }
         });
         $target.on('keydown', function (e) {
           if(e.which === 27 || e.which === 13 ) {
-            handleEdited(original, $target);
+            handleCoordsEdited(original, $target);
           }
         });
         COPO.maps.allMarkers.eachLayer(function(marker) {
@@ -74,15 +74,13 @@ $(document).on('page:change', function() {
         });
       });
 
-      function handleEdited (original, $target) {
+      function handleCoordsEdited(original, $target) {
         var newCoords = $target.text();
         var coords = newCoords.split(",");
         if(coords.length == 2 && original !== newCoords){
           if(Math.abs(coords[0]) < 180 && Math.abs(coords[1]) < 180){
             var url = $target.parents('span').attr('href');
-            var lat = parseFloat(coords[0]);
-            var lng = parseFloat(coords[1]);
-            var data = { checkin: { lat: lat, lng: lng} }
+            var data = { checkin: { lat: parseFloat(coords[0]), lng: parseFloat(coords[1])} }
             postCheckin(url, data, M.queueRefresh);
           } else {
             $target.text(original);
@@ -99,10 +97,8 @@ $(document).on('page:change', function() {
           var url = $target.parents('span').attr('href');
           var data = { checkin: {lat: e.latlng.lat, lng: e.latlng.lng} }
           postCheckin(url, data, M.refreshMarkers);
-          removeEditable($target);
-        } else {
-          removeEditable($target);
         }
+        removeEditable($target);
       }
 
       function postCheckin(url, data, success){
@@ -114,9 +110,9 @@ $(document).on('page:change', function() {
         })
         .done(function (response) {
           checkin = _.find(gon.checkins, _.matchesProperty('id',response.id));
-          checkin.lat = data.checkin.lat;
-          checkin.lng = data.checkin.lng;
-          checkin.edited = true;
+          checkin.lat = response.lat;
+          checkin.lng = response.lng;
+          checkin.edited = response.edited;
           checkin.lastEdited = true;
           success(gon.checkins);
         })
