@@ -77,7 +77,7 @@ $(document).on('page:change', function() {
       function handleCoordsEdited(original, $target) {
         var newCoords = $target.text();
         var coords = newCoords.split(",");
-        if(coords.length == 2 && original !== newCoords){
+        if(coords.length === 2 && original !== newCoords){
           if(Math.abs(coords[0]) < 180 && Math.abs(coords[1]) < 180){
             var url = $target.parents('span').attr('href');
             var data = { checkin: { lat: parseFloat(coords[0]), lng: parseFloat(coords[1])} }
@@ -93,7 +93,7 @@ $(document).on('page:change', function() {
 
       function handleMapClick($target, e) {
         var r = confirm("Are you sure? Click ok to reposition check-in to new coordinates (" + e.latlng.lat.toFixed(6) + ", " + e.latlng.lng.toFixed(6) + ").");
-        if (r == true) {
+        if (r === true) {
           var url = $target.parents('span').attr('href');
           var data = { checkin: {lat: e.latlng.lat, lng: e.latlng.lng} }
           postCheckin(url, data, M.refreshMarkers);
