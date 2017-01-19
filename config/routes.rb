@@ -10,7 +10,6 @@ Rails.application.routes.draw do
 
   # Devise
 
-  # devise_for :users, ActiveAdmin::Devise.config
   devise_for :users, controllers: {
     registrations: 'users/devise/registrations',
     sessions: 'users/devise/sessions'
