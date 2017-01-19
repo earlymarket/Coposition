@@ -178,6 +178,7 @@ window.COPO.maps = {
       }
     }
     checkinTemp.edited = checkin.edited ? '(edited)' : ''
+    checkinTemp.inlineCoords = COPO.utility.updateCheckinSpan(checkin, 'coords');
     checkinTemp.inlineLat = COPO.utility.updateCheckinSpan(checkin, 'lat');
     checkinTemp.inlineLng = COPO.utility.updateCheckinSpan(checkin, 'lng');
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
@@ -288,7 +289,7 @@ window.COPO.maps = {
     COPO.maps.mouseControl = new mouseControl();
     map.addControl(COPO.maps.mouseControl);
   },
-  
+
   mapPinIcon(public_id, color) {
     // The iconClass is a named Cloudinary transform
     // At the moment there are only three: 'map-pin' and
