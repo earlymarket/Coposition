@@ -46,8 +46,8 @@ $(document).on('page:change', function() {
       $('body').on('click', '.edit-coords', function (e) {
         M.coordsControlInit();
         $(this).toggleClass('hide', true);
-        let $target = $(this).prev('span');
-        const original = $target.text();
+        var $target = $(this).prev('span');
+        var original = $target.text();
         $target.attr('contenteditable', true);
         $target.focus();
         document.execCommand('selectAll', false, null);
@@ -76,12 +76,12 @@ $(document).on('page:change', function() {
 
       function handleEdited (original, $target) {
         var newCoords = $target.text();
-        var coords = newCoords.split(",")
+        var coords = newCoords.split(",");
         if(coords.length == 2 && original !== newCoords){
           if(Math.abs(coords[0]) < 180 && Math.abs(coords[1]) < 180){
             var url = $target.parents('span').attr('href');
-            var lat = parseFloat(coords[0])
-            var lng = parseFloat(coords[1])
+            var lat = parseFloat(coords[0]);
+            var lng = parseFloat(coords[1]);
             var data = { checkin: { lat: lat, lng: lng} }
             postCheckin(url, data, M.queueRefresh);
           } else {
