@@ -260,6 +260,35 @@ window.COPO.maps = {
     map.addControl(new pathControl());
   },
 
+  coordsControlInit(){
+    const mouseControl = L.Control.extend({
+      options: {
+        position: 'bottomleft',
+      },
+
+      onAdd: function (map) {
+        this._container = L.DomUtil.create('div', 'leaflet-control-mouseposition');
+        L.DomEvent.disableClickPropagation(this._container);
+        map.on('mousemove', this._onMouseMove, this);
+        this._container.innerHTML = '';
+        return this._container;
+      },
+
+      onRemove: function (map) {
+        map.off('mousemove', this._onMouseMove)
+      },
+
+      _onMouseMove: function (e) {
+        var lng = e.latlng.lng.toFixed(6)
+        var lat = e.latlng.lat.toFixed(6)
+        var value = lng + ',' + lat;
+        this._container.innerHTML = value;
+      }
+    });
+    COPO.maps.mouseControl = new mouseControl();
+    map.addControl(COPO.maps.mouseControl);
+  },
+  
   mapPinIcon(public_id, color) {
     // The iconClass is a named Cloudinary transform
     // At the moment there are only three: 'map-pin' and

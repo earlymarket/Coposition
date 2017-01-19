@@ -45,26 +45,31 @@ $(document).on('page:change', function() {
 
       $('body').on('click', '.edit-lat', function (e) {
         $(this).toggleClass('hide', true);
-        makeEditable($(this).prev('span'), handleEdited, 'lat');
+        makeEditable($(this).prev('span'), 'lat');
       });
 
       $('body').on('click', '.edit-lng', function (e) {
         $(this).toggleClass('hide', true);
-        makeEditable($(this).prev('span'), handleEdited, 'lng');
+        makeEditable($(this).prev('span'), 'lng');
       });
 
-      function makeEditable ($target, handler, type) {
+      function makeEditable ($target, type) {
+        M.coordsControlInit();
+        $('#map').css('cursor','crosshair');
         var original = $target.text();
         $target.attr('contenteditable', true);
         $target.focus();
         document.execCommand('selectAll', false, null);
         $target.on('blur', function () {
-          handler(original, $target, type);
+          handleEdited(original, $target, type);
         });
         $target.on('keydown', function (e) {
           if(e.which === 27 || e.which === 13 ) {
-            handler(original, $target, type);
+            handleEdited(original, $target, type);
           }
+        });
+        map.once('click', function(e){
+          handleMapClick(e, $target);
         });
         return $target;
       }
@@ -96,6 +101,36 @@ $(document).on('page:change', function() {
         } else {
           $target.text(original);
         }
+        map.removeControl(COPO.maps.mouseControl);
+        $('#map').css('cursor','auto');
+        $target.attr('contenteditable', false);
+        $target.next().toggleClass('hide', false);
+        U.deselect();
+        $target.off();
+      }
+
+      function handleMapClick(e, $target) {
+        var url = $target.parents('span').attr('href');
+        var coords = e.latlng
+        var data = { checkin: {lat: coords.lat, lng: coords.lng} }
+        var request = $.ajax({
+          dataType: 'json',
+          url: url,
+          type: 'PUT',
+          data: data
+        });
+        request
+        .done(function (response) {
+          checkin = _.find(gon.checkins, _.matchesProperty('id',response.id));
+          checkin.lat = coords.lat;
+          checkin.lng = coords.lng;
+          checkin.edited = true;
+          checkin.lastEdited = true;
+          M.refreshMarkers(gon.checkins);
+        })
+        .fail(function (error) {
+        })
+        $('#map').css('cursor','auto');
         $target.attr('contenteditable', false);
         $target.next().toggleClass('hide', false);
         U.deselect();
