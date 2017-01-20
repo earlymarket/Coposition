@@ -24,14 +24,15 @@
         </div>
         <div class="row">
           <div class="input-field col s12">
-            <%= f.label :avatar, 'Upload a new avatar', class:'active'%></br>
-            <%= f.attachinary_file_field :avatar %>
-          </div>
-        </div>
-        <div class="row">
-          <div class="input-field col s12">
             <%= f.check_box :zapier_enabled %>
             <%= f.label :zapier_enabled, "Zapier enabled?" %>
+          </div>
+        </div>
+        <br/>
+        <div class="row">
+          <div class="input-field col s12">
+            <%= f.label :avatar, 'Upload a new avatar', class:'active'%></br>
+            <%= f.attachinary_file_field :avatar %>
           </div>
         </div>
         <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
