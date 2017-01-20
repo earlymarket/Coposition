@@ -28,6 +28,12 @@
             <%= f.attachinary_file_field :avatar %>
           </div>
         </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <%= f.label :zapier_enabled, "Enable zapier?" %>
+            <%= f.check_box :zapier_enabled %>
+          </div>
+        </div>
         <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
           <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
         <% end %>

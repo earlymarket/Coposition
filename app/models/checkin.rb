@@ -46,7 +46,7 @@ class Checkin < ApplicationRecord
       JSON.parse(post_content).each do |checkin_hash|
         checkin = Checkin.create(checkin_hash.slice('lat', 'lng', 'created_at', 'fogged'))
         raise ActiveRecord::Rollback unless checkin.save
-        # checkin.device.notify_subscribers('new_checkin', checkin)
+        checkin.device.notify_subscribers('new_checkin', checkin)
       end
     end
   end
