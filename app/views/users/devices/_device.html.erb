@@ -45,6 +45,8 @@
 
     <%= link_to(fogged_icon(device.fogged), user_device_path(current_user.url_id, device.id), { method: :put, id:"fogButton#{device.id}", remote: true, class: 'left tooltipped fogButton', data: { confirm: "Are you sure? Turning fogging off will allow you friends/apps to see your precise location", fogged: device.fogged?, tooltip:'Fogging' } })%>
 
+    <%= link_to(devices_cloaked_icon(device.cloaked), user_device_path(current_user.url_id, device.id), { method: :put, id:"cloakButton#{device.id}", remote: true, class: 'left tooltipped cloakButton', data: { confirm: "Are you sure? Cloaking a device will hide it and all of it's check-ins from all of your apps and friends", cloaked: device.cloaked?, tooltip:'Cloaking' } })%>
+
     <a class="modal-trigger left tooltipped" id='downloadButton<%=device.id%>' data-tooltip='Download checkins' href="#download<%=device.id%>"><i class="material-icons">file_download</i></a>
     <div id="download<%=device.id%>" class="modal download-modal">
       <div class="modal-content">

@@ -47,6 +47,15 @@ module DevicesHelper
     output
   end
 
+  def devices_cloaked_icon(value)
+    if device.cloaked?
+      '<i class="material-icons">do_not_disturb</i>'.html_safe
+    else
+      '<i class="material-icons disabled-icon-simple ">do_not_disturb</i>'.html_safe
+    end
+  end
+
+
   def devices_config_rows(config)
     return '<tr><td><i>No additional config</i></td></tr>'.html_safe unless config.custom.present?
     output = config.custom.map do |key, value|
