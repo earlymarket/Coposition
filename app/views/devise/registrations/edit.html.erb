@@ -30,8 +30,8 @@
         </div>
         <div class="row">
           <div class="input-field col s12">
-            <%= f.label :zapier_enabled, "Enable zapier?" %>
             <%= f.check_box :zapier_enabled %>
+            <%= f.label :zapier_enabled, "Zapier enabled?" %>
           </div>
         </div>
         <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
