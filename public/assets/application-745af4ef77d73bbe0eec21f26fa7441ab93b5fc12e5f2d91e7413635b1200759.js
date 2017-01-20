@@ -42303,8 +42303,8 @@ COPO.utility = {
     return COPO.utility.ujsLink('put', '<i class="material-icons">cloud</i>', window.location.pathname + '/checkins/' + checkin.id).attr('id', fogId + checkin.id).attr('class', foggedClass).prop('outerHTML');
   },
 
-  updateCheckinSpan: function updateCheckinSpan(checkin, type) {
-    return $('<span href="' + window.location.pathname + '/checkins/' + checkin.id + '"><span class="editable">' + checkin[type] + '</span><i class="material-icons grey-text edit-' + type + '">mode_edit</i>&nbsp;</span>').prop('outerHTML');
+  updateCheckinSpan: function updateCheckinSpan(checkin) {
+    return $('<span href="' + window.location.pathname + '/checkins/' + checkin.id + '"><span class="editable">' + checkin.lat.toFixed(6) + ', ' + checkin.lng.toFixed(6) + '</span><i class="material-icons grey-text edit-coords">mode_edit</i>&nbsp;</span>').prop('outerHTML');
   },
 
   geocodeCheckinLink: function geocodeCheckinLink(checkin) {
@@ -42551,6 +42551,7 @@ window.COPO.maps = {
 
   initMarkers: function initMarkers(checkins, total) {
     map.once('ready', function () {
+      COPO.maps.generatePath(checkins);
       COPO.maps.renderAllMarkers(checkins);
       COPO.maps.bindMarkerListeners(checkins);
       COPO.maps.loadAllCheckins(checkins, total);
@@ -42620,6 +42621,7 @@ window.COPO.maps = {
   refreshMarkers: function refreshMarkers(checkins) {
     map.removeEventListener('popupclose');
     map.removeEventListener('zoomstart');
+
     map.closePopup();
     if (COPO.maps.markers) {
       map.removeLayer(COPO.maps.markers);
@@ -42627,8 +42629,10 @@ window.COPO.maps = {
     if (COPO.maps.last) {
       map.removeLayer(COPO.maps.last);
     }
+    COPO.maps.refreshPath(checkins);
     COPO.maps.renderAllMarkers(checkins);
     COPO.maps.bindMarkerListeners(checkins);
+    COPO.maps.clickLastEditedMarker();
     COPO.maps.queueCalled = false;
   },
 
@@ -42660,6 +42664,15 @@ window.COPO.maps = {
   bindMarkerListeners: function bindMarkerListeners(checkins) {
     COPO.maps.allMarkers.eachLayer(function (marker) {
       COPO.maps.markerClickListener(checkins, marker);
+    });
+  },
+
+  openLastEditedMarker: function openLastEditedMarker() {
+    COPO.maps.allMarkers.eachLayer(function (marker) {
+      if (marker.options.checkin.lastEdited) {
+        marker.fire('click');
+        marker.options.checkin.lastEdited = false;
+      }
     });
   },
 
@@ -42709,8 +42722,8 @@ window.COPO.maps = {
         return '<a href="' + window.location.pathname + '/show_device?device_id=' + checkin.device_id + '" title="Device map">' + checkin.device + '</a>';
       }
     };
-    checkinTemp.inlineLat = COPO.utility.updateCheckinSpan(checkin, 'lat');
-    checkinTemp.inlineLng = COPO.utility.updateCheckinSpan(checkin, 'lng');
+    checkinTemp.edited = checkin.edited ? '(edited)' : '';
+    checkinTemp.inlineCoords = COPO.utility.updateCheckinSpan(checkin);
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
     var template = $('#markerPopupTmpl').html();
@@ -42722,7 +42735,7 @@ window.COPO.maps = {
 
     // When giving custom controls, I recommend adding layers last
     // This is because it expands downwards
-    controls = controls || ['geocoder', 'locate', 'w3w', 'fullscreen', 'layers'];
+    controls = controls || ['geocoder', 'locate', 'w3w', 'fullscreen', 'path', 'layers'];
     controls.forEach(function (control) {
       var fn = _this[control + 'ControlInit'];
       if (typeof fn === 'function') {
@@ -42768,6 +42781,52 @@ window.COPO.maps = {
   w3wControlInit: function w3wControlInit() {
     COPO.maps.w3w = new L.Control.w3w({ apikey: '4AQOB5CT', position: 'topright' });
     COPO.maps.w3w.addTo(map);
+  },
+
+  pathControlInit: function pathControlInit() {
+    var pathControl = L.Control.extend({
+      options: {
+        position: 'topleft'
+      },
+      onAdd: function onAdd(map) {
+        var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+        container.innerHTML = '\n        <a class="leaflet-control-path leaflet-bar-path" href="#" onclick="return false;" title="View path">\n          <i class="material-icons path-icon">timeline</i>\n        </a>\n        ';
+        container.onclick = function () {
+          COPO.maps.pathControlClick();
+        };
+        return container;
+      }
+    });
+    map.addControl(new pathControl());
+  },
+
+  mousePositionControlInit: function mousePositionControlInit() {
+    var mousePositionControl = L.Control.extend({
+      options: {
+        position: 'bottomleft'
+      },
+
+      onAdd: function onAdd(map) {
+        this.container = L.DomUtil.create('div', 'leaflet-control-mouseposition');
+        L.DomEvent.disableClickPropagation(this.container);
+        map.on('mousemove', this.onMouseMove, this);
+        this.container.innerHTML = 'Coordinates unavailable';
+        return this.container;
+      },
+
+      onRemove: function onRemove(map) {
+        map.off('mousemove', this.onMouseMove);
+      },
+
+      onMouseMove: function onMouseMove(e) {
+        var lng = e.latlng.lng.toFixed(6);
+        var lat = e.latlng.lat.toFixed(6);
+        var value = lng + ', ' + lat;
+        this.container.innerHTML = value;
+      }
+    });
+    COPO.maps.mousePositionControl = new mousePositionControl();
+    map.addControl(COPO.maps.mousePositionControl);
   },
 
   mapPinIcon: function mapPinIcon(public_id, color) {
@@ -42897,6 +42956,32 @@ window.COPO.maps = {
 
   centerMapOn: function centerMapOn(lat, lng) {
     map.setView(L.latLng(lat, lng), 18);
+  },
+
+  generatePath: function generatePath(checkins) {
+    var latLngs = checkins.map(function (checkin) {
+      return [checkin.lat, checkin.lng];
+    });
+    COPO.maps.checkinPath = L.polyline(latLngs, { color: 'red' });
+  },
+
+  refreshPath: function refreshPath(checkins) {
+    var path = COPO.maps.checkinPath;
+    COPO.maps.generatePath(checkins);
+    if (path && path._map) {
+      map.removeLayer(path);
+      COPO.maps.checkinPath.addTo(map);
+    }
+  },
+
+  pathControlClick: function pathControlClick() {
+    if (COPO.maps.checkinPath && COPO.maps.checkinPath._map) {
+      $('.path-icon').removeClass('path-active');
+      map.removeLayer(COPO.maps.checkinPath);
+    } else {
+      $('.path-icon').addClass('path-active');
+      COPO.maps.checkinPath.addTo(map);
+    }
   }
 };
 "use strict";
@@ -43549,60 +43634,93 @@ $(document).on('page:change', function() {
         getLocation();
       })
 
-      $('body').on('click', '.edit-lat', function (e) {
+      $('body').on('click', '.edit-coords', function (e) {
+        M.mousePositionControlInit();
         $(this).toggleClass('hide', true);
-        makeEditable($(this).prev('span'), handleEdited, 'lat');
-      });
-
-      $('body').on('click', '.edit-lng', function (e) {
-        $(this).toggleClass('hide', true);
-        makeEditable($(this).prev('span'), handleEdited, 'lng');
-      });
-
-      function makeEditable ($target, handler, type) {
+        var $target = $(this).prev('span');
         var original = $target.text();
         $target.attr('contenteditable', true);
         $target.focus();
         document.execCommand('selectAll', false, null);
-        $target.on('blur', function () {
-          handler(original, $target, type);
+        $('#map').addClass('crosshair');
+        map.on('click', function(e){
+          handleMapClick($target, e);
+        });
+        $('.leaflet-popup').on('click', function (e) {
+          if(e.target.className !== 'editable'){
+            handleCoordsEdited(original, $target);
+          }
         });
         $target.on('keydown', function (e) {
           if(e.which === 27 || e.which === 13 ) {
-            handler(original, $target, type);
+            handleCoordsEdited(original, $target);
           }
         });
-        return $target;
-      }
-
-      function handleEdited (original, $target, type) {
-        var newCoord = $target.text()
-        var newCoordFloat = parseFloat(newCoord)
-        if(newCoordFloat && Math.abs(newCoordFloat) < 180 && original !== newCoord) {
-          var url = $target.parents('span').attr('href');
-          var data = { checkin: {} }
-          data.checkin[type] = newCoord;
-          var request = $.ajax({
-            dataType: 'json',
-            url: url,
-            type: 'PUT',
-            data: data
+        COPO.maps.allMarkers.eachLayer(function(marker) {
+          marker.on('click', function(e) {
+            if($target.attr('contenteditable')==="true"){
+              removeEditable($target);
+            }
           });
-          request
-          .done(function (response) {
-            _.find(gon.checkins, _.matchesProperty('id',response.id))[type] = parseFloat(newCoord);
-            M.queueRefresh(gon.checkins);
-          })
-          .fail(function (error) {
+        });
+      });
+
+      function handleCoordsEdited(original, $target) {
+        var newCoords = $target.text();
+        var coords = newCoords.split(",");
+        if(coords.length === 2 && original !== newCoords){
+          if(Math.abs(coords[0]) < 180 && Math.abs(coords[1]) < 180){
+            var url = $target.parents('span').attr('href');
+            var data = { checkin: { lat: parseFloat(coords[0]), lng: parseFloat(coords[1])} }
+            postCheckin(url, data);
+          } else {
             $target.text(original);
-          })
+          }
         } else {
           $target.text(original);
         }
+        removeEditable($target);
+      }
+
+      function handleMapClick($target, e) {
+        var r = confirm("Are you sure? Click ok to reposition check-in to new coordinates (" + e.latlng.lat.toFixed(6) + ", " + e.latlng.lng.toFixed(6) + ").");
+        if (r === true) {
+          var url = $target.parents('span').attr('href');
+          var data = { checkin: {lat: e.latlng.lat, lng: e.latlng.lng} }
+          postCheckin(url, data);
+        }
+        removeEditable($target);
+      }
+
+      function postCheckin(url, data){
+        $.ajax({
+          dataType: 'json',
+          url: url,
+          type: 'PUT',
+          data: data
+        })
+        .done(function (response) {
+          checkin = _.find(gon.checkins, _.matchesProperty('id',response.id));
+          checkin.lat = response.lat;
+          checkin.lng = response.lng;
+          checkin.edited = response.edited;
+          checkin.lastEdited = true;
+          M.refreshMarkers(gon.checkins);
+        })
+        .fail(function (error) {
+          console.log('Error updating checkin');
+        })
+      }
+
+      function removeEditable($target){
+        map.removeControl(COPO.maps.mousePositionControl);
+        map.off('click');
+        $('#map').removeClass('crosshair');
+        $target.parents('.leaflet-popup').off('click');
+        $target.off('keydown');
         $target.attr('contenteditable', false);
         $target.next().toggleClass('hide', false);
         U.deselect();
-        $target.off();
       }
     }
 

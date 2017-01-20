@@ -18,6 +18,7 @@ window.COPO.maps = {
 
   initMarkers(checkins, total) {
     map.once('ready', function() {
+      COPO.maps.generatePath(checkins);
       COPO.maps.renderAllMarkers(checkins);
       COPO.maps.bindMarkerListeners(checkins);
       COPO.maps.loadAllCheckins(checkins, total);
@@ -87,6 +88,7 @@ window.COPO.maps = {
   refreshMarkers(checkins) {
     map.removeEventListener('popupclose');
     map.removeEventListener('zoomstart');
+
     map.closePopup();
     if(COPO.maps.markers){
       map.removeLayer(COPO.maps.markers);
@@ -94,8 +96,10 @@ window.COPO.maps = {
     if(COPO.maps.last){
       map.removeLayer(COPO.maps.last);
     }
+    COPO.maps.refreshPath(checkins);
     COPO.maps.renderAllMarkers(checkins);
     COPO.maps.bindMarkerListeners(checkins);
+    COPO.maps.clickLastEditedMarker();
     COPO.maps.queueCalled = false;
   },
 
@@ -125,6 +129,15 @@ window.COPO.maps = {
   bindMarkerListeners(checkins) {
     COPO.maps.allMarkers.eachLayer(function(marker) {
       COPO.maps.markerClickListener(checkins, marker);
+    })
+  },
+
+  openLastEditedMarker(){
+    COPO.maps.allMarkers.eachLayer(function(marker) {
+      if(marker.options.checkin.lastEdited){
+        marker.fire('click');
+        marker.options.checkin.lastEdited = false;
+      }
     })
   },
 
@@ -174,8 +187,8 @@ window.COPO.maps = {
         return `<a href="${window.location.pathname}/show_device?device_id=${checkin.device_id}" title="Device map">${checkin.device}</a>`
       }
     }
-    checkinTemp.inlineLat = COPO.utility.updateCheckinSpan(checkin, 'lat');
-    checkinTemp.inlineLng = COPO.utility.updateCheckinSpan(checkin, 'lng');
+    checkinTemp.edited = checkin.edited ? '(edited)' : ''
+    checkinTemp.inlineCoords = COPO.utility.updateCheckinSpan(checkin);
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
     var template = $('#markerPopupTmpl').html();
@@ -185,7 +198,7 @@ window.COPO.maps = {
   initControls(controls) {
     // When giving custom controls, I recommend adding layers last
     // This is because it expands downwards
-    controls = controls || ['geocoder', 'locate', 'w3w', 'fullscreen', 'layers'];
+    controls = controls || ['geocoder', 'locate', 'w3w', 'fullscreen', 'path', 'layers'];
     controls.forEach((control) => {
       let fn = this[control + 'ControlInit']
       if (typeof(fn) === 'function') {
@@ -233,6 +246,56 @@ window.COPO.maps = {
   w3wControlInit() {
     COPO.maps.w3w = new L.Control.w3w({apikey: '4AQOB5CT', position: 'topright'});
     COPO.maps.w3w.addTo(map);
+  },
+
+  pathControlInit() {
+    const pathControl = L.Control.extend({
+      options: {
+        position: 'topleft' 
+      },
+      onAdd: (map) => {
+        var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+        container.innerHTML = `
+        <a class="leaflet-control-path leaflet-bar-path" href="#" onclick="return false;" title="View path">
+          <i class="material-icons path-icon">timeline</i>
+        </a>
+        `
+        container.onclick = function(){
+          COPO.maps.pathControlClick();
+        }
+        return container;
+      },
+    });
+    map.addControl(new pathControl());
+  },
+
+  mousePositionControlInit(){
+    const mousePositionControl = L.Control.extend({
+      options: {
+        position: 'bottomleft',
+      },
+
+      onAdd: function(map) {
+        this.container = L.DomUtil.create('div', 'leaflet-control-mouseposition');
+        L.DomEvent.disableClickPropagation(this.container);
+        map.on('mousemove', this.onMouseMove, this);
+        this.container.innerHTML = 'Coordinates unavailable';
+        return this.container;
+      },
+
+      onRemove: function(map) {
+        map.off('mousemove', this.onMouseMove)
+      },
+
+      onMouseMove: function(e) {
+        let lng = e.latlng.lng.toFixed(6)
+        let lat = e.latlng.lat.toFixed(6)
+        let value = `${lng}, ${lat}`;
+        this.container.innerHTML = value;
+      }
+    });
+    COPO.maps.mousePositionControl = new mousePositionControl();
+    map.addControl(COPO.maps.mousePositionControl);
   },
 
   mapPinIcon(public_id, color) {
@@ -358,5 +421,29 @@ window.COPO.maps = {
 
   centerMapOn(lat, lng){
     map.setView(L.latLng(lat, lng), 18);
-  }
+  },
+
+  generatePath(checkins){
+    const latLngs = checkins.map((checkin) => [checkin.lat, checkin.lng]);
+    COPO.maps.checkinPath = L.polyline(latLngs, {color: 'red'});
+  },
+
+  refreshPath(checkins) {
+    const path = COPO.maps.checkinPath;
+    COPO.maps.generatePath(checkins);
+    if(path && path._map){
+      map.removeLayer(path);
+      COPO.maps.checkinPath.addTo(map);
+    }  
+  },
+
+  pathControlClick() {
+    if(COPO.maps.checkinPath && COPO.maps.checkinPath._map){
+      $('.path-icon').removeClass('path-active')
+      map.removeLayer(COPO.maps.checkinPath);
+    } else {
+      $('.path-icon').addClass('path-active')
+      COPO.maps.checkinPath.addTo(map);
+    }
+  },
 }

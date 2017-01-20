@@ -139,7 +139,7 @@ window.COPO.maps = {
         marker.options.checkin.lastEdited = false;
       }
     })
-  }
+  },
 
   markerClickListener(checkins, marker) {
     marker.on('click', function(e) {
