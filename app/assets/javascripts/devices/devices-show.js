@@ -81,7 +81,7 @@ $(document).on('page:change', function() {
           if(Math.abs(coords[0]) < 180 && Math.abs(coords[1]) < 180){
             var url = $target.parents('span').attr('href');
             var data = { checkin: { lat: parseFloat(coords[0]), lng: parseFloat(coords[1])} }
-            postCheckin(url, data);
+            putUpdateCheckin(url, data);
           } else {
             $target.text(original);
           }
@@ -96,12 +96,12 @@ $(document).on('page:change', function() {
         if (r === true) {
           var url = $target.parents('span').attr('href');
           var data = { checkin: {lat: e.latlng.lat, lng: e.latlng.lng} }
-          postCheckin(url, data);
+          putUpdateCheckin(url, data);
         }
         removeEditable($target);
       }
 
-      function postCheckin(url, data){
+      function putUpdateCheckin(url, data){
         $.ajax({
           dataType: 'json',
           url: url,
