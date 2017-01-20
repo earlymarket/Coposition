@@ -243,7 +243,7 @@ window.COPO.maps = {
       options: {
         position: 'topleft' 
       },
-      onAdd: function (map) {
+      onAdd: (map) => {
         var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
         container.innerHTML = `
         <a class="leaflet-control-path leaflet-bar-path" href="#" onclick="return false;" title="View path">
@@ -265,23 +265,23 @@ window.COPO.maps = {
         position: 'bottomleft',
       },
 
-      onAdd: function (map) {
-        this._container = L.DomUtil.create('div', 'leaflet-control-mouseposition');
-        L.DomEvent.disableClickPropagation(this._container);
-        map.on('mousemove', this._onMouseMove, this);
-        this._container.innerHTML = '';
-        return this._container;
+      onAdd: function(map) {
+        this.container = L.DomUtil.create('div', 'leaflet-control-mouseposition');
+        L.DomEvent.disableClickPropagation(this.container);
+        map.on('mousemove', this.onMouseMove, this);
+        this.container.innerHTML = 'Coordinates unavailable';
+        return this.container;
       },
 
-      onRemove: function (map) {
-        map.off('mousemove', this._onMouseMove)
+      onRemove: function(map) {
+        map.off('mousemove', this.onMouseMove)
       },
 
-      _onMouseMove: function (e) {
-        var lng = e.latlng.lng.toFixed(6)
-        var lat = e.latlng.lat.toFixed(6)
-        var value = lng + ',' + lat;
-        this._container.innerHTML = value;
+      onMouseMove: function(e) {
+        let lng = e.latlng.lng.toFixed(6)
+        let lat = e.latlng.lat.toFixed(6)
+        let value = `${lng}, ${lat}`;
+        this.container.innerHTML = value;
       }
     });
     COPO.maps.mousePositionControl = new mousePositionControl();
