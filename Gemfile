@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.3.0'
+ruby '2.3.1'
 
 gem 'rename'
 gem 'rails', '5.0.0'
@@ -35,6 +35,8 @@ gem 'sprockets', '>= 3.0.0'
 gem 'sprockets-es6'
 gem 'bower-rails', '~> 0.10.0'
 gem 'gpx'
+gem 'activeadmin', github: 'activeadmin/activeadmin'
+gem 'inherited_resources', github: 'activeadmin/inherited_resources'
 
 group :production do
   gem 'puma'
@@ -52,6 +54,7 @@ group :development do
   gem 'byebug'
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
+  gem "foreman"
 end
 
 group :development, :test do
