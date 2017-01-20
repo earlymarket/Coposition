@@ -99,6 +99,7 @@ window.COPO.maps = {
     COPO.maps.refreshPath(checkins);
     COPO.maps.renderAllMarkers(checkins);
     COPO.maps.bindMarkerListeners(checkins);
+    COPO.maps.clickLastEditedMarker();
     COPO.maps.queueCalled = false;
   },
 
@@ -130,6 +131,15 @@ window.COPO.maps = {
       COPO.maps.markerClickListener(checkins, marker);
     })
   },
+
+  openLastEditedMarker(){
+    COPO.maps.allMarkers.eachLayer(function(marker) {
+      if(marker.options.checkin.lastEdited){
+        marker.fire('click');
+        marker.options.checkin.lastEdited = false;
+      }
+    })
+  }
 
   markerClickListener(checkins, marker) {
     marker.on('click', function(e) {
@@ -392,10 +402,6 @@ window.COPO.maps = {
       title: 'ID: ' + checkin.id,
       alt: 'ID: ' + checkin.id,
       checkin: checkin
-    }
-    if(checkin.lastEdited){
-      map.panTo([checkin.lat, checkin.lng]);
-      checkin.lastEdited = false;
     }
     markerOptions = $.extend({}, defaults, markerOptions)
     return L.marker([checkin.lat, checkin.lng], markerOptions)

@@ -81,7 +81,7 @@ $(document).on('page:change', function() {
           if(Math.abs(coords[0]) < 180 && Math.abs(coords[1]) < 180){
             var url = $target.parents('span').attr('href');
             var data = { checkin: { lat: parseFloat(coords[0]), lng: parseFloat(coords[1])} }
-            postCheckin(url, data, M.queueRefresh);
+            postCheckin(url, data);
           } else {
             $target.text(original);
           }
@@ -96,12 +96,12 @@ $(document).on('page:change', function() {
         if (r === true) {
           var url = $target.parents('span').attr('href');
           var data = { checkin: {lat: e.latlng.lat, lng: e.latlng.lng} }
-          postCheckin(url, data, M.refreshMarkers);
+          postCheckin(url, data);
         }
         removeEditable($target);
       }
 
-      function postCheckin(url, data, success){
+      function postCheckin(url, data){
         $.ajax({
           dataType: 'json',
           url: url,
@@ -114,7 +114,7 @@ $(document).on('page:change', function() {
           checkin.lng = response.lng;
           checkin.edited = response.edited;
           checkin.lastEdited = true;
-          success(gon.checkins);
+          M.refreshMarkers(gon.checkins);
         })
         .fail(function (error) {
           console.log('Error updating checkin');
