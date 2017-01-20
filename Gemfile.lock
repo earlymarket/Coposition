@@ -461,8 +461,8 @@ DEPENDENCIES
   devise
   factory_girl_rails
   faker
-  friendly_id (~> 5.2.0)
   foreman
+  friendly_id (~> 5.2.0)
   geocoder
   gon (~> 6.1.0)
   gpx
