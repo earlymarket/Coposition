@@ -51,7 +51,7 @@ $(document).on('page:change', function() {
         $target.attr('contenteditable', true);
         $target.focus();
         document.execCommand('selectAll', false, null);
-        $('#map').css('cursor','crosshair');
+        $('#map').addClass('crosshair');
         map.on('click', function(e){
           handleMapClick($target, e);
         });
@@ -124,7 +124,7 @@ $(document).on('page:change', function() {
       function removeEditable($target){
         map.removeControl(COPO.maps.mousePositionControl);
         map.off('click');
-        $('#map').css('cursor','auto');
+        $('#map').removeClass('crosshair');
         $target.parents('.leaflet-popup').off('click');
         $target.off('keydown');
         $target.attr('contenteditable', false);
