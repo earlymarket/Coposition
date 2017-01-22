@@ -38,7 +38,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
   shared_context 'from copo app' do
     before do
       request.headers['X-Secret-App-Key'] = 'this-is-a-mobile-app'
-      checkin
+      checkin.reload
     end
   end
 
@@ -121,7 +121,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       it "should fetch the user's last device checkin with all attributes" do
         get :last, params: params
         expect(res_hash.first['id']).to be checkin.id
-        expect(res_hash.first.keys).to eq checkin.attributes.keys
+        expect(res_hash.first.keys).to match checkin.attributes.keys
       end
 
       it 'should geocode last checkin if type param provided' do
