@@ -1,5 +1,9 @@
-
 # Setup user/dev for example site
+developer = FactoryGirl.build :developer
+developer.company_name = 'Demo developer account'
+developer.api_key = Rails.application.secrets['mobile_app_api_key']
+developer.save!
+
 user = FactoryGirl.build :user
 user.username = 'coporulez'
 user.save!
@@ -10,8 +14,3 @@ user.save!
 
 device.checkins.create(lat: 51.588330, lng: -0.513069)
 device.save!
-
-developer = FactoryGirl.build :developer
-developer.save!
-developer.company_name = 'Demo developer account'
-developer.save!
