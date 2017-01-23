@@ -31,6 +31,10 @@ Then(/^I should have a published device$/) do
   expect(page).not_to have_selector('a[data-tooltip="Device sharing"] i.disabled-icon')
 end
 
+Then(/^I should have a cloaked device$/) do
+  expect(page).not_to have_selector('a[data-tooltip="Cloaking"] i.disabled-icon-simple')
+end
+
 Then(/^I should have a delayed device$/) do
   expect(page).not_to have_selector('a.modal-trigger i.disabled-icon')
 end
