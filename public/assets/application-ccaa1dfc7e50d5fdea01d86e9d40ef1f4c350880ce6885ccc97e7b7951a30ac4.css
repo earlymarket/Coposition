@@ -17119,7 +17119,7 @@ a[data-maitre-status]:hover {
 }
 /* line 83, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .crosshair {
-  cursor: url(/ic_location_searching_black_24dp_1x.png), auto;
+  cursor: url(/assets/location_searching-766b237168aa1c412dbf300f59a722ad25d65cef57e81c9df8b82cff655c599e.png), auto;
 }
 /* line 87, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .leaflet-container .leaflet-control-mouseposition {

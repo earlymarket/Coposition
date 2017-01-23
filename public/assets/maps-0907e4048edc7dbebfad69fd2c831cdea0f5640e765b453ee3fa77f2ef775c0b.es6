@@ -132,7 +132,7 @@ window.COPO.maps = {
     })
   },
 
-  openLastEditedMarker(){
+  clickLastEditedMarker(){
     COPO.maps.allMarkers.eachLayer(function(marker) {
       if(marker.options.checkin.lastEdited){
         marker.fire('click');
