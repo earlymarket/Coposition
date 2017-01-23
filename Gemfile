@@ -48,6 +48,8 @@ end
 # gem 'capistrano-rails', group: :development
 
 group :development do
+  gem "brakeman", require: false
+  gem "bundler-audit", require: false
   gem 'derailed'
   gem 'guard-livereload', '~> 2.4', require: false
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
