@@ -14,6 +14,14 @@ $('#mins').val('<%= @device.delayed %>');
 var publish = $('#publishedButton<%=@device.id%>');
 publish.html("<%=j devices_shared_icon(@device)%>");
 
+var cloak = $('#cloakedButton<%=@device.id%>');
+cloak.html("<%=j devices_cloaked_icon(@device.cloaked)%>");
+<% if @device.cloaked %>
+  cloak.removeData('confirm').removeAttr('data-confirm')
+<% else %>
+  cloak.data('confirm', "Are you sure? Cloaking a device will hide it and all of it's check-ins from all of your apps and friends")
+<% end %>
+
 var link = $('#sharedLink<%=@device.id%>');
 link.html("<%=j devices_shared_link(@device)%>");
 

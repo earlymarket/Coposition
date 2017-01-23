@@ -25,9 +25,9 @@ module DevicesHelper
 
   def devices_shared_icon(device)
     if device.published?
-      '<i class="material-icons">visibility</i>'.html_safe
+      '<i class="material-icons">public</i>'.html_safe
     else
-      '<i class="material-icons disabled-icon">visibility</i>'.html_safe
+      '<i class="material-icons disabled-icon">public</i>'.html_safe
     end
   end
 
@@ -48,10 +48,10 @@ module DevicesHelper
   end
 
   def devices_cloaked_icon(value)
-    if device.cloaked?
-      '<i class="material-icons">do_not_disturb</i>'.html_safe
+    if value
+      '<i class="material-icons">visibility_off</i>'.html_safe
     else
-      '<i class="material-icons disabled-icon-simple ">do_not_disturb</i>'.html_safe
+      '<i class="material-icons disabled-icon-simple">visibility_off</i>'.html_safe
     end
   end
 

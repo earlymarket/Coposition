@@ -16,7 +16,7 @@ module Users
     end
 
     def show
-      @devices = @friend.devices.ordered_by_checkins.paginate(page: @params[:page], per_page: 5)
+      @devices = @friend.devices.where(cloaked: false).ordered_by_checkins.paginate(page: @params[:page], per_page: 5)
     end
 
     def show_device
