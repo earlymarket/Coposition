@@ -18,6 +18,7 @@ window.COPO.maps = {
 
   initMarkers(checkins, total) {
     map.once('ready', function() {
+      COPO.maps.generatePath(checkins);
       COPO.maps.renderAllMarkers(checkins);
       COPO.maps.bindMarkerListeners(checkins);
       COPO.maps.loadAllCheckins(checkins, total);
@@ -87,6 +88,7 @@ window.COPO.maps = {
   refreshMarkers(checkins) {
     map.removeEventListener('popupclose');
     map.removeEventListener('zoomstart');
+
     map.closePopup();
     if(COPO.maps.markers){
       map.removeLayer(COPO.maps.markers);
@@ -94,6 +96,7 @@ window.COPO.maps = {
     if(COPO.maps.last){
       map.removeLayer(COPO.maps.last);
     }
+    COPO.maps.refreshPath(checkins);
     COPO.maps.renderAllMarkers(checkins);
     COPO.maps.bindMarkerListeners(checkins);
     COPO.maps.queueCalled = false;
@@ -174,6 +177,7 @@ window.COPO.maps = {
         return `<a href="${window.location.pathname}/show_device?device_id=${checkin.device_id}" title="Device map">${checkin.device}</a>`
       }
     }
+    checkinTemp.edited = checkin.edited ? '(edited)' : ''
     checkinTemp.inlineLat = COPO.utility.updateCheckinSpan(checkin, 'lat');
     checkinTemp.inlineLng = COPO.utility.updateCheckinSpan(checkin, 'lng');
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
@@ -185,7 +189,7 @@ window.COPO.maps = {
   initControls(controls) {
     // When giving custom controls, I recommend adding layers last
     // This is because it expands downwards
-    controls = controls || ['geocoder', 'locate', 'w3w', 'fullscreen', 'layers'];
+    controls = controls || ['geocoder', 'locate', 'w3w', 'fullscreen', 'path', 'layers'];
     controls.forEach((control) => {
       let fn = this[control + 'ControlInit']
       if (typeof(fn) === 'function') {
@@ -233,6 +237,27 @@ window.COPO.maps = {
   w3wControlInit() {
     COPO.maps.w3w = new L.Control.w3w({apikey: '4AQOB5CT', position: 'topright'});
     COPO.maps.w3w.addTo(map);
+  },
+
+  pathControlInit() {
+    const pathControl = L.Control.extend({
+      options: {
+        position: 'topleft' 
+      },
+      onAdd: function (map) {
+        var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+        container.innerHTML = `
+        <a class="leaflet-control-path leaflet-bar-path" href="#" onclick="return false;" title="View path">
+          <i class="material-icons path-icon">timeline</i>
+        </a>
+        `
+        container.onclick = function(){
+          COPO.maps.pathControlClick();
+        }
+        return container;
+      },
+    });
+    map.addControl(new pathControl());
   },
 
   mapPinIcon(public_id, color) {
@@ -340,6 +365,10 @@ window.COPO.maps = {
       alt: 'ID: ' + checkin.id,
       checkin: checkin
     }
+    if(checkin.lastEdited){
+      map.panTo([checkin.lat, checkin.lng]);
+      checkin.lastEdited = false;
+    }
     markerOptions = $.extend({}, defaults, markerOptions)
     return L.marker([checkin.lat, checkin.lng], markerOptions)
   },
@@ -358,5 +387,29 @@ window.COPO.maps = {
 
   centerMapOn(lat, lng){
     map.setView(L.latLng(lat, lng), 18);
-  }
+  },
+
+  generatePath(checkins){
+    const latLngs = checkins.map((checkin) => [checkin.lat, checkin.lng]);
+    COPO.maps.checkinPath = L.polyline(latLngs, {color: 'red'});
+  },
+
+  refreshPath(checkins) {
+    const path = COPO.maps.checkinPath;
+    COPO.maps.generatePath(checkins);
+    if(path && path._map){
+      map.removeLayer(path);
+      COPO.maps.checkinPath.addTo(map);
+    }  
+  },
+
+  pathControlClick() {
+    if(COPO.maps.checkinPath && COPO.maps.checkinPath._map){
+      $('.path-icon').removeClass('path-active')
+      map.removeLayer(COPO.maps.checkinPath);
+    } else {
+      $('.path-icon').addClass('path-active')
+      COPO.maps.checkinPath.addTo(map);
+    }
+  },
 }

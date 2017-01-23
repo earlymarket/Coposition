@@ -8,10 +8,18 @@ Given(/^A user sends me a friend request$/) do
   Approval.link(user, @me, 'User')
 end
 
-Then(/^I should have an approved (?:app|friend)$/) do
+Then(/^I should see an approved (?:app|friend)$/) do
   expect(page).to have_selector('div.card-panel', count: 1)
 end
 
-Then(/^I should not have any approved (?:apps|friends)$/) do
-  expect(page).to have_selector('div.card-panel', count: 0)
+Then(/^I should not see any approved (?:apps|friends)$/) do
+  expect(page).not_to have_selector('div.card-panel')
+end
+
+Then(/^I should see an approval request$/) do
+  expect(page).to have_selector('div.collection-item')
+end
+
+Then(/^I should not see any approval requests$/) do
+  expect(page).not_to have_selector('div.collection-item')
 end

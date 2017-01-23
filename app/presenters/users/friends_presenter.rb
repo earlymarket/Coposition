@@ -10,7 +10,7 @@ module Users
 
     def initialize(user, params, action)
       @user = user
-      @friend = User.friendly.find(params[:id])
+      @friend = User.find(params[:id])
       @params = params
       send action
     end

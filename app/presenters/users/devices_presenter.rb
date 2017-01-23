@@ -31,7 +31,7 @@ module Users
 
     def shared
       @device = Device.find(@params[:id])
-      @checkin = @device.checkins.before(@device.delayed.to_i.minutes.ago).first
+      @checkin = @device.checkins.before(@device.delayed.to_i.minutes.ago).first.reverse_geocode!
     end
 
     def info
@@ -83,7 +83,7 @@ module Users
 
     def show_checkins
       @device.checkins.paginate(page: 1, per_page: 1000)
-             .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city)
+             .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :edited)
     end
   end
 end

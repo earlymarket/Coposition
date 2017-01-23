@@ -41,7 +41,7 @@ COPO.utility = {
   },
 
   updateCheckinSpan(checkin, type) {
-    return $('<span href="' + window.location.pathname + '/checkins/' + checkin.id + '"><span class="editable">' + checkin[type] + '</span><i class="material-icons grey-text edit-' + type + '">mode_edit</i>&nbsp;</span>').prop('outerHTML')
+    return $('<span href="' + window.location.pathname + '/checkins/' + checkin.id + '"><span class="editable">' + checkin[type].toFixed(6) + '</span><i class="material-icons grey-text edit-' + type + '">mode_edit</i>&nbsp;</span>').prop('outerHTML')
   },
 
   geocodeCheckinLink(checkin) {
