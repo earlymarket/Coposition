@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '2.3.1'
 
 gem 'rename'
-gem 'rails', '5.0.0'
+gem 'rails', '5.0.1'
 gem 'pg'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
@@ -35,8 +35,8 @@ gem 'sprockets', '>= 3.0.0'
 gem 'sprockets-es6'
 gem 'bower-rails', '~> 0.10.0'
 gem 'gpx'
-gem 'activeadmin', github: 'activeadmin/activeadmin'
-gem 'inherited_resources', github: 'activeadmin/inherited_resources'
+gem "activeadmin", git: "https://github.com/activeadmin/activeadmin"
+gem "inherited_resources", git: "https://github.com/activeadmin/inherited_resources"
 
 group :production do
   gem 'puma'

@@ -43,7 +43,7 @@ module DevicesHelper
     output = text_field_tag(nil, link, class: 'linkbox', id: linkbox_id)
     output << content_tag(:i, 'assignment', class: 'material-icons tooltipped clip_button',
                                             data: {
-                                              'clipboard-target': "#linkbox#{device.id}",
+                                              'clipboard-target': linkbox_id,
                                               tooltip: 'Click to copy', position: 'right'
                                             })
     output
