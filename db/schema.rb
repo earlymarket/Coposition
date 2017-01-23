@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170119104140) do
+ActiveRecord::Schema.define(version: 20170120161207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -127,6 +127,7 @@ ActiveRecord::Schema.define(version: 20170119104140) do
     t.integer "delayed"
     t.string  "alias"
     t.boolean "published", default: false
+    t.boolean "cloaked",   default: false
     t.index ["uuid"], name: "index_devices_on_uuid", using: :btree
   end
 
