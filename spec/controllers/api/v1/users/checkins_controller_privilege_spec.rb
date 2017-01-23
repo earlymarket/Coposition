@@ -27,9 +27,16 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
   context 'with 3 checkins: 2 old, 1 new, on 2 devices' do
     describe 'GET #last/#index' do
-      context 'with privilege set to disallowed and bypass_delay set to false' do
+      context 'with device cloaked' do
         it 'should return 0 checkins' do
           # call_checkin_action(method, no. of checkins returned, first checkin)
+          Device.all.each { |device| device.update! cloaked: true }
+          %w(last index).each { |method| call_checkin_action(method, 0, nil) }
+        end
+      end
+
+      context 'with privilege set to disallowed and bypass_delay set to false' do
+        it 'should return 0 checkins' do
           Device.all.each { |device| update_permissions(device, 'disallowed', false) }
           %w(last index).each { |method| call_checkin_action(method, 0, nil) }
         end

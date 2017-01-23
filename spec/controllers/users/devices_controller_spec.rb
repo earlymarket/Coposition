@@ -232,6 +232,15 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(device.reload.name).to_not eq 'Computer'
       expect(response.body).to match 'already been taken'
     end
+
+    it 'should switch cloaked status' do
+      expect(device.cloaked?).to be false
+      request.accept = 'text/javascript'
+      put :update, params: params.merge(cloaked: true)
+      expect(flash[:notice]).to match 'Device cloaking is'
+      device.reload
+      expect(device.cloaked?).to be true
+    end
   end
 
   describe 'DELETE #destroy' do

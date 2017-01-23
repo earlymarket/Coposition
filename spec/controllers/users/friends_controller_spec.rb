@@ -37,6 +37,14 @@ RSpec.describe Users::FriendsController, type: :controller do
       end
     end
 
+    context 'device cloaked' do
+      it 'should render no checkins' do
+        device.update! cloaked: true
+        get :show, params: params
+        expect((assigns :presenter).index_gon[:checkins].size).to eq 0
+      end
+    end
+
     context 'permission complete, bypass delay false, bypass fogging false' do
       it 'should render one historic fogged checkin' do
         device.permission_for(user).update! privilege: 'complete', bypass_delay: false, bypass_fogging: false
@@ -73,6 +81,14 @@ RSpec.describe Users::FriendsController, type: :controller do
     context 'permission disallowed' do
       it 'should render no checkins' do
         device.permission_for(user).update! privilege: 'disallowed'
+        get :show_device, params: params
+        expect((assigns :presenter).show_device_gon[:checkins].size).to eq 0
+      end
+    end
+
+    context 'device cloaked' do
+      it 'should render no checkins' do
+        device.update! cloaked: true
         get :show_device, params: params
         expect((assigns :presenter).show_device_gon[:checkins].size).to eq 0
       end
