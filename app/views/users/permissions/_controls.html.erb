@@ -1,11 +1,25 @@
 <div class="col s5 permission<%=permissions_control_class(permissionable)%>">
-  <div class="<%=permissions_switch_class(permissionable)%> switch" data-id=<%=permissionable.id%> data-attribute="privilege" data-switchtype="disallowed">
+  <div class='row'>
+    <div class="<%=permissions_switch_class(permissionable)%> radio col" data-id=<%=permissionable.id%> data-attribute="privilege" data-switchtype="disallowed">
+      <%= radio_button_tag permissionable.id, 'disallowed', permissions_check_box_value(permissionable, 'disallowed'), id: permissions_label_id(permissionable, 'disallowed') %>
+      <label id="<%=permissions_label_id(permissionable, 'disallowed')%>" for="<%=permissions_label_id(permissionable, 'disallowed')%>">Disable <%= permissions_for_all(permissionable)%></label>
+    </div>
+    <div class="<%=permissions_switch_class(permissionable)%> radio col" data-id=<%=permissionable.id%> data-attribute="privilege" data-switchtype="last_only">
+      <%= radio_button_tag permissionable.id, 'last_only', permissions_check_box_value(permissionable, 'last_only'), id: permissions_label_id(permissionable, 'last_only') %>
+      <label id="<%=permissions_label_id(permissionable, 'last_only')%>" for="<%=permissions_label_id(permissionable, 'last_only')%>">Last <%= permissions_for_all(permissionable)%></label>
+    </div>
+    <div class="<%=permissions_switch_class(permissionable)%> radio col" data-id=<%=permissionable.id%> data-attribute="privilege" data-switchtype="complete">
+      <%= radio_button_tag permissionable.id, 'complete', permissions_check_box_value(permissionable, 'complete'), id: permissions_label_id(permissionable, 'complete')  %>
+      <label id="<%=permissions_label_id(permissionable, 'complete')%>" for="<%=permissions_label_id(permissionable, 'complete')%>">Full history <%= permissions_for_all(permissionable)%></label>
+    </div>
+  </div>
+  <!-- <div class="<%=permissions_switch_class(permissionable)%> switch" data-id=<%=permissionable.id%> data-attribute="privilege" data-switchtype="disallowed">
     <label id="<%=permissions_label_id(permissionable, 'disallowed')%>">
       <%= check_box_tag 'privilege','', permissions_check_box_value(permissionable, 'disallowed') %>
       <span class="lever"></span>
       Disable access<%= permissions_for_all(permissionable) %>
     </label>
-  </div>
+  </div> -->
   <div class="<%=permissions_switch_class(permissionable)%> switch disable" data-id=<%=permissionable.id%> data-attribute="bypass_fogging" data-switchtype="bypass_fogging">
     <label id="<%=permissions_label_id(permissionable, 'bypass-fogging')%>">
       <%= check_box_tag 'bypass_fogging','', permissions_check_box_value(permissionable, 'bypass_fogging') %>
@@ -20,11 +34,12 @@
       Bypass Delay<%= permissions_for_all(permissionable) %>
     </label>
   </div>
-  <div class="<%=permissions_switch_class(permissionable)%> switch disable" data-id=<%=permissionable.id%> data-attribute="privilege" data-switchtype="last_only">
+  <!-- <div class="<%=permissions_switch_class(permissionable)%> switch disable" data-id=<%=permissionable.id%> data-attribute="privilege" data-switchtype="last_only">
     <label id="<%=permissions_label_id(permissionable, 'last-only')%>">
       <%= check_box_tag 'last_only','', permissions_check_box_value(permissionable, 'complete') %>
       <span class="lever"></span>
       Last checkin only/Full history<%= permissions_for_all(permissionable) %>
     </label>
-  </div>
+  </div> -->
 </div>
+

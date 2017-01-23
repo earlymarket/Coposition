@@ -17,7 +17,7 @@ window.COPO.permissions = {
     $('[data-switchtype=disallowed].permission-switch').each(function(){
       const P_SWITCH = new PermissionSwitch(user, $(this))
       if (P_SWITCH.checked){
-        P_SWITCH.changeDisableSwitches(true);
+        //P_SWITCH.changeDisableSwitches(true);
       } else {
         $('#accessIcon'+P_SWITCH.id).css('display', 'none');
       }
@@ -76,6 +76,8 @@ window.COPO.permissions = {
       $('#delayIcon'+permissionId).toggle();
     } else if (switchtype === 'disallowed'){
       $('#accessIcon'+permissionId).toggle();
-    }
+    } else if (switchtype === 'last_only' || switchtype === 'complete'){
+      $('#accessIcon'+permissionId).css('display', 'none');
+    } 
   }
 };
