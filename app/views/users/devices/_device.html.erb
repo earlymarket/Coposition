@@ -2,11 +2,11 @@
 
   <div class="col s12">
 
-    <span class="valign-wrapper">
+    <div class="valign-wrapper">
       <h4 class="device-name">
         <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>"><span class="editable"><%= device.name %></span> <i class="material-icons grey-text edit-button">mode_edit</i>&nbsp;</a>
       </h4>
-      <span class="right-align">
+      <div>
         <%= link_to info_user_device_path(current_user.url_id, device.id), class: 'right tooltipped', data: { tooltip: 'Additional device information' } do %>
           <i class='material-icons grey-text valign'>perm_device_info</i>
         <% end %>
@@ -16,8 +16,8 @@
 
           <div id="perm<%=device.id%>" class="modal">
             <div class="modal-content">
-              <h4>Permission control for <%=device.name%>
-              <a class="right tooltipped" target="_blank" data-tooltip='Permissions help' href="/help#permissions"><i class="material-icons">help</i></a></h4>
+                <h4><%=device.name%> permissions
+                <a class="right tooltipped" target="_blank" data-tooltip='Permissions help' href="/help#permissions"><i class="material-icons">help</i></a></h4>
               <ul class="permissions collection" data-device=<%=device.id%>>
                 <li class="collection-item row valign-wrapper  master-permissions">
                   <div class='valign col s6' id="<%=device.id%>-status">
@@ -45,8 +45,8 @@
             </div>
           </div>
         </div>
-      </span>
-    </span>
+      </div>
+    </div>
 
     <div>
       <a class="modal-trigger left tooltipped" id='delayButton<%=device.id%>' data-tooltip='Delay Settings' href="#delay<%=device.id%>"><%= devices_delay_icon(device.delayed)%></a>
