@@ -6,12 +6,12 @@
       <h4 class="inline-text">
         <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>"><span class="editable"><%= device.name %></span> <i class="material-icons grey-text edit-button">mode_edit</i>&nbsp;</a>
       </h4>
-      <%= link_to info_user_device_path(current_user.url_id, device.id), class: 'tooltipped', data: { tooltip: 'Additional device information' } do %>
-        <div class="grey-text valign-wrapper">&nbsp; Additional Info &nbsp;<i class='material-icons grey-text'>perm_device_info</i></div>
+      <%= link_to info_user_device_path(current_user.url_id, device.id), class: 'tooltipped device-control', data: { tooltip: 'Additional device information' } do %>
+        <div class="grey-text valign-wrapper">&nbsp; Device Info &nbsp;<i class='material-icons grey-text'>perm_device_info</i></div>
       <% end %>
 
       <% if device.developers.exists? || device.permitted_users.exists? %>
-        <a class="permissions-trigger tooltipped" data-tooltip='Detailed Permissions' href="#perm<%=device.id%>">
+        <a class="permissions-trigger device-control tooltipped" data-tooltip='Detailed Permissions' href="#perm<%=device.id%>">
           <div class="grey-text valign-wrapper">&nbsp; Permissions &nbsp;<i class="material-icons grey-text">lock</i></div>
         </a>
 
@@ -35,7 +35,7 @@
           </div>
         </div>
       <% end %>
-      <a class="modal-trigger right tooltipped" id='downloadButton<%=device.id%>' data-tooltip='Download checkins' href="#download<%=device.id%>">
+      <a class="modal-trigger device-control tooltipped" id='downloadButton<%=device.id%>' data-tooltip='Download checkins' href="#download<%=device.id%>">
         <div class="grey-text valign-wrapper">&nbsp; Download check-ins &nbsp;<i class="grey-text material-icons">file_download</i></div>
       </a>
 
@@ -53,7 +53,7 @@
     </div>
 
     <div class='valign-wrapper'>
-      <div class="grey-text valign-wrapper">&nbsp; Delay &nbsp;
+      <div class="grey-text device-control valign-wrapper">&nbsp; Delay &nbsp;
         <a class="modal-trigger tooltipped" id='delayButton<%=device.id%>' data-tooltip='Delay Settings' href="#delay<%=device.id%>"><%= devices_delay_icon(device.delayed)%></a>
       </div>
       <div id="delay<%=device.id%>" class="modal delay-modal">
@@ -63,13 +63,13 @@
           <div class='delay-slider' data-device=<%=device.id%>></div>
         </div>
       </div>
-      <div class="grey-text valign-wrapper">&nbsp; Fogging &nbsp;
+      <div class="grey-text device-control valign-wrapper">&nbsp; Fogging &nbsp;
         <%= link_to(fogged_icon(device.fogged), user_device_path(current_user.url_id, device.id), { method: :put, id:"fogButton#{device.id}", remote: true, class: 'tooltipped fogButton', data: { confirm: "Are you sure? Turning fogging off will allow you friends/apps to see your precise location", fogged: device.fogged?, tooltip:'Fogging' } })%>
       </div>
-      <div class="grey-text valign-wrapper">&nbsp; Cloaking &nbsp;
+      <div class="grey-text device-control valign-wrapper">&nbsp; Cloaking &nbsp;
         <%= link_to(devices_cloaked_icon(device.cloaked), user_device_path(current_user.url_id, device.id, cloaked: device.cloaked), { method: :put, id:"cloakedButton#{device.id}", remote: true, class: 'tooltipped cloakedButton', data: { confirm: "Are you sure? Cloaking a device will hide it and all of it's check-ins from all of your apps and friends", cloaked: device.cloaked?, tooltip:'Cloaking' } })%>
       </div>
-      <div class="grey-text valign-wrapper">&nbsp; Sharing &nbsp;
+      <div class="grey-text device-control valign-wrapper">&nbsp; Sharing &nbsp;
         <%= link_to(devices_shared_icon(device), user_device_path(current_user.url_id, device.id, published: device.published), { method: :put, id:"publishedButton#{device.id}", remote: true, class: 'tooltipped', data: { published: device.published?, tooltip:'Sharing' } })%>
       </div>
       <div class="valign-wrapper" id="sharedLink<%= device.id %>">

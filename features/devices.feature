@@ -31,7 +31,7 @@ Feature: Devices
           Then I should see "Device cloaking is on"
           And I should have a cloaked device
       When I click the link "cloud"
-        Then I should see a link that says "cloud_done"
+        Then I should see a link that says "cloud"
         And I should have an unfogged device
       When I click the link "timer"
       And I click the slider
