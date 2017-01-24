@@ -1,15 +1,11 @@
 .c-devices.a-index {
   .center-map {
-    color: $primary-color;
+    color: $primary-color-darker;
     cursor: pointer;
   }
 
   .editable {
-    color: $primary-color;
-  }
-
-  a {
-    color: $primary-color;
+    color: $primary-color-darker;
   }
 
   .inline-text {
@@ -42,6 +38,16 @@
   .card-panel {
     padding: 5px;
     margin: 0.25rem 0 0 0;
+  }
+
+  .enabled-icon {
+    color: $primary-color-darker;
+  }
+
+  .modal {
+    .enabled-icon {
+      color: black;
+    }
   }
 
   .disabled-icon {

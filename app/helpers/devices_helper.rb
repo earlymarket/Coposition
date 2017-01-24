@@ -17,7 +17,7 @@ module DevicesHelper
 
   def devices_delay_icon(value)
     if value
-      '<i class="material-icons">timer</i>'.html_safe
+      '<i class="material-icons enabled-icon">timer</i>'.html_safe
     else
       '<i class="material-icons disabled-icon">timer</i>'.html_safe
     end
@@ -25,7 +25,7 @@ module DevicesHelper
 
   def devices_shared_icon(device)
     if device.published?
-      '<i class="material-icons">public</i>'.html_safe
+      '<i class="material-icons enabled-icon">public</i>'.html_safe
     else
       '<i class="material-icons disabled-icon">public</i>'.html_safe
     end
@@ -49,7 +49,7 @@ module DevicesHelper
 
   def devices_cloaked_icon(value)
     if value
-      '<i class="material-icons">visibility_off</i>'.html_safe
+      '<i class="material-icons enabled-icon">visibility_off</i>'.html_safe
     else
       '<i class="material-icons disabled-icon">visibility_off</i>'.html_safe
     end
