@@ -10,7 +10,7 @@ if($list.children().length===1) {
   $list.append(`
     <% @presenter.permissions.each_with_index do |permission, i| %>
       <li class="collection-item row valign-wrapper">
-        <div class='valign col s5'>
+        <div class='valign col s4'>
         <% if @presenter.device.present? %>
           <%= permissible_title(permission.permissible) %>
         <% else %>

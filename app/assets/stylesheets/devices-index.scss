@@ -6,6 +6,11 @@
   .editable {
     color: $dark-text-color;
   }
+
+  .device-name {
+    display: inline;
+  }
+  
   .linkbox {
     width: auto;
     height: inherit;
