@@ -170,7 +170,7 @@ window.COPO.maps = {
       id: checkin.id,
       lat: checkin.lat.toFixed(6),
       lng: checkin.lng.toFixed(6),
-      created_at: (new Date(checkin.created_at)).toUTCString(),
+      created_at: moment(new Date(checkin.created_at)).format("ddd, Do MMM YYYY, HH:mm:ss") + ' (UTC+00:00)',
       address: address,
     };
 
@@ -201,41 +201,31 @@ window.COPO.maps = {
     let coords = [checkin.lat, checkin.lng];
     $.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${checkin.lat}, ${checkin.lng}&timestamp=${created_at}&key=AIzaSyCEjHZhLTdiy7jbRTDU3YADs8a1yXKTwqI`)
     .done((data) => {
-      if(data.status=='OK'){
-        let date = moment((created_at + data.rawOffset)*1000).format("ddd, Do MMM YYYY, HH:mm:ss");
-        let offsetStr = COPO.maps.formatOffset(data.rawOffset);
-        let local_date = `${date} (${data.timeZoneName}) ${offsetStr}`;
+      if(data.status === 'OK'){
+        let date = moment((created_at + data.rawOffset + data.dstOffset)*1000).format("ddd, Do MMM YYYY, HH:mm:ss");
+        let offsetStr = COPO.maps.formatOffset(parseInt(data.rawOffset) + data.dstOffset);
+        let local_date = `${date} (UTC${offsetStr})`;
         checkin.created_at = local_date;
-        $('#localTime').html(`Created at: ${local_date}`);
+        $('#localTime').html(`Created on: ${local_date}`);
       }
     });
   },
 
-  formatOffset(rawOffset){
-    let time = rawOffset/60;
-    let hour = Math.floor(time / 60);
-    let min = Math.abs(time % 60);
-    let minStr = `${min}`
-    let hrStr = "";
-    let offsetStr = "";
-    if (hour > 0 && hour < 10) {
-      hrStr = `+0${hour}`;
-    } else if (hour >= 10) {
-      hrStr = `+${hour}`;
-    } else if (hour < 0 && hour > -10) {
-      hrStr = `-0${Math.abs(hour)}`;
-    } else if (hour <= -10){
-      hrStr = `-${hour}`
-    } else {
-      hrStr = `${hour}`
-    }
-    if (min < 10) {
-      minStr = `0${time%60}`;
-    }
-    if(hour !== 0 || min !== 0){
-      offsetStr = `${hrStr}:${minStr}`
-    }
-    return offsetStr;
+  formatOffset(offset) {
+    // offset is an int that's the time offset in seconds from UTC
+    // normally this is composed of dstOffset + rawOffset
+    // formatOffset converts it to hours:mins format
+
+    // Nepal Standard Time is UTC+05:45. offset: 20700
+    // Newfoundland Standard Time is UTC−03:30: -12600
+
+    // converted and padded to give HH:MM
+    let offsetStr = [Math.floor(offset / 3600), (offset % 3600) / 60].map(digits => {
+      return COPO.utility.padStr('0', 2, Math.abs(digits));
+    }).join(':');
+
+    // prepend + or -
+    return offset < 0 ? '-' + offsetStr : '+' + offsetStr;
   },
 
   initControls(controls) {
@@ -294,7 +284,7 @@ window.COPO.maps = {
   pathControlInit() {
     const pathControl = L.Control.extend({
       options: {
-        position: 'topleft' 
+        position: 'topleft'
       },
       onAdd: (map) => {
         var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
@@ -477,7 +467,7 @@ window.COPO.maps = {
     if(path && path._map){
       map.removeLayer(path);
       COPO.maps.checkinPath.addTo(map);
-    }  
+    }
   },
 
   pathControlClick() {

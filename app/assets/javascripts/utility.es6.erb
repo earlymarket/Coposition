@@ -142,5 +142,11 @@ COPO.utility = {
     $('html, body').animate({
       scrollTop: $(selector).offset().top
     }, speed);
+  },
+
+  padStr(char, length, str) {
+    // leftpads str using char until it is at least length
+    const diff = parseInt(length) - String(str).length;
+    return diff > 0 ? String(char).repeat(diff) + str : str;
   }
 };
