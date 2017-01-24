@@ -38,6 +38,6 @@ module PermissionsHelper
   end
 
   def permissions_for_all(permissionable)
-    ' for all' unless permissionable.class == Permission
+    '' unless permissionable.class == Permission
   end
 end
