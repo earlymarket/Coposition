@@ -57,7 +57,7 @@ module DevicesHelper
 
   def devices_cloaked_info(value)
     if value
-      "<div class='inline grey-text'>This device is cloaked. No friends or apps can see it or its check-ins.</div>".html_safe 
+      "<div class='inline-text cloaked-info grey-text'>This device is cloaked. No friends or apps can see this device or its check-ins.</div>".html_safe 
     end
   end
 

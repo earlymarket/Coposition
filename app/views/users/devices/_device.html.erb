@@ -3,7 +3,7 @@
   <div class="col s12">
 
     <div class="valign-wrapper">
-      <h4 class="device-name">
+      <h4 class="inline-text">
         <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>"><span class="editable"><%= device.name %></span> <i class="material-icons grey-text edit-button">mode_edit</i>&nbsp;</a>
       </h4>
       <%= link_to info_user_device_path(current_user.url_id, device.id), class: 'tooltipped', data: { tooltip: 'Additional device information' } do %>
@@ -18,7 +18,7 @@
         <div id="perm<%=device.id%>" class="modal">
           <div class="modal-content">
             <div>
-              <h4 class="device-name" id='<%=device.id%>-status'><%=device.name%> 
+              <h4 class="inline-text" id='<%=device.id%>-status'><%=device.name%> 
                 <%= fogged_icon(device.fogged) %> <%= devices_delay_icon(device.delayed) %> <%= devices_cloaked_icon(device.cloaked) %> <%= devices_shared_icon(device) %>
               </h4>
               <%= devices_cloaked_info(device.cloaked) %>

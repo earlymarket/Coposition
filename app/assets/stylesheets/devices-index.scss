@@ -7,7 +7,7 @@
     color: $dark-text-color;
   }
 
-  .device-name {
+  .inline-text {
     display: inline;
   }
   
@@ -57,6 +57,10 @@
       left: 0;
       transform: rotate(45deg);
     }
+  }
+
+  .cloaked-info {
+    font-size: 14px;
   }
 
   .disabled-icon-dashed {
