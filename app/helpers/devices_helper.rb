@@ -55,6 +55,11 @@ module DevicesHelper
     end
   end
 
+  def devices_cloaked_info(value)
+    if value
+      "<div class='inline grey-text'>This device is cloaked. No friends or apps can see it or its check-ins.</div>".html_safe 
+    end
+  end
 
   def devices_config_rows(config)
     return '<tr><td><i>No additional config</i></td></tr>'.html_safe unless config.custom.present?
