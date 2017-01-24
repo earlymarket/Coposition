@@ -17,7 +17,7 @@
 
         <div id="perm<%=device.id%>" class="modal">
           <div class="modal-content">
-              <h4 id='<%=device.id%>-status'><%=device.name%> permissions 
+              <h4 id='<%=device.id%>-status'><%=device.name%> 
               <%= fogged_icon(device.fogged) %> <%= devices_delay_icon(device.delayed) %> <%= devices_cloaked_icon(device.cloaked) %> <%= devices_shared_icon(device) %>
               <a class="right tooltipped" target="_blank" data-tooltip='Permissions help' href="/help#permissions"><i class="material-icons">help</i></a></h4>
             <ul class="permissions collection" data-device=<%=device.id%>>
