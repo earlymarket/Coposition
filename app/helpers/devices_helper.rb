@@ -51,7 +51,7 @@ module DevicesHelper
     if value
       '<i class="material-icons">visibility_off</i>'.html_safe
     else
-      '<i class="material-icons disabled-icon-simple">visibility_off</i>'.html_safe
+      '<i class="material-icons disabled-icon">visibility_off</i>'.html_safe
     end
   end
 

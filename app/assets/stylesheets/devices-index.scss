@@ -39,7 +39,7 @@
     margin: 0.25rem 0 0 0;
   }
 
-  .disabled-icon-simple {
+  .disabled-icon {
     color: rgba(0,0,0,0.2);
   }
 
@@ -59,7 +59,7 @@
     }
   }
 
-  .disabled-icon {
+  .disabled-icon-dashed {
     color: rgba(0,0,0,0.2);
     position: relative;
     &:after {
