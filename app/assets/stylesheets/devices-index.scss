@@ -1,10 +1,15 @@
 .c-devices.a-index {
   .center-map {
-    color: $primary-color-darker;
+    color: $primary-color;
     cursor: pointer;
   }
+
   .editable {
-    color: $dark-text-color;
+    color: $primary-color;
+  }
+
+  a {
+    color: $primary-color;
   }
 
   .inline-text {
