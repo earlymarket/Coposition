@@ -25,7 +25,6 @@
                   </div>
                   <%= render partial: "users/permissions/controls", object: device, as: 'permissionable' %>
                 </li>
-
               </ul>
             </div>
           </div>
@@ -46,7 +45,7 @@
       </div>
     </div>
 
-    <div>
+    <div class='valign-wrapper'>
       <a class="modal-trigger left tooltipped" id='delayButton<%=device.id%>' data-tooltip='Delay Settings' href="#delay<%=device.id%>"><%= devices_delay_icon(device.delayed)%></a>
       <div id="delay<%=device.id%>" class="modal delay-modal">
         <div class="modal-content">
@@ -65,7 +64,6 @@
         <%= devices_shared_link(device) if device.published %>
       </div>
     </div>
-    <br/>
     <%= devices_last_checkin(device) %>
   </div>
 </div>
