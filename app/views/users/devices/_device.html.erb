@@ -6,6 +6,8 @@
       <h4 class="inline-text">
         <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>"><span class="editable underlined"><%= device.name %></span> <i class="material-icons grey-text edit-button">mode_edit</i>&nbsp;</a>
       </h4>
+    </div>
+    <div class="valign-wrapper">
       <%= link_to info_user_device_path(current_user.url_id, device.id), class: 'tooltipped device-control', data: { tooltip: 'Additional device information' } do %>
         <div class="grey-text valign-wrapper">&nbsp; Device Info &nbsp;<i class='material-icons grey-text'>perm_device_info</i></div>
       <% end %>
