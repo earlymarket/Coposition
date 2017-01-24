@@ -136,10 +136,11 @@ class Checkin < ApplicationRecord
 
   def self.to_csv
     attributes = Checkin.column_names
+
     CSV.generate(headers: true) do |csv|
       csv << attributes
-      all.each do |checkin|
-        csv << checkin.attributes.values_at(*attributes)
+      all.pluck(*attributes).each do |record|
+        csv << record
       end
     end
   end
@@ -181,21 +182,21 @@ class Checkin < ApplicationRecord
   end
 
   def self.to_gpx
-    gpx = GPX::GPXFile.new
-    route = GPX::Route.new
-    all.each do |checkin|
-      route.points << GPX::Point.new(elevation: 0, lat: checkin.lat, lon: checkin.lng, time: checkin.created_at)
-    end
-    gpx.routes << route
-    gpx.to_s
+    GPX::GPXFile.new.tap do |gpx|
+      gpx.routes << GPX::Route.new.tap do |route|
+        all.pluck(:lat, :lng, :created_at).each do |record|
+          route.points << GPX::Point.new(elevation: 0, lat: record[0], lon: record[1], time: record[2])
+        end
+      end
+    end.to_s
   end
 
   def self.to_geojson
-    geojson_checkins = []
-    all.each do |checkin|
-      geojson_checkins << GeojsonCheckin.new(checkin)
-    end
-    geojson_checkins.as_json
+    [].tap do |geojson_checkins|
+      all.pluck(:lat, :lng, :id).each do |record|
+        geojson_checkins << GeojsonCheckin.new(record)
+      end
+    end.as_json
   end
 
   def set_edited
