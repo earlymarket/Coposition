@@ -99,6 +99,7 @@ window.COPO.maps = {
     COPO.maps.refreshPath(checkins);
     COPO.maps.renderAllMarkers(checkins);
     COPO.maps.bindMarkerListeners(checkins);
+    COPO.maps.clickLastEditedMarker();
     COPO.maps.queueCalled = false;
   },
 
@@ -128,6 +129,15 @@ window.COPO.maps = {
   bindMarkerListeners(checkins) {
     COPO.maps.allMarkers.eachLayer(function(marker) {
       COPO.maps.markerClickListener(checkins, marker);
+    })
+  },
+
+  clickLastEditedMarker(){
+    COPO.maps.allMarkers.eachLayer(function(marker) {
+      if(marker.options.checkin.lastEdited){
+        marker.fire('click');
+        marker.options.checkin.lastEdited = false;
+      }
     })
   },
 
@@ -178,8 +188,7 @@ window.COPO.maps = {
       }
     }
     checkinTemp.edited = checkin.edited ? '(edited)' : ''
-    checkinTemp.inlineLat = COPO.utility.updateCheckinSpan(checkin, 'lat');
-    checkinTemp.inlineLng = COPO.utility.updateCheckinSpan(checkin, 'lng');
+    checkinTemp.inlineCoords = COPO.utility.updateCheckinSpan(checkin);
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
     var template = $('#markerPopupTmpl').html();
@@ -244,7 +253,7 @@ window.COPO.maps = {
       options: {
         position: 'topleft' 
       },
-      onAdd: function (map) {
+      onAdd: (map) => {
         var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
         container.innerHTML = `
         <a class="leaflet-control-path leaflet-bar-path" href="#" onclick="return false;" title="View path">
@@ -258,6 +267,35 @@ window.COPO.maps = {
       },
     });
     map.addControl(new pathControl());
+  },
+
+  mousePositionControlInit(){
+    const mousePositionControl = L.Control.extend({
+      options: {
+        position: 'bottomleft',
+      },
+
+      onAdd: function(map) {
+        this.container = L.DomUtil.create('div', 'leaflet-control-mouseposition');
+        L.DomEvent.disableClickPropagation(this.container);
+        map.on('mousemove', this.onMouseMove, this);
+        this.container.innerHTML = 'Coordinates unavailable';
+        return this.container;
+      },
+
+      onRemove: function(map) {
+        map.off('mousemove', this.onMouseMove)
+      },
+
+      onMouseMove: function(e) {
+        let lng = e.latlng.lng.toFixed(6)
+        let lat = e.latlng.lat.toFixed(6)
+        let value = `${lng}, ${lat}`;
+        this.container.innerHTML = value;
+      }
+    });
+    COPO.maps.mousePositionControl = new mousePositionControl();
+    map.addControl(COPO.maps.mousePositionControl);
   },
 
   mapPinIcon(public_id, color) {
@@ -364,10 +402,6 @@ window.COPO.maps = {
       title: 'ID: ' + checkin.id,
       alt: 'ID: ' + checkin.id,
       checkin: checkin
-    }
-    if(checkin.lastEdited){
-      map.panTo([checkin.lat, checkin.lng]);
-      checkin.lastEdited = false;
     }
     markerOptions = $.extend({}, defaults, markerOptions)
     return L.marker([checkin.lat, checkin.lng], markerOptions)
