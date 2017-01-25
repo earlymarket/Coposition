@@ -24,19 +24,19 @@ Then(/^I should not have a device$/) do
 end
 
 Then(/^I should have an unfogged device$/) do
-  expect(page).to have_selector('a[data-tooltip="Fogging"] i.disabled-icon', count: 1)
+  expect(page).to have_selector('a.fogButton i.disabled-icon', count: 1)
 end
 
 Then(/^I should have a published device$/) do
-  expect(page).not_to have_selector('a[data-tooltip="Device sharing"] i.disabled-icon')
+  expect(page).not_to have_selector('a.sharedButton i.disabled-icon')
 end
 
 Then(/^I should have a cloaked device$/) do
-  expect(page).not_to have_selector('a[data-tooltip="Cloaking"] i.disabled-icon')
+  expect(page).not_to have_selector('a.cloakedButton i.disabled-icon')
 end
 
 Then(/^I should have a delayed device$/) do
-  expect(page).not_to have_selector('a.modal-trigger i.disabled-icon')
+  expect(page).not_to have_selector('a.delayedButton i.disabled-icon')
 end
 
 Given(/^I click the slider$/) do
