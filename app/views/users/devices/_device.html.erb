@@ -1,8 +1,7 @@
-
 <div class="card">
   <div class="card-content">
     <span class="card-title">
-      <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>"><span class="editable underlined"><%= device.name %></span> <i class="material-icons grey-text edit-button">mode_edit</i>&nbsp;</a>
+      <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>"><span class="editable underlined"><%= device.name %></span> <i class="material-icons grey-text edit-button">mode_edit</i></a>
     </span>
     <div class="card-action">
       <div class="row">
@@ -13,12 +12,12 @@
             <% end %>
           </div>
           <div class="col s3">
-            <%= link_to user_device_path(current_user.url_id, device.id), { method: :put, id:"fogButton#{device.id}", remote: true, class: 'device-toggle fogButton', data: { confirm: "Are you sure? Turning fogging off will allow you friends/apps to see your precise location", fogged: device.fogged? } } do %>
-              <%=fogged_icon(device.fogged)%>Fogging
+            <%= link_to user_device_path(current_user.url_id, device.id), { method: :put, id:"fogButton#{device.id}", remote: true, class: 'device-toggle fogButton valign-wrapper', data: { confirm: "Are you sure? Turning fogging off will allow you friends/apps to see your precise location", fogged: device.fogged? } } do %>
+              <%=fogged_icon(device.fogged)%>&nbsp;Fogging
             <% end %>
           </div>
           <div class="col s3">
-            <a class="modal-trigger device-toggle" id='delayButton<%=device.id%>' data-tooltip='Delay Settings' href="#delay<%=device.id%>"><%= devices_delay_icon(device.delayed)%>Delay</a>
+            <a class="modal-trigger valign-wrapper device-toggle" id='delayButton<%=device.id%>' data-tooltip='Delay Settings' href="#delay<%=device.id%>"><%= devices_delay_icon(device.delayed)%>&nbsp;Delay</a>
           </div>
         </div>
       </div>
@@ -30,13 +29,13 @@
             </a>
           </div>
           <div class="col s3">
-            <%= link_to user_device_path(current_user.url_id, device.id, cloaked: device.cloaked), { method: :put, id:"cloakedButton#{device.id}", remote: true, class: 'tooltipped device-toggle cloakedButton', data: { confirm: "Are you sure? Cloaking a device will hide it and all of it's check-ins from all of your apps and friends", cloaked: device.cloaked?, tooltip:'Cloaking' } } do %>
-              <%=devices_cloaked_icon(device.cloaked)%>Cloaking
+            <%= link_to user_device_path(current_user.url_id, device.id, cloaked: device.cloaked), { method: :put, id:"cloakedButton#{device.id}", remote: true, class: 'device-toggle valign-wrapper cloakedButton', data: { confirm: "Are you sure? Cloaking a device will hide it and all of it's check-ins from all of your apps and friends", cloaked: device.cloaked? } } do %>
+              <%=devices_cloaked_icon(device.cloaked)%>&nbsp;Cloaking
             <% end %>
           </div>
           <div class="col s3">
-            <%= link_to user_device_path(current_user.url_id, device.id, published: device.published), { method: :put, id:"publishedButton#{device.id}", remote: true, class: 'device-toggle tooltipped', data: { published: device.published?, tooltip:'Sharing' } } do %>
-              <%=devices_shared_icon(device)%>Sharing
+            <%= link_to user_device_path(current_user.url_id, device.id, published: device.published), { method: :put, id:"publishedButton#{device.id}", remote: true, class: 'device-toggle valign-wrapper', data: { published: device.published? } } do %>
+              <%=devices_shared_icon(device)%>&nbsp;Sharing
             <% end %>
           </div>
         </div>
