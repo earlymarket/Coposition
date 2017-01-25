@@ -25,12 +25,6 @@ cloak.html("<%=j devices_cloaked_icon(@device.cloaked)%>&nbsp;Cloaking");
 var link = $('#sharedLink<%=@device.id%>');
 link.html("<%=j devices_shared_link(@device)%>");
 
-var fogIcon = $('.fogIcon<%=@device.id%>');
-fogIcon.html("<%=j fogged_icon(@device.fogged) if @device.fogged %>");
-
-var delayIcon = $('.delayIcon<%=@device.id%>');
-delayIcon.html("<%=j devices_delay_icon(@device.delayed) if @device.delayed %>");
-
 var deviceStatus = $('#<%=@device.id%>-status');
 deviceStatus.html('<%=@device.name%> permissions \
                 <%= fogged_icon(@device.fogged) %> <%= devices_delay_icon(@device.delayed) %> <%= devices_cloaked_icon(@device.cloaked) %> <%= devices_shared_icon(@device) %>')

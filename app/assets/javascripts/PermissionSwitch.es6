@@ -27,17 +27,14 @@ class LocalSwitch extends PermissionSwitch {
   toggleSwitch() {
     if (this.switchtype === "disallowed") {
       const bool = (this.attributeState != 'disallowed')
-      //this.changeDisableSwitches(bool);
     }
-    if (this.switchtype === "complete") {
+    if (this.switchtype === "complete" && this.checked) {
       let result = confirm(this.fullHistWarning);
       if(!result){
         $(`div[data-id=${this.id}][data-switchtype=${this.attributeState}].permission-switch`).find('input').prop("checked", true);
-        //this.inputDomElement.prop("checked", true);
         return;
       }
     }
-    COPO.permissions.iconToggle(this.switchtype, this.id);
     this.permission[this.attribute] = this.nextState();
     $.ajax({
       url: `/users/${this.user}/devices/${this.permission['device_id']}/permissions/${this.id}`,
@@ -93,11 +90,5 @@ class MasterSwitch extends PermissionSwitch {
     }, this)
     const NEW_MASTER_CHECKED_STATE = _.every(SWITCHES_CHECKED)
     this.inputDomElement.prop("checked", NEW_MASTER_CHECKED_STATE)
-
-    if (this.switchtype === "disallowed") {
-      //$(`div[data-id=${this.id}][data-switchtype=last_only].master`).find('input').prop("checked", false);
-      //const MASTERS = $(`div[data-id=${this.id}].disable.master`).find('input');
-      //MASTERS.prop("disabled", NEW_MASTER_CHECKED_STATE);
-    }
   }
 }
