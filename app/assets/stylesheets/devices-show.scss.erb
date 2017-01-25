@@ -80,8 +80,12 @@
     height: 60px;
   }
 
-  .crosshair {  
+  .crosshair {
     cursor: url(<%= asset_path("location_searching.png") %>), auto;
+  }
+
+  .leaflet-popup-content-wrapper {
+    z-index: 1000;
   }
 
   .leaflet-container .leaflet-control-mouseposition {
@@ -91,6 +95,27 @@
     margin:0;
     color: #333;
     font: 11px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+  }
+
+  .leaflet-popup-content {
+
+    h3, ul {
+      margin: 0;
+    }
+
+    .edit-coords {
+      font-size: 14px;
+    }
+
+    .editable {
+      font-size: 0.9rem;
+      border-bottom: #ff8f00 2px dotted;
+    }
+
+    li.address, .foggedAddress > li {
+      white-space: pre-wrap;
+      font-family: "Fira Mono", monospace;
+    }
   }
 
 }

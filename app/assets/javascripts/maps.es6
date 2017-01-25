@@ -178,7 +178,8 @@ window.COPO.maps = {
     checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
     checkinTemp.foggedAddress = function() {
       if(checkin.fogged) {
-        return '<li class="foggedAddress">Fogged address: ' + checkin.fogged_city + '</li>'
+        return `<div class="foggedAddress"><h3 class="lined"><span class="lined-pad">Fogged Address</span></h3>
+                <li>${checkin.fogged_city}</li></div>`
       }
     }
     checkinTemp.devicebutton = function(){
@@ -199,14 +200,14 @@ window.COPO.maps = {
   dateToLocal(checkin){
     let created_at = Date.parse(checkin.created_at)/1000;
     let coords = [checkin.lat, checkin.lng];
-    $.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${checkin.lat}, ${checkin.lng}&timestamp=${created_at}&key=AIzaSyCEjHZhLTdiy7jbRTDU3YADs8a1yXKTwqI`)
+    checkin.local_date = checkin.local_date || $.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${checkin.lat},${checkin.lng}&timestamp=${created_at}&key=AIzaSyCEjHZhLTdiy7jbRTDU3YADs8a1yXKTwqI`)
     .done((data) => {
-      if(data.status === 'OK'){
+      if(data.status === 'OK') {
         let date = moment((created_at + data.rawOffset + data.dstOffset)*1000).format("ddd, Do MMM YYYY, HH:mm:ss");
         let offsetStr = COPO.maps.formatOffset(parseInt(data.rawOffset) + data.dstOffset);
         let local_date = `${date} (UTC${offsetStr})`;
-        checkin.created_at = local_date;
-        $('#localTime').html(`Created on: ${local_date}`);
+        checkin.local_date = local_date;
+        $('#localTime').html(local_date);
       }
     });
   },
