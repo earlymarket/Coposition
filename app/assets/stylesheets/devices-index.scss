@@ -4,6 +4,27 @@
     cursor: pointer;
   }
 
+  .row {
+    margin-bottom: 5px;
+  }
+
+  .btn-flat i {
+    color: inherit;
+  }
+
+  .device-button {
+    background-color: $primary-color;
+    color: #ffffff !important;
+    width: 60%;
+  }
+
+  .device-toggle {
+    line-height: 36px;
+    text-transform: none !important;
+    margin-right: 0px !important;
+    color: #000000 !important;
+  }
+
   .editable {
     color: $primary-color-darker;
   }
@@ -17,8 +38,8 @@
     height: inherit;
     border: 1px solid darkgrey;
     border-radius: 2px;
-    font-size: 12px;
     margin: 2px;
+    line-height: 36px;
 
     &:focus {
       @extend .linkbox;
