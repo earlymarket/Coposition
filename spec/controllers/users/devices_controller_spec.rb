@@ -88,10 +88,13 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
 
   describe 'GET #shared' do
-    it 'should deny access if device not published' do
+    it 'should deny access if device not published or cloaked' do
       get :shared, params: params
       expect(response).to redirect_to(root_path)
-      expect(flash[:notice]).to match('not shared')
+      expect(flash[:notice]).to match('Could not find ')
+      device.update! published: true, cloaked: true
+      get :shared, params: params
+      expect(response).to redirect_to(root_path)
     end
 
     it 'should render page if published and checkin should be fogged' do

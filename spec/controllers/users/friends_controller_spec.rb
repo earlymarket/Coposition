@@ -87,10 +87,10 @@ RSpec.describe Users::FriendsController, type: :controller do
     end
 
     context 'device cloaked' do
-      it 'should render no checkins' do
+      it 'should fail to render' do
         device.update! cloaked: true
         get :show_device, params: params
-        expect((assigns :presenter).show_device_gon[:checkins].size).to eq 0
+        expect(assigns :presenter).to eq nil
       end
     end
 
