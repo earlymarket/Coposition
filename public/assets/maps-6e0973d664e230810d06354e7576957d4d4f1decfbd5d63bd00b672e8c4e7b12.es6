@@ -144,6 +144,7 @@ window.COPO.maps = {
   markerClickListener(checkins, marker) {
     marker.on('click', function(e) {
       let checkin = this.options.checkin;
+      COPO.maps.dateToLocal(checkin);
       if(!marker._popup) {
         var template = COPO.maps.buildMarkerPopup(checkin);
         marker.bindPopup(L.Util.template(template, checkin));
@@ -169,7 +170,7 @@ window.COPO.maps = {
       id: checkin.id,
       lat: checkin.lat.toFixed(6),
       lng: checkin.lng.toFixed(6),
-      created_at: (new Date(checkin.created_at)).toUTCString(),
+      created_at: moment(new Date(checkin.created_at)).format("ddd, Do MMM YYYY, HH:mm:ss") + ' (UTC+00:00)',
       address: address,
     };
 
@@ -177,7 +178,8 @@ window.COPO.maps = {
     checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
     checkinTemp.foggedAddress = function() {
       if(checkin.fogged) {
-        return '<li class="foggedAddress">Fogged address: ' + checkin.fogged_city + '</li>'
+        return `<div class="foggedAddress"><h3 class="lined"><span class="lined-pad">Fogged Address</span></h3>
+                <li>${checkin.fogged_city}</li></div>`
       }
     }
     checkinTemp.devicebutton = function(){
@@ -193,6 +195,42 @@ window.COPO.maps = {
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
     var template = $('#markerPopupTmpl').html();
     return Mustache.render(template, checkinTemp);
+  },
+
+  dateToLocal(checkin) {
+    if (checkin.local_date) {
+      map.once('popupopen', function() { $('#localTime').html(checkin.local_date) });
+    } else {
+      let created_at = Date.parse(checkin.created_at)/1000;
+      let coords = [checkin.lat, checkin.lng];
+      $.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${checkin.lat},${checkin.lng}&timestamp=${created_at}&key=AIzaSyCEjHZhLTdiy7jbRTDU3YADs8a1yXKTwqI`)
+      .done((data) => {
+        if(data.status === 'OK') {
+          let date = moment((created_at + data.rawOffset + data.dstOffset)*1000).format("ddd, Do MMM YYYY, HH:mm:ss");
+          let offsetStr = COPO.maps.formatOffset(parseInt(data.rawOffset) + data.dstOffset);
+          let local_date = `${date} (UTC${offsetStr})`;
+          checkin.local_date = local_date;
+          $('#localTime').html(local_date);
+        }
+      });
+    }
+  },
+
+  formatOffset(offset) {
+    // offset is an int that's the time offset in seconds from UTC
+    // normally this is composed of dstOffset + rawOffset
+    // formatOffset converts it to hours:mins format
+
+    // Nepal Standard Time is UTC+05:45. offset: 20700
+    // Newfoundland Standard Time is UTC−03:30: -12600
+
+    // converted and padded to give HH:MM
+    let offsetStr = [Math.floor(offset / 3600), (offset % 3600) / 60].map(digits => {
+      return COPO.utility.padStr('0', 2, Math.abs(digits));
+    }).join(':');
+
+    // prepend + or -
+    return offset < 0 ? '-' + offsetStr : '+' + offsetStr;
   },
 
   initControls(controls) {
@@ -251,7 +289,7 @@ window.COPO.maps = {
   pathControlInit() {
     const pathControl = L.Control.extend({
       options: {
-        position: 'topleft' 
+        position: 'topleft'
       },
       onAdd: (map) => {
         var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
@@ -434,7 +472,7 @@ window.COPO.maps = {
     if(path && path._map){
       map.removeLayer(path);
       COPO.maps.checkinPath.addTo(map);
-    }  
+    }
   },
 
   pathControlClick() {
