@@ -3,8 +3,8 @@ window.COPO.permissionsTrigger = {
   initTrigger: function(page){
     $('.permissions-trigger').leanModal()
     $('.permissions-trigger').on('click touchstart', function(){
-      const DEVICE_ID = this.dataset.device;
-      const $LIST = $(`.permissions[data-device=${DEVICE_ID}]`)
+      const DEVICE_ID = this.dataset.id;
+      const $LIST = $(`.permissions[data-id=${DEVICE_ID}]`)
       if($LIST.children().length===1) {
         const FROM = { from: page }
         $LIST.append('<div class="progress"><div class="indeterminate"></div></div>');
