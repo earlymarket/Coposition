@@ -27,15 +27,6 @@ RSpec.describe PermissionsHelper, type: :helper do
     end
   end
 
-  describe '#permissions_for_all' do
-    it 'should return a string if permissionable is not a Permission' do
-      expect(helper.permissions_for_all(developer)).to be_a(String)
-    end
-    it 'should not return anything if permissionable is a Permission' do
-      expect(helper.permissions_for_all(permission)).to be_nil
-    end
-  end
-
   describe '#permissions_control_class' do
     it 'should return a string with the permissionable id' do
       expect(helper.permissions_control_class(developer)).to include(developer.id.to_s)

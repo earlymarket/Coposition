@@ -58,11 +58,12 @@ class Device < ApplicationRecord
   end
 
   def permitted_history_for(permissible)
+    return Checkin.none if cloaked
     resolve_privilege(delayed_checkins_for(permissible), permissible)
   end
 
   def resolve_privilege(unresolved_checkins, permissible)
-    return Checkin.none if privilege_for(permissible) == 'disallowed' || cloaked
+    return Checkin.none if privilege_for(permissible) == 'disallowed'
     return unresolved_checkins if unresolved_checkins.empty?
     if privilege_for(permissible) == 'last_only'
       unresolved_checkins.where(id: unresolved_checkins.first.id)
