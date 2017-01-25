@@ -1,4 +1,4 @@
-class Api::ApiController < ActionController::Base
+class Api::ApiController < ActionController::API
   include ApiApplicationMixin
   rescue_from ::ActiveRecord::RecordNotFound, with: :render_404_and_error
   rescue_from ::ActionController::ParameterMissing, with: :render_400_and_error
