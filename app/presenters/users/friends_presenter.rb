@@ -20,7 +20,7 @@ module Users
     end
 
     def show_device
-      @device = @friend.devices.find(@params[:device_id])
+      @device = @friend.devices.where(cloaked: false).find(@params[:device_id])
     end
 
     def index_gon
