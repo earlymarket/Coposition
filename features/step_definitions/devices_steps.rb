@@ -16,11 +16,11 @@ Given(/^I enter UUID "(.*?)" and a friendly name "(.*?)"$/) do |uuid, device_nam
 end
 
 Then(/^I should have a device$/) do
-  expect(page).to have_selector('div.card', count: 1)
+  expect(page).to have_selector('div.card-panel', count: 1)
 end
 
 Then(/^I should not have a device$/) do
-  expect(page).not_to have_selector('div.card')
+  expect(page).not_to have_selector('div.card-panel')
 end
 
 Then(/^I should have an unfogged device$/) do
