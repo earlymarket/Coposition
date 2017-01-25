@@ -197,19 +197,23 @@ window.COPO.maps = {
     return Mustache.render(template, checkinTemp);
   },
 
-  dateToLocal(checkin){
-    let created_at = Date.parse(checkin.created_at)/1000;
-    let coords = [checkin.lat, checkin.lng];
-    checkin.local_date = checkin.local_date || $.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${checkin.lat},${checkin.lng}&timestamp=${created_at}&key=AIzaSyCEjHZhLTdiy7jbRTDU3YADs8a1yXKTwqI`)
-    .done((data) => {
-      if(data.status === 'OK') {
-        let date = moment((created_at + data.rawOffset + data.dstOffset)*1000).format("ddd, Do MMM YYYY, HH:mm:ss");
-        let offsetStr = COPO.maps.formatOffset(parseInt(data.rawOffset) + data.dstOffset);
-        let local_date = `${date} (UTC${offsetStr})`;
-        checkin.local_date = local_date;
-        $('#localTime').html(local_date);
-      }
-    });
+  dateToLocal(checkin) {
+    if (checkin.local_date) {
+      map.once('popupopen', function() { $('#localTime').html(checkin.local_date) });
+    } else {
+      let created_at = Date.parse(checkin.created_at)/1000;
+      let coords = [checkin.lat, checkin.lng];
+      $.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${checkin.lat},${checkin.lng}&timestamp=${created_at}&key=AIzaSyCEjHZhLTdiy7jbRTDU3YADs8a1yXKTwqI`)
+      .done((data) => {
+        if(data.status === 'OK') {
+          let date = moment((created_at + data.rawOffset + data.dstOffset)*1000).format("ddd, Do MMM YYYY, HH:mm:ss");
+          let offsetStr = COPO.maps.formatOffset(parseInt(data.rawOffset) + data.dstOffset);
+          let local_date = `${date} (UTC${offsetStr})`;
+          checkin.local_date = local_date;
+          $('#localTime').html(local_date);
+        }
+      });
+    }
   },
 
   formatOffset(offset) {
