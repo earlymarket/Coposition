@@ -1,9 +1,9 @@
 module ApplicationHelper
-  def fogged_icon(value)
+  def attribute_icon(value, icon)
     if value
-      '<i class="material-icons enabled-icon">cloud</i>'.html_safe
+      "<i class='material-icons enabled-icon'>#{icon}</i>".html_safe
     else
-      '<i class="material-icons disabled-icon">cloud</i>'.html_safe
+      "<i class='material-icons disabled-icon'>#{icon}</i>".html_safe
     end
   end
 

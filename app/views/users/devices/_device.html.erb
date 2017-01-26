@@ -15,11 +15,11 @@
           </div>
           <div class="col s3">
             <%= link_to user_device_path(current_user.url_id, device.id), { method: :put, id:"fogButton#{device.id}", remote: true, class: 'device-toggle fogButton valign-wrapper', data: { confirm: "Are you sure? Turning fogging off will allow you friends/apps to see your precise location", fogged: device.fogged? } } do %>
-              <%=fogged_icon(device.fogged)%>&nbsp;Fogging
+              <%=attribute_icon(device.fogged, 'cloud')%>&nbsp;Fogging
             <% end %>
           </div>
           <div class="col s3">
-            <a class="modal-trigger valign-wrapper device-toggle delayedButton" id='delayButton<%=device.id%>' data-tooltip='Delay Settings' href="#delay<%=device.id%>"><%= devices_delay_icon(device.delayed)%>&nbsp;Delay</a>
+            <a class="modal-trigger valign-wrapper device-toggle delayedButton" id='delayButton<%=device.id%>' data-tooltip='Delay Settings' href="#delay<%=device.id%>"><%= attribute_icon(device.delayed, 'timer')%>&nbsp;Delay</a>
           </div>
         </div>
       </div>
@@ -32,12 +32,12 @@
           </div>
           <div class="col s3">
             <%= link_to user_device_path(current_user.url_id, device.id, cloaked: device.cloaked), { method: :put, id:"cloakedButton#{device.id}", remote: true, class: 'device-toggle valign-wrapper cloakedButton', data: { confirm: "Are you sure? Cloaking a device will hide it and all of it's check-ins from all of your apps and friends", cloaked: device.cloaked? } } do %>
-              <%=devices_cloaked_icon(device.cloaked)%>&nbsp;Cloaking
+              <%=attribute_icon(device.cloaked, 'visibility')%>&nbsp;Cloaking
             <% end %>
           </div>
           <div class="col s3">
             <%= link_to user_device_path(current_user.url_id, device.id, published: device.published), { method: :put, id:"publishedButton#{device.id}", remote: true, class: 'device-toggle valign-wrapper sharedButton', data: { published: device.published? } } do %>
-              <%=devices_shared_icon(device)%>&nbsp;Sharing
+              <%=attribute_icon(device.published, 'public')%>&nbsp;Sharing
             <% end %>
           </div>
         </div>
@@ -65,7 +65,7 @@
   <div class="modal-content">
     <div>
       <h4 class="inline-text" id='<%=device.id%>-status'><%=device.name%> 
-        <%= fogged_icon(device.fogged) %> <%= devices_delay_icon(device.delayed) %> <%= devices_cloaked_icon(device.cloaked) %> <%= devices_shared_icon(device) %>
+        <%= attribute_icon(device.fogged, 'cloud') %> <%= attribute_icon(device.delayed, 'timer') %> <%= attribute_icon(device.cloaked, 'visibility') %> <%= attribute_icon(device.published, 'public') %>
       </h4>
       <%= devices_cloaked_info(device.cloaked) %>
       <a class="right tooltipped" target="_blank" data-tooltip='Permissions help' href="/help#permissions"><i class="material-icons">help</i></a>

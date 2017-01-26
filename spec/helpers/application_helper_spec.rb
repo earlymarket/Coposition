@@ -21,10 +21,11 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
   end
 
-  describe '#fogged_icon' do
+  describe '#attribute_icon' do
     it 'returns different icons depending on a boolean input' do
-      expect(helper.fogged_icon(true) && helper.fogged_icon(false)).to match('icon')
-      expect(helper.fogged_icon(true)).not_to eq(helper.fogged_icon(false))
+      expect(helper.attribute_icon(true, 'cloud') && helper.attribute_icon(false, 'cloud')).to match('icon')
+      expect(helper.attribute_icon(true, 'public')).not_to eq(helper.attribute_icon(false, 'public'))
+      expect(helper.attribute_icon(true, 'timer')).not_to eq(helper.attribute_icon(true, 'visibility'))
     end
   end
 

@@ -15,26 +15,6 @@ module DevicesHelper
     end
   end
 
-  def devices_delay_icon(value)
-    if value
-      '<i class="material-icons enabled-icon">timer</i>'.html_safe
-    else
-      '<i class="material-icons disabled-icon">timer</i>'.html_safe
-    end
-  end
-
-  def devices_shared_icon(device)
-    if device.published?
-      '<i class="material-icons enabled-icon">public</i>'.html_safe
-    else
-      '<i class="material-icons disabled-icon">public</i>'.html_safe
-    end
-  end
-
-  def devices_access_icon
-    '<i class="material-icons">not_interested</i>'.html_safe
-  end
-
   def devices_shared_link(device)
     return nil unless device.published?
     link = Rails.application.routes.url_helpers.shared_user_device_url(id: device.id, user_id: device.user_id)
@@ -45,14 +25,6 @@ module DevicesHelper
                                               tooltip: 'Click to copy', position: 'right'
                                             })
     output
-  end
-
-  def devices_cloaked_icon(value)
-    if value
-      '<i class="material-icons enabled-icon">visibility_off</i>'.html_safe
-    else
-      '<i class="material-icons disabled-icon">visibility_off</i>'.html_safe
-    end
   end
 
   def devices_cloaked_info(value)

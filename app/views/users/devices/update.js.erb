@@ -1,6 +1,6 @@
 <%= raw render_flash %>
 var fog = $('#fogButton<%=@device.id%>');
-fog.html("<%=j fogged_icon(@device.fogged)%>&nbsp;Fogging");
+fog.html("<%=j attribute_icon(@device.fogged, 'cloud')%>&nbsp;Fogging");
 <% if @device.fogged %>
   fog.data('confirm', 'Are you sure? Turning off fogging will allow your friends/apps to see your precise location')
 <% else %>
@@ -8,14 +8,14 @@ fog.html("<%=j fogged_icon(@device.fogged)%>&nbsp;Fogging");
 <% end %>
 
 var delay = $('#delayButton<%=@device.id%>');
-delay.html("<%=j devices_delay_icon(@device.delayed)%>&nbsp;Delay");
+delay.html("<%=j attribute_icon(@device.delayed, 'timer')%>&nbsp;Delay");
 $('#mins').val('<%= @device.delayed %>');
 
 var publish = $('#publishedButton<%=@device.id%>');
-publish.html("<%=j devices_shared_icon(@device)%>&nbsp;Sharing");
+publish.html("<%=j attribute_icon(@device.published, 'public')%>&nbsp;Sharing");
 
 var cloak = $('#cloakedButton<%=@device.id%>');
-cloak.html("<%=j devices_cloaked_icon(@device.cloaked)%>&nbsp;Cloaking");
+cloak.html("<%=j attribute_icon(@device.cloaked, 'visibility')%>&nbsp;Cloaking");
 <% if @device.cloaked %>
   cloak.removeData('confirm').removeAttr('data-confirm')
 <% else %>
@@ -26,7 +26,7 @@ var link = $('#sharedLink<%=@device.id%>');
 link.html("<%=j devices_shared_link(@device)%>");
 
 var deviceStatus = $('#<%=@device.id%>-status');
-deviceStatus.html('<%=@device.name%> permissions \
-                <%= fogged_icon(@device.fogged) %> <%= devices_delay_icon(@device.delayed) %> <%= devices_cloaked_icon(@device.cloaked) %> <%= devices_shared_icon(@device) %>')
+deviceStatus.html("<%=@device.name%> permissions \
+                <%= attribute_icon(@device.fogged, 'cloud') %> <%= attribute_icon(@device.delayed, 'timer') %> <%= attribute_icon(@device.cloaked, 'visibility') %> <%= attribute_icon(@device.published, 'public') %>")
 
 initPage();
