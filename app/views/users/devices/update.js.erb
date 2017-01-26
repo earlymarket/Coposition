@@ -15,7 +15,7 @@ var publish = $('#publishedButton<%=@device.id%>');
 publish.html("<%=j attribute_icon(@device.published, 'public')%>&nbsp;Sharing");
 
 var cloak = $('#cloakedButton<%=@device.id%>');
-cloak.html("<%=j attribute_icon(@device.cloaked, 'visibility')%>&nbsp;Cloaking");
+cloak.html("<%=j attribute_icon(@device.cloaked, 'visibility_off')%>&nbsp;Cloaking");
 <% if @device.cloaked %>
   cloak.removeData('confirm').removeAttr('data-confirm')
 <% else %>
@@ -27,6 +27,6 @@ link.html("<%=j devices_shared_link(@device)%>");
 
 var deviceStatus = $('#<%=@device.id%>-status');
 deviceStatus.html("<%=@device.name%> permissions \
-                <%= attribute_icon(@device.fogged, 'cloud') %> <%= attribute_icon(@device.delayed, 'timer') %> <%= attribute_icon(@device.cloaked, 'visibility') %> <%= attribute_icon(@device.published, 'public') %>")
+                <%= attribute_icon(@device.fogged, 'cloud') %> <%= attribute_icon(@device.delayed, 'timer') %> <%= attribute_icon(@device.cloaked, 'visibility_off') %> <%= attribute_icon(@device.published, 'public') %>")
 
 initPage();

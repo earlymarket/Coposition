@@ -27,7 +27,7 @@ Feature: Devices
       When I click the link "public"
         Then I should see "Location sharing is on"
         And I should have a published device
-        When I click the link "visibility"
+        When I click the link "visibility_off"
           Then I should see "Device cloaking is on"
           And I should have a cloaked device
       When I click the link "cloud"
