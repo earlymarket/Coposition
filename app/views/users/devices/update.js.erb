@@ -1,6 +1,6 @@
 <%= raw render_flash %>
 var fog = $('#fogButton<%=@device.id%>');
-fog.html("<%=j fogged_icon(@device.fogged)%>");
+fog.html("<%=j fogged_icon(@device.fogged)%>&nbsp;Fogging");
 <% if @device.fogged %>
   fog.data('confirm', 'Are you sure? Turning off fogging will allow your friends/apps to see your precise location')
 <% else %>
@@ -8,25 +8,25 @@ fog.html("<%=j fogged_icon(@device.fogged)%>");
 <% end %>
 
 var delay = $('#delayButton<%=@device.id%>');
-delay.html("<%=j devices_delay_icon(@device.delayed)%>");
+delay.html("<%=j devices_delay_icon(@device.delayed)%>&nbsp;Delay");
 $('#mins').val('<%= @device.delayed %>');
 
 var publish = $('#publishedButton<%=@device.id%>');
-publish.html("<%=j devices_shared_icon(@device)%>");
+publish.html("<%=j devices_shared_icon(@device)%>&nbsp;Sharing");
+
+var cloak = $('#cloakedButton<%=@device.id%>');
+cloak.html("<%=j devices_cloaked_icon(@device.cloaked)%>&nbsp;Cloaking");
+<% if @device.cloaked %>
+  cloak.removeData('confirm').removeAttr('data-confirm')
+<% else %>
+  cloak.data('confirm', "Are you sure? Cloaking a device will hide it and all of it's check-ins from all of your apps and friends")
+<% end %>
 
 var link = $('#sharedLink<%=@device.id%>');
 link.html("<%=j devices_shared_link(@device)%>");
 
-var fogIcon = $('.fogIcon<%=@device.id%>');
-fogIcon.html("<%=j fogged_icon(@device.fogged) if @device.fogged %>");
-
-var delayIcon = $('.delayIcon<%=@device.id%>');
-delayIcon.html("<%=j devices_delay_icon(@device.delayed) if @device.delayed %>");
-
 var deviceStatus = $('#<%=@device.id%>-status');
-deviceStatus.html('<h5>Master permissions <%= fogged_icon(@device.fogged) %> \
-                    <%= devices_delay_icon(@device.delayed) %></h5> \
-                    This device is <%= @device.fogged ? "fogged" : "not fogged" %> \
-                    and is <%= @device.delayed ? "delayed by #{@device.delayed} minutes" : "not delayed" %>.')
+deviceStatus.html('<%=@device.name%> permissions \
+                <%= fogged_icon(@device.fogged) %> <%= devices_delay_icon(@device.delayed) %> <%= devices_cloaked_icon(@device.cloaked) %> <%= devices_shared_icon(@device) %>')
 
 initPage();

@@ -24,11 +24,14 @@ Feature: Devices
         When I enter UUID "123456789123" and a friendly name "G-RALA"
       And I click "Add"
       And I click the link "Devices"
-      When I click the link "visibility"
+      When I click the link "public"
         Then I should see "Location sharing is on"
         And I should have a published device
+        When I click the link "visibility"
+          Then I should see "Device cloaking is on"
+          And I should have a cloaked device
       When I click the link "cloud"
-        Then I should see a link that says "cloud_done"
+        Then I should see a link that says "cloud"
         And I should have an unfogged device
       When I click the link "timer"
       And I click the slider

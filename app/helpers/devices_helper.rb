@@ -8,16 +8,16 @@ module DevicesHelper
       last_checkin = device.checkins.first
       postcode = last_checkin.postal_code
       last_checkin.address = last_checkin.address.gsub(' ' + postcode, '') if postcode
-      "<p>Last reported in #{last_checkin.address} on #{humanize_date_and_time(last_checkin.created_at)}
-      <i data-device='#{device.id}' class='center-map material-icons'>my_location</i></p>".html_safe
+      "Last reported in #{last_checkin.address} on #{humanize_date_and_time(last_checkin.created_at)}
+      <i data-device='#{device.id}' class='center-map material-icons'>my_location</i>".html_safe
     else
-      '<p>No Checkins found</p>'.html_safe
+      'No Checkins found'.html_safe
     end
   end
 
   def devices_delay_icon(value)
     if value
-      '<i class="material-icons">timer</i>'.html_safe
+      '<i class="material-icons enabled-icon">timer</i>'.html_safe
     else
       '<i class="material-icons disabled-icon">timer</i>'.html_safe
     end
@@ -25,9 +25,9 @@ module DevicesHelper
 
   def devices_shared_icon(device)
     if device.published?
-      '<i class="material-icons">visibility</i>'.html_safe
+      '<i class="material-icons enabled-icon">public</i>'.html_safe
     else
-      '<i class="material-icons disabled-icon">visibility</i>'.html_safe
+      '<i class="material-icons disabled-icon">public</i>'.html_safe
     end
   end
 
@@ -47,6 +47,20 @@ module DevicesHelper
                                               tooltip: 'Click to copy', position: 'right'
                                             })
     output
+  end
+
+  def devices_cloaked_icon(value)
+    if value
+      '<i class="material-icons enabled-icon">visibility_off</i>'.html_safe
+    else
+      '<i class="material-icons disabled-icon">visibility_off</i>'.html_safe
+    end
+  end
+
+  def devices_cloaked_info(value)
+    if value
+      "<div class='inline-text cloaked-info grey-text'>This device is cloaked. No friends or apps can see this device or its check-ins.</div>".html_safe 
+    end
   end
 
   def devices_config_rows(config)

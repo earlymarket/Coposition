@@ -8,7 +8,6 @@ class PermissionSwitch {
     this.checked = this.inputDomElement.prop('checked');
     this.disabled = this.inputDomElement.prop('disabled');
     this.fullHistWarning = "WARNING: once you turn this on, it may be possible for your entire location history to be copied before you are able to turn it off again. Only share your history with highly trusted parties. Click OK to continue anyway."
-
   }
 
   changeDisableSwitches(state) {
@@ -26,15 +25,13 @@ class LocalSwitch extends PermissionSwitch {
   }
 
   toggleSwitch() {
-    COPO.permissions.iconToggle(this.switchtype, this.id);
     if (this.switchtype === "disallowed") {
       const bool = (this.attributeState != 'disallowed')
-      this.changeDisableSwitches(bool);
     }
-    if (this.switchtype === "last_only" && this.checked === true && this.attributeState === 'last_only') {
+    if (this.switchtype === "complete" && this.checked) {
       let result = confirm(this.fullHistWarning);
       if(!result){
-        this.inputDomElement.prop("checked", !this.checked);
+        $(`div[data-id=${this.id}][data-switchtype=${this.attributeState}].permission-switch`).find('input').prop("checked", true);
         return;
       }
     }
@@ -48,14 +45,8 @@ class LocalSwitch extends PermissionSwitch {
   }
 
   nextState() {
-    if(this.attributeState === "disallowed") {
-      return "last_only"
-    } else if(this.switchtype === "disallowed") {
-      return "disallowed"
-    } else if(this.attributeState === "complete") {
-      return "last_only"
-    } else if(this.attributeState === "last_only") {
-      return "complete"
+    if(this.attribute === "privilege") {
+      return this.switchtype
     } else {
       return !this.attributeState
     }
@@ -70,7 +61,7 @@ class MasterSwitch extends PermissionSwitch {
   }
 
   toggleSwitch() {
-    if (this.switchtype === "last_only" && this.checked === true) {
+    if (this.switchtype === "complete"){
       let result = confirm(this.fullHistWarning);
       if(!result){
         this.inputDomElement.prop("checked", !this.checked);
@@ -99,11 +90,5 @@ class MasterSwitch extends PermissionSwitch {
     }, this)
     const NEW_MASTER_CHECKED_STATE = _.every(SWITCHES_CHECKED)
     this.inputDomElement.prop("checked", NEW_MASTER_CHECKED_STATE)
-
-    if (this.switchtype === "disallowed") {
-      $(`div[data-id=${this.id}][data-switchtype=last_only].master`).find('input').prop("checked", false);
-      const MASTERS = $(`div[data-id=${this.id}].disable.master`).find('input');
-      MASTERS.prop("disabled", NEW_MASTER_CHECKED_STATE);
-    }
   }
 }
