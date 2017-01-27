@@ -41,8 +41,12 @@ COPO.utility = {
       .attr('id', fogId + checkin.id).attr('class', foggedClass).prop('outerHTML')
   },
 
-  updateCheckinSpan(checkin) {
-    return $('<span href="' + window.location.pathname + '/checkins/' + checkin.id + '"><span class="editable">' + checkin.lat.toFixed(6) + ', ' + checkin.lng.toFixed(6) + '</span><i class="material-icons grey-text edit-coords">mode_edit</i>&nbsp;</span>').prop('outerHTML')
+  renderInlineCoords(checkin) {
+    const url = `${window.location.pathname}/checkins/${checkin.id}`;
+    return `<span class="editable-wrapper clickable">
+              <span class="editable" data-url="${url}">${checkin.lat.toFixed(6)}, ${checkin.lng.toFixed(6)}</span>
+              <i class="material-icons grey-text edit-coords">mode_edit</i>
+            </span>`;
   },
 
   geocodeCheckinLink(checkin) {
@@ -149,5 +153,9 @@ COPO.utility = {
     // leftpads str using char until it is at least length
     const diff = parseInt(length) - String(str).length;
     return diff > 0 ? String(char).repeat(diff) + str : str;
+  },
+
+  validateLatLng(coord) {
+    return Math.abs(coord) < 180;
   }
 };

@@ -103,13 +103,25 @@
       margin: 0;
     }
 
-    .edit-coords {
-      font-size: 14px;
-    }
-
     .editable {
       font-size: 0.9rem;
-      border-bottom: #ff8f00 2px dotted;
+    }
+
+    .edit-coords {
+      font-size: 14px;
+      display: none;
+    }
+
+    .editable-wrapper.clickable {
+      cursor: pointer;
+
+      .editable {
+        border-bottom: #ff8f00 2px dotted;
+      }
+
+      .edit-coords {
+        display: inline-block;
+      }
     }
 
     li.address, .foggedAddress > li {
