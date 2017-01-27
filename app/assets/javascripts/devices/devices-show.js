@@ -2,18 +2,18 @@ $(document).on('page:change', function() {
   if ($(".c-friends.a-show_device").length === 1 || $(".c-devices.a-show").length === 1) {
     var page = $(".c-devices.a-show").length === 1 ? 'user' : 'friend'
     var fogged = false;
+    var currentCoords;
     var U = window.COPO.utility;
     var M = window.COPO.maps;
     U.gonFix();
     M.initMap();
     M.initMarkers(gon.checkins, gon.total);
     M.initControls();
-    var currentCoords;
 
     map.on('locationfound', onLocationFound);
 
     if (page === 'user') {
-      map.on('contextmenu', function(e){
+      map.on('contextmenu', function(e) {
         var coords = {
           lat: e.latlng.lat.toFixed(6),
           lng: e.latlng.lng.toFixed(6),
@@ -25,85 +25,139 @@ $(document).on('page:change', function() {
         popup.openOn(map);
       })
 
-      map.on('popupopen', function(e){
+      map.on('popupopen', function(e) {
         var coords = e.popup.getLatLng()
-        if($('#current-location').length){
+        if($('#current-location').length) {
           $createCheckinLink = U.createCheckinLink(coords);
           $('#current-location').replaceWith($createCheckinLink);
         }
       })
 
-      $('#checkinNow').on('click', function(){
+      $('#checkinNow').on('click', function() {
         fogged = false;
         getLocation();
       })
 
-      $('#checkinFoggedNow').on('click', function(){
+      $('#checkinFoggedNow').on('click', function() {
         fogged = true;
         getLocation();
       })
 
-      $('body').on('click', '.edit-lat', function (e) {
-        $(this).toggleClass('hide', true);
-        makeEditable($(this).prev('span'), handleEdited, 'lat');
-      });
+      $('body').on('click', '.editable-wrapper.clickable', handleEditStart);
 
-      $('body').on('click', '.edit-lng', function (e) {
-        $(this).toggleClass('hide', true);
-        makeEditable($(this).prev('span'), handleEdited, 'lng');
-      });
-
-      function makeEditable ($target, handler, type) {
-        var original = $target.text();
-        $target.attr('contenteditable', true);
-        $target.focus();
+      function handleEditStart() {
+        var $editable = $('.editable');
+        M.mousePositionControlInit();
+        $('.editable-wrapper').toggleClass('clickable');
+        // make .editable, a contenteditable
+        // select all the text to make it easier to edit
+        $editable.attr('contenteditable', true);
+        $editable.focus();
         document.execCommand('selectAll', false, null);
-        $target.on('blur', function () {
-          handler(original, $target, type);
+        setEditableListeners($editable)
+      }
+
+      function setEditableListeners($editable) {
+        var original = $editable.text();
+
+        // mousing over the map shows crosshair to quickly set latlng
+        $('#map').toggleClass('crosshair');
+        map.on('click', function(e) {
+          handleMapClick($editable, e);
         });
-        $target.on('keydown', function (e) {
-          if(e.which === 27 || e.which === 13 ) {
-            handler(original, $target, type);
+
+        // if they click the popup, stop editing
+        $('.leaflet-popup').on('click', function (e) {
+          if(e.target.className !== 'editable') {
+            handleCoordsEdited(original, $editable);
           }
         });
-        return $target;
+
+        // if they hit enter or esc, stop editing
+        $editable.on('keydown', function (e) {
+          if(e.which === 27 || e.which === 13 ) {
+            handleCoordsEdited(original, $editable);
+          }
+        });
+
+        // if they click another marker, remove all the listeners
+        COPO.maps.allMarkers.eachLayer(function(marker) {
+          marker.on('click', function(e) {
+            if($editable.attr('contenteditable')) {
+              handleEditEnd($editable);
+            }
+          });
+        });
       }
 
-      function handleEdited (original, $target, type) {
-        var newCoord = $target.text()
-        var newCoordFloat = parseFloat(newCoord)
-        if(newCoordFloat && Math.abs(newCoordFloat) < 180 && original !== newCoord) {
-          var url = $target.parents('span').attr('href');
-          var data = { checkin: {} }
-          data.checkin[type] = newCoord;
-          var request = $.ajax({
-            dataType: 'json',
-            url: url,
-            type: 'PUT',
-            data: data
-          });
-          request
-          .done(function (response) {
-            checkin = _.find(gon.checkins, _.matchesProperty('id',response.id));
-            checkin[type] = parseFloat(newCoord);
-            checkin.edited = true;
-            checkin.lastEdited = true;
-            M.queueRefresh(gon.checkins);
-          })
-          .fail(function (error) {
-            $target.text(original);
-          })
+      function handleCoordsEdited(original, $editable) {
+        var coords = $editable.text().split(",").map(parseFloat);
+        if(original !== $editable.text() && coords.length === 2 && coords.every(U.validateLatLng)) {
+          var url = $editable.data('url');
+          var data = { checkin: { lat: coords[0], lng: coords[1]} }
+          putUpdateCheckin(url, data);
         } else {
-          $target.text(original);
+          // reverse the edit
+          $editable.text(original);
         }
-        $target.attr('contenteditable', false);
-        $target.next().toggleClass('hide', false);
-        U.deselect();
-        $target.off();
+        handleEditEnd($editable);
       }
+
+      function handleMapClick($editable, e) {
+        var confirmText = "Are you sure? Click ok to reposition check-in to new coordinates (";
+            confirmText += e.latlng.lat.toFixed(6) + ", " + e.latlng.lng.toFixed(6) + ").";
+        if (confirm(confirmText)) {
+          var data = { checkin: {lat: e.latlng.lat, lng: e.latlng.lng} }
+          putUpdateCheckin($editable.data('url'), data);
+        }
+        handleEditEnd($editable);
+      }
+
+      function putUpdateCheckin(url, data) {
+        $.ajax({
+          dataType: 'json',
+          url: url,
+          type: 'PUT',
+          data: data
+        })
+        .done(updateCheckin)
+        .fail(function (error) {
+          console.log('Error updating checkin:', error);
+        })
+      }
+
+      function updateCheckin(response) {
+        // tries to find the checkin in gon and update it with the response
+        checkin = _.find(gon.checkins, _.matchesProperty('id',response.id));
+        checkin.lat = response.lat;
+        checkin.lng = response.lng;
+        checkin.edited = response.edited;
+        checkin.lastEdited = true;
+        checkin.address = response.address;
+        checkin.fogged_city = response.fogged_city;
+        // delete the localDate so we generate fresh timezone data
+        delete checkin.localDate;
+        M.refreshMarkers(gon.checkins);
+      }
+
+      function handleEditEnd($editable) {
+        map.removeControl(COPO.maps.mousePositionControl);
+        $('#map').toggleClass('crosshair');
+        $editable.removeAttr('contenteditable');
+        U.deselect();
+        $('.editable-wrapper').toggleClass('clickable');
+        unsetEditableListeners($editable)
+      }
+
+      function unsetEditableListeners($editable) {
+        map.off('click');
+        $('.leaflet-popup').off('click');
+        $editable.off('keydown');
+      }
+
     }
 
-    function postLocation(position){
+    function postLocation(position) {
       $.ajax({
         url: '/users/'+gon.current_user_id+'/devices/'+gon.device+'/checkins/',
         type: 'POST',
@@ -112,8 +166,8 @@ $(document).on('page:change', function() {
       });
     }
 
-    function getLocation(fogged){
-      if(currentCoords){
+    function getLocation(fogged) {
+      if(currentCoords) {
         var position = { coords: { latitude: currentCoords.lat, longitude: currentCoords.lng } }
         postLocation(position)
       } else {
@@ -121,7 +175,7 @@ $(document).on('page:change', function() {
       }
     }
 
-    function onLocationFound(p){
+    function onLocationFound(p) {
       currentCoords = p.latlng;
     }
   }
