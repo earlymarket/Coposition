@@ -17,7 +17,7 @@ class Developer < ApplicationRecord
   has_many :configurable_devices, through: :configs, source: :device
 
   before_create do |dev|
-    dev.api_key = SecureRandom.uuid
+    dev.api_key ||= SecureRandom.uuid
   end
 
   def slack_message

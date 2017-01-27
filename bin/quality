@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+set -e
+
+bin/brakeman --quiet --skip-libs --exit-on-warn
+
+bin/bundle-audit update
+bin/bundle-audit

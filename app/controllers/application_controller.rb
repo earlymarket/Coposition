@@ -15,7 +15,13 @@ class ApplicationController < ActionController::Base
   end
 
   def correct_url_user?
-    return if User.friendly.find(params[:user_id]) == current_user
+    return if User.find(params[:user_id]) == current_user
     redirect_to controller: params[:controller], action: params[:action], user_id: current_user.friendly_id
+  end
+
+  def authenticate_admin!
+    authenticate_user!
+
+    redirect_to root_path, alert: "Unauthorized Access" unless current_user.admin?
   end
 end
