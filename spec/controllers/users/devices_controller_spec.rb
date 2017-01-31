@@ -59,7 +59,7 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
 
     it 'should create a CSV file if .csv appended to url' do
-      checkin
+      checkin.reload
       get :show, params: params.merge(format: :csv, download: 'csv')
       expect(response.header['Content-Type']).to include 'text/csv'
       expect(response.body).to include(*checkin.attributes.keys)
@@ -106,11 +106,12 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(assigns(:presenter).shared_gon[:checkin]['lat'].round(6)).to eq older_checkin.fogged_lat.round(6)
     end
 
-    it 'should render page if published and checkin should be fogged if unfogged' do
+    it 'should render page if published and checkin should be unfogged if unfogged' do
       device.published = true
       device.fogged = false
-      checkin
       older_checkin.fogged = false
+      checkin
+      older_checkin.set_output_to_unfogged
       get :shared, params: params
       expect(assigns(:presenter).shared_gon[:checkin]['lat']).to eq older_checkin.lat
     end

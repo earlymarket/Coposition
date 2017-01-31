@@ -18,8 +18,11 @@
 }
 
 .center{
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
+}
+
+.ta-center {
+  text-align: center;
 }
 
 // Effects classes
@@ -40,6 +43,25 @@
   i{
     color: $dark-text-color;
   }
+}
+
+.lined {
+  text-align: center;
+  background:
+    linear-gradient(0deg,
+      white calc(50% - 1px),
+      black,
+      black calc(50% + 1px),
+      white,
+      white calc(50% + 2px),
+      white);
+  display: inline-block;
+  width: 100%;
+}
+
+.lined-pad {
+  background: white;
+  padding: 0 0.5rem;
 }
 
 .promo{
