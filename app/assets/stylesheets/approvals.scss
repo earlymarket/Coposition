@@ -31,6 +31,15 @@
     }
   }
 
+  .permissions-button {
+    background-color: $primary-color;
+    color: #ffffff;
+  }
+
+  .btn-flat i {
+    color: inherit;
+  }
+
   #map-overlay {
     position: absolute;
     z-index: 2;

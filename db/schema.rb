@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170119104140) do
+ActiveRecord::Schema.define(version: 20170120161207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,8 +42,8 @@ ActiveRecord::Schema.define(version: 20170119104140) do
   end
 
   create_table "attachinary_files", force: :cascade do |t|
-    t.integer  "attachinariable_id"
     t.string   "attachinariable_type"
+    t.integer  "attachinariable_id"
     t.string   "scope"
     t.string   "public_id"
     t.string   "version"
@@ -127,6 +127,7 @@ ActiveRecord::Schema.define(version: 20170119104140) do
     t.integer "delayed"
     t.string  "alias"
     t.boolean "published", default: false
+    t.boolean "cloaked",   default: false
     t.index ["uuid"], name: "index_devices_on_uuid", using: :btree
   end
 

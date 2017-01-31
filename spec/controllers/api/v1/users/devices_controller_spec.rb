@@ -38,6 +38,12 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       expect(res_hash.first['id']).to be device.id
     end
 
+    it 'should not return friends cloaked devices' do
+      second_user.devices.each{ |device| device.update! cloaked: true }
+      get :index, params: params.merge(user_id: second_user.id)
+      expect(res_hash.size).to eq 0
+    end
+
     it 'should record the request' do
       expect(developer.requests.count).to be 0
       get :index, params: params

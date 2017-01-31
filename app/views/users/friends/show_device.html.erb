@@ -9,9 +9,10 @@
     <h3>ID: {{ id }}</h3>
     <ul>
       <li id="localTime">Created on: {{ created_at }}</li>
-      <li>Latitude: {{ lat }}</li>
-      <li>Longitude {{ lng }}</li>
-      <li>Address: {{ address }}</li>
+      <h3 class="lined"><span class="lined-pad">Coordinates</span></h3>
+      <li class="ta-center">{{ lat }}, {{ lng }}</li>
+      <h3 class="lined"><span class="lined-pad">Address</span></h3>
+      <li class="address">{{ address }}</li>
     </ul>
   </script>
 <% end %>
