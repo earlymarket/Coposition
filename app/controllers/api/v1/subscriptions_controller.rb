@@ -1,4 +1,4 @@
-class Api::V1::SubscriptionsController < ActionController::Base
+class Api::V1::SubscriptionsController < ActionController::API
   def create
     sub = subscriber.subscriptions.create(allowed_params)
     render status: 201, json: { id: sub.id }

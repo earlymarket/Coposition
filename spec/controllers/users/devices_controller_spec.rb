@@ -59,7 +59,7 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
 
     it 'should create a CSV file if .csv appended to url' do
-      checkin
+      checkin.reload
       get :show, params: params.merge(format: :csv, download: 'csv')
       expect(response.header['Content-Type']).to include 'text/csv'
       expect(response.body).to include(*checkin.attributes.keys)
@@ -88,10 +88,13 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
 
   describe 'GET #shared' do
-    it 'should deny access if device not published' do
+    it 'should deny access if device not published or cloaked' do
       get :shared, params: params
       expect(response).to redirect_to(root_path)
-      expect(flash[:notice]).to match('not shared')
+      expect(flash[:notice]).to match('Could not find ')
+      device.update! published: true, cloaked: true
+      get :shared, params: params
+      expect(response).to redirect_to(root_path)
     end
 
     it 'should render page if published and checkin should be fogged' do
@@ -103,11 +106,12 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(assigns(:presenter).shared_gon[:checkin]['lat'].round(6)).to eq older_checkin.fogged_lat.round(6)
     end
 
-    it 'should render page if published and checkin should be fogged if unfogged' do
+    it 'should render page if published and checkin should be unfogged if unfogged' do
       device.published = true
       device.fogged = false
-      checkin
       older_checkin.fogged = false
+      checkin
+      older_checkin.set_output_to_unfogged
       get :shared, params: params
       expect(assigns(:presenter).shared_gon[:checkin]['lat']).to eq older_checkin.lat
     end
@@ -231,6 +235,15 @@ RSpec.describe Users::DevicesController, type: :controller do
       put :update, params: params.merge(name: other.name, format: :json)
       expect(device.reload.name).to_not eq 'Computer'
       expect(response.body).to match 'already been taken'
+    end
+
+    it 'should switch cloaked status' do
+      expect(device.cloaked?).to be false
+      request.accept = 'text/javascript'
+      put :update, params: params.merge(cloaked: true)
+      expect(flash[:notice]).to match 'Device cloaking is'
+      device.reload
+      expect(device.cloaked?).to be true
     end
   end
 

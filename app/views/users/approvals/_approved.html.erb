@@ -4,7 +4,7 @@
   <% end %>
 
   <% approved.each do |approvable| %>
-
+    <% approval = current_user.approval_for(approvable) %>
     <div class="card-panel">
       <div class="row">
 
@@ -22,21 +22,23 @@
                   <% end %>
                   <%= approvals_friends_locator(approvable_type, approvable) %>
                 </h5><div class="tagline"><%= approvable.try(:tagline) %></div>
-                <div>Approved since <%= humanize_date(current_user.approval_for(approvable).approval_date) %></div>
+                <div>Approved since <%= humanize_date(approval.approval_date) unless approval.nil? %></div>
               </div>
            </span>
          </div>
 
         <div class="col s4">
           <% if current_user.devices.exists? %>
-            <a class="waves-effect waves-light btn-flat permissions-trigger right" href="#perm<%=approvable.id%>"><i class="material-icons right">lock</i>Permissions</a>
+            <a class="permissions-trigger btn-flat right permissions-button" href="#perm<%=approvable.id%>" data-id=<%=approvable.id%>>
+              <i class="material-icons right">lock</i>Permissions</a>
+            </a>
             <div id="perm<%=approvable.id%>" class="modal">
               <div class="modal-content">
                 <h4 class="modal-content">Permissions controls for <%=approvals_approvable_name(approvable)%></h4>
-                <ul class="permissions collection" data-friend=<%=approvable.id%>>
+                <ul class="permissions collection" data-id=<%=approvable.id%>>
                   <li class="collection-item row valign-wrapper  master-permissions">
-                    <div class='valign col s7'>
-                      <h5>Master permissions</h5>
+                    <div class='valign col s6'>
+                      <h5>Update all permissions</h5>
                     </div>
                     <%= render partial: "users/permissions/controls", object: approvable, as: 'permissionable' %>
                   </li>
@@ -47,7 +49,7 @@
         </div>
 
         <div class="col s4">
-          <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, current_user.approval_for(approvable)), remote: true, class: "btn-flat right", data: { confirm: "Are you sure? They will no longer have access to any of your data." } %>
+          <%= button_to "Revoke Approval", reject_user_approval_path(current_user.url_id, approval), remote: true, class: "btn-flat right", data: { confirm: "Are you sure? They will no longer have access to any of your data." } %>
         </div>
       </div>
 

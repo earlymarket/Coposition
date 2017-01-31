@@ -1,4 +1,4 @@
-class Api::ApiController < ActionController::Base
+class Api::ApiController < ActionController::API
   include ApiApplicationMixin
   rescue_from ::ActiveRecord::RecordNotFound, with: :render_404_and_error
   rescue_from ::ActionController::ParameterMissing, with: :render_400_and_error
@@ -9,9 +9,9 @@ class Api::ApiController < ActionController::Base
 
   def find_user
     @user = if params[:controller] == 'api/v1/users'
-              User.friendly.find(params[:id])
+              User.find(params[:id])
             else
-              User.friendly.find(params[:user_id])
+              User.find(params[:user_id])
             end
   end
 
@@ -44,7 +44,7 @@ class Api::ApiController < ActionController::Base
   end
 
   def find_permissible
-    params[:permissible_id] ? User.friendly.find(params[:permissible_id]) : @dev
+    params[:permissible_id] ? User.find(params[:permissible_id]) : @dev
   end
 
   def paginated_response_headers(resource)
@@ -55,7 +55,7 @@ class Api::ApiController < ActionController::Base
   end
 
   def current_user?(user_id)
-    auth_token = User.friendly.find(user_id).authentication_token
+    auth_token = User.find(user_id).authentication_token
     request.headers['X-User-Token'] == auth_token
   end
 

@@ -13,7 +13,7 @@ Feature: Devices
       When I click "Add"
       Then I should see "Right click on the map to check-in"
         And I click the link "Devices"
-      Then I should see "G-RALA"
+      Then I should have a device
         When I click "G-RALA"
       When I click and confirm "Delete device"
       Then I should see "Device deleted"
@@ -24,11 +24,14 @@ Feature: Devices
         When I enter UUID "123456789123" and a friendly name "G-RALA"
       And I click "Add"
       And I click the link "Devices"
-      When I click the link "visibility"
+      When I click the link "public"
         Then I should see "Location sharing is on"
         And I should have a published device
+        When I click the link "visibility_off"
+          Then I should see "Device cloaking is on"
+          And I should have a cloaked device
       When I click the link "cloud"
-        Then I should see a link that says "cloud_done"
+        Then I should see a link that says "cloud"
         And I should have an unfogged device
       When I click the link "timer"
       And I click the slider

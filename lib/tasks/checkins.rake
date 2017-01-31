@@ -41,10 +41,11 @@ namespace :checkins do
 
   desc 'Updates output fields of checkins'
   task :update_output, [:device_id] => :environment do |_t, args|
-    device = Device.find(args[:device_id])
-    Checkin.transaction do
-      unfogged = device.checkins.where(fogged: false)
-      device.fogged ? unfogged.each(&:set_output_to_fogged) : unfogged.each(&:set_output_to_unfogged)
+    if (device = Device.find_by(id: args[:device_id]))
+      Checkin.transaction do
+        unfogged = device.checkins.where(fogged: false)
+        device.fogged ? unfogged.each(&:set_output_to_fogged) : unfogged.each(&:set_output_to_unfogged)
+      end
     end
   end
 end

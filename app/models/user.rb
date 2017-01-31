@@ -10,7 +10,8 @@ class User < ApplicationRecord
          authentication_keys: { username: false, email: true }
 
   validates :username, uniqueness: true, allow_blank: true,
-                       format: { with: /\A[-a-zA-Z_]+\z/, message: 'only allows letters, underscores and dashes' }
+                       format: { with: /\A[-a-zA-Z_]+\z/, message: 'only allows letters, underscores and dashes' },
+                       length: { in: 4..20 }
 
   has_many :devices, dependent: :destroy
   has_many :checkins, through: :devices
@@ -40,6 +41,10 @@ class User < ApplicationRecord
 
   def url_id
     username.empty? ? id : username.downcase
+  end
+
+  def should_generate_new_friendly_id?
+    slug.blank? || username_changed?
   end
 
   ## Approvals

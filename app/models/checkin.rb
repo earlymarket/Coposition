@@ -9,6 +9,8 @@ class Checkin < ApplicationRecord
   scope :since, ->(date) { where('created_at > ?', date) }
   scope :before, ->(date) { where('created_at < ?', date) }
 
+  before_update :set_edited, if: proc { lat_changed? || lng_changed? }
+
   reverse_geocoded_by :lat, :lng do |obj, results|
     if results.present?
       results.first.methods.each do |m|
@@ -22,12 +24,18 @@ class Checkin < ApplicationRecord
 
   after_create do
     if device
+      reload
+      city = nearest_city
       update(
         uuid: device.uuid,
-        fogged: fogged ||= device.fogged
+        fogged: self.fogged ||= device.fogged,
+        fogged_lat: city.latitude || lat + rand(-0.5..0.5),
+        fogged_lng: city.longitude || lng + rand(-0.5..0.5),
+        fogged_city: city.name,
+        country_code: city.country_code,
+        fogged_country_code: city.country_code
       )
       reverse_geocode! if device.checkins.count == 1
-      init_fogged_info
       fogged ? set_output_to_fogged : set_output_to_unfogged
     else
       raise 'Checkin is not assigned to a device.' unless Rails.env.test?
@@ -39,7 +47,7 @@ class Checkin < ApplicationRecord
       JSON.parse(post_content).each do |checkin_hash|
         checkin = Checkin.create(checkin_hash.slice('lat', 'lng', 'created_at', 'fogged'))
         raise ActiveRecord::Rollback unless checkin.save
-        checkin.device.notify_subscribers('new_checkin', checkin)
+        # checkin.device.notify_subscribers('new_checkin', checkin)
       end
     end
   end
@@ -57,6 +65,7 @@ class Checkin < ApplicationRecord
   def reverse_geocode!
     unless reverse_geocoded?
       reverse_geocode
+      update_output
       save
     end
     self
@@ -70,13 +79,21 @@ class Checkin < ApplicationRecord
     City.near([lat, lng], 200).first || NoCity.new
   end
 
+  def refresh
+    reverse_geocode
+    save
+    init_fogged_info
+    fogged || device.fogged ? set_output_to_fogged : set_output_to_unfogged
+  end
+
   def init_fogged_info
+    city = nearest_city
     update(
-      fogged_lat: nearest_city.latitude || lat + rand(-0.5..0.5),
-      fogged_lng: nearest_city.longitude || lng + rand(-0.5..0.5),
-      fogged_city: nearest_city.name,
-      country_code: nearest_city.country_code,
-      fogged_country_code: nearest_city.country_code
+      fogged_lat: city.latitude || lat + rand(-0.5..0.5),
+      fogged_lng: city.longitude || lng + rand(-0.5..0.5),
+      fogged_city: city.name,
+      country_code: city.country_code,
+      fogged_country_code: city.country_code
     )
   end
 
@@ -100,11 +117,8 @@ class Checkin < ApplicationRecord
   end
 
   def self.unique_places_only(unique_places)
-    # doesn't work so making it always return all for now
-    return all # unless unique_places
-    checkins = unscope(:order).select('DISTINCT ON (checkins.fogged_city) *')
-                              .sort { |checkin, next_checkin| next_checkin['created_at'] <=> checkin['created_at'] }
-    all.where(id: checkins.map(&:id))
+    return all unless unique_places
+    where('created_at IN(SELECT MAX(created_at) FROM checkins GROUP BY fogged_city)')
   end
 
   def self.hash_group_and_count_by(attribute)
@@ -122,10 +136,11 @@ class Checkin < ApplicationRecord
 
   def self.to_csv
     attributes = Checkin.column_names
+
     CSV.generate(headers: true) do |csv|
       csv << attributes
-      all.each do |checkin|
-        csv << checkin.attributes.values_at(*attributes)
+      all.pluck(*attributes).each do |record|
+        csv << record
       end
     end
   end
@@ -134,6 +149,14 @@ class Checkin < ApplicationRecord
     update(fogged: !fogged)
     return if device.fogged
     fogged ? set_output_to_fogged : set_output_to_unfogged
+  end
+
+  def update_output
+    if fogged || device.fogged
+      set_output_to_fogged
+    else
+      set_output_to_unfogged
+    end
   end
 
   def set_output_to_fogged
@@ -159,20 +182,25 @@ class Checkin < ApplicationRecord
   end
 
   def self.to_gpx
-    gpx = GPX::GPXFile.new
-    route = GPX::Route.new
-    all.each do |checkin|
-      route.points << GPX::Point.new(elevation: 0, lat: checkin.lat, lon: checkin.lng, time: checkin.created_at)
-    end
-    gpx.routes << route
-    gpx.to_s
+    GPX::GPXFile.new.tap do |gpx|
+      gpx.routes << GPX::Route.new.tap do |route|
+        all.pluck(:lat, :lng, :created_at).each do |record|
+          route.points << GPX::Point.new(elevation: 0, lat: record[0], lon: record[1], time: record[2])
+        end
+      end
+    end.to_s
   end
 
   def self.to_geojson
-    geojson_checkins = []
-    all.each do |checkin|
-      geojson_checkins << GeojsonCheckin.new(checkin)
-    end
-    geojson_checkins.as_json
+    [].tap do |geojson_checkins|
+      all.pluck(:lat, :lng, :id).each do |record|
+        geojson_checkins << GeojsonCheckin.new(record)
+      end
+    end.as_json
   end
+
+  def set_edited
+    write_attribute(:edited, true)
+  end
+
 end
