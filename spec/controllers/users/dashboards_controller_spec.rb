@@ -51,6 +51,14 @@ RSpec.describe Users::DashboardsController, type: :controller do
       end
     end
 
+    context 'device cloaked' do
+      it 'should render no checkins' do
+        friend_device.update! cloaked: true
+        get :show, params: { user_id: user.id }
+        expect((assigns :presenter).gon[:friends][0][:lastCheckin]).to be nil
+      end
+    end
+
     context 'permission complete, bypass delay false, bypass fogging false' do
       it 'should render one historic fogged checkin' do
         friend_device.permission_for(user).update! privilege: 'complete', bypass_delay: false, bypass_fogging: false

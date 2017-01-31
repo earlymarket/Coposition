@@ -58,6 +58,7 @@ class Device < ApplicationRecord
   end
 
   def permitted_history_for(permissible)
+    return Checkin.none if cloaked
     resolve_privilege(delayed_checkins_for(permissible), permissible)
   end
 

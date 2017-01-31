@@ -17,6 +17,12 @@ $(document).on('page:change', function() {
       }
     })
 
+    $('.cloakedButton').each((index, cloakedButton) => {
+      if($(cloakedButton).data('cloaked')){
+        $(cloakedButton).removeData('confirm').removeAttr('data-confirm')
+      }
+    })
+
     $('body').on('click', '.edit-button', function (e) {
       e.preventDefault();
       $(this).toggleClass('hide', true);

@@ -3,16 +3,43 @@
     color: $primary-color-darker;
     cursor: pointer;
   }
-  .editable {
-    color: $dark-text-color;
+
+  .row {
+    margin-bottom: 5px;
   }
+
+  .btn-flat i {
+    color: inherit;
+  }
+
+  .device-button {
+    background-color: $primary-color;
+    color: #ffffff !important;
+    width: 60%;
+  }
+
+  .device-toggle {
+    line-height: 36px;
+    text-transform: none !important;
+    margin-right: 0px !important;
+    color: #000000 !important;
+  }
+
+  .editable {
+    color: $primary-color-darker;
+  }
+
+  .inline-text {
+    display: inline;
+  }
+  
   .linkbox {
     width: auto;
     height: inherit;
     border: 1px solid darkgrey;
     border-radius: 2px;
-    font-size: 12px;
     margin: 2px;
+    line-height: 36px;
 
     &:focus {
       @extend .linkbox;
@@ -34,21 +61,27 @@
     margin: 0.25rem 0 0 0;
   }
 
+  .enabled-icon {
+    color: $primary-color-darker;
+  }
+
+  .modal {
+    .enabled-icon {
+      color: black;
+    }
+  }
+
   .disabled-icon {
     color: rgba(0,0,0,0.2);
-    position: relative;
-    &:after {
-      content:" ";
-      // these are relative to font based settings
-      height: 4px; // arbitary width of the strikethrough that visually matches
-      width: 24px; // matches font-size
-      border-top: white solid 2px;
-      background-color: #ccc; //needs to be solid. Matches how the icon renders on white
-      position: absolute;
-      top: 11px; //half font height but slightly higher to offset the visual illusion
-      left: 0;
-      transform: rotate(45deg);
-    }
+  }
+
+  .device-control {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .cloaked-info {
+    font-size: 14px;
   }
 
   #map-overlay {

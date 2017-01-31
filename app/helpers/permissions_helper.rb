@@ -20,20 +20,20 @@ module PermissionsHelper
   end
 
   def permissions_label_id(permissionable, switchtype)
-    "#{permissionable.id}-#{switchtype}" if permissionable.class == Permission
+    if permissionable.class == Permission
+      "#{permissionable.id}_#{switchtype}"
+    else
+      "master_#{permissionable.id}_#{switchtype}"
+    end
   end
 
   def permissions_check_box_value(permissionable, type)
     if permissionable.class == Permission
-      if %w(disallowed complete).include? type
+      if %w(disallowed last_only complete).include? type
         permissionable.privilege == type
       else
         permissionable[type]
       end
     end
-  end
-
-  def permissions_for_all(permissionable)
-    ' for all' unless permissionable.class == Permission
   end
 end
