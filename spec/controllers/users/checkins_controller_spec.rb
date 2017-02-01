@@ -11,7 +11,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
   let(:update_lat_params) { params.merge(checkin: { lat: 10 }) }
 
   describe 'GET #new' do
-    it 'should assign a device with a matching :device_id to @device and a new checkin to @checkin' do
+    it 'assigns a device with a matching :device_id to @device and a new checkin to @checkin' do
       get :new, params: params
       expect(assigns(:checkin)).to be_a_new(Checkin)
       expect(assigns(:device)).to eq(Device.find(device.id))
@@ -19,7 +19,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
   end
 
   describe 'POST #create' do
-    it 'should assign a device, create a new checkin and assign it to @checkin' do
+    it 'assigns a device, creates a new checkin and assigns it to @checkin' do
       checkin
       count = device.checkins.count
       request.accept = 'text/javascript'
@@ -39,21 +39,21 @@ RSpec.describe Users::CheckinsController, type: :controller do
   end
 
   describe 'POST #import' do
-    it 'should return alert if no file provided' do
+    it 'returns an alert if no file provided' do
       post :import, params: { user_id: user.id, device_id: device.id }
       expect(response).to redirect_to(user_devices_path(user.url_id))
-      expect(flash[:alert]).to match('Invalid file')
+      expect(flash[:alert]).to match('must choose a CSV file')
     end
   end
 
   describe 'GET #show' do
-    it 'should assign :id.checkin to @checkin if user owns device which owns checkin' do
+    it 'assigns :checkin to @checkin if user owns device which owns checkin' do
       request.accept = 'text/javascript'
       get :show, params: params
       expect(assigns(:checkin)).to eq(Checkin.find(checkin.id))
     end
 
-    it 'should not assign :id.checkin if user does not own device which owns checkin' do
+    it 'does not assign :checkin if user does not own device which owns checkin' do
       user
       request.accept = 'text/javascript'
       get :show, params: params.merge(user_id: new_user.username)
@@ -63,7 +63,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
   end
 
   describe 'PUT #update' do
-    it 'should switch fogging if no extra params' do
+    it 'switches fogging if no extra params' do
       device.update(fogged: false)
       checkin.update(fogged: false)
       request.accept = 'text/javascript'
@@ -78,7 +78,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
       expect(checkin.edited).to be false
     end
 
-    it 'should update lat/lng if valid lat/lng provided' do
+    it 'updates lat/lng if valid lat/lng provided' do
       request.accept = 'text/javascript'
       put :update, params: update_lat_params
       checkin.reload
@@ -88,7 +88,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
   end
 
   describe 'DELETE #destroy_all' do
-    it 'should delete all checkins belonging to a device if user owns device' do
+    it 'deletes all checkins belonging to a device if user owns device' do
       count = checkin.device.checkins.count
       expect(count).to be > 0
       delete :destroy_all, params: {
@@ -98,7 +98,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
       expect(device.checkins.count).to eq 0
     end
 
-    it 'should not delete all checkins if user does not own device' do
+    it 'does not delete all checkins if user does not own device' do
       count = checkin.device.checkins.count
       expect(count).to be > 0
       delete :destroy_all, params: {
@@ -111,7 +111,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    it 'should delete a checkin by id' do
+    it 'deletes a checkin by id' do
       count = checkin.device.checkins.count
       expect(count).to be > 0
       request.accept = 'text/javascript'
@@ -119,7 +119,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
       expect(device.checkins.count).to eq(count - 1)
     end
 
-    it 'should not delete a checkin if it does not belong to the user' do
+    it 'does not delete a checkin if it does not belong to the user' do
       count = checkin.device.checkins.count
       expect(count).to be > 0
       request.accept = 'text/javascript'
