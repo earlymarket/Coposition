@@ -29,7 +29,7 @@ class Users::CheckinsController < ApplicationController
 
   def import
     if params[:file] && valid_file?
-      Checkin.import(params[:file])
+      Checkin.import(params[:file], params[:device_id])
       flash[:notice] = 'Importing check-ins'
     else
       flash[:alert] = 'Invalid file'

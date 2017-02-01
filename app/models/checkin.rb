@@ -42,8 +42,8 @@ class Checkin < ApplicationRecord
     end
   end
 
-  def self.import(file)
-    system "rake checkins:import[#{file.path}] &"
+  def self.import(file, device)
+    system "rake checkins:import[#{file.path},#{device}] &"
   end
 
   def self.batch_create(post_content)
