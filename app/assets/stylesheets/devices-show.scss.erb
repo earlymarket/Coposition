@@ -68,6 +68,40 @@
     background: white;
     font-size: 1.5rem;
   }
+
+  .leaflet-popup-content {
+
+    h3, ul {
+      margin: 0;
+    }
+
+    .editable {
+      font-size: 0.9rem;
+    }
+
+    .edit-coords {
+      font-size: 14px;
+      display: none;
+    }
+
+    .editable-wrapper.clickable {
+      cursor: pointer;
+
+      .editable {
+        border-bottom: #ff8f00 2px dotted;
+      }
+
+      .edit-coords {
+        display: inline-block;
+      }
+    }
+
+    li.address, .foggedAddress > li {
+      white-space: pre-wrap;
+      font-family: "Fira Mono", monospace;
+    }
+  }
+
 }
 
 .c-devices.a-show {
@@ -78,6 +112,23 @@
 
   .bottom-panel {
     height: 60px;
+  }
+
+  .crosshair {
+    cursor: url(<%= asset_path("location_searching.png") %>), auto;
+  }
+
+  .leaflet-popup-content-wrapper {
+    z-index: 1000;
+  }
+
+  .leaflet-container .leaflet-control-mouseposition {
+    background-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 5px #bbb;
+    padding: 0 5px;
+    margin:0;
+    color: #333;
+    font: 11px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
   }
 
 }

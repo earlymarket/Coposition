@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
-ruby '2.3.0'
+ruby '2.3.1'
 
 gem 'rename'
-gem 'rails', '5.0.0'
+gem 'rails', '5.0.1'
 gem 'pg'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
@@ -35,6 +35,8 @@ gem 'sprockets', '>= 3.0.0'
 gem 'sprockets-es6'
 gem 'bower-rails', '~> 0.10.0'
 gem 'gpx'
+gem "activeadmin", git: "https://github.com/activeadmin/activeadmin"
+gem "inherited_resources", git: "https://github.com/activeadmin/inherited_resources"
 
 group :production do
   gem 'puma'
@@ -46,12 +48,15 @@ end
 # gem 'capistrano-rails', group: :development
 
 group :development do
+  gem "brakeman", require: false
+  gem "bundler-audit", require: false
   gem 'derailed'
   gem 'guard-livereload', '~> 2.4', require: false
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
+  gem "foreman"
 end
 
 group :development, :test do

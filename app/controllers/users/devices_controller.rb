@@ -84,6 +84,8 @@ class Users::DevicesController < ApplicationController
   end
 
   def published?
-    redirect_to root_path, notice: 'Device is not shared' unless Device.find(params[:id]).published?
+    device = Device.find(params[:id])
+    return if device.published? && !device.cloaked?
+    redirect_to root_path, notice: 'Could not find shared device'
   end
 end

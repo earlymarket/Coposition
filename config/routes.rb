@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  ActiveAdmin.routes(self)
   root to: 'welcome#index'
 
   # Specified routes
@@ -24,7 +25,7 @@ Rails.application.routes.draw do
   # API
 
   namespace :api, path: '', constraints: { subdomain: 'api' }, defaults: { format: 'json' } do
-    namespace :v1 do
+    scope module: :v1, constraints: ApiConstraint.new(version: 1, default: true) do
       resources :subscriptions, only: [:create, :destroy]
       resources :configs, only: [:index, :show, :update]
       resource :uuid, only: [:show]

@@ -28,6 +28,6 @@ Feature: map
       Given I right click on the map
         And I click "Create checkin here"
       When I click the link "Devices"
-        And I click the link "visibility"
+        And I click the link "public"
       When I visit my device published page
        Then I have 1 checkins on the map
