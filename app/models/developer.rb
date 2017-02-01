@@ -37,7 +37,7 @@ class Developer < ApplicationRecord
   end
 
   def notify_if_subscribed(event, data)
-    return unless (sub = subscribed_to? event)
+    return unless zapier_enabled? && (sub = subscribed_to? event)
     sub.send_data(data)
   end
 
