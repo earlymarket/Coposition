@@ -1,8 +1,9 @@
 <div class="card">
   <div class="card-content">
     <div class="card-title">
+      <i class="material-icons medium"><%=device.icon%></i>&nbsp;
       <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>">
-        <span class="editable"><%= device.name %></span> <i class="material-icons grey-text edit-button">mode_edit</i>&nbsp;
+        <i class="material-icons grey-text right edit-button">mode_edit</i><span class="editable"><%= device.name %></span>
       </a>
     </div>
     <div class="card-action">
