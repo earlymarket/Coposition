@@ -4,8 +4,10 @@ checkin.fogged = <%= @checkin.fogged %>
 //change open popups
 
 if(<%= @checkin.fogged %>){
+  var $foggedAddress = '<div class="foggedAddress"><h3 class="lined">';
+      $foggedAddress += '<span class="lined-pad">Fogged Address<span></h3><li><%= @checkin.fogged_city %></li></div>';
   $('#fog<%=@checkin.id%>').attr('class', 'fogged enabled-icon')
-    .parent().prepend('<li class="foggedAddress">Fogged address: <%= @checkin.fogged_city %></li>');
+    .parent().prepend($foggedAddress);
   $('.foggedAddress').hide().slideDown('fast');
 } else {
   $('#fog<%=@checkin.id%>').attr('class', 'disabled-icon');
