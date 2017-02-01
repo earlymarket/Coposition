@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170120161207) do
+ActiveRecord::Schema.define(version: 20170201134802) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -128,6 +128,7 @@ ActiveRecord::Schema.define(version: 20170120161207) do
     t.string  "alias"
     t.boolean "published", default: false
     t.boolean "cloaked",   default: false
+    t.string  "icon",      default: "devices_other"
     t.index ["uuid"], name: "index_devices_on_uuid", using: :btree
   end
 
@@ -189,6 +190,7 @@ ActiveRecord::Schema.define(version: 20170120161207) do
     t.string   "authentication_token"
     t.string   "webhook_key"
     t.boolean  "admin",                  default: false, null: false
+    t.boolean  "zapier_enabled",         default: false
     t.index ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
