@@ -42,7 +42,7 @@ Create a user with the username `testuser`.
 
 Create a developer.
 
-Note the API key.
+Note the API key found on the developer dashboard.
 
 ### Create a device
 
@@ -51,12 +51,15 @@ This is determined by the UUID of the device.
 If you're creating a new device, all you need to do is request a new UUID
 
 `GET http://api.coposition-dev.com/uuid`
-With `X-API-KEY: YourApiKey` passed as a header
+
+With `X-API-KEY: YourApiKey` passed as a header.
 
 ### Posting a checkin
 
 `POST http://api.coposition-dev.com/checkins`
-With `X-API-KEY: YourApiKey, X-UUID: YourDeviceUUID` passed as headers
+
+With `X-API-KEY: YourApiKey, X-UUID: YourDeviceUUID` passed as headers.
+
 With the payload:
 ```
 {
@@ -65,12 +68,13 @@ With the payload:
 }
 ```
 
-If you then go to your Dashboard > Devices > Add a device, add the UUID used, the device will be bound to your account with the check-in you created.
+If you then go to http://coposition-dev.com/users/testuser/devices > Add a device, enter the UUID, the device will be bound to your account with the check-in you created.
 
 ### Asking for approval
 
 `POST http://api.coposition-dev.com/users/testuser/approvals`
-With `X-API-KEY: YourApiKey` passed as a header
+
+With `X-API-KEY: YourApiKey` passed as a header.
 
 If you go to the user dashboard, you'll now see an approval request from the company you created.
 
@@ -79,14 +83,18 @@ Approving this allows the company to have access to that user's location data of
 ### Getting the device information
 
 `GET http://api.coposition-dev.com/users/testuser/devices`
-With `X-API-KEY: YourApiKey` passed as a header
+
+With `X-API-KEY: YourApiKey` passed as a header.
+
 Returns an index of devices.
 
-### Getting device check-ins
+### Getting user check-ins
 
-`GET http://api.coposition-dev.com/users/testuser/checkins?device_id=DEVICE_ID`
-With `X-API-KEY: YourApiKey` passed as a header
-Returns an index of check-ins saved to the device.
+`GET http://api.coposition-dev.com/users/testuser/checkins`
+
+With `X-API-KEY: YourApiKey` passed as a header.
+
+Returns an index of check-ins belonging to the testuser.
 
 --------
 
