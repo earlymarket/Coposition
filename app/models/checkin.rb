@@ -44,11 +44,23 @@ class Checkin < ApplicationRecord
 
   def self.batch_create(post_content)
     Checkin.transaction do
+      checkins = []
       JSON.parse(post_content).each do |checkin_hash|
-        checkin = Checkin.create(checkin_hash.slice('lat', 'lng', 'created_at', 'fogged'))
-        raise ActiveRecord::Rollback unless checkin.save
-        # checkin.device.notify_subscribers('new_checkin', checkin)
+        checkin = Checkin.new(checkin_hash.slice('lat', 'lng', 'created_at', 'fogged'))
+        city = checkin.nearest_city
+        checkin.assign_attributes(
+          uuid: checkin.device.uuid,
+          fogged: checkin.fogged ||= checkin.device.fogged,
+          fogged_lat: city.latitude || checkin.lat + rand(-0.5..0.5),
+          fogged_lng: city.longitude || checkin.lng + rand(-0.5..0.5),
+          fogged_city: city.name,
+          country_code: city.country_code,
+          fogged_country_code: city.country_code
+        )
+        checkin.fogged ? checkin.assign_output_to_fogged : checkin.assign_output_to_unfogged
+        checkins << checkin
       end
+      Checkin.import checkins
     end
   end
 
@@ -172,6 +184,28 @@ class Checkin < ApplicationRecord
 
   def set_output_to_unfogged
     update(
+      output_lat: lat,
+      output_lng: lng,
+      output_address: address,
+      output_city: city,
+      output_postal_code: postal_code,
+      output_country_code: country_code
+    )
+  end
+
+  def assign_output_to_fogged
+    assign_attributes(
+      output_lat: fogged_lat,
+      output_lng: fogged_lng,
+      output_address: nil,
+      output_city: fogged_city,
+      output_postal_code: nil,
+      output_country_code: fogged_country_code
+    )
+  end
+
+  def assign_output_to_unfogged
+    assign_attributes(
       output_lat: lat,
       output_lng: lng,
       output_address: address,
