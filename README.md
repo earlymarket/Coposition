@@ -7,7 +7,7 @@
 ## What's it all about?
 
 ### For users
-You go an a website. Let's call it LifeInvader.
+You start using an app that requires your location, let's call it LifeInvader.
 
 LifeInvader will immediately start tracking your location.
 
@@ -52,13 +52,13 @@ If you're creating a new device, all you need to do is request a new UUID
 
 `GET http://api.coposition-dev.com/uuid`
 
-With `X-API-KEY: YourApiKey` passed as a header.
+Headers: `X-API-KEY: YourApiKey`
 
 ### Posting a checkin
 
 `POST http://api.coposition-dev.com/checkins`
 
-With `X-API-KEY: YourApiKey, X-UUID: YourDeviceUUID` passed as headers.
+Headers: `X-API-KEY: YourApiKey, X-UUID: YourDeviceUUID`
 
 With the payload:
 ```
@@ -74,7 +74,7 @@ If you then go to http://coposition-dev.com/users/testuser/devices > Add a devic
 
 `POST http://api.coposition-dev.com/users/testuser/approvals`
 
-With `X-API-KEY: YourApiKey` passed as a header.
+Headers: `X-API-KEY: YourApiKey`
 
 If you go to the user dashboard, you'll now see an approval request from the company you created.
 
@@ -84,7 +84,7 @@ Approving this allows the company to have access to that user's location data of
 
 `GET http://api.coposition-dev.com/users/testuser/devices`
 
-With `X-API-KEY: YourApiKey` passed as a header.
+Headers: `X-API-KEY: YourApiKey`
 
 Returns an index of devices.
 
@@ -92,7 +92,7 @@ Returns an index of devices.
 
 `GET http://api.coposition-dev.com/users/testuser/checkins`
 
-With `X-API-KEY: YourApiKey` passed as a header.
+Headers: `X-API-KEY: YourApiKey`
 
 Returns an index of check-ins belonging to the testuser.
 
