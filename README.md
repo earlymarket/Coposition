@@ -11,9 +11,9 @@ You start using an app that requires your location, let's call it LifeInvader.
 
 LifeInvader will immediately start tracking your location.
 
-But, if LifeInvader used Coposition, you'd have to specify which of your devices it can see, and how much location data it has access to.
+But, if LifeInvader used Coposition, you'd have control over how much location data they have access to, how accurate it is and when they can see it. 
 
-Keeping your data yours.
+With one click you can completely disable LifeInvaders access to your location, keeping your data yours.
 
 
 ### For the developers
