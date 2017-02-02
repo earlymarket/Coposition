@@ -12,6 +12,22 @@ html {
   box-sizing: inherit;
 }
 
+// Breakpoints
+// ----------------
+// 600px => large
+// Show the fancy "full page"
+//
+//  At other sizes:
+//
+//  cosmetic graphics are removed
+//  layout reflows to single column
+
+$lg-breakpoint: 600px;
+
+@-ms-viewport{
+  width: device-width;
+}
+
 .placeholder {
 
   #quicklinks {
@@ -23,54 +39,109 @@ html {
     color: white;
     text-transform: uppercase;
     font-size: $quicklinks-size;
-    padding: $quicklinks-size 0;
+    padding: 0;
 
-    .items-left {
-      text-align: left;
-      > * {
-        margin-right: $quicklinks-size;
-      }
+    .quicklinks-items > * {
+      margin-right: $quicklinks-size;
+      line-height: 1.5rem;
     }
 
-    .items-right {
-      text-align: right;
-      > * {
+    // on large screens split the quicklinks between left and right
+
+    @media (min-width: $lg-breakpoint) {
+      line-height: 0.8rem;
+      .lg-items-left {
+        float: left;
+      }
+
+      .lg-items-right {
+        float: right;
         margin-left: $quicklinks-size;
+        margin-right: 0;
       }
     }
+
   }
 
   #top-menu {
-    display: flex;
-    align-items: center;
     padding: 0.6rem 0;
+    position: relative;
+    z-index: 100;
+    background: white;
+
+    i {
+      font-size: 48px;
+    }
 
     .top-menu-left {
+      float: left;
       display: flex;
       align-items: center;
 
       .brandname {
         @extend .font-heavy;
         font-size: 1.4rem;
+        display: inline-block;
       }
     }
+
     .top-menu-right {
-      text-align: right;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      text-align: center;
+
       > * {
-        margin-left: 2rem;
+        margin-left: 2vw;
         font-size: 1rem;
       }
+
     }
+
+    #mobile-menu {
+      visibility: hidden;
+      margin: 0;
+      padding: 0;
+      height: 0;
+      width: 0;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin: 0;
+      padding: 0.6rem;
+      padding-right: 7.1429%;
+      width: 100%;
+      background: white;
+      list-style: none;
+      display: block;
+      z-index: 100;
+      text-align: right;
+
+      @media (min-width: $lg-breakpoint) {
+        display: none;
+      }
+    }
+
+    .dropdown > * {
+      padding: 0.5rem 0;
+    }
+
+    #mobile-menu:checked ~ .dropdown {
+      opacity: 0;
+      z-index: -10;
+    }
+
   }
 
   #take-control {
     background: image-url('bg.jpg');
     background-size: cover;
     position: relative;
-    overflow-x: hidden;;
-    .valign-wrapper {
-      justify-content: center;
-    }
+    overflow: hidden;
+    height: 768px;
 
     .ringed-logo {
       position: absolute;
@@ -79,28 +150,29 @@ html {
       z-index: 10;
     }
 
-    .phones, .content {
+    .take-control-phones, .take-control-content {
       position: relative;
       z-index: 100;
     }
 
-    .content {
+    .take-control-phones {
+      justify-content: center;
+    }
+
+    .take-control-content {
       color: white;
+      margin-top: 260px;
+      margin-bottom: 1rem;
+      width: 50%;
 
-      .l-wrapper {
-        margin-top: 260px;
-        margin-bottom: 1rem;
-        width: 50%;
+      .title {
+        @extend .font-heavy;
+        font-size: 2.2rem;
+      }
 
-        .title {
-          @extend .font-heavy;
-          font-size: 2.2rem;
-        }
-
-        .pitch {
-          @extend .font-light;
-          font-size: 1.2rem;
-        }
+      .pitch {
+        @extend .font-light;
+        font-size: 1.2rem;
       }
     }
   }
@@ -138,15 +210,6 @@ html {
     background-image: linear-gradient(90deg, #08244f, #1d727a);
     color: white;
 
-    .caption {
-      @extend .font-heavy;
-      font-size: 1.8rem;
-    }
-
-    .btn {
-      background: #fb1d4f;
-    }
-
     .map {
       background-image: image-url('location-callout-map.png');
       background-size: 100%;
@@ -154,6 +217,16 @@ html {
       background-repeat: no-repeat;
     }
 
+    .text {
+      .caption {
+        @extend .font-heavy;
+        font-size: 1.8rem;
+      }
+
+      .btn {
+        background: #fb1d4f;
+      }
+    }
   }
 
   #benefits {
@@ -195,7 +268,7 @@ html {
       background: white;
       box-shadow: 0 3px 4px darkgray;
       text-align: center;
-      padding: 0 6rem;
+      padding: 2rem 6rem;
       max-width: 40rem;
 
       .card-title {
@@ -322,11 +395,38 @@ a {
   display: flex;
   align-items: center;
   height: 100%;
-  width: 100%;
 }
 
 .valign {
   display: inline-block;
+}
+
+@media (min-width: $lg-breakpoint) {
+  .lg-hide {
+    display: none;
+  }
+
+  .lg-show-inl {
+    display: inline;
+  }
+
+  .lg-show-bl {
+    display: block;
+  }
+
+  .lg-show-ib {
+    display: inline-block;
+  }
+
+  .lg-show-flex {
+    display: flex;
+  }
+}
+
+@media (max-width: 599px) {
+  .sm-hide {
+    display: none !important;
+  }
 }
 
 // Grid stuff
