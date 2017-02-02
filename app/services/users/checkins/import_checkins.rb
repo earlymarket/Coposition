@@ -21,7 +21,7 @@ module Users::Checkins
 
     def error
       return 'You must choose a CSV file to upload' unless @file
-      'Your CSV file is in the wrong format'
+      'Invalid CSV file format'
     end
   end
 end
