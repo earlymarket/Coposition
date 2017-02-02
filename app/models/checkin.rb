@@ -26,7 +26,6 @@ class Checkin < ApplicationRecord
     if device
       reload
       assign_values
-      reverse_geocode! if device.checkins.count == 1
       fogged ? assign_output_to_fogged : assign_output_to_unfogged
       save
     else
