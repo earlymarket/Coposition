@@ -25,18 +25,10 @@ class Checkin < ApplicationRecord
   after_create do
     if device
       reload
-      city = nearest_city
-      update(
-        uuid: device.uuid,
-        fogged: self.fogged ||= device.fogged,
-        fogged_lat: city.latitude || lat + rand(-0.5..0.5),
-        fogged_lng: city.longitude || lng + rand(-0.5..0.5),
-        fogged_city: city.name,
-        country_code: city.country_code,
-        fogged_country_code: city.country_code
-      )
+      assign_values
       reverse_geocode! if device.checkins.count == 1
-      fogged ? set_output_to_fogged : set_output_to_unfogged
+      fogged ? assign_output_to_fogged : assign_output_to_unfogged
+      save
     else
       raise 'Checkin is not assigned to a device.' unless Rails.env.test?
     end
@@ -47,16 +39,8 @@ class Checkin < ApplicationRecord
       checkins = []
       JSON.parse(post_content).each do |checkin_hash|
         checkin = Checkin.new(checkin_hash.slice('lat', 'lng', 'created_at', 'fogged'))
-        city = checkin.nearest_city
-        checkin.assign_attributes(
-          uuid: checkin.device.uuid,
-          fogged: checkin.fogged ||= checkin.device.fogged,
-          fogged_lat: city.latitude || checkin.lat + rand(-0.5..0.5),
-          fogged_lng: city.longitude || checkin.lng + rand(-0.5..0.5),
-          fogged_city: city.name,
-          country_code: city.country_code,
-          fogged_country_code: city.country_code
-        )
+        raise ActiveRecord::Rollback unless checkin.lat && checkin.lng
+        checkin.assign_values
         checkin.fogged ? checkin.assign_output_to_fogged : checkin.assign_output_to_unfogged
         checkins << checkin
       end
@@ -93,9 +77,9 @@ class Checkin < ApplicationRecord
 
   def refresh
     reverse_geocode
-    save
     init_fogged_info
-    fogged || device.fogged ? set_output_to_fogged : set_output_to_unfogged
+    fogged || device.fogged ? assign_output_to_fogged : assign_output_to_unfogged
+    save
   end
 
   def init_fogged_info
@@ -160,36 +144,29 @@ class Checkin < ApplicationRecord
   def switch_fog
     update(fogged: !fogged)
     return if device.fogged
-    fogged ? set_output_to_fogged : set_output_to_unfogged
+    fogged ? assign_output_to_fogged : assign_output_to_unfogged
+    save
   end
 
   def update_output
     if fogged || device.fogged
-      set_output_to_fogged
+      assign_output_to_fogged
     else
-      set_output_to_unfogged
+      assign_output_to_unfogged
     end
+    save
   end
 
-  def set_output_to_fogged
-    update(
-      output_lat: fogged_lat,
-      output_lng: fogged_lng,
-      output_address: nil,
-      output_city: fogged_city,
-      output_postal_code: nil,
-      output_country_code: fogged_country_code
-    )
-  end
-
-  def set_output_to_unfogged
-    update(
-      output_lat: lat,
-      output_lng: lng,
-      output_address: address,
-      output_city: city,
-      output_postal_code: postal_code,
-      output_country_code: country_code
+  def assign_values
+    city = nearest_city
+    assign_attributes(
+      uuid: device.uuid,
+      fogged: self.fogged ||= device.fogged,
+      fogged_lat: city.latitude || lat + rand(-0.5..0.5),
+      fogged_lng: city.longitude || lng + rand(-0.5..0.5),
+      fogged_city: city.name,
+      country_code: city.country_code,
+      fogged_country_code: city.country_code
     )
   end
 
