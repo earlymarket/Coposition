@@ -109,9 +109,8 @@ RSpec.describe Users::DevicesController, type: :controller do
     it 'should render page if published and checkin should be unfogged if unfogged' do
       device.published = true
       device.fogged = false
-      older_checkin.fogged = false
       checkin
-      older_checkin.set_output_to_unfogged
+      older_checkin.switch_fog
       get :shared, params: params
       expect(assigns(:presenter).shared_gon[:checkin]['lat']).to eq older_checkin.lat
     end
