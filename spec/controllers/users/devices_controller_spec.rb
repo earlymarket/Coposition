@@ -249,6 +249,15 @@ RSpec.describe Users::DevicesController, type: :controller do
       device.reload
       expect(device.cloaked?).to be true
     end
+
+    it 'changes icon' do
+      expect(device.icon).to eq 'devices_other'
+      request.accept = 'text/javascript'
+      put :update, params: params.merge(icon: 'tablet')
+      expect(flash[:notice]).to match 'Device icon updated'
+      device.reload
+      expect(device.icon).to eq 'tablet'
+    end
   end
 
   describe 'DELETE #destroy' do
