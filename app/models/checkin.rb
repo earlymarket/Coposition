@@ -41,6 +41,7 @@ class Checkin < ApplicationRecord
         raise ActiveRecord::Rollback unless checkin.lat && checkin.lng
         checkin.assign_values
         checkin.fogged ? checkin.assign_output_to_fogged : checkin.assign_output_to_unfogged
+        checkin.device.notify_subscribers('new_checkin', checkin)
         checkins << checkin
       end
       Checkin.import checkins
