@@ -190,7 +190,6 @@ ActiveRecord::Schema.define(version: 20170201134802) do
     t.string   "authentication_token"
     t.string   "webhook_key"
     t.boolean  "admin",                  default: false, null: false
-    t.boolean  "zapier_enabled",         default: false
     t.index ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree

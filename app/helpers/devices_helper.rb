@@ -50,4 +50,14 @@ module DevicesHelper
     label << '&nbsp' + presenter.device.name
     label.html_safe
   end
+
+  def devices_choose_icon(device, icon)
+    link_to user_device_path(current_user.url_id, device.id, icon: icon), { method: :put, remote: true, class: 'valign-wrapper col s2', data: { icon: icon } } do
+      if(device.icon == icon)
+        "<i class='material-icons medium active'>#{icon}</i>".html_safe
+      else
+        "<i class='material-icons medium choose-icon'>#{icon}</i>".html_safe
+      end
+    end
+  end
 end

@@ -16,6 +16,8 @@ module Users::Devices
         @device.update(name: @params[:name])
       elsif @params[:cloaked]
         @device.update(cloaked: !@device.cloaked)
+      elsif @params[:icon]
+        @device.update(icon: @params[:icon])
       else
         @device.switch_fog
       end
@@ -29,6 +31,8 @@ module Users::Devices
         "Location sharing is #{boolean_to_state(@device.published)}."
       elsif @params[:cloaked]
         "Device cloaking is #{boolean_to_state(@device.cloaked)}."
+      elsif @params[:icon]
+        "Device icon updated"
       elsif !@params[:name]
         "Location fogging is #{boolean_to_state(@device.fogged)}."
       end
