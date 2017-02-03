@@ -7,6 +7,7 @@ module Users::Devices
       @developer = developer
       @name = params[:name]
       @uuid = params[:uuid]
+      @icon = params[:icon]
       @device = if @uuid.present?
                   Device.find_by(uuid: @uuid)
                 else
@@ -15,7 +16,7 @@ module Users::Devices
     end
 
     def save?
-      if @device && @device.user.nil? && @device.construct(@user, @name)
+      if @device && @device.user.nil? && @device.construct(@user, @name, @icon)
         @developer.configs.create(device: @device) unless @device.config
         @device.notify_subscribers('new_device', @device)
         true

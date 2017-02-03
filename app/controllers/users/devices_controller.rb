@@ -66,7 +66,7 @@ class Users::DevicesController < ApplicationController
   private
 
   def allowed_params
-    params.require(:device).permit(:uuid, :name, :delayed)
+    params.require(:device).permit(:uuid, :name, :delayed, :icon)
   end
 
   def create_checkin(device)
