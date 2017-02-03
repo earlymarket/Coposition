@@ -146,7 +146,7 @@ RSpec.describe Users::DevicesController, type: :controller do
 
     it 'creates a device with a given icon' do
       post :create, params: user_param.merge(device: { name: 'New Device', icon: 'tablet' })
-      expect(user.devices.last.icon).to eq 'tablet'
+      expect(user.devices.all.last.icon).to eq 'tablet'
     end
 
     it 'creates a new device and a checkin if location provided' do
