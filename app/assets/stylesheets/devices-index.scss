@@ -18,6 +18,11 @@
     width: 60%;
   }
 
+  .device-button-small {
+    @extend .device-button;
+    width: 40%;
+  }
+
   .device-toggle {
     line-height: 36px;
     text-transform: none !important;
