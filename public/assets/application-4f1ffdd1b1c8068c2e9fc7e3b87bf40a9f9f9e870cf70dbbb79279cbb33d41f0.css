@@ -16998,27 +16998,31 @@ a[data-maitre-status]:hover {
   color: inherit;
 }
 /* line 15, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
-.c-devices.a-index .device-button {
+.c-devices.a-index .device-button, .c-devices.a-index .device-button-small {
   background-color: #47b8e0;
   color: #ffffff !important;
   width: 60%;
 }
 /* line 21, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
+.c-devices.a-index .device-button-small {
+  width: 40%;
+}
+/* line 26, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index .device-toggle {
   line-height: 36px;
   text-transform: none !important;
   margin-right: 0px !important;
   color: #000000 !important;
 }
-/* line 28, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
+/* line 33, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index .editable {
   color: #2092bb;
 }
-/* line 32, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
+/* line 37, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index .inline-text {
   display: inline;
 }
-/* line 36, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
+/* line 41, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index .linkbox, .c-devices.a-index .linkbox:focus {
   width: auto;
   height: inherit;
@@ -17027,46 +17031,46 @@ a[data-maitre-status]:hover {
   margin: 2px;
   line-height: 36px;
 }
-/* line 44, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
+/* line 49, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index .linkbox:focus {
   box-shadow: inherit;
 }
-/* line 50, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
+/* line 55, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index .delay-modal {
   height: 180px;
   width: 320px;
 }
-/* line 55, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
+/* line 60, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index .delay-slider {
   width: 98%;
 }
-/* line 59, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
+/* line 64, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index .card-panel {
   padding: 5px;
   margin: 0.25rem 0 0 0;
 }
-/* line 64, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
+/* line 69, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index .enabled-icon {
   color: #2092bb;
 }
-/* line 69, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
+/* line 74, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index .modal .enabled-icon {
   color: black;
 }
-/* line 74, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
+/* line 79, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index .disabled-icon {
   color: rgba(0, 0, 0, 0.2);
 }
-/* line 78, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
+/* line 83, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index .device-control {
   margin-left: 1rem;
   margin-right: 1rem;
 }
-/* line 83, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
+/* line 88, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index .cloaked-info {
   font-size: 14px;
 }
-/* line 87, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
+/* line 92, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index #map-overlay {
   position: absolute;
   z-index: 2;
@@ -17076,11 +17080,11 @@ a[data-maitre-status]:hover {
   opacity: 0.85;
   padding: 1rem;
 }
-/* line 96, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
+/* line 101, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index #map-overlay div {
   width: 100%;
 }
-/* line 100, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
+/* line 105, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index #map {
   width: 100%;
   height: 300px;
