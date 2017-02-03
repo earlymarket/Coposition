@@ -27,13 +27,13 @@ RSpec.describe Users::DevicesController, type: :controller do
   let(:params) { user_param.merge(id: device.id) }
   let(:date_params) { params.merge(from: Date.yesterday, to: Date.yesterday) }
 
-  it 'should have a current_user' do
+  it 'has a current_user' do
     user
     expect(subject.current_user).to_not be nil
   end
 
   describe 'GET #index' do
-    it 'should assign current_user.devices to @devices' do
+    it 'assigns current_user.devices to @devices' do
       get :index, params: user_param
       expect(assigns(:presenter).devices).to eq(user.devices)
       expect(assigns(:presenter).devices.first).to eq(device)
@@ -41,24 +41,24 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
 
   describe 'GET #show' do
-    it 'should assign :id.device to @device if user owns device' do
+    it 'assigns :id.device to @device if user owns device' do
       get :show, params: params
       expect(assigns(:presenter).device).to eq(Device.find(device.id))
     end
 
-    it 'should not assign to @device if user does not own device' do
+    it 'does not assign to @device if user does not own device' do
       get :show, params: params.merge(user_id: new_user.username)
       expect(response).to redirect_to(root_path)
       expect(assigns(:presenter)).to eq(nil)
     end
 
-    it 'should redirect to root path and render error message if device doesnt exist' do
+    it 'redirects to root path and render error message if device doesnt exist' do
       get :show, params: params.merge(id: 1000)
       expect(flash[:alert]).to eq "Couldn't find Device with 'id'=1000"
       expect(response).to redirect_to(root_path)
     end
 
-    it 'should create a CSV file if .csv appended to url' do
+    it 'creates a CSV file if .csv appended to url' do
       checkin.reload
       get :show, params: params.merge(format: :csv, download: 'csv')
       expect(response.header['Content-Type']).to include 'text/csv'
@@ -66,12 +66,12 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(response.body).to include(checkin.attributes.values[1, 5].join(','))
     end
 
-    it 'should create a GPX file if .gpx appended to url' do
+    it 'creates a GPX file if .gpx appended to url' do
       get :show, params: params.merge(format: :gpx, download: 'gpx')
       expect(response.header['Content-Type']).to include 'application/gpx+xml'
       expect(response.body).to include(device.checkins.to_gpx)
     end
-    it 'should create a geojson file if .json appended to url' do
+    it 'creates a geojson file if .json appended to url' do
       get :show, params: params.merge(format: :geojson, download: 'geojson')
       expect(response.header['Content-Type']).to include 'application/geojson'
       expect(response.body).to include(device.checkins.to_geojson.to_s)
@@ -79,7 +79,7 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
 
   describe 'GET #new' do
-    it 'should assign :uuid to @device.uuid if exists' do
+    it 'assigns :uuid to @device.uuid if exists' do
       get :new, params: user_param
       expect(assigns(:device).uuid).to eq(nil)
       get :new, params: user_param.merge(uuid: '123412341234')
@@ -88,7 +88,7 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
 
   describe 'GET #shared' do
-    it 'should deny access if device not published or cloaked' do
+    it 'denies access if device not published or cloaked' do
       get :shared, params: params
       expect(response).to redirect_to(root_path)
       expect(flash[:notice]).to match('Could not find ')
@@ -97,7 +97,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(response).to redirect_to(root_path)
     end
 
-    it 'should render page if published and checkin should be fogged' do
+    it 'renders page if published and checkin is fogged' do
       checkin
       older_checkin
       device.published = true
@@ -106,7 +106,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(assigns(:presenter).shared_gon[:checkin]['lat'].round(6)).to eq older_checkin.fogged_lat.round(6)
     end
 
-    it 'should render page if published and checkin should be unfogged if unfogged' do
+    it 'renders page if published and checkin is unfogged if unfogged' do
       device.published = true
       device.fogged = false
       checkin
@@ -117,7 +117,7 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
 
   describe 'GET #info' do
-    it 'should render info page' do
+    it 'renders info page' do
       get :info, params: params
       expect(assigns(:device)).to eq device
       expect(assigns(:config)).to eq device.config
@@ -126,7 +126,7 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
 
   describe 'POST #create' do
-    it 'should create a new device and config' do
+    it 'creates a new device and config' do
       device_count = user.devices.count
       config_count = Config.count
       post :create, params: user_param.merge(device: { name: 'New Device' })
@@ -136,7 +136,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(user.devices.all.last.name).to eq 'New Device'
     end
 
-    it 'should create a device with a given UUID' do
+    it 'creates a device with a given UUID' do
       count = user.devices.count
       post :create, params: user_param.merge(device: { name: 'New Device', uuid: empty_device.uuid })
       expect(response.code).to eq '302'
@@ -144,7 +144,12 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(user.devices.all.last).to eq empty_device
     end
 
-    it 'should create a new device and a checkin if location provided' do
+    it 'creates a device with a given icon' do
+      post :create, params: user_param.merge(device: { name: 'New Device', icon: 'tablet' })
+      expect(user.devices.last.icon).to eq 'tablet'
+    end
+
+    it 'creates a new device and a checkin if location provided' do
       devices_count = user.devices.count
       checkins_count = Checkin.count
       post :create, params: user_param.merge(
@@ -157,7 +162,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(Checkin.last.lat).to eq 51.588330
     end
 
-    it 'should fail to to create a device with an invalid UUID' do
+    it 'fails to to create a device with an invalid UUID' do
       count = user.devices.count
       post :create, params: user_param.merge(device: { uuid: 123 })
       expect(flash[:notice]).to match 'does not match'
@@ -165,7 +170,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(user.devices.count).to be count
     end
 
-    it 'should fail to to create a device when the device is assigned to a user' do
+    it 'fails to to create a device when the device is assigned to a user' do
       count = user.devices.count
       taken_uuid = user.devices.last.uuid
       post :create, params: user_param.merge(device: { uuid: taken_uuid })
@@ -174,7 +179,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(user.devices.count).to be count
     end
 
-    it 'should fail to to create a device with a duplicate username' do
+    it 'fails to to create a device with a duplicate username' do
       taken_name = user.devices.last.name
       count = user.devices.count
       post :create, params: user_param.merge(device: { name: taken_name })
@@ -185,7 +190,7 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
 
   describe 'PUT #update' do
-    it 'should switch fogging status by default' do
+    it 'switches fogging status by default' do
       expect(device.fogged?).to be true
       request.accept = 'text/javascript'
       put :update, params: params
@@ -195,7 +200,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(flash[:notice]).to match 'Location fogging is'
     end
 
-    it 'should switch published status' do
+    it 'switches published status' do
       expect(device.published?).to be false
       request.accept = 'text/javascript'
       put :update, params: params.merge(published: true)
@@ -204,7 +209,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(device.published?).to be true
     end
 
-    it 'should set a delay' do
+    it 'sets a delay' do
       request.accept = 'text/javascript'
       put :update, params: params.merge(delayed: 5)
       expect(flash[:notice]).to include 'minutes'
@@ -216,7 +221,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(device.delayed).to be 1440
     end
 
-    it 'should set a delay of 0 as nil' do
+    it 'sets a delay of 0 as nil' do
       request.accept = 'text/javascript'
       put :update, params: params.merge(delayed: 0)
 
@@ -224,19 +229,19 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(device.delayed).to be nil
     end
 
-    it 'should update device name' do
+    it 'updates device name' do
       put :update, params: params.merge(name: 'Computer', format: :json)
       expect(device.reload.name).to eq 'Computer'
     end
 
-    it 'should fail to update device name if taken' do
+    it 'fails to update device name if taken' do
       other = user.devices.create(name: 'Computer')
       put :update, params: params.merge(name: other.name, format: :json)
       expect(device.reload.name).to_not eq 'Computer'
       expect(response.body).to match 'already been taken'
     end
 
-    it 'should switch cloaked status' do
+    it 'switches cloaked status' do
       expect(device.cloaked?).to be false
       request.accept = 'text/javascript'
       put :update, params: params.merge(cloaked: true)
@@ -247,7 +252,7 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    it 'should delete' do
+    it 'deletes the device' do
       user
       count = Device.count
       delete :destroy, params: params
@@ -255,7 +260,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       expect(Device.count).to be count - 1
     end
 
-    it 'should not delete if user does not own device' do
+    it 'does not delete if user does not own device' do
       user
       count = Device.count
       delete :destroy, params: params.merge(user_id: new_user.username)
