@@ -7,8 +7,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
   before_action :check_user, only: [:update, :create]
 
   def index
-    devices = @user.devices.public_info.where(cloaked: false)
-    devices = @user.devices if req_from_coposition_app?
+    devices = req_from_coposition_app? ? @user.devices : @user.devices.public_info.where(cloaked: false)
     render json: devices
   end
 
