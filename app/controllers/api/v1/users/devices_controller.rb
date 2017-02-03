@@ -7,8 +7,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
   before_action :check_user, only: [:update, :create]
 
   def index
-    devices = req_from_coposition_app? ? @user.devices : @user.devices.public_info
-    devices = devices.where(cloaked: false) unless current_user?(params[:user_id])
+    devices = req_from_coposition_app? ? @user.devices : @user.devices.public_info.where(cloaked: false)
     render json: devices
   end
 
@@ -24,8 +23,10 @@ class Api::V1::Users::DevicesController < Api::ApiController
 
   def show
     device = @user.devices.where(id: params[:id]).first
-    return unless device_exists? device && (!device.cloaked? || current_user?(params[:user_id]))
-    device = device.public_info unless req_from_coposition_app? || @dev.configures_device?(device)
+    if !req_from_coposition_app?
+      return unless device_exists? device && !device.cloaked?
+      device = device.public_info unless @dev.configures_device?(device)
+    end
     render json: { data: device, config: configuration(device) }
   end
 

@@ -128,7 +128,7 @@ class Device < ApplicationRecord
   end
 
   def notify_subscribers(event, data)
-    return unless (subs = subscriptions(event))
+    return unless (user.zapier_enabled && subs = subscriptions(event))
     data = data.as_json
     data.merge!(remove_id.as_json)
     data.merge!(user.public_info.remove_id.as_json) if user
