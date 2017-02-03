@@ -133,6 +133,12 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         get :last, params: params
         expect(res_hash.first['lat']).to eq checkin.lat
       end
+
+      it 'should ignore cloaking by default' do
+        device.update! cloaked: true
+        get :last, params: params
+        expect(res_hash.size).to eq 1
+      end
     end
   end
 
