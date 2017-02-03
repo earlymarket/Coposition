@@ -47,7 +47,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
   end
 
   def device_params
-    params.require(:device).permit(:name, :uuid, :fogged, :delayed, :published, :alias)
+    params.require(:device).permit(:name, :uuid, :fogged, :delayed, :published, :cloaked, :alias)
   end
 
   def configuration(device)
