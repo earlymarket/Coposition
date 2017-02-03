@@ -7,39 +7,24 @@
 ## What's it all about?
 
 ### For users
-You go an a website. Let's call it ~~Facebook~~ LifeInvader.
+You start using an app that requires your location, let's call it LifeInvader.
 
-LifeInvader will immediately start tracking your location. :eyes:
+LifeInvader will immediately start tracking your location.
 
-But, if LifeInvader used Coposition, you'd have to specify which of your devices it can see. :cop:
+But, if LifeInvader used Coposition, you'd have control over how much location data they have access to, how accurate it is and when they can see it. 
 
-Keeping your data yours. :thumbsup:
+With one click you can completely disable LifeInvaders access to your location, keeping your data yours.
 
 
 ### For the developers
-A very easy to use HTTP REST API, giving you some cool location-aware data. :neckbeard:
+A very easy to use HTTP REST API, giving you some cool location-aware data.
 
-Instant trust from your users. :innocent:
+Instant trust from your users.
 
-Open source. If you see something you think could be improved, improve it! :shipit:
-
-
-## Example usage with demo app
-
-### Setup Coposition
-- Sign up on [coposition.com](http://coposition.com)
-- Go to Dashboard > Devices > Add current device
-- Enter a friendly name for your current device
-
-### Use Whereforartthou
-- Sign up on [whereforartthou.com](http://whereforartthou.com/)
-- Enter some sign up information (Does not need to relate to Coposition in any way)
-- Enter your Coposition username when prompted
-
-Have a go at messing around with your Coposition permissions, and see how it affects WFAT
+Open source. If you see something you think could be improved, improve it!
 
 --------
-# Setup
+# Developer local setup
 
 Add the following routes to your /etc/hosts
 
@@ -57,7 +42,7 @@ Create a user with the username `testuser`.
 
 Create a developer.
 
-Note the API key.
+Note the API key found on the developer dashboard.
 
 ### Create a device
 
@@ -65,29 +50,31 @@ To start posting a checkin, you need to tell us which device you're posting to.
 This is determined by the UUID of the device.
 If you're creating a new device, all you need to do is request a new UUID
 
-`GET http://api.coposition.com/v1/uuid`
-With `X-API-KEY: YourApiKey` passed as a header
+`GET http://api.coposition-dev.com/uuid`
+
+Headers: `X-API-KEY: YourApiKey`
 
 ### Posting a checkin
 
-`POST http://api.coposition-dev.com/v1/checkins`
+`POST http://api.coposition-dev.com/checkins`
+
+Headers: `X-API-KEY: YourApiKey, X-UUID: YourDeviceUUID`
+
 With the payload:
 ```
 {
-  "checkin": {
-    "uuid":"07b47a50-6f22-468f-b387-b314768f4649",
-    "lat":"51.588330",
-    "lng":"-0.513069"
-  }
+  "lat":"51.588330",
+  "lng":"-0.513069"
 }
 ```
 
-If you then go to your Dashboard > Devices > Add a device, add the UUID `07b47a50-6f22-468f-b387-b314768f4649`, and the device will be bound to your account.
+If you then go to http://coposition-dev.com/users/testuser/devices > Add a device, enter the UUID, the device will be bound to your account with the check-in you created.
 
 ### Asking for approval
 
-`POST http://api.coposition-dev.com/v1/users/testuser/approvals`
-With `X-API-KEY: YourApiKey` passed as a header
+`POST http://api.coposition-dev.com/users/testuser/approvals`
+
+Headers: `X-API-KEY: YourApiKey`
 
 If you go to the user dashboard, you'll now see an approval request from the company you created.
 
@@ -95,12 +82,19 @@ Approving this allows the company to have access to that user's location data of
 
 ### Getting the device information
 
-`GET http://api.coposition-dev.com/v1/users/testuser/devices`
-With `X-API-KEY: YourApiKey` passed as a header
+`GET http://api.coposition-dev.com/users/testuser/devices`
+
+Headers: `X-API-KEY: YourApiKey`
+
 Returns an index of devices.
 
+### Getting user check-ins
 
+`GET http://api.coposition-dev.com/users/testuser/checkins`
 
+Headers: `X-API-KEY: YourApiKey`
+
+Returns an index of check-ins belonging to the testuser.
 
 --------
 
