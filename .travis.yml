@@ -23,6 +23,14 @@ before_script:
 script:
   - bin/ci
 
+# deploy:
+#   provider: heroku
+#   app:
+#     dev: coposition-staging
+#   api_key:
+#     secure: "YOUR ENCRYPTED API KEY"
+#   run: "rake db:migrate"
+
 addons:
   apt:
     sources:
