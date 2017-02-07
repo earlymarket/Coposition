@@ -1,7 +1,7 @@
 class FriendChannel < ApplicationCable::Channel
   def subscribed
     # stream_from "some_channel"
-    stream_from "friend_#{uuid}"
+    stream_from "friends_#{current_user.id}"
   end
 
   def unsubscribed

@@ -31,10 +31,10 @@ gem 'inline_svg'
 gem 'gon', '~> 6.1.0'
 gem 'cloudinary', '~> 1.1.3'
 gem 'attachinary', '~> 1.3.1'
-gem 'sprockets', '>= 3.0.0'
-gem 'sprockets-es6'
-gem 'bower-rails', '~> 0.10.0'
-gem 'gpx'
+gem "sprockets", ">= 3.0.0"
+gem "sprockets-es6"
+gem "bower-rails", "~> 0.10.0"
+gem "gpx"
 gem "activeadmin", git: "https://github.com/activeadmin/activeadmin"
 gem "inherited_resources", git: "https://github.com/activeadmin/inherited_resources"
 gem "activerecord-import"
