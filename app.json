@@ -1,48 +1,57 @@
 {
-  "name":"CoPosition",
-  "description":"Secure trusted geolocation",
-  "scripts":{
-    "postdeploy": "bundle exec rake db:setup"
+  "name": "CoPosition",
+  "description": "Secure trusted geolocation",
+  "scripts": {
+    "postdeploy": "pg_dump $STAGING_DATABASE_URL | psql $DATABASE_URL && bundle exec rake db:migrate"
   },
-  "env":{
-    "LANG":{
+  "env": {
+    "LANG": {
+      "required": true
+    },
+    "RACK_ENV": {
       "required":true
     },
-    "RACK_ENV":{
-      "required":true
+    "RAILS_ENV": {
+      "required": true
     },
-    "RAILS_ENV":{
-      "required":true
+    "RAILS_SERVE_STATIC_FILES": {
+      "required": true
     },
-    "RAILS_SERVE_STATIC_FILES":{
-      "required":true
+    "SECRET_KEY_BASE": {
+      "required": true
     },
-    "SECRET_KEY_BASE":{
-      "required":true
+    "SLACK_WEBHOOK_URL": {
+      "required": true
     },
-    "SLACK_WEBHOOK_URL":{
-      "required":true
+    "CLOUDINARY_API_KEY": {
+      "required": true
     },
-    "CLOUDINARY_API_KEY":{
-      "required":true
+    "CLOUDINARY_API_SECRET": {
+      "required": true
     },
-    "CLOUDINARY_API_SECRET":{
-      "required":true
+    "MOBILE_APP_KEY": {
+      "required": true
     },
-    "MOBILE_APP_KEY":{
-      "required":true
+    "COPOSITION_API_KEY": {
+      "required": true
     },
-    "COPOSITION_API_KEY":{
-      "required":true
+    "MOBILE_APP_API_KEY": {
+      "required": true
     },
-    "MOBILE_APP_API_KEY":{
-      "required":true
+    "GOOGLE_MAPS_API_KEY": {
+      "required": true
     },
-    "GOOGLE_MAPS_API_KEY":{
-      "required":true
+    "STAGING_DATABASE_URL": {
+      "required": true
     }
   },
-  "addons":[
-    "heroku-postgresql"
+  "addons": [
+    "sendgrid:starter",
+    {
+      "plan": "heroku-postgresql:hobby-basic",
+      "options": {
+        "version": "9.5"
+      }
+    }
   ]
 }
