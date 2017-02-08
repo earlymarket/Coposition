@@ -46,6 +46,10 @@ $lg-breakpoint: 600px;
       line-height: 1.5rem;
     }
 
+    .current {
+      color: #00d646;
+    }
+
     // on large screens split the quicklinks between left and right
 
     @media (min-width: $lg-breakpoint) {
@@ -74,13 +78,13 @@ $lg-breakpoint: 600px;
     }
 
     .top-menu-left {
-      float: left;
       display: flex;
       align-items: center;
+      justify-content: center;
 
       .brandname {
         @extend .font-heavy;
-        font-size: 1.4rem;
+        font-size: 2.5rem;
         display: inline-block;
       }
     }
@@ -143,11 +147,20 @@ $lg-breakpoint: 600px;
     overflow: hidden;
     height: 768px;
 
+    @media (max-width: 599px) {
+      height: auto;
+    }
+
     .ringed-logo {
       position: absolute;
       top: 0;
       left: calc(50vw - 600px);
       z-index: 10;
+
+      @media (max-width: 599px) {
+        top: -139px;
+        left: calc(-596px + 10vw);
+      }
     }
 
     .take-control-phones, .take-control-content {
@@ -174,11 +187,16 @@ $lg-breakpoint: 600px;
         @extend .font-light;
         font-size: 1.2rem;
       }
+
+      @media (max-width: 599px) {
+        margin-top: 130px;
+        margin-left: 10%;
+        width: 80%;
+      }
     }
   }
 
   #callouts {
-    display: flex;
     color: white;
     text-align: center;
 
@@ -200,6 +218,11 @@ $lg-breakpoint: 600px;
 
     > .cell-contrast {
       background: #1a1a1a;
+    }
+
+    .gh-logo {
+      font-size: 65px;
+      color: #008ecf;
     }
 
   }
@@ -255,7 +278,7 @@ $lg-breakpoint: 600px;
   }
 
   #get-enabled {
-    height: 75vh;
+    height: 600px;
     background-image: image-url('enabled-tile.png'), linear-gradient(#dbfdff 10%, rgba(224, 255, 255, 0.3), #dbfdff);
     background-blend-mode: overlay;
     position: relative;
@@ -294,19 +317,17 @@ $lg-breakpoint: 600px;
     background-position: top center;
     background-repeat: no-repeat;
     color: white;
-    height: 75vh;
+    height: 600px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     .wrapper {
       max-width: 40rem;
       text-align: center;
       position: relative;
-      top: 14rem;
-      margin: 0 auto;
-
-      :first-child {
-        margin-top: 0;
-      }
 
       .wrapper-pitch {
         font-size: 1.3rem;
@@ -358,9 +379,9 @@ a {
     background: #008ecf;
   }
 
-  // &.btn-alternate {
-  //   background: #fb1d4f;
-  // }
+  &.btn-alternate {
+    background: #fb1d4f;
+  }
 
   &.btn-inverse {
     color: #279ac5;
@@ -385,7 +406,7 @@ a {
 }
 
 .font-light {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Muli', sans-serif;
   font-weight: 300;
 }
 
@@ -399,6 +420,14 @@ a {
 
 .valign {
   display: inline-block;
+}
+
+.filled-row {
+  display: flex;
+
+  @media (max-width: 599px) {
+    flex-direction: column;
+  }
 }
 
 @media (min-width: $lg-breakpoint) {
@@ -766,7 +795,8 @@ a {
   }
 }
 
-@media screen and (min-width: 64em) {
+// @media screen and (min-width: 64em) {
+@media screen and (min-width: 600px) {
   .pure-u-lg-1,
   .pure-u-lg-1-1,
   .pure-u-lg-1-2,
