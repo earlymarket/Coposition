@@ -1,7 +1,7 @@
 class Users::CheckinsController < ApplicationController
   protect_from_forgery except: :show
   before_action :authenticate_user!
-  before_action :require_checkin_ownership, except: [:index, :new, :create, :destroy_all]
+  before_action :require_checkin_ownership, only: [:show, :update, :destroy]
   before_action :require_device_ownership, only: [:index, :new, :create, :destroy_all]
 
   def new
@@ -25,6 +25,16 @@ class Users::CheckinsController < ApplicationController
     @checkin = @device.checkins.create(allowed_params)
     @device.notify_subscribers('new_checkin', @checkin)
     flash[:notice] = 'Checked in.'
+  end
+
+  def import
+    if params[:file] && valid_file?
+      Checkin.import(params[:file])
+      flash[:notice] = 'Importing check-ins'
+    else
+      flash[:alert] = 'Invalid file'
+    end
+    redirect_to user_devices_path(current_user.url_id)
   end
 
   def show
@@ -59,6 +69,12 @@ class Users::CheckinsController < ApplicationController
 
   def allowed_params
     params.require(:checkin).permit(:lat, :lng, :device_id, :fogged)
+  end
+
+  def valid_file?
+    CSV.foreach(params[:file].path, headers: true) do |csv|
+      return csv.headers == Checkin.column_names
+    end
   end
 
   def require_checkin_ownership
