@@ -44,7 +44,7 @@ namespace :checkins do
     if (device = Device.find_by(id: args[:device_id]))
       Checkin.transaction do
         unfogged = device.checkins.where(fogged: false)
-        device.fogged ? unfogged.each(&:set_output_to_fogged) : unfogged.each(&:set_output_to_unfogged)
+        device.fogged ? unfogged.each(&:assign_output_to_fogged) : unfogged.each(&:assign_output_to_unfogged)
       end
     end
   end
