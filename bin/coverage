@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require "json"
+
 last_run_file = File.dirname(__FILE__) << "/../coverage" << "/.last_run.json"
 unless File.exists?(last_run_file)
   puts "Result coverage file is missing or currupted."
