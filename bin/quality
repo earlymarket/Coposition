@@ -2,7 +2,11 @@
 
 set -e
 
+# bin/rubocop --rails --format json --config config/rubocop.yml
 bin/brakeman --quiet --skip-libs --exit-on-warn
+
+bin/coffeelint
+bin/coverage
 
 bin/bundle-audit update
 bin/bundle-audit
