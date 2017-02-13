@@ -4,6 +4,7 @@ set -e
 
 # bin/rubocop --rails --format json --config config/rubocop.yml
 bin/brakeman --quiet --skip-libs --exit-on-warn
+# bin/rails_best_practices --silent --spec --features -x lib/templates
 
 bin/coffeelint
 bin/coverage

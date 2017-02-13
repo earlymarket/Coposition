@@ -73,6 +73,7 @@ group :development, :test do
   gem "rubocop", require: false
   gem "rubocop-rspec", require: false
   gem "coffeelint"
+  gem "rails_best_practices", require: false
 end
 
 group :test do
