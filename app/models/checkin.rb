@@ -1,6 +1,3 @@
-require 'rake'
-Coposition::Application.load_tasks
-
 class Checkin < ApplicationRecord
   validates :lat, presence: :true
   validates :lng, presence: :true
@@ -34,36 +31,6 @@ class Checkin < ApplicationRecord
     else
       raise 'Checkin is not assigned to a device.' unless Rails.env.test?
     end
-  end
-
-  class << self
-    def import_file(device_id)
-      device = Device.find(device_id)
-      resource = Cloudinary::Api.resource(device.csv.public_id, {resource_type: 'raw'})
-      download = Cloudinary::Downloader.download(resource['secure_url'])
-      Checkin.transaction do
-        CSV.parse(download, headers: true) do |row|
-          checkin = Checkin.find_by_id(row['id']) || Checkin.new
-          checkin.attributes = row.to_hash.slice('lat', 'lng', 'created_at', 'fogged')
-          checkin.device_id = device_id
-          checkin.save!
-        end
-      end
-      # puts 'importing'
-      # Checkin.transaction do
-      #   CSV.foreach(Device.find(device_id).csv.path, headers: true) do |row|
-      #     checkin = Checkin.find_by_id(row['id']) || Checkin.new
-      #     puts checkin
-      #     checkin.attributes = row.to_hash.slice('lat', 'lng', 'created_at', 'fogged')
-      #     checkin.device_id = device_id
-      #     checkin.save!
-      #   end
-      # end
-      # load File.join(Rails.root, 'lib', 'tasks', 'checkins.rake')
-      # Rake::Task["checkins:import"].invoke(file.path, device)
-      # Rake.application.invoke_task("checkins:import[#{file.path},#{device}] &")
-    end
-    handle_asynchronously :import_file
   end
 
   def self.batch_create(post_content)
