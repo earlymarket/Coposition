@@ -33,7 +33,7 @@ class Checkin < ApplicationRecord
     end
   end
 
-  def self.import(file, device)
+  def self.import_file(file, device)
     system "rake checkins:import[#{file.path},#{device}] &"
   end
 

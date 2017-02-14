@@ -8,7 +8,7 @@ module Users::Checkins
 
     def success?
     	if @file && valid_file?
-    	  Checkin.import(@file, @device_id)
+    	  Checkin.import_file(@file, @device_id)
     	  true
     	end
     end
