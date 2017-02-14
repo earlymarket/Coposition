@@ -8,7 +8,10 @@ module Users::Checkins
 
     def success?
     	if @file && valid_file?
-    	  Checkin.import_file(@file, @device_id)
+        device = Device.find(@device_id)
+        device.csv = File.open(@file.path, "r")
+        device.save
+    	  Checkin.import_file(@device_id)
     	  true
     	end
     end

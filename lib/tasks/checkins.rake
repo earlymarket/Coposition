@@ -51,6 +51,8 @@ namespace :checkins do
 
   desc 'Imports checkins from CSV'
   task :import, [:filepath, :device_id] => :environment do |_t, args|
+    puts "trying to import"
+    puts args
     Checkin.transaction do
       CSV.foreach(args[:filepath], headers: true) do |row|
         checkin = Checkin.find_by_id(row['id']) || Checkin.new

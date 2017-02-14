@@ -148,8 +148,14 @@ GEM
       nokogiri (~> 1.5)
       railties (>= 3, < 5.1)
     cucumber-wire (0.0.1)
+    daemons (1.2.4)
     database_cleaner (1.5.3)
     debug_inspector (0.0.2)
+    delayed_job (4.1.2)
+      activesupport (>= 3.0, < 5.1)
+    delayed_job_active_record (4.1.1)
+      activerecord (>= 3.0, < 5.1)
+      delayed_job (>= 3.0, < 5)
     derailed (0.1.0)
       derailed_benchmarks
     derailed_benchmarks (1.3.1)
@@ -463,7 +469,9 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   colorize
   cucumber-rails
+  daemons
   database_cleaner
+  delayed_job_active_record
   derailed
   devise
   factory_girl_rails

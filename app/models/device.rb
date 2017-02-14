@@ -10,6 +10,7 @@ class Device < ApplicationRecord
   has_many :permitted_users, through: :permissions, source: :permissible, source_type: 'User'
   has_many :allowed_user_permissions, -> { where.not privilege: 0 }, class_name: 'Permission'
   has_many :allowed_users, through: :allowed_user_permissions, source: :permissible, source_type: 'User'
+  has_attachment :csv, accept: :raw
 
   validates :name, uniqueness: { scope: :user_id }, if: :user_id
 
