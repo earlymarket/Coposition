@@ -10,20 +10,20 @@ RSpec.describe PermissionsHelper, type: :helper do
     Permission.last
   end
 
-  describe '#permissible_title' do
+  describe '#permissions_permissible_title' do
     it 'should accept either a user or a developer' do
-      expect { helper.permissible_title(user) }.not_to raise_error
-      expect { helper.permissible_title(developer) }.not_to raise_error
+      expect { helper.permissions_permissible_title(user) }.not_to raise_error
+      expect { helper.permissions_permissible_title(developer) }.not_to raise_error
     end
 
     it "should return html with the user's shortened email or name if it's a user" do
-      expect(helper.permissible_title(user)).to match(user.username)
-      expect(helper.permissible_title(user).class).to eq(safebuffer)
+      expect(helper.permissions_permissible_title(user)).to match(user.username)
+      expect(helper.permissions_permissible_title(user).class).to eq(safebuffer)
     end
 
     it "should return html with the company name if it's a developer" do
-      expect(helper.permissible_title(developer).class).to eq(safebuffer)
-      expect(helper.permissible_title(developer)).to match(developer.company_name)
+      expect(helper.permissions_permissible_title(developer).class).to eq(safebuffer)
+      expect(helper.permissions_permissible_title(developer)).to match(developer.company_name)
     end
   end
 
