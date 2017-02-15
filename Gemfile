@@ -35,11 +35,11 @@ gem 'sprockets', '>= 3.0.0'
 gem 'sprockets-es6'
 gem 'bower-rails', '~> 0.10.0'
 gem 'gpx'
-gem "activeadmin", git: "https://github.com/activeadmin/activeadmin"
-gem "inherited_resources", git: "https://github.com/activeadmin/inherited_resources"
-gem "activerecord-import"
-gem "delayed_job_active_record"
-gem "daemons"
+gem 'activeadmin', git: 'https://github.com/activeadmin/activeadmin'
+gem 'inherited_resources', git: 'https://github.com/activeadmin/inherited_resources'
+gem 'activerecord-import'
+gem 'delayed_job_active_record'
+gem 'daemons'
 
 group :production do
   gem 'puma'
