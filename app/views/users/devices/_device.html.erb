@@ -5,7 +5,7 @@
         <i id="currentIcon<%=device.id%>" class="material-icons medium"><%=device.icon%></i>
       </a>
       <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>">
-        <i class="material-icons grey-text right edit-button">mode_edit</i><span class="editable"><%= device.name %></span>
+        <span class="editable"><%= device.name %></span><i class="material-icons grey-text right edit-button">mode_edit</i>
       </a>
     </div>
     <div class="card-action">
