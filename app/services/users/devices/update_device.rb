@@ -32,7 +32,7 @@ module Users::Devices
       elsif @params[:cloaked]
         "Device cloaking is #{boolean_to_state(@device.cloaked)}."
       elsif @params[:icon]
-        "Device icon updated"
+        'Device icon updated'
       elsif !@params[:name]
         "Location fogging is #{boolean_to_state(@device.fogged)}."
       end

@@ -30,9 +30,8 @@ module DevicesHelper
   end
 
   def devices_cloaked_info(value)
-    if value
-      "<div class='inline-text cloaked-info grey-text'>This device is cloaked. No friends or apps can see this device or its check-ins.</div>".html_safe 
-    end
+    return unless value
+    "<div class='inline-text cloaked-info grey-text'>This device is cloaked. No friends or apps can see this device or its check-ins.</div>".html_safe
   end
 
   def devices_config_rows(config)
@@ -45,15 +44,15 @@ module DevicesHelper
 
   def devices_label(presenter)
     label = ''
-    user = (presenter.class == Users::FriendsPresenter) ? presenter.friend : presenter.user
+    user = presenter.class == Users::FriendsPresenter ? presenter.friend : presenter.user
     label << avatar_for(user, title: name_or_email_name(user), width: 40, height: 40)
     label << '&nbsp' + presenter.device.name
     label.html_safe
   end
 
   def devices_choose_icon(device, icon)
-    link_to user_device_path(current_user.url_id, device.id, icon: icon), { method: :put, remote: true, class: 'valign-wrapper col s2', data: { icon: icon } } do
-      if(device.icon == icon)
+    link_to user_device_path(current_user.url_id, device.id, icon: icon), method: :put, remote: true, class: 'valign-wrapper col s2', data: { icon: icon } do
+      if device.icon == icon
         "<i class='material-icons medium active'>#{icon}</i>".html_safe
       else
         "<i class='material-icons medium choose-icon'>#{icon}</i>".html_safe
