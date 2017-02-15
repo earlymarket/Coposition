@@ -23,10 +23,13 @@ class Checkin < ApplicationRecord
   end
 
   after_create do
-    raise 'Checkin is not assigned to a device.' unless device || Rails.env.test?
-    reload
-    assign_values
-    save
+    if device
+      reload
+      assign_values
+      save
+    else
+      raise 'Checkin is not assigned to a device.' unless Rails.env.test?
+    end
   end
 
   def assign_values

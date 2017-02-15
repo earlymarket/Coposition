@@ -10,10 +10,6 @@ class NoCity
     true
   end
 
-  def id
-    nil
-  end
-
   def latitude
     lat + rand(-0.5..0.5)
   end
