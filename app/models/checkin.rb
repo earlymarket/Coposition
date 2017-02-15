@@ -26,10 +26,24 @@ class Checkin < ApplicationRecord
     if device
       reload
       assign_values
-      update_output
+      save
     else
       raise 'Checkin is not assigned to a device.' unless Rails.env.test?
     end
+  end
+
+  def assign_values
+    city = nearest_city
+    assign_attributes(
+      uuid: device.uuid,
+      fogged: self.fogged ||= device.fogged,
+      fogged_lat: city.latitude,
+      fogged_lng: city.longitude,
+      fogged_city: city.name,
+      country_code: city.country_code,
+      fogged_country_code: city.country_code
+    )
+    update_output
   end
 
   def update_output
@@ -38,20 +52,6 @@ class Checkin < ApplicationRecord
     else
       assign_output_to_unfogged
     end
-    save
-  end
-
-  def assign_values
-    city = nearest_city
-    assign_attributes(
-      uuid: device.uuid,
-      fogged: self.fogged ||= device.fogged,
-      fogged_lat: city.latitude || lat + rand(-0.5..0.5),
-      fogged_lng: city.longitude || lng + rand(-0.5..0.5),
-      fogged_city: city.name,
-      country_code: city.country_code,
-      fogged_country_code: city.country_code
-    )
   end
 
   def assign_output_to_fogged
@@ -80,6 +80,7 @@ class Checkin < ApplicationRecord
     unless reverse_geocoded?
       reverse_geocode
       update_output
+      save
     end
     self
   end
@@ -92,31 +93,21 @@ class Checkin < ApplicationRecord
     update(fogged: !fogged)
     return if device.fogged
     update_output
+    save
   end
 
   def set_edited
     write_attribute(:edited, true)
   end
 
-  def nearest_city
-    City.near([lat, lng], 200).first || NoCity.new
-  end
-
   def refresh
     reverse_geocode
-    init_fogged_info
-    update_output
+    assign_values
+    save
   end
 
-  def init_fogged_info
-    city = nearest_city
-    update(
-      fogged_lat: city.latitude || lat + rand(-0.5..0.5),
-      fogged_lng: city.longitude || lng + rand(-0.5..0.5),
-      fogged_city: city.name,
-      country_code: city.country_code,
-      fogged_country_code: city.country_code
-    )
+  def nearest_city
+    City.near([lat, lng], 200).first || NoCity.new(lat, lng)
   end
 
   class << self

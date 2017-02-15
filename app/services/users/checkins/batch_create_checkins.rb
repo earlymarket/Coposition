@@ -14,8 +14,6 @@ module Users::Checkins
           checkin = Checkin.new(checkin_hash.slice('lat', 'lng', 'created_at', 'fogged'))
           raise ActiveRecord::Rollback unless checkin.lat && checkin.lng
           checkin.assign_values
-          checkin.fogged ? checkin.assign_output_to_fogged : checkin.assign_output_to_unfogged
-          checkin.device.notify_subscribers('new_checkin', checkin)
           checkin
         end
         Checkin.import checkins

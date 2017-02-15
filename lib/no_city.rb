@@ -1,4 +1,11 @@
 class NoCity
+  attr_reader :lat
+  attr_reader :lng
+  def initialize(lat, lng)
+    @lat = lat
+    @lng = lng
+  end
+
   def nil?
     true
   end
@@ -8,11 +15,11 @@ class NoCity
   end
 
   def latitude
-    nil
+    lat + rand(-0.5..0.5)
   end
 
   def longitude
-    nil
+    lng + rand(-0.5..0.5)
   end
 
   def name
