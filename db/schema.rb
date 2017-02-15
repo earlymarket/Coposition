@@ -144,7 +144,6 @@ ActiveRecord::Schema.define(version: 20170214134138) do
     t.string  "alias"
     t.boolean "published", default: false
     t.boolean "cloaked",   default: false
-    t.string  "icon",      default: "devices_other"
     t.index ["uuid"], name: "index_devices_on_uuid", using: :btree
   end
 
