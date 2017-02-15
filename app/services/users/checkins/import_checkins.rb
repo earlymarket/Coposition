@@ -1,18 +1,16 @@
 module Users::Checkins
   class ImportCheckins
-
     def initialize(params)
-    	@file = params[:file]
-    	@device = Device.find(params[:device_id])
+      @file = params[:file]
+      @device = Device.find(params[:device_id])
     end
 
     def success?
-    	if @file && valid_file?
-        @device.csv = File.open(@file.path, "r")
-        @device.save
-    	  import
-    	  true
-    	end
+      return false unless @file && valid_file?
+      @device.csv = File.open(@file.path, 'r')
+      @device.save
+      import
+      true
     end
 
     def valid_file?
@@ -22,7 +20,7 @@ module Users::Checkins
     end
 
     def import
-      resource_info = Cloudinary::Api.resource(@device.csv.public_id, {resource_type: 'raw'})
+      resource_info = Cloudinary::Api.resource(@device.csv.public_id, resource_type: 'raw')
       csv_file = Cloudinary::Downloader.download(resource_info['secure_url'])
       Checkin.transaction do
         CSV.parse(csv_file, headers: true) do |row|
@@ -32,7 +30,7 @@ module Users::Checkins
           checkin.save!
         end
       end
-      Cloudinary::Uploader.destroy(@device.csv.public_id, {resource_type: 'raw'})
+      Cloudinary::Uploader.destroy(@device.csv.public_id, resource_type: 'raw')
       @device.update csv: nil
     end
     handle_asynchronously :import

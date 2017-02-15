@@ -213,5 +213,4 @@ class Checkin < ApplicationRecord
   def set_edited
     write_attribute(:edited, true)
   end
-
 end
