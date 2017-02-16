@@ -11,7 +11,7 @@ class WelcomeController < ApplicationController
     render 'placeholder_devs', layout: false unless Rails.env == "development" ||
                                                     Rails.env == "test" ||
                                                     params[:admin] ||
-                                                    signed_in?signed_in?
+                                                    signed_in?
     # render 'placeholder_devs', layout: false
   end
 
