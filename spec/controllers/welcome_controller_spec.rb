@@ -4,7 +4,7 @@ RSpec.describe WelcomeController, type: :controller do
   describe '#index' do
     it 'should render the index under normal circumstances' do
       get :index
-      expect(response).to render_template('welcome/placeholder_users')
+      expect(response).to render_template('index')
     end
 
     it 'should render the placeholder in production' do
