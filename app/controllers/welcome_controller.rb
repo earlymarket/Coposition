@@ -1,11 +1,11 @@
 class WelcomeController < ApplicationController
   def index
-    render 'placeholder_users', layout: false if Rails.env == 'production' && (!params[:admin] || !signed_in?)
+    render 'placeholder_users', layout: false if (Rails.env == "production" || Rails.env == "staging") && (!params[:admin] || !signed_in?)
     # render 'placeholder_users', layout: false
   end
 
   def devs
-    render 'placeholder_devs', layout: false if Rails.env == 'production' && (!params[:admin] || !signed_in?)
+    render 'placeholder_devs', layout: false if (Rails.env == "production" || Rails.env == "staging") && (!params[:admin] || !signed_in?)
     # render 'placeholder_devs', layout: false
   end
 
