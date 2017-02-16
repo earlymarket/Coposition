@@ -56,7 +56,7 @@ class Api::V1::CheckinsController < Api::ApiController
   end
 
   def batch_create
-    result = Users::Checkins::BatchCreateCheckins.new(@device, request.raw_post)
+    result = ::Users::Checkins::BatchCreateCheckins.new(@device, request.raw_post)
     if result.success
       render json: { message: 'Checkins created' }, status: 200
     else
