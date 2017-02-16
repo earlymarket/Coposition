@@ -1,19 +1,15 @@
 class ImportWorker
   include Sidekiq::Worker
 
-  def perform(device_id)
-    device = Device.find device_id
-    resource_info = Cloudinary::Api.resource(device.csv.public_id, resource_type: 'raw')
-    csv_file = Cloudinary::Downloader.download(resource_info['secure_url'])
+  def perform(device, json_file)
+    file_array = JSON.parse(json_file)
     Checkin.transaction do
-      CSV.parse(csv_file, headers: true) do |row|
-        checkin = Checkin.find_by_id(row['id']) || Checkin.new
-        checkin.attributes = row.to_hash.slice('lat', 'lng', 'created_at', 'fogged')
-        checkin.device_id = device.id
+      file_array.drop(1).each do |row|
+        attr = row.split(',')
+        checkin = Checkin.find_by_id(attr[0]) || Checkin.new
+        checkin.assign_attributes(lat: attr[1], lng: attr[2], created_at: attr[3], fogged: attr[11], device_id: device)
         checkin.save!
       end
     end
-    Cloudinary::Uploader.destroy(@device.csv.public_id, resource_type: 'raw')
-    @device.update csv: nil
   end
 end

@@ -7,9 +7,8 @@ module Users::Checkins
 
     def success?
       return false unless @file && valid_file?
-      @device.csv = File.open(@file.path, 'r')
-      @device.save
-      ImportWorker.perform_async(@device.id)
+      json_file = File.open(@file.path, 'r').to_json
+      ImportWorker.perform_async(@device.id, json_file)
       true
     end
 
