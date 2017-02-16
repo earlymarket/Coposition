@@ -16,3 +16,5 @@ Documentation:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+StringLiterals:
+  Enabled: false
