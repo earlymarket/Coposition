@@ -17089,6 +17089,11 @@ a[data-maitre-status]:hover {
   color: black !important;
 }
 /* line 111, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
+.c-devices.a-index .icon-label {
+  font-size: 13px;
+  text-align: center;
+}
+/* line 116, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index #map-overlay {
   position: absolute;
   z-index: 2;
@@ -17098,11 +17103,11 @@ a[data-maitre-status]:hover {
   opacity: 0.85;
   padding: 1rem;
 }
-/* line 120, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
+/* line 125, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index #map-overlay div {
   width: 100%;
 }
-/* line 124, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
+/* line 129, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-index.scss */
 .c-devices.a-index #map {
   width: 100%;
   height: 300px;
