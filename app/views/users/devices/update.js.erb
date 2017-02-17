@@ -1,4 +1,6 @@
 <%= raw render_flash %>
+$('.tooltipped').tooltip('remove');
+$('.tooltipped').tooltip({delay: 50});
 var fog = $('#fogButton<%=@device.id%>');
 fog.html("<%=j attribute_icon(@device.fogged, 'cloud')%>&nbsp;Fogging");
 <% if @device.fogged %>
