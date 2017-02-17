@@ -52,23 +52,22 @@ module DevicesHelper
 
   def devices_choose_icon(device, icon)
     link_to user_device_path(current_user.url_id, device.id, icon: icon),
-            method: :put, data: { tooltip: tooltip(icon), icon: icon }, remote: true,
-            class: 'valign-wrapper tooltipped col s2' do
+            class: 'col s2', method: :put, remote: true, data: { icon: icon } do
       if device.icon == icon
-        "<i class='material-icons medium active'>#{icon}</i>".html_safe
+        "<i class='material-icons medium active'>#{icon}</i>#{icon_label(icon)}".html_safe
       else
-        "<i class='material-icons medium choose-icon'>#{icon}</i>".html_safe
+        "<i class='material-icons medium choose-icon'>#{icon}</i>#{icon_label(icon)}".html_safe
       end
     end
   end
 
-  def tooltip(icon)
+  def icon_label(icon)
     if icon == 'desktop_windows'
-      'desktop'
+      "<p class='icon-label'>desktop</p>".html_safe
     elsif icon == 'devices_other'
-      'other'
+      "<p class='icon-label'>other</p>".html_safe
     else
-      icon
+      "<p class='icon-label'>#{icon}</p>".html_safe
     end
   end
 end
