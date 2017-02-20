@@ -7,8 +7,7 @@ module Users::Checkins
 
     def success?
       return false unless @file && valid_file?
-      json_file = File.open(@file.path, 'r').to_json
-      ImportWorker.perform_async(@device.id, json_file)
+      ImportWorker.perform_async(@device.id, @file.path)
       true
     end
 

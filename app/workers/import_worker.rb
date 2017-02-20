@@ -1,27 +1,22 @@
 class ImportWorker
   include Sidekiq::Worker
 
-  def perform(device, json_file)
+  def perform(device, path)
     Checkin.transaction do
-      file_array(json_file).drop(1).each do |row|
+      CSV.foreach(path, headers: true) do |row|
         checkin_create_or_update_from_row!(row, device)
       end
     end
   end
 
-  def file_array(json_file)
-    JSON.parse(json_file)
-  end
-
   def checkin_create_or_update_from_row!(row, device)
-    attrs = attributes_from_row(row, device)
-    checkin = Checkin.find_by_id(attrs.delete(:id)) || Checkin.new
-    checkin.assign_attributes(attrs)
+    checkin = Checkin.find_by_id(row['id']) || Checkin.new
+    checkin.attributes = attributes_from_row(row)
+    checkin.device_id = device
     checkin.save!
   end
 
-  def attributes_from_row(row, device)
-    attr = row.split(",")
-    { id: attr[0], lat: attr[1], lng: attr[2], created_at: attr[3], fogged: attr[11], device_id: device }
+  def attributes_from_row(row)
+    row.to_hash.slice('lat', 'lng', 'created_at', 'fogged')
   end
 end
