@@ -33,30 +33,37 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   end
 
   describe 'GET' do
-    it 'should GET a list of devices of a specific user' do
+    it 'returns a list of devices of a specific user' do
       get :index, params: params
       expect(res_hash.first['id']).to be device.id
     end
 
-    it 'should not return friends cloaked devices' do
+    it 'does not return friends cloaked devices' do
       second_user.devices.each{ |device| device.update! cloaked: true }
       get :index, params: params.merge(user_id: second_user.id)
       expect(res_hash.size).to eq 0
     end
 
-    it 'should record the request' do
+    it 'does return cloaked devices if request from copo_app' do
+      request.headers['X-Secret-App-Key'] = 'this-is-a-mobile-app'
+      second_user.devices.each{ |device| device.update! cloaked: true }
+      get :index, params: params.merge(user_id: second_user.id)
+      expect(res_hash.size).to eq second_user.devices.count
+    end
+
+    it 'records the request' do
       expect(developer.requests.count).to be 0
       get :index, params: params
       expect(developer.requests.count).to be 1
     end
 
-    it 'should return filtered information on a device belonging to a user' do
+    it 'returns filtered information on a device belonging to a user' do
       get :show, params: device_params
       expect(res_hash[:data]['id']).to be device.id
       expect(res_hash[:data].keys).to_not include(*private_device_info)
     end
 
-    it 'should return full info if request is from copo app or from developer with control' do
+    it 'returns full info if request is from copo app or from developer with control' do
       developer.configs.create(device: device)
       get :show, params: device_params
       expect(res_hash[:data]['uuid']).to eq device.uuid
@@ -64,7 +71,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       expect(res_hash[:data].keys).to include(*private_device_info)
     end
 
-    it 'should return an error message if device does not exist' do
+    it 'returns an error message if device does not exist' do
       get :show, params: device_params.merge(id: 9999999)
       expect(res_hash[:error]).to eq('Device does not exist')
       expect(response.status).to eq 404
@@ -72,7 +79,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   end
 
   describe 'POST' do
-    it 'should create a device with a UUID provided' do
+    it 'creates a device with a UUID provided' do
       create_params[:device] = { uuid: empty_device.uuid }
       config_count = developer.configs.count
       post :create, params: create_params
@@ -81,7 +88,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       expect(res_hash[:data]['uuid']).to eq empty_device.uuid
     end
 
-    it 'should fail to to create a device with a taken UUID' do
+    it 'fails to to create a device with a taken UUID' do
       create_params[:device] = { uuid: device.uuid }
       count = user.devices.count
       post :create, params: create_params
@@ -89,7 +96,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       expect(res_hash[:error]).to match 'registered to another user'
     end
 
-    it 'should fail to to create a device with a taken name' do
+    it 'fails to to create a device with a taken name' do
       create_params[:device] = { name: device.name }
       post :create, params: create_params
       expect(res_hash[:error]).to match device.name
@@ -97,7 +104,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   end
 
   describe 'PUT' do
-    it 'should update settings' do
+    it 'updates settings' do
       put :update, params: device_params.merge(device: { fogged: true })
       expect(res_hash[:data]['fogged']).to eq(true)
       put :update, params: device_params.merge(device: { fogged: false })
@@ -105,20 +112,20 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       expect(res_hash[:data]['fogged']).to eq(false)
     end
 
-    it 'should reject non-existant device ids' do
+    it 'rejects non-existant device ids' do
       put :update, params: device_params.merge(id: 9999999, device: { fogged: true })
       expect(response.status).to eq(404)
       expect(res_hash[:error]).to eq('Device does not exist')
     end
 
-    it 'should return an error if updating with same name as another device' do
+    it 'returns an error if updating with same name as another device' do
       user.devices << empty_device
       put :update, params: device_params.merge(id: empty_device.id, device: { name: device.name })
       expect(response.status).to eq(400)
       expect(res_hash[:error]['name'][0]).to match 'already been taken'
     end
 
-    it 'should not allow you to update someone elses device' do
+    it 'does not allow you to update someone elses device' do
       put :update, params: {
         user_id: second_user.id, id: second_user.devices.last.id, device: { fogged: true }, format: :json
       }

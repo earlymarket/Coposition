@@ -37,6 +37,7 @@ gem 'bower-rails', '~> 0.10.0'
 gem 'gpx'
 gem "activeadmin", git: "https://github.com/activeadmin/activeadmin"
 gem "inherited_resources", git: "https://github.com/activeadmin/inherited_resources"
+gem "activerecord-import"
 
 group :production do
   gem 'puma'
