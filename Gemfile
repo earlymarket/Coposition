@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
+
 ruby '2.3.1'
 
-gem 'rename'
 gem 'rails', '5.0.1'
 gem 'pg'
 gem 'sass-rails', '~> 5.0'
@@ -17,6 +17,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'devise'
 gem 'friendly_id', '~> 5.2.0'
 gem 'responders', '~> 2.0'
+gem 'rename'
 gem 'rack-cors', require: 'rack/cors'
 gem 'factory_girl_rails'
 gem 'faker'
