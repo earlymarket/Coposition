@@ -107,7 +107,7 @@ class Checkin < ApplicationRecord
   end
 
   def nearest_city
-    City.near([lat, lng], 200).first || NoCity.new(lat, lng)
+    City.near([lat, lng], 200).first || NoCity.new
   end
 
   class << self

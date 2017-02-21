@@ -1,11 +1,4 @@
 class NoCity
-  attr_reader :lat
-  attr_reader :lng
-  def initialize(lat, lng)
-    @lat = lat
-    @lng = lng
-  end
-
   def nil?
     true
   end
