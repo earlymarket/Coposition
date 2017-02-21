@@ -56,7 +56,7 @@ module Users
         checkins: show_checkins,
         device: @device.id,
         current_user_id: @user.id,
-        total: @device.checkins.count
+        total: show_checkins_total
       }
     end
 
@@ -88,6 +88,10 @@ module Users
       checkins = @from.present? ? @device.checkins.where(created_at: @from..@to) : @device.checkins
       checkins.paginate(page: 1, per_page: 1000)
               .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :edited)
+    end
+
+    def show_checkins_total
+      @from.present? ? @device.checkins.where(created_at: @from..@to).count : @device.checkins.count
     end
 
     def date_range
