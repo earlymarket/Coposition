@@ -1,29 +1,28 @@
 class Users::CheckinsController < ApplicationController
   protect_from_forgery except: :show
+
   before_action :authenticate_user!
   before_action :require_checkin_ownership, except: [:index, :new, :create, :destroy_all]
   before_action :require_device_ownership, only: [:index, :new, :create, :destroy_all]
 
   def new
-    @device = Device.find(params[:device_id])
-    @checkin = Device.find(params[:device_id]).checkins.new
+    @checkin = device.checkins.new
   end
 
   def index
-    @device = Device.find(params[:device_id])
     per_page = params[:per_page].to_i <= 1000 ? params[:per_page] : 1000
     render json: {
-      checkins: @device.checkins.paginate(page: params[:page], per_page: per_page)
+      checkins: device.checkins.paginate(page: params[:page], per_page: per_page)
         .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :device_id),
       current_user_id: current_user.id,
-      total: @device.checkins.count
+      total: device.checkins.count
     }
   end
 
   def create
-    @device = Device.find(params[:device_id])
-    @checkin = @device.checkins.create(allowed_params)
-    @device.notify_subscribers('new_checkin', @checkin)
+    @checkin = device.checkins.create(allowed_params)
+    NotifyAboutCheckin.call(device: device, checkin: @checkin)
+
     flash[:notice] = 'Checked in.'
   end
 
@@ -56,6 +55,10 @@ class Users::CheckinsController < ApplicationController
   end
 
   private
+
+  def device
+    @device ||= Device.find(params[:device_id])
+  end
 
   def allowed_params
     params.require(:checkin).permit(:lat, :lng, :device_id, :fogged)

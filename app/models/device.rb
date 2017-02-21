@@ -135,6 +135,15 @@ class Device < ApplicationRecord
     subs.each { |subscription| subscription.send_data([data]) }
   end
 
+  def broadcast_checkin_for_friends(checkin)
+    user.friends.each do |friend|
+      ActionCable.server.broadcast "friends_#{friend.id}",
+        {
+          action: "checkin", msg: checkin.as_json
+        }
+    end
+  end
+
   def self.public_info
     select([:id, :user_id, :name, :alias, :published])
   end

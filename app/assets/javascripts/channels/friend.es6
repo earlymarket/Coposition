@@ -8,7 +8,13 @@ App.friend = App.cable.subscriptions.create("FriendChannel", {
   },
 
   received: function(data) {
-    // Called when there's incoming data on the websocket for this channel
+    switch (data.action) {
+      case "checkin":
+        gon.checkins.unshift(data.msg);
+        COPO.maps.refreshMarkers(gon.checkins);
+
+        break;
+    }
   },
 
   checkin: function() {
