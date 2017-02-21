@@ -136,7 +136,7 @@ class Device < ApplicationRecord
   end
 
   def broadcast_checkin_for_friends(checkin)
-    user.friends.each do |friend|
+    user.friends.find_each do |friend|
       ActionCable.server.broadcast "friends_#{friend.id}",
         {
           action: "checkin", msg: checkin.as_json

@@ -46,11 +46,13 @@ module Users
     private
 
     def most_recent_checkins
-      checkins = @devices.map do |device|
-        checkins = device.safe_checkin_info_for(permissible: @user)
-        checkins.first.as_json.merge(device: device.name) if checkins.present?
-      end.compact
-      checkins.sort_by { |checkin| checkin['created_at'] }.reverse
+      checkins =
+        @devices.map do |device|
+          checkins = device.safe_checkin_info_for(permissible: @user)
+          checkins.first.as_json.merge(device: device.name) if checkins.present?
+        end
+        .compact
+        .sort_by { |checkin| checkin['created_at'] }.reverse
     end
 
     def device_checkins

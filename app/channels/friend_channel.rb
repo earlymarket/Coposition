@@ -6,7 +6,4 @@ class FriendChannel < ApplicationCable::Channel
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
   end
-
-  def checkin
-  end
 end

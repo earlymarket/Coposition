@@ -10,14 +10,12 @@ App.friend = App.cable.subscriptions.create("FriendChannel", {
   received: function(data) {
     switch (data.action) {
       case "checkin":
+        if (!gon.checkins) { return };
+
         gon.checkins.unshift(data.msg);
         COPO.maps.refreshMarkers(gon.checkins);
 
         break;
     }
-  },
-
-  checkin: function() {
-    return this.perform('checkin');
   }
 });
