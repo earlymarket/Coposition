@@ -37,8 +37,8 @@ class Checkin < ApplicationRecord
     assign_attributes(
       uuid: device.uuid,
       fogged: self.fogged ||= device.fogged,
-      fogged_lat: city.latitude,
-      fogged_lng: city.longitude,
+      fogged_lat: city.latitude || lat + rand(-0.5..0.5),
+      fogged_lng: city.longitude || lng + rand(-0.5..0.5),
       fogged_city: city.name,
       country_code: city.country_code,
       fogged_country_code: city.country_code

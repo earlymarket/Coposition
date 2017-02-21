@@ -11,11 +11,11 @@ class NoCity
   end
 
   def latitude
-    lat + rand(-0.5..0.5)
+    nil
   end
 
   def longitude
-    lng + rand(-0.5..0.5)
+    nil
   end
 
   def name
