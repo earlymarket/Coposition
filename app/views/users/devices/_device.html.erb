@@ -1,8 +1,11 @@
 <div class="card">
   <div class="card-content">
     <div class="card-title">
+      <a class="modal-trigger icon-trigger" href="#icon<%=device.id%>" data-id=<%=device.id%>>
+        <i id="currentIcon<%=device.id%>" class="material-icons medium"><%=device.icon%></i>
+      </a>
       <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>">
-        <span class="editable"><%= device.name %></span> <i class="material-icons grey-text edit-button">mode_edit</i>&nbsp;
+        <span class="editable"><%= device.name %></span><i class="material-icons grey-text right edit-button">mode_edit</i>
       </a>
     </div>
     <div class="card-action">
@@ -57,6 +60,17 @@
     </div>
     <div class="card-action">
       <p><%= devices_last_checkin(device) %><p>
+    </div>
+  </div>
+</div>
+
+<div id="icon<%=device.id%>" class="modal icon-modal">
+  <div class="modal-content">
+    <h4 class='center-align'>Choose your device type</h4>
+    <div class='center-align row' id="icons<%=device.id%>">
+      <% %w(smartphone watch laptop tablet desktop_windows devices_other).each do |icon| %>
+        <%= devices_choose_icon(device, icon) %>
+      <% end %>
     </div>
   </div>
 </div>

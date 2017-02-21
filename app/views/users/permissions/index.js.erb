@@ -12,9 +12,9 @@ if($list.children().length===1) {
       <li class="collection-item row valign-wrapper">
         <div class='valign col s6'>
         <% if @presenter.device.present? %>
-          <%= permissible_title(permission.permissible) %>
+          <%= permissions_permissible_title(permission.permissible) %>
         <% else %>
-          <%= permission.device.name %>
+          <%= permissions_device_title(permission.device) %>
         <% end %>
         </div>
         <%= render partial: "users/permissions/controls", object: permission, as: 'permissionable' %>
