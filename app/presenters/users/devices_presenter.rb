@@ -6,6 +6,8 @@ module Users
     attr_reader :checkins
     attr_reader :filename
     attr_reader :config
+    attr_reader :from
+    attr_reader :to
 
     def initialize(user, params, action)
       @user = user
@@ -24,6 +26,7 @@ module Users
 
     def show
       @device = Device.find(@params[:id])
+      @from, @to = date_range
       return unless (download_format = @params[:download])
       @filename = "device-#{@device.id}-checkins-#{Date.today}." + download_format
       @checkins = @device.checkins.send('to_' + download_format)
@@ -82,8 +85,19 @@ module Users
     end
 
     def show_checkins
-      @device.checkins.paginate(page: 1, per_page: 1000)
+      @device.checkins.where(created_at: @from..@to).paginate(page: 1, per_page: 1000)
              .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :edited)
+    end
+
+    def date_range
+      if @params[:from].present?
+        return Date.parse(@params[:from]).beginning_of_day, Date.parse(@params[:to]).end_of_day
+      elsif @device.checkins.present?
+        most_recent = Date.parse(@device.checkins.first.created_at.to_s)
+        return (most_recent << 1).beginning_of_day, most_recent.end_of_day
+      else 
+        return nil, nil
+      end
     end
   end
 end
