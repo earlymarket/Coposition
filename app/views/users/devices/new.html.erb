@@ -7,6 +7,9 @@
     "Enter existing coposition UUID #{link_to('(What is this?)', '/help#sharing')}".html_safe
   end %>
   <%= f.text_field(:uuid, class: "form-control input-lg fifth-width", placeholder: "(Optional) 15 digits, no spaces") %>
+  </br>
+  <%= label :icon, "Choose your device type", class: "control-label" %>
+  <%= f.select(:icon, options_for_select([['Laptop', 'laptop'], ['Mobile', 'smartphone'], ['Desktop', 'desktop_windows'], ['Tablet', 'tablet'], ['Watch', 'watch'], ['Other', 'other']])) %>
   <%= check_box_tag :create_checkin, id:"create_checkin" %>
   <%= f.label "create_checkin", for:"create_checkin", id:"create_checkin" %>
   </br></br>

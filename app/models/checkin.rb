@@ -26,135 +26,10 @@ class Checkin < ApplicationRecord
     if device
       reload
       assign_values
-      fogged ? assign_output_to_fogged : assign_output_to_unfogged
       save
     else
       raise 'Checkin is not assigned to a device.' unless Rails.env.test?
     end
-  end
-
-  def self.batch_create(post_content)
-    Checkin.transaction do
-      checkins = []
-      JSON.parse(post_content).each do |checkin_hash|
-        checkin = Checkin.new(checkin_hash.slice('lat', 'lng', 'created_at', 'fogged'))
-        raise ActiveRecord::Rollback unless checkin.lat && checkin.lng
-        checkin.assign_values
-        checkin.fogged ? checkin.assign_output_to_fogged : checkin.assign_output_to_unfogged
-        checkin.device.notify_subscribers('new_checkin', checkin)
-        checkins << checkin
-      end
-      Checkin.import checkins
-    end
-  end
-
-  def self.limit_returned_checkins(args)
-    if args[:action] == 'index' && args[:multiple_devices]
-      all
-    elsif args[:action] == 'index' && !args[:multiple_devices]
-      paginate(page: args[:page], per_page: args[:per_page])
-    else
-      limit(1)
-    end
-  end
-
-  def reverse_geocode!
-    unless reverse_geocoded?
-      reverse_geocode
-      update_output
-      save
-    end
-    self
-  end
-
-  def reverse_geocoded?
-    address != 'Not yet geocoded'
-  end
-
-  def nearest_city
-    City.near([lat, lng], 200).first || NoCity.new
-  end
-
-  def refresh
-    reverse_geocode
-    init_fogged_info
-    fogged || device.fogged ? assign_output_to_fogged : assign_output_to_unfogged
-    save
-  end
-
-  def init_fogged_info
-    city = nearest_city
-    update(
-      fogged_lat: city.latitude || lat + rand(-0.5..0.5),
-      fogged_lng: city.longitude || lng + rand(-0.5..0.5),
-      fogged_city: city.name,
-      country_code: city.country_code,
-      fogged_country_code: city.country_code
-    )
-  end
-
-  def self.near_to(near)
-    return all unless near
-    near_array = near.split(',')
-    lat = near_array[0].to_f
-    lng = near_array[1].to_f
-    where(lat: (lat - 0.5)..(lat + 0.5), lng: (lng - 0.5)..(lng + 0.5))
-  end
-
-  def self.since_time(time_amount, time_unit)
-    return all unless time_unit && time_amount
-    since(time_amount.to_i.send(time_unit).ago)
-  end
-
-  def self.on_date(date)
-    return all unless date
-    date = Date.parse(date)
-    where(created_at: date.midnight..date.end_of_day)
-  end
-
-  def self.unique_places_only(unique_places)
-    return all unless unique_places
-    where('created_at IN(SELECT MAX(created_at) FROM checkins GROUP BY fogged_city)')
-  end
-
-  def self.hash_group_and_count_by(attribute)
-    grouped_and_counted = unscope(:order).group(attribute).count
-    grouped_and_counted.sort_by { |_attribute, count| count }.reverse
-  end
-
-  def self.percentage_increase(time_range)
-    one_time_range_ago = 1.send(time_range).ago
-    recent_checkins_count = where(created_at: one_time_range_ago..Time.now).count.to_f
-    older_checkins_count = where(created_at: 2.send(time_range).ago..one_time_range_ago).count.to_f
-    return unless [recent_checkins_count, older_checkins_count].all? { |count| count > 0 }
-    (((recent_checkins_count / older_checkins_count) - 1) * 100).round(2)
-  end
-
-  def self.to_csv
-    attributes = Checkin.column_names
-
-    CSV.generate(headers: true) do |csv|
-      csv << attributes
-      all.pluck(*attributes).each do |record|
-        csv << record
-      end
-    end
-  end
-
-  def switch_fog
-    update(fogged: !fogged)
-    return if device.fogged
-    fogged ? assign_output_to_fogged : assign_output_to_unfogged
-    save
-  end
-
-  def update_output
-    if fogged || device.fogged
-      assign_output_to_fogged
-    else
-      assign_output_to_unfogged
-    end
-    save
   end
 
   def assign_values
@@ -168,6 +43,15 @@ class Checkin < ApplicationRecord
       country_code: city.country_code,
       fogged_country_code: city.country_code
     )
+    update_output
+  end
+
+  def update_output
+    if fogged || device.fogged
+      assign_output_to_fogged
+    else
+      assign_output_to_unfogged
+    end
   end
 
   def assign_output_to_fogged
@@ -192,26 +76,115 @@ class Checkin < ApplicationRecord
     )
   end
 
-  def self.to_gpx
-    GPX::GPXFile.new.tap do |gpx|
-      gpx.routes << GPX::Route.new.tap do |route|
-        all.pluck(:lat, :lng, :created_at).each do |record|
-          route.points << GPX::Point.new(elevation: 0, lat: record[0], lon: record[1], time: record[2])
-        end
-      end
-    end.to_s
+  def reverse_geocode!
+    unless reverse_geocoded?
+      reverse_geocode
+      update_output
+      save
+    end
+    self
   end
 
-  def self.to_geojson
-    [].tap do |geojson_checkins|
-      all.pluck(:lat, :lng, :id).each do |record|
-        geojson_checkins << GeojsonCheckin.new(record)
-      end
-    end.as_json
+  def reverse_geocoded?
+    address != 'Not yet geocoded'
+  end
+
+  def switch_fog
+    update(fogged: !fogged)
+    return if device.fogged
+    update_output
+    save
   end
 
   def set_edited
     write_attribute(:edited, true)
   end
 
+  def refresh
+    reverse_geocode
+    assign_values
+    save
+  end
+
+  def nearest_city
+    City.near([lat, lng], 200).first || NoCity.new
+  end
+
+  class << self
+    def limit_returned_checkins(args)
+      if args[:action] == 'index' && args[:multiple_devices]
+        all
+      elsif args[:action] == 'index' && !args[:multiple_devices]
+        paginate(page: args[:page], per_page: args[:per_page])
+      else
+        limit(1)
+      end
+    end
+
+    def near_to(near)
+      return all unless near
+      near_array = near.split(',')
+      lat = near_array[0].to_f
+      lng = near_array[1].to_f
+      where(lat: (lat - 0.5)..(lat + 0.5), lng: (lng - 0.5)..(lng + 0.5))
+    end
+
+    def since_time(time_amount, time_unit)
+      return all unless time_unit && time_amount
+      since(time_amount.to_i.send(time_unit).ago)
+    end
+
+    def on_date(date)
+      return all unless date
+      date = Date.parse(date)
+      where(created_at: date.midnight..date.end_of_day)
+    end
+
+    def unique_places_only(unique_places)
+      return all unless unique_places
+      where('created_at IN(SELECT MAX(created_at) FROM checkins GROUP BY fogged_city)')
+    end
+
+    def hash_group_and_count_by(attribute)
+      grouped_and_counted = unscope(:order).group(attribute).count
+      grouped_and_counted.sort_by { |_attribute, count| count }.reverse
+    end
+
+    def percentage_increase(time_range)
+      one_time_range_ago = 1.send(time_range).ago
+      recent_checkins_count = where(created_at: one_time_range_ago..Time.now).count.to_f
+      older_checkins_count = where(created_at: 2.send(time_range).ago..one_time_range_ago).count.to_f
+      return unless [recent_checkins_count, older_checkins_count].all? & :positive?
+      (((recent_checkins_count / older_checkins_count) - 1) * 100).round(2)
+    end
+
+    def to_csv
+      attributes = Checkin.column_names
+
+      CSV.generate(headers: true) do |csv|
+        csv << attributes
+        all.pluck(*attributes).each do |record|
+          csv << record
+        end
+      end
+    end
+
+    def to_gpx
+      GPX::GPXFile.new.tap do |gpx|
+        gpx.routes << GPX::Route.new.tap do |route|
+          all.pluck(:lat, :lng, :created_at).each do |record|
+            route.points << GPX::Point.new(elevation: 0, lat: record[0], lon: record[1], time: record[2])
+          end
+        end
+      end.to_s
+    end
+
+    def to_geojson
+      [].tap do |geojson_checkins|
+        all.pluck(:lat, :lng, :id).each do |record|
+          geojson_checkins << GeojsonCheckin.new(record)
+        end
+      end.as_json
+    end
+  end
 end
