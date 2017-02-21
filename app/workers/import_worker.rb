@@ -10,7 +10,8 @@ class ImportWorker
   end
 
   def checkin_create_or_update_from_row!(row, device)
-    checkin = Checkin.find_by_id(row['id']) || Checkin.new
+    checkin = Checkin.find_by_sql("SELECT * FROM checkins WHERE checkins.id = #{row['id']}")[0] || Checkin.new
+    #checkin = Checkin.find_by_id(row['id']) || Checkin.new
     checkin.attributes = attributes_from_row(row)
     checkin.device_id = device
     checkin.save!
