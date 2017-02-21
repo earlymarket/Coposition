@@ -80,6 +80,7 @@ GEM
     arbre (1.1.1)
       activesupport (>= 3.0.0)
     arel (7.1.4)
+    ast (2.3.0)
     attachinary (1.3.1)
       cloudinary (~> 1.1.0)
       rails (>= 3.2)
@@ -119,6 +120,8 @@ GEM
     cloudinary (1.1.7)
       aws_cf_signer
       rest-client
+    code_analyzer (0.4.7)
+      sexp_processor
     codeclimate-test-reporter (0.6.0)
       simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.1)
@@ -129,6 +132,10 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
+    coffeelint (1.14.0)
+      coffee-script
+      execjs
+      json
     colorize (0.8.1)
     concurrent-ruby (1.0.4)
     cucumber (2.4.0)
@@ -292,9 +299,12 @@ GEM
       nenv (~> 0.1)
       shellany (~> 0.0)
     orm_adapter (0.5.0)
+    parser (2.4.0.0)
+      ast (~> 2.2)
     pg (0.18.4)
     polyamorous (1.3.1)
       activerecord (>= 3.0)
+    powerpack (0.1.1)
     pry (0.10.4)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -336,6 +346,14 @@ GEM
     rails_12factor (0.0.3)
       rails_serve_static_assets
       rails_stdout_logging
+    rails_best_practices (1.17.0)
+      activesupport
+      code_analyzer (>= 0.4.3)
+      erubis
+      i18n
+      json
+      require_all
+      ruby-progressbar
     rails_serve_static_assets (0.0.5)
     rails_stdout_logging (0.0.5)
     railties (5.0.1)
@@ -344,6 +362,7 @@ GEM
       method_source
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
+    rainbow (2.2.1)
     rake (11.3.0)
     ransack (1.8.2)
       actionpack (>= 3.0)
@@ -359,6 +378,7 @@ GEM
     rename (1.0.2)
       rails (>= 3.0.0)
     request_store (1.3.1)
+    require_all (1.4.0)
     responders (2.2.0)
       railties (>= 4.2.0, < 5.1)
     rest-client (2.0.0)
@@ -382,6 +402,15 @@ GEM
       rspec-mocks (~> 3.5.0)
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
+    rubocop (0.47.1)
+      parser (>= 2.3.3.1, < 3.0)
+      powerpack (~> 0.1)
+      rainbow (>= 1.99.1, < 3.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (~> 1.0, >= 1.0.1)
+    rubocop-rspec (1.10.0)
+      rubocop (>= 0.42.0)
+    ruby-progressbar (1.8.1)
     ruby_dep (1.4.0)
     sass (3.4.22)
     sass-rails (5.0.6)
@@ -393,6 +422,7 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    sexp_processor (4.8.0)
     shellany (0.0.1)
     simple_token_authentication (1.14.0)
       actionmailer (>= 3.2.6, < 6)
@@ -430,6 +460,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.2)
+    unicode-display_width (1.1.3)
     uniform_notifier (1.10.0)
     warden (1.2.6)
       rack (>= 1.0)
@@ -461,6 +492,7 @@ DEPENDENCIES
   cloudinary (~> 1.1.3)
   codeclimate-test-reporter
   coffee-rails (~> 4.1.0)
+  coffeelint
   colorize
   cucumber-rails
   database_cleaner
@@ -493,9 +525,12 @@ DEPENDENCIES
   rails (= 5.0.1)
   rails-controller-testing
   rails_12factor
+  rails_best_practices
   rename
   responders (~> 2.0)
   rspec-rails
+  rubocop
+  rubocop-rspec
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   simple_token_authentication

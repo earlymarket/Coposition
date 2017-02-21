@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+require "json"
+
+last_run_file = File.dirname(__FILE__) << "/../coverage" << "/.last_run.json"
+unless File.exists?(last_run_file)
+  puts "Result coverage file is missing or currupted."
+  exit(1)
+end
+File.open(last_run_file, "r") do |f|
+  json = JSON.parse f.read
+  percent = json["result"]["covered_percent"]
+  acceptable = 53.0
+  if percent < acceptable
+    puts "Test coverage percent is too low (#{percent} < #{acceptable})."
+    exit(1)
+  else
+    puts "Test coverage percent is #{percent}."
+  end
+end
