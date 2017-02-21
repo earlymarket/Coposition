@@ -85,19 +85,14 @@ module Users
     end
 
     def show_checkins
-      @device.checkins.where(created_at: @from..@to).paginate(page: 1, per_page: 1000)
-             .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :edited)
+      checkins = @from.present? ? @device.checkins.where(created_at: @from..@to) : @device.checkins
+      checkins.paginate(page: 1, per_page: 1000)
+              .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :edited)
     end
 
     def date_range
-      if @params[:from].present?
-        return Date.parse(@params[:from]).beginning_of_day, Date.parse(@params[:to]).end_of_day
-      elsif @device.checkins.present?
-        most_recent = Date.parse(@device.checkins.first.created_at.to_s)
-        return (most_recent << 1).beginning_of_day, most_recent.end_of_day
-      else 
-        return nil, nil
-      end
+      return nil, nil unless @params[:from].present?
+      return Date.parse(@params[:from]).beginning_of_day, Date.parse(@params[:to]).end_of_day
     end
   end
 end
