@@ -61,23 +61,27 @@ group :development do
 end
 
 group :development, :test do
-  gem 'pry'
-  gem 'pry-rails'
-  gem 'pry-byebug'
-  gem 'rspec-rails'
+  gem "pry"
+  gem "pry-rails"
+  gem "pry-byebug"
+  gem "rspec-rails"
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'bullet'
-  gem 'letter_opener'
-  gem 'meta_request'
+  gem "spring"
+  gem "bullet"
+  gem "letter_opener"
+  gem "meta_request"
+  gem "rubocop", require: false
+  gem "rubocop-rspec", require: false
+  gem "coffeelint"
+  gem "rails_best_practices", require: false
 end
 
 group :test do
-  gem 'codeclimate-test-reporter', require: nil
-  gem 'capybara-webkit', '~> 1.11.1'
-  gem 'cucumber-rails', require: false
-  gem 'launchy'
-  gem 'database_cleaner'
-  gem 'simplecov', require: false
-  gem 'rails-controller-testing'
+  gem "codeclimate-test-reporter", require: nil
+  gem "capybara-webkit", "~> 1.11.1"
+  gem "cucumber-rails", require: false
+  gem "launchy"
+  gem "database_cleaner"
+  gem "simplecov", require: false
+  gem "rails-controller-testing"
 end
