@@ -44,7 +44,7 @@ window.COPO.maps = {
           return $.getJSON(`${window.location.pathname}/checkins?page=${page}&per_page=1000`)
         }
       } else if($('.c-friends.a-show_device').length !== 0) {
-        return $.getJSON(`${window.location.pathname}&page=${page}&per_page=1000`)
+        return $.getJSON(`${window.location.pathname}${window.location.search}&page=${page}&per_page=1000`)
       } else {
         console.log('Page not recognised. No incremental loading.');
       }

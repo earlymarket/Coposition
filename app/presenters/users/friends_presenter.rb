@@ -54,9 +54,16 @@ module Users
     end
 
     def device_checkins
+      from, to = date_range
       device = @friend.devices.find(@params[:device_id])
       checkins = @friend.get_checkins(@user, device)
+      checkins = checkins.where(created_at: from..to) if from
       device.replace_checkin_attributes(@user, checkins)
+    end
+
+    def date_range
+      return nil, nil unless @params[:from].present?
+      return Date.parse(@params[:from]).beginning_of_day, Date.parse(@params[:to]).end_of_day
     end
   end
 end
