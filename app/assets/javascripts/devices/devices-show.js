@@ -9,6 +9,7 @@ $(document).on('page:change', function() {
     M.initMap();
     M.initMarkers(gon.checkins, gon.total);
     M.initControls();
+    COPO.datePicker.init();
 
     map.on('locationfound', onLocationFound);
 
@@ -178,31 +179,5 @@ $(document).on('page:change', function() {
     function onLocationFound(p) {
       currentCoords = p.latlng;
     }
-
-    var from_picker = $('#input_from').pickadate().pickadate('picker')
-    var to_picker = $('#input_to').pickadate().pickadate('picker')
-
-    // materialize datepicker init
-    $('.datepick').pickadate({
-      selectMonths: true,
-      selectYears: 15,
-      onSet: function( arg ){
-        //var from_picker = $('#input_from').pickadate().pickadate('picker')
-        //var to_picker = $('#input_to').pickadate().pickadate('picker')
-        var selectedPicker = this.component.$node[0].name;
-        if ( selectedPicker === 'from' ){
-          COPO.datePicker.setLimits(arg, to_picker, from_picker, 'min')
-        } else if ( selectedPicker === 'to' ){
-          COPO.datePicker.setLimits(arg, from_picker, to_picker, 'max')
-        }
-        if ( 'select' in arg ){ //prevent closing on selecting month/year
-          this.close();
-        }
-      }
-    });
-
-    // Check if there’s a “from” or “to” date to start with.
-    COPO.datePicker.checkPickers(to_picker, from_picker, 'min')
-    COPO.datePicker.checkPickers(from_picker, to_picker, 'max')
   }
 });
