@@ -93,11 +93,6 @@ class Device < ApplicationRecord
     "A new device was created, id: #{id}, name: #{name}, user_id: #{user_id}. There are now #{Device.count} devices"
   end
 
-  def switch_fog
-    update(fogged: !fogged)
-    fogged
-  end
-
   def public_info
     # Clears out any potentially sensitive attributes, returns a normal ActiveRecord relation
     # Returns a normal ActiveRecord relation

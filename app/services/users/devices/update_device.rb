@@ -19,14 +19,14 @@ module Users::Devices
       elsif @params[:icon]
         @device.update(icon: @params[:icon])
       else
-        @device.switch_fog
+        @device.update(fogged: !@device.fogged)
       end
       @device
     end
 
     def notice
       if @params[:delayed]
-        @device.humanize_delay
+        humanize_delay
       elsif @params[:published]
         "Location sharing is #{boolean_to_state(@device.published)}."
       elsif @params[:cloaked]
