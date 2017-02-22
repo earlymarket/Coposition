@@ -89,13 +89,6 @@ class Checkin < ApplicationRecord
     address != 'Not yet geocoded'
   end
 
-  def switch_fog
-    update(fogged: !fogged)
-    return if device.fogged
-    update_output
-    save
-  end
-
   def set_edited
     write_attribute(:edited, true)
   end
