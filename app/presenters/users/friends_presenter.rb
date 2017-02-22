@@ -1,5 +1,5 @@
 module Users
-  class FriendsPresenter
+  class FriendsPresenter < ApplicationPresenter
     attr_reader :friend
     attr_reader :devices
     attr_reader :device
@@ -7,6 +7,7 @@ module Users
     # for tests, maybe a better way of doing this
     attr_reader :show_device_gon
     attr_reader :index_gon
+    attr_reader :date_range
 
     def initialize(user, params, action)
       @user = user
@@ -54,16 +55,11 @@ module Users
     end
 
     def device_checkins
-      from, to = date_range
       device = @friend.devices.find(@params[:device_id])
+      @date_range = checkins_date_range
       checkins = @friend.get_checkins(@user, device)
-      checkins = checkins.where(created_at: from..to) if from
+      checkins = checkins.where(created_at: @date_range[:from]..@date_range[:to]) if @date_range[:from]
       device.replace_checkin_attributes(@user, checkins)
-    end
-
-    def date_range
-      return nil, nil unless @params[:from].present?
-      return Date.parse(@params[:from]).beginning_of_day, Date.parse(@params[:to]).end_of_day
     end
   end
 end

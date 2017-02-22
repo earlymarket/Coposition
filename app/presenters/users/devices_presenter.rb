@@ -1,13 +1,12 @@
 module Users
-  class DevicesPresenter
+  class DevicesPresenter < ApplicationPresenter
     attr_reader :user
     attr_reader :devices
     attr_reader :device
     attr_reader :checkins
     attr_reader :filename
     attr_reader :config
-    attr_reader :from
-    attr_reader :to
+    attr_reader :date_range
 
     def initialize(user, params, action)
       @user = user
@@ -26,7 +25,7 @@ module Users
 
     def show
       @device = Device.find(@params[:id])
-      @from, @to = date_range
+      @date_range = checkins_date_range
       return unless (download_format = @params[:download])
       @filename = "device-#{@device.id}-checkins-#{Date.today}." + download_format
       @checkins = @device.checkins.send('to_' + download_format)
@@ -53,10 +52,10 @@ module Users
 
     def show_gon
       {
-        checkins: show_checkins,
+        checkins: gon_show_checkins_paginated,
         device: @device.id,
         current_user_id: @user.id,
-        total: show_checkins_total
+        total: gon_show_checkins.count
       }
     end
 
@@ -84,19 +83,13 @@ module Users
                      'output_country_code AS country_code')[0]
     end
 
-    def show_checkins
-      checkins = @from.present? ? @device.checkins.where(created_at: @from..@to) : @device.checkins
-      checkins.paginate(page: 1, per_page: 1000)
-              .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :edited)
+    def gon_show_checkins_paginated
+      gon_show_checkins.paginate(page: 1, per_page: 1000)
+                       .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :edited)
     end
 
-    def show_checkins_total
-      @from.present? ? @device.checkins.where(created_at: @from..@to).count : @device.checkins.count
-    end
-
-    def date_range
-      return nil, nil unless @params[:from].present?
-      return Date.parse(@params[:from]).beginning_of_day, Date.parse(@params[:to]).end_of_day
+    def gon_show_checkins
+      @date_range[:from] ? @device.checkins.where(created_at: @date_range[:from]..@date_range[:to]) : @device.checkins
     end
   end
 end

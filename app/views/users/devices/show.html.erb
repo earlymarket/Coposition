@@ -21,9 +21,9 @@
         </div>
         <%= form_for @presenter.device, url: user_device_path(current_user.url_id, @presenter.device), class: "form-group", method: :get do |f| %>
           <%= f.label 'From' %>
-          <%= text_field_tag(:from, humanize_date(@presenter.from), class: "datepick", id: "input_from", required: true) %>
+          <%= text_field_tag(:from, humanize_date(@presenter.date_range[:from]), class: "datepick", id: "input_from", required: true) %>
           <%= f.label 'to' %>
-          <%= text_field_tag(:to, humanize_date(@presenter.to), class: "datepick", id: "input_to", required: true) %>
+          <%= text_field_tag(:to, humanize_date(@presenter.date_range[:to]), class: "datepick", id: "input_to", required: true) %>
           <%= f.submit("Filter", class: "form-control btn btn-default") %>
           <%= link_to("Reset", user_device_path(current_user.url_id, @presenter.device) , { method: :get, class: "btn-flat" })%>
         <% end %>

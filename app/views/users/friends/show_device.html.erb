@@ -12,9 +12,9 @@
         </div>
         <%= form_for @presenter.friend, data: { device_id: @presenter.device }, url: show_device_user_friend_path(current_user.url_id, @presenter.friend), class: "form-group", method: :get do |f| %>
           <%= f.label 'From' %>
-          <%= text_field_tag(:from, nil, class: "datepick", id: "input_from", required: true) %>
+          <%= text_field_tag(:from, @presenter.date_range[:from], class: "datepick", id: "input_from", required: true) %>
           <%= f.label 'to' %>
-          <%= text_field_tag(:to, nil, class: "datepick", id: "input_to", required: true) %>
+          <%= text_field_tag(:to, @presenter.date_range[:to], class: "datepick", id: "input_to", required: true) %>
           <%= f.submit("Filter", class: "form-control btn btn-default") %>
           <%= link_to("Reset", show_device_user_friend_path(current_user.url_id, @presenter.friend, device_id: @presenter.device), { method: :get, class: "btn-flat" })%>
           <%= hidden_field_tag(:device_id, @presenter.device.id ) %>

@@ -10,16 +10,9 @@ class Users::CheckinsController < ApplicationController
   end
 
   def index
-    @device = Device.find(params[:device_id])
-    per_page = params[:per_page].to_i <= 1000 ? params[:per_page] : 1000
-    from, to = date_range
-    checkins = from ? @device.checkins.where(created_at: from..to) : @device.checkins
-    render json: {
-      checkins: checkins.paginate(page: params[:page], per_page: per_page)
-        .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :device_id),
-      current_user_id: current_user.id,
-      total: checkins.count
-    }
+    @presenter = ::Users::CheckinsPresenter.new(current_user, params, 'index')
+    @device = @presenter.device
+    render json: @presenter.json
   end
 
   def create
@@ -73,10 +66,5 @@ class Users::CheckinsController < ApplicationController
     return if current_user.devices.exists?(params[:device_id])
     flash[:alert] = 'You do not own this device.'
     redirect_to root_path
-  end
-
-  def date_range
-    return nil, nil unless params[:from].present?
-    return Date.parse(params[:from]).beginning_of_day, Date.parse(params[:to]).end_of_day
   end
 end
