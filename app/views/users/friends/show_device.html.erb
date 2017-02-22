@@ -10,7 +10,7 @@
           <%= link_to("Last month", show_device_user_friend_path(current_user.url_id, @presenter.friend, device_id: @presenter.device, from: 1.month.ago, to: Date.today), { method: :get })%>
           <%= link_to("Last year", show_device_user_friend_path(current_user.url_id, @presenter.friend, device_id: @presenter.device, from: 1.year.ago, to: Date.today), { method: :get })%>
         </div>
-        <%= form_for @presenter.friend, data: { device_id: @presenter.device }, url: show_device_user_friend_path(current_user.url_id, @presenter.friend), class: "form-group", method: :get do |f| %>
+        <%= form_for @presenter.friend, url: show_device_user_friend_path(current_user.url_id, @presenter.friend), class: "form-group", method: :get do |f| %>
           <%= f.label 'From' %>
           <%= text_field_tag(:from, @presenter.date_range[:from], class: "datepick", id: "input_from", required: true) %>
           <%= f.label 'to' %>
