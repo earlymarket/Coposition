@@ -17,13 +17,6 @@ class Device < ApplicationRecord
     dev.uuid = SecureRandom.uuid
   end
 
-  def construct(current_user, device_name, icon_name)
-    if update(user: current_user, name: device_name, icon: icon_name)
-      developers << current_user.developers
-      permitted_users << current_user.friends
-    end
-  end
-
   def safe_checkin_info_for(args)
     sanitized = filtered_checkins(args)
     sanitize_checkins(sanitized, args)

@@ -34,11 +34,10 @@ class Users::DevicesController < ApplicationController
   end
 
   def create
-    result = Users::Devices::CreateDevice.new(current_user, Developer.default(coposition: true), allowed_params)
+    result = Users::Devices::CreateDevice.new(current_user, Developer.default(coposition: true), params)
     if result.save?
-      device = result.device
-      gon.checkins = create_checkin(device)
-      redirect_to user_device_path(id: device.id)
+      gon.checkins = result.checkin
+      redirect_to user_device_path(id: result.device.id)
     else
       redirect_to new_user_device_path, notice: result.error
     end
@@ -64,18 +63,6 @@ class Users::DevicesController < ApplicationController
   end
 
   private
-
-  def allowed_params
-    params.require(:device).permit(:uuid, :name, :delayed, :icon)
-  end
-
-  def create_checkin(device)
-    device.checkins.create(checkin_params) if params[:create_checkin].present?
-  end
-
-  def checkin_params
-    { lng: params[:location].split(',').first, lat: params[:location].split(',').last }
-  end
 
   def require_ownership
     return if user_owns_device?
