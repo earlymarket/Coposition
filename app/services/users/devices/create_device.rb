@@ -33,7 +33,8 @@ module Users::Devices
     private
 
     def construct
-      return false unless @device.update(user: @user, name: @name, icon: allowed_params[:icon])
+      return false unless @device.update(user: @user, name: @name)
+      @device.update(allowed_params)
       @device.developers << @user.developers
       @device.permitted_users << @user.friends
       true
