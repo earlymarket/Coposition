@@ -47,11 +47,7 @@ class Checkin < ApplicationRecord
   end
 
   def update_output
-    if fogged || device.fogged
-      assign_output_to_fogged
-    else
-      assign_output_to_unfogged
-    end
+    fogged ? assign_output_to_fogged : assign_output_to_unfogged
   end
 
   def assign_output_to_fogged
