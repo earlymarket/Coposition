@@ -14,7 +14,7 @@ Feature: Devices
       Then I should see "Right click on the map to check-in"
         And I click the link "Devices"
       Then I should have a device
-        And I should see "smartphone"
+        And I should see "laptop"
         When I click "G-RALA"
       When I click and confirm "Delete device"
       Then I should see "Device deleted"

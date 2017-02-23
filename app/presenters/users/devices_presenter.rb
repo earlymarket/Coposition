@@ -75,10 +75,16 @@ module Users
     end
 
     def gon_shared_checkin
-      Checkin.where(id: @checkin.id)
-             .select('id', 'created_at', 'updated_at', 'device_id', 'output_lat AS lat', 'output_lng AS lng',
-                     'output_address AS address', 'output_city AS city', 'output_postal_code AS postal_code',
-                     'output_country_code AS country_code')[0]
+      checkin = Checkin.where(id: @checkin.id)
+      if @checkin.device.fogged?
+        checkin.select('id', 'created_at', 'updated_at', 'device_id', 'fogged_lat AS lat', 'fogged_lng AS lng',
+                       'fogged_city AS address', 'fogged_city AS city', 'fogged_country_code AS postal_code',
+                       'fogged_country_code AS country_code')[0]
+      else
+        checkin.select('id', 'created_at', 'updated_at', 'device_id', 'output_lat AS lat', 'output_lng AS lng',
+                       'output_address AS address', 'output_city AS city', 'output_postal_code AS postal_code',
+                       'output_country_code AS country_code')[0]
+      end
     end
 
     def show_checkins
