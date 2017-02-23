@@ -10,16 +10,8 @@ module Users::Devices
     def update_device
       if @params[:delayed]
         update_delay(@params[:delayed])
-      elsif @params[:published]
-        @device.update(published: !@device.published)
-      elsif @params[:name]
-        @device.update(name: @params[:name])
-      elsif @params[:cloaked]
-        @device.update(cloaked: !@device.cloaked)
-      elsif @params[:icon]
-        @device.update(icon: @params[:icon])
       else
-        @device.update(fogged: !@device.fogged)
+        @device.update(allowed_params)
       end
       @device
     end
@@ -27,13 +19,13 @@ module Users::Devices
     def notice
       if @params[:delayed]
         humanize_delay
-      elsif @params[:published]
+      elsif allowed_params[:published]
         "Location sharing is #{boolean_to_state(@device.published)}."
-      elsif @params[:cloaked]
+      elsif allowed_params[:cloaked]
         "Device cloaking is #{boolean_to_state(@device.cloaked)}."
-      elsif @params[:icon]
+      elsif allowed_params[:icon]
         'Device icon updated'
-      elsif !@params[:name]
+      elsif allowed_params[:fogged]
         "Location fogging is #{boolean_to_state(@device.fogged)}."
       end
     end
@@ -67,6 +59,10 @@ module Users::Devices
         days = minutes / 1440
         "#{days} #{'day'.pluralize(days)}."
       end
+    end
+
+    def allowed_params
+      @params.require(:device).permit(:name, :uuid, :icon, :fogged, :delayed, :published, :cloaked, :alias)
     end
   end
 end

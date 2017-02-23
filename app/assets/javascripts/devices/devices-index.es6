@@ -31,15 +31,6 @@ $(document).on('page:change', function() {
 
     $('.modal-trigger').leanModal();
 
-    $('.center-map').on('click', function() {
-      const device_id = this.dataset.device;
-      const checkin = gon.checkins.find((checkin) => checkin.device_id.toString() === device_id);
-      if(checkin) {
-        U.scrollTo('#top', 200);
-        setTimeout(() => M.centerMapOn(checkin.lat, checkin.lng), 200);
-      }
-    });
-
     function makeEditable ($target, handler) {
       let original = $target.text();
       $target.attr('contenteditable', true);
@@ -68,7 +59,7 @@ $(document).on('page:change', function() {
           dataType: 'json',
           url: url,
           type: 'PUT',
-          data: { name: newName }
+          data: { device: { name: newName } }
         });
         request
         .done(function (response) {
@@ -106,6 +97,15 @@ $(document).on('page:change', function() {
       $('.linkbox').each(function(i,linkbox){
         $(linkbox).attr('size', $(linkbox).val().length)
       })
+
+      $('.center-map').on('click', function() {
+        const device_id = this.dataset.device;
+        const checkin = gon.checkins.find((checkin) => checkin.device_id.toString() === device_id);
+        if(checkin) {
+          U.scrollTo('#top', 200);
+          setTimeout(() => M.centerMapOn(checkin.lat, checkin.lng), 200);
+        }
+      });
     }
     initPage();
 
