@@ -2,20 +2,6 @@
 
 $('#device<%=@device.id%>').html("<%= j render @device %>");
 
-var fog = $('#fogButton<%=@device.id%>');
-<% if @device.fogged %>
-  fog.data('confirm', 'Are you sure? Turning off fogging will allow your friends/apps to see your precise location')
-<% else %>
-  fog.removeData('confirm').removeAttr('data-confirm')
-<% end %>
-
-var cloak = $('#cloakedButton<%=@device.id%>');
-<% if @device.cloaked %>
-  cloak.removeData('confirm').removeAttr('data-confirm')
-<% else %>
-  cloak.data('confirm', "Are you sure? Cloaking a device will hide it and all of it's check-ins from all of your apps and friends")
-<% end %>
-
 var icons = $('#icons<%=@device.id%>')
 icons.html('<% %w(smartphone watch laptop tablet desktop_windows devices_other).each do |icon| %><%=j devices_choose_icon(@device, icon) %><% end %>');
 
@@ -24,5 +10,3 @@ deviceStatus.html("<%=@device.name%> permissions \
                 <%= attribute_icon(@device.fogged, 'cloud') %> <%= attribute_icon(@device.delayed, 'timer') %> <%= attribute_icon(@device.cloaked, 'visibility_off') %> <%= attribute_icon(@device.published, 'public') %>")
 
 initPage();
-
-$(".modal-trigger").leanModal();

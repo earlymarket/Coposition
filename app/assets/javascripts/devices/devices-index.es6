@@ -11,25 +11,11 @@ $(document).on('page:change', function() {
     COPO.delaySlider.initSliders(gon.devices);
     gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');
 
-    $('.fogButton').each((index, fogButton) => {
-      if(!$(fogButton).data('fogged')){
-        $(fogButton).removeData('confirm').removeAttr('data-confirm')
-      }
-    })
-
-    $('.cloakedButton').each((index, cloakedButton) => {
-      if($(cloakedButton).data('cloaked')){
-        $(cloakedButton).removeData('confirm').removeAttr('data-confirm')
-      }
-    })
-
     $('body').on('click', '.edit-button', function (e) {
       e.preventDefault();
       $(this).toggleClass('hide', true);
       makeEditable($(this).prev('span'), handleEdited);
     });
-
-    $('.modal-trigger').leanModal();
 
     function makeEditable ($target, handler) {
       let original = $target.text();
@@ -78,6 +64,7 @@ $(document).on('page:change', function() {
     }
 
     window.initPage = function(){
+      $('.modal-trigger').leanModal();
       $('.clip_button').off();
       U.initClipboard();
       $('.tooltipped').tooltip('remove');
@@ -106,6 +93,18 @@ $(document).on('page:change', function() {
           setTimeout(() => M.centerMapOn(checkin.lat, checkin.lng), 200);
         }
       });
+
+      $('.fogButton').each((index, fogButton) => {
+        if(!$(fogButton).data('fogged')){
+          $(fogButton).removeData('confirm').removeAttr('data-confirm')
+        }
+      })
+
+      $('.cloakedButton').each((index, cloakedButton) => {
+        if($(cloakedButton).data('cloaked')){
+          $(cloakedButton).removeData('confirm').removeAttr('data-confirm')
+        }
+      })
     }
     initPage();
 
