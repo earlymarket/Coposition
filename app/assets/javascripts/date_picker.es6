@@ -24,6 +24,8 @@ window.COPO.datePicker = {
     // Check if there’s a “from” or “to” date to start with.
     COPO.datePicker.checkPickers(to_picker, from_picker, 'min')
     COPO.datePicker.checkPickers(from_picker, to_picker, 'max')
+    COPO.datePicker.checkPickers(to_picker, to_picker, 'select')
+    COPO.datePicker.checkPickers(from_picker, from_picker, 'select')
   },
 
   setLimits: function(event, beingSet, setter, limit){
@@ -37,7 +39,9 @@ window.COPO.datePicker = {
 
   checkPickers: function(beingSet, setter, limit){
     if (setter.get('value')) {
-      beingSet.set(limit, setter.get('value'))
+      let dateArray = setter.get('value').split(" ");
+      let date = new Date(dateArray[1].replace(/\D/g,'')+" "+dateArray[2]+" "+dateArray[3])
+      beingSet.set(limit, date)
     }
   }
 }
