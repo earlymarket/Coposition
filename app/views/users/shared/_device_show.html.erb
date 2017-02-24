@@ -3,4 +3,33 @@
   <i class="material-icons medium"><%=@presenter.device.icon%></i>&nbsp;<%=@presenter.device.name%>
 </div>
 
+<ul id='filters' class='date-select collapsible'>
+  <li>
+    <div class='collapsible-header' id='date-range-toggle'>Select a date range</div>
+    <div class='collapsible-body'>
+      <% friend = @presenter.respond_to? :friend %>
+      <%= form_for friend ? @presenter.friend : @presenter.device, 
+      	url: friend ? show_device_user_friend_path(current_user.url_id, @presenter.friend) : user_device_path(current_user.url_id, @presenter.device),
+      	class: "form-group", method: :get do |f| %>
+        <%= f.label 'From' %>
+        <%= text_field_tag(:from, humanize_date(@presenter.date_range[:from]), class: "datepick", id: "input_from", required: true) %>
+        <%= f.label 'to' %>
+        <%= text_field_tag(:to, humanize_date(@presenter.date_range[:to]), class: "datepick", id: "input_to", required: true) %>
+        <%= f.label 'Or' %>
+        <div class='date-filter-presets'>
+          <%= friend ? friends_device_range_filter('LAST 24H', 1.day.ago) : devices_range_filter('LAST 24H', 1.day.ago) %>
+          <%= friend ? friends_device_range_filter('LAST WEEK', 1.week.ago) : devices_range_filter('LAST WEEK', 1.week.ago) %>
+          <%= friend ? friends_device_range_filter('LAST MONTH', 1.month.ago) : devices_range_filter('LAST MONTH', 1.month.ago) %>
+          <%= friend ? friends_device_range_filter('LAST YEAR', 1.year.ago) : devices_range_filter('LAST YEAR', 1.year.ago) %>
+        </div>
+        <%= f.submit("Apply", class: "form-control btn btn-default") %>
+        <%= link_to("Clear", 
+        	friend ? show_device_user_friend_path(current_user.url_id, @presenter.friend, device_id: @presenter.device) : user_device_path(current_user.url_id, @presenter.device), 
+        	{ method: :get, class: "btn-flat right" })%>
+        <%= hidden_field_tag(:device_id, @presenter.device.id ) %>
+      <% end %>
+    </div>
+  </li>
+</ul>
+
 <div id='map'></div>

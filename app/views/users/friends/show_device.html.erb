@@ -1,30 +1,6 @@
 <% content_for :outside_container do %>
   <%= render 'users/shared/device_show' %>
 
-  <ul id='filters' class='date-select collapsible'>
-    <li>
-      <div class='collapsible-header'>Select a date range</div>
-      <div class='collapsible-body'>
-        <%= form_for @presenter.friend, url: show_device_user_friend_path(current_user.url_id, @presenter.friend), class: "form-group", method: :get do |f| %>
-          <%= f.label 'From' %>
-          <%= text_field_tag(:from, humanize_date(@presenter.date_range[:from]), class: "datepick", id: "input_from", required: true) %>
-          <%= f.label 'to' %>
-          <%= text_field_tag(:to, humanize_date(@presenter.date_range[:to]), class: "datepick", id: "input_to", required: true) %>
-          <%= f.label 'Or' %>
-          <div class='date-filter-presets'>
-            <%= friends_device_range_filter('LAST 24H', 1.day.ago) %>
-            <%= friends_device_range_filter('LAST WEEK', 1.week.ago) %>
-            <%= friends_device_range_filter('LAST MONTH', 1.month.ago) %>
-            <%= friends_device_range_filter('LAST YEAR', 1.year.ago) %>
-          </div>
-          <%= f.submit("Apply", class: "form-control btn btn-default") %>
-          <%= link_to("Clear", show_device_user_friend_path(current_user.url_id, @presenter.friend, device_id: @presenter.device), { method: :get, class: "btn-flat right" })%>
-          <%= hidden_field_tag(:device_id, @presenter.device.id ) %>
-        <% end %>
-      </div>
-    </li>
-  </ul>
-
   <script type="x-tmpl-mustache" id="markerPopupTmpl">
     <h3>ID: {{ id }}</h3>
     <ul>
