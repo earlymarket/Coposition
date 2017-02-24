@@ -9,6 +9,6 @@ module FriendsHelper
 
   def friends_device_range_filter(text, from)
     link_to(text, show_device_user_friend_path(current_user.url_id, @presenter.friend,
-  			    device_id: @presenter.device, from: from, to: Date.today), { method: :get })
+                                               device_id: @presenter.device, from: from, to: Date.today), method: :get)
   end
 end
