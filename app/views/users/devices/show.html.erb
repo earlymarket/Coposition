@@ -12,7 +12,7 @@
 
   <ul id='filters' class='date-select collapsible'>
     <li>
-      <div class='collapsible-header'>Select a date range</div>
+      <div class='collapsible-header' id='date-range-toggle'>Select a date range</div>
       <div class='collapsible-body'>
         <%= form_for @presenter.device, url: user_device_path(current_user.url_id, @presenter.device), class: "form-group", method: :get do |f| %>
           <%= f.label 'From' %>
