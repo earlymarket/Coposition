@@ -60,7 +60,7 @@ window.COPO.maps = {
           loadCheckins(page);
         });
       } else {
-        Materialize.toast('All check-ins loaded', 3000);
+        Materialize.toast('Check-ins loaded', 3000);
         window.COPO.maps.fitBounds();
       };
     }

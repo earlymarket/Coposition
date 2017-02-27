@@ -26,6 +26,7 @@ window.COPO.datePicker = {
     COPO.datePicker.checkPickers(from_picker, to_picker, 'max')
     COPO.datePicker.checkPickers(to_picker, to_picker, 'select')
     COPO.datePicker.checkPickers(from_picker, from_picker, 'select')
+    COPO.datePicker.openIfSet(from_picker);
   },
 
   setLimits: function(event, beingSet, setter, limit){
@@ -42,6 +43,12 @@ window.COPO.datePicker = {
       let dateArray = setter.get('value').split(" ");
       let date = new Date(dateArray[1].replace(/\D/g,'')+" "+dateArray[2]+" "+dateArray[3])
       beingSet.set(limit, date)
+    }
+  },
+
+  openIfSet: function(picker) {
+    if (picker.get('value')) {
+      $('#date-range-toggle').click()
     }
   }
 }

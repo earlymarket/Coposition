@@ -42604,7 +42604,7 @@ window.COPO.maps = {
           loadCheckins(page);
         });
       } else {
-        Materialize.toast('All check-ins loaded', 3000);
+        Materialize.toast('Check-ins loaded', 3000);
         window.COPO.maps.fitBounds();
       };
     }
@@ -55180,6 +55180,7 @@ window.COPO.datePicker = {
     COPO.datePicker.checkPickers(from_picker, to_picker, 'max');
     COPO.datePicker.checkPickers(to_picker, to_picker, 'select');
     COPO.datePicker.checkPickers(from_picker, from_picker, 'select');
+    COPO.datePicker.openIfSet(from_picker);
   },
 
   setLimits: function setLimits(event, beingSet, setter, limit) {
@@ -55195,6 +55196,12 @@ window.COPO.datePicker = {
       var dateArray = setter.get('value').split(" ");
       var date = new Date(dateArray[1].replace(/\D/g, '') + " " + dateArray[2] + " " + dateArray[3]);
       beingSet.set(limit, date);
+    }
+  },
+
+  openIfSet: function openIfSet(picker) {
+    if (picker.get('value')) {
+      $('#date-range-toggle').click();
     }
   }
 };
