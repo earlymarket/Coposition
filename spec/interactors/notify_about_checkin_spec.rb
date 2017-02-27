@@ -18,7 +18,6 @@ describe NotifyAboutCheckin do
   it "notifies device subscribers" do
     expect(notify_about_checkin.success?).to be_truthy
 
-    
     expect(device)
       .to have_received(:notify_subscribers).with("new_checkin", checkin)
   end

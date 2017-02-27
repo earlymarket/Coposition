@@ -7,5 +7,7 @@ development: *redis
 test: *redis
 
 staging: *redis
+  url: <%= ENV.fetch("REDISTOGO_URL") %>
 
 production: *redis
+  url: <%= ENV.fetch("REDISTOGO_URL") %>

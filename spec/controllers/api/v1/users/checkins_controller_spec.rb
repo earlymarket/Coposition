@@ -229,7 +229,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
     context 'with date param' do
       it 'returns checkins from the date provided' do
-        date = Date.today
+        date = Time.zone.now.to_date
         get :index, params: params.merge(date: date)
         expect(res_hash.all? { |checkin| Date.parse(checkin['created_at']) == date }).to be true
         expect(res_hash.size).to eq 30
