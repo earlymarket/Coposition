@@ -128,4 +128,14 @@ RSpec.describe Users::CheckinsController, type: :controller do
       expect(device.checkins.count).to eq count
     end
   end
+
+  describe 'POST #import' do
+    it 'returns 400 if you POST an invalid file' do
+      filename = { path: 'filename' }
+      allow(CSV).to receive(:foreach).with('filename', headers: true).and_return(false)
+      post :import, params: params.merge(file: filename)
+      expect(flash[:alert]).to match('Invalid CSV file format')
+      expect(response).to redirect_to(user_devices_path(user.url_id))
+    end
+  end
 end

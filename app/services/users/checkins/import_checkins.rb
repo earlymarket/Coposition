@@ -7,12 +7,12 @@ module Users::Checkins
 
     def success?
       return false unless @file && valid_file?
-      ImportWorker.perform_async(@device.id, @file.path)
+      ImportWorker.perform_async(@device.id, @file['path'])
       true
     end
 
     def valid_file?
-      CSV.foreach(@file.path, headers: true) do |csv|
+      CSV.foreach(@file['path'], headers: true) do |csv|
         return csv.headers == Checkin.column_names
       end
     end
