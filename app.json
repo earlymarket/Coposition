@@ -43,10 +43,14 @@
     },
     "STAGING_DATABASE_URL": {
       "required": true
+    },
+    "REDISTOGO_URL": {
+      "required": true
     }
   },
   "addons": [
     "sendgrid:starter",
+    "redistogo:nano"
     {
       "plan": "heroku-postgresql:hobby-basic",
       "options": {

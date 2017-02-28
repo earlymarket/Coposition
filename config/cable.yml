@@ -6,8 +6,10 @@ development: *redis
 
 test: *redis
 
-staging: *redis
-  url: <%= ENV.fetch("REDISTOGO_URL") %>
+staging:
+  <<: *redis
+  url: <%= ENV["REDISTOGO_URL"] %>
 
-production: *redis
-  url: <%= ENV.fetch("REDISTOGO_URL") %>
+production:
+  <<: *redis
+  url: <%= ENV["REDISTOGO_URL"] %>
