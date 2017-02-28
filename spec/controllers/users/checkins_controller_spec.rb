@@ -18,6 +18,15 @@ RSpec.describe Users::CheckinsController, type: :controller do
     end
   end
 
+  describe 'GET #index' do
+    it 'returns json containing checkins' do
+      get :index, params: params
+      expect(res_hash[:checkins][0]['lat']).to eq checkin.lat
+      expect(res_hash[:current_user_id]).to eq user.id
+      expect(res_hash[:total]).to eq device.checkins.count
+    end
+  end
+
   describe 'POST #create' do
     it 'assigns a device, creates a new checkin and assigns it to @checkin' do
       checkin
