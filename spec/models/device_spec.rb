@@ -81,4 +81,48 @@ RSpec.describe Device, type: :model do
       end
     end
   end
+
+  describe "#can_bypass_delay?" do
+    let(:permission) { double "permission", bypass_delay: bypass_delay }
+    let(:permissions) { double "permissions" }
+    let(:permissible) { create :user }
+
+    subject(:can_bypass_delay) { device.can_bypass_delay?(permissible) }
+
+    before do
+      allow(device)
+        .to receive(:permissions)
+        .and_return(permissions)
+      allow(permissions)
+        .to receive(:find_by)
+        .with(permissible_id: permissible.id, permissible_type: permissible.class.to_s)
+        .and_return(permission)
+    end
+
+    context "when permission has bypass_delay" do
+      let(:bypass_delay) { true }
+
+      it "returns true" do
+        expect(can_bypass_delay).to be_truthy
+      end
+    end
+
+    context "when permission has no bypass_delay" do
+      let(:bypass_delay) { false }
+
+      it "returns false" do
+        expect(can_bypass_delay).to be_falsy
+      end
+    end
+  end
+
+  describe "#slack_message" do
+    subject(:message) { device.slack_message }
+
+    it "includes id, name and user_id" do
+      expect(message).to match("#{device.id}")
+      expect(message).to match("#{device.name}")
+      expect(message).to match("#{device.user_id}")
+    end
+  end
 end
