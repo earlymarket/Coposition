@@ -50,7 +50,7 @@
   },
   "addons": [
     "sendgrid:starter",
-    "redistogo:nano"
+    "redistogo:nano",
     {
       "plan": "heroku-postgresql:hobby-basic",
       "options": {
