@@ -19,20 +19,18 @@ module DevicesHelper
     return nil unless device.published?
 
     link = Rails.application.routes.url_helpers.shared_user_device_url(id: device.id, user_id: device.user_id)
-    linkbox_id = "#linkbox#{device.id}"
-    output = text_field_tag(nil, link, class: 'linkbox', id: linkbox_id)
+    output = text_field_tag(nil, link, class: 'linkbox truncate', id: "linkbox#{device.id}")
     output << content_tag(:i, 'assignment', class: 'material-icons tooltipped clip_button',
                                             data: {
-                                              'clipboard-target': linkbox_id,
+                                              'clipboard-target': "#linkbox#{device.id}",
                                               tooltip: 'Click to copy', position: 'right'
                                             })
     output
   end
 
   def devices_cloaked_info(value)
-    if value
-      "<div class='inline-text cloaked-info grey-text'>This device is cloaked. No friends or apps can see this device or its check-ins.</div>".html_safe 
-    end
+    return unless value
+    "<div class='inline-text cloaked-info grey-text'>This device is cloaked. No friends or apps can see this device or its check-ins.</div>".html_safe
   end
 
   def devices_config_rows(config)
@@ -45,9 +43,30 @@ module DevicesHelper
 
   def devices_label(presenter)
     label = ''
-    user = (presenter.class == Users::FriendsPresenter) ? presenter.friend : presenter.user
+    user = presenter.class == Users::FriendsPresenter ? presenter.friend : presenter.user
     label << avatar_for(user, title: name_or_email_name(user), width: 40, height: 40)
     label << '&nbsp' + presenter.device.name
     label.html_safe
+  end
+
+  def devices_choose_icon(device, icon)
+    link_to user_device_path(current_user.url_id, device.id, icon: icon),
+            class: 'col s2', method: :put, remote: true, data: { icon: icon } do
+      if device.icon == icon
+        "<i class='material-icons medium active'>#{icon}</i>#{icon_label(icon)}".html_safe
+      else
+        "<i class='material-icons medium choose-icon'>#{icon}</i>#{icon_label(icon)}".html_safe
+      end
+    end
+  end
+
+  def icon_label(icon)
+    if icon == 'desktop_windows'
+      "<p class='icon-label'>desktop</p>".html_safe
+    elsif icon == 'devices_other'
+      "<p class='icon-label'>other</p>".html_safe
+    else
+      "<p class='icon-label'>#{icon}</p>".html_safe
+    end
   end
 end

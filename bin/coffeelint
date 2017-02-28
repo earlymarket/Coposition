@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require 'pathname'
+ENV['BUNDLE_GEMFILE'] ||= File.expand_path("../../Gemfile",
+  Pathname.new(__FILE__).realpath)
+
+require 'rubygems'
+require 'bundler/setup'
+require 'coffeelint'
+
+failures = Coffeelint.run_test_suite('app') + Coffeelint.run_test_suite('spec')
+puts "Coffeelint found #{failures} problems with coffeescript."

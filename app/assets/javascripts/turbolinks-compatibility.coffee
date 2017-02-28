@@ -5,7 +5,12 @@ handleEvent = (eventName, handler) ->
 
 translateEvent = ({from, to}) ->
   handler = (event) ->
-    event = dispatch(to, target: event.target, cancelable: event.cancelable, data: event.data)
+    event = dispatch(
+      to,
+      target: event.target,
+      cancelable: event.cancelable,
+      data: event.data
+    )
     event.preventDefault() if event.defaultPrevented
   handleEvent(from, handler)
 

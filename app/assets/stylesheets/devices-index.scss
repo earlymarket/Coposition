@@ -8,6 +8,11 @@
     margin-bottom: 5px;
   }
 
+  .card-title {
+    display: flex;
+    align-content: center;
+  }
+
   .btn-flat i {
     color: inherit;
   }
@@ -87,6 +92,25 @@
 
   .cloaked-info {
     font-size: 14px;
+  }
+
+  .icon-trigger {
+    color: black;
+    margin-right: 0.5rem;
+  }
+
+  .icon-modal {
+    .choose-icon {
+      color: grey !important;
+    }
+    .active {
+      color: black !important;
+    }
+  }
+
+  .icon-label {
+    font-size: 13px;
+    text-align: center;
   }
 
   #map-overlay {

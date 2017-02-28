@@ -3,10 +3,6 @@ class NoCity
     true
   end
 
-  def id
-    nil
-  end
-
   def latitude
     nil
   end
