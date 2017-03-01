@@ -8,41 +8,27 @@ RSpec.feature "Devices", type: :feature do
     given_I_am_signed_in
   end
 
-  scenario "User creates device and edits settings with javascript enabled", js: true do
-    and_I_create_a_new_device
-    then_I_should_see_the_device_map
-    and_I_am_on_the_devices_page
-    when_I_click_the_icon "cloud"
-    then_I_should_see "Location fogging is off"
-    when_I_click_the_icon "public"
-    then_I_should_see "Location sharing is on"
-    when_I_click_the_icon "visibility_off"
-    then_I_should_see "Device cloaking is on"
-    when_I_click_the_icon "timer"
-    and_I_click_the_slider
-    then_I_should_see "is delayed by"
-  end
-
-  scenario "User creates device and edits settings" do
-    and_I_create_a_new_device
-    then_I_should_see_the_device_map
-    and_I_am_on_the_devices_page
-    when_I_click_the_icon "cloud"
-    then_I_should_see "Location fogging is off"
-    when_I_click_the_icon "public"
-    then_I_should_see "Location sharing is on"
-    when_I_click_the_icon "visibility_off"
-    then_I_should_see "Device cloaking is on"
-    when_I_click_the_icon "timer"
-    and_I_click_the_slider
-    then_I_should_see "is delayed by"
-  end
-
   scenario "User creates then deletes device" do
     and_I_create_a_new_device
     when_I_click_delete
     then_I_should_see_no_devices
   end
+
+  # JAVASCRIPT
+  # scenario "User creates device and edits settings with javascript enabled", js: true do
+  #   and_I_create_a_new_device
+  #   then_I_should_see_the_device_map
+  #   and_I_am_on_the_devices_page
+  #   when_I_click_the_icon "cloud"
+  #   then_I_should_see "Location fogging is off"
+  #   when_I_click_the_icon "public"
+  #   then_I_should_see "Location sharing is on"
+  #   when_I_click_the_icon "visibility_off"
+  #   then_I_should_see "Device cloaking is on"
+  #   when_I_click_the_icon "timer"
+  #   and_I_click_the_slider
+  #   then_I_should_see "is delayed by"
+  # end
 
   def given_I_am_signed_in
     visit "/users/sign_in"
