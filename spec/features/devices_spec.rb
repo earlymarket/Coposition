@@ -4,8 +4,11 @@ RSpec.feature "Devices", type: :feature do
 
   let(:user) { FactoryGirl.create :user }
 
-  scenario "User creates device and edits settings with javascript enabled", js: true do
+  background do
     given_I_am_signed_in
+  end
+
+  scenario "User creates device and edits settings with javascript enabled", js: true do
     and_I_create_a_new_device
     then_I_should_see_the_device_map
     and_I_am_on_the_devices_page
@@ -21,7 +24,6 @@ RSpec.feature "Devices", type: :feature do
   end
 
   scenario "User creates device and edits settings" do
-    given_I_am_signed_in
     and_I_create_a_new_device
     then_I_should_see_the_device_map
     and_I_am_on_the_devices_page
@@ -36,9 +38,11 @@ RSpec.feature "Devices", type: :feature do
     then_I_should_see "is delayed by"
   end
 
-  # scenario "User deletes device" do
-
-  # end
+  scenario "User creates then deletes device" do
+    and_I_create_a_new_device
+    when_I_click_delete
+    then_I_should_see_no_devices
+  end
 
   def given_I_am_signed_in
     visit "/users/sign_in"
@@ -50,7 +54,7 @@ RSpec.feature "Devices", type: :feature do
   def and_I_am_on_the_devices_page
     visit "/users/#{user.id}/devices/"
     expect(page).to have_text("Your devices")
-    expect(page).to have_text("My device")
+    expect(page).to have_text("Device info")
   end
 
   def and_I_create_a_new_device
@@ -75,4 +79,14 @@ RSpec.feature "Devices", type: :feature do
   def and_I_click_the_slider
     find(:class, ".noUi-origin").click
   end
+
+  def when_I_click_delete
+    click_link "Delete device"
+  end
+
+  def then_I_should_see_no_devices
+    expect(page).to have_text("Your devices")
+    expect(page).not_to have_text("Device info")
+  end
+
 end
