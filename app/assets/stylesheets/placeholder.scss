@@ -35,6 +35,7 @@ $lg-breakpoint: 600px;
     // font-size and padding
     $quicklinks-size: 0.7rem;
 
+    display: flex;
     background: black;
     color: white;
     text-transform: uppercase;
@@ -145,38 +146,44 @@ $lg-breakpoint: 600px;
     background-size: cover;
     position: relative;
     overflow: hidden;
-    height: 768px;
+    height: auto;
 
-    @media (max-width: 599px) {
-      height: auto;
+    @media (min-width: $lg-breakpoint) {
+      height: 768px;
     }
 
     .ringed-logo {
       position: absolute;
-      top: 0;
-      left: calc(50vw - 600px);
-      z-index: 10;
+      top: -139px;
+      left: calc(-596px + 10vw);
 
-      @media (max-width: 599px) {
-        top: -139px;
-        left: calc(-596px + 10vw);
+      @media (min-width: $lg-breakpoint) {
+        top: 0;
+        left: calc(50vw - 600px);
+        z-index: 10;
       }
     }
 
-    .take-control-phones, .take-control-content {
+    .take-control-content {
       position: relative;
       z-index: 100;
     }
 
+    .take-control-left {
+      text-align: center;
+    }
+
     .take-control-phones {
-      justify-content: center;
+      width: 100%;
+      max-width: 382px;
     }
 
     .take-control-content {
       color: white;
-      margin-top: 260px;
+      margin-top: 130px;
       margin-bottom: 1rem;
-      width: 50%;
+      margin-left: 10%;
+      width: 80%;
 
       .title {
         @extend .font-heavy;
@@ -188,10 +195,12 @@ $lg-breakpoint: 600px;
         font-size: 1.2rem;
       }
 
-      @media (max-width: 599px) {
-        margin-top: 130px;
-        margin-left: 10%;
-        width: 80%;
+      @media (min-width: $lg-breakpoint) {
+        margin-top: 260px;
+        margin-left: 0;
+        width: 50%;
+
+
       }
     }
   }
@@ -229,9 +238,14 @@ $lg-breakpoint: 600px;
 
   #location-map {
     display: flex;
-    height: 75vh;
+    height: auto;
     background-image: linear-gradient(90deg, #08244f, #1d727a);
     color: white;
+    padding: 2rem;
+
+    @media (min-width: $lg-breakpoint) {
+      height: 75vh;
+    }
 
     .map {
       background-image: image-url('location-callout-map.png');
@@ -258,8 +272,12 @@ $lg-breakpoint: 600px;
     color: white;
     background: #252525;
 
-    .tagline {
-      @extend .font-light;
+    .headline {
+      padding: 0 2rem;
+
+      .tagline {
+        @extend .font-light;
+      }
     }
 
     .cell {
@@ -278,21 +296,39 @@ $lg-breakpoint: 600px;
   }
 
   #get-enabled {
-    height: 600px;
     background-image: image-url('enabled-tile.png'), linear-gradient(#dbfdff 10%, rgba(224, 255, 255, 0.3), #dbfdff);
     background-blend-mode: overlay;
     position: relative;
+    @media (min-width: $lg-breakpoint) {
+      height: 600px;
+    }
 
     .valign-wrapper {
       justify-content: center;
     }
 
     .card {
+      position: relative;
       background: white;
-      box-shadow: 0 3px 4px darkgray;
-      text-align: center;
-      padding: 2rem 6rem;
-      max-width: 40rem;
+      height: 100%;
+      padding: 1rem;
+      text-align: left;
+      @media (min-width: $lg-breakpoint) {
+        width: 57.1429%; // matches 8-14 grid
+        min-width: 530px; // since the page breaks at 600px, this allows 35px padding for the trustmark
+        padding: 2rem 6rem;
+        box-shadow: 0 3px 4px darkgray;
+        text-align: center;
+        height: initial;
+      }
+
+      #trustmark {
+        @media (min-width: $lg-breakpoint) {
+          position: absolute;
+          top: -30px;
+          left: -30px;
+        }
+      }
 
       .card-title {
         font-size: 2rem;
@@ -328,6 +364,7 @@ $lg-breakpoint: 600px;
       max-width: 40rem;
       text-align: center;
       position: relative;
+      padding: 0 2rem;
 
       .wrapper-pitch {
         font-size: 1.3rem;

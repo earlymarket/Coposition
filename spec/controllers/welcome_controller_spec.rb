@@ -18,7 +18,7 @@ RSpec.describe WelcomeController, type: :controller do
       Rails.env = 'production'
       get :index, params: { admin: 'true' }
       Rails.env = 'test'
-      expect(response).to render_template('welcome/placeholder_users')
+      expect(response).to render_template('index')
     end
   end
 
