@@ -1,41 +1,62 @@
 require "rails_helper"
 
 RSpec.feature "Devices", type: :feature do
-  let(:user) { create_user }
-  let(:device) { FactoryGirl.create :device, user_id: user.id }
 
-  scenario "User creates device" do
-    given_I_am_on_the_devices_page
+  let(:user) { FactoryGirl.create :user }
+
+  scenario "User creates device and edits settings with javascript enabled", js: true do
+    given_I_am_signed_in
     and_I_create_a_new_device
     then_I_should_see_the_device_map
+    and_I_am_on_the_devices_page
+    when_I_click_the_icon "cloud"
+    then_I_should_see "Location fogging is off"
+    when_I_click_the_icon "public"
+    then_I_should_see "Location sharing is on"
+    when_I_click_the_icon "visibility_off"
+    then_I_should_see "Device cloaking is on"
+    when_I_click_the_icon "timer"
+    and_I_click_the_slider
+    then_I_should_see "is delayed by"
   end
 
-  scenario "User edits device settings" do
-    given_I_am_on_the_devices_page
-    and_I_have_a_device
-    and_I_edit_device("fogged")
-    then_I_should_see_attribute_updated("fogged")
-    and_I_edit_device("cloaked")
-    then_I_should_see_attribute_updated("cloaked")
-    and_I_edit_device("shared")
-    then_I_should_see_attribute_updated("shared")
-    and_I_edit_device("delayed")
-    then_I_should_see_attribute_updated("delayed")
-    and_I_edit_device("name")
-    then_I_should_see_attribute_updated("name")
+  scenario "User creates device and edits settings" do
+    given_I_am_signed_in
+    and_I_create_a_new_device
+    then_I_should_see_the_device_map
+    and_I_am_on_the_devices_page
+    when_I_click_the_icon "cloud"
+    then_I_should_see "Location fogging is off"
+    when_I_click_the_icon "public"
+    then_I_should_see "Location sharing is on"
+    when_I_click_the_icon "visibility_off"
+    then_I_should_see "Device cloaking is on"
+    when_I_click_the_icon "timer"
+    and_I_click_the_slider
+    then_I_should_see "is delayed by"
   end
 
-  scenario "User deletes device" do
+  # scenario "User deletes device" do
 
+  # end
+
+  def given_I_am_signed_in
+    visit "/users/sign_in"
+    fill_in "user_email", with: user.email
+    fill_in "user_password", with: user.password
+    click_button "Log in"
   end
 
-  def given_I_am_on_the_devices_page
-    visit "/users/#{user.id}devices/"
+  def and_I_am_on_the_devices_page
+    visit "/users/#{user.id}/devices/"
+    expect(page).to have_text("Your devices")
+    expect(page).to have_text("My device")
   end
 
   def and_I_create_a_new_device
-    visit "users/#{user.id}/devices/new"
-    fill_in "device[name]", with: "laptop"
+    visit "/users/#{user.id}/devices/new"
+    expect(page).to have_text("Device Creation")
+    fill_in "device_name", with: "My device"
     click_button "Add"
   end
 
@@ -43,28 +64,15 @@ RSpec.feature "Devices", type: :feature do
     expect(page).to have_text("Checkin now")
   end
 
-  def and_I_have_a_device
-    device
+  def when_I_click_the_icon(icon)
+    click_link(icon, match: :first)
   end
 
-  def and_I_edit_device(attribute)
-    if attribute == "delayed"
-      device.update delayed: 60
-    elsif attribute == "name"
-      device.update name: "mobile"
-    else
-      device[attribute] = !device[attribute]
-      device.save
-    end
+  def then_I_should_see(text)
+    expect(page).to have_text(text)
   end
 
-  def then_I_should_see_attribute_updated(attribute)
-    if attribute == "delayed"
-      expect(page).to have_text("Checkin now")
-    elsif attribute == "name"
-      expect(page).to have_text("mobile now")
-    else
-      device[attribute] = !device[attribute]
-      device.save
-    end
+  def and_I_click_the_slider
+    find(:class, ".noUi-origin").click
+  end
 end
