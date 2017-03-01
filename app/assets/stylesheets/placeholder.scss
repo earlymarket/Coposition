@@ -79,14 +79,23 @@ $lg-breakpoint: 600px;
     }
 
     .top-menu-left {
+      float: left;
       display: flex;
       align-items: center;
       justify-content: center;
 
+      @media (min-width: $lg-breakpoint) {
+        float: none;
+      }
+
       .brandname {
         @extend .font-heavy;
-        font-size: 2.5rem;
+        font-size: 1.4rem;
         display: inline-block;
+
+        @media (min-width: $lg-breakpoint) {
+          font-size: 2.4rem;
+        }
       }
     }
 
@@ -132,6 +141,10 @@ $lg-breakpoint: 600px;
 
     .dropdown > * {
       padding: 0.5rem 0;
+      text-transform: capitalize;
+      .current {
+        color: #00d646;
+      }
     }
 
     #mobile-menu:checked ~ .dropdown {
