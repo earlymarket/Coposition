@@ -28,10 +28,10 @@ RSpec.feature "Developers", type: :feature do
 
   def given_i_fill_in_sign_up_details
     visit "/developers/sign_up"
-    fill_in "developer_email", with: "example@email.com"
+    fill_in "developer_email", with: Faker::Internet.email
     fill_in "developer_password", with: "password"
     fill_in "developer_password_confirmation", with: "password"
-    fill_in "developer_company_name", with: "example"
+    fill_in "developer_company_name", with: Faker::Internet.user_name(4..20, %w(_ -))
     fill_in "developer_redirect_url", with: "http://example.com"
   end
 

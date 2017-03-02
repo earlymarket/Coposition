@@ -14,7 +14,7 @@ RSpec.feature "Devices", type: :feature do
     then_i_should_see_no_devices
   end
 
-  scenario "User creates device and edits settings with javascript enabled", js: true do
+  scenario "User creates device and edits settings", js: true do
     when_i_create_a_new_device
     and_i_am_on_the_devices_page
     when_i_click_the_icon "cloud"
@@ -30,10 +30,10 @@ RSpec.feature "Devices", type: :feature do
 
   def given_i_am_signed_in
     visit "/users/sign_up"
-    fill_in "user_email", with: "example@email.com"
+    fill_in "user_email", with: Faker::Internet.email
     fill_in "user_password", with: "password"
     fill_in "user_password_confirmation", with: "password"
-    fill_in "user_username", with: "example"
+    fill_in "user_username", with: Faker::Internet.user_name(4..20, %w(_ -))
     click_on "Sign up"
   end
 

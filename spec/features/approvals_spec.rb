@@ -1,9 +1,7 @@
 require "rails_helper"
 
 RSpec.feature "Approvals", type: :feature do
-  let(:user) { FactoryGirl.create :user }
   let(:friend) { FactoryGirl.create :user }
-  let(:developer) { FactoryGirl.create :developer }
 
   background do
     given_i_am_signed_in
@@ -14,31 +12,57 @@ RSpec.feature "Approvals", type: :feature do
     then_i_should_have_a_pending_friend_request
   end
 
-  # JAVASCRIPT
-  scenario "User adds developer then revokes" do
+  scenario "User adds developer then revokes", js: true do
+    given_a_developer_is_signed_up
     when_i_add_a_developer
-    then_i_should_have_an_approved_app
-    # JAVASCRIPT
-    # when_i_revoke_the_approval
-    # then_i_should_have_no_approved_apps
+    then_i_should_have_two_approved_apps
+    when_i_revoke_the_approval
+    then_i_should_have_one_approved_app
+  end
+
+  scenario "Developer requests approval from a user", js: true do
+    given_a_developer_is_signed_up
+    when_i_add_a_user
+    then_i_should_see_request_sent
   end
 
   def given_i_am_signed_in
-    visit "/users/sign_in"
-    fill_in "user_email", with: user.email
-    fill_in "user_password", with: user.password
-    click_button "Log in"
+    visit "/users/sign_up"
+    fill_in "user_email", with: Faker::Internet.email
+    fill_in "user_password", with: "password"
+    fill_in "user_password_confirmation", with: "password"
+    fill_in "user_username", with: Faker::Internet.user_name(4..20, %w(_ -))
+    click_on "Sign up"
+  end
+
+  def given_a_developer_is_signed_up
+    visit "/developers/sign_up"
+    fill_in "developer_email", with: Faker::Internet.email
+    fill_in "developer_password", with: "password"
+    fill_in "developer_password_confirmation", with: "password"
+    fill_in "developer_company_name", with: Faker::Internet.user_name(4..20, %w(_ -))
+    fill_in "developer_redirect_url", with: "http://example.com"
+    click_on "Sign up"
   end
 
   def when_i_add_a_friend
-    visit "/users/#{user.id}/approvals/new?approvable_type=User"
+    click_on "Friends", match: :first
+    click_on "add"
     fill_in "approval_approvable", with: friend.email
     click_button "Add"
   end
 
+  def when_i_add_a_user
+    click_on "New user"
+    fill_in "approval_user", with: User.last.email
+    click_button "Request"
+  end
+
   def when_i_add_a_developer
-    visit "/users/#{user.id}/approvals/new?approvable_type=Developer"
-    fill_in "approval_approvable", with: developer.company_name
+    click_on "Apps", match: :first
+    click_on "add"
+    fill_in "approval_approvable", with: Developer.last.company_name
+    find(".page-footer").click
     click_button "Add"
   end
 
@@ -46,15 +70,19 @@ RSpec.feature "Approvals", type: :feature do
     expect(page).to have_text "You have sent 1 friend request"
   end
 
-  def then_i_should_have_an_approved_app
-    expect(page).to have_text "#{developer.company_name} Approved since"
+  def then_i_should_have_two_approved_apps
+    expect(page).to have_text "Approved since", count: 2
+  end
+
+  def then_i_should_see_request_sent
+    expect(page).to have_text "Successfully sent"
   end
 
   def when_i_revoke_the_approval
     click_on "Revoke Approval", match: :first
   end
 
-  def then_i_should_have_no_approved_apps
-    expect(page).not_to have_text "Approved since"
+  def then_i_should_have_one_approved_app
+    expect(page).to have_text "Approved since", count: 1
   end
 end
