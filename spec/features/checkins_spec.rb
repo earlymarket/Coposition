@@ -42,9 +42,8 @@ RSpec.feature "Approvals", type: :feature do
   end
 
   def when_i_right_click_on_the_map
-    expect(page).to have_text "timeline"
+    sleep 2
     find("#map").right_click
-    expect(page).to have_text "Longitude"
   end
 
   def and_i_click_create_checkin_here
@@ -65,7 +64,6 @@ RSpec.feature "Approvals", type: :feature do
 
   def and_i_click_on_the_checkin
     find("img.leaflet-marker-icon").click
-    expect(page).to have_text "Coordinates"
   end
 
   def when_i_click_fogging

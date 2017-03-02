@@ -44,7 +44,6 @@ RSpec.feature "Devices", type: :feature do
 
   def when_i_create_a_new_device
     click_on "add"
-    expect(page).to have_text("Device Creation")
     fill_in "device_name", with: "My device"
     click_button "Add"
   end

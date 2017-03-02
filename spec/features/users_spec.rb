@@ -72,7 +72,7 @@ RSpec.feature "Users", type: :feature do
   end
 
   def then_i_should_see_a_new_username
-    visit "users/#{user.id}/dashboard"
+    click_on "Dashboard", match: :first
     expect(page).to have_text "Hello changed"
   end
 

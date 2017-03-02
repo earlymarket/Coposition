@@ -2,5 +2,5 @@
 
 set -e
 
-bin/rake xvfb-run bundle exec rspec spec
+bin/rake
 bin/quality
