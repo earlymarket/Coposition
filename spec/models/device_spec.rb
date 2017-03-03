@@ -171,19 +171,39 @@ RSpec.describe Device, type: :model do
     end
 
     context "permission_for" do
-
+      it "returns a permission" do
+        expect(device.permission_for(developer)).to be_kind_of Permission
+      end
     end
 
     context "can_bypass_fogging?" do
-
+      it "returns true if developer can bypass fogging" do
+        device.permission_for(developer).update(bypass_fogging: true)
+        device.permission_for(developer).update(bypass_fogging: true)
+        expect(device.can_bypass_fogging?(developer)).to be true
+      end
+      it "returns false if developer can't bypass fogging" do
+        expect(device.can_bypass_fogging?(developer)).to be false
+      end
     end
 
     context "can_bypass_delay?" do
-
+      it "returns true if developer can bypass delay" do
+        device.permission_for(developer).update(bypass_delay: true)
+        device.permission_for(developer).update(bypass_delay: true)
+        expect(device.can_bypass_delay?(developer)).to be true
+      end
+      it "returns false if developer can't bypass delay" do
+        expect(device.can_bypass_delay?(developer)).to be false
+      end
     end
 
     context "slack_message" do
-
+      it "return slack message string" do
+        msg = "A new device was created, id: #{device.id}, name: #{device.name}, user_id: #{device.user_id}. "\
+              "There are now #{Device.count} devices"
+        expect(device.slack_message).to eq msg
+      end
     end
 
     context "update_delay" do
