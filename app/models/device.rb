@@ -8,8 +8,6 @@ class Device < ApplicationRecord
   has_many :permissions, dependent: :destroy
   has_many :developers, through: :permissions, source: :permissible, source_type: 'Developer'
   has_many :permitted_users, through: :permissions, source: :permissible, source_type: 'User'
-  has_many :allowed_user_permissions, -> { where.not privilege: 0 }, class_name: 'Permission'
-  has_many :allowed_users, through: :allowed_user_permissions, source: :permissible, source_type: 'User'
 
   validates :name, uniqueness: { scope: :user_id }, if: :user_id
 
@@ -21,6 +19,7 @@ class Device < ApplicationRecord
     if update(user: current_user, name: device_name, icon: icon_name)
       developers << current_user.developers
       permitted_users << current_user.friends
+      true
     end
   end
 
@@ -43,10 +42,10 @@ class Device < ApplicationRecord
       sanitized.map(&:reverse_geocode!) unless args[:action] == 'index' && args[:multiple_devices]
     end
     return sanitized if args[:copo_app]
-    replace_checkin_attributes(args[:permissible], sanitized)
+    replace_checkin_attributes(sanitized, args[:permissible])
   end
 
-  def replace_checkin_attributes(permissible, sanitized)
+  def replace_checkin_attributes(sanitized, permissible)
     if can_bypass_fogging?(permissible)
       sanitized.select(:id, :created_at, :updated_at, :device_id, :lat,
                        :lng, :address, :city, :postal_code, :country_code)
