@@ -29,49 +29,11 @@ RSpec.describe User, type: :model do
   end
 
   describe "Associations" do
-    it "has many devices" do
-      assc = described_class.reflect_on_association(:devices)
-      expect(assc.macro).to eq :has_many
-    end
-
-    it "has many checkins" do
-      assc = described_class.reflect_on_association(:checkins)
-      expect(assc.macro).to eq :has_many
-    end
-
-    it "has many requests" do
-      assc = described_class.reflect_on_association(:requests)
-      expect(assc.macro).to eq :has_many
-    end
-
-    it "has many approvals" do
-      assc = described_class.reflect_on_association(:approvals)
-      expect(assc.macro).to eq :has_many
-    end
-
-    it "has many subscriptions" do
-      assc = described_class.reflect_on_association(:subscriptions)
-      expect(assc.macro).to eq :has_many
-    end
-
-    it "has many developers" do
-      assc = described_class.reflect_on_association(:developers)
-      expect(assc.macro).to eq :has_many
-    end
-
-    it "has many friends" do
-      assc = described_class.reflect_on_association(:friends)
-      expect(assc.macro).to eq :has_many
-    end
-
-    it "has many permissions" do
-      assc = described_class.reflect_on_association(:permissions)
-      expect(assc.macro).to eq :has_many
-    end
-
-    it "has many permitted_devices" do
-      assc = described_class.reflect_on_association(:permitted_devices)
-      expect(assc.macro).to eq :has_many
+    %w(devices checkins requests approvals subscriptions developers friends permissions permitted_devices).each do |asoc|
+      it "has many #{asoc}" do
+        assc = described_class.reflect_on_association(asoc.to_sym)
+        expect(assc.macro).to eq :has_many
+      end
     end
   end
 
@@ -107,20 +69,11 @@ RSpec.describe User, type: :model do
     end
 
     context "responds to its methods" do
-      it { expect(user).to respond_to(:url_id) }
-      it { expect(user).to respond_to(:should_generate_new_friendly_id?) }
-      it { expect(user).to respond_to(:approved?) }
-      it { expect(user).to respond_to(:request_from?) }
-      it { expect(user).to respond_to(:approval_for) }
-      it { expect(user).to respond_to(:destroy_permissions_for) }
-      it { expect(user).to respond_to(:not_coposition_developers) }
-      it { expect(user).to respond_to(:safe_checkin_info) }
-      it { expect(user).to respond_to(:filtered_checkins) }
-      it { expect(user).to respond_to(:safe_checkin_info_for) }
-      it { expect(user).to respond_to(:changed_location?) }
-      it { expect(user).to respond_to(:slack_message) }
-      it { expect(user).to respond_to(:public_info) }
-      it { expect(user).to respond_to(:public_info_hash) }
+      %i(url_id should_generate_new_friendly_id? approved? request_from? approval_for destroy_permissions_for
+         not_coposition_developers safe_checkin_info filtered_checkins safe_checkin_info_for
+         changed_location? slack_message public_info public_info_hash).each do |method|
+        it { expect(user).to respond_to(method) }
+      end
     end
 
     context "url_id" do
