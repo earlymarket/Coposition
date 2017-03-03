@@ -113,17 +113,6 @@ class User < ApplicationRecord
     end
   end
 
-  def get_checkins(permissible, device)
-    device ? device.permitted_history_for(permissible) : get_user_checkins_for(permissible)
-  end
-
-  def get_user_checkins_for(permissible)
-    subqueries = devices.map do |device|
-      Checkin.arel_table[:id].in(device.permitted_history_for(permissible).ids)
-    end
-    subqueries.present? ? Checkin.where(subqueries.inject(&:or)) : Checkin.none
-  end
-
   def changed_location?
     most_recent = checkins[0]
     second_most_recent = checkins[1]

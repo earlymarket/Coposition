@@ -55,7 +55,7 @@ module Users
 
     def device_checkins
       device = @friend.devices.find(@params[:device_id])
-      checkins = @friend.get_checkins(@user, device)
+      checkins = device.permitted_history_for(@user)
       device.replace_checkin_attributes(@user, checkins)
     end
   end
