@@ -158,7 +158,10 @@ RSpec.describe User, type: :model do
 
     context "not_coposition_developers" do
       it "returns all developers except coposition developers" do
-        expect(user.not_coposition_developers).to include(Developer.last)
+        dev = FactoryGirl.create(:developer)
+        Approval.link(user, dev, "Developer")
+        Approval.accept(user, dev, "Developer")
+        expect(user.not_coposition_developers).to include(dev)
       end
     end
 

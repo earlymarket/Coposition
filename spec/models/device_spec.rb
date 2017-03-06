@@ -32,7 +32,7 @@ RSpec.describe Device, type: :model do
     end
 
     %w(config configurer).each do |asoc|
-      it "has many #{asoc}" do
+      it "has one #{asoc}" do
         assc = described_class.reflect_on_association(asoc.to_sym)
         expect(assc.macro).to eq :has_one
       end

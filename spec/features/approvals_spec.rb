@@ -15,9 +15,9 @@ RSpec.feature "Approvals", type: :feature do
   scenario "User adds developer then revokes", js: true do
     given_a_developer_is_signed_up
     when_i_add_a_developer
-    then_i_should_have_two_approved_apps
-    when_i_revoke_the_approval
     then_i_should_have_one_approved_app
+    when_i_revoke_the_approval
+    then_i_should_have_no_approved_apps
   end
 
   scenario "Developer requests approval from a user", js: true do
@@ -70,8 +70,8 @@ RSpec.feature "Approvals", type: :feature do
     expect(page).to have_text "You have sent 1 friend request"
   end
 
-  def then_i_should_have_two_approved_apps
-    expect(page).to have_text "Approved since", count: 2
+  def then_i_should_have_one_approved_app
+    expect(page).to have_text "Approved since", count: 1
   end
 
   def then_i_should_see_request_sent
@@ -82,7 +82,7 @@ RSpec.feature "Approvals", type: :feature do
     click_on "Revoke Approval", match: :first
   end
 
-  def then_i_should_have_one_approved_app
-    expect(page).to have_text "Approved since", count: 1
+  def then_i_should_have_no_approved_apps
+    expect(page).not_to have_text "Approved since"
   end
 end
