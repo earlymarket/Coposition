@@ -116,7 +116,7 @@ class Device < ApplicationRecord
     if delayed.nil?
       "#{name} is not delayed."
     else
-      "#{name} delayed by #{humanize_minutes(delayed)}."
+      "#{name} delayed by #{humanize_minutes(delayed)}"
     end
   end
 
@@ -127,7 +127,8 @@ class Device < ApplicationRecord
   end
 
   def subscriptions(event)
-    Subscription.where(event: event).where(subscriber_id: user_id)
+    subs = Subscription.where(event: event).where(subscriber_id: user_id)
+    subs if subs.present?
   end
 
   def notify_subscribers(event, data)

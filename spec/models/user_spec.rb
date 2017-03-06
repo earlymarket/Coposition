@@ -251,7 +251,7 @@ RSpec.describe User, type: :model do
 
   describe "public class methods" do
     context "responds to its methods" do
-      it { expect(user).to respond_to(:public_info) }
+      it { expect(User).to respond_to(:public_info) }
     end
 
     context "self.public_info" do

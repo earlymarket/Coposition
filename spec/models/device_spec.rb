@@ -207,34 +207,127 @@ RSpec.describe Device, type: :model do
     end
 
     context "update_delay" do
+      it "updates device delay to given number" do
+        device.update_delay 60
+        expect(device.delayed).to eq 60
+      end
 
+      it "updates device delay to nil if zero given" do
+        device.update_delay 0
+        expect(device.delayed).to eq nil
+      end
     end
 
     context "switch_fog" do
+      it "switches device fog" do
+        device.switch_fog
+        expect(device.fogged).to eq false
+      end
 
+      it "returns fogged status" do
+        expect(device.switch_fog).to eq false
+      end
     end
 
     context "humanize_delay" do
+      it "returns a string explaining delay setting" do
+        device.update(delayed: 10)
+        string = "#{device.name} delayed by 10 minutes."
+        expect(device.humanize_delay).to eq string
+      end
 
+      it "returns a different string if device not delayed" do
+        string = "#{device.name} is not delayed."
+        expect(device.humanize_delay).to eq string
+      end
     end
 
     context "public_info" do
+      it "returns a Device" do
+        expect(device.public_info).to be_kind_of(Device)
+      end
+
+      it "returns devices public info" do
+        expect(device.public_info).not_to respond_to(:uuid)
+      end
     end
 
     context "subscriptions" do
+      it "returns subscriptions to a certain event" do
+        subscrp = FactoryGirl.create(:subscription, subscriber: user)
+        expect(device.subscriptions("new_checkin")).to eq [subscrp]
+      end
     end
 
     context "notify_subscribers" do
+      it "does nothing if user not zapier enabled" do
+        expect(device.notify_subscribers("new_checkin", checkins.last)).to eq nil
+      end
+
+      it "does nothing if no subscriptions" do
+        user.update(zapier_enabled: true)
+        expect(device.notify_subscribers("new_checkin", checkins.last)).to eq nil
+      end
+
+      it "calls remove_id if zapier_enabled and subscriptions" do
+        user.update(zapier_enabled: true)
+        FactoryGirl.create(:subscription, subscriber: user)
+        allow(device).to receive(:remove_id).and_return(device)
+        device.notify_subscribers("new_checkin", checkins.last)
+        expect(device).to have_received(:remove_id)
+      end
     end
   end
 
   describe "public class methods" do
     context "responds to its methods" do
-      # it { expect(user).to respond_to(:public_info) }
+      %i(public_info last_checkins geocode_last_checkins ordered_by_checkins).each do |method|
+        it { expect(Device).to respond_to(method) }
+      end
     end
 
-    context "" do
+    context "public_info" do
+      it "returns all devices public info" do
+        expect(Device.public_info).to eq(Device.select(%i(id user_id name alias published)))
+      end
+    end
 
+    context "last_checkins" do
+      before do
+        checkins
+      end
+
+      it "returns an array" do
+        expect(Device.last_checkins).to be_kind_of(Array)
+      end
+
+      it "returns each devices first checkin" do
+        expect(Device.last_checkins[0]).to eq checkins.last
+      end
+    end
+
+    context "geocode_last_checkins" do
+      before do
+        checkins
+      end
+
+      it "returns an array" do
+        expect(Device.geocode_last_checkins).to be_kind_of(Array)
+      end
+
+      it "geocodes each devices most recent checkin" do
+        Device.geocode_last_checkins
+        expect(device.checkins.first.reverse_geocoded?).to eq true
+      end
+    end
+
+    context "ordered_by_checkins" do
+      it "returns devices in order of most recent checkin created" do
+        checkins
+        new_device = FactoryGirl.create(:device, user: user)
+        FactoryGirl.create(:checkin, device: new_device, created_at: 1.day.ago)
+        expect(Device.ordered_by_checkins).to eq [device, new_device]
+      end
     end
   end
 end
