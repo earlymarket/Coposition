@@ -5,7 +5,7 @@ RSpec.describe Request, type: :model do
   let(:request) { FactoryGirl.create :request, developer: developer }
 
   describe "factory" do
-    it "creates a valid developer" do
+    it "creates a valid request" do
       req = FactoryGirl.build(:request)
       expect(req).to be_valid
     end
