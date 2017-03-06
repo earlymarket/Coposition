@@ -9,8 +9,8 @@ RSpec.describe Device, type: :model do
     dev.developers << developer
     dev
   end
-  let(:checkins) do
-    device.checkins << FactoryGirl.create(:checkin)
+  let(:checkin) do
+    FactoryGirl.create(:checkin, device: device)
   end
   let(:user) { FactoryGirl.create(:user) }
 
@@ -220,8 +220,7 @@ RSpec.describe Device, type: :model do
 
     context "switch_fog" do
       it "switches device fog" do
-        device.switch_fog
-        expect(device.fogged).to eq false
+        expect { device.switch_fog }.to change { device.fogged }
       end
 
       it "returns fogged status" do
@@ -261,19 +260,19 @@ RSpec.describe Device, type: :model do
 
     context "notify_subscribers" do
       it "does nothing if user not zapier enabled" do
-        expect(device.notify_subscribers("new_checkin", checkins.last)).to eq nil
+        expect(device.notify_subscribers("new_checkin", checkin)).to eq nil
       end
 
       it "does nothing if no subscriptions" do
         user.update(zapier_enabled: true)
-        expect(device.notify_subscribers("new_checkin", checkins.last)).to eq nil
+        expect(device.notify_subscribers("new_checkin", checkin)).to eq nil
       end
 
       it "calls remove_id if zapier_enabled and subscriptions" do
         user.update(zapier_enabled: true)
         FactoryGirl.create(:subscription, subscriber: user)
         allow(device).to receive(:remove_id).and_return(device)
-        device.notify_subscribers("new_checkin", checkins.last)
+        device.notify_subscribers("new_checkin", checkin)
         expect(device).to have_received(:remove_id)
       end
     end
@@ -294,7 +293,7 @@ RSpec.describe Device, type: :model do
 
     context "last_checkins" do
       before do
-        checkins
+        checkin
       end
 
       it "returns an array" do
@@ -302,13 +301,13 @@ RSpec.describe Device, type: :model do
       end
 
       it "returns each devices first checkin" do
-        expect(Device.last_checkins[0]).to eq checkins.last
+        expect(Device.last_checkins[0]).to eq checkin
       end
     end
 
     context "geocode_last_checkins" do
       before do
-        checkins
+        checkin
       end
 
       it "returns an array" do
@@ -323,7 +322,7 @@ RSpec.describe Device, type: :model do
 
     context "ordered_by_checkins" do
       it "returns devices in order of most recent checkin created" do
-        checkins
+        checkin
         new_device = FactoryGirl.create(:device, user: user)
         FactoryGirl.create(:checkin, device: new_device, created_at: 1.day.ago)
         expect(Device.ordered_by_checkins).to eq [device, new_device]
