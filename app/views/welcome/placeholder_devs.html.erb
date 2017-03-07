@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta property="og:logo" content="./copo-logo.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="turbolinks-cache-control" content="no-cache">
   <title>Coposition</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -18,6 +19,7 @@
   <meta name="theme-color" content="#ffffff">
   <!-- end favicon stuff -->
   <script src="//load.sumome.com/" data-sumo-site-id="392e8ae3834cda33e6d3d929716838cd302cea46e1d8def5b6701a560770bebc" async="async"></script>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 </head>
 <body class="placeholder">
   <nav>
@@ -83,7 +85,7 @@
       <p class="text">Generate location data and govern how it appears to your friends and apps.</p>
     </div><!--
  --><div class="pure-u-lg-4-14 cell cell-contrast">
-      <%= image_tag('dev-access.png', width: 60) %>
+      <%= image_tag('icons/copo-dev-icon.png', width: 60) %>
       <h2 class="title">Get Developer Access</h2>
       <p class="text">Empower your users. Offer them the only trusted and secure location data storage framework of its kind.</p>
     </div><!--
@@ -100,7 +102,7 @@
  --><div class="pure-u-lg-4-14">
       <div class="valign-wrapper text">
         <div class="valign">
-          <%= image_tag('dev-access.png', width: 60, class: 'lg-hide') %>
+          <%= image_tag('icons/copo-dev-icon.png', width: 60, class: 'lg-hide') %>
           <h2 class="caption">Coposition is the secure, trusted, and efficient way to manage location data</h2>
         </div>
       </div>
@@ -109,25 +111,31 @@
 --></div>
     <div id="benefits" class="pure-g"><!--
    --><h2 class="headline">Coposition. <span class="tagline">The all-in-one solution for location data protection</span></h2><!--
-   --><div class="pure-u-lg-1-14 sm-hide"></div><!--
-   --><div class="pure-u-lg-3-14 pure-u-14-14 cell">
+ --><div class="pure-u-lg-1-14 sm-hide"></div><!--
+ --><div class="cell-wrapper"><!--
+   --><div class="cell">
+        <div class="ringed-icon"><%= image_tag("icons/control.png") %></div>
         <h2 class="cell-title">Control</h2>
         <p class="cell-description">Empower your users. Let them know that by using your product they are taking advantage of the most powerful geolocation data security platform ever developed.</p>
       </div><!--
-   --><div class="pure-u-lg-3-14 pure-u-14-14 cell">
+   --><div class="cell">
+       <div class="ringed-icon"><%= image_tag("icons/trust.png") %></div>
         <h2 class="cell-title">Trusted</h2>
         <p class="cell-description">Don’t risk it. Developed with privacy at the forefront, the trusted and secure cloud-based storage system keeps your users and their data protected.</p>
       </div><!--
-   --><div class="pure-u-lg-3-14 pure-u-14-14 cell">
+   --><div class="cell">
+       <div class="ringed-icon"><%= image_tag("icons/api.png") %></div>
         <h2 class="cell-title">API</h2>
-        <p class="cell-description">Power, right out of the box. Highly functional and detailed API endpoints as standard means reduced development load and plenty of additional benefits, like improved battery performance and instant analytics.</p>
+        <p class="cell-description">Power, right out of the box. Highly functional and detailed API endpoints as standard means reduced development load and plenty of additional benefits, like instant analytics.</p>
       </div><!--
-   --><div class="pure-u-lg-3-14 pure-u-14-14 cell">
+   --><div class="cell">
+       <div class="ringed-icon"><%= image_tag("icons/scalable.png") %></div>
         <h2 class="cell-title">Scalable</h2>
         <p class="cell-description">Let Coposition do the work. With unlimited users, you can take advantage of our servers that already handle billions of check-ins daily.</p>
       </div><!--
-   --><div class="pure-u-lg-1-14 small-hide"></div><!--
-  --></div>
+  --></div><!--
+  --><div class="pure-u-lg-1-14 small-hide"></div><!--
+--></div>
   <div id="get-enabled">
     <div class="valign-wrapper">
       <div class="card">
@@ -147,9 +155,30 @@
   </div>
   <div id="bottom-bar" class="pure-g"><!--
  --><div class="pure-u-1-14"></div><!--
- --><div class="pure-u-6-14 copy-notice">Copyright &copy; 2016 Coposition</div><!--
+ --><div class="pure-u-6-14 copy-notice">Copyright &copy; 2017 Coposition</div><!--
  --><div class="pure-u-6-14"><a href="https://github.com/earlymarket/Coposition"><i class="fa fa-github-square fa-2x" aria-hidden="true"></i></a> <a href="https://twitter.com/coposition"><i class="fa fa-twitter-square fa-2x" aria-hidden="true"></i></a></div><!--
  --><div class="pure-u-1-14"></div><!--
 --></div>
+  <script>
+    $('.cell-wrapper').slick({
+      autoplay: true,
+      arrows: false,
+      dots: true,
+      mobileFirst: true,
+      responsive: [{
+        breakpoint: 600,
+        settings: 'unslick'
+      }]
+    });
+
+    $(window).resize(function () {
+        $('.cell-wrapper').slick('resize');
+    });
+
+    $(window).on('orientationchange', function () {
+        $('.cell-wrapper').slick('resize');
+    });
+
+  </script>
 </body>
 </html>

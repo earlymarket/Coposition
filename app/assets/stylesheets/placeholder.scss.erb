@@ -1,3 +1,16 @@
+@import 'slick-carousel/slick/slick.scss';
+@import 'slick-carousel/slick/slick-theme.css';
+
+// custom slick styling for our dark background
+
+.slick-dots li button:before {
+  color: white;
+}
+.slick-dots li.slick-active button:before{
+  opacity: .75;
+  color: white;
+}
+
 html, button, input, select, textarea,
 .pure-g [class *= "pure-u"] {
     /* Set your content font stack here: */
@@ -293,7 +306,15 @@ $lg-breakpoint: 600px;
       }
     }
 
+    .cell-wrapper {
+      display: flex;
+      flex-flow: row wrap;
+    }
     .cell {
+      // display: flex;
+      width: 300px;
+      flex-grow: 1;
+      text-align: center;
       padding: 0 2rem;
 
       .cell-title {
@@ -304,6 +325,8 @@ $lg-breakpoint: 600px;
         font-size: 1rem;
         @extend .font-light;
         color: #959595;
+        max-width: 300px;
+        margin: 1rem auto;
       }
     }
   }
@@ -461,6 +484,19 @@ a {
 }
 
 // other helpers
+
+.ringed-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  width: 167px;
+  height: 178px;
+  background-image: image-url('icons/icon-rings.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 
 .valign-wrapper {
   display: flex;
