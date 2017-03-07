@@ -15,7 +15,7 @@ RSpec.describe FriendsHelper, type: :helper do
 
     it "returns the last checkin address if it exists" do
       expect(helper.friends_device_last_checkin(device.checkins.first)).to match("Last available")
-      expect(helper.friends_device_last_checkin(device.checkins.first)).to match(device.checkins.first.fogged_city.to_s)
+      expect(helper.friends_device_last_checkin(device.checkins.first)).to match(device.checkins.first.city.to_s)
     end
   end
 end
