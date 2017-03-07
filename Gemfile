@@ -84,4 +84,5 @@ group :test do
   gem "database_cleaner"
   gem "simplecov", require: false
   gem "rails-controller-testing"
+  gem "webmock"
 end

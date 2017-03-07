@@ -138,6 +138,8 @@ GEM
       json
     colorize (0.8.1)
     concurrent-ruby (1.0.4)
+    crack (0.4.3)
+      safe_yaml (~> 1.0.0)
     cucumber (2.4.0)
       builder (>= 2.1.2)
       cucumber-core (~> 1.5.0)
@@ -230,6 +232,7 @@ GEM
     has_scope (0.7.0)
       actionpack (>= 4.1, < 5.1)
       activesupport (>= 4.1, < 5.1)
+    hashdiff (0.3.2)
     heapy (0.1.2)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
@@ -412,6 +415,7 @@ GEM
       rubocop (>= 0.42.0)
     ruby-progressbar (1.8.1)
     ruby_dep (1.4.0)
+    safe_yaml (1.0.4)
     sass (3.4.22)
     sass-rails (5.0.6)
       railties (>= 4.0.0, < 6)
@@ -469,6 +473,10 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
+    webmock (2.3.2)
+      addressable (>= 2.3.6)
+      crack (>= 0.3.2)
+      hashdiff
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
@@ -542,6 +550,7 @@ DEPENDENCIES
   turbolinks
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
+  webmock
   will_paginate-materialize!
 
 RUBY VERSION

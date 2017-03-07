@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :permission do
-    privilege 1
+    privilege 0
   end
 end
