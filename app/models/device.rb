@@ -6,8 +6,8 @@ class Device < ApplicationRecord
   has_one :configurer, through: :configs, source: :developer
   has_many :checkins, dependent: :destroy
   has_many :permissions, dependent: :destroy
-  has_many :developers, through: :permissions, source: :permissible, source_type: 'Developer'
-  has_many :permitted_users, through: :permissions, source: :permissible, source_type: 'User'
+  has_many :developers, through: :permissions, source: :permissible, source_type: "Developer"
+  has_many :permitted_users, through: :permissions, source: :permissible, source_type: "User"
 
   validates :name, uniqueness: { scope: :user_id }, if: :user_id
 
@@ -38,8 +38,8 @@ class Device < ApplicationRecord
   end
 
   def sanitize_checkins(sanitized, args)
-    if args[:type] == 'address'
-      sanitized.map(&:reverse_geocode!) unless args[:action] == 'index' && args[:multiple_devices]
+    if args[:type] == "address"
+      sanitized.map(&:reverse_geocode!) unless args[:action] == "index" && args[:multiple_devices]
     end
     return sanitized if args[:copo_app]
     replace_checkin_attributes(sanitized, args[:permissible])
@@ -48,15 +48,15 @@ class Device < ApplicationRecord
   def replace_checkin_attributes(sanitized, permissible)
     if can_bypass_fogging?(permissible)
       sanitized.select(:id, :created_at, :updated_at, :device_id, :lat,
-                       :lng, :address, :city, :postal_code, :country_code)
+        :lng, :address, :city, :postal_code, :country_code)
     elsif fogged
-      sanitized.select('id', 'created_at', 'updated_at', 'device_id', 'fogged_lat AS lat', 'fogged_lng AS lng',
-                       'fogged_city AS address', 'fogged_city AS city', 'fogged_country_code AS postal_code',
-                       'fogged_country_code AS country_code')
+      sanitized.select("id", "created_at", "updated_at", "device_id", "fogged_lat AS lat", "fogged_lng AS lng",
+        "fogged_city AS address", "fogged_city AS city", "fogged_country_code AS postal_code",
+        "fogged_country_code AS country_code")
     else
-      sanitized.select('id', 'created_at', 'updated_at', 'device_id', 'output_lat AS lat', 'output_lng AS lng',
-                       'output_address AS address', 'output_city AS city', 'output_postal_code AS postal_code',
-                       'output_country_code AS country_code')
+      sanitized.select("id", "created_at", "updated_at", "device_id", "output_lat AS lat", "output_lng AS lng",
+        "output_address AS address", "output_city AS city", "output_postal_code AS postal_code",
+        "output_country_code AS country_code")
     end
   end
 
@@ -66,9 +66,9 @@ class Device < ApplicationRecord
   end
 
   def resolve_privilege(unresolved_checkins, permissible)
-    return Checkin.none if privilege_for(permissible) == 'disallowed'
+    return Checkin.none if privilege_for(permissible) == "disallowed"
     return unresolved_checkins if unresolved_checkins.empty?
-    if privilege_for(permissible) == 'last_only'
+    if privilege_for(permissible) == "last_only"
       unresolved_checkins.where(id: unresolved_checkins.first.id)
     else
       unresolved_checkins
@@ -123,7 +123,7 @@ class Device < ApplicationRecord
   def public_info
     # Clears out any potentially sensitive attributes, returns a normal ActiveRecord relation
     # Returns a normal ActiveRecord relation
-    Device.select([:id, :user_id, :name, :alias, :published]).find(id)
+    Device.select(%i(id user_id name alias published)).find(id)
   end
 
   def subscriptions(event)
@@ -132,7 +132,7 @@ class Device < ApplicationRecord
   end
 
   def notify_subscribers(event, data)
-    return unless (user.zapier_enabled && subs = subscriptions(event))
+    return unless user.zapier_enabled && (subs = subscriptions(event))
     data = data.as_json
     data.merge!(remove_id.as_json)
     data.merge!(user.public_info.remove_id.as_json) if user
@@ -140,7 +140,7 @@ class Device < ApplicationRecord
   end
 
   def self.public_info
-    select([:id, :user_id, :name, :alias, :published])
+    select(%i(id user_id name alias published))
   end
 
   def self.last_checkins

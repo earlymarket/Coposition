@@ -37,9 +37,9 @@ module Users
       }
     end
 
-    def show_checkins(params)
+    def show_checkins
       {
-        checkins: device_checkins.paginate(page: params[:page], per_page: params[:per_page])
+        checkins: device_checkins.paginate(page: @params[:page], per_page: @params[:per_page])
       }
     end
 
@@ -50,13 +50,12 @@ module Users
         checkins = device.safe_checkin_info_for(permissible: @user)
         checkins.first.as_json.merge(device: device.name) if checkins.present?
       end.compact
-      checkins.sort_by { |checkin| checkin['created_at'] }.reverse
+      checkins.sort_by { |checkin| checkin["created_at"] }.reverse
     end
 
     def device_checkins
       device = @friend.devices.find(@params[:device_id])
-      checkins = device.permitted_history_for(@user)
-      device.replace_checkin_attributes(checkins, @user)
+      device.safe_checkin_info_for(permissible: @user, action: "index", multiple_devices: true)
     end
   end
 end

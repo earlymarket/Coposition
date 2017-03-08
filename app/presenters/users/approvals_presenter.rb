@@ -31,22 +31,21 @@ module Users
     end
 
     def users_approved
-      @approvable_type == 'Developer' ? @user.not_coposition_developers.public_info : @user.friends.public_info
+      @approvable_type == "Developer" ? @user.not_coposition_developers.public_info : @user.friends.public_info
     end
 
     def users_requests
-      @approvable_type == 'Developer' ? @user.developer_requests : @user.friend_requests
+      @approvable_type == "Developer" ? @user.developer_requests : @user.friend_requests
     end
 
     def friends_checkins
-      if @approvable_type == 'User'
-        friends = @user.friends.includes(:devices)
-        friends.map do |friend|
-          {
-            userinfo: friend.public_info_hash,
-            lastCheckin: friend.safe_checkin_info_for(permissible: @user, action: 'last')[0]
-          }
-        end
+      return unless @approvable_type == "User"
+      friends = @user.friends.includes(:devices)
+      friends.map do |friend|
+        {
+          userinfo: friend.public_info_hash,
+          lastCheckin: friend.safe_checkin_info_for(permissible: @user, action: "last")[0]
+        }
       end
     end
   end
