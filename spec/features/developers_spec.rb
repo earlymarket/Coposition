@@ -49,10 +49,6 @@ RSpec.feature "Developers", type: :feature do
     click_button "Sign up"
   end
 
-  def then_i_should_see_welcome_page
-    expect(page).to have_text "Hello #{developer.username}"
-  end
-
   def then_i_should_see_sign_up
     expect(page).to have_text("Sign up")
   end
