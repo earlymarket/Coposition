@@ -17,15 +17,17 @@ module Users::Checkins
       end
     end
 
+    private
+
     def checkin_create(hash)
-      checkin = Checkin.new(hash.slice('lat', 'lng', 'created_at', 'fogged'))
+      checkin = Checkin.new(hash.slice("lat", "lng", "created_at", "fogged"))
       raise ActiveRecord::Rollback unless valid_hash(checkin)
       checkin.assign_values
       checkin
     end
 
     def valid_hash(checkin)
-      checkin.lat && checkin.lng
+      checkin.lat? && checkin.lng?
     end
   end
 end
