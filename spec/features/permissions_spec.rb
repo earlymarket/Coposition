@@ -13,16 +13,16 @@ RSpec.feature "Permissions", js: true, type: :feature do
     and_i_am_on_the_devices_page
   end
 
-  # scenario "User edits permissions", js: true do
-  #   when_i_click_on_permissions
-  #   then_i_should_see_my_friends_permissions
-  #   when_i_check_bypass_fogging
-  #   then_bypass_fogging_should_be_checked
-  #   when_i_check_bypass_delay
-  #   then_bypass_delay_should_be_checked
-  #   when_i_choose_disable
-  #   then_disabled_should_be_chosen
-  # end
+  scenario "User edits permissions", js: true do
+    when_i_click_on_permissions
+    then_i_should_see_my_friends_permissions
+    when_i_check_bypass_fogging
+    then_bypass_fogging_should_be_checked
+    when_i_check_bypass_delay
+    then_bypass_delay_should_be_checked
+    when_i_choose_disable
+    then_disabled_should_be_chosen
+  end
 
   def given_i_am_signed_in
     visit "/users/sign_up"
