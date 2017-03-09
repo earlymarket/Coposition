@@ -21,8 +21,27 @@ describe ::Users::FriendsPresenter do
   end
 
   describe "Interface" do
-    %i(show show_device index_gon show_device_gon show_checkins).each do |method|
+    %i(friend devices device show show_device index_gon show_device_gon show_checkins).each do |method|
       it { is_expected.to respond_to method }
+    end
+  end
+
+  describe "friend" do
+    it "returns friend" do
+      expect(friends.friend).to eq friend
+    end
+  end
+
+  describe "devices" do
+    it "returns paginated devices" do
+      expect(friends.devices).to be_kind_of WillPaginate::Collection
+    end
+  end
+
+  describe "device" do
+    it "returns a device" do
+      friends = described_class.new(user, { id: friend.id, device_id: device.id }, "show_device")
+      expect(friends.device).to be_kind_of Device
     end
   end
 

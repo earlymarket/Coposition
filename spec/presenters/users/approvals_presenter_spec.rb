@@ -14,7 +14,33 @@ describe ::Users::ApprovalsPresenter do
   end
 
   describe "Interface" do
-    it { is_expected.to respond_to :gon }
+    %i(approvable_type approved pending devices gon).each do |method|
+      it { is_expected.to respond_to method }
+    end
+  end
+
+  describe "approvable_type" do
+    it "returns a string" do
+      expect(approvals.approvable_type).to be_kind_of String
+    end
+  end
+
+  describe "approved" do
+    it "returns users_approved" do
+      expect(approvals.approved).to eq approvals.send(:users_approved)
+    end
+  end
+
+  describe "pending" do
+    it "returns users_requests" do
+      expect(approvals.pending).to eq approvals.send(:users_requests)
+    end
+  end
+
+  describe "devices" do
+    it "returns collection of devices" do
+      expect(approvals.devices).to be_kind_of ActiveRecord::Associations::CollectionProxy
+    end
   end
 
   describe "gon" do

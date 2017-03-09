@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe ::Users::PermissionsPresenter do
   subject(:permissions) do
-    described_class.new(user, { id: device.permissions.last.id, device_id: device.id, from: "devices" }, "index" )
+    described_class.new(user, { id: permission.id, device_id: device.id, from: "devices" }, "index" )
   end
   let(:user) do
     us = FactoryGirl.create(:user)
@@ -10,6 +10,7 @@ describe ::Users::PermissionsPresenter do
     us.developers << developer
     us
   end
+  let(:permission) { device.permissions.last }
   let(:developer) { FactoryGirl.create(:developer) }
   let(:friend) { FactoryGirl.create(:user) }
   let(:device) do
@@ -24,8 +25,40 @@ describe ::Users::PermissionsPresenter do
   end
 
   describe "Interface" do
-    %i(devices_index approvals_index update gon devices_gon apps_gon friends_gon).each do |method|
+    %i(permissible device permissions permission devices_index
+       approvals_index update gon devices_gon apps_gon friends_gon).each do |method|
       it { is_expected.to respond_to method }
+    end
+  end
+
+  describe "permissible" do
+    it "returns a User if from friends page" do
+      permissions = described_class.new(user, { id: permission.id, device_id: friend.id, from: "friends" }, "index" )
+      expect(permissions.permissible).to eq friend
+    end
+
+    it "returns a Developer if from apps page" do
+      permissions = described_class.new(user, { id: permission.id, device_id: developer.id, from: "apps" }, "index" )
+      expect(permissions.permissible).to eq developer
+    end
+  end
+
+  describe "device" do
+    it "returns a device" do
+      expect(permissions.device).to eq device
+    end
+  end
+
+  describe "permissions" do
+    it "returns array of permissions" do
+      expect(permissions.permissions[0]).to be_kind_of Permission
+    end
+  end
+
+  describe "permission" do
+    it "returns a permission" do
+      permissions = described_class.new(user, { id: permission.id, device_id: friend.id, from: "friends" }, "update" )
+      expect(permissions.permission).to eq permission
     end
   end
 

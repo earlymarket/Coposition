@@ -16,8 +16,51 @@ describe ::Users::DevicesPresenter do
   end
 
   describe "Interface" do
-    %i(index show shared info index_gon show_gon shared_gon).each do |method|
+    %i(user devices device checkins filename config index show
+       shared info index_gon show_gon shared_gon).each do |method|
       it { is_expected.to respond_to method }
+    end
+  end
+
+  describe "user" do
+    it "returns user" do
+      expect(devices.user).to eq user
+    end
+  end
+
+  describe "devices" do
+    it "returns paginated devices" do
+      expect(devices.devices).to be_kind_of WillPaginate::Collection
+    end
+  end
+
+  describe "device" do
+    it "returns a device" do
+      devices = described_class.new(user, { id: device.id, download: "gpx" }, "show")
+      expect(devices.device).to be_kind_of Device
+    end
+  end
+
+  describe "checkins" do
+    it "returns checkins converted to param provided" do
+      checkins
+      devices = described_class.new(user, { id: device.id, download: "gpx" }, "show")
+      expect(devices.checkins).to eq device.checkins.to_gpx
+    end
+  end
+
+  describe "filename" do
+    it "returns a string" do
+      devices = described_class.new(user, { id: device.id, download: "gpx" }, "show")
+      expect(devices.filename).to be_kind_of String
+    end
+  end
+
+  describe "config" do
+    it "returns a config" do
+      device.config = FactoryGirl.create(:config)
+      devices = described_class.new(user, { id: device.id }, "info")
+      expect(devices.config).to be_kind_of Config
     end
   end
 
