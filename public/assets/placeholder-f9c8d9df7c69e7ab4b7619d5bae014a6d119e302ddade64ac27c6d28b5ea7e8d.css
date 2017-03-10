@@ -262,10 +262,9 @@ html {
 }
 /* line 164, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #top-menu #mobile-menu:checked ~ .dropdown {
-  opacity: 0;
-  z-index: -10;
+  display: none;
 }
-/* line 171, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 170, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #take-control {
   background: url(/assets/bg-38ffa352763291444cc3c4e95c238fe0f764d56b003042596ff647295007d012.jpg);
   background-size: cover;
@@ -274,40 +273,40 @@ html {
   height: auto;
 }
 @media (min-width: 600px) {
-  /* line 171, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 170, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .placeholder #take-control {
     height: 768px;
   }
 }
-/* line 182, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 181, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #take-control .ringed-logo {
   position: absolute;
   top: -139px;
   left: calc(-596px + 10vw);
 }
 @media (min-width: 600px) {
-  /* line 182, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 181, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .placeholder #take-control .ringed-logo {
     top: 0;
     left: calc(50vw - 600px);
     z-index: 10;
   }
 }
-/* line 194, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 193, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #take-control .take-control-content {
   position: relative;
   z-index: 100;
 }
-/* line 199, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 198, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #take-control .take-control-left {
   text-align: center;
 }
-/* line 203, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 202, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #take-control .take-control-phones {
   width: 100%;
   max-width: 382px;
 }
-/* line 208, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 207, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #take-control .take-control-content {
   color: white;
   margin-top: 130px;
@@ -315,51 +314,51 @@ html {
   margin-left: 10%;
   width: 80%;
 }
-/* line 215, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 214, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #take-control .take-control-content .title {
   font-size: 2.2rem;
 }
-/* line 220, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 219, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #take-control .take-control-content .pitch {
   font-size: 1.2rem;
 }
 @media (min-width: 600px) {
-  /* line 208, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 207, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .placeholder #take-control .take-control-content {
     margin-top: 260px;
     margin-left: 0;
     width: 50%;
   }
 }
-/* line 235, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 234, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #callouts {
   color: white;
   text-align: center;
 }
-/* line 239, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 238, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #callouts > .cell {
   padding: 5em 2em;
   background: #252525;
 }
-/* line 243, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 242, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #callouts > .cell .title {
   font-size: 1rem;
 }
-/* line 247, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 246, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #callouts > .cell .text {
   font-size: 1rem;
   color: #959595;
 }
-/* line 255, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 254, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #callouts > .cell-contrast {
   background: #1a1a1a;
 }
-/* line 259, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 258, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #callouts .gh-logo {
   font-size: 65px;
   color: #008ecf;
 }
-/* line 266, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 265, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #location-map {
   display: flex;
   height: auto;
@@ -368,77 +367,77 @@ html {
   padding: 2rem;
 }
 @media (min-width: 600px) {
-  /* line 266, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 265, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .placeholder #location-map {
     height: 75vh;
   }
 }
-/* line 277, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 276, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #location-map .map {
   background-image: url(/assets/location-callout-map-e02715a3ee570c72db9832d47b5f6fccaf81602d64778b72d645dab5ed8cc19f.png);
   background-size: 100%;
   background-position: center;
   background-repeat: no-repeat;
 }
-/* line 285, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 284, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #location-map .text .caption {
   font-size: 1.8rem;
 }
-/* line 290, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 289, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #location-map .text .btn {
   background: #fb1d4f;
 }
-/* line 296, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 295, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #benefits {
   text-align: center;
   padding: 5em 0;
   color: white;
   background: #252525;
 }
-/* line 302, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 301, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #benefits .headline {
   padding: 0 2rem;
 }
-/* line 310, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 309, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #benefits .cell-wrapper {
   display: flex;
   flex-flow: row wrap;
 }
-/* line 314, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 313, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #benefits .cell {
   width: 300px;
   flex-grow: 1;
   text-align: center;
   padding: 0 2rem;
 }
-/* line 321, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 320, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #benefits .cell .cell-title {
   font-size: 1rem;
 }
-/* line 325, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 324, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #benefits .cell .cell-description {
   font-size: 1rem;
   color: #959595;
   max-width: 300px;
   margin: 1rem auto;
 }
-/* line 335, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 334, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #get-enabled {
   background-image: url(/assets/enabled-tile-3b6da5d2ed68fc76fb53b688ffa9621ebeef91ca43f91d81f7b63b186ec7ef20.png), linear-gradient(#dbfdff 10%, rgba(224, 255, 255, 0.3), #dbfdff);
   background-blend-mode: overlay;
   position: relative;
 }
 @media (min-width: 600px) {
-  /* line 335, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 334, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .placeholder #get-enabled {
     height: 600px;
   }
 }
-/* line 343, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 342, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #get-enabled .valign-wrapper {
   justify-content: center;
 }
-/* line 347, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 346, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #get-enabled .card {
   position: relative;
   background: white;
@@ -447,7 +446,7 @@ html {
   text-align: left;
 }
 @media (min-width: 600px) {
-  /* line 347, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 346, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .placeholder #get-enabled .card {
     width: 57.1429%;
     min-width: 530px;
@@ -458,26 +457,26 @@ html {
   }
 }
 @media (min-width: 600px) {
-  /* line 362, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 361, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .placeholder #get-enabled .card #trustmark {
     position: absolute;
     top: -30px;
     left: -30px;
   }
 }
-/* line 370, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 369, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #get-enabled .card .card-title {
   font-size: 2rem;
 }
-/* line 378, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 377, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #get-enabled .card .card-pitch {
   font-size: 1.3rem;
 }
-/* line 382, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 381, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #get-enabled .card .card-description {
   font-size: 0.9rem;
 }
-/* line 388, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 387, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #bottom-callout {
   background-image: url(/assets/logo-rings-footer-1c9c618495b04590d950cbc777687a897a806edc62af096d33161032828f4257.png), linear-gradient(90deg, #08244f, #1d727a);
   background-position: top center;
@@ -490,41 +489,41 @@ html {
   justify-content: center;
   align-items: center;
 }
-/* line 400, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 399, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #bottom-callout .wrapper {
   max-width: 40rem;
   text-align: center;
   position: relative;
   padding: 0 2rem;
 }
-/* line 406, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 405, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #bottom-callout .wrapper .wrapper-pitch {
   font-size: 1.3rem;
 }
-/* line 410, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 409, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #bottom-callout .wrapper .wrapper-description {
   font-size: 1.2rem;
   color: #008ecf;
 }
-/* line 418, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 417, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #bottom-bar {
   text-align: center;
   background: #141414;
   color: white;
   padding: 3rem 0;
 }
-/* line 424, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 423, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .placeholder #bottom-bar .copy-notice {
   font-size: 0.8rem;
 }
 
-/* line 433, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 432, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 a {
   text-decoration: none;
   color: inherit;
 }
 
-/* line 440, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 439, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .btn {
   display: inline-block;
   color: white;
@@ -533,47 +532,47 @@ a {
   margin: 2px;
   border-radius: 5px;
 }
-/* line 448, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 447, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .btn.btn-primary {
   background: #34c946;
 }
-/* line 452, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 451, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .btn.btn-blue {
   background: #008ecf;
 }
-/* line 456, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 455, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .btn.btn-alternate {
   background: #fb1d4f;
 }
-/* line 460, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 459, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .btn.btn-inverse {
   color: #279ac5;
   border: solid 2px #279ac5;
 }
-/* line 465, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 464, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .btn.btn-large {
   padding: 1rem 1.5rem;
 }
 
-/* line 472, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 471, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .font-heavy, .placeholder #top-menu .top-menu-left .brandname, .placeholder #take-control .take-control-content .title, .placeholder #location-map .text .caption {
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
 }
 
-/* line 477, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 476, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .font-medium, .placeholder #bottom-callout .wrapper .wrapper-description {
   font-family: 'Montserrat', sans-serif;
   font-weight: 400;
 }
 
-/* line 482, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 481, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .font-light, .placeholder #take-control .take-control-content .pitch, .placeholder #callouts > .cell .text, .placeholder #benefits .headline .tagline, .placeholder #benefits .cell .cell-description, .placeholder #get-enabled .card .card-pitch, .placeholder #get-enabled .card .card-description, .placeholder #bottom-bar .copy-notice {
   font-family: 'Muli', sans-serif;
   font-weight: 300;
 }
 
-/* line 489, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 488, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .ringed-icon {
   display: flex;
   align-items: center;
@@ -587,62 +586,62 @@ a {
   background-position: center;
 }
 
-/* line 502, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 501, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .valign-wrapper {
   display: flex;
   align-items: center;
   height: 100%;
 }
 
-/* line 508, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 507, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .valign {
   display: inline-block;
 }
 
-/* line 512, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 511, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .filled-row {
   display: flex;
 }
 @media (max-width: 599px) {
-  /* line 512, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 511, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .filled-row {
     flex-direction: column;
   }
 }
 
 @media (min-width: 600px) {
-  /* line 521, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 520, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .lg-hide {
     display: none;
   }
 
-  /* line 525, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 524, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .lg-show-inl {
     display: inline;
   }
 
-  /* line 529, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 528, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .lg-show-bl {
     display: block;
   }
 
-  /* line 533, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 532, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .lg-show-ib {
     display: inline-block;
   }
 
-  /* line 537, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 536, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .lg-show-flex {
     display: flex;
   }
 }
 @media (max-width: 599px) {
-  /* line 543, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 542, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .sm-hide {
     display: none !important;
   }
 }
-/* line 551, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 550, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .pure-u-1,
 .pure-u-1-1,
 .pure-u-1-2,
@@ -675,92 +674,92 @@ a {
   text-rendering: auto;
 }
 
-/* line 583, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 582, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .pure-u-1-14 {
   width: 7.1429%;
   *width: 7.1119%;
 }
 
-/* line 588, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 587, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .pure-u-1-7,
 .pure-u-2-14 {
   width: 14.2857%;
   *width: 14.2547%;
 }
 
-/* line 594, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 593, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .pure-u-3-14 {
   width: 21.4286%;
   *width: 21.3976%;
 }
 
-/* line 599, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 598, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .pure-u-2-7,
 .pure-u-4-14 {
   width: 28.5714%;
   *width: 28.5404%;
 }
 
-/* line 605, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 604, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .pure-u-5-14 {
   width: 35.7143%;
   *width: 35.6833%;
 }
 
-/* line 610, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 609, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .pure-u-3-7,
 .pure-u-6-14 {
   width: 42.8571%;
   *width: 42.8261%;
 }
 
-/* line 616, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 615, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .pure-u-1-2,
 .pure-u-7-14 {
   width: 50%;
   *width: 49.9690%;
 }
 
-/* line 622, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 621, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .pure-u-4-7,
 .pure-u-8-14 {
   width: 57.1429%;
   *width: 57.1119%;
 }
 
-/* line 628, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 627, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .pure-u-9-14 {
   width: 64.2857%;
   *width: 64.2547%;
 }
 
-/* line 633, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 632, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .pure-u-5-7,
 .pure-u-10-14 {
   width: 71.4286%;
   *width: 71.3976%;
 }
 
-/* line 639, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 638, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .pure-u-11-14 {
   width: 78.5714%;
   *width: 78.5404%;
 }
 
-/* line 644, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 643, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .pure-u-6-7,
 .pure-u-12-14 {
   width: 85.7143%;
   *width: 85.6833%;
 }
 
-/* line 650, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 649, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .pure-u-13-14 {
   width: 92.8571%;
   *width: 92.8261%;
 }
 
-/* line 655, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+/* line 654, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
 .pure-u-1,
 .pure-u-1-1,
 .pure-u-14-14 {
@@ -768,7 +767,7 @@ a {
 }
 
 @media screen and (min-width: 35.5em) {
-  /* line 662, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 661, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-sm-1,
   .pure-u-sm-1-1,
   .pure-u-sm-1-2,
@@ -801,92 +800,92 @@ a {
     text-rendering: auto;
   }
 
-  /* line 694, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 693, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-sm-1-14 {
     width: 7.1429%;
     *width: 7.1119%;
   }
 
-  /* line 699, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 698, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-sm-1-7,
   .pure-u-sm-2-14 {
     width: 14.2857%;
     *width: 14.2547%;
   }
 
-  /* line 705, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 704, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-sm-3-14 {
     width: 21.4286%;
     *width: 21.3976%;
   }
 
-  /* line 710, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 709, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-sm-2-7,
   .pure-u-sm-4-14 {
     width: 28.5714%;
     *width: 28.5404%;
   }
 
-  /* line 716, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 715, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-sm-5-14 {
     width: 35.7143%;
     *width: 35.6833%;
   }
 
-  /* line 721, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 720, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-sm-3-7,
   .pure-u-sm-6-14 {
     width: 42.8571%;
     *width: 42.8261%;
   }
 
-  /* line 727, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 726, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-sm-1-2,
   .pure-u-sm-7-14 {
     width: 50%;
     *width: 49.9690%;
   }
 
-  /* line 733, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 732, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-sm-4-7,
   .pure-u-sm-8-14 {
     width: 57.1429%;
     *width: 57.1119%;
   }
 
-  /* line 739, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 738, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-sm-9-14 {
     width: 64.2857%;
     *width: 64.2547%;
   }
 
-  /* line 744, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 743, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-sm-5-7,
   .pure-u-sm-10-14 {
     width: 71.4286%;
     *width: 71.3976%;
   }
 
-  /* line 750, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 749, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-sm-11-14 {
     width: 78.5714%;
     *width: 78.5404%;
   }
 
-  /* line 755, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 754, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-sm-6-7,
   .pure-u-sm-12-14 {
     width: 85.7143%;
     *width: 85.6833%;
   }
 
-  /* line 761, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 760, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-sm-13-14 {
     width: 92.8571%;
     *width: 92.8261%;
   }
 
-  /* line 766, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 765, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-sm-1,
   .pure-u-sm-1-1,
   .pure-u-sm-14-14 {
@@ -894,7 +893,7 @@ a {
   }
 }
 @media screen and (min-width: 48em) {
-  /* line 774, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 773, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-md-1,
   .pure-u-md-1-1,
   .pure-u-md-1-2,
@@ -927,92 +926,92 @@ a {
     text-rendering: auto;
   }
 
-  /* line 806, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 805, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-md-1-14 {
     width: 7.1429%;
     *width: 7.1119%;
   }
 
-  /* line 811, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 810, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-md-1-7,
   .pure-u-md-2-14 {
     width: 14.2857%;
     *width: 14.2547%;
   }
 
-  /* line 817, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 816, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-md-3-14 {
     width: 21.4286%;
     *width: 21.3976%;
   }
 
-  /* line 822, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 821, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-md-2-7,
   .pure-u-md-4-14 {
     width: 28.5714%;
     *width: 28.5404%;
   }
 
-  /* line 828, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 827, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-md-5-14 {
     width: 35.7143%;
     *width: 35.6833%;
   }
 
-  /* line 833, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 832, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-md-3-7,
   .pure-u-md-6-14 {
     width: 42.8571%;
     *width: 42.8261%;
   }
 
-  /* line 839, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 838, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-md-1-2,
   .pure-u-md-7-14 {
     width: 50%;
     *width: 49.9690%;
   }
 
-  /* line 845, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 844, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-md-4-7,
   .pure-u-md-8-14 {
     width: 57.1429%;
     *width: 57.1119%;
   }
 
-  /* line 851, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 850, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-md-9-14 {
     width: 64.2857%;
     *width: 64.2547%;
   }
 
-  /* line 856, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 855, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-md-5-7,
   .pure-u-md-10-14 {
     width: 71.4286%;
     *width: 71.3976%;
   }
 
-  /* line 862, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 861, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-md-11-14 {
     width: 78.5714%;
     *width: 78.5404%;
   }
 
-  /* line 867, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 866, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-md-6-7,
   .pure-u-md-12-14 {
     width: 85.7143%;
     *width: 85.6833%;
   }
 
-  /* line 873, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 872, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-md-13-14 {
     width: 92.8571%;
     *width: 92.8261%;
   }
 
-  /* line 878, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 877, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-md-1,
   .pure-u-md-1-1,
   .pure-u-md-14-14 {
@@ -1020,7 +1019,7 @@ a {
   }
 }
 @media screen and (min-width: 600px) {
-  /* line 887, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 886, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-lg-1,
   .pure-u-lg-1-1,
   .pure-u-lg-1-2,
@@ -1053,92 +1052,92 @@ a {
     text-rendering: auto;
   }
 
-  /* line 919, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 918, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-lg-1-14 {
     width: 7.1429%;
     *width: 7.1119%;
   }
 
-  /* line 924, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 923, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-lg-1-7,
   .pure-u-lg-2-14 {
     width: 14.2857%;
     *width: 14.2547%;
   }
 
-  /* line 930, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 929, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-lg-3-14 {
     width: 21.4286%;
     *width: 21.3976%;
   }
 
-  /* line 935, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 934, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-lg-2-7,
   .pure-u-lg-4-14 {
     width: 28.5714%;
     *width: 28.5404%;
   }
 
-  /* line 941, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 940, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-lg-5-14 {
     width: 35.7143%;
     *width: 35.6833%;
   }
 
-  /* line 946, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 945, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-lg-3-7,
   .pure-u-lg-6-14 {
     width: 42.8571%;
     *width: 42.8261%;
   }
 
-  /* line 952, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 951, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-lg-1-2,
   .pure-u-lg-7-14 {
     width: 50%;
     *width: 49.9690%;
   }
 
-  /* line 958, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 957, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-lg-4-7,
   .pure-u-lg-8-14 {
     width: 57.1429%;
     *width: 57.1119%;
   }
 
-  /* line 964, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 963, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-lg-9-14 {
     width: 64.2857%;
     *width: 64.2547%;
   }
 
-  /* line 969, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 968, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-lg-5-7,
   .pure-u-lg-10-14 {
     width: 71.4286%;
     *width: 71.3976%;
   }
 
-  /* line 975, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 974, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-lg-11-14 {
     width: 78.5714%;
     *width: 78.5404%;
   }
 
-  /* line 980, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 979, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-lg-6-7,
   .pure-u-lg-12-14 {
     width: 85.7143%;
     *width: 85.6833%;
   }
 
-  /* line 986, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 985, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-lg-13-14 {
     width: 92.8571%;
     *width: 92.8261%;
   }
 
-  /* line 991, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 990, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-lg-1,
   .pure-u-lg-1-1,
   .pure-u-lg-14-14 {
@@ -1146,7 +1145,7 @@ a {
   }
 }
 @media screen and (min-width: 80em) {
-  /* line 999, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 998, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-xl-1,
   .pure-u-xl-1-1,
   .pure-u-xl-1-2,
@@ -1179,92 +1178,92 @@ a {
     text-rendering: auto;
   }
 
-  /* line 1031, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 1030, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-xl-1-14 {
     width: 7.1429%;
     *width: 7.1119%;
   }
 
-  /* line 1036, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 1035, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-xl-1-7,
   .pure-u-xl-2-14 {
     width: 14.2857%;
     *width: 14.2547%;
   }
 
-  /* line 1042, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 1041, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-xl-3-14 {
     width: 21.4286%;
     *width: 21.3976%;
   }
 
-  /* line 1047, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 1046, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-xl-2-7,
   .pure-u-xl-4-14 {
     width: 28.5714%;
     *width: 28.5404%;
   }
 
-  /* line 1053, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 1052, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-xl-5-14 {
     width: 35.7143%;
     *width: 35.6833%;
   }
 
-  /* line 1058, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 1057, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-xl-3-7,
   .pure-u-xl-6-14 {
     width: 42.8571%;
     *width: 42.8261%;
   }
 
-  /* line 1064, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 1063, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-xl-1-2,
   .pure-u-xl-7-14 {
     width: 50%;
     *width: 49.9690%;
   }
 
-  /* line 1070, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 1069, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-xl-4-7,
   .pure-u-xl-8-14 {
     width: 57.1429%;
     *width: 57.1119%;
   }
 
-  /* line 1076, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 1075, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-xl-9-14 {
     width: 64.2857%;
     *width: 64.2547%;
   }
 
-  /* line 1081, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 1080, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-xl-5-7,
   .pure-u-xl-10-14 {
     width: 71.4286%;
     *width: 71.3976%;
   }
 
-  /* line 1087, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 1086, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-xl-11-14 {
     width: 78.5714%;
     *width: 78.5404%;
   }
 
-  /* line 1092, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 1091, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-xl-6-7,
   .pure-u-xl-12-14 {
     width: 85.7143%;
     *width: 85.6833%;
   }
 
-  /* line 1098, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 1097, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-xl-13-14 {
     width: 92.8571%;
     *width: 92.8261%;
   }
 
-  /* line 1103, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
+  /* line 1102, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .pure-u-xl-1,
   .pure-u-xl-1-1,
   .pure-u-xl-14-14 {
