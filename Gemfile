@@ -74,6 +74,7 @@ group :development, :test do
   gem "rubocop-rspec", require: false
   gem "coffeelint"
   gem "rails_best_practices", require: false
+  gem "dotenv-rails"
 end
 
 group :test do
