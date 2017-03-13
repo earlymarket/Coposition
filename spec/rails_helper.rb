@@ -31,6 +31,9 @@ ActiveRecord::Migration.maintain_test_schema!
 
 Capybara.default_max_wait_time = 10
 Capybara.javascript_driver = :webkit
+Capybara.default_host = "http://localhost"
+Capybara.server_port = 9887
+Capybara.app_host = "#{Capybara.default_host}:#{Capybara.server_port}"
 
 Capybara::Webkit.configure do |config|
   config.allow_unknown_urls
