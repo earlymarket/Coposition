@@ -307,8 +307,11 @@ $lg-breakpoint: 600px;
     }
 
     .cell-wrapper {
-      display: flex;
-      flex-flow: row wrap;
+      display: block;
+      @media (min-width: $lg-breakpoint) {
+        display: flex;
+        flex-flow: row wrap;
+      }
     }
     .cell {
       // display: flex;
