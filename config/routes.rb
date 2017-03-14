@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get '/api', to: 'welcome#api'
   get '/help', to: 'welcome#help'
   get '/getting_started', to: 'welcome#getting_started'
+  get '/devs', to: 'welcome#devs'
 
   # Devise
 
