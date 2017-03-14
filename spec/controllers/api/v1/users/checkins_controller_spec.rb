@@ -28,8 +28,6 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     api_request_headers(developer, user)
     unless example.metadata[:skip_before]
       device
-      Approval.link(user, second_user, 'User')
-      Approval.accept(second_user, user, 'User')
       Approval.link(user, developer, 'Developer')
       Approval.accept(user, developer, 'Developer')
     end
@@ -73,6 +71,8 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       end
 
       it 'fetches the last reported location for a friend' do
+        Approval.link(user, second_user, 'User')
+        Approval.accept(second_user, user, 'User')
         get :last, params: params.merge(permissible_id: second_user.id)
         expect(res_hash.first['lat']).to be checkin.lat
       end
@@ -267,8 +267,6 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
   describe 'POST #create' do
     it 'creates a checkin when there is a pre-existing device' do
-      subscription
-      friend_sub
       count = user.checkins.count
       create_headers
       post :create, params: create_params
