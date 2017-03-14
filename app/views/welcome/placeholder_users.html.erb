@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta property="og:logo" content="./copo-logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="turbolinks-cache-control" content="no-cache">
+  <title>Coposition</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Muli:300|Material+Icons" rel="stylesheet">
+  <%= stylesheet_link_tag 'placeholder', media: 'all', 'data-turbolinks-track' => true %>
+  <!-- favicon stuff -->
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="./favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="mask-icon" href="./safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="theme-color" content="#ffffff">
+  <!-- end favicon stuff -->
+  <script src="//load.sumome.com/" data-sumo-site-id="392e8ae3834cda33e6d3d929716838cd302cea46e1d8def5b6701a560770bebc" async="async"></script>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+</head>
+<body class="placeholder">
+  <nav>
+    <div id="quicklinks" class="pure-g sm-hide"><!-- INLINE SPACE. DO NOT REMOVE.
+ --><div class="pure-u-1-14"></div><!--
+   --><div class="pure-u-12-14 quicklinks-items">
+        <a href="#" class="lg-items-left current">users</a>
+        <a href="./devs" class="lg-items-left">developers</a><!--
+        <span class="lg-items-left">/</span>
+        <a href="./help" class="lg-items-left">support</a>
+        <a href="#" class="lg-items-right">documentation</a>
+        <a href="#" class="lg-items-right">support</a>
+    --></div>
+      <div class="pure-u-1-14"></div>
+    </div>
+    <div id="top-menu" class="pure-g">
+      <div class="pure-u-1-14"></div><!--
+   --><div class="pure-u-12-14">
+        <div class="top-menu-left">
+          <%= image_tag("copo-logo.png", width: 60, class: 'sm-hide') %>
+          <h1 class="brandname">Coposition</h1>
+        </div>
+        <div class="top-menu-right">
+          <!-- <a href="#" class="sm-hide lg-show-inl">Features</a>
+          <a href="#" class="sm-hide lg-show-inl">How it works</a>
+          <a href="#" class="sm-hide lg-show-inl">Open Source</a>
+          <a href="#" class="btn btn-large btn-inverse sm-hide lg-show-inl">Sign In</a> -->
+          <label for="mobile-menu" class="lg-hide"><i class="material-icons">menu</i></label><input type="checkbox" id="mobile-menu" checked>
+          <ul class="dropdown">
+            <li><a href="#" class="current">users</a></li>
+            <li><a href="./devs">developers</a></li><!--
+            <!-- <li><a href="#" class="btn btn-inverse">Sign In</a></li>
+            <li>Features</li>
+            <li>How it works</li>
+            <li>Open Source </li> -->
+          </ul>
+        </div>
+      </div><!--
+   --><div class="pure-u-1-14"></div><!--
+ --></div>
+  </nav>
+  <div id="take-control" class="pure-g">
+    <%= image_tag("logo-rings-header.png", class: "ringed-logo") %>
+    <div class="pure-u-lg-7-14 sm-hide take-control-left">
+      <%= image_tag("phones.png", class: "take-control-phones") %>
+    </div><!--
+ --><div class="pure-u-lg-7-14">
+      <div class="take-control-content">
+        <h2 class="title">Take back control</h2>
+        <p class="pitch">With Coposition your location data is owned by you. Share it with friends and family. Let your apps use it. Delete it entirely.</p>
+        <a data-sumome-listbuilder-id="c0ed50c4-1747-4efa-b22b-20ad66f37913" href="#" class="btn btn-primary btn-large">Request access</a>
+      </div>
+    </div><!--
+ --><div class="pure-u-3-14"></div>
+  </div>
+  <div id="callouts" class="pure-g filled-row"><!--
+ --><div class="pure-u-lg-1-14 sm-hide cell"></div><!--
+ --><div class="pure-u-lg-4-14 pure-u-14-14 cell">
+      <%= image_tag("copo-logo.png", width: 60) %>
+      <h2 class="title">Coposition App</h2>
+      <p class="text">Choose how you create your location data and dictate how it appears to your friends and apps.</p>
+    </div><!--
+ --><div class="pure-u-lg-4-14 cell cell-contrast">
+      <%= image_tag('icons/copo-dev-icon.png', width: 60) %>
+      <h2 class="title">Get Developer Access</h2>
+      <p class="text">Empower your app’s users. Offer them the only trusted and secure location data storage framework of its kind.</p>
+      <a data-sumome-listbuilder-id="a0271823-e170-4ab5-943f-9e3f5cfe4665" href="#" class="btn btn-large btn-inverse">Request an invitation</a>
+    </div><!--
+ --><div class="pure-u-lg-4-14 cell">
+      <%= image_tag('github-hex.png', width: 60) %>
+      <h2 class="title">We're Open Source</h2>
+      <p class="text">No nasty surprises. Our code is available for anyone to inspect, modify, and enhance.</p>
+      <a href="https://github.com/earlymarket/Coposition" class="btn btn-large btn-inverse">Take a look</a>
+    </div><!--
+ --><div class="pure-u-lg-1-14 sm-hide cell"></div><!--
+--></div><!--
+--><div id="location-map" class="pure-g"><!--
+ --><div class="pure-u-lg-1-14"></div><!--
+ --><div class="pure-u-lg-6-14 map"></div><!--
+ --><div class="pure-u-lg-4-14">
+      <div class="valign-wrapper text">
+        <div class="valign">
+          <%= image_tag('icons/copo-dev-icon.png', width: 60, class: 'lg-hide') %>
+          <h2 class="caption">Coposition is the secure and trusted way to manage location data</h2>
+          <!-- <a href="#" class="btn btn-large btn-alternate">See how it works</a> -->
+        </div>
+      </div>
+    </div><!--
+ --><div class="pure-u-3-14"></div><!--
+--></div>
+  <div id="benefits" class="pure-g"><!--
+ --><h2 class="headline">Coposition. <span class="tagline">Take back control of your location data</span></h2><!--
+ --><div class="pure-u-lg-1-14 sm-hide"></div><!--
+ --><div class="cell-wrapper">
+      <div class="cell">
+        <div class="ringed-icon"><%= image_tag("icons/control.png") %></div>
+        <h2 class="cell-title">Control</h2>
+        <p class="cell-description">For the first time, your geolocation data history is all in one place. Create. View. Edit. Share. Restrict access. Erase. After all, it’s now yours.</p>
+      </div>
+      <div class="cell">
+        <div class="ringed-icon"><%= image_tag("icons/trust.png") %></div>
+        <h2 class="cell-title">Trust</h2>
+        <p class="cell-description">Don’t risk it. Developed with privacy at the forefront, the trusted and secure cloud-based storage system keeps you and your data protected.</p>
+      </div>
+      <div class="cell">
+        <div class="ringed-icon"><%= image_tag("icons/dashboard.png") %></div>
+        <h2 class="cell-title">Dashboard</h2>
+        <p class="cell-description">Manage your full geolocation history online. See everything we store and export whatever you want to use in a format convenient to you.</p>
+      </div>
+      <div class="cell">
+        <div class="ringed-icon"><%= image_tag("icons/free.png") %></div>
+        <h2 class="cell-title">Free</h2>
+        <p class="cell-description">Protecting your data shouldn’t come at a price. Your Coposition account is free for life, as we believe privacy is your basic right.</p>
+      </div><!--
+ --></div><!--
+ --><div class="pure-u-lg-1-14 small-hide"></div><!--
+--></div>
+  <div id="get-enabled">
+    <div class="valign-wrapper">
+      <div class="card">
+        <%= inline_svg('copo-enabled-logo.svg', height: '60px', width: '159px', id: 'trustmark') %>
+        <h2 class="card-title">Copo Enabled&#8482;</h2>
+        <p class="card-pitch">When you see the Copo Enabled&#8482; badge, you know you’re in control.</p>
+        <p class="card-description">Only applications using the Coposition platform meet the new minimum industry standard for the protection of user privacy. Don’t settle for anything less.</p>
+      </div>
+    </div>
+  </div>
+  <div id="bottom-callout">
+    <div class="wrapper">
+      <p class="wrapper-pitch">Start using the most secure geolocation data management system available anywhere.</p>
+      <p class="wrapper-description">Trust us, we know where to look.</p>
+      <a href="#" data-sumome-listbuilder-id="b6407316-dccd-4aa7-a3e8-a7be9a068dca" class="btn btn-primary btn-large">Request access</a>
+    </div>
+  </div>
+  <div id="bottom-bar" class="pure-g"><!--
+ --><div class="pure-u-1-14"></div><!--
+ --><div class="pure-u-6-14 copy-notice">Copyright &copy; 2017 Coposition</div><!--
+ --><div class="pure-u-6-14"><a href="https://github.com/earlymarket/Coposition"><i class="fa fa-github-square fa-2x" aria-hidden="true"></i></a> <a href="https://twitter.com/coposition"><i class="fa fa-twitter-square fa-2x" aria-hidden="true"></i></a></div><!--
+ --><div class="pure-u-1-14"></div><!--
+--></div>
+  <script>
+    $('.cell-wrapper').slick({
+      autoplay: true,
+      arrows: false,
+      dots: true,
+      mobileFirst: true,
+      responsive: [{
+        breakpoint: 600,
+        settings: 'unslick'
+      }]
+    });
+
+    $(window).resize(function () {
+        $('.cell-wrapper').slick('resize');
+    });
+
+    $(window).on('orientationchange', function () {
+        $('.cell-wrapper').slick('resize');
+    });
+
+  </script>
+</body>
+</html>
