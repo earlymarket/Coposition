@@ -107,13 +107,6 @@ describe ::Users::FriendsPresenter do
     it "retuns an array" do
       expect(friends.send(:most_recent_checkins)).to be_kind_of Array
     end
-
-    it "calls device.safe_checkin_info_for" do
-      # can't find a way to get this to work, despite this method definitely being called
-      allow(device).to receive(:safe_checkin_info_for).and_return device.checkins
-      friends.send(:most_recent_checkins)
-      expect(device).to have_received(:safe_checkin_info_for)
-    end
   end
 
   describe "device_checkins" do

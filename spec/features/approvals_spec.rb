@@ -28,19 +28,19 @@ RSpec.feature "Approvals", type: :feature do
 
   def given_i_am_signed_in
     visit "/users/sign_up"
-    fill_in "user_email", with: Faker::Internet.email
+    fill_in "user_email", with: "tommo@email.com"
     fill_in "user_password", with: "password"
     fill_in "user_password_confirmation", with: "password"
-    fill_in "user_username", with: Faker::Internet.user_name(4..20, %w(_ -))
+    fill_in "user_username", with: "tommo"
     click_on "Sign up"
   end
 
   def given_a_developer_is_signed_up
     visit "/developers/sign_up"
-    fill_in "developer_email", with: Faker::Internet.email
+    fill_in "developer_email", with: "jimbo@email.com"
     fill_in "developer_password", with: "password"
     fill_in "developer_password_confirmation", with: "password"
-    fill_in "developer_company_name", with: Faker::Internet.user_name(4..20, %w(_ -))
+    fill_in "developer_company_name", with: "fake company"
     fill_in "developer_redirect_url", with: "http://example.com"
     click_on "Sign up"
   end
@@ -54,14 +54,14 @@ RSpec.feature "Approvals", type: :feature do
 
   def when_i_add_a_user
     click_on "New user"
-    fill_in "approval_user", with: User.last.email
+    fill_in "approval_user", with: "tommo@email.com"
     click_button "Request"
   end
 
   def when_i_add_a_developer
     click_on "Apps", match: :first
     click_on "add"
-    fill_in "approval_approvable", with: Developer.last.company_name
+    fill_in "approval_approvable", with: "fake company"
     find(".page-footer").click
     click_button "Add"
   end

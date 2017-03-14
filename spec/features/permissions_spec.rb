@@ -1,7 +1,7 @@
 require "rails_helper"
 
-RSpec.feature "Permissions", js: true, type: :feature do
-  background do
+RSpec.feature "Permissions", type: :feature do
+  scenario "User edits permissions", js: true do
     given_i_am_signed_in
     and_they_log_out
     and_there_is_another_user
@@ -11,9 +11,6 @@ RSpec.feature "Permissions", js: true, type: :feature do
     and_i_have_a_device
     and_i_approve_the_friend_request
     and_i_am_on_the_devices_page
-  end
-
-  scenario "User edits permissions", js: true do
     when_i_click_on_permissions
     then_i_should_see_my_friends_permissions
     when_i_check_bypass_fogging
@@ -26,16 +23,16 @@ RSpec.feature "Permissions", js: true, type: :feature do
 
   def given_i_am_signed_in
     visit "/users/sign_up"
-    fill_in "user_email", with: Faker::Internet.email
+    fill_in "user_email", with: "tommo@email.com"
     fill_in "user_password", with: "password"
     fill_in "user_password_confirmation", with: "password"
-    fill_in "user_username", with: Faker::Internet.user_name(4..20, %w(_ -))
+    fill_in "user_username", with: "tommo"
     click_on "Sign up"
   end
 
   def and_i_sign_in
     visit "/users/sign_in"
-    fill_in "user_email", with: User.first.email
+    fill_in "user_email", with: "tommo@email.com"
     fill_in "user_password", with: "password"
     click_on "Log in"
   end
@@ -49,10 +46,10 @@ RSpec.feature "Permissions", js: true, type: :feature do
 
   def and_there_is_another_user
     visit "/users/sign_up"
-    fill_in "user_email", with: Faker::Internet.email
+    fill_in "user_email", with: "jimbo@email.com"
     fill_in "user_password", with: "password"
     fill_in "user_password_confirmation", with: "password"
-    fill_in "user_username", with: Faker::Internet.user_name(4..20, %w(_ -))
+    fill_in "user_username", with: "jimbo"
     click_on "Sign up"
   end
 
@@ -63,7 +60,7 @@ RSpec.feature "Permissions", js: true, type: :feature do
   def and_they_have_added_me
     click_on "Friends", match: :first
     click_on "add"
-    fill_in "approval_approvable", with: User.first.email
+    fill_in "approval_approvable", with: "tommo@email.com"
     click_button "Add"
     expect(page).to have_text "You have sent"
   end
@@ -73,6 +70,7 @@ RSpec.feature "Permissions", js: true, type: :feature do
     expect(page).to have_text "Pending Requests"
     click_on "Approve"
     expect(page).to have_text "Approved since"
+    expect(page).to have_text "jimbo"
   end
 
   def and_i_am_on_the_devices_page
@@ -85,7 +83,7 @@ RSpec.feature "Permissions", js: true, type: :feature do
   end
 
   def then_i_should_see_my_friends_permissions
-    expect(page).to have_text User.last.username
+    expect(page).to have_text "jimbo"
   end
 
   def when_i_check_bypass_fogging

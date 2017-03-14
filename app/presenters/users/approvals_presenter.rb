@@ -41,7 +41,6 @@ module Users
     def friends_checkins
       return unless @approvable_type == "User"
       friends = @user.friends.includes(:devices)
-      # friends is nil in tests despite @user.friends NOT being nil and this works in development
       friends.map do |friend|
         {
           userinfo: friend.public_info_hash,

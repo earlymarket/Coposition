@@ -4,7 +4,8 @@ describe ::Users::ApprovalsPresenter do
   subject(:approvals) { described_class.new(user, "User") }
   let(:user) do
     us = FactoryGirl.create(:user)
-    us.friends << friend
+    Approval.add_friend(us, friend)
+    Approval.add_friend(friend, us)
     us
   end
   let(:friend) { FactoryGirl.create(:user) }
