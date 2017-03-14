@@ -369,7 +369,7 @@ html {
 @media (min-width: 600px) {
   /* line 265, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
   .placeholder #location-map {
-    height: 75vh;
+    min-height: 75vh;
   }
 }
 /* line 276, /Users/Gary/Documents/earlymarket/Coposition/app/assets/stylesheets/placeholder.scss.erb */
