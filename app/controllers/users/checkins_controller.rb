@@ -45,6 +45,8 @@ class Users::CheckinsController < ApplicationController
 
   def destroy
     @checkin = Checkin.find_by(id: params[:id]).delete
+    NotifyAboutDestroyCheckin.call(device: device, checkin: @checkin)
+
     flash[:notice] = 'Check-in deleted.'
   end
 

@@ -144,11 +144,17 @@ class Device < ApplicationRecord
       allowed_checkin = safe_checkin_info_for(permissible: friend, action: "last", type: "address")
       next unless allowed_checkin && allowed_checkin[0]["id"] == checkin.id
       ActionCable.server.broadcast "friends_#{friend.id}",
-      {
-        action: "checkin",
-        privilege: privilege_for(friend),
-        msg: checkin.as_json,
-      }
+                                   action: "checkin",
+                                   privilege: privilege_for(friend),
+                                   msg: checkin.as_json
+    end
+  end
+
+  def broadcast_destroy_checkin_for_friends(checkin)
+    user.friends.find_each do |friend|
+      ActionCable.server.broadcast "friends_#{friend.id}",
+                                   action: "destroy",
+                                   msg: checkin.as_json
     end
   end
 
