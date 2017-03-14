@@ -20,12 +20,9 @@ rvm:
 
 before_script:
   - bin/setup
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - sleep 5 # give xvfb some time to start
 
 script:
-  - bin/ci
+  - xvfb-run -a bin/ci
 
 deploy:
   provider: heroku
