@@ -4,6 +4,7 @@ dist: trusty
 before_install:
   - sudo add-apt-repository --yes ppa:beineri/opt-qt551-trusty
   - sudo apt-get update -qq
+  - sudo apt-get install qt55base
   - gem install bundler
 
 install:
