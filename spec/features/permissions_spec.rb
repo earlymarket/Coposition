@@ -70,7 +70,6 @@ RSpec.feature "Permissions", type: :feature do
     expect(page).to have_text "Pending Requests"
     click_on "Approve"
     expect(page).to have_text "Approved since"
-    expect(page).to have_text "jimbo"
   end
 
   def and_i_am_on_the_devices_page
