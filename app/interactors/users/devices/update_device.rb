@@ -1,23 +1,25 @@
 module Users::Devices
   class UpdateDevice
-    attr_reader :device
+    include Interactor
 
-    def initialize(params)
-      @params = params
+    delegate :params, to: :context
+
+    def call
       @device = Device.find(params[:id])
-    end
-
-    def update_device
-      if @params[:delayed]
-        update_delay(@params[:delayed])
+      if params[:delayed]
+        update_delay(params[:delayed])
       else
         @device.update(allowed_params)
       end
-      @device
+      check_for_errors
+      context.device = @device
+      context.notice = notice
     end
 
+    private
+
     def notice
-      if @params[:delayed]
+      if params[:delayed]
         humanize_delay
       elsif allowed_params[:published]
         "Location sharing is #{boolean_to_state(@device.published)}."
@@ -30,7 +32,9 @@ module Users::Devices
       end
     end
 
-    private
+    def check_for_errors
+      context.fail!(error: @device.errors.messages) if @device.errors.any?
+    end
 
     def boolean_to_state(boolean)
       boolean ? 'on' : 'off'
@@ -62,7 +66,7 @@ module Users::Devices
     end
 
     def allowed_params
-      @params.require(:device).permit(:name, :uuid, :icon, :fogged, :delayed, :published, :cloaked, :alias)
+      params.require(:device).permit(:name, :uuid, :icon, :fogged, :delayed, :published, :cloaked, :alias)
     end
   end
 end
