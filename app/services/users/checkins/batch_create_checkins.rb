@@ -1,14 +1,10 @@
 module Users::Checkins
   class BatchCreateCheckins
-    attr_reader :post_content
-    attr_reader :device
+    include Interactor
 
-    def initialize(device, post_content)
-      @device = device
-      @post_content = post_content
-    end
+    delegate :device, :post_content, to: :context
 
-    def success
+    def call
       device.checkins.transaction do
         checkins = JSON.parse(post_content).map do |checkin_hash|
           checkin_create(checkin_hash)
