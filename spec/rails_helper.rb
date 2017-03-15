@@ -38,6 +38,8 @@ Capybara::Webkit.configure do |config|
   config.debug = false
 end
 
+WebMock.disable_net_connect!(allow_localhost: true)
+
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -82,6 +84,7 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.start
+    stub_request(:post, "https://zapier.com").to_return(status: 200, body: "OK", headers: {})
   end
 
   config.append_after(:each) do
