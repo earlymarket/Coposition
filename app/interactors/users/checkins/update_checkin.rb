@@ -5,23 +5,20 @@ module Users::Checkins
     delegate :params, to: :context
 
     def call
-      context.checkin = Checkin.find(params[:id])
+      checkin = Checkin.find(params[:id])
       if params[:checkin]
-        context.checkin.update(allowed_params)
-        context.checkin.refresh
+        checkin.update(allowed_params)
+        checkin.refresh
+        context.checkin = checkin
       else
-        switch_fog
+        switch_fog(checkin)
       end
-    end
-
-    def success?
-      @checkin.errors.none?
+      context.fail! unless checkin.errors.none?
     end
 
     private
 
-    def switch_fog
-      checkin = context.checkin
+    def switch_fog(checkin)
       checkin.update(fogged: !checkin.fogged)
       return if checkin.device.fogged
       checkin.update_output

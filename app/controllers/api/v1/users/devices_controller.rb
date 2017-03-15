@@ -12,8 +12,8 @@ class Api::V1::Users::DevicesController < Api::ApiController
   end
 
   def create
-    result = ::Users::Devices::CreateDevice.new(@user, @dev, params)
-    if result.save?
+    result = ::Users::Devices::CreateDevice.call(user: @user, developer: @dev, params: params)
+    if result.success?
       device = result.device
       render json: { data: device, config: configuration(device) }
     else

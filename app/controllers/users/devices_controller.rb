@@ -34,8 +34,10 @@ class Users::DevicesController < ApplicationController
   end
 
   def create
-    result = Users::Devices::CreateDevice.new(current_user, Developer.default(coposition: true), params)
-    if result.save?
+    result = Users::Devices::CreateDevice.call(user: current_user,
+                                               developer: Developer.default(coposition: true),
+                                               params: params)
+    if result.success?
       gon.checkins = result.checkin
       redirect_to user_device_path(id: result.device.id)
     else
