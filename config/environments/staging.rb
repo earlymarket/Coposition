@@ -42,7 +42,7 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
   # Action Cable endpoint configuration
-  config.action_cable.url = "wss://coposition-staging-pr-634.herokuapp.com/cable"
+  config.action_cable.url = "wss://coposition-staging.herokuapp.com/cable"
   config.action_cable.allowed_request_origins = [
     "http://coposition-staging.herokuapp.com",
     "https://coposition-staging.herokuapp.com",

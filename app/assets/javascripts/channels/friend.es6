@@ -10,7 +10,7 @@ App.friend = App.cable.subscriptions.create("FriendChannel", {
       case "checkin":
         if ($(".c-friends.a-show_device").length === 0) { return };
 
-        if(data.privilege === 'complete'){
+        if (data.privilege === 'complete') {
           gon.checkins.unshift(data.msg);
         } else {
           gon.checkins = [data.msg];
