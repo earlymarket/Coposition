@@ -1,13 +1,13 @@
-# This file is copied to spec/ when you run 'rails generate rspec:install'
-ENV['RAILS_ENV'] ||= 'test'
-require File.expand_path('../../config/environment', __FILE__)
+# This file is copied to spec/ when you run "rails generate rspec:install"
+ENV["RAILS_ENV"] ||= "test"
+require File.expand_path("../../config/environment", __FILE__)
 # Prevent database truncation if the environment is production
-abort('The Rails environment is running in production mode!') if Rails.env.production?
-require 'spec_helper'
-require 'rspec/rails'
+abort("The Rails environment is running in production mode!") if Rails.env.production?
+require "spec_helper"
+require "rspec/rails"
 # Add additional requires below this line. Rails is not loaded until this point!
 
-require 'devise'
+require "devise"
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -22,8 +22,8 @@ require 'devise'
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-Dir[Rails.root.join('spec/fixtures/**/*.rb')].each { |f| require f }
-Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join("spec/fixtures/**/*.rb")].each { |f| require f }
+Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
@@ -37,8 +37,6 @@ Capybara::Webkit.configure do |config|
   config.ignore_ssl_errors
   config.debug = false
 end
-
-WebMock.disable_net_connect!(allow_localhost: true)
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
@@ -58,8 +56,8 @@ RSpec.configure do |config|
 
         During testing, the app-under-test that the browser driver connects to
         uses a different database connection to the database connection used by
-        the spec. The app's database connection would not be able to access
-        uncommitted transaction data setup over the spec's database connection.
+        the spec. The app"s database connection would not be able to access
+        uncommitted transaction data setup over the spec"s database connection.
       MSG
     end
     DatabaseCleaner.clean_with(:truncation)
@@ -74,7 +72,7 @@ RSpec.configure do |config|
     # with the specs, so continue to use transaction strategy for speed.
     driver_shares_db_connection_with_specs = Capybara.current_driver == :rack_test
 
-    if !driver_shares_db_connection_with_specs
+    unless driver_shares_db_connection_with_specs
       # Driver is probably for an external browser with an app
       # under test that does *not* share a database connection with the
       # specs, so use truncation strategy.
