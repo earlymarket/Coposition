@@ -9,10 +9,10 @@ module Users::Checkins
       if params[:checkin]
         checkin.update(allowed_params)
         checkin.refresh
-        context.checkin = checkin
       else
         switch_fog(checkin)
       end
+      context.checkin = checkin
       context.fail! unless checkin.errors.none?
     end
 
