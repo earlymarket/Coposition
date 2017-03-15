@@ -5,15 +5,14 @@ module Users::Devices
     delegate :user, :developer, :params, to: :context
 
     def call
-      device = new_device(allowed_params[:uuid])
-      device_name = allowed_params[:name]
-      error = device_error(device, device_name)
+      @device = new_device(allowed_params[:uuid])
+      error = device_error(allowed_params[:name])
       if error.present?
         context.fail!(error: error)
       else
-        construct_device(device, device_name)
-        context.device = device
-        context.checkin = create_checkin(device)
+        context.device = construct_device
+        context.checkin = create_checkin
+        @device.notify_subscribers('new_device', @device)
       end
     end
 
@@ -27,27 +26,34 @@ module Users::Devices
       end
     end
 
-    def device_error(device, device_name)
-      if device.blank?
+    def device_error(device_name)
+      if @device.blank?
         'UUID does not match an existing device'
-      elsif device.user.present?
+      elsif @device.user.present?
         'Device is registered to another user'
-      elsif Device.where(user: user, name: device_name).present?
+      elsif user.devices.where(name: device_name).present?
         "You already have a device with the name #{device_name}"
       end
     end
 
-    def construct_device(device, device_name)
-      device.update(user: user, name: device_name)
-      device.update(allowed_params)
-      device.developers << user.developers
-      device.permitted_users << user.friends
-      developer.configs.create(device: device) unless device.config
-      device.notify_subscribers('new_device', device)
+    def construct_device
+      @device.update(allowed_params.merge(user: user))
+      create_device_permissions
+      create_device_config
+      @device
     end
 
-    def create_checkin(device)
-      device.checkins.create(checkin_params) if params[:create_checkin]
+    def create_device_permissions
+      @device.developers << user.developers
+      @device.permitted_users << user.friends
+    end
+
+    def create_device_config
+      developer.configs.create(device: @device) unless @device.config
+    end
+
+    def create_checkin
+      @device.checkins.create(checkin_params) if params[:create_checkin]
     end
 
     def checkin_params
