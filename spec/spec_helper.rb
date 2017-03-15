@@ -1,6 +1,5 @@
 require "simplecov"
 require "codeclimate-test-reporter"
-require "webmock/rspec"
 
 SimpleCov.start
 CodeClimate::TestReporter.start
