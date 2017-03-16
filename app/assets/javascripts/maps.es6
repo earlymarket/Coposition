@@ -47,6 +47,7 @@ window.COPO.maps = {
     };
 
     function loadCheckins(page) {
+      updateProgress(gon.checkins.length, total);
       if (total > gon.checkins.length) {
         getCheckinData(page).then(function(data) {
           if(window.gon.total === undefined) return;
@@ -56,11 +57,18 @@ window.COPO.maps = {
           loadCheckins(page);
         });
       } else {
+        // $('.progress').remove();
         Materialize.toast('All check-ins loaded', 3000);
         window.COPO.maps.fitBounds();
       };
     }
+
+    function updateProgress(checkins, total) {
+      let percentageLoaded = (checkins/total * 100) + '%';
+      $('.determinate').css('width', percentageLoaded);
+    }
   },
+
 
   removeMap() {
     map.remove();
