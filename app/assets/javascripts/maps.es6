@@ -57,7 +57,7 @@ window.COPO.maps = {
           loadCheckins(page);
         });
       } else {
-        // $('.progress').remove();
+        $('.myProgress').remove();
         Materialize.toast('All check-ins loaded', 3000);
         window.COPO.maps.fitBounds();
       };
@@ -65,7 +65,7 @@ window.COPO.maps = {
 
     function updateProgress(checkins, total) {
       let percentageLoaded = (checkins/total * 100) + '%';
-      $('.determinate').css('width', percentageLoaded);
+      $('.myDeterminate').css('width', percentageLoaded);
     }
   },
 

@@ -28,9 +28,25 @@
     margin-top: 55px;
   }
 
-  .progress {
+  .myProgress {
     z-index: 10;
-    margin-top: 0px !important;
+    position: relative;
+    height: 4px;
+    display: block;
+    width: 100%;
+    background-color: white;
+    border-radius: 2px;
+    margin: 0rem 0 1rem 0;
+    overflow: hidden;
+
+    .myDeterminate {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      background-color: #ffc952;
+      transition: width .5s linear;
+    }
   }
 
   .bottom-panel {
