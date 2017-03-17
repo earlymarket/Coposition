@@ -47,8 +47,8 @@ window.COPO.maps = {
     };
 
     function loadCheckins(page) {
-      updateProgress(gon.checkins.length, total);
       if (total > gon.checkins.length) {
+        updateProgress(gon.checkins.length, total);
         getCheckinData(page).then(function(data) {
           if(window.gon.total === undefined) return;
           gon.checkins = gon.checkins.concat(data.checkins);
