@@ -10,12 +10,13 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def create
-    user = User.find_by(email: allowed_params[:approvable].downcase)
-    approval = Approval.add_friend(current_user, user) if user
-    if approval_created?(user, approval)
-      approvals_presenter_and_gon('User')
-      redirect_to(user_friends_path, notice: 'Friend request sent')
-    end
+    result = CreateApproval.call(
+      current_user: current_user,
+      approvable: approval_params[:approvable]
+    )
+    approvals_presenter_and_gon("User") if result.success?
+
+    redirect_to(result.path, result.message)
   end
 
   def apps
@@ -53,18 +54,9 @@ class Users::ApprovalsController < ApplicationController
 
   private
 
-  def allowed_params
-    params.require(:approval).permit(:approvable, :approvable_type)
-  end
-
-  def approval_created?(user, approval)
-    return true if user && approval.save
-    if user.present?
-      redirect_to new_user_approval_path(approvable_type: 'User'), alert: "Error: #{approval.errors[:base].first}"
-    else
-      UserMailer.invite_email(allowed_params[:approvable]).deliver_now
-      redirect_to user_dashboard_path, notice: 'User not signed up with Coposition, invite email sent!'
-    end
-    false
+  def approval_params
+    params
+      .require(:approval)
+      .permit(:approvable, :approvable_type)
   end
 end

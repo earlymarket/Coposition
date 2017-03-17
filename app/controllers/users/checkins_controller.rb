@@ -4,6 +4,7 @@ class Users::CheckinsController < ApplicationController
   before_action :authenticate_user!
   before_action :require_checkin_ownership, except: [:index, :new, :create, :destroy_all]
   before_action :require_device_ownership, only: [:index, :new, :create, :destroy_all]
+  before_action :find_checkin, only: [:show, :update, :destroy]
 
   def new
     @checkin = device.checkins.new
@@ -12,7 +13,9 @@ class Users::CheckinsController < ApplicationController
   def index
     per_page = params[:per_page].to_i <= 1000 ? params[:per_page] : 1000
     render json: {
-      checkins: device.checkins.paginate(page: params[:page], per_page: per_page)
+      checkins: device
+        .checkins
+        .paginate(page: params[:page], per_page: per_page)
         .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :device_id),
       current_user_id: current_user.id,
       total: device.checkins.count
@@ -22,17 +25,14 @@ class Users::CheckinsController < ApplicationController
   def create
     @checkin = device.checkins.create(allowed_params)
     NotifyAboutCheckin.call(device: device, checkin: @checkin)
-
     flash[:notice] = 'Checked in.'
   end
 
   def show
-    @checkin = Checkin.find(params[:id])
     @checkin.reverse_geocode!
   end
 
   def update
-    @checkin = Checkin.find(params[:id])
     if params[:checkin]
       @checkin.update(allowed_params)
       @checkin.refresh
@@ -44,9 +44,8 @@ class Users::CheckinsController < ApplicationController
   end
 
   def destroy
-    @checkin = Checkin.find_by(id: params[:id]).delete
+    @checkin.delete
     NotifyAboutDestroyCheckin.call(device: device, checkin: @checkin)
-
     flash[:notice] = 'Check-in deleted.'
   end
 
@@ -66,14 +65,20 @@ class Users::CheckinsController < ApplicationController
     params.require(:checkin).permit(:lat, :lng, :device_id, :fogged)
   end
 
+  def find_checkin
+    @checkin = Checkin.find(params[:id])
+  end
+
   def require_checkin_ownership
     return if user_owns_checkin?
+
     flash[:alert] = 'You do not own that check-in.'
     redirect_to root_path
   end
 
   def require_device_ownership
     return if current_user.devices.exists?(params[:device_id])
+
     flash[:alert] = 'You do not own this device.'
     redirect_to root_path
   end
