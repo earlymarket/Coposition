@@ -7,7 +7,7 @@ class CreateApproval
   def call
     if approval && approval.save
       context.message = { notice: "Friend request sent" }
-      context.path = user_friends_path(user_id: user.id)
+      context.path = user_friends_path(user_id: current_user.id)
     else
       describe_error_case
       context.fail!
@@ -19,7 +19,7 @@ class CreateApproval
   def describe_error_case
     if user && approval
       context.message = { alert: "Error: #{approval.errors[:base].first}" }
-      context.path = new_user_approval_path(user_id: user.id, approvable_type: "User")
+      context.path = new_user_approval_path(user_id: current_user.id, approvable_type: "User")
     else
       UserMailer.invite_email(approvable).deliver_now
 
