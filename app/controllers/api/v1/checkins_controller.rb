@@ -47,7 +47,7 @@ class Api::V1::CheckinsController < Api::ApiController
   def create
     checkin = @device.checkins.create(allowed_params)
     if checkin.save
-      @device.notify_subscribers('new_checkin', checkin)
+      NotifyAboutCheckin.call(device: @device, checkin: checkin)
       config = @dev.configs.find_by(device_id: @device.id)
       render json: { data: [checkin], config: config }
     else

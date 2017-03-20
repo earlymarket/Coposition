@@ -3,12 +3,12 @@ require 'rails_helper'
 RSpec.describe Users::DevicesController, type: :controller do
   include ControllerMacros
 
-  let(:empty_device) { FactoryGirl.create :device }
-  let(:device) { FactoryGirl.create :device, delayed: 10 }
-  let(:checkin) { FactoryGirl.create(:checkin, lat: 10.5, lng: 10.5, device: device) }
-  let(:older_checkin) { FactoryGirl.create(:checkin, created_at: 1.hour.ago, device: device) }
+  let(:empty_device) { create :device, user: nil }
+  let(:device) { create :device, delayed: 10, user: nil }
+  let(:checkin) { create(:checkin, lat: 10.5, lng: 10.5, device: device) }
+  let(:older_checkin) { create(:checkin, created_at: 1.hour.ago, device: device) }
   let(:developer) do
-    dev = FactoryGirl.create :developer
+    dev = create :developer
     dev.configs.create(device: device)
     dev
   end

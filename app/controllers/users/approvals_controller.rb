@@ -15,7 +15,6 @@ class Users::ApprovalsController < ApplicationController
       approvable: approval_params[:approvable]
     )
     approvals_presenter_and_gon("User") if result.success?
-
     redirect_to(result.path, result.message)
   end
 

@@ -17172,6 +17172,27 @@ footer.page-footer {
   margin-top: 55px;
 }
 /* line 31, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+.c-devices.a-show .myProgress, .c-friends.a-show_device .myProgress {
+  z-index: 10;
+  position: relative;
+  height: 4px;
+  display: block;
+  width: 100%;
+  background-color: white;
+  border-radius: 2px;
+  margin: 0rem 0 1rem 0;
+  overflow: hidden;
+}
+/* line 42, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+.c-devices.a-show .myProgress .myDeterminate, .c-friends.a-show_device .myProgress .myDeterminate {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-color: #ffc952;
+  transition: width .5s linear;
+}
+/* line 52, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .bottom-panel, .c-friends.a-show_device .bottom-panel {
   position: absolute;
   bottom: 0px;
@@ -17180,81 +17201,81 @@ footer.page-footer {
   text-align: center;
   background: white;
 }
-/* line 40, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+/* line 61, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .bottom-panel *, .c-friends.a-show_device .bottom-panel * {
   margin: 0;
 }
-/* line 44, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+/* line 65, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .buttons, .c-friends.a-show_device .buttons {
   margin: 10px;
 }
-/* line 48, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+/* line 69, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .disabled-icon, .c-friends.a-show_device .disabled-icon {
   color: rgba(0, 0, 0, 0.12);
 }
-/* line 57, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+/* line 78, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .fogged, .c-friends.a-show_device .fogged {
   color: #2196f3;
 }
-/* line 61, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+/* line 82, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .path-active, .c-friends.a-show_device .path-active {
   color: #FC8428;
 }
-/* line 65, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+/* line 86, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show #device-name, .c-friends.a-show_device #device-name {
   height: 55px;
   justify-content: center;
   background: white;
   font-size: 1.5rem;
 }
-/* line 74, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+/* line 95, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .leaflet-popup-content h3, .c-devices.a-show .leaflet-popup-content ul, .c-friends.a-show_device .leaflet-popup-content h3, .c-friends.a-show_device .leaflet-popup-content ul {
   margin: 0;
 }
-/* line 78, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+/* line 99, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .leaflet-popup-content .editable, .c-friends.a-show_device .leaflet-popup-content .editable {
   font-size: 0.9rem;
 }
-/* line 82, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+/* line 103, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .leaflet-popup-content .edit-coords, .c-friends.a-show_device .leaflet-popup-content .edit-coords {
   font-size: 14px;
   display: none;
 }
-/* line 87, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+/* line 108, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .leaflet-popup-content .editable-wrapper.clickable, .c-friends.a-show_device .leaflet-popup-content .editable-wrapper.clickable {
   cursor: pointer;
 }
-/* line 90, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+/* line 111, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .leaflet-popup-content .editable-wrapper.clickable .editable, .c-friends.a-show_device .leaflet-popup-content .editable-wrapper.clickable .editable {
   border-bottom: #ff8f00 2px dotted;
 }
-/* line 94, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+/* line 115, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .leaflet-popup-content .editable-wrapper.clickable .edit-coords, .c-friends.a-show_device .leaflet-popup-content .editable-wrapper.clickable .edit-coords {
   display: inline-block;
 }
-/* line 99, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+/* line 120, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .leaflet-popup-content li.address, .c-devices.a-show .leaflet-popup-content .foggedAddress > li, .c-friends.a-show_device .leaflet-popup-content li.address, .c-friends.a-show_device .leaflet-popup-content .foggedAddress > li {
   white-space: pre-wrap;
   font-family: "Fira Mono", monospace;
 }
 
-/* line 109, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+/* line 130, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show #map {
   bottom: 60px;
 }
-/* line 113, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+/* line 134, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .bottom-panel {
   height: 60px;
 }
-/* line 117, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+/* line 138, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .crosshair {
   cursor: url(/assets/location_searching-766b237168aa1c412dbf300f59a722ad25d65cef57e81c9df8b82cff655c599e.png), auto;
 }
-/* line 121, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+/* line 142, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .leaflet-popup-content-wrapper {
   z-index: 1000;
 }
-/* line 125, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
+/* line 146, /Users/tomharpur/Documents/work/rails/Coposition/app/assets/stylesheets/devices-show.scss.erb */
 .c-devices.a-show .leaflet-container .leaflet-control-mouseposition {
   background-color: rgba(255, 255, 255, 0.7);
   box-shadow: 0 0 5px #bbb;
