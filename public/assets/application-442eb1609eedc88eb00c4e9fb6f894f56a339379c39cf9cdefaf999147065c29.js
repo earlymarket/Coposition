@@ -42611,6 +42611,7 @@ window.COPO.maps = {
 
     function loadCheckins(page) {
       if (total > gon.checkins.length) {
+        updateProgress(gon.checkins.length, total);
         getCheckinData(page).then(function (data) {
           if (window.gon.total === undefined) return;
           gon.checkins = gon.checkins.concat(data.checkins);
@@ -42619,9 +42620,15 @@ window.COPO.maps = {
           loadCheckins(page);
         });
       } else {
+        $('.myProgress').remove();
         Materialize.toast('All check-ins loaded', 3000);
         window.COPO.maps.fitBounds();
       };
+    }
+
+    function updateProgress(checkins, total) {
+      var percentageLoaded = checkins / total * 100 + '%';
+      $('.myDeterminate').css('width', percentageLoaded);
     }
   },
 
