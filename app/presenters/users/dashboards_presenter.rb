@@ -24,7 +24,9 @@ module Users
     end
 
     def last_countries
-      @checkins.where('created_at IN(SELECT MAX(created_at) FROM checkins GROUP BY country_code)').first 10
+      last_countries_sql = "created_at IN(SELECT MAX(created_at) FROM checkins INNER JOIN devices ON"\
+        " checkins.device_id = devices.id WHERE devices.user_id = #{@user.id} GROUP BY country_code)"
+      @checkins.where(last_countries_sql).first 10
     end
 
     def gon
