@@ -7,12 +7,11 @@ class Users::CheckinsController < ApplicationController
   before_action :find_checkin, only: [:show, :update, :destroy]
 
   def new
-    @checkin = Device.find(params[:device_id]).checkins.new
+    @checkin = device.checkins.new
   end
 
   def index
     per_page = params[:per_page].to_i <= 1000 ? params[:per_page] : 1000
-
     render json: {
       checkins: device
         .checkins
@@ -24,9 +23,8 @@ class Users::CheckinsController < ApplicationController
   end
 
   def create
-    @checkin = device.checkins.create(checkin_params)
-    device.notify_subscribers('new_checkin', @checkin)
-
+    @checkin = device.checkins.create(allowed_params)
+    NotifyAboutCheckin.call(device: device, checkin: @checkin)
     flash[:notice] = 'Checked in.'
   end
 
@@ -36,7 +34,7 @@ class Users::CheckinsController < ApplicationController
 
   def update
     if params[:checkin]
-      @checkin.update(checkin_params)
+      @checkin.update(allowed_params)
       @checkin.refresh
       return render status: 200, json: @checkin unless @checkin.errors.any?
       render status: 400, json: @checkin.errors.messages
@@ -47,7 +45,7 @@ class Users::CheckinsController < ApplicationController
 
   def destroy
     @checkin.delete
-
+    NotifyAboutDestroyCheckin.call(device: device, checkin: @checkin)
     flash[:notice] = 'Check-in deleted.'
   end
 
@@ -63,14 +61,12 @@ class Users::CheckinsController < ApplicationController
     @device ||= Device.find(params[:device_id])
   end
 
-  def find_checkin
-    @checkin = Checkin.find(params[:id])
+  def allowed_params
+    params.require(:checkin).permit(:lat, :lng, :device_id, :fogged)
   end
 
-  def checkin_params
-    params
-      .require(:checkin)
-      .permit(:lat, :lng, :device_id, :fogged)
+  def find_checkin
+    @checkin = Checkin.find(params[:id])
   end
 
   def require_checkin_ownership

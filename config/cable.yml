@@ -1,13 +1,15 @@
-development:
-  adapter: async
+redis: &redis
+  adapter: redis
+  url: redis://localhost:6379/1
 
-test:
-  adapter: async
+development: *redis
+
+test: *redis
 
 staging:
-  adapter: redis
-  url: redis://localhost:6379/1
+  <<: *redis
+  url: <%= ENV["REDISTOGO_URL"] %>
 
 production:
-  adapter: redis
-  url: redis://localhost:6379/1
+  <<: *redis
+  url: <%= ENV["REDISTOGO_URL"] %>
