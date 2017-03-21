@@ -1,25 +1,25 @@
 require "rails_helper"
 
 RSpec.feature "Permissions", type: :feature do
-  # scenario "User edits permissions", js: true do
-  #   given_i_am_signed_in
-  #   and_they_log_out
-  #   and_there_is_another_user
-  #   and_they_have_added_me
-  #   and_they_log_out
-  #   and_i_sign_in
-  #   and_i_have_a_device
-  #   and_i_approve_the_friend_request
-  #   and_i_am_on_the_devices_page
-  #   when_i_click_on_permissions
-  #   then_i_should_see_my_friends_permissions
-  #   when_i_check_bypass_fogging
-  #   then_bypass_fogging_should_be_checked
-  #   when_i_check_bypass_delay
-  #   then_bypass_delay_should_be_checked
-  #   when_i_choose_disable
-  #   then_disabled_should_be_chosen
-  # end
+  scenario "User edits permissions", js: true do
+    given_i_am_signed_in
+    and_they_log_out
+    and_there_is_another_user
+    and_they_have_added_me
+    and_they_log_out
+    and_i_sign_in
+    and_i_have_a_device
+    and_i_approve_the_friend_request
+    and_i_am_on_the_devices_page
+    when_i_click_on_permissions
+    then_i_should_see_my_friends_permissions
+    when_i_check_bypass_fogging
+    then_bypass_fogging_should_be_checked
+    when_i_check_bypass_delay
+    then_bypass_delay_should_be_checked
+    when_i_choose_disable
+    then_disabled_should_be_chosen
+  end
 
   def given_i_am_signed_in
     visit "/users/sign_up"
@@ -86,27 +86,30 @@ RSpec.feature "Permissions", type: :feature do
   end
 
   def when_i_check_bypass_fogging
-    expect(page).to have_css("label##{Permission.last.id}_bypass-fogging")
-    find("label##{Permission.last.id}_bypass-fogging", match: :first).click
+    expect(page).to have_css("label#bypass-fogging-2")
+    find("label#bypass-fogging-2").click
   end
 
   def when_i_check_bypass_delay
-    find("label##{Permission.last.id}_bypass-delay").click
+    find("label#bypass-delay-2").click
   end
 
   def when_i_choose_disable
-    find("label##{Permission.last.id}_disallowed").click
+    find("label#disallowed-2").click
   end
 
   def then_bypass_fogging_should_be_checked
-    expect("#{Permission.last.id}_bypass-fogging").to be_checked
+    bypass_fogging = find("input#bypass-fogging-2")
+    expect(bypass_fogging).to be_checked
   end
 
   def then_bypass_delay_should_be_checked
-    expect("#{Permission.last.id}_bypass-delay").to be_checked
+    bypass_delay = find("input#bypass-delay-2")
+    expect(bypass_delay).to be_checked
   end
 
   def then_disabled_should_be_chosen
-    expect("#{Permission.last.id}_disallowed").to be_checked
+    disallowed = find("input#disallowed-2")
+    expect(disallowed).to be_checked
   end
 end
