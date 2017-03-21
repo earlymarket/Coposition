@@ -66,7 +66,7 @@ class Checkin < ApplicationRecord
       output_lat: lat,
       output_lng: lng,
       output_address: address,
-      output_city: city,
+      output_city: city || fogged_city,
       output_postal_code: postal_code,
       output_country_code: country_code
     )
