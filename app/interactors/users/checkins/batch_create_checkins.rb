@@ -5,12 +5,13 @@ module Users::Checkins
     delegate :device, :post_content, to: :context
 
     def call
-      device.checkins.transaction do
+      checkins = device.checkins.transaction do
         checkins = JSON.parse(post_content).map do |checkin_hash|
           checkin_create(checkin_hash)
         end
         Checkin.import checkins
       end
+      context.checkins = Checkin.find(checkins.ids)
     end
 
     private

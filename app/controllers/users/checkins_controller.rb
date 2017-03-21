@@ -35,11 +35,7 @@ class Users::CheckinsController < ApplicationController
   def update
     result = Users::Checkins::UpdateCheckin.call(params: params)
     @checkin = result.checkin
-    if result.success?
-      render status: 200, json: @checkin if params[:checkin]
-    else
-      render status: 400, json: @checkin.errors
-    end
+    render status: 200, json: @checkin if params[:checkin]
   end
 
   def destroy
