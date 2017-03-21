@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Coposition</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <script src="https://cdn.smooch.io/smooch.min.js"></script>
   <link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
   <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.mapbox.css' rel='stylesheet' />
@@ -13,6 +13,7 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= cloudinary_js_config %>
   <%= csrf_meta_tags %>
+  <%= action_cable_meta_tag %>
   <link href='https://fonts.googleapis.com/css?family=Fira+Sans:400,300|Roboto+Condensed:400,300|Fira+Mono|Material+Icons' rel='stylesheet' type='text/css'>
   <meta name="format-detection" content="telephone=no">
   <meta name="msapplication-tap-highlight" content="no">
@@ -23,7 +24,7 @@
   <%= render partial: "navbar" %>
   <%= render partial: "mobilenav" %>
   <main>
-  <%= javascript_tag( raw render_flash ) %>
+  <%= javascript_tag(raw render_flash) %>
     <div class="outside-container">
       <%= yield :outside_container %>
     </div>

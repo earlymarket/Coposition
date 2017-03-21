@@ -1,39 +1,38 @@
 class Users::CheckinsController < ApplicationController
   protect_from_forgery except: :show
+
   before_action :authenticate_user!
   before_action :require_checkin_ownership, except: %i(index new create destroy_all)
   before_action :require_device_ownership, only: %i(index new create destroy_all)
+  before_action :find_checkin, only: %i(show update destroy)
 
   def new
-    @device = Device.find(params[:device_id])
-    @checkin = Device.find(params[:device_id]).checkins.new
+    @checkin = device.checkins.new
   end
 
   def index
-    @device = Device.find(params[:device_id])
     per_page = params[:per_page].to_i <= 1000 ? params[:per_page] : 1000
     render json: {
-      checkins: @device.checkins.paginate(page: params[:page], per_page: per_page)
+      checkins: device
+        .checkins
+        .paginate(page: params[:page], per_page: per_page)
         .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :device_id),
       current_user_id: current_user.id,
-      total: @device.checkins.count
+      total: device.checkins.count
     }
   end
 
   def create
-    @device = Device.find(params[:device_id])
-    @checkin = @device.checkins.create(allowed_params)
-    @device.notify_subscribers("new_checkin", @checkin)
-    flash[:notice] = "Checked in."
+    @checkin = device.checkins.create(allowed_params)
+    NotifyAboutCheckin.call(device: device, checkin: @checkin)
+    flash[:notice] = 'Checked in.'
   end
 
   def show
-    @checkin = Checkin.find(params[:id])
     @checkin.reverse_geocode!
   end
 
   def update
-    @checkin = Checkin.find(params[:id])
     if params[:checkin]
       @checkin.update(allowed_params)
       @checkin.refresh
@@ -44,8 +43,9 @@ class Users::CheckinsController < ApplicationController
   end
 
   def destroy
-    @checkin = Checkin.find_by(id: params[:id]).delete
-    flash[:notice] = "Check-in deleted."
+    @checkin.delete
+    NotifyAboutDestroyCheckin.call(device: device, checkin: @checkin)
+    flash[:notice] = 'Check-in deleted.'
   end
 
   def destroy_all
@@ -56,8 +56,16 @@ class Users::CheckinsController < ApplicationController
 
   private
 
+  def device
+    @device ||= Device.find(params[:device_id])
+  end
+
   def allowed_params
     params.require(:checkin).permit(:lat, :lng, :device_id, :fogged)
+  end
+
+  def find_checkin
+    @checkin = Checkin.find(params[:id])
   end
 
   def require_checkin_ownership

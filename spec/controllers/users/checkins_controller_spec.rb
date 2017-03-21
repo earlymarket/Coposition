@@ -13,10 +13,10 @@ RSpec.describe Users::CheckinsController, type: :controller do
   let(:index_params) { params.merge(page: 1, per_page: 1000) }
   let(:update_lat_params) { params.merge(checkin: { lat: 10 }) }
 
-  describe "GET #new" do
-    it "assigns a device with a matching :device_id to @device and a new checkin to @checkin" do
+  describe 'GET #new' do
+    it 'should assign a new checkin to @checkin' do
       get :new, params: params
-      expect(assigns(:device)).to eq(Device.find(device.id))
+      expect(assigns(:checkin)).to be_a_new(Checkin)
     end
 
     it "assigns a new checkin to @checkin" do

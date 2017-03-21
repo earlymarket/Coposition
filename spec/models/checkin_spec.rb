@@ -32,7 +32,7 @@ RSpec.describe Checkin, type: :model do
 
   describe "callbacks" do
     context "after_create" do
-      let(:new_checkin) { FactoryGirl.build(:checkin) }
+      let(:new_checkin) { FactoryGirl.build(:checkin, device: nil) }
 
       it "generates values after create" do
         allow(new_checkin).to receive(:assign_values)

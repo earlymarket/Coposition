@@ -3,25 +3,25 @@ require "rails_helper"
 RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   include ControllerMacros
 
-  let(:device) { FactoryGirl.create :device }
-  let(:empty_device) { FactoryGirl.create :device }
-  let(:developer) do
-    dev = FactoryGirl.create :developer
-    Approval.link(user, dev, "Developer")
-    Approval.accept(user, dev, "Developer")
-    Approval.link(second_user, dev, "Developer")
-    Approval.accept(second_user, dev, "Developer")
-    dev
-  end
+  let(:device) { create :device, user: nil }
+  let(:empty_device) { create :device, user: nil }
   let(:user) do
-    us = FactoryGirl.create :user
+    us = create :user
     us.devices << device
     us
   end
   let(:second_user) do
-    us = FactoryGirl.create :user
-    us.devices << FactoryGirl.create(:device)
+    us = create :user
+    us.devices << create(:device)
     us
+  end
+  let(:developer) do
+    dev = create :developer
+    Approval.link(user, dev, 'Developer')
+    Approval.accept(user, dev, 'Developer')
+    Approval.link(second_user, dev, 'Developer')
+    Approval.accept(second_user, dev, 'Developer')
+    dev
   end
   let(:params) { { user_id: user.id, format: :json } }
   let(:device_params) { params.merge(id: device.id) }

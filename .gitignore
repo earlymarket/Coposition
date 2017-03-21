@@ -26,8 +26,13 @@ public/system/*
 # Bower
 vendor/assets/bower_components
 
+<<<<<<< HEAD
 # Ignore local Procfile
 Procfile.local
 
 # Ignore local env file
 .env
+=======
+# Ignore foreman config
+.foreman
+>>>>>>> dev

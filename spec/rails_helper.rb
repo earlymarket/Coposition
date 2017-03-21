@@ -99,6 +99,8 @@ RSpec.configure do |config|
       Bullet.end_request
     end
   end
+
+  config.include FactoryGirl::Syntax::Methods
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.extend ControllerMacros, type: :controller
 end

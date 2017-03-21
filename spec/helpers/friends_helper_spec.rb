@@ -1,12 +1,10 @@
 require "rails_helper"
 
 RSpec.describe FriendsHelper, type: :helper do
-  let(:friend) { FactoryGirl.create :user }
-  let(:device) do
-    dev = FactoryGirl.create(:device, user_id: friend.id)
-    dev.checkins << [FactoryGirl.create(:checkin, device: dev), FactoryGirl.create(:checkin, device: dev)]
-    dev
-  end
+  let(:friend) { create :user }
+  let(:device) { create :device, user: friend }
+
+  before { create_list :checkin, 2, device: device, city: "city" }
 
   describe "#friends_device_last_checkin" do
     it "returns no location if user can not see any of friends checkins" do
