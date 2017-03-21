@@ -33,13 +33,12 @@ class Users::CheckinsController < ApplicationController
   end
 
   def update
-    if params[:checkin]
-      @checkin.update(allowed_params)
-      @checkin.refresh
-      return render status: 200, json: @checkin unless @checkin.errors.any?
-      render status: 400, json: @checkin.errors.messages
+    result = Users::Checkins::UpdateCheckin.call(params: params)
+    @checkin = result.checkin
+    if result.success?
+      render status: 200, json: @checkin if params[:checkin]
     else
-      @checkin.switch_fog
+      render status: 400, json: @checkin.errors
     end
   end
 
