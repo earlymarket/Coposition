@@ -89,7 +89,7 @@ RSpec.describe Checkin, type: :model do
   describe "public instance methods" do
     context "responds to its methods" do
       %i(assign_values update_output assign_output_to_fogged assign_output_to_unfogged reverse_geocode!
-         reverse_geocoded? switch_fog set_edited nearest_city).each do |method|
+         reverse_geocoded? set_edited nearest_city).each do |method|
         it { expect(checkin).to respond_to(method) }
       end
     end
@@ -155,18 +155,6 @@ RSpec.describe Checkin, type: :model do
       it "returns true if checkin geocoded" do
         checkin.reverse_geocode!
         expect(checkin.reverse_geocoded?).to eq true
-      end
-    end
-
-    context "switch_fog" do
-      it "switches checkin fog" do
-        expect { checkin.switch_fog }.to change { checkin.fogged }
-      end
-
-      it "updates other attributes" do
-        allow(checkin).to receive(:update_output)
-        checkin.switch_fog
-        expect(checkin).to have_received(:update_output)
       end
     end
 

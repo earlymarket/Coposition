@@ -1,5 +1,5 @@
 class Device < ApplicationRecord
-  include SlackNotifiable, HumanizeMinutes, RemoveId
+  include SlackNotifiable, RemoveId
 
   belongs_to :user
   has_one :config, dependent: :destroy
@@ -13,14 +13,6 @@ class Device < ApplicationRecord
 
   before_create do |dev|
     dev.uuid = SecureRandom.uuid
-  end
-
-  def construct(current_user, device_name, icon_name)
-    if update(user: current_user, name: device_name, icon: icon_name)
-      developers << current_user.developers
-      permitted_users << current_user.friends
-      true
-    end
   end
 
   def safe_checkin_info_for(args)
@@ -101,23 +93,6 @@ class Device < ApplicationRecord
 
   def slack_message
     "A new device was created, id: #{id}, name: #{name}, user_id: #{user_id}. There are now #{Device.count} devices"
-  end
-
-  def update_delay(mins)
-    mins.to_i.zero? ? update(delayed: nil) : update(delayed: mins)
-  end
-
-  def switch_fog
-    update(fogged: !fogged)
-    fogged
-  end
-
-  def humanize_delay
-    if delayed.nil?
-      "#{name} is not delayed."
-    else
-      "#{name} delayed by #{humanize_minutes(delayed)}"
-    end
   end
 
   def public_info

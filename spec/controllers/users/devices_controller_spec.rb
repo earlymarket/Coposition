@@ -100,17 +100,16 @@ RSpec.describe Users::DevicesController, type: :controller do
     it 'renders page if published and checkin is fogged' do
       checkin
       older_checkin
-      device.published = true
+      device.update(published: true)
       get :shared, params: params
       expect(response).to render_template('shared')
       expect(assigns(:presenter).shared_gon[:checkin]['lat'].round(6)).to eq older_checkin.fogged_lat.round(6)
     end
 
     it 'renders page if published and checkin is unfogged if unfogged' do
-      device.published = true
-      device.fogged = false
+      device.update(published: true, fogged: false)
       checkin
-      older_checkin.switch_fog
+      older_checkin
       get :shared, params: params
       expect(assigns(:presenter).shared_gon[:checkin]['lat']).to eq older_checkin.lat
     end
@@ -193,7 +192,7 @@ RSpec.describe Users::DevicesController, type: :controller do
     it 'switches fogging status by default' do
       expect(device.fogged?).to be true
       request.accept = 'text/javascript'
-      put :update, params: params
+      put :update, params: params.merge(device: { fogged: false })
 
       device.reload
       expect(device.fogged?).to be false
@@ -203,7 +202,7 @@ RSpec.describe Users::DevicesController, type: :controller do
     it 'switches published status' do
       expect(device.published?).to be false
       request.accept = 'text/javascript'
-      put :update, params: params.merge(published: true)
+      put :update, params: params.merge(device: { published: true })
       expect(flash[:notice]).to match 'Location sharing is'
       device.reload
       expect(device.published?).to be true
@@ -230,13 +229,13 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
 
     it 'updates device name' do
-      put :update, params: params.merge(name: 'Computer', format: :json)
+      put :update, params: params.merge(device: { name: 'Computer' }, format: :json)
       expect(device.reload.name).to eq 'Computer'
     end
 
     it 'fails to update device name if taken' do
       other = user.devices.create(name: 'Computer')
-      put :update, params: params.merge(name: other.name, format: :json)
+      put :update, params: params.merge(device: { name: other.name }, format: :json)
       expect(device.reload.name).to_not eq 'Computer'
       expect(response.body).to match 'already been taken'
     end
@@ -244,7 +243,7 @@ RSpec.describe Users::DevicesController, type: :controller do
     it 'switches cloaked status' do
       expect(device.cloaked?).to be false
       request.accept = 'text/javascript'
-      put :update, params: params.merge(cloaked: true)
+      put :update, params: params.merge(device: { cloaked: true })
       expect(flash[:notice]).to match 'Device cloaking is'
       device.reload
       expect(device.cloaked?).to be true
@@ -253,7 +252,7 @@ RSpec.describe Users::DevicesController, type: :controller do
     it 'changes icon' do
       expect(device.icon).to eq 'devices_other'
       request.accept = 'text/javascript'
-      put :update, params: params.merge(icon: 'tablet')
+      put :update, params: params.merge(device: { icon: 'tablet' })
       expect(flash[:notice]).to match 'Device icon updated'
       device.reload
       expect(device.icon).to eq 'tablet'

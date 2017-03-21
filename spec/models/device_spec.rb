@@ -48,23 +48,11 @@ RSpec.describe Device, type: :model do
 
   describe "public instance methods" do
     context "responds to its methods" do
-      %i(construct safe_checkin_info_for filtered_checkins sanitize_checkins replace_checkin_attributes
+      %i(safe_checkin_info_for filtered_checkins sanitize_checkins replace_checkin_attributes
          permitted_history_for resolve_privilege privilege_for delayed_checkins_for permission_for
-         can_bypass_fogging? can_bypass_delay? slack_message update_delay switch_fog humanize_delay
-         public_info subscriptions notify_subscribers).each do |method|
+         can_bypass_fogging? can_bypass_delay? slack_message public_info subscriptions
+         notify_subscribers).each do |method|
         it { expect(device).to respond_to(method) }
-      end
-    end
-
-    context "construct" do
-      let(:new_device) { FactoryGirl.build(:device) }
-
-      it "returns true if successful update" do
-        expect(new_device.construct(user, "laptop", "laptop")).to be true
-      end
-
-      it "returns nil if username taken by another device belonging to current user" do
-        expect(new_device.construct(user, device.name, "laptop")).to be nil
       end
     end
 
@@ -203,41 +191,6 @@ RSpec.describe Device, type: :model do
         msg = "A new device was created, id: #{device.id}, name: #{device.name}, user_id: #{device.user_id}. "\
               "There are now #{Device.count} devices"
         expect(device.slack_message).to eq msg
-      end
-    end
-
-    context "update_delay" do
-      it "updates device delay to given number" do
-        device.update_delay 60
-        expect(device.delayed).to eq 60
-      end
-
-      it "updates device delay to nil if zero given" do
-        device.update_delay 0
-        expect(device.delayed).to eq nil
-      end
-    end
-
-    context "switch_fog" do
-      it "switches device fog" do
-        expect { device.switch_fog }.to change { device.fogged }
-      end
-
-      it "returns fogged status" do
-        expect(device.switch_fog).to eq false
-      end
-    end
-
-    context "humanize_delay" do
-      it "returns a string explaining delay setting" do
-        device.update(delayed: 10)
-        string = "#{device.name} delayed by 10 minutes."
-        expect(device.humanize_delay).to eq string
-      end
-
-      it "returns a different string if device not delayed" do
-        string = "#{device.name} is not delayed."
-        expect(device.humanize_delay).to eq string
       end
     end
 

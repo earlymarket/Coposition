@@ -195,7 +195,7 @@ describe ::Users::DevicesPresenter do
 
       it "returns an unfogged checkin if device and checkin unfogged" do
         device.update(fogged: false)
-        Checkin.first.switch_fog
+        Checkin.first.update(fogged: false)
         expect(devices.send(:gon_shared_checkin)["lat"]).to eq Checkin.first.lat
       end
     end

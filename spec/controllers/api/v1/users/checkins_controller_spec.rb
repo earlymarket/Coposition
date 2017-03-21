@@ -60,7 +60,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
     context 'with approval' do
       before do
-        device.switch_fog
+        device.update(fogged: !device.fogged)
         checkin
       end
 
@@ -85,7 +85,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       end
 
       it "fos the last reported location's address and lat/lng if fogged" do
-        device.switch_fog
+        device.update(fogged: !device.fogged)
         device.checkins.create(lat: 51.57123, lng: -0.50523)
         get :last, params: geocode_params
         expect(res_hash.first['city']).to eq 'Denham'
@@ -96,7 +96,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
       it 'bypasses fogging if bypass_fogging is true' do
         # Make it fogged
-        device.switch_fog
+        device.update(fogged: !device.fogged)
         device.checkins.create(lat: 51.57471, lng: -0.50626)
         Permission.last.update(bypass_fogging: true)
         get :last, params: geocode_params
@@ -108,7 +108,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
     context 'on a user' do
       it 'fetches the last reported location' do
-        device.switch_fog
+        device.update(fogged: !device.fogged)
         checkin
         get :last, params: { user_id: user.id }
         expect(res_hash.first['lat']).to be checkin.lat
