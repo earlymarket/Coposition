@@ -6,6 +6,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   before_action :check_user, only: :update
 
   def create
+    # can create user or developer permission.
     resource_exists?(approvable_type, approvable)
     Approval.link(@user, approvable, approvable_type)
     accept_if_friend_request_or_adding_developer if req_from_coposition_app?
@@ -15,21 +16,23 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   end
 
   def update
-    approval = Approval.find_by(id: params[:id], user: @user)
-    return unless approval_exists? approval
-    approvable = approval.approvable
-    type = approval.approvable_type
-    Approval.accept(@user, approvable, type)
-    render json: approval.reload
-    approvable.notify_if_subscribed('new_approval', approval_zapier_data(approval)) if type == 'Developer'
+    result = ::Users::Approvals::ApproveApproval.call(current_user: @user, params: params)
+    if result.success?
+      render json: result.approval.reload
+      return unless result.approvable_type == 'Developer'
+      result.approvable.notify_if_subscribed('new_approval', approval_zapier_data(result.approval))
+    else
+      render status: 404, json: { error: "Approval does not exist" }
+    end
   end
 
   def destroy
-    approval = Approval.find_by(id: params[:id], user: @user)
-    return unless approval_exists? approval
-    @user.destroy_permissions_for(approval.approvable)
-    approval.destroy
-    render status: 200, json: { message: 'Approval Destroyed' }
+    result = ::Users::Approvals::RejectApproval.call(current_user: @user, params: params)
+    if result.success?
+      render status: 200, json: { message: "Approval Destroyed" }
+    else
+      render status: 404, json: { error: "Approval does not exist" }
+    end
   end
 
   def index

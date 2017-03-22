@@ -5,6 +5,7 @@ module Users::Approvals
     delegate :current_user, :params, to: :context
 
     def call
+      context.fail! unless approval
       Approval.accept(current_user, approvable, approvable_type)
       context.approval = approval
       context.approvable_type = approvable_type
