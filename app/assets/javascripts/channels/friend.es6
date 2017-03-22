@@ -5,29 +5,27 @@ App.friend = App.cable.subscriptions.create("FriendChannel", {
   // disconnected: function() {
   // },
 
-  received: function(data) {
+  received: (data) => {
     switch (data.action) {
       case "checkin":
-        if ($(".c-friends.a-show_device").length === 0) { return };
-
-        if (data.privilege === 'complete') {
-          gon.checkins.unshift(data.msg);
-        } else {
-          gon.checkins = [data.msg];
+        const create = window.COPO.pushCreateCheckin;
+        if ($(".c-friends.a-show_device").length === 1) { 
+          create.deviceShow(data);
+        } else if ($(".c-friends.a-show").length === 1) {
+          create.friendShow(data);
+        } else if ($(".c-approvals.a-friends").length === 1) {
+          create.friendsIndex(data);
         }
-
-        COPO.maps.refreshMarkers(gon.checkins);
-
         break;
-
       case "destroy":
-        if ($(".c-friends.a-show_device").length === 0) { return };
-
-        const index = gon.checkins.findIndex((checkin) => checkin.id === data.msg.id);
-        gon.checkins.splice(index, 1);
-
-        COPO.maps.refreshMarkers(gon.checkins);
-
+        const destroy = window.COPO.pushDestroyCheckin;
+        if ($(".c-friends.a-show_device").length === 1) { 
+          destroy.deviceShow(data);
+        } else if ($(".c-friends.a-show").length === 1) {
+          destroy.friendShow(data);
+        } else if ($(".c-approvals.a-friends").length === 1) {
+          destroy.friendsIndex(data);
+        }
         break;
     }
   }
