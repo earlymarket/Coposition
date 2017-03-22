@@ -139,7 +139,7 @@ class Device < ApplicationRecord
       ActionCable.server.broadcast "friends_#{friend.id}",
                                    action: "destroy",
                                    checkin: checkin.as_json,
-                                   new: new_recent.as_json
+                                   new: new_recent
     end
   end
 
