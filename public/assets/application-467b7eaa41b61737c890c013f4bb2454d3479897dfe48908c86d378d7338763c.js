@@ -42970,6 +42970,11 @@ window.COPO.maps = {
     map.fitBounds(BOUNDS, { padding: [40, 40] });
   },
 
+  refreshFriendMarkers: function refreshFriendMarkers(checkins) {
+    map.removeLayer(COPO.maps.friendMarkers);
+    COPO.maps.addFriendMakers(checkins);
+  },
+
   bindFriendMarkers: function bindFriendMarkers(checkins) {
     var markers = COPO.maps.friendsCheckinsToCluster(checkins);
     markers.eachLayer(function (marker) {
@@ -43034,6 +43039,7 @@ window.COPO.maps = {
   },
 
   generatePath: function generatePath(checkins) {
+    if (!checkins.length) return;
     var latLngs = checkins.map(function (checkin) {
       return [checkin.lat, checkin.lng];
     });
@@ -55792,32 +55798,24 @@ App.friend = App.cable.subscriptions.create("FriendChannel", {
   received: function received(data) {
     switch (data.action) {
       case "checkin":
-        if ($(".c-friends.a-show_device").length === 0) {
-          return;
-        };
-
-        if (data.privilege === 'complete') {
-          gon.checkins.unshift(data.msg);
-        } else {
-          gon.checkins = [data.msg];
+        var create = window.COPO.pushCreateCheckin;
+        if ($(".c-friends.a-show_device").length === 1) {
+          create.deviceShow(data);
+        } else if ($(".c-friends.a-show").length === 1) {
+          create.friendShow(data);
+        } else if ($(".c-approvals.a-friends").length === 1) {
+          create.friendsIndex(data);
         }
-
-        COPO.maps.refreshMarkers(gon.checkins);
-
         break;
-
       case "destroy":
-        if ($(".c-friends.a-show_device").length === 0) {
-          return;
-        };
-
-        var index = gon.checkins.findIndex(function (checkin) {
-          return checkin.id === data.msg.id;
-        });
-        gon.checkins.splice(index, 1);
-
-        COPO.maps.refreshMarkers(gon.checkins);
-
+        var destroy = window.COPO.pushDestroyCheckin;
+        if ($(".c-friends.a-show_device").length === 1) {
+          destroy.deviceShow(data);
+        } else if ($(".c-friends.a-show").length === 1) {
+          destroy.friendShow(data);
+        } else if ($(".c-approvals.a-friends").length === 1) {
+          destroy.friendsIndex(data);
+        }
         break;
     }
   }
@@ -55855,7 +55853,7 @@ $(document).on('page:change', function () {
             dataType: 'json',
             url: url,
             type: 'PUT',
-            data: { name: newName }
+            data: { device: { name: newName } }
           });
           request.done(function (response) {
             // console.log('Server processed the request');
@@ -55882,40 +55880,14 @@ $(document).on('page:change', function () {
       COPO.delaySlider.initSliders(gon.devices);
       gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');
 
-      $('.fogButton').each(function (index, fogButton) {
-        if (!$(fogButton).data('fogged')) {
-          $(fogButton).removeData('confirm').removeAttr('data-confirm');
-        }
-      });
-
-      $('.cloakedButton').each(function (index, cloakedButton) {
-        if ($(cloakedButton).data('cloaked')) {
-          $(cloakedButton).removeData('confirm').removeAttr('data-confirm');
-        }
-      });
-
       $('body').on('click', '.edit-button', function (e) {
         e.preventDefault();
         $(this).toggleClass('hide', true);
         makeEditable($(this).prev('span'), handleEdited);
       });
 
-      $('.modal-trigger').leanModal();
-
-      $('.center-map').on('click', function () {
-        var device_id = this.dataset.device;
-        var checkin = gon.checkins.find(function (checkin) {
-          return checkin.device_id.toString() === device_id;
-        });
-        if (checkin) {
-          U.scrollTo('#top', 200);
-          setTimeout(function () {
-            return M.centerMapOn(checkin.lat, checkin.lng);
-          }, 200);
-        }
-      });
-
       window.initPage = function () {
+        $('.modal-trigger').leanModal();
         $('.clip_button').off();
         U.initClipboard();
         $('.tooltipped').tooltip('remove');
@@ -55934,6 +55906,31 @@ $(document).on('page:change', function () {
 
         $('.linkbox').each(function (i, linkbox) {
           $(linkbox).attr('size', $(linkbox).val().length);
+        });
+
+        $('.center-map').on('click', function () {
+          var device_id = this.dataset.device;
+          var checkin = gon.checkins.find(function (checkin) {
+            return checkin.device_id.toString() === device_id;
+          });
+          if (checkin) {
+            U.scrollTo('#top', 200);
+            setTimeout(function () {
+              return M.centerMapOn(checkin.lat, checkin.lng);
+            }, 200);
+          }
+        });
+
+        $('.fogButton').each(function (index, fogButton) {
+          if (!$(fogButton).data('fogged')) {
+            $(fogButton).removeData('confirm').removeAttr('data-confirm');
+          }
+        });
+
+        $('.cloakedButton').each(function (index, cloakedButton) {
+          if ($(cloakedButton).data('cloaked')) {
+            $(cloakedButton).removeData('confirm').removeAttr('data-confirm');
+          }
         });
       };
       initPage();
@@ -56338,6 +56335,116 @@ window.COPO.permissionsTrigger = {
         });
       }
     });
+  }
+};
+'use strict';
+
+window.COPO = window.COPO || {};
+window.COPO.pushCreateCheckin = {
+	deviceShow: function deviceShow(data) {
+		if (data.privilege === 'complete') {
+			gon.checkins.unshift(data.checkin);
+		} else {
+			gon.checkins = [data.checkin];
+		}
+
+		COPO.maps.refreshMarkers(gon.checkins);
+	},
+
+	friendShow: function friendShow(data) {
+		var index = gon.checkins.findIndex(function (checkin) {
+			return checkin.device_id === data.checkin.device_id;
+		});
+
+		if (!gon.checkins.length) {
+			gon.checkins.unshift(data.checkin);
+			$('#map-overlay').addClass('hide');
+			COPO.maps.refreshMarkers(gon.checkins);
+		} else {
+			if (index === -1) {
+				gon.checkins.unshift(data.checkin);
+			} else {
+				gon.checkins[index] = data.checkin;
+			}
+			COPO.maps.refreshMarkers(gon.checkins);
+		}
+	},
+
+	friendsIndex: function friendsIndex(data) {
+		var index = gon.friends.findIndex(function (friend) {
+			return friend.userinfo.id === data.checkin.user_id;
+		});
+		var friend = { lastCheckin: data.checkin, userinfo: gon.friends[index].userinfo };
+
+		if (!gon.friends.every(function (friend) {
+			return friend.lastCheckin;
+		})) {
+			$('#map-overlay').addClass('hide');
+			gon.friends[index] = friend;
+			COPO.maps.addFriendMarkers(gon.friends);
+		} else {
+			gon.friends[index] = friend;
+			COPO.maps.refreshFriendMarkers(gon.friends);
+		}
+	}
+};
+'use strict';
+
+window.COPO = window.COPO || {};
+window.COPO.pushDestroyCheckin = {
+  deviceShow: function deviceShow(data) {
+    var index = gon.checkins.findIndex(function (checkin) {
+      return checkin.id === data.checkin.id;
+    });
+    if (index === -1) {
+      return;
+    }
+
+    gon.checkins.splice(index, 1);
+    if (gon.checkins.length === 0 && data.privilege === 'last') {
+      gon.checkins = [data['new']];
+    }
+
+    COPO.maps.refreshMarkers(gon.checkins);
+  },
+
+  friendShow: function friendShow(data) {
+    var index = gon.checkins.findIndex(function (checkin) {
+      return checkin.id === data.checkin.id;
+    });
+    if (index === -1) {
+      return;
+    }
+
+    gon.checkins.splice(index, 1);
+    if (data['new']) {
+      gon.checkins.unshift(data['new']);
+    }
+    if (!gon.checkins.length) {
+      $('#map-overlay').removeClass('hide');
+    }
+    COPO.maps.refreshMarkers(gon.checkins);
+  },
+
+  friendsIndex: function friendsIndex(data) {
+    var index = gon.friends.findIndex(function (friend) {
+      return friend.lastCheckin.id === data.checkin.id;
+    });
+    if (index === -1) {
+      return;
+    }
+
+    var friend = { lastCheckin: data['new'], userinfo: gon.friends[index].userinfo };
+    gon.friends.splice(index, 1);
+    gon.friends.unshift(friend);
+    if (gon.friends.some(function (friend) {
+      return friend.lastCheckin;
+    })) {
+      COPO.maps.refreshFriendMarkers(gon.friends);
+    } else {
+      map.removeLayer(COPO.maps.friendMarkers);
+      $('#map-overlay').removeClass('hide');
+    }
   }
 };
 window.COPO = window.COPO || {};

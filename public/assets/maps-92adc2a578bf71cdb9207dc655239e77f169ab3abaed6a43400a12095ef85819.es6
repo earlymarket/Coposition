@@ -401,6 +401,11 @@ window.COPO.maps = {
     map.fitBounds(BOUNDS, {padding: [40, 40]})
   },
 
+  refreshFriendMarkers(checkins) {
+    map.removeLayer(COPO.maps.friendMarkers);
+    COPO.maps.addFriendMakers(checkins);
+  },
+
   bindFriendMarkers(checkins) {
     let markers = COPO.maps.friendsCheckinsToCluster(checkins);
     markers.eachLayer((marker) => {
@@ -468,6 +473,7 @@ window.COPO.maps = {
   },
 
   generatePath(checkins) {
+    if(!checkins.length) return;
     const latLngs = checkins.map((checkin) => [checkin.lat, checkin.lng]);
     COPO.maps.checkinPath = L.polyline(latLngs, {color: 'red'});
   },
