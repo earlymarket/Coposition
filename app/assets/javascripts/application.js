@@ -32,7 +32,7 @@
 //= require typeahead.js/dist/typeahead.bundle.min
 //= require ion.rangeSlider/js/ion.rangeSlider.min
 //= require clipboard/dist/clipboard.min
-//= require slick-carousel/slick/slick
+
 // STILL more up to date version
 //= require nouislider.min
 
