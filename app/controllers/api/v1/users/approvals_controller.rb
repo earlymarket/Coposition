@@ -6,7 +6,6 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   before_action :check_user, only: :update
 
   def create
-    # can create user or developer permission.
     resource_exists?(approvable_type, approvable)
     Approval.link(@user, approvable, approvable_type)
     accept_if_friend_request_or_adding_developer if req_from_coposition_app?
