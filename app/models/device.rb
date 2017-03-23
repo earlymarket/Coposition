@@ -115,34 +115,6 @@ class Device < ApplicationRecord
     subs.each { |subscription| subscription.send_data([data]) }
   end
 
-  def broadcast_checkin_for_friends(checkin)
-    user.friends.find_each do |friend|
-      allowed_checkin = safe_checkin_info_for(permissible: friend, action: "last", type: "address")
-      next unless allowed_checkin && allowed_checkin[0]["id"] == checkin.id
-      checkin_h = checkin.attributes
-      checkin_h['user_id'] = user_id
-      checkin_h['device'] = name
-      ActionCable.server.broadcast "friends_#{friend.id}",
-                                   action: "checkin",
-                                   privilege: privilege_for(friend),
-                                   checkin: checkin_h
-    end
-  end
-
-  def broadcast_destroy_checkin_for_friends(checkin)
-    user.friends.find_each do |friend|
-      new_recent = safe_checkin_info_for(permissible: friend, action: "last", type: "address")[0]
-      if(new_recent)
-        new_recent = new_recent.attributes
-        new_recent['device'] = name
-      end
-      ActionCable.server.broadcast "friends_#{friend.id}",
-                                   action: "destroy",
-                                   checkin: checkin.as_json,
-                                   new: new_recent
-    end
-  end
-
   def self.public_info
     select([:id, :user_id, :name, :alias, :published])
   end
