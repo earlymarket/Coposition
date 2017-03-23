@@ -13,7 +13,6 @@ module Users::Checkins
         switch_fog(checkin)
       end
       context.checkin = checkin
-      context.fail! unless checkin.errors.none?
     end
 
     private

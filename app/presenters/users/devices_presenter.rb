@@ -16,7 +16,7 @@ module Users
     def index
       devices = @user.devices
       devices.geocode_last_checkins
-      device_ids = devices.last_checkins.map { |checkin| checkin['device_id'] }
+      device_ids = devices.last_checkins.map { |checkin| checkin["device_id"] }
       devices = devices.index_by(&:id).values_at(*device_ids)
       devices += @user.devices.includes(:permissions)
       @devices = devices.uniq.paginate(page: @params[:page], per_page: 5)
@@ -26,12 +26,13 @@ module Users
       @device = Device.find(@params[:id])
       return unless (download_format = @params[:download])
       @filename = "device-#{@device.id}-checkins-#{Date.today}." + download_format
-      @checkins = @device.checkins.send('to_' + download_format)
+      @checkins = @device.checkins.send("to_" + download_format)
     end
 
     def shared
       @device = Device.find(@params[:id])
-      @checkin = @device.checkins.before(@device.delayed.to_i.minutes.ago).first.reverse_geocode!
+      @checkin = @device.checkins.before(@device.delayed.to_i.minutes.ago).first
+      @checkin&.reverse_geocode!
     end
 
     def info
@@ -71,19 +72,20 @@ module Users
       checkins = @user.devices.map do |device|
         device.checkins.first.as_json.merge(device: device.name) if device.checkins.exists?
       end.compact
-      checkins.sort_by { |checkin| checkin['created_at'] }.reverse
+      checkins.sort_by { |checkin| checkin["created_at"] }.reverse
     end
 
     def gon_shared_checkin
+      return unless @checkin
       checkin = Checkin.where(id: @checkin.id)
       if @checkin.device.fogged?
-        checkin.select('id', 'created_at', 'updated_at', 'device_id', 'fogged_lat AS lat', 'fogged_lng AS lng',
-                       'fogged_city AS address', 'fogged_city AS city', 'fogged_country_code AS postal_code',
-                       'fogged_country_code AS country_code')[0]
+        checkin.select("id", "created_at", "updated_at", "device_id", "fogged_lat AS lat", "fogged_lng AS lng",
+          "fogged_city AS address", "fogged_city AS city", "fogged_country_code AS postal_code",
+          "fogged_country_code AS country_code")[0]
       else
-        checkin.select('id', 'created_at', 'updated_at', 'device_id', 'output_lat AS lat', 'output_lng AS lng',
-                       'output_address AS address', 'output_city AS city', 'output_postal_code AS postal_code',
-                       'output_country_code AS country_code')[0]
+        checkin.select("id", "created_at", "updated_at", "device_id", "output_lat AS lat", "output_lng AS lng",
+          "output_address AS address", "output_city AS city", "output_postal_code AS postal_code",
+          "output_country_code AS country_code")[0]
       end
     end
 

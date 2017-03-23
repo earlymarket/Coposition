@@ -6,7 +6,7 @@ RSpec.describe Users::PermissionsController, type: :controller do
   let(:device) { FactoryGirl.create :device }
   let(:user) do
     u = create_user
-    device.checkins << FactoryGirl.create(:checkin)
+    device.checkins << FactoryGirl.create(:checkin, device: device)
     u.devices << device
     u
   end
