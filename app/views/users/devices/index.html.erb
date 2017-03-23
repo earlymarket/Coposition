@@ -24,7 +24,10 @@
 </section>
 <div>
   <% @presenter.devices.each do |device| %>
-    <%= render device %>
+    <div id="device<%=device.id%>">
+      <%= render device %>
+    </div>
+    <%= render partial: "device_modals", locals: {device: device} %>
   <% end %>
 </div>
 <div class="center"><%= will_paginate @presenter.devices %><div>

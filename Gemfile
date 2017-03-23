@@ -1,9 +1,10 @@
 source 'https://rubygems.org'
+
 ruby '2.3.1'
 
-gem 'rename'
 gem 'rails', '5.0.1'
 gem 'pg'
+gem 'redis'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
@@ -17,6 +18,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'devise'
 gem 'friendly_id', '~> 5.2.0'
 gem 'responders', '~> 2.0'
+gem 'rename'
 gem 'rack-cors', require: 'rack/cors'
 gem 'factory_girl_rails'
 gem 'faker'
@@ -31,14 +33,15 @@ gem 'inline_svg'
 gem 'gon', '~> 6.1.0'
 gem 'cloudinary', '~> 1.1.3'
 gem 'attachinary', '~> 1.3.1'
-gem 'sprockets', '>= 3.0.0'
-gem 'sprockets-es6'
-gem 'bower-rails', '~> 0.10.0'
-gem 'gpx'
-gem 'activeadmin', git: 'https://github.com/activeadmin/activeadmin'
-gem 'inherited_resources', git: 'https://github.com/activeadmin/inherited_resources'
-gem 'activerecord-import'
+gem "sprockets", ">= 3.0.0"
+gem "sprockets-es6"
+gem "bower-rails", "~> 0.10.0"
+gem "gpx"
+gem "activeadmin", git: "https://github.com/activeadmin/activeadmin"
+gem "inherited_resources", git: "https://github.com/activeadmin/inherited_resources"
+gem "activerecord-import"
 gem 'sidekiq'
+gem "interactor"
 
 group :production do
   gem 'puma'

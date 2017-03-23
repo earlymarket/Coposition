@@ -1,5 +1,5 @@
 class Device < ApplicationRecord
-  include SlackNotifiable, HumanizeMinutes, RemoveId
+  include SlackNotifiable, RemoveId
 
   belongs_to :user
   has_one :config, dependent: :destroy
@@ -15,13 +15,6 @@ class Device < ApplicationRecord
 
   before_create do |dev|
     dev.uuid = SecureRandom.uuid
-  end
-
-  def construct(current_user, device_name, icon_name)
-    if update(user: current_user, name: device_name, icon: icon_name)
-      developers << current_user.developers
-      permitted_users << current_user.friends
-    end
   end
 
   def safe_checkin_info_for(args)
@@ -104,23 +97,6 @@ class Device < ApplicationRecord
     "A new device was created, id: #{id}, name: #{name}, user_id: #{user_id}. There are now #{Device.count} devices"
   end
 
-  def update_delay(mins)
-    mins.to_i.zero? ? update(delayed: nil) : update(delayed: mins)
-  end
-
-  def switch_fog
-    update(fogged: !fogged)
-    fogged
-  end
-
-  def humanize_delay
-    if delayed.nil?
-      "#{name} is not delayed."
-    else
-      "#{name} delayed by #{humanize_minutes(delayed)}."
-    end
-  end
-
   def public_info
     # Clears out any potentially sensitive attributes, returns a normal ActiveRecord relation
     # Returns a normal ActiveRecord relation
@@ -137,6 +113,25 @@ class Device < ApplicationRecord
     data.merge!(remove_id.as_json)
     data.merge!(user.public_info.remove_id.as_json) if user
     subs.each { |subscription| subscription.send_data([data]) }
+  end
+
+  def broadcast_checkin_for_friends(checkin)
+    user.friends.find_each do |friend|
+      allowed_checkin = safe_checkin_info_for(permissible: friend, action: "last", type: "address")
+      next unless allowed_checkin && allowed_checkin[0]["id"] == checkin.id
+      ActionCable.server.broadcast "friends_#{friend.id}",
+                                   action: "checkin",
+                                   privilege: privilege_for(friend),
+                                   msg: checkin.as_json
+    end
+  end
+
+  def broadcast_destroy_checkin_for_friends(checkin)
+    user.friends.find_each do |friend|
+      ActionCable.server.broadcast "friends_#{friend.id}",
+                                   action: "destroy",
+                                   msg: checkin.as_json
+    end
   end
 
   def self.public_info
