@@ -1,6 +1,4 @@
 module ActionCableConfig
-  # Allows accessing config variables from harmony.yml like so:
-  #   Harmony[:domain] => harmonyapp.com
   def self.[](key)
     unless @config
       template = ERB.new(File.read(Rails.root + 'config/cable.yml'))
