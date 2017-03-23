@@ -27,10 +27,12 @@ describe NotifyAboutDestroyCheckin do
   end
 
   it "broadcasts destroy checkin message for friends" do
-    expect(ActionCable.server)
+    allow(ActionCable.server)
       .to receive(:broadcast)
-      .with "friends_#{friend.id}", destroy_checkin_message
+      .with("friends_#{friend.id}", destroy_checkin_message)
+      .and_return "ok"
 
     notify_about_destroy_checkin
+    expect(ActionCable.server).to have_received(:broadcast)
   end
 end

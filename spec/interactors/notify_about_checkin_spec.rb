@@ -28,10 +28,12 @@ describe NotifyAboutCheckin do
   end
 
   it "broadcasts checkin message for friends" do
-    expect(ActionCable.server)
+    allow(ActionCable.server)
       .to receive(:broadcast)
-      .with "friends_#{friend.id}", checkin_message
+      .with("friends_#{friend.id}", checkin_message)
+      .and_return "ok"
 
     notify_about_checkin
+    expect(ActionCable.server).to have_received(:broadcast)
   end
 end
