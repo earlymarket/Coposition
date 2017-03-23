@@ -12,8 +12,7 @@ class NotifyAboutCheckin
 
   def broadcast_checkin_for_friends
     device.user.friends.find_each do |friend|
-      binding.pry
-      next unless ConnectedList.all.include?(friend.id) && broadcast_checkin?(friend)
+      next unless ConnectedList.all.include?(friend.id.to_s) && broadcast_checkin?(friend)
       ActionCable.server.broadcast "friends_#{friend.id}",
                                    action: "checkin",
                                    privilege: device.privilege_for(friend),

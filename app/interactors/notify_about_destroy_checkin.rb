@@ -5,7 +5,7 @@ class NotifyAboutDestroyCheckin
 
   def call
     device.user.friends.find_each do |friend|
-      next unless ConnectedList.all.include? friend.id
+      next unless ConnectedList.all.include? friend.id.to_s
       ActionCable.server.broadcast "friends_#{friend.id}",
                                    action: "destroy",
                                    checkin: checkin.as_json,
