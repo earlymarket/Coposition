@@ -19,6 +19,10 @@ describe NotifyAboutCheckin do
     Approval.add_friend(friend, device.user)
     allow(ConnectedList).to receive(:all).and_return [friend.id.to_s]
     allow(device).to receive(:notify_subscribers)
+    allow(ActionCable.server)
+      .to receive(:broadcast)
+      .with("friends_#{friend.id}", checkin_message)
+      .and_return "ok"
   end
 
   it "notifies device subscribers" do
@@ -28,11 +32,6 @@ describe NotifyAboutCheckin do
   end
 
   it "broadcasts checkin message for friends" do
-    allow(ActionCable.server)
-      .to receive(:broadcast)
-      .with("friends_#{friend.id}", checkin_message)
-      .and_return "ok"
-
     notify_about_checkin
     expect(ActionCable.server).to have_received(:broadcast)
   end

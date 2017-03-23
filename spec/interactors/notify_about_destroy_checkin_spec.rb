@@ -16,6 +16,10 @@ describe NotifyAboutDestroyCheckin do
     Approval.add_friend(device.user, friend)
     Approval.add_friend(friend, device.user)
     allow(ConnectedList).to receive(:all).and_return [friend.id.to_s]
+    allow(ActionCable.server)
+      .to receive(:broadcast)
+      .with("friends_#{friend.id}", destroy_checkin_message)
+      .and_return "ok"
   end
 
   subject(:notify_about_destroy_checkin) do
@@ -27,11 +31,6 @@ describe NotifyAboutDestroyCheckin do
   end
 
   it "broadcasts destroy checkin message for friends" do
-    allow(ActionCable.server)
-      .to receive(:broadcast)
-      .with("friends_#{friend.id}", destroy_checkin_message)
-      .and_return "ok"
-
     notify_about_destroy_checkin
     expect(ActionCable.server).to have_received(:broadcast)
   end
