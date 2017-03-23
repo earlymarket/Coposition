@@ -3,8 +3,7 @@ class Developer < ApplicationRecord
 
   has_attachment :avatar
 
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
 
   has_many :requests, dependent: :destroy
   has_many :permissions, as: :permissible, dependent: :destroy
@@ -25,19 +24,19 @@ class Developer < ApplicationRecord
   end
 
   def public_info
-    Developer.select([:id, :email, :company_name, :tagline, :redirect_url]).find(id)
+    Developer.select(%i(id email company_name tagline redirect_url)).find(id)
   end
 
   def self.public_info
-    all.select([:id, :email, :company_name, :tagline, :redirect_url])
+    all.select(%i(id email company_name tagline redirect_url))
   end
 
-  def subscribed_to?(event)
+  def subscribed_to(event)
     subscriptions.find_by(event: event)
   end
 
   def notify_if_subscribed(event, data)
-    return unless zapier_enabled? && (sub = subscribed_to? event)
+    return unless zapier_enabled? && (sub = subscribed_to event)
     sub.send_data(data)
   end
 
@@ -46,8 +45,8 @@ class Developer < ApplicationRecord
   end
 
   def self.default(type)
-    return FactoryGirl.create(:developer) if Rails.env.test?
-    key = type[:coposition] ? 'coposition_api_key' : 'mobile_app_api_key'
+    key = type[:coposition] ? "coposition_api_key" : "mobile_app_api_key"
+    FactoryGirl.create(:developer, api_key: Rails.application.secrets[key]) if Rails.env.test?
     find_by(api_key: Rails.application.secrets[key])
   end
 end
