@@ -48,7 +48,7 @@ Rails.application.configure do
     "wss://coposition-staging.herokuapp.com/cable"
   end
   config.action_cable.allowed_request_origins = [
-    "https://#{ENV["CORS_REDIRECT_PROXY"]}",
+    ENV["CORS_REDIRECT_PROXY"],
     "https://coposition-staging.herokuapp.com",
     "https://coposition-staging-pr-*.herokuapp.com"
   ]
