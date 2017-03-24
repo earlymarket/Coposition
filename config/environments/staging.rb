@@ -43,17 +43,14 @@ Rails.application.configure do
 
   # Action Cable endpoint configuration
   config.action_cable.url = if ENV["CORS_REDIRECT_PROXY"]
-    "wss://#{ENV["CORS_REDIRECT_PROXY"]}/cable?state=#{Base64.encode64(ENV["HEROKU_HOST"])}"
+    "#{ENV['CORS_REDIRECT_PROXY']}?state=#{Base64.encode64('wss://' + ENV['HEROKU_HOST'] + '/cable')}"
   else
     "wss://coposition-staging.herokuapp.com/cable"
   end
   config.action_cable.allowed_request_origins = [
-    "http://#{ENV["CORS_REDIRECT_PROXY"]}",
     "https://#{ENV["CORS_REDIRECT_PROXY"]}",
-    "http://coposition-staging.herokuapp.com",
     "https://coposition-staging.herokuapp.com",
-    "http://coposition-staging-pr-*.herokuapp.com",
-    "https://coposition-staging-pr-*.herokuapp.com",
+    "https://coposition-staging-pr-*.herokuapp.com"
   ]
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
