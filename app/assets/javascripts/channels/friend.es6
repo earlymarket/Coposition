@@ -7,6 +7,8 @@ App.friend = App.cable.subscriptions.create("FriendChannel", {
 
   received: function(data) {
     switch (data.action) {
+      console.log(data.action);
+      console.log(data.msg);
       case "checkin":
         if ($(".c-friends.a-show_device").length === 0) { return };
 
