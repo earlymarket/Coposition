@@ -40,12 +40,12 @@ gem "gpx"
 gem "activeadmin", git: "https://github.com/activeadmin/activeadmin"
 gem "inherited_resources", git: "https://github.com/activeadmin/inherited_resources"
 gem "activerecord-import"
-gem 'sidekiq'
+gem "sidekiq"
 gem "interactor"
+gem "rails_12factor"
 
 group :production do
   gem "rack-timeout"
-  gem "rails_12factor"
 end
 
 group :production, :development do
