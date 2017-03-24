@@ -2,7 +2,7 @@
   "name": "CoPosition",
   "description": "Secure trusted geolocation",
   "scripts": {
-    "postdeploy": "pg_dump $STAGING_DATABASE_URL | psql $DATABASE_URL && bundle exec rake db:migrate"
+    "postdeploy": "pg_dump $STAGING_DATABASE_URL | psql $DATABASE_URL && bundle exec rake db:migrate && heroku config:set HEROKU_URL=$(heroku info -s | grep web_url | cut -d= -f2)"
   },
   "env": {
     "LANG": {
