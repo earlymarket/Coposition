@@ -26,13 +26,13 @@ class Users::CheckinsController < ApplicationController
   def create
     @checkin = device.checkins.create(allowed_params)
     NotifyAboutCheckin.call(device: device, checkin: @checkin)
-    flash[:notice] = 'Checked in.'
+    flash[:notice] = "Checked in."
   end
 
   def import
-    result = Users::Checkins::ImportCheckins.new(params)
+    result = Users::Checkins::ImportCheckins.call(params: params)
     if result.success?
-      flash[:notice] = 'Importing check-ins'
+      flash[:notice] = "Importing check-ins"
     else
       flash[:alert] = result.error
     end
@@ -52,7 +52,7 @@ class Users::CheckinsController < ApplicationController
   def destroy
     @checkin.delete
     NotifyAboutDestroyCheckin.call(device: device, checkin: @checkin)
-    flash[:notice] = 'Check-in deleted.'
+    flash[:notice] = "Check-in deleted."
   end
 
   def destroy_all

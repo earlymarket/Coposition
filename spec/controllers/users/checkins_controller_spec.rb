@@ -141,12 +141,18 @@ RSpec.describe Users::CheckinsController, type: :controller do
   end
 
   describe "POST #import" do
-    it "returns 400 if you POST an invalid file" do
-      filename = { path: "filename" }
-      allow(CSV).to receive(:foreach).with("filename", headers: true).and_return(false)
-      post :import, params: params.merge(file: filename)
+    let(:file) { fixture_file_upload("files/test_file.csv", "text/csv") }
+
+    it "returns an alert message and rediercts if invalid file" do
+      allow(CSV).to receive(:foreach).and_return(false)
+      post :import, params: params.merge(file: file)
       expect(flash[:alert]).to match("Invalid CSV file format")
       expect(response).to redirect_to(user_devices_path(user.url_id))
+    end
+
+    it "returns a helpful message if import succeeds" do
+      post :import, params: params.merge(file: file)
+      expect(flash[:notice]).to match("Importing check-ins")
     end
   end
 end
