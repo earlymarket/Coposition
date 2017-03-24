@@ -91,6 +91,7 @@ RSpec.configure do |config|
   end
 
   config.append_after(:each) do
+    CleanupCloudinary.clean
     DatabaseCleaner.clean
   end
 

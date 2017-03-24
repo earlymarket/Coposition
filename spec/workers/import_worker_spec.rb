@@ -2,7 +2,8 @@ require "rails_helper"
 
 RSpec.describe ImportWorker, type: :worker do
   subject(:import) { ImportWorker.new }
-  let(:device) { FactoryGirl.create :device }
+  let(:device) { FactoryGirl.create(:device, csv: File.open(file.path, "r")) }
+  let(:file) { fixture_file_upload("files/test_file.csv", "text/csv") }
   let(:checkin) { FactoryGirl.create :checkin, device: device }
   let(:params) { { "lat" => 10, "lng" => 10 } }
 
@@ -13,9 +14,8 @@ RSpec.describe ImportWorker, type: :worker do
 
     it "calls checkin_create_or_update_from_row" do
       allow(import).to receive(:checkin_create_or_update_from_row!)
-      allow(CSV).to receive(:foreach).and_yield("row")
       import.perform(device.id)
-      expect(import).to have_received(:checkin_create_or_update_from_row!)
+      expect(import).to have_received(:checkin_create_or_update_from_row!).twice
     end
   end
 

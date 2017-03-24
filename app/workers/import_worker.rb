@@ -10,6 +10,7 @@ class ImportWorker
         checkin_create_or_update_from_row!(row, device_id)
       end
     end
+    Cloudinary::Uploader.destroy(device.csv.public_id, resource_type: "raw")
   end
 
   def checkin_create_or_update_from_row!(row, device_id)

@@ -42,7 +42,6 @@ gem "inherited_resources", git: "https://github.com/activeadmin/inherited_resour
 gem "activerecord-import"
 gem "sidekiq"
 gem "interactor"
-gem "rails_12factor"
 
 group :production do
   gem "rack-timeout"
@@ -50,6 +49,7 @@ end
 
 group :production, :development do
   gem "puma"
+  gem "rails_12factor"
 end
 
 # Use Capistrano for deployment
