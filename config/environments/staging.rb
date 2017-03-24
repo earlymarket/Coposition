@@ -43,7 +43,7 @@ Rails.application.configure do
 
   # Action Cable endpoint configuration
   config.action_cable.url = if ENV["CORS_REDIRECT_PROXY"]
-    "wss://#{ENV["CORS_REDIRECT_PROXY"]}/cable?state=#{Base64.encode64(ENV["HEROKU_URL"])}"
+    "wss://#{ENV["CORS_REDIRECT_PROXY"]}/cable?state=#{Base64.encode64(ENV["HEROKU_HOST"])}"
   else
     "wss://coposition-staging.herokuapp.com/cable"
   end
