@@ -1,9 +1,12 @@
 class ImportWorker
   include Sidekiq::Worker
 
-  def perform(device_id, path)
+  def perform(device_id)
+    device = Device.find(device_id)
+    resource = Cloudinary::Api.resource(device.csv.public_id, resource_type: "raw")
+    download = Cloudinary::Downloader.download(resource["secure_url"])
     Checkin.transaction do
-      CSV.foreach(path, headers: true) do |row|
+      CSV.parse(download, headers: true) do |row|
         checkin_create_or_update_from_row!(row, device_id)
       end
     end

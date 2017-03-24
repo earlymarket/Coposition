@@ -5,7 +5,8 @@ module Users::Checkins
 
     def call
       if file && valid_file?
-        ImportWorker.perform_async(device.id, file.path)
+        device.update(csv: File.open(path, "r"))
+        ImportWorker.perform_async(device.id)
       else
         context.fail!(error: error)
       end
@@ -17,12 +18,16 @@ module Users::Checkins
       @file ||= params[:file]
     end
 
+    def path
+      @path ||= file.path
+    end
+
     def device
       @device ||= Device.find(params[:device_id])
     end
 
     def valid_file?
-      CSV.foreach(file.path, headers: true) do |csv|
+      CSV.foreach(path, headers: true) do |csv|
         return csv.headers == Checkin.column_names
       end
     end

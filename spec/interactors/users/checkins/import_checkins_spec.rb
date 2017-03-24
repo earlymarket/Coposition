@@ -16,7 +16,7 @@ RSpec.describe Users::Checkins::ImportCheckins, type: :interactor do
       end
 
       it "calls ImportWorker.perform async" do
-        allow(ImportWorker).to receive(:perform_async).with(device.id, file.path)
+        allow(ImportWorker).to receive(:perform_async).with(device.id)
         context
         expect(ImportWorker).to have_received(:perform_async)
       end

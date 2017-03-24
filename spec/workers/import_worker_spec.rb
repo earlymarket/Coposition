@@ -8,13 +8,13 @@ RSpec.describe ImportWorker, type: :worker do
 
   describe "perform" do
     it "pushes a job on to the queue" do
-      expect { ImportWorker.perform_async(device.id, "path") }.to change(ImportWorker.jobs, :size).by(1)
+      expect { ImportWorker.perform_async(device.id) }.to change(ImportWorker.jobs, :size).by(1)
     end
 
     it "calls checkin_create_or_update_from_row" do
       allow(import).to receive(:checkin_create_or_update_from_row!)
       allow(CSV).to receive(:foreach).and_yield("row")
-      import.perform(device.id, "path")
+      import.perform(device.id)
       expect(import).to have_received(:checkin_create_or_update_from_row!)
     end
   end
