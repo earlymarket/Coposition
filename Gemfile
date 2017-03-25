@@ -47,7 +47,7 @@ group :production do
   gem "rails_12factor"
 end
 
-group :production, :development do
+group :development, :staging, :production do
   gem "puma"
 end
 
