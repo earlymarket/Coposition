@@ -1,6 +1,7 @@
 App.friend = App.cable.subscriptions.create("FriendChannel", {
-  // connected: function() {
-  // },
+  connected: function() {
+    console.log("CONNECTED");
+  },
 
   disconnected: function() {
     console.log("DISCONNECTED");
