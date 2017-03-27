@@ -70,8 +70,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   end
 
   def accept_if_friend_request_or_adding_developer
-    if @user.request_from?(approvable) || approvable_type == "Developer"
-      Approval.accept(@user, approvable, approvable_type)
-    end
+    return unless @user.request_from?(approvable) || approvable_type == "Developer"
+    Approval.accept(@user, approvable, approvable_type)
   end
 end
