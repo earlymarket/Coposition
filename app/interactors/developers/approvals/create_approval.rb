@@ -6,7 +6,7 @@ module Developers::Approvals
 
     def call
       if user && approval.id
-        context.notice = 'Successfully sent'
+        context.notice = "Successfully sent"
         context.approval = approval
       else
         context.fail!(alert: alert)
@@ -16,15 +16,15 @@ module Developers::Approvals
     private
 
     def alert
-      user ? 'Approval already exists' : 'User does not exist'
+      user ? "Approval already exists" : "User does not exist"
     end
 
     def user
-      @user = User.find_by(email: params[:user])
+      @user ||= User.find_by(email: params[:user])
     end
 
     def approval
-      @approval = Approval.link(user, developer, 'Developer')
+      @approval ||= Approval.link(user, developer, "Developer")
     end
   end
 end

@@ -7,7 +7,7 @@ module Users::Approvals
     def call
       context.fail! unless approval
       current_user.destroy_permissions_for(approvable)
-      destroy_friend_side if approvable_type == 'User'
+      destroy_friend_side if approvable_type == "User"
       approval.destroy
       context.approvable_type = approvable_type
     end

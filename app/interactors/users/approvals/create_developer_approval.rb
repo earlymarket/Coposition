@@ -2,7 +2,7 @@ module Users::Approvals
   class CreateDeveloperApproval
     include Interactor
 
-    delegate :current_user, :params, to: :context
+    delegate :current_user, :approvable, to: :context
 
     def call
       context.developer = developer
@@ -14,7 +14,7 @@ module Users::Approvals
     private
 
     def developer
-      @developer ||= Developer.find_by(company_name: params[:approvable])
+      @developer ||= Developer.find_by(company_name: approvable)
     end
 
     def approval
