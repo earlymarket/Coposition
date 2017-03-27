@@ -126,10 +126,9 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
         expect(user.friends.include?(second_user)).to be true
       end
 
-      it 'should not be able to approve if not signed in user' do
+      it 'should not be able to approve approval belonging to another user' do
         put :update, params: approval_update_params.merge(user_id: second_user.id)
-        expect(res_hash[:error]).to match('Incorrect User')
-        expect(response.status).to be 403
+        expect(res_hash[:error]).to match('Approval does not exist')
         expect(user.approved?(developer)).to be false
       end
 

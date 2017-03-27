@@ -3,8 +3,6 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
 
   acts_as_token_authentication_handler_for User, except: :create
 
-  before_action :check_user, only: :update
-
   def create
     resource_exists?(approvable_type, approvable)
     Approval.link(@user, approvable, approvable_type)
@@ -51,10 +49,6 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
 
   def allowed_params
     params.require(:approval).permit(:user, :approvable, :approvable_type, :status)
-  end
-
-  def check_user
-    render status: 403, json: { error: "Incorrect User" } unless current_user?(params[:user_id])
   end
 
   def approvable_type
