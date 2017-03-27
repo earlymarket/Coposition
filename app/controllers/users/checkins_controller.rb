@@ -2,9 +2,9 @@ class Users::CheckinsController < ApplicationController
   protect_from_forgery except: :show
 
   before_action :authenticate_user!
-  before_action :require_checkin_ownership, except: [:index, :new, :create, :destroy_all]
-  before_action :require_device_ownership, only: [:index, :new, :create, :destroy_all]
-  before_action :find_checkin, only: [:show, :update, :destroy]
+  before_action :require_checkin_ownership, except: %i(index new create destroy_all)
+  before_action :require_device_ownership, only: %i(index new create destroy_all)
+  before_action :find_checkin, only: %i(show update destroy)
 
   def new
     @checkin = device.checkins.new
@@ -33,14 +33,9 @@ class Users::CheckinsController < ApplicationController
   end
 
   def update
-    if params[:checkin]
-      @checkin.update(allowed_params)
-      @checkin.refresh
-      return render status: 200, json: @checkin unless @checkin.errors.any?
-      render status: 400, json: @checkin.errors.messages
-    else
-      @checkin.switch_fog
-    end
+    result = Users::Checkins::UpdateCheckin.call(params: params)
+    @checkin = result.checkin
+    render status: 200, json: @checkin if params[:checkin]
   end
 
   def destroy
@@ -51,7 +46,7 @@ class Users::CheckinsController < ApplicationController
 
   def destroy_all
     Checkin.where(device: params[:device_id]).delete_all
-    flash[:notice] = 'History deleted.'
+    flash[:notice] = "History deleted."
     redirect_to user_device_path(current_user.url_id, params[:device_id])
   end
 
@@ -71,15 +66,13 @@ class Users::CheckinsController < ApplicationController
 
   def require_checkin_ownership
     return if user_owns_checkin?
-
-    flash[:alert] = 'You do not own that check-in.'
+    flash[:alert] = "You do not own that check-in."
     redirect_to root_path
   end
 
   def require_device_ownership
     return if current_user.devices.exists?(params[:device_id])
-
-    flash[:alert] = 'You do not own this device.'
+    flash[:alert] = "You do not own this device."
     redirect_to root_path
   end
 end

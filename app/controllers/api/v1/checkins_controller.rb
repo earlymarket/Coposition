@@ -51,24 +51,24 @@ class Api::V1::CheckinsController < Api::ApiController
       config = @dev.configs.find_by(device_id: @device.id)
       render json: { data: [checkin], config: config }
     else
-      render status: 400, json: { error: 'You must provide a lat and lng' }
+      render status: 400, json: { error: "You must provide a lat and lng" }
     end
   end
 
   def batch_create
-    result = ::Users::Checkins::BatchCreateCheckins.new(@device, request.raw_post)
-    if result.success
-      render json: { message: 'Checkins created' }, status: 200
+    result = ::Users::Checkins::BatchCreateCheckins.call(device: @device, post_content: request.raw_post)
+    if result.success?
+      render json: { data: result.checkins, message: "Checkins created" }, status: 200
     else
-      render json: { error: 'Checkins not created' }, status: 422
+      render json: { error: "Checkins not created" }, status: 422
     end
   end
 
   private
 
   def device_exists?
-    return unless (@device = Device.find_by(uuid: request.headers['X-UUID'])).nil?
-    render status: 400, json: { error: 'You must provide a valid uuid' }
+    return unless (@device = Device.find_by(uuid: request.headers["X-UUID"])).nil?
+    render status: 400, json: { error: "You must provide a valid uuid" }
   end
 
   def allowed_params
