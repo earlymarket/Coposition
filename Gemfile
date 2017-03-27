@@ -48,7 +48,7 @@ group :production do
 end
 
 group :development, :staging, :production do
-  gem "puma"
+  gem "puma", "3.6.0"
 end
 
 # Use Capistrano for deployment
