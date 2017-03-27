@@ -36,10 +36,10 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
 
   def index
     approvals = if params[:type]
-                  params[:type] == "friends" ? @user.friend_approvals : @user.developer_approvals
-                else
-                  @user.approvals
-                end
+      params[:type] == "friends" ? @user.friend_approvals : @user.developer_approvals
+    else
+      @user.approvals
+    end
     render json: approvals
   end
 
