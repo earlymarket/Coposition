@@ -29,7 +29,7 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def approve
-    result = Users::Approvals::ApproveApproval.call(
+    result = Users::Approvals::UpdateApproval.call(
       current_user: current_user,
       params: params
     )

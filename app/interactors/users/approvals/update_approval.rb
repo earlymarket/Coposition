@@ -1,5 +1,5 @@
 module Users::Approvals
-  class ApproveApproval
+  class UpdateApproval
     include Interactor
 
     delegate :current_user, :params, to: :context

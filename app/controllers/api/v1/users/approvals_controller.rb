@@ -15,7 +15,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   end
 
   def update
-    result = ::Users::Approvals::ApproveApproval.call(current_user: @user, params: params)
+    result = ::Users::Approvals::UpdateApproval.call(current_user: @user, params: params)
     if result.success?
       render json: result.approval.reload
       return unless result.approvable_type == 'Developer'
