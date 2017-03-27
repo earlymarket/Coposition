@@ -41,6 +41,7 @@ gem "activeadmin", git: "https://github.com/activeadmin/activeadmin"
 gem "inherited_resources", git: "https://github.com/activeadmin/inherited_resources"
 gem "activerecord-import"
 gem "interactor"
+gem "doorkeeper"
 
 group :production do
   gem "rack-timeout"

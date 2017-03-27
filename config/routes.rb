@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   ActiveAdmin.routes(self)
   mount ActionCable.server => "/cable"
   root to: 'welcome#index'
