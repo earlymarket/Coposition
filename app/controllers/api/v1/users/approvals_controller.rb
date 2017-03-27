@@ -10,7 +10,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
     Approval.link(@user, approvable, approvable_type)
     accept_if_friend_request_or_adding_developer if req_from_coposition_app?
     approval = @user.approval_for(approvable)
-    @dev.notify_if_subscribed('new_approval', approval_zapier_data(approval))
+    @dev.notify_if_subscribed("new_approval", approval_zapier_data(approval))
     render json: approval
   end
 
@@ -18,8 +18,8 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
     result = ::Users::Approvals::UpdateApproval.call(current_user: @user, params: params)
     if result.success?
       render json: result.approval.reload
-      return unless result.approvable_type == 'Developer'
-      result.approvable.notify_if_subscribed('new_approval', approval_zapier_data(result.approval))
+      return unless result.approvable_type == "Developer"
+      result.approvable.notify_if_subscribed("new_approval", approval_zapier_data(result.approval))
     else
       render status: 404, json: { error: "Approval does not exist" }
     end
@@ -36,7 +36,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
 
   def index
     approvals = if params[:type]
-                  params[:type] == 'friends' ? @user.friend_approvals : @user.developer_approvals
+                  params[:type] == "friends" ? @user.friend_approvals : @user.developer_approvals
                 else
                   @user.approvals
                 end
@@ -54,11 +54,11 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   end
 
   def check_user
-    render status: 403, json: { error: 'Incorrect User' } unless current_user?(params[:user_id])
+    render status: 403, json: { error: "Incorrect User" } unless current_user?(params[:user_id])
   end
 
   def approvable_type
-    req_from_coposition_app? ? allowed_params[:approvable_type] : 'Developer'
+    req_from_coposition_app? ? allowed_params[:approvable_type] : "Developer"
   end
 
   def approvable
@@ -70,7 +70,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   end
 
   def accept_if_friend_request_or_adding_developer
-    if @user.request_from?(approvable) || approvable_type == 'Developer'
+    if @user.request_from?(approvable) || approvable_type == "Developer"
       Approval.accept(@user, approvable, approvable_type)
     end
   end
