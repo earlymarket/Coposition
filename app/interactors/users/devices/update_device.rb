@@ -21,13 +21,13 @@ module Users::Devices
     def notice
       if params[:delayed]
         humanize_delay
-      elsif allowed_params[:published]
+      elsif !allowed_params[:published].nil?
         "Location sharing is #{boolean_to_state(@device.published)}."
-      elsif allowed_params[:cloaked]
+      elsif !allowed_params[:cloaked].nil?
         "Device cloaking is #{boolean_to_state(@device.cloaked)}."
       elsif allowed_params[:icon]
-        'Device icon updated'
-      elsif allowed_params[:fogged]
+        "Device icon updated"
+      elsif !allowed_params[:fogged].nil?
         "Location fogging is #{boolean_to_state(@device.fogged)}."
       end
     end
@@ -37,7 +37,7 @@ module Users::Devices
     end
 
     def boolean_to_state(boolean)
-      boolean ? 'on' : 'off'
+      boolean ? "on" : "off"
     end
 
     def update_delay(mins)
@@ -54,14 +54,14 @@ module Users::Devices
 
     def humanize_minutes(minutes)
       if minutes < 60
-        "#{minutes} #{'minute'.pluralize(minutes)}."
+        "#{minutes} #{'minute'.pluralize(minutes)}"
       elsif minutes < 1440
         hours = minutes / 60
         minutes = minutes % 60
-        "#{hours} #{'hour'.pluralize(hours)} and #{minutes} #{'minutes'.pluralize(minutes)}."
+        "#{hours} #{'hour'.pluralize(hours)} and #{minutes} #{'minutes'.pluralize(minutes)}"
       else
         days = minutes / 1440
-        "#{days} #{'day'.pluralize(days)}."
+        "#{days} #{'day'.pluralize(days)}"
       end
     end
 

@@ -1,8 +1,8 @@
 <div class="card">
   <div class="card-content">
     <div class="card-title">
-      <a class="modal-trigger icon-trigger" href="#icon<%=device.id%>" data-id=<%=device.id%>>
-        <i id="currentIcon<%=device.id%>" class="material-icons medium"><%=device.icon%></i>
+      <a class="modal-trigger icon-trigger" href="#icon<%= device.id %>" data-id=<%= device.id %>>
+        <i id="currentIcon<%= device.id %>" class="material-icons medium"><%= device.icon %></i>
       </a>
       <a id="<%= device.name %>" href="<%= user_device_path(current_user.url_id, device) %>">
         <span class="editable"><%= device.name %></span><i class="material-icons grey-text right edit-button">mode_edit</i>
@@ -22,7 +22,9 @@
             <% end %>
           </div>
           <div class="col s3">
-            <a class="modal-trigger valign-wrapper device-toggle delayedButton" id='delayButton<%=device.id%>' data-tooltip='Delay Settings' href="#delay<%=device.id%>"><%= attribute_icon(device.delayed, 'timer')%>&nbsp;Delay</a>
+            <a class="modal-trigger valign-wrapper device-toggle delayedButton" id='delayButton<%= device.id %>' data-tooltip='Delay Settings' href="#delay<%= device.id %>">
+              <%= attribute_icon(device.delayed, 'timer') %>&nbsp;Delay
+            </a>
           </div>
         </div>
       </div>
@@ -48,8 +50,9 @@
       <div class="row">
         <div class="col s12">
           <div class="col s6">
-            <a class="modal-trigger btn-flat device-button" id='downloadButton<%=device.id%>' href="#download<%=device.id%>">
-              <i class="material-icons right">file_download</i>Download check-ins</a>
+            <a class="modal-trigger btn-flat device-button" id='downloadButton<%= device.id %>' href="#download<%= device.id %>">
+              <i class="material-icons right">file_download</i>
+              Download check-ins
             </a>
           </div>
           <div class="col s6 valign-wrapper" id="sharedLink<%= device.id %>">
