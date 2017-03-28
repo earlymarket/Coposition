@@ -32,7 +32,7 @@ module Users
     end
 
     def form_path
-      show_device_user_friend_path(@user.url_id, @friend)
+      show_device_user_friend_path(@user.url_id, @friend, device_id: @device.id)
     end
 
     def form_range_filter(text, from)
