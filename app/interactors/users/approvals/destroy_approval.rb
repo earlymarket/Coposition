@@ -1,5 +1,5 @@
 module Users::Approvals
-  class RejectApproval
+  class DestroyApproval
     include Interactor
 
     delegate :current_user, :params, to: :context
@@ -16,7 +16,7 @@ module Users::Approvals
 
     def destroy_friend_side
       approvable.destroy_permissions_for(current_user)
-      Approval.where(user: approvable, approvable: current_user, approvable_type: 'User').destroy_all
+      Approval.where(user: approvable, approvable: current_user, approvable_type: "User").destroy_all
     end
 
     def approval

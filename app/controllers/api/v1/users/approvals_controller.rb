@@ -24,7 +24,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   end
 
   def destroy
-    result = ::Users::Approvals::RejectApproval.call(current_user: @user, params: params)
+    result = ::Users::Approvals::DestroyApproval.call(current_user: @user, params: params)
     if result.success?
       render status: 200, json: { message: "Approval Destroyed" }
     else

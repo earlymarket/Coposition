@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Users::Approvals::RejectApproval, type: :interactor do
+RSpec.describe Users::Approvals::DestroyApproval, type: :interactor do
   subject(:context) { described_class.call(current_user: user, params: { id: friend_approval.id }) }
 
   let(:user) { FactoryGirl.create :user }

@@ -19,32 +19,32 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def apps
-    approvals_presenter_and_gon('Developer')
-    render 'approvals'
+    approvals_presenter_and_gon("Developer")
+    render "approvals"
   end
 
   def friends
-    approvals_presenter_and_gon('User')
-    render 'approvals'
+    approvals_presenter_and_gon("User")
+    render "approvals"
   end
 
-  def approve
+  def update
     result = Users::Approvals::UpdateApproval.call(
       current_user: current_user,
       params: params
     )
     approvals_presenter_and_gon(result.approvable_type)
-    return unless result.approvable_type == 'Developer'
-    result.approvable.notify_if_subscribed('new_approval', approval_zapier_data(result.approval))
+    return unless result.approvable_type == "Developer"
+    result.approvable.notify_if_subscribed("new_approval", approval_zapier_data(result.approval))
   end
 
-  def reject
-    result = Users::Approvals::RejectApproval.call(
+  def destroy
+    result = Users::Approvals::DestroyApproval.call(
       current_user: current_user,
       params: params
     )
     approvals_presenter_and_gon(result.approvable_type)
-    render 'approve'
+    render "update"
   end
 
   private
