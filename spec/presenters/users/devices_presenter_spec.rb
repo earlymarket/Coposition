@@ -14,10 +14,11 @@ describe ::Users::DevicesPresenter do
     FactoryGirl.create(:checkin, device_id: device.id).reverse_geocode!
     FactoryGirl.create(:checkin, device_id: device.id)
   end
+  let(:devices_show) { described_class.new(user, { id: device.id }, "show") }
 
   describe "Interface" do
-    %i(user devices device checkins filename config index show
-       shared info index_gon show_gon shared_gon).each do |method|
+    %i(user devices device checkins filename config index show shared info
+       index_gon show_gon shared_gon form_for form_path form_range_filter).each do |method|
       it { is_expected.to respond_to method }
     end
   end
@@ -125,16 +126,14 @@ describe ::Users::DevicesPresenter do
   end
 
   describe "show_gon" do
-    let(:devices) { described_class.new(user, { id: device.id }, "show") }
-
     it "returns a hash" do
-      expect(devices.show_gon).to be_kind_of Hash
+      expect(devices_show.show_gon).to be_kind_of Hash
     end
 
-    it "calls show_checkins" do
-      allow(devices).to receive(:show_checkins)
-      devices.show_gon
-      expect(devices).to have_received(:show_checkins)
+    it "calls gon_show_checkins" do
+      allow(devices_show).to receive(:gon_show_checkins).and_return device.checkins
+      devices_show.show_gon
+      expect(devices_show).to have_received(:gon_show_checkins).twice
     end
   end
 
@@ -201,11 +200,15 @@ describe ::Users::DevicesPresenter do
     end
   end
 
-  describe "show_checkins" do
-    let(:devices) { described_class.new(user, { id: device.id }, "show") }
-
+  describe "gon_show_checkins" do
     it "returns an ActiveRecord AssociationRelation" do
-      expect(devices.send(:show_checkins)).to be_kind_of ActiveRecord::AssociationRelation
+      expect(devices_show.send(:gon_show_checkins)).to be_kind_of ActiveRecord::Associations::CollectionProxy
+    end
+  end
+
+  describe "gon_show_checkins_paginated" do
+    it "returns an ActiveRecord AssociationRelation" do
+      expect(devices_show.send(:gon_show_checkins_paginated)).to be_kind_of ActiveRecord::AssociationRelation
     end
 
     context "with checkins" do
@@ -214,8 +217,26 @@ describe ::Users::DevicesPresenter do
       end
 
       it "removes excess attributes" do
-        expect(devices.send(:show_checkins)[0]).not_to respond_to(:fogged_lat)
+        expect(devices_show.send(:gon_show_checkins_paginated)[0]).not_to respond_to(:fogged_lat)
       end
+    end
+  end
+
+  describe "form_for" do
+    it "returns a Device" do
+      expect(devices_show.form_for).to be_kind_of Device
+    end
+  end
+
+  describe "form_path" do
+    it "returns show device path" do
+      expect(devices_show.form_path).to eq "/users/#{user.url_id}/devices/#{device.id}"
+    end
+  end
+
+  describe "form_range_filter" do
+    it "returns a link to get checkins for a certain range" do
+      expect(devices_show.form_range_filter("range", 1.week.ago)).to match "range</a>"
     end
   end
 end

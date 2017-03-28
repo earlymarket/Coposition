@@ -21,7 +21,8 @@ describe ::Users::FriendsPresenter do
   end
 
   describe "Interface" do
-    %i(friend devices device show show_device index_gon show_device_gon show_checkins).each do |method|
+    %i(friend devices device show show_device index_gon show_device_gon show_checkins form_for form_path
+       form_range_filter).each do |method|
       it { is_expected.to respond_to method }
     end
   end
@@ -117,6 +118,24 @@ describe ::Users::FriendsPresenter do
     it "returns device.safe_checkin_info_for" do
       checkins = device.safe_checkin_info_for(permissible: user, action: "index", multiple_devices: true)
       expect(friends.send(:device_checkins)).to eq checkins
+    end
+  end
+
+  describe "form_for" do
+    it "returns a User" do
+      expect(friends.form_for).to be_kind_of User
+    end
+  end
+
+  describe "form_path" do
+    it "returns friends show device path" do
+      expect(friends.form_path).to eq "/users/#{user.url_id}/friends/#{friend.url_id}/show_device"
+    end
+  end
+
+  describe "form_range_filter" do
+    it "returns a link to get checkins for a certain range" do
+      expect(friends.form_range_filter("range", 1.week.ago)).to match "range</a>"
     end
   end
 end

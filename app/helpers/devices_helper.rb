@@ -70,8 +70,4 @@ module DevicesHelper
       "<p class='icon-label'>#{icon}</p>".html_safe
     end
   end
-
-  def devices_range_filter(text, from)
-    link_to(text, user_device_path(current_user.url_id, @presenter.device, from: from, to: Date.today), { method: :get })
-  end
 end
