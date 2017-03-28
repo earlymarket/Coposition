@@ -104,22 +104,20 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     end
   end
 
-  describe "GET #apps" do
-    it "assigns current users apps, devices, pending" do
+  describe "GET #index" do
+    it "assigns current users apps, devices, pending with Developer type" do
       approval.update(status: "accepted", approvable_id: developer.id, approvable_type: "Developer")
-      get :apps, params: user_params
+      get :index, params: user_params.merge(approvable_type: "Developer")
       expect(assigns(:presenter).approved).to eq user.not_coposition_developers
       expect(assigns(:presenter).devices).to eq user.devices
       expect(assigns(:presenter).pending).to eq user.developer_requests
     end
-  end
 
-  describe "GET #friends" do
-    it "assigns current users friends" do
+    it "assigns current users friends with User type" do
       approval.update(status: "requested", approvable_id: friend.id, approvable_type: "User")
       approval_two.update(status: "pending", approvable_id: user.id, approvable_type: "User")
       Approval.accept(user, friend, "User")
-      get :friends, params: user_params
+      get :index, params: user_params.merge(approvable_type: "User")
       expect(assigns(:presenter).pending).to eq user.friend_requests
       expect(assigns(:presenter).approved).to eq user.friends
       expect(assigns(:presenter).devices).to eq user.devices

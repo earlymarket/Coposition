@@ -18,13 +18,8 @@ class Users::ApprovalsController < ApplicationController
     redirect_to(result.path, result.message)
   end
 
-  def apps
-    approvals_presenter_and_gon("Developer")
-    render "approvals"
-  end
-
-  def friends
-    approvals_presenter_and_gon("User")
+  def index
+    approvals_presenter_and_gon(params[:approvable_type])
     render "approvals"
   end
 
