@@ -28,9 +28,9 @@ module Users::Devices
 
     def device_error(device_name)
       if @device.blank?
-        'UUID does not match an existing device'
+        "UUID does not match an existing device"
       elsif @device.user.present?
-        'Device is registered to another user'
+        "Device is registered to another user"
       elsif user.devices.where(name: device_name).present?
         "You already have a device with the name #{device_name}"
       end
