@@ -32,11 +32,11 @@ module Users
     end
 
     def form_path
-      show_device_user_friend_path(current_user.url_id, @friend)
+      show_device_user_friend_path(@user.url_id, @friend)
     end
 
     def form_range_filter(text, from)
-      link_to(text, show_device_user_friend_path(current_user.url_id, @friend,
+      link_to(text, show_device_user_friend_path(@user.url_id, @friend,
         device_id: @device, from: from, to: Time.zone.today), method: :get)
     end
 
@@ -76,7 +76,7 @@ module Users
       @date_range = checkins_date_range
       checkins = device.permitted_history_for(@user)
       checkins = checkins.where(created_at: @date_range[:from]..@date_range[:to]) if @date_range[:from]
-      device.replace_checkin_attributes(@user, checkins)
+      device.replace_checkin_attributes(checkins, @user)
     end
   end
 end
