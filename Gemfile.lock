@@ -535,7 +535,7 @@ DEPENDENCIES
   pry
   pry-byebug
   pry-rails
-  puma (= 3.6.0)
+  puma
   rack-cors
   rack-timeout
   rails (= 5.0.0.1)
