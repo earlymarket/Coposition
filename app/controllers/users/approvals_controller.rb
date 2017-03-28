@@ -28,9 +28,10 @@ class Users::ApprovalsController < ApplicationController
       current_user: current_user,
       params: params
     )
+    if result.approvable_type == "Developer"
+      result.approvable.notify_if_subscribed("new_approval", approval_zapier_data(result.approval))
+    end
     approvals_presenter_and_gon(result.approvable_type)
-    return unless result.approvable_type == "Developer"
-    result.approvable.notify_if_subscribed("new_approval", approval_zapier_data(result.approval))
   end
 
   def destroy

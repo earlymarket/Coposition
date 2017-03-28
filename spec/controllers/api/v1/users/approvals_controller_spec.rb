@@ -115,10 +115,16 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
         expect(user.approved?(developer)).to be true
       end
 
+      it "returns the new approval" do
+        put :update, params: approval_update_params
+        expect(res_hash[:id]).to eq user.approval_for(developer).id
+      end
+
       it "is able to approve a user approval request" do
         Approval.link(user, second_user, "User")
         expect(user.friends.include?(second_user)).to be false
         put :update, params: approval_update_params.merge(id: Approval.find_by(user: user, approvable_type: "User").id)
+        expect(res_hash[:id]).to eq user.approval_for(second_user).id
         expect(second_user.friends.include?(user)).to be true
         expect(user.friends.include?(second_user)).to be true
       end

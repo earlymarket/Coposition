@@ -15,8 +15,9 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   def update
     result = ::Users::Approvals::UpdateApproval.call(current_user: @user, params: params)
     if result.success?
-      return unless result.approvable_type == "Developer"
-      result.approvable.notify_if_subscribed("new_approval", approval_zapier_data(result.approval))
+      if result.approvable_type == "Developer"
+        result.approvable.notify_if_subscribed("new_approval", approval_zapier_data(result.approval))
+      end
       render json: result.approval.reload
     else
       render status: 404, json: { error: "Approval does not exist" }
