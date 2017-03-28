@@ -28,7 +28,7 @@ class Checkin < ApplicationRecord
       assign_values
       save
     else
-      raise 'Checkin is not assigned to a device.' unless Rails.env.test?
+      raise 'Checkin is not assigned to a device.'
     end
   end
 
@@ -47,11 +47,7 @@ class Checkin < ApplicationRecord
   end
 
   def update_output
-    if fogged || device.fogged
-      assign_output_to_fogged
-    else
-      assign_output_to_unfogged
-    end
+    fogged ? assign_output_to_fogged : assign_output_to_unfogged
   end
 
   def assign_output_to_fogged
@@ -87,13 +83,6 @@ class Checkin < ApplicationRecord
 
   def reverse_geocoded?
     address != 'Not yet geocoded'
-  end
-
-  def switch_fog
-    update(fogged: !fogged)
-    return if device.fogged
-    update_output
-    save
   end
 
   def set_edited
@@ -154,7 +143,7 @@ class Checkin < ApplicationRecord
       one_time_range_ago = 1.send(time_range).ago
       recent_checkins_count = where(created_at: one_time_range_ago..Time.now).count.to_f
       older_checkins_count = where(created_at: 2.send(time_range).ago..one_time_range_ago).count.to_f
-      return unless [recent_checkins_count, older_checkins_count].all? & :positive?
+      return unless [recent_checkins_count, older_checkins_count].all?(&:positive?)
       (((recent_checkins_count / older_checkins_count) - 1) * 100).round(2)
     end
 

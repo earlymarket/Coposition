@@ -58,6 +58,27 @@
     margin-top: 55px;
   }
 
+  .myProgress {
+    z-index: 10;
+    position: relative;
+    height: 4px;
+    display: block;
+    width: 100%;
+    background-color: white;
+    border-radius: 2px;
+    margin: 0rem 0 1rem 0;
+    overflow: hidden;
+
+    .myDeterminate {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      background-color: #ffc952;
+      transition: width .5s linear;
+    }
+  }
+
   .bottom-panel {
     position: absolute;
     bottom: 0px;

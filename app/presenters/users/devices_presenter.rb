@@ -7,6 +7,9 @@ module Users
     attr_reader :filename
     attr_reader :config
     attr_reader :date_range
+    attr_reader :forn_for
+    attr_reader :form_path
+    attr_reader :form_range_fiter
 
     def initialize(user, params, action)
       @user = user
@@ -17,7 +20,7 @@ module Users
     def index
       devices = @user.devices
       devices.geocode_last_checkins
-      device_ids = devices.last_checkins.map { |checkin| checkin['device_id'] }
+      device_ids = devices.last_checkins.map { |checkin| checkin["device_id"] }
       devices = devices.index_by(&:id).values_at(*device_ids)
       devices += @user.devices.includes(:permissions)
       @devices = devices.uniq.paginate(page: @params[:page], per_page: 5)
@@ -28,12 +31,25 @@ module Users
       @date_range = checkins_date_range
       return unless (download_format = @params[:download])
       @filename = "device-#{@device.id}-checkins-#{Date.today}." + download_format
-      @checkins = @device.checkins.send('to_' + download_format)
+      @checkins = @device.checkins.send("to_" + download_format)
+    end
+
+    def form_for
+      @device
+    end
+
+    def form_path
+      user_device_path(@user.url_id, @device)
+    end
+
+    def form_range_filter(text, from)
+      link_to(text, user_device_path(@user.url_id, @device, from: from, to: Time.zone.today), method: :get)
     end
 
     def shared
       @device = Device.find(@params[:id])
-      @checkin = @device.checkins.before(@device.delayed.to_i.minutes.ago).first.reverse_geocode!
+      @checkin = @device.checkins.before(@device.delayed.to_i.minutes.ago).first
+      @checkin&.reverse_geocode!
     end
 
     def info
@@ -73,14 +89,21 @@ module Users
       checkins = @user.devices.map do |device|
         device.checkins.first.as_json.merge(device: device.name) if device.checkins.exists?
       end.compact
-      checkins.sort_by { |checkin| checkin['created_at'] }.reverse
+      checkins.sort_by { |checkin| checkin["created_at"] }.reverse
     end
 
     def gon_shared_checkin
-      Checkin.where(id: @checkin.id)
-             .select('id', 'created_at', 'updated_at', 'device_id', 'output_lat AS lat', 'output_lng AS lng',
-                     'output_address AS address', 'output_city AS city', 'output_postal_code AS postal_code',
-                     'output_country_code AS country_code')[0]
+      return unless @checkin
+      checkin = Checkin.where(id: @checkin.id)
+      if @checkin.device.fogged?
+        checkin.select("id", "created_at", "updated_at", "device_id", "fogged_lat AS lat", "fogged_lng AS lng",
+          "fogged_city AS address", "fogged_city AS city", "fogged_country_code AS postal_code",
+          "fogged_country_code AS country_code")[0]
+      else
+        checkin.select("id", "created_at", "updated_at", "device_id", "output_lat AS lat", "output_lng AS lng",
+          "output_address AS address", "output_city AS city", "output_postal_code AS postal_code",
+          "output_country_code AS country_code")[0]
+      end
     end
 
     def gon_show_checkins_paginated

@@ -19,11 +19,10 @@ module DevicesHelper
     return nil unless device.published?
 
     link = Rails.application.routes.url_helpers.shared_user_device_url(id: device.id, user_id: device.user_id)
-    linkbox_id = "#linkbox#{device.id}"
-    output = text_field_tag(nil, link, class: 'linkbox', id: linkbox_id)
+    output = text_field_tag(nil, link, class: 'linkbox truncate', id: "linkbox#{device.id}")
     output << content_tag(:i, 'assignment', class: 'material-icons tooltipped clip_button',
                                             data: {
-                                              'clipboard-target': linkbox_id,
+                                              'clipboard-target': "#linkbox#{device.id}",
                                               tooltip: 'Click to copy', position: 'right'
                                             })
     output
@@ -51,8 +50,9 @@ module DevicesHelper
   end
 
   def devices_choose_icon(device, icon)
-    link_to user_device_path(current_user.url_id, device.id, icon: icon),
-            class: 'col s2', method: :put, remote: true, data: { icon: icon } do
+    link_to Rails.application.routes.url_helpers
+      .user_device_path(current_user.url_id, device.id, device: { icon: icon }),
+      class: "col s2", method: :put, remote: true, data: { icon: icon } do
       if device.icon == icon
         "<i class='material-icons medium active'>#{icon}</i>#{icon_label(icon)}".html_safe
       else

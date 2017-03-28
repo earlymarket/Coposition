@@ -1,4 +1,7 @@
 class ApplicationPresenter
+  include Rails.application.routes.url_helpers
+  include ActionView::Helpers::UrlHelper
+
   attr_reader :checkins_date_range
   def checkins_date_range
     return { from: nil, to: nil } unless @params[:from].present?

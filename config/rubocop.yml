@@ -54,3 +54,8 @@ Style/StringMethods:
 
 Style/SpaceInsideParens:
   Enabled: false
+
+Style/MethodName:
+  Description: 'Use the configured style when naming methods.'
+  StyleGuide: '#snake-case-symbols-methods-vars'
+  Enabled: true  

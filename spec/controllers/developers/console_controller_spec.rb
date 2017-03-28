@@ -13,7 +13,7 @@ RSpec.describe Developers::ConsolesController, type: :controller do
   describe '#show' do
     it 'should assign requests today and unpaid requests' do
       get :show, params: developer_params
-      expect(assigns(:requests_today)).to eq developer.requests.recent(1.day.ago).count
+      expect(assigns(:requests_today)).to eq developer.requests.since(1.day.ago).count
       expect(assigns(:unpaid)).to eq developer.requests.where(paid: false).count
     end
   end

@@ -11,7 +11,7 @@ RSpec.describe WelcomeController, type: :controller do
       Rails.env = 'production'
       get :index
       Rails.env = 'test'
-      expect(response).to render_template('placeholder')
+      expect(response).to render_template('welcome/placeholder_users')
     end
 
     it 'should let you bypass the placeholder if you set something on admin' do
