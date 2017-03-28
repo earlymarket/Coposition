@@ -4,6 +4,7 @@ class Api::ApiController < ActionController::API
   rescue_from ::ActionController::ParameterMissing, with: :render_400_and_error
 
   before_action :find_user, :authenticate
+  before_action :doorkeeper_authorize! :public # Require access token for all actions
 
   private
 

@@ -28,7 +28,7 @@ Rails.application.routes.draw do
   # API
 
   namespace :api, path: '', constraints: { subdomain: 'api' }, defaults: { format: 'json' } do
-    scope module: :v1, constraints: ApiConstraint.new(version: 1, default: true) do
+    scope module: :v1, constraints: Constraints::ApiConstraint.new(version: 1, default: true) do
       resources :subscriptions, only: [:create, :destroy]
       resources :configs, only: [:index, :show, :update]
       resource :uuid, only: [:show]
