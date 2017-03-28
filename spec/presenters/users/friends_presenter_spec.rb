@@ -19,6 +19,7 @@ describe ::Users::FriendsPresenter do
     FactoryGirl.create(:checkin, device_id: device.id).reverse_geocode!
     FactoryGirl.create(:checkin, device_id: device.id)
   end
+  let(:friends_show_device) { described_class.new(user, { id: friend.id, device_id: device.id }, "show_device") }
 
   describe "Interface" do
     %i(friend devices device show show_device index_gon show_device_gon show_checkins form_for form_path
@@ -123,19 +124,21 @@ describe ::Users::FriendsPresenter do
 
   describe "form_for" do
     it "returns a User" do
-      expect(friends.form_for).to be_kind_of User
+      expect(friends_show_device.form_for).to be_kind_of User
     end
   end
 
   describe "form_path" do
     it "returns friends show device path" do
-      expect(friends.form_path).to eq "/users/#{user.url_id}/friends/#{friend.url_id}/show_device"
+      expect(friends_show_device.form_path).to eq(
+        "/users/#{user.url_id}/friends/#{friend.url_id}/show_device?device_id=#{device.id}"
+      )
     end
   end
 
   describe "form_range_filter" do
     it "returns a link to get checkins for a certain range" do
-      expect(friends.form_range_filter("range", 1.week.ago)).to match "range</a>"
+      expect(friends_show_device.form_range_filter("range", 1.week.ago)).to match "range</a>"
     end
   end
 end
