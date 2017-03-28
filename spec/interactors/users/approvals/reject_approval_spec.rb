@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Users::Approvals::DestroyApproval, type: :interactor do
-  subject(:context) { described_class.call(current_user: user, params: { id: friend_approval.id }) }
+  subject(:destroy_context) { described_class.call(current_user: user, params: { id: friend_approval.id }) }
 
   let(:user) { FactoryGirl.create :user }
   let(:friend) { FactoryGirl.create :user }
@@ -19,31 +19,31 @@ RSpec.describe Users::Approvals::DestroyApproval, type: :interactor do
   describe "call" do
     context "when given valid user arguments" do
       it "succeeds" do
-        expect(context).to be_a_success
+        expect(destroy_context).to be_a_success
       end
 
       it "provides the approvable type" do
-        expect(context.approvable_type).to eq friend_approval.approvable_type
+        expect(destroy_context.approvable_type).to eq friend_approval.approvable_type
       end
     end
 
     context "when given valid developer arguments" do
-      subject(:context) { described_class.call(current_user: user, params: { id: developer_approval.id }) }
+      subject(:destroy_context) { described_class.call(current_user: user, params: { id: developer_approval.id }) }
 
       it "succeeds" do
-        expect(context).to be_a_success
+        expect(destroy_context).to be_a_success
       end
 
       it "provides the approvable type" do
-        expect(context.approvable_type).to eq developer_approval.approvable_type
+        expect(destroy_context.approvable_type).to eq developer_approval.approvable_type
       end
     end
 
     context "when approval doesn't exist" do
-      subject(:context) { described_class.call(current_user: user, params: { id: "wrong" }) }
+      subject(:destroy_context) { described_class.call(current_user: user, params: { id: "wrong" }) }
 
       it "fails" do
-        expect(context).to be_a_failure
+        expect(destroy_context).to be_a_failure
       end
     end
   end
