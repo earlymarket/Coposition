@@ -401,11 +401,6 @@ window.COPO.maps = {
     map.fitBounds(BOUNDS, {padding: [40, 40]})
   },
 
-  refreshFriendMarkers(checkins) {
-    map.removeLayer(COPO.maps.friendMarkers);
-    COPO.maps.addFriendMakers(checkins);
-  },
-
   bindFriendMarkers(checkins) {
     let markers = COPO.maps.friendsCheckinsToCluster(checkins);
     markers.eachLayer((marker) => {
@@ -420,11 +415,13 @@ window.COPO.maps = {
         marker.openPopup();
       });
     });
-    return markers
+    return markers;
   },
 
   refreshFriendMarkers(checkins) {
-    if(COPO.maps.friendMarkers) { map.removeLayer(COPO.maps.friendMarkers) }
+    if(COPO.maps.friendMarkers.length) {
+      map.removeLayer(COPO.maps.friendMarkers);
+    }
     COPO.maps.addFriendMarkers(checkins);
   },
 
