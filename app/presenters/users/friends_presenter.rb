@@ -10,7 +10,7 @@ module Users
     attr_reader :date_range
     attr_reader :forn_for
     attr_reader :form_path
-    attr_reader :form_range_fiter
+    attr_reader :form_range_filter
 
     def initialize(user, params, action)
       @user = user
