@@ -18,11 +18,11 @@ module Users
     end
 
     def index
-      devices = @user.devices
+      devices = user.devices
       devices.geocode_last_checkins
       device_ids = devices.last_checkins.map { |checkin| checkin["device_id"] }
       devices = devices.index_by(&:id).values_at(*device_ids)
-      devices += @user.devices.includes(:permissions)
+      devices += user.devices.includes(:permissions)
       @devices = devices.uniq.paginate(page: @params[:page], per_page: 5)
     end
 
@@ -30,63 +30,63 @@ module Users
       @device = Device.find(@params[:id])
       @date_range = checkins_date_range
       return unless (download_format = @params[:download])
-      @filename = "device-#{@device.id}-checkins-#{Date.today}." + download_format
-      @checkins = @device.checkins.send("to_" + download_format)
-    end
-
-    def form_for
-      @device
-    end
-
-    def form_path
-      user_device_path(@user.url_id, @device)
-    end
-
-    def form_range_filter(text, from)
-      link_to(text, user_device_path(@user.url_id, @device, from: from, to: Time.zone.today), method: :get)
+      @filename = "device-#{device.id}-checkins-#{Date.today}." + download_format
+      @checkins = device.checkins.send("to_" + download_format)
     end
 
     def shared
       @device = Device.find(@params[:id])
-      @checkin = @device.checkins.before(@device.delayed.to_i.minutes.ago).first
+      @checkin = device.checkins.before(device.delayed.to_i.minutes.ago).first
       @checkin&.reverse_geocode!
     end
 
     def info
       @device = Device.find(@params[:id])
-      @config = @device.config
+      @config = device.config
     end
 
     def index_gon
       {
         checkins: gon_index_checkins,
-        current_user_id: @user.id,
-        devices: @devices,
-        permissions: @devices.map { |device| device.permissions.not_coposition_developers }.inject(:+)
+        current_user_id: user.id,
+        devices: devices,
+        permissions: devices.map { |device| device.permissions.not_coposition_developers }.inject(:+)
       }
     end
 
     def show_gon
       {
         checkins: gon_show_checkins_paginated,
-        device: @device.id,
-        current_user_id: @user.id,
+        device: device.id,
+        current_user_id: user.id,
         total: gon_show_checkins.count
       }
     end
 
     def shared_gon
       {
-        device: @device.public_info,
-        user: @device.user.public_info_hash,
+        device: device.public_info,
+        user: device.user.public_info_hash,
         checkin: gon_shared_checkin
       }
+    end
+
+    def form_for
+      device
+    end
+
+    def form_path
+      user_device_path(user.url_id, device)
+    end
+
+    def form_range_filter(text, from)
+      link_to(text, user_device_path(user.url_id, device, from: from, to: Time.zone.today), method: :get)
     end
 
     private
 
     def gon_index_checkins
-      checkins = @user.devices.map do |device|
+      checkins = user.devices.map do |device|
         device.checkins.first.as_json.merge(device: device.name) if device.checkins.exists?
       end.compact
       checkins.sort_by { |checkin| checkin["created_at"] }.reverse
@@ -112,7 +112,7 @@ module Users
     end
 
     def gon_show_checkins
-      @date_range[:from] ? @device.checkins.where(created_at: @date_range[:from]..@date_range[:to]) : @device.checkins
+      date_range[:from] ? device.checkins.where(created_at: date_range[:from]..date_range[:to]) : device.checkins
     end
   end
 end

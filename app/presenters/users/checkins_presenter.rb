@@ -11,7 +11,7 @@ module Users
 
     def index
       @device = Device.find(@params[:device_id])
-      @per_page = @params[:per_page].to_i <= 1000 ? @params[:per_page] : 1000
+      @per_page = [@params[:per_page].to_i, 1000].min
       range = checkins_date_range
       @checkins = range[:from] ? @device.checkins.where(created_at: range[:from]..range[:to]) : @device.checkins
     end

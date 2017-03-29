@@ -235,8 +235,15 @@ describe ::Users::DevicesPresenter do
   end
 
   describe "form_range_filter" do
-    it "returns a link to get checkins for a certain range" do
-      expect(devices_show.form_range_filter("range", 1.week.ago)).to match "range</a>"
+    let(:date) { 1.week.ago }
+    let(:output) { devices_show.form_range_filter("range", date) }
+
+    it "returns a link containing the provided text to get checkins for a certain range" do
+      expect(output).to match "range"
+    end
+
+    it "returns a link containing the provided range" do
+      expect(output).to match date.to_date.to_s
     end
   end
 end

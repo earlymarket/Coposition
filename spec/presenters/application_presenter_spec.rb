@@ -9,7 +9,7 @@ describe ApplicationPresenter do
 
   describe "checkins_date_range" do
     before do
-      application_presenter.instance_variable_set("@params", from: nil, to: nil)
+      allow(application_presenter).to receive(:params).and_return from: nil, to: nil
     end
 
     it "returns from to hash with nil values" do
@@ -17,7 +17,7 @@ describe ApplicationPresenter do
     end
 
     it "returns from beginning of day to end of day hash values" do
-      application_presenter.instance_variable_set("@params", from: "2017-03-25", to: "2017-03-27")
+      allow(application_presenter).to receive(:params).and_return from: "2017-03-25", to: "2017-03-27"
       expect(application_presenter.checkins_date_range).to eq from: Date.parse("2017-03-25").beginning_of_day,
                                                               to: Date.parse("2017-03-27").end_of_day
     end
