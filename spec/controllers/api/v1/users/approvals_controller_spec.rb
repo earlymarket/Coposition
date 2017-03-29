@@ -145,12 +145,24 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
     end
 
     context "making a request to #destroy" do
-      it "is able to reject an approval" do
-        approval_destroy_params
-        approval_count = Approval.count
+      it "returns response with status 200" do
         delete :destroy, params: approval_destroy_params
-        expect(Approval.count).to eq approval_count - 1
-        expect(user.approved?(developer)).to be false
+        expect(response.status).to be 200
+      end
+
+      it "renders message" do
+        delete :destroy, params: approval_destroy_params
+        expect(res_hash[:message]).to eq "Approval Destroyed"
+      end
+
+      it "returns an error message if approval does not exist" do
+        delete :destroy, params: params.merge(id: "wrong")
+        expect(res_hash[:error]).to eq "Approval does not exist"
+      end
+
+      it "renders status 404 if approval does not exist" do
+        delete :destroy, params: params.merge(id: "wrong")
+        expect(response.status).to be 404
       end
     end
   end
