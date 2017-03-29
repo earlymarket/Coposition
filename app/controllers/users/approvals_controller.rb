@@ -10,7 +10,7 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def create
-    result = CreateApproval.call(
+    result = Users::Approvals::CreateUserApproval.call(
       current_user: current_user,
       approvable: approval_params[:approvable]
     )
@@ -18,37 +18,29 @@ class Users::ApprovalsController < ApplicationController
     redirect_to(result.path, result.message)
   end
 
-  def apps
-    approvals_presenter_and_gon('Developer')
-    render 'approvals'
+  def index
+    approvals_presenter_and_gon(params[:approvable_type])
+    render "approvals"
   end
 
-  def friends
-    approvals_presenter_and_gon('User')
-    render 'approvals'
-  end
-
-  def approve
-    approval = Approval.find_by(id: params[:id], user: current_user)
-    approvable_type = approval.approvable_type
-    approvable = approval.approvable
-    Approval.accept(current_user, approvable, approvable_type)
-    approvals_presenter_and_gon(approvable_type)
-    approvable.notify_if_subscribed('new_approval', approval_zapier_data(approval)) if approvable_type == 'Developer'
-  end
-
-  def reject
-    approval = Approval.find_by(id: params[:id], user: current_user)
-    approvable_type = approval.approvable_type
-    approvable = approval.approvable
-    current_user.destroy_permissions_for(approvable)
-    if approvable_type == 'User'
-      approvable.destroy_permissions_for(current_user)
-      Approval.where(user: approvable, approvable: current_user, approvable_type: 'User').destroy_all
+  def update
+    result = Users::Approvals::UpdateApproval.call(
+      current_user: current_user,
+      params: params
+    )
+    if result.approvable_type == "Developer"
+      result.approvable.notify_if_subscribed("new_approval", approval_zapier_data(result.approval))
     end
-    approval.destroy
-    approvals_presenter_and_gon(approvable_type)
-    render 'approve'
+    approvals_presenter_and_gon(result.approvable_type)
+  end
+
+  def destroy
+    result = Users::Approvals::DestroyApproval.call(
+      current_user: current_user,
+      params: params
+    )
+    approvals_presenter_and_gon(result.approvable_type)
+    render "update"
   end
 
   private
