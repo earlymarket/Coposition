@@ -56168,6 +56168,62 @@ $(document).on('page:change', function () {
 });
 'use strict';
 
+window.COPO = window.COPO || {};
+window.COPO.datePicker = {
+
+  init: function init() {
+    $('.datepick').pickadate({
+      selectMonths: true,
+      selectYears: 15,
+      onSet: function onSet(arg) {
+        var from_picker = $('#input_from').pickadate().pickadate('picker');
+        var to_picker = $('#input_to').pickadate().pickadate('picker');
+        var selectedPicker = this.component.$node[0].name;
+        if (selectedPicker === 'from') {
+          COPO.datePicker.setLimits(arg, to_picker, from_picker, 'min');
+        } else if (selectedPicker === 'to') {
+          COPO.datePicker.setLimits(arg, from_picker, to_picker, 'max');
+        }
+        if ('select' in arg) {
+          //prevent closing on selecting month/year
+          this.close();
+        }
+      }
+    });
+    var from_picker = $('#input_from').pickadate().pickadate('picker');
+    var to_picker = $('#input_to').pickadate().pickadate('picker');
+    // Check if there’s a “from” or “to” date to start with.
+    COPO.datePicker.checkPickers(to_picker, from_picker, 'min');
+    COPO.datePicker.checkPickers(from_picker, to_picker, 'max');
+    COPO.datePicker.checkPickers(to_picker, to_picker, 'select');
+    COPO.datePicker.checkPickers(from_picker, from_picker, 'select');
+    COPO.datePicker.openIfSet(from_picker);
+  },
+
+  setLimits: function setLimits(event, beingSet, setter, limit) {
+    if (event.select) {
+      beingSet.set(limit, setter.get('select'));
+    } else if ('clear' in event) {
+      beingSet.set(limit, false);
+    }
+  },
+
+  checkPickers: function checkPickers(beingSet, setter, limit) {
+    if (setter.get('value')) {
+      var dateArray = setter.get('value').split(" ");
+      var date = new Date(dateArray[1].replace(/\D/g, '') + " " + dateArray[2] + " " + dateArray[3]);
+      beingSet.set(limit, date);
+    }
+  },
+
+  openIfSet: function openIfSet(picker) {
+    if (picker.get('value')) {
+      $('#date-range-toggle').click();
+    }
+  }
+};
+'use strict';
+
 $(document).on('page:change', function () {
   if (window.COPO.utility.currentPage('devices', 'index')) {
     (function () {
@@ -56463,6 +56519,7 @@ $(document).on('page:change', function () {
       M.initMap();
       M.initMarkers(gon.checkins, gon.total);
       M.initControls();
+      COPO.datePicker.init();
 
       map.on('locationfound', onLocationFound);
 

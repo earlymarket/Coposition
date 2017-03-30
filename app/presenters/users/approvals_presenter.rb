@@ -18,7 +18,7 @@ module Users
     def gon
       gon =
         {
-          approved: @approved,
+          approved: approved,
           permissions: permissions,
           current_user_id: @user.id
         }
@@ -33,8 +33,8 @@ module Users
     end
 
     def permissions
-      @devices.map do |device|
-        device.permissions.where(permissible_type: @approvable_type).not_coposition_developers
+      devices.map do |device|
+        device.permissions.where(permissible_type: approvable_type).not_coposition_developers
       end.inject(:+)
     end
 
@@ -47,7 +47,7 @@ module Users
     end
 
     def friends_checkins
-      return unless @approvable_type == "User"
+      return unless approvable_type == "User"
       friends = @user.friends.includes(:devices)
       friends.map do |friend|
         {

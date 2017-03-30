@@ -1,23 +1,53 @@
 .c-devices.a-show, .c-friends.a-show_device {
 
-// ion.rangeSlider override stuff
-
-  .irs-line-mid,
-  .irs-line-left,
-  .irs-line-right,
-  .irs-bar,
-  .irs-bar-edge,
-  .irs-slider {
-      background-image: url(<%= asset_path 'sprite-skin-flat-custom.png' %>);
+  .date-select {
+    background: #fff;
+    position: absolute;
+    padding: 10px;
+    width: 300px;
+    top: 115px;
+    left: 90px;
+    z-index: 9;
+    padding-left: 5px;
   }
 
-  .irs-from, .irs-to, .irs-single {
-    color: #fff;
-    background: $primary-color-darker;
+  .date-filter-presets {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    a {
+      color: black;
+      font-size: 12px;
+    }
   }
-  .irs-from:after, .irs-to:after, .irs-single:after {
-    border-top-color: $primary-color-darker;
+
+  /* Header - Day of the week */
+  .picker__weekday-display { background-color: $primary-color-darker; }
+  /* Body - Today info */
+  .picker__date-display { background-color: $primary-color; }
+  /* Buttons of actions */
+  .picker__nav--prev:hover, .picker__nav--next:hover { background-color: $primary-color-lighter; }
+  .picker__nav--prev:before { border-right: 0.75em solid $primary-color; }
+  .picker__nav--next:before { border-left: 0.75em solid $primary-color; }
+  .picker__today, .picker__close { color: $primary-color; }
+  .btn-flat.picker__today:active, .btn-flat.picker__close:active, .btn-flat.picker__clear:active { background-color: $primary-color; }
+  /* Select months of the year */
+  .picker__select--month.browser-default {
+    display: inline;
+    background-color: #FFFFFF;
+    width: 34%;
+    border: none;
+    outline: none;
   }
+  /* Every month of the year except: today */
+  .picker__day--infocus:hover { color: $primary-color; }
+  .picker__day--selected, .picker__day--selected:hover, .picker--focused .picker__day--selected { color: $primary-color-darker; }
+  .picker__day.picker__day--infocus.picker__day--selected.picker__day--highlighted { background-color: $primary-color-lighter; }
+  /* Today */
+  .picker__day.picker__day--infocus.picker__day--today.picker__day--selected.picker__day--highlighted { background-color: $primary-color-lighter; }
+  .picker__day.picker__day--today { color: $primary-color-darker; }
 
 // end of override stuff
 

@@ -9,6 +9,7 @@ $(document).on('page:change', function() {
     M.initMap();
     M.initMarkers(gon.checkins, gon.total);
     M.initControls();
+    COPO.datePicker.init();
 
     map.on('locationfound', onLocationFound);
 
