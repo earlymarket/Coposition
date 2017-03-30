@@ -1,17 +1,17 @@
 window.COPO = window.COPO || {};
 window.COPO.permissions = {
-  initSwitches: function(page, user, permissions){
+  initSwitches(page, user, permissions) {
     COPO.permissions.setMasters(page, user, permissions);
     COPO.permissions.masterChange(page, user, permissions);
     COPO.permissions.switchChange(page, user, permissions);
   },
 
-  switchesOff: function(){
+  switchesOff() {
     $(".permission-switch").off("change");
     $(".master").off("change");
   },
 
-  setMasters: function(page, user, gonPermissions){
+  setMasters(page, user, gonPermissions) {
     const gonVariable = (page === 'devices' ? 'devices' : 'approved')
     if (gon[gonVariable]) {
       gon[gonVariable].forEach(function(permissionable){
@@ -24,7 +24,7 @@ window.COPO.permissions = {
     }
   },
 
-  switchChange:function(page, user, gonPermissions){
+  switchChange(page, user, gonPermissions) {
     $(".permission-switch").change(function() {
       const P_SWITCH = new LocalSwitch(user, $(this), gonPermissions, page)
       P_SWITCH.toggleSwitch();
@@ -32,7 +32,7 @@ window.COPO.permissions = {
     })
   },
 
-  masterChange:function(page, user, gonPermissions){
+  masterChange(page, user, gonPermissions) {
     $(".master").change(function() {
       const ID_TYPE = (page === 'devices' ? 'device_id' : 'permissible_id')
       const M_SWITCH = new MasterSwitch(user, $(this), gonPermissions, ID_TYPE, page)

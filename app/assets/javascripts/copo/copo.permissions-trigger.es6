@@ -1,6 +1,6 @@
 window.COPO = window.COPO || {};
 window.COPO.permissionsTrigger = {
-  initTrigger: function(page){
+  initTrigger(page) {
     $('.permissions-trigger').leanModal()
     $('.permissions-trigger').on('click touchstart', function(){
       const DATA_ID = this.dataset.id;

@@ -1,6 +1,6 @@
 window.COPO = window.COPO || {};
 window.COPO.pushDestroyCheckin = {
-  push: (data) => {
+  push(data) {
     if (window.COPO.utility.currentPage('friends', 'show-device')) {
       window.COPO.pushDestroyCheckin.deviceShow(data);
     } else if (window.COPO.utility.currentPage('friends', 'show')) {
@@ -10,7 +10,7 @@ window.COPO.pushDestroyCheckin = {
     }
   },
 
-	deviceShow: (data) => {
+	deviceShow(data) {
 		const index = gon.checkins.findIndex((checkin) => checkin.id === data.checkin.id);
     if (index === -1) { return; }
 
@@ -22,7 +22,7 @@ window.COPO.pushDestroyCheckin = {
     COPO.maps.refreshMarkers(gon.checkins);
 	},
 
-	friendShow: (data) => {
+	friendShow(data) {
     const index = gon.checkins.findIndex((checkin) => checkin.id === data.checkin.id);
     if (index === -1) return;
 
@@ -34,7 +34,7 @@ window.COPO.pushDestroyCheckin = {
 	  COPO.maps.refreshMarkers(gon.checkins);		
 	},
 
-	friendsIndex: (data) => {
+	friendsIndex(data) {
 	  const index = gon.friends.findIndex((friend) => friend.lastCheckin.id === data.checkin.id);
     if (index === -1) return;
 

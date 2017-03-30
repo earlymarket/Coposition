@@ -1,6 +1,6 @@
 window.COPO = window.COPO || {};
 window.COPO.pushCreateCheckin = {
-	push: (data) => {
+	push(data) {
 		if (window.COPO.utility.currentPage('friends', 'show-device')) {
 		  window.COPO.pushCreateCheckin.deviceShow(data);
 		} else if (window.COPO.utility.currentPage('friends', 'show')) {
@@ -10,7 +10,7 @@ window.COPO.pushCreateCheckin = {
 		}
 	},
 
-	deviceShow: (data) => {
+	deviceShow(data) {
 		if (data.privilege === 'complete') {
 		  gon.checkins.unshift(data.checkin);
 		} else {
@@ -20,7 +20,7 @@ window.COPO.pushCreateCheckin = {
 		COPO.maps.refreshMarkers(gon.checkins);
 	},
 
-	friendShow: (data) => {
+	friendShow(data) {
 		const index = gon.checkins.findIndex((checkin) => checkin.device_id === data.checkin.device_id);
 
 		if (!gon.checkins.length) {
@@ -37,7 +37,7 @@ window.COPO.pushCreateCheckin = {
 	  }	
 	},
 
-	friendsIndex: (data) => {
+	friendsIndex(data) {
 		const index = gon.friends.findIndex((friend) => friend.userinfo.id === data.checkin.user_id);
 		const friend = { lastCheckin: data.checkin, userinfo: gon.friends[index].userinfo }
 
