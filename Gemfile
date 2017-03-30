@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 ruby "2.3.1"
 
-gem "rails", "5.0.1"
+gem "rails", "5.0.2"
 gem "pg"
 gem "redis"
 gem "sass-rails", "~> 5.0"
@@ -47,7 +47,7 @@ group :production do
   gem "rails_12factor"
 end
 
-group :production, :development do
+group :development, :staging, :production do
   gem "puma"
 end
 

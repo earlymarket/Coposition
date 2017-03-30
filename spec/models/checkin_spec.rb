@@ -133,6 +133,11 @@ RSpec.describe Checkin, type: :model do
         checkin.update(output_lat: nil)
         expect { checkin.assign_output_to_unfogged }.to change { checkin.output_lat }.to checkin.lat
       end
+
+      it "assigns output_city to fogged_city if no city present" do
+        checkin.update(city: nil, fogged_city: "London")
+        expect { checkin.assign_output_to_unfogged }.to change { checkin.output_city }.to checkin.fogged_city
+      end
     end
 
     context "reverse_geocode!" do

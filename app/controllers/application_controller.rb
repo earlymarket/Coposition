@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   end
 
   def approvals_presenter_and_gon(type)
-    @presenter = ::Users::ApprovalsPresenter.new(current_user, type)
+    @presenter = Users::ApprovalsPresenter.new(current_user, type)
     gon.push(@presenter.gon)
   end
 

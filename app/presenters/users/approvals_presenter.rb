@@ -4,25 +4,33 @@ module Users
     attr_reader :approved
     attr_reader :pending
     attr_reader :devices
+    attr_reader :page
 
     def initialize(user, approvable_type)
       @user = user
       @approvable_type = approvable_type
+      @page = apps_page? ? "Apps" : "Friends"
       @approved = users_approved
       @pending = users_requests
       @devices = user.devices
     end
 
     def gon
-      {
-        approved: approved,
-        permissions: permissions,
-        current_user_id: @user.id,
-        friends: friends_checkins
-      }
+      gon =
+        {
+          approved: approved,
+          permissions: permissions,
+          current_user_id: @user.id
+        }
+      gon[:friends] = friends_checkins unless apps_page?
+      gon
     end
 
     private
+
+    def apps_page?
+      @approvable_type == "Developer"
+    end
 
     def permissions
       devices.map do |device|
@@ -31,11 +39,11 @@ module Users
     end
 
     def users_approved
-      approvable_type == "Developer" ? @user.not_coposition_developers.public_info : @user.friends.public_info
+      apps_page? ? @user.not_coposition_developers.public_info : @user.friends.public_info
     end
 
     def users_requests
-      approvable_type == "Developer" ? @user.developer_requests : @user.friend_requests
+      apps_page? ? @user.developer_requests : @user.friend_requests
     end
 
     def friends_checkins
