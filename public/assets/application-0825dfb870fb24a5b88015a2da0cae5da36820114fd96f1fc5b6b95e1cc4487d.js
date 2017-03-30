@@ -55116,9 +55116,13 @@ window.COPO.maps = {
 
     function getCheckinData(page) {
       if (window.COPO.utility.currentPage('devices', 'show')) {
-        return $.getJSON(window.location.href + '/checkins?page=' + page + '&per_page=1000');
+        if (window.location.search.length !== 0) {
+          return $.getJSON(window.location.pathname + '/checkins' + window.location.search + '&page=' + page + '&per_page=1000');
+        } else {
+          return $.getJSON(window.location.pathname + '/checkins?page=' + page + '&per_page=1000');
+        }
       } else if (window.COPO.utility.currentPage('friends', 'show_device')) {
-        return $.getJSON(window.location.href + '&page=' + page + '&per_page=1000');
+        return $.getJSON('' + window.location.pathname + window.location.search + '&page=' + page + '&per_page=1000');
       } else {
         console.log('Page not recognised. No incremental loading.');
       }
@@ -55136,7 +55140,7 @@ window.COPO.maps = {
         });
       } else {
         $('.myProgress').remove();
-        Materialize.toast('All check-ins loaded', 3000);
+        Materialize.toast('Check-ins loaded', 3000);
         window.COPO.maps.fitBounds();
       };
     }
