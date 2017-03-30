@@ -493,4 +493,36 @@ window.COPO.maps = {
       COPO.maps.checkinPath.addTo(map);
     }
   },
+
+  createCheckinPopup() {
+    map.on('popupopen', function(e) {
+      if ($('#current-location').length) {
+        $createCheckinLink = window.COPO.utility.createCheckinLink(e.popup.getLatLng());
+        $('#current-location').replaceWith($createCheckinLink);
+      }
+    })
+  },
+
+  rightClickListener() {
+    map.on('contextmenu', function(e) {
+      var coords = {
+        lat: e.latlng.lat.toFixed(6),
+        lng: e.latlng.lng.toFixed(6),
+        checkinLink: window.COPO.utility.createCheckinLink(e.latlng)
+      };
+      var template = $('#createCheckinTmpl').html();
+      var content = Mustache.render(template, coords);
+      var popup = L.popup().setLatLng(e.latlng).setContent(content);
+      popup.openOn(map);
+    })
+  },
+
+  checkinNowListeners(callback) {
+    $('#checkinNow').on('click', function() {
+      callback(false);
+    })
+    $('#checkinFoggedNow').on('click', function() {
+      callback(true);
+    })
+  },
 }
