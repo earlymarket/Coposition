@@ -1,5 +1,5 @@
 $(document).on('page:change', function () {
-  if ($(".c-dashboards.a-show").length === 1) {
+  if (window.COPO.utility.currentPage('dashboards', 'show')) {
     const M  = window.COPO.maps;
     const U  = window.COPO.utility;
     const SL = window.COPO.slides;

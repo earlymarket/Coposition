@@ -1,5 +1,5 @@
 $(document).on('page:change', function() {
-  if ($(".c-friends.a-show").length === 1) {
+  if (window.COPO.utility.currentPage('friends', 'show')) {
     COPO.utility.gonFix();
     COPO.maps.initMap();
     COPO.maps.initControls(['locate', 'w3w', 'fullscreen', 'layers']);

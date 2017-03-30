@@ -1,5 +1,5 @@
 $(document).on('ready page:change', function() {
-  if ($(".c-welcome.a-index").length > 0) {
+  if (window.COPO.utility.currentPage('welcome', 'index')) {
     $("main").css('padding-top', '0');
 
     // Click and hover event for the main button on landing page

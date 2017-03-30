@@ -1,9 +1,9 @@
 $(document).on('page:change', function() {
-  if ($(".c-friends.a-show_device").length === 1 || $(".c-devices.a-show").length === 1) {
-    var page = $(".c-devices.a-show").length === 1 ? 'user' : 'friend'
+  var U = window.COPO.utility;
+  if (U.currentPage('friends', 'device-show') || U.currentPage('devices', 'show')) {
+    var page = U.currentPage('devices', 'show') ? 'user' : 'friend'
     var fogged = false;
     var currentCoords;
-    var U = window.COPO.utility;
     var M = window.COPO.maps;
     U.gonFix();
     M.initMap();
@@ -27,7 +27,7 @@ $(document).on('page:change', function() {
 
       map.on('popupopen', function(e) {
         var coords = e.popup.getLatLng()
-        if($('#current-location').length) {
+        if ($('#current-location').length) {
           $createCheckinLink = U.createCheckinLink(coords);
           $('#current-location').replaceWith($createCheckinLink);
         }
@@ -68,14 +68,14 @@ $(document).on('page:change', function() {
 
         // if they click the popup, stop editing
         $('.leaflet-popup').on('click', function (e) {
-          if(e.target.className !== 'editable') {
+          if (e.target.className !== 'editable') {
             handleCoordsEdited(original, $editable);
           }
         });
 
         // if they hit enter or esc, stop editing
         $editable.on('keydown', function (e) {
-          if(e.which === 27 || e.which === 13 ) {
+          if (e.which === 27 || e.which === 13 ) {
             handleCoordsEdited(original, $editable);
           }
         });
@@ -83,7 +83,7 @@ $(document).on('page:change', function() {
         // if they click another marker, remove all the listeners
         COPO.maps.allMarkers.eachLayer(function(marker) {
           marker.on('click', function(e) {
-            if($editable.attr('contenteditable')) {
+            if ($editable.attr('contenteditable')) {
               handleEditEnd($editable);
             }
           });
@@ -92,7 +92,7 @@ $(document).on('page:change', function() {
 
       function handleCoordsEdited(original, $editable) {
         var coords = $editable.text().split(",").map(parseFloat);
-        if(original !== $editable.text() && coords.length === 2 && coords.every(U.validateLatLng)) {
+        if (original !== $editable.text() && coords.length === 2 && coords.every(U.validateLatLng)) {
           var url = $editable.data('url');
           var data = { checkin: { lat: coords[0], lng: coords[1]} }
           putUpdateCheckin(url, data);
@@ -154,12 +154,11 @@ $(document).on('page:change', function() {
         $('.leaflet-popup').off('click');
         $editable.off('keydown');
       }
-
     }
 
     function postLocation(position) {
       $.ajax({
-        url: '/users/'+gon.current_user_id+'/devices/'+gon.device+'/checkins/',
+        url: '/users/' + gon.current_user_id + '/devices/' + gon.device + '/checkins/',
         type: 'POST',
         dataType: 'script',
         data: { checkin: { lat: position.coords.latitude, lng: position.coords.longitude, fogged: fogged } }
@@ -167,7 +166,7 @@ $(document).on('page:change', function() {
     }
 
     function getLocation(fogged) {
-      if(currentCoords) {
+      if (currentCoords) {
         var position = { coords: { latitude: currentCoords.lat, longitude: currentCoords.lng } }
         postLocation(position)
       } else {

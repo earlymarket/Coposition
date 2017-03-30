@@ -1,6 +1,7 @@
 require "rails_helper"
 
 describe NotifyAboutCheckin do
+  subject(:notify_about_checkin) { described_class.call(device: device, checkin: checkin) }
   let(:device) { create :device }
   let(:checkin) { create :checkin, device: device }
   let(:friend) { create :user }
@@ -8,10 +9,6 @@ describe NotifyAboutCheckin do
     { action: "checkin",
       privilege: "last_only",
       checkin: checkin.as_json.merge("user_id" => device.user.id, "device" => checkin.device.name) }
-  end
-
-  subject(:notify_about_checkin) do
-    described_class.call(device: device, checkin: checkin)
   end
 
   before do

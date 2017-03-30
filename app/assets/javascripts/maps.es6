@@ -156,7 +156,7 @@ window.COPO.maps = {
         marker.bindPopup(L.Util.template(template, checkin));
         marker.openPopup();
       }
-      if ($(".c-devices.a-show").length === 1) {
+      if (window.COPO.utility.currentPage('devices', 'show')) {
         $.get({
           url: "/users/"+gon.current_user_id+"/devices/"+checkin.device_id+"/checkins/"+checkin.id,
           dataType: "script"
@@ -189,7 +189,7 @@ window.COPO.maps = {
       }
     }
     checkinTemp.devicebutton = function() {
-      if ($(".c-devices.a-index").length === 1) {
+      if (window.COPO.utility.currentPage('devices', 'index')) {
         return `<a href="./devices/${checkin.device_id}" title="Device map">${checkin.device}</a>`
       } else {
         return `<a href="${window.location.pathname}/show_device?device_id=${checkin.device_id}" title="Device map">${checkin.device}</a>`
