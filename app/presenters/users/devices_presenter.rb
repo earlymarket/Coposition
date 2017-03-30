@@ -7,9 +7,6 @@ module Users
     attr_reader :filename
     attr_reader :config
     attr_reader :date_range
-    attr_reader :forn_for
-    attr_reader :form_path
-    attr_reader :form_range_fiter
 
     def initialize(user, params, action)
       @user = user
@@ -30,7 +27,7 @@ module Users
       @device = Device.find(@params[:id])
       @date_range = checkins_date_range
       return unless (download_format = @params[:download])
-      @filename = "device-#{device.id}-checkins-#{Date.today}." + download_format
+      @filename = "device-#{device.id}-checkins-#{Time.zone.today}." + download_format
       @checkins = device.checkins.send("to_" + download_format)
     end
 
@@ -95,7 +92,7 @@ module Users
     def gon_shared_checkin
       return unless @checkin
       checkin = Checkin.where(id: @checkin.id)
-      if @checkin.device.fogged?
+      if device.fogged?
         checkin.select("id", "created_at", "updated_at", "device_id", "fogged_lat AS lat", "fogged_lng AS lng",
           "fogged_city AS address", "fogged_city AS city", "fogged_country_code AS postal_code",
           "fogged_country_code AS country_code")[0]

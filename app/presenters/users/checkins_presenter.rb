@@ -1,7 +1,6 @@
 module Users
   class CheckinsPresenter < ApplicationPresenter
     attr_reader :device
-    attr_reader :json
 
     def initialize(user, params, action)
       @user = user

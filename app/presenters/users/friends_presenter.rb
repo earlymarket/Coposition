@@ -3,14 +3,7 @@ module Users
     attr_reader :friend
     attr_reader :devices
     attr_reader :device
-    attr_reader :show_checkins
-    # for tests, maybe a better way of doing this
-    attr_reader :show_device_gon
-    attr_reader :index_gon
     attr_reader :date_range
-    attr_reader :forn_for
-    attr_reader :form_path
-    attr_reader :form_range_filter
 
     def initialize(user, params, action)
       @user = user
