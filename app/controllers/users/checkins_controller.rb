@@ -2,7 +2,8 @@ class Users::CheckinsController < ApplicationController
   protect_from_forgery except: :show
 
   before_action :authenticate_user!
-  before_action :require_checkin_ownership, except: %i(index new create destroy_all)
+
+  before_action :require_checkin_ownership, only: %i(show update destroy)
   before_action :require_device_ownership, only: %i(index new create destroy_all)
   before_action :find_checkin, only: %i(show update destroy)
 
@@ -25,7 +26,17 @@ class Users::CheckinsController < ApplicationController
   def create
     @checkin = device.checkins.create(allowed_params)
     NotifyAboutCheckin.call(device: device, checkin: @checkin)
-    flash[:notice] = 'Checked in.'
+    flash[:notice] = "Checked in."
+  end
+
+  def import
+    result = Users::Checkins::ImportCheckins.call(params: params)
+    if result.success?
+      flash[:notice] = "Importing check-ins"
+    else
+      flash[:alert] = result.error
+    end
+    redirect_to user_devices_path(current_user.url_id)
   end
 
   def show
@@ -41,7 +52,7 @@ class Users::CheckinsController < ApplicationController
   def destroy
     @checkin.delete
     NotifyAboutDestroyCheckin.call(device: device, checkin: @checkin)
-    flash[:notice] = 'Check-in deleted.'
+    flash[:notice] = "Check-in deleted."
   end
 
   def destroy_all

@@ -41,6 +41,20 @@
   </div>
 </div>
 
+<div id="upload<%= device.id %>" class="modal upload-modal">
+  <div class="modal-content">
+    <h4 class='center-align'>Upload checkins</h4>
+    <a class="right tooltipped" target="_blank" data-tooltip='Upload help' href="/help#download"><i class="material-icons">help</i></a>
+    <div class='center-align'>
+      <label>Upload previously downloaded check-ins to restore data. Warning, this may overwrite existing check-ins.</label></br></br>
+      <%= form_tag import_user_device_checkins_path(device_id: device.id), multipart: :true do %>
+        <%= file_field_tag :file, accept: 'text/csv' %>
+        <%= submit_tag "Import CSV", class: "btn" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
 <div id="delay<%=device.id%>" class="modal delay-modal">
   <div class="modal-content">
     <h4>Delay Controls</h4>

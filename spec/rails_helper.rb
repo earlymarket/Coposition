@@ -5,9 +5,12 @@ require File.expand_path("../../config/environment", __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require "spec_helper"
 require "rspec/rails"
+require 'sidekiq/testing'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 require "devise"
+
+include ActionDispatch::TestProcess
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -28,6 +31,8 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
+
+Sidekiq::Testing.fake!
 
 Capybara.default_max_wait_time = 10
 Capybara.javascript_driver = :webkit
@@ -86,6 +91,7 @@ RSpec.configure do |config|
   end
 
   config.append_after(:each) do
+    CleanupCloudinary.clean
     DatabaseCleaner.clean
   end
 

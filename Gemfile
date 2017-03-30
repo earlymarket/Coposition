@@ -40,15 +40,16 @@ gem "gpx"
 gem "activeadmin", git: "https://github.com/activeadmin/activeadmin"
 gem "inherited_resources", git: "https://github.com/activeadmin/inherited_resources"
 gem "activerecord-import"
+gem "sidekiq"
 gem "interactor"
 
 group :production do
   gem "rack-timeout"
-  gem "rails_12factor"
 end
 
 group :development, :staging, :production do
   gem "puma"
+  gem "rails_12factor"
 end
 
 # Use Capistrano for deployment
