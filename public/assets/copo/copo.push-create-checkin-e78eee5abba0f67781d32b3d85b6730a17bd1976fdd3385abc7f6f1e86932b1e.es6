@@ -1,7 +1,7 @@
 window.COPO = window.COPO || {};
 window.COPO.pushCreateCheckin = {
   push(data) {
-    if (window.COPO.utility.currentPage('friends', 'show-device')) {
+    if (window.COPO.utility.currentPage('friends', 'show_device')) {
       window.COPO.pushCreateCheckin.deviceShow(data);
     } else if (window.COPO.utility.currentPage('friends', 'show')) {
       window.COPO.pushCreateCheckin.friendShow(data);

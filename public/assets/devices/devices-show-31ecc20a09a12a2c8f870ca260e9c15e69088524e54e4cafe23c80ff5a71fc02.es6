@@ -1,6 +1,6 @@
 $(document).on('page:change', function() {
   var U = window.COPO.utility;
-  if (U.currentPage('friends', 'device-show') || U.currentPage('devices', 'show')) {
+  if (U.currentPage('friends', 'show_device') || U.currentPage('devices', 'show')) {
     var page = U.currentPage('devices', 'show') ? 'user' : 'friend'
     var fogged = false;
     var currentCoords;

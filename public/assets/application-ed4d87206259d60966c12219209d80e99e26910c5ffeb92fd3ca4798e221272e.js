@@ -55117,7 +55117,7 @@ window.COPO.maps = {
     function getCheckinData(page) {
       if (window.COPO.utility.currentPage('devices', 'show')) {
         return $.getJSON(window.location.href + '/checkins?page=' + page + '&per_page=1000');
-      } else if (window.COPO.utility.currentPage('friends', 'show-device')) {
+      } else if (window.COPO.utility.currentPage('friends', 'show_device')) {
         return $.getJSON(window.location.href + '&page=' + page + '&per_page=1000');
       } else {
         console.log('Page not recognised. No incremental loading.');
@@ -55678,7 +55678,7 @@ window.COPO.permissions = {
 window.COPO = window.COPO || {};
 window.COPO.pushCreateCheckin = {
   push: function push(data) {
-    if (window.COPO.utility.currentPage('friends', 'show-device')) {
+    if (window.COPO.utility.currentPage('friends', 'show_device')) {
       window.COPO.pushCreateCheckin.deviceShow(data);
     } else if (window.COPO.utility.currentPage('friends', 'show')) {
       window.COPO.pushCreateCheckin.friendShow(data);
@@ -55739,7 +55739,7 @@ window.COPO.pushCreateCheckin = {
 window.COPO = window.COPO || {};
 window.COPO.pushDestroyCheckin = {
   push: function push(data) {
-    if (window.COPO.utility.currentPage('friends', 'show-device')) {
+    if (window.COPO.utility.currentPage('friends', 'show_device')) {
       window.COPO.pushDestroyCheckin.deviceShow(data);
     } else if (window.COPO.utility.currentPage('friends', 'show')) {
       window.COPO.pushDestroyCheckin.friendShow(data);
@@ -56425,7 +56425,7 @@ $(document).on('page:change', function() {
 
 $(document).on('page:change', function () {
   var U = window.COPO.utility;
-  if (U.currentPage('friends', 'device-show') || U.currentPage('devices', 'show')) {
+  if (U.currentPage('friends', 'show_device') || U.currentPage('devices', 'show')) {
     var page;
     var fogged;
     var currentCoords;
