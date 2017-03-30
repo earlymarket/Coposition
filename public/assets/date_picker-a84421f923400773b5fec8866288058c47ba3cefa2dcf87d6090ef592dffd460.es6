@@ -1,20 +1,20 @@
 window.COPO = window.COPO || {};
 window.COPO.datePicker = {
 
-  init: function(){
+  init: function() {
     $('.datepick').pickadate({
       selectMonths: true,
       selectYears: 15,
-      onSet: function( arg ){
+      onSet: function(arg) {
         var from_picker = $('#input_from').pickadate().pickadate('picker')
         var to_picker = $('#input_to').pickadate().pickadate('picker')
         var selectedPicker = this.component.$node[0].name;
-        if ( selectedPicker === 'from' ){
+        if (selectedPicker === 'from') {
           COPO.datePicker.setLimits(arg, to_picker, from_picker, 'min')
-        } else if ( selectedPicker === 'to' ){
+        } else if (selectedPicker === 'to') {
           COPO.datePicker.setLimits(arg, from_picker, to_picker, 'max')
         }
-        if ( 'select' in arg ){ //prevent closing on selecting month/year
+        if ('select' in arg) { //prevent closing on selecting month/year
           this.close();
         }
       }
@@ -29,19 +29,19 @@ window.COPO.datePicker = {
     COPO.datePicker.openIfSet(from_picker);
   },
 
-  setLimits: function(event, beingSet, setter, limit){
-    if ( event.select ) {
+  setLimits: function(event, beingSet, setter, limit) {
+    if (event.select) {
       beingSet.set(limit, setter.get('select'))
     }
-    else if ( 'clear' in event ) {
+    else if ('clear' in event) {
       beingSet.set(limit, false)
     }
   },
 
-  checkPickers: function(beingSet, setter, limit){
+  checkPickers: function(beingSet, setter, limit) {
     if (setter.get('value')) {
       let dateArray = setter.get('value').split(" ");
-      let date = new Date(dateArray[1].replace(/\D/g,'')+" "+dateArray[2]+" "+dateArray[3])
+      let date = new Date(dateArray[1].replace(/\D/g,'') + " " + dateArray[2] + " " + dateArray[3])
       beingSet.set(limit, date)
     }
   },
