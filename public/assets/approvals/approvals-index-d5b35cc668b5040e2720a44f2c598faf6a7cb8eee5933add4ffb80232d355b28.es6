@@ -1,10 +1,10 @@
 $(document).on('page:change', function() {
-  if (($(".c-approvals.a-apps").length === 1) || ($(".c-approvals.a-friends").length === 1)) {
-    const U  = window.COPO.utility;
+  var U  = window.COPO.utility;
+  if (U.currentPage('approvals', 'apps') || U.currentPage('approvals', 'friends')) {
     const M  = window.COPO.maps;
 
     U.gonFix();
-    const PAGE = ($(".c-approvals.a-apps").length === 1 ? 'apps' : 'friends')
+    const PAGE = U.currentPage('approvals', 'apps') ? 'apps' : 'friends';
     COPO.permissionsTrigger.initTrigger(PAGE)
     COPO.permissions.initSwitches(PAGE, gon.current_user_id, gon.permissions)
 

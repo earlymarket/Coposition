@@ -16,6 +16,11 @@ COPO.utility = {
       document.selection.empty();
     }
   },
+
+  currentPage(controller, action) {
+    return $(`.c-${controller}.a-${action}`).length === 1
+  },
+
   urlParam(name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     if (!results) return null;
