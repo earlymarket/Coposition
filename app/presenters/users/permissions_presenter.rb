@@ -18,7 +18,7 @@ module Users
 
     def devices_index
       @device = Device.find(@params[:device_id])
-      @permissions = @device.permissions.includes(:permissible)
+      @permissions = device.permissions.includes(:permissible)
                             .order(:permissible_type, :permissible_id).not_coposition_developers.reverse
     end
 
@@ -27,7 +27,7 @@ module Users
       model = from == "friends" ? User : Developer
       @permissible = model.find(@params[:device_id]) # device_id = user_id/developer_id, permissions for friend/dev
       @permissions = Permission.where(device_id: device_ids,
-                                      permissible_id: @permissible.id, permissible_type: model.to_s)
+                                      permissible_id: permissible.id, permissible_type: model.to_s)
                                .order(:device_id)
                                .includes(:permissible, :device)
     end

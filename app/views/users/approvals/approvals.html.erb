@@ -1,7 +1,7 @@
 <div id="gonvariables">
   <%= Gon::Base.render_data %>
 </div>
-<h1><%= action_name.titleize %></h1>
+<h1><%= @presenter.page %></h1>
 <div class='center-align'>
   <%= link_to(new_user_approval_path(approvable_type: @presenter.approvable_type), class: "btn-floating btn-large waves-effect waves-light primary-color") do %>
       <i class="material-icons">add</i>
