@@ -37,9 +37,9 @@ window.COPO.maps = {
     loadCheckins(2);
 
     function getCheckinData(page) {
-      if ($('.c-devices.a-show').length !== 0) {
+      if (window.COPO.utility.currentPage('devices', 'show')) {
         return $.getJSON(`${window.location.href}/checkins?page=${page}&per_page=1000`)
-      } else if($('.c-friends.a-show_device').length !== 0) {
+      } else if(window.COPO.utility.currentPage('friends', 'show-device')) {
         return $.getJSON(`${window.location.href}&page=${page}&per_page=1000`)
       } else {
         console.log('Page not recognised. No incremental loading.');
