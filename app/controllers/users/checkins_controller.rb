@@ -12,15 +12,9 @@ class Users::CheckinsController < ApplicationController
   end
 
   def index
-    per_page = params[:per_page].to_i <= 1000 ? params[:per_page] : 1000
-    render json: {
-      checkins: device
-        .checkins
-        .paginate(page: params[:page], per_page: per_page)
-        .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :device_id),
-      current_user_id: current_user.id,
-      total: device.checkins.count
-    }
+    @presenter = ::Users::CheckinsPresenter.new(current_user, params, "index")
+    @device = @presenter.device
+    render json: @presenter.json
   end
 
   def create
