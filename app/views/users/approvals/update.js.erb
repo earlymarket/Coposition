@@ -13,7 +13,7 @@ $('#approved').html("<%= j (render partial: 'approved', locals: {approved: @pres
 $(".button-collapse").sideNav();
 $(document).unbind('scroll');
 
-var page = ($(".c-approvals.a-apps").length === 1 ? 'apps' : 'friends');
+var page = "friends" in gon ? 'friends' : 'apps';
 COPO.permissionsTrigger.initTrigger(page);
 COPO.permissions.initSwitches(page, gon.current_user_id, gon.permissions);
 
