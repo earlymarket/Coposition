@@ -13,12 +13,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
   let(:index_params) { params.merge(page: 1, per_page: 1000) }
   let(:update_lat_params) { params.merge(checkin: { lat: 10 }) }
 
-  describe 'GET #new' do
-    it 'should assign a new checkin to @checkin' do
-      get :new, params: params
-      expect(assigns(:checkin)).to be_a_new(Checkin)
-    end
-
+  describe "GET #new" do
     it "assigns a new checkin to @checkin" do
       get :new, params: params
       expect(assigns(:checkin)).to be_a_new(Checkin)
@@ -142,6 +137,22 @@ RSpec.describe Users::CheckinsController, type: :controller do
     it "redirects to root page if checkin doesn't belong to user" do
       delete :destroy, params: other_user_params
       expect(response).to redirect_to(root_path)
+    end
+  end
+
+  describe "POST #import" do
+    let(:file) { fixture_file_upload("files/test_file.csv", "text/csv") }
+
+    it "returns an alert message and rediercts if invalid file" do
+      allow(CSV).to receive(:foreach).and_return(false)
+      post :import, params: params.merge(file: file)
+      expect(flash[:alert]).to match("Invalid CSV file format")
+      expect(response).to redirect_to(user_devices_path(user.url_id))
+    end
+
+    it "returns a helpful message if import succeeds" do
+      post :import, params: params.merge(file: file)
+      expect(flash[:notice]).to match("Importing check-ins")
     end
   end
 end
