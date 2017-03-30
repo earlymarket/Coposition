@@ -4,7 +4,6 @@
 window.COPO = window.COPO || {};
 
 COPO.utility = {
-
   deselect() {
     if (window.getSelection) {
       if (window.getSelection().empty) {  // Chrome

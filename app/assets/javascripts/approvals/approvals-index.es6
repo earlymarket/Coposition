@@ -1,10 +1,9 @@
 $(document).on('page:change', function() {
   var U  = window.COPO.utility;
-  if (U.currentPage('approvals', 'apps') || U.currentPage('approvals', 'friends')) {
+  if (U.currentPage('approvals', 'index')) {
     const M  = window.COPO.maps;
-
     U.gonFix();
-    const PAGE = U.currentPage('approvals', 'apps') ? 'apps' : 'friends';
+    const PAGE = "friends" in gon ? 'friends' : 'apps';
     COPO.permissionsTrigger.initTrigger(PAGE)
     COPO.permissions.initSwitches(PAGE, gon.current_user_id, gon.permissions)
 

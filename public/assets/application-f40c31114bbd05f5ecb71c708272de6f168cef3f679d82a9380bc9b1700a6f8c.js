@@ -54225,12 +54225,11 @@ return $.ui.tabs;
 
 $(document).on('page:change', function () {
   var U = window.COPO.utility;
-  if (U.currentPage('approvals', 'apps') || U.currentPage('approvals', 'friends')) {
+  if (U.currentPage('approvals', 'index')) {
     (function () {
       var M = window.COPO.maps;
-
       U.gonFix();
-      var PAGE = U.currentPage('approvals', 'apps') ? 'apps' : 'friends';
+      var PAGE = "friends" in gon ? 'friends' : 'apps';
       COPO.permissionsTrigger.initTrigger(PAGE);
       COPO.permissions.initSwitches(PAGE, gon.current_user_id, gon.permissions);
 
@@ -55678,62 +55677,62 @@ window.COPO.permissions = {
 
 window.COPO = window.COPO || {};
 window.COPO.pushCreateCheckin = {
-	push: function push(data) {
-		if (window.COPO.utility.currentPage('friends', 'show-device')) {
-			window.COPO.pushCreateCheckin.deviceShow(data);
-		} else if (window.COPO.utility.currentPage('friends', 'show')) {
-			window.COPO.pushCreateCheckin.friendShow(data);
-		} else if (window.COPO.utility.currentPage('approvals', 'friends')) {
-			window.COPO.pushCreateCheckin.friendsIndex(data);
-		}
-	},
+  push: function push(data) {
+    if (window.COPO.utility.currentPage('friends', 'show-device')) {
+      window.COPO.pushCreateCheckin.deviceShow(data);
+    } else if (window.COPO.utility.currentPage('friends', 'show')) {
+      window.COPO.pushCreateCheckin.friendShow(data);
+    } else if (window.COPO.utility.currentPage('approvals', 'friends')) {
+      window.COPO.pushCreateCheckin.friendsIndex(data);
+    }
+  },
 
-	deviceShow: function deviceShow(data) {
-		if (data.privilege === 'complete') {
-			gon.checkins.unshift(data.checkin);
-		} else {
-			gon.checkins = [data.checkin];
-		}
+  deviceShow: function deviceShow(data) {
+    if (data.privilege === 'complete') {
+      gon.checkins.unshift(data.checkin);
+    } else {
+      gon.checkins = [data.checkin];
+    }
 
-		COPO.maps.refreshMarkers(gon.checkins);
-	},
+    COPO.maps.refreshMarkers(gon.checkins);
+  },
 
-	friendShow: function friendShow(data) {
-		var index = gon.checkins.findIndex(function (checkin) {
-			return checkin.device_id === data.checkin.device_id;
-		});
+  friendShow: function friendShow(data) {
+    var index = gon.checkins.findIndex(function (checkin) {
+      return checkin.device_id === data.checkin.device_id;
+    });
 
-		if (!gon.checkins.length) {
-			gon.checkins.unshift(data.checkin);
-			$('#map-overlay').addClass('hide');
-			COPO.maps.refreshMarkers(gon.checkins);
-		} else {
-			if (index === -1) {
-				gon.checkins.unshift(data.checkin);
-			} else {
-				gon.checkins[index] = data.checkin;
-			}
-			COPO.maps.refreshMarkers(gon.checkins);
-		}
-	},
+    if (!gon.checkins.length) {
+      gon.checkins.unshift(data.checkin);
+      $('#map-overlay').addClass('hide');
+      COPO.maps.refreshMarkers(gon.checkins);
+    } else {
+      if (index === -1) {
+        gon.checkins.unshift(data.checkin);
+      } else {
+        gon.checkins[index] = data.checkin;
+      }
+      COPO.maps.refreshMarkers(gon.checkins);
+    }
+  },
 
-	friendsIndex: function friendsIndex(data) {
-		var index = gon.friends.findIndex(function (friend) {
-			return friend.userinfo.id === data.checkin.user_id;
-		});
-		var friend = { lastCheckin: data.checkin, userinfo: gon.friends[index].userinfo };
+  friendsIndex: function friendsIndex(data) {
+    var index = gon.friends.findIndex(function (friend) {
+      return friend.userinfo.id === data.checkin.user_id;
+    });
+    var friend = { lastCheckin: data.checkin, userinfo: gon.friends[index].userinfo };
 
-		if (!gon.friends.every(function (friend) {
-			return friend.lastCheckin;
-		})) {
-			$('#map-overlay').addClass('hide');
-			gon.friends[index] = friend;
-			COPO.maps.addFriendMarkers(gon.friends);
-		} else {
-			gon.friends[index] = friend;
-			COPO.maps.refreshFriendMarkers(gon.friends);
-		}
-	}
+    if (!gon.friends.every(function (friend) {
+      return friend.lastCheckin;
+    })) {
+      $('#map-overlay').addClass('hide');
+      gon.friends[index] = friend;
+      COPO.maps.addFriendMarkers(gon.friends);
+    } else {
+      gon.friends[index] = friend;
+      COPO.maps.refreshFriendMarkers(gon.friends);
+    }
+  }
 };
 'use strict';
 
@@ -55843,7 +55842,6 @@ window.COPO.smooch = {
 window.COPO = window.COPO || {};
 
 COPO.utility = {
-
   deselect: function deselect() {
     if (window.getSelection) {
       if (window.getSelection().empty) {
