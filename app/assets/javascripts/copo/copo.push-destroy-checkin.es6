@@ -10,8 +10,8 @@ window.COPO.pushDestroyCheckin = {
     }
   },
 
-	deviceShow(data) {
-		const index = gon.checkins.findIndex((checkin) => checkin.id === data.checkin.id);
+  deviceShow(data) {
+    const index = gon.checkins.findIndex((checkin) => checkin.id === data.checkin.id);
     if (index === -1) { return; }
 
     gon.checkins.splice(index, 1);
@@ -20,9 +20,9 @@ window.COPO.pushDestroyCheckin = {
     }
 
     COPO.maps.refreshMarkers(gon.checkins);
-	},
+  },
 
-	friendShow(data) {
+  friendShow(data) {
     const index = gon.checkins.findIndex((checkin) => checkin.id === data.checkin.id);
     if (index === -1) return;
 
@@ -31,21 +31,21 @@ window.COPO.pushDestroyCheckin = {
     if (!gon.checkins.length) {
       $('#map-overlay').removeClass('hide');
     }
-	  COPO.maps.refreshMarkers(gon.checkins);		
-	},
+    COPO.maps.refreshMarkers(gon.checkins);		
+  },
 
-	friendsIndex(data) {
-	  const index = gon.friends.findIndex((friend) => friend.lastCheckin.id === data.checkin.id);
+  friendsIndex(data) {
+    const index = gon.friends.findIndex((friend) => friend.lastCheckin.id === data.checkin.id);
     if (index === -1) return;
 
     const friend = { lastCheckin: data.new, userinfo: gon.friends[index].userinfo }
     gon.friends.splice(index, 1);
     gon.friends.unshift(friend);
     if (gon.friends.some(friend => friend.lastCheckin)) {
-	    COPO.maps.refreshFriendMarkers(gon.friends);
+      COPO.maps.refreshFriendMarkers(gon.friends);
     } else {
       map.removeLayer(COPO.maps.friendMarkers);
       $('#map-overlay').removeClass('hide');
     }
-	},
+  },
 }
