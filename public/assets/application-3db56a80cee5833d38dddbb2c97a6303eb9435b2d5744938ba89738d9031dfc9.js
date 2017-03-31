@@ -42744,7 +42744,7 @@ window.COPO.maps = {
       id: checkin.id,
       lat: checkin.lat.toFixed(6),
       lng: checkin.lng.toFixed(6),
-      created_at: moment(new Date(checkin.created_at)).format("ddd, Do MMM YYYY, HH:mm:ss") + ' (UTC+00:00)',
+      created_at: moment.utc(checkin.created_at).format("ddd, Do MMM YYYY, HH:mm:ss") + ' (UTC+00:00)',
       address: address
     };
 
@@ -42781,7 +42781,7 @@ window.COPO.maps = {
         var coords = [checkin.lat, checkin.lng];
         $.get('https://maps.googleapis.com/maps/api/timezone/json?location=' + checkin.lat + ',' + checkin.lng + '&timestamp=' + created_at + '&key=AIzaSyCEjHZhLTdiy7jbRTDU3YADs8a1yXKTwqI').done(function (data) {
           if (data.status === 'OK') {
-            var date = moment((created_at + data.rawOffset + data.dstOffset) * 1000).format("ddd, Do MMM YYYY, HH:mm:ss");
+            var date = moment.utc((created_at + data.rawOffset + data.dstOffset) * 1000).format("ddd, Do MMM YYYY, HH:mm:ss");
             var offsetStr = COPO.maps.formatOffset(parseInt(data.rawOffset) + data.dstOffset);
             var localDate = date + ' (UTC' + offsetStr + ')';
             checkin.localDate = localDate;
@@ -55128,13 +55128,13 @@ return $.ui.tabs;
 "use strict";
 
 $(document).on('page:change', function () {
-  if ($(".c-approvals.a-apps").length === 1 || $(".c-approvals.a-friends").length === 1) {
+  if ($(".c-approvals.a-index").length === 1) {
     (function () {
       var U = window.COPO.utility;
       var M = window.COPO.maps;
 
       U.gonFix();
-      var PAGE = $(".c-approvals.a-apps").length === 1 ? 'apps' : 'friends';
+      var PAGE = "friends" in gon ? 'friends' : 'apps';
       COPO.permissionsTrigger.initTrigger(PAGE);
       COPO.permissions.initSwitches(PAGE, gon.current_user_id, gon.permissions);
 
@@ -55430,7 +55430,7 @@ $(document).on('page:change', function () {
         };
 
         Connection.prototype.reopen = function() {
-          var error, error1;
+          var error;
           ActionCable.log("Reopening WebSocket, current state is " + (this.getState()));
           if (this.isActive()) {
             try {
@@ -55935,7 +55935,6 @@ $(document).on('page:change', function () {
       M.initMap();
       M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
       U.gonFix();
-      P.initTrigger('devices');
       COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions);
       COPO.delaySlider.initSliders(gon.devices);
       gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');
@@ -55947,6 +55946,7 @@ $(document).on('page:change', function () {
       });
 
       window.initPage = function () {
+        P.initTrigger('devices');
         $('.modal-trigger').leanModal();
         $('.clip_button').off();
         U.initClipboard();
@@ -56148,6 +56148,7 @@ $(document).on('page:change', function() {
     M.initMarkers(gon.checkins, gon.total);
     M.initControls();
     COPO.datePicker.init();
+    $('.modal-trigger').leanModal();
 
     map.on('locationfound', onLocationFound);
 
