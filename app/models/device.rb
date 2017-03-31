@@ -117,8 +117,8 @@ class Device < ApplicationRecord
 
   def broadcast_checkin_for_friends(checkin)
     user.friends.find_each do |friend|
-      allowed_checkin = safe_checkin_info_for(permissible: friend, action: "last", type: "address")
-      next unless allowed_checkin && allowed_checkin[0]["id"] == checkin.id
+      allowed_checkin = safe_checkin_info_for(permissible: friend, action: "last", type: "address")[0]
+      next unless allowed_checkin && allowed_checkin["id"] == checkin.id
       ActionCable.server.broadcast "friends_#{friend.id}",
                                    action: "checkin",
                                    privilege: privilege_for(friend),

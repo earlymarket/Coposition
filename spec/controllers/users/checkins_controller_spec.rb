@@ -118,6 +118,16 @@ RSpec.describe Users::CheckinsController, type: :controller do
       delete :destroy_all, params: other_user_params
       expect(response).to redirect_to(root_path)
     end
+
+    context "with date params" do
+      before { FactoryGirl.create(:checkin, device: device, created_at: 1.day.ago) }
+
+      it "deletes all checkins within date range specified" do
+        expect {
+          delete :destroy_all, params: params.merge(from: 1.day.ago, to: 1.day.ago)
+        }.to change { device.checkins.count }.by(-1)
+      end
+    end
   end
 
   describe "DELETE #destroy" do

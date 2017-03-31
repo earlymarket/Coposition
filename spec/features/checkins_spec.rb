@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.feature "Approvals", type: :feature do
+RSpec.feature "Checkins", type: :feature do
   background do
     given_i_am_signed_in
     and_i_have_a_device
@@ -10,7 +10,8 @@ RSpec.feature "Approvals", type: :feature do
     when_i_right_click_on_the_map
     and_i_click_create_checkin_here
     then_i_should_have_a_checkin
-    and_i_click_delete_history
+    and_i_click_delete_checkins
+    and_i_click_delete_all
     then_i_should_have_no_checkins
   end
 
@@ -54,8 +55,12 @@ RSpec.feature "Approvals", type: :feature do
     expect(page).to have_selector "img.leaflet-marker-icon"
   end
 
-  def and_i_click_delete_history
-    click_on "Delete history"
+  def and_i_click_delete_checkins
+    click_on "Delete check-ins"
+  end
+
+  def and_i_click_delete_all
+    click_on "Delete all check-ins"
   end
 
   def then_i_should_have_no_checkins
