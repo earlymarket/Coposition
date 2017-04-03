@@ -9,8 +9,8 @@ module Users
       @user = user
       @devices = user.devices.includes(:permissions)
       @params = params
-      if action == 'index'
-        params[:from] == 'devices' ? devices_index : approvals_index(params[:from])
+      if action == "index"
+        params[:from] == "devices" ? devices_index : approvals_index(params[:from])
       else
         update
       end
@@ -20,12 +20,11 @@ module Users
       @device = Device.find(@params[:device_id])
       @permissions = @device.permissions.includes(:permissible)
                             .order(:permissible_type, :permissible_id).not_coposition_developers.reverse
-      @permissions
     end
 
     def approvals_index(from)
       device_ids = @devices.select(:id)
-      model = from == 'friends' ? User : Developer
+      model = from == "friends" ? User : Developer
       @permissible = model.find(@params[:device_id]) # device_id = user_id/developer_id, permissions for friend/dev
       @permissions = Permission.where(device_id: device_ids,
                                       permissible_id: @permissible.id, permissible_type: model.to_s)
@@ -38,11 +37,7 @@ module Users
     end
 
     def gon(from)
-      case from
-      when 'devices' then devices_gon
-      when 'apps' then apps_gon
-      when 'friends' then friends_gon
-      end
+      send from + "_gon"
     end
 
     def devices_gon
@@ -56,7 +51,7 @@ module Users
 
     def apps_gon
       {
-        permissions: approvals_permissions('Developer'),
+        permissions: approvals_permissions("Developer"),
         current_user_id: @user.id,
         approved: @user.not_coposition_developers.public_info
       }
@@ -64,7 +59,7 @@ module Users
 
     def friends_gon
       {
-        permissions: approvals_permissions('User'),
+        permissions: approvals_permissions("User"),
         current_user_id: @user.id,
         approved: @user.friends.public_info
       }

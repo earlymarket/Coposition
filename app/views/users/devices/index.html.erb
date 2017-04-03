@@ -1,4 +1,7 @@
-<div id='gonvariables'><%= Gon::Base.render_data %></div>
+<div id='gonvariables'>
+  <%= Gon::Base.render_data %>
+</div>
+
 <h1>Your devices</h1>
 <div class="row">
   <div class="center">
@@ -24,7 +27,10 @@
 </section>
 <div>
   <% @presenter.devices.each do |device| %>
-    <%= render device %>
+    <div id="device<%=device.id%>">
+      <%= render device %>
+    </div>
+    <%= render partial: "device_modals", locals: {device: device} %>
   <% end %>
 </div>
 <div class="center"><%= will_paginate @presenter.devices %><div>
