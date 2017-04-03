@@ -22,6 +22,7 @@ before_script:
   - bin/setup
 
 script:
+  - bundle exec rake assets:clobber && bundle exec rake assets:precompile
   - xvfb-run -a bin/ci
 
 deploy:
