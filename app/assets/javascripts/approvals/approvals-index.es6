@@ -9,7 +9,7 @@ $(document).on('page:change', function() {
 
     if(gon.friends && gon.friends.some(friend => friend.lastCheckin)) {
       $('.friends-index').removeClass('hide');
-      gon.friends.forEach(friend => {
+      gon.friends.forEach((friend) => {
         if (!friend.lastCheckin) {
           $('i[data-friend="'+ friend.userinfo.id+'"]').remove();
         }

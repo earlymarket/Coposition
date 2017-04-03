@@ -8,7 +8,7 @@ asset 'moment'
 asset 'leaflet.locatecontrol'
 asset 'ion.rangeSlider'
 asset 'lodash'
-asset 'materialize'
+asset 'materialize', "0.97.6"
 asset 'typeahead.js'
 asset 'mustache.js'
 asset 'jquery-Mustache'

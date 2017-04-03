@@ -1,7 +1,7 @@
 window.COPO = window.COPO || {};
 window.COPO.permissionsTrigger = {
   initTrigger(page) {
-    $('.permissions-trigger').modal();
+    $('.permissions-trigger').leanModal();
     $('.permissions-trigger').on('click touchstart', function(){
       const DATA_ID = this.dataset.id;
       const $LIST = $(`.permissions[data-id=${DATA_ID}]`)
