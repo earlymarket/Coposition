@@ -23,7 +23,6 @@ before_script:
 
 script:
   - npm install -g bower
-  - bower install
   - bundle exec rake assets:clobber && bundle exec rake assets:precompile
   - xvfb-run -a bin/ci
 
