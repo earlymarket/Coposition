@@ -423,7 +423,7 @@ window.COPO.maps = {
   },
 
   refreshFriendMarkers(checkins) {
-    if (COPO.maps.friendMarkers.length) {
+    if (COPO.maps.friendMarkers) {
       map.removeLayer(COPO.maps.friendMarkers);
     }
     COPO.maps.addFriendMarkers(checkins);
