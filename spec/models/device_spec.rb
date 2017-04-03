@@ -283,38 +283,6 @@ RSpec.describe Device, type: :model do
     end
   end
 
-  describe "#broadcast_methods" do
-    let(:friend) { create :user }
-    let(:checkin_message) { { action: "checkin", privilege: "last_only", msg: checkin.as_json }}
-    let(:destroy_checkin_message) { { action: "destroy", msg: checkin.as_json }}
-
-    before do
-      device
-      Approval.add_friend(user, friend)
-      Approval.add_friend(friend, user)
-    end
-
-    context "checkin" do
-      it "broadcasts checkin message for friends" do
-        expect(ActionCable.server)
-          .to receive(:broadcast)
-          .with "friends_#{friend.id}", checkin_message
-
-        device.broadcast_checkin_for_friends(checkin)
-      end
-    end
-
-    context "destroy" do
-      it "broadcasts destroy checkin message for friends" do
-        expect(ActionCable.server)
-          .to receive(:broadcast)
-          .with "friends_#{friend.id}", destroy_checkin_message
-
-        device.broadcast_destroy_checkin_for_friends(checkin)
-      end
-    end
-  end
-
   describe "#can_bypass_fogging?" do
     let(:permission) { double "permission", bypass_fogging: bypass_fogging }
     let(:permissions) { double "permissions" }
