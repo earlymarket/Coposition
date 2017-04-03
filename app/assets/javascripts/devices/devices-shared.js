@@ -1,6 +1,5 @@
 $(document).on('page:change', function() {
-  if ($(".c-devices.a-shared").length === 1) {
-
+  if (window.COPO.utility.currentPage('devices', 'shared')) {
     COPO.maps.initMap()
     COPO.maps.initControls();
     var checkin = gon.checkin;

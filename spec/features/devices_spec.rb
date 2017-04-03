@@ -61,7 +61,7 @@ RSpec.feature "Devices", type: :feature do
   end
 
   def and_i_click_the_slider
-    find(:class, ".noUi-origin").click
+    find(".noUi-origin").click
   end
 
   def when_i_click_delete
