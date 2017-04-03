@@ -12,8 +12,8 @@
           </div>
         </div>
         <div class="col s4 valign right-align">
-          <%= button_to "Approve", approve_user_approval_path(current_user.url_id, approval.id), remote: true, class: "waves-effect waves-orange btn-flat" %>
-          <%= button_to "Reject", reject_user_approval_path(current_user.url_id, approval.id), remote: true, class: "waves-effect waves-orange btn-flat" %>
+          <%= button_to "Approve", user_approval_path(current_user.url_id, approval.id), method: :put, remote: true, class: "waves-effect waves-orange btn-flat" %>
+          <%= button_to "Reject", user_approval_path(current_user.url_id, approval.id), method: :delete, remote: true, class: "waves-effect waves-orange btn-flat" %>
         </div>
       </div>
     <% end %>

@@ -71,7 +71,7 @@ RSpec.describe User, type: :model do
     context "responds to its methods" do
       %i(url_id should_generate_new_friendly_id? approved? request_from? approval_for destroy_permissions_for
          not_coposition_developers safe_checkin_info filtered_checkins safe_checkin_info_for
-         changed_location? slack_message public_info public_info_hash).each do |method|
+         slack_message public_info public_info_hash).each do |method|
         it { expect(user).to respond_to(method) }
       end
     end
@@ -205,22 +205,6 @@ RSpec.describe User, type: :model do
 
       it "returns one checkin if action is last" do
         expect(user.safe_checkin_info_for(action: "last", permissible: developer)).to be_kind_of(Array)
-      end
-    end
-
-    context "changed_location?" do
-      before do
-        user.devices.last.checkins.create(lat: 10, lng: 10)
-      end
-
-      it "returns true if location" do
-        user.devices.last.checkins.create(lat: 20, lng: 20)
-        expect(user.changed_location?).to be true
-      end
-
-      it "returns false if location not changed " do
-        user.devices.last.checkins.create(lat: 10, lng: 10)
-        expect(user.changed_location?).to be false
       end
     end
 

@@ -1,32 +1,32 @@
 Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   mount ActionCable.server => "/cable"
-  root to: 'welcome#index'
+  root to: "welcome#index"
 
   # Specified routes
 
-  get '/api', to: 'welcome#api'
-  get '/help', to: 'welcome#help'
-  get '/getting_started', to: 'welcome#getting_started'
-  get '/devs', to: 'welcome#devs'
+  get "/api", to: "welcome#api"
+  get "/help", to: "welcome#help"
+  get "/getting_started", to: "welcome#getting_started"
+  get "/devs", to: "welcome#devs"
 
   # Devise
 
   devise_for :users, controllers: {
-    registrations: 'users/devise/registrations',
-    sessions: 'users/devise/sessions'
+    registrations: "users/devise/registrations",
+    sessions: "users/devise/sessions"
   }
   devise_for :developers, controllers: {
-    registrations: 'developers/devise/registrations',
-    sessions: 'developers/devise/sessions'
+    registrations: "developers/devise/registrations",
+    sessions: "developers/devise/sessions"
   }
 
   # Attachinary
-  mount Attachinary::Engine => '/attachinary'
+  mount Attachinary::Engine => "/attachinary"
 
   # API
 
-  namespace :api, path: '', constraints: { subdomain: 'api' }, defaults: { format: 'json' } do
+  namespace :api, path: "", constraints: { subdomain: "api" }, defaults: { format: "json" } do
     scope module: :v1, constraints: ApiConstraint.new(version: 1, default: true) do
       resources :subscriptions, only: [:create, :destroy]
       resources :configs, only: [:index, :show, :update]
@@ -64,14 +64,14 @@ Rails.application.routes.draw do
         end
         resources :devices, only: [:index, :create, :show, :update], module: :users do
           resources :permissions, only: [:update, :index]
-          put '/permissions', to: 'permissions#update_all'
+          put "/permissions", to: "permissions#update_all"
         end
       end
       namespace :mobile_app do
         resources :sessions, only: [:create, :destroy]
       end
     end
-    match '*path', to: -> (_env) { [404, {}, ['{"error": "route_not_found"}']] }, via: :all
+    match "*path", to: -> (_env) { [404, {}, ["{'error': 'route_not_found'}"]] }, via: :all
   end
 
   # Users
@@ -80,34 +80,31 @@ Rails.application.routes.draw do
     resource :dashboard, only: [:show]
     resources :devices, except: :edit do
       member { get :shared, :info }
-      resources :checkins, only: [:index, :show, :create, :new, :update]
-      delete '/checkins/', to: 'checkins#destroy_all'
-      delete '/checkins/:id', to: 'checkins#destroy'
+      resources :checkins, only: [:index, :show, :create, :new, :update] do
+        collection { post :import }
+      end
+      delete "/checkins/", to: "checkins#destroy_all"
+      delete "/checkins/:id", to: "checkins#destroy"
       resources :permissions, only: [:update, :index]
     end
-    resources :approvals, only: [:new, :create] do
-      member do
-        post 'approve'
-        post 'reject'
-      end
-    end
+    resources :approvals, only: [:new, :create, :update, :destroy]
     resource :create_dev_approvals, only: :create
     resources :friends, only: [:show] do
       member do
-        get 'show_device'
+        get "show_device"
       end
     end
-    get '/apps', to: 'approvals#apps'
-    get '/friends', to: 'approvals#friends'
+    get "/apps", to: "approvals#index", defaults: { approvable_type: "Developer" }
+    get "/friends", to: "approvals#index", defaults: { approvable_type: "User" }
   end
 
   # Devs
   resources :developers, only: [:edit, :update]
 
   namespace :developers do
-    get '/', to: 'consoles#show'
+    get "/", to: "consoles#show"
     resource :console, only: [:show] do
-      collection { post 'key' }
+      collection { post "key" }
     end
     resources :approvals, only: [:index, :new, :create, :destroy]
     # For cool API usage stats in the future

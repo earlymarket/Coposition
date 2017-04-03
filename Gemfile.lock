@@ -138,6 +138,7 @@ GEM
       json
     colorize (0.8.1)
     concurrent-ruby (1.0.5)
+    connection_pool (2.2.1)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     cucumber (2.4.0)
@@ -330,6 +331,8 @@ GEM
     rack-cors (0.4.0)
     rack-mini-profiler (0.10.2)
       rack (>= 1.2.0)
+    rack-protection (1.5.3)
+      rack
     rack-test (0.6.3)
       rack (>= 1.0)
     rack-timeout (0.4.2)
@@ -439,6 +442,11 @@ GEM
       rdoc (~> 4.0)
     sexp_processor (4.8.0)
     shellany (0.0.1)
+    sidekiq (4.2.9)
+      concurrent-ruby (~> 1.0)
+      connection_pool (~> 2.2, >= 2.2.0)
+      rack-protection (>= 1.5.0)
+      redis (~> 3.2, >= 3.2.1)
     simple_token_authentication (1.14.0)
       actionmailer (>= 3.2.6, < 6)
       actionpack (>= 3.2.6, < 6)
@@ -560,6 +568,7 @@ DEPENDENCIES
   ruby-prof
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
+  sidekiq
   simple_token_authentication
   simplecov
   slack-notifier

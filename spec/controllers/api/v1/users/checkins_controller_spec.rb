@@ -42,14 +42,14 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
   describe 'GET #last' do
     context 'without developer approval' do
-      it "does not fetch the last reported location", :skip_before do
+      it 'does not fetch the last reported location', :skip_before do
         get :last, params: params
         expect(res_hash[:error]).to eq 'approval_status: No Approval'
       end
     end
 
     context 'with developer approval but without friend approval' do
-      it "does not fetch the last reported location", :skip_before do
+      it 'does not fetch the last reported location', :skip_before do
         device
         Approval.link(user, developer, 'Developer')
         Approval.accept(user, developer, 'Developer')

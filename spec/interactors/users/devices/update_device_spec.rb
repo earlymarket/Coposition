@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Users::Devices::UpdateDevice, type: :interactor do
-  subject(:context) { described_class.call(params: params) }
+  subject(:update_context) { described_class.call(params: params) }
 
   let(:device) { FactoryGirl.create :device }
   let(:params) { ActionController::Parameters.new(id: device.id, device: { fogged: false }) }
@@ -9,15 +9,15 @@ RSpec.describe Users::Devices::UpdateDevice, type: :interactor do
   describe "call" do
     context "with valid fogging params" do
       it "succeeds" do
-        expect(context).to be_a_success
+        expect(update_context).to be_a_success
       end
 
       it "provides the device" do
-        expect(context.device).to eq device
+        expect(update_context.device).to eq device
       end
 
       it "provides a helpful notice" do
-        expect(context.notice).to eq "Location fogging is off."
+        expect(update_context.notice).to eq "Location fogging is off."
       end
     end
 
@@ -25,11 +25,11 @@ RSpec.describe Users::Devices::UpdateDevice, type: :interactor do
       let(:params) { ActionController::Parameters.new(id: device.id, delayed: 10) }
 
       it "succeeds" do
-        expect(context).to be_a_success
+        expect(update_context).to be_a_success
       end
 
       it "provides a helpful notice" do
-        expect(context.notice).to eq "#{device.name} delayed by 10 minutes."
+        expect(update_context.notice).to eq "#{device.name} delayed by 10 minutes."
       end
     end
 
@@ -37,11 +37,11 @@ RSpec.describe Users::Devices::UpdateDevice, type: :interactor do
       let(:params) { ActionController::Parameters.new(id: device.id, device: { published: true }) }
 
       it "succeeds" do
-        expect(context).to be_a_success
+        expect(update_context).to be_a_success
       end
 
       it "provides a helpful notice" do
-        expect(context.notice).to eq "Location sharing is on."
+        expect(update_context.notice).to eq "Location sharing is on."
       end
     end
 
@@ -49,11 +49,11 @@ RSpec.describe Users::Devices::UpdateDevice, type: :interactor do
       let(:params) { ActionController::Parameters.new(id: device.id, device: { icon: "mobile" }) }
 
       it "succeeds" do
-        expect(context).to be_a_success
+        expect(update_context).to be_a_success
       end
 
       it "provides a helpful notice" do
-        expect(context.notice).to eq "Device icon updated"
+        expect(update_context.notice).to eq "Device icon updated"
       end
     end
 
@@ -61,11 +61,11 @@ RSpec.describe Users::Devices::UpdateDevice, type: :interactor do
       let(:params) { ActionController::Parameters.new(id: device.id, device: { cloaked: true }) }
 
       it "succeeds" do
-        expect(context).to be_a_success
+        expect(update_context).to be_a_success
       end
 
       it "provides a helpful notice" do
-        expect(context.notice).to eq "Device cloaking is on."
+        expect(update_context.notice).to eq "Device cloaking is on."
       end
     end
 
@@ -76,11 +76,11 @@ RSpec.describe Users::Devices::UpdateDevice, type: :interactor do
       end
 
       it "fails" do
-        expect(context).to be_a_failure
+        expect(update_context).to be_a_failure
       end
 
       it "provides a helpful error" do
-        expect(context.error).to eq name: ["has already been taken"]
+        expect(update_context.error).to eq name: ["has already been taken"]
       end
     end
   end

@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Users::Devices::CreateDevice, type: :interactor do
-  subject(:context) { described_class.call(user: user, developer: developer, params: params) }
+  subject(:create_context) { described_class.call(user: user, developer: developer, params: params) }
 
   let(:user) { FactoryGirl.create :user }
   let(:developer) { FactoryGirl.create :developer }
@@ -15,15 +15,15 @@ RSpec.describe Users::Devices::CreateDevice, type: :interactor do
   describe "call" do
     context "when given valid params" do
       it "succeeds" do
-        expect(context).to be_a_success
+        expect(create_context).to be_a_success
       end
 
       it "provides the new device" do
-        expect(context.device).to eq device
+        expect(create_context.device).to eq device
       end
 
       it "provides a new checkin" do
-        expect(context.checkin).to eq device.checkins.first
+        expect(create_context.checkin).to eq device.checkins.first
       end
     end
 
@@ -35,11 +35,11 @@ RSpec.describe Users::Devices::CreateDevice, type: :interactor do
       end
 
       it "fails" do
-        expect(context).to be_a_failure
+        expect(create_context).to be_a_failure
       end
 
       it "provides a helpful error message" do
-        expect(context.error).to eq "UUID does not match an existing device"
+        expect(create_context.error).to eq "UUID does not match an existing device"
       end
     end
 
@@ -49,11 +49,11 @@ RSpec.describe Users::Devices::CreateDevice, type: :interactor do
       end
 
       it "fails" do
-        expect(context).to be_a_failure
+        expect(create_context).to be_a_failure
       end
 
       it "provides a helpful error message" do
-        expect(context.error).to eq "You already have a device with the name laptop"
+        expect(create_context.error).to eq "You already have a device with the name laptop"
       end
     end
 
@@ -63,11 +63,11 @@ RSpec.describe Users::Devices::CreateDevice, type: :interactor do
       end
 
       it "fails" do
-        expect(context).to be_a_failure
+        expect(create_context).to be_a_failure
       end
 
       it "provides a helpful error message" do
-        expect(context.error).to eq "Device is registered to another user"
+        expect(create_context.error).to eq "Device is registered to another user"
       end
     end
   end
