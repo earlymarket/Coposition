@@ -12,6 +12,6 @@ asset 'materialize'
 asset 'typeahead.js'
 asset 'mustache.js'
 asset 'jquery-Mustache'
-asset 'leaflet.markercluster'
+asset 'leaflet.markercluster', "0.5.0"
 asset 'clipboard'
 asset 'slick-carousel'
