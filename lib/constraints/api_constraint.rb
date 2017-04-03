@@ -14,11 +14,4 @@ module Constraints
         .include?("version=#{version}")
     end
   end
-
-  class OAuthConstraint
-    def matches?(request)
-      token = Doorkeeper.authenticate(request)
-      token && token.accessible?
-    end
-  end
 end
