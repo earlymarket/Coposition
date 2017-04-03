@@ -4,12 +4,12 @@ $(document).on('page:change', function() {
     const M  = window.COPO.maps;
     U.gonFix();
     const PAGE = "friends" in gon ? 'friends' : 'apps';
-    COPO.permissionsTrigger.initTrigger(PAGE)
-    COPO.permissions.initSwitches(PAGE, gon.current_user_id, gon.permissions)
+    COPO.permissionsTrigger.initTrigger(PAGE);
+    COPO.permissions.initSwitches(PAGE, gon.current_user_id, gon.permissions);
 
     if(gon.friends && gon.friends.some(friend => friend.lastCheckin)) {
       $('.friends-index').removeClass('hide');
-      gon.friends.forEach(friend => {
+      gon.friends.forEach((friend) => {
         if (!friend.lastCheckin) {
           $('i[data-friend="'+ friend.userinfo.id+'"]').remove();
         }

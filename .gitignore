@@ -23,8 +23,11 @@ coverage/*
 # User uploaded images
 public/system/*
 
+# Assets
+public/assets
+
 # Bower
-# vendor/assets/bower_components
+vendor/assets/bower_components
 
 # Ignore local Procfile
 Procfile.local

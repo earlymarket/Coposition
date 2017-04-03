@@ -1,0 +1,11 @@
+{
+  "name": "copsition",
+  "version": "1.0.0",
+  "dependencies": {
+    "bower": "1.8.0"
+  },
+  "engine": {
+    "node": "7.1.0",
+    "npm": "3.10.9"
+  }
+}
