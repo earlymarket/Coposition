@@ -2,6 +2,7 @@
 # Check out https://github.com/42dev/bower-rails#ruby-dsl-configuration for more options
 
 # asset 'bootstrap'
+asset 'jquery', "2.2.4"
 asset 'mapbox.js'
 asset 'leaflet-fullscreen'
 asset 'moment'
