@@ -43,15 +43,27 @@
     },
     "STAGING_DATABASE_URL": {
       "required": true
+    },
+    "REDISTOGO_URL": {
+      "required": true
     }
   },
   "addons": [
     "sendgrid:starter",
+    "redistogo:nano",
     {
       "plan": "heroku-postgresql:hobby-basic",
       "options": {
         "version": "9.5"
       }
+    }
+  ],
+  "buildpacks": [
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-nodejs"
+    },
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-ruby"
     }
   ]
 }

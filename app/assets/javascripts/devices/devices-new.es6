@@ -1,5 +1,5 @@
 $(document).on('page:change', () => {
-  if ($(".c-devices.a-new").length === 1) {
+  if (window.COPO.utility.currentPage('devices', 'new')) {
     const $CREATE_CHECKIN = $('#create_checkin');
     const $ADD_BUTTON = $('#add_button');
     const $PREVIEW = $('#preview');

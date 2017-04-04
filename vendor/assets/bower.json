@@ -1,17 +1,18 @@
 {
   "name": "dsl-generated dependencies",
   "dependencies": {
+    "jquery": "2.2.4",
     "mapbox.js": "latest",
     "leaflet-fullscreen": "latest",
     "moment": "latest",
     "leaflet.locatecontrol": "latest",
     "ion.rangeSlider": "latest",
     "lodash": "latest",
-    "materialize": "latest",
+    "materialize": "0.97.6",
     "typeahead.js": "latest",
     "mustache.js": "latest",
     "jquery-Mustache": "latest",
-    "leaflet.markercluster": "latest",
+    "leaflet.markercluster": "0.5.0",
     "clipboard": "latest",
     "slick-carousel": "latest"
   }

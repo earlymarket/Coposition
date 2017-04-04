@@ -1,43 +1,19 @@
 $(document).on('page:change', function() {
-  if ($(".c-devices.a-index").length === 1) {
+  if (window.COPO.utility.currentPage('devices', 'index')) {
     const U = window.COPO.utility;
     const M  = window.COPO.maps;
     const P = window.COPO.permissionsTrigger;
     M.initMap();
     M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
     U.gonFix();
-    P.initTrigger('devices');
     COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions)
     COPO.delaySlider.initSliders(gon.devices);
     gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');
-
-    $('.fogButton').each((index, fogButton) => {
-      if(!$(fogButton).data('fogged')){
-        $(fogButton).removeData('confirm').removeAttr('data-confirm')
-      }
-    })
-
-    $('.cloakedButton').each((index, cloakedButton) => {
-      if($(cloakedButton).data('cloaked')){
-        $(cloakedButton).removeData('confirm').removeAttr('data-confirm')
-      }
-    })
 
     $('body').on('click', '.edit-button', function (e) {
       e.preventDefault();
       $(this).toggleClass('hide', true);
       makeEditable($(this).prev('span'), handleEdited);
-    });
-
-    $('.modal-trigger').leanModal();
-
-    $('.center-map').on('click', function() {
-      const device_id = this.dataset.device;
-      const checkin = gon.checkins.find((checkin) => checkin.device_id.toString() === device_id);
-      if(checkin) {
-        U.scrollTo('#top', 200);
-        setTimeout(() => M.centerMapOn(checkin.lat, checkin.lng), 200);
-      }
     });
 
     function makeEditable ($target, handler) {
@@ -68,7 +44,7 @@ $(document).on('page:change', function() {
           dataType: 'json',
           url: url,
           type: 'PUT',
-          data: { name: newName }
+          data: { device: { name: newName } }
         });
         request
         .done(function (response) {
@@ -87,6 +63,8 @@ $(document).on('page:change', function() {
     }
 
     window.initPage = function(){
+      P.initTrigger('devices');
+      $('.modal-trigger').leanModal();
       $('.clip_button').off();
       U.initClipboard();
       $('.tooltipped').tooltip('remove');
@@ -105,6 +83,27 @@ $(document).on('page:change', function() {
 
       $('.linkbox').each(function(i,linkbox){
         $(linkbox).attr('size', $(linkbox).val().length)
+      })
+
+      $('.center-map').on('click', function() {
+        const device_id = this.dataset.device;
+        const checkin = gon.checkins.find((checkin) => checkin.device_id.toString() === device_id);
+        if(checkin) {
+          U.scrollTo('#top', 200);
+          setTimeout(() => M.centerMapOn(checkin.lat, checkin.lng), 200);
+        }
+      });
+
+      $('.fogButton').each((index, fogButton) => {
+        if(!$(fogButton).data('fogged')){
+          $(fogButton).removeData('confirm').removeAttr('data-confirm')
+        }
+      })
+
+      $('.cloakedButton').each((index, cloakedButton) => {
+        if($(cloakedButton).data('cloaked')){
+          $(cloakedButton).removeData('confirm').removeAttr('data-confirm')
+        }
       })
     }
     initPage();

@@ -28,8 +28,6 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     api_request_headers(developer, user)
     unless example.metadata[:skip_before]
       device
-      Approval.link(user, second_user, 'User')
-      Approval.accept(second_user, user, 'User')
       Approval.link(user, developer, 'Developer')
       Approval.accept(user, developer, 'Developer')
     end
@@ -44,14 +42,14 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
   describe 'GET #last' do
     context 'without developer approval' do
-      it "does not fetch the last reported location", :skip_before do
+      it 'does not fetch the last reported location', :skip_before do
         get :last, params: params
         expect(res_hash[:error]).to eq 'approval_status: No Approval'
       end
     end
 
     context 'with developer approval but without friend approval' do
-      it "does not fetch the last reported location", :skip_before do
+      it 'does not fetch the last reported location', :skip_before do
         device
         Approval.link(user, developer, 'Developer')
         Approval.accept(user, developer, 'Developer')
@@ -62,7 +60,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
     context 'with approval' do
       before do
-        device.switch_fog
+        device.update(fogged: !device.fogged)
         checkin
       end
 
@@ -73,6 +71,8 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       end
 
       it 'fetches the last reported location for a friend' do
+        Approval.link(user, second_user, 'User')
+        Approval.accept(second_user, user, 'User')
         get :last, params: params.merge(permissible_id: second_user.id)
         expect(res_hash.first['lat']).to be checkin.lat
       end
@@ -85,7 +85,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       end
 
       it "fos the last reported location's address and lat/lng if fogged" do
-        device.switch_fog
+        device.update(fogged: !device.fogged)
         device.checkins.create(lat: 51.57123, lng: -0.50523)
         get :last, params: geocode_params
         expect(res_hash.first['city']).to eq 'Denham'
@@ -96,7 +96,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
       it 'bypasses fogging if bypass_fogging is true' do
         # Make it fogged
-        device.switch_fog
+        device.update(fogged: !device.fogged)
         device.checkins.create(lat: 51.57471, lng: -0.50626)
         Permission.last.update(bypass_fogging: true)
         get :last, params: geocode_params
@@ -108,7 +108,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
     context 'on a user' do
       it 'fetches the last reported location' do
-        device.switch_fog
+        device.update(fogged: !device.fogged)
         checkin
         get :last, params: { user_id: user.id }
         expect(res_hash.first['lat']).to be checkin.lat
@@ -229,7 +229,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
     context 'with date param' do
       it 'returns checkins from the date provided' do
-        date = Date.today
+        date = Time.zone.now.to_date
         get :index, params: params.merge(date: date)
         expect(res_hash.all? { |checkin| Date.parse(checkin['created_at']) == date }).to be true
         expect(res_hash.size).to eq 30
@@ -267,8 +267,6 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
   describe 'POST #create' do
     it 'creates a checkin when there is a pre-existing device' do
-      subscription
-      friend_sub
       count = user.checkins.count
       create_headers
       post :create, params: create_params

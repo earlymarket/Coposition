@@ -23,5 +23,17 @@ coverage/*
 # User uploaded images
 public/system/*
 
+# Assets
+public/assets
+
 # Bower
 vendor/assets/bower_components
+
+# Ignore local Procfile
+Procfile.local
+
+# Ignore local env file
+.env
+
+# Ignore foreman config
+.foreman

@@ -32,7 +32,7 @@
 //= require typeahead.js/dist/typeahead.bundle.min
 //= require ion.rangeSlider/js/ion.rangeSlider.min
 //= require clipboard/dist/clipboard.min
-//= require slick-carousel/slick/slick.min
+// = require slick-carousel/slick/slick.min
 
 // STILL more up to date version
 //= require nouislider.min
@@ -44,17 +44,6 @@
 //= require leaflet.locatecontrol/dist/L.Control.Locate.min
 //= require leaflet-fullscreen/dist/Leaflet.fullscreen.min
 //= require control.w3w
-
-// -- Run every page
-
-//= require utility
-//= require navbar
-//= require init
-//= require cleanup
-//= require maps
-//= require permissions
-//= require delay-slider
-//= require slides
 
 // I've put require_tree back in. Any js where the load order isn't important doesn't need to be specified.
 //= require_tree .

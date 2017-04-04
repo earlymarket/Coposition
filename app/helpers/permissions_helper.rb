@@ -26,9 +26,9 @@ module PermissionsHelper
 
   def permissions_label_id(permissionable, switchtype)
     if permissionable.class == Permission
-      "#{permissionable.id}_#{switchtype}"
+      "#{switchtype}-#{permissionable.id}"
     else
-      "master_#{permissionable.id}_#{switchtype}"
+      "master-#{switchtype}-#{permissionable.id}"
     end
   end
 
