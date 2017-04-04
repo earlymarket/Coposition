@@ -140,8 +140,9 @@ RSpec.describe Users::CheckinsController, type: :controller do
       end
 
       it "does not delete checkins when no days in range specified" do
-        delete :destroy_all, params: params.merge(from: 6.days.ago, to: 5.day.ago)
-        expect(device.checkins.count).to eq(4)
+        expect {
+          delete :destroy_all, params: params.merge(from: 6.days.ago, to: 5.day.ago)
+        }.to change { device.checkins.count }.by(0)
       end
     end
   end
