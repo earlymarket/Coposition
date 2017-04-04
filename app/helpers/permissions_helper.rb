@@ -21,7 +21,7 @@ module PermissionsHelper
   end
 
   def permissions_switch_class(permissionable)
-    permissionable.class == Permission ? 'permission-switch' : 'master'
+    permissionable.class == Permission ? "permission-switch" : "master"
   end
 
   def permissions_label_id(permissionable, switchtype)
@@ -33,12 +33,11 @@ module PermissionsHelper
   end
 
   def permissions_check_box_value(permissionable, type)
-    if permissionable.class == Permission
-      if %w(disallowed last_only complete).include? type
-        permissionable.privilege == type
-      else
-        permissionable[type]
-      end
+    return unless permissionable.class == Permission
+    if %w(disallowed last_only complete).include? type
+      permissionable.privilege == type
+    else
+      permissionable[type]
     end
   end
 end

@@ -56,5 +56,31 @@ module Users
         }
       end
     end
+
+    def input_options
+      if apps_page?
+        { placeholder: "App name", class: "validate devs_typeahead", required: true }
+      else
+        { placeholder: "email@email.com", class: "validate", required: true }
+      end
+    end
+
+    def pending_friends
+      string = ""
+      user.pending_friends.each_with_index do |friend, index|
+        string += friend.email
+        string += ", " if index < user.pending_friends.length - 2
+        string += " and " if index == user.pending_friends.length - 2
+      end
+      string
+    end
+
+    def create_approval_url
+      if apps_page?
+        Rails.application.routes.url_helpers.user_create_dev_approvals_path(current_user.url_id)
+      else
+        Rails.application.routes.url_helpers.user_approvals_path(current_user.url_id)
+      end
+    end
   end
 end
