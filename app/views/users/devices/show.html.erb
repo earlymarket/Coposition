@@ -19,7 +19,7 @@
         <p class='center-align'>
           Warning, this is a permanent change that can only be undone by uploading a back-up of your location history. We strongly recommend downloading a back-up of your device's data before deleting any check-in(s).
         </p>
-        <a class="btn device-button-small" href="<%= user_device_path(current_user.url_id, @presenter.device) %>.csv?download=csv">
+        <a class="btn" href="<%= user_device_path(current_user.url_id, @presenter.device) %>.csv?download=csv">
           Download back-up
         </a>
         <p class='center-align'>
