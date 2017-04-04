@@ -19,6 +19,9 @@
         <p class='center-align'>
           Warning, this is a permanent change that can only be undone by uploading a back-up of your location history. We strongly recommend downloading a back-up of your device's data before deleting any check-in(s).
         </p>
+        <a class="btn device-button-small" href="<%= user_device_path(current_user.url_id, @presenter.device) %>.csv?download=csv">
+          Download back-up
+        </a>
         <p class='center-align'>
           <% if @presenter.date_range[:from] %>
             Currently, you are filtering to only see check-ins from <%= humanize_date(@presenter.date_range[:from]) %> to <%= humanize_date(@presenter.date_range[:to]) %>.
