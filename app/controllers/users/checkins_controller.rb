@@ -50,15 +50,21 @@ class Users::CheckinsController < ApplicationController
   end
 
   def destroy_all
-    Checkin.where(device: params[:device_id]).delete_all
+    checkins = device.checkins
+    checkins = checkins.where(created_at: date_range) if params[:from]
+    checkins.delete_all
     flash[:notice] = "History deleted."
-    redirect_to user_device_path(current_user.url_id, params[:device_id])
+    redirect_to user_device_path(current_user.url_id, device.id)
   end
 
   private
 
   def device
     @device ||= Device.find(params[:device_id])
+  end
+
+  def date_range
+    Date.parse(params[:from])..Date.parse(params[:to]).end_of_day
   end
 
   def allowed_params
