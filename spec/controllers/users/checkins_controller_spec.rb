@@ -120,12 +120,28 @@ RSpec.describe Users::CheckinsController, type: :controller do
     end
 
     context "with date params" do
-      before { FactoryGirl.create(:checkin, device: device, created_at: 1.day.ago) }
+      before(:example) {
+        # create 3 days of checkins
+        FactoryGirl.create(:checkin, device: device, created_at: 3.days.ago)
+        FactoryGirl.create(:checkin, device: device, created_at: 2.days.ago)
+        FactoryGirl.create(:checkin, device: device, created_at: 1.day.ago)
+      }
 
-      it "deletes all checkins within date range specified" do
+      it "deletes 3 checkins when 3 days in range specified" do
+        expect {
+          delete :destroy_all, params: params.merge(from: 3.days.ago, to: 1.day.ago)
+        }.to change { device.checkins.count }.by(-3)
+      end
+
+      it "deletes 1 checkin when 1 day in range specified" do
         expect {
           delete :destroy_all, params: params.merge(from: 1.day.ago, to: 1.day.ago)
         }.to change { device.checkins.count }.by(-1)
+      end
+
+      it "does not delete checkins when no days in range specified" do
+        delete :destroy_all, params: params.merge(from: 6.days.ago, to: 5.day.ago)
+        expect(device.checkins.count).to eq(4)
       end
     end
   end
