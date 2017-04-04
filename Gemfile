@@ -65,6 +65,9 @@ group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem "web-console", "~> 2.0"
   gem "foreman"
+  gem "rack-mini-profiler", require: false
+  gem "flamegraph"
+  gem "stackprof"
 end
 
 group :development, :test do
@@ -86,11 +89,16 @@ end
 
 group :test do
   gem "codeclimate-test-reporter", require: nil
-  gem "capybara-webkit", "~> 1.11.1"
+  gem "capybara-webkit", "~> 1.14.0"
   gem "cucumber-rails", require: false
   gem "launchy"
   gem "database_cleaner"
   gem "simplecov", require: false
   gem "rails-controller-testing"
   gem "webmock", require: false
+end
+
+group :benchmark do
+  gem "rails-perftest"
+  gem "ruby-prof"
 end

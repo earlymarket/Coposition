@@ -1,5 +1,5 @@
 $(document).on('page:change', function() {
-  if ($(".c-devices.a-index").length === 1) {
+  if (window.COPO.utility.currentPage('devices', 'index')) {
     const U = window.COPO.utility;
     const M  = window.COPO.maps;
     const P = window.COPO.permissionsTrigger;

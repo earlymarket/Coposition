@@ -20,6 +20,11 @@ COPO.permissions.initSwitches(page, gon.current_user_id, gon.permissions);
 if(gon.friends && gon.friends.some(function(friend){ return friend.lastCheckin })) {
   $('#map-overlay').addClass('hide');
   COPO.maps.refreshFriendMarkers(gon.friends);
+  gon.friends.forEach(function(friend) {
+    if (!friend.lastCheckin) {
+      $('i[data-friend="'+ friend.userinfo.id+'"]').remove();
+    }
+  });
 } else if(gon.friends){
   if(COPO.maps.friendMarkers){ map.removeLayer(COPO.maps.friendMarkers) }
   $('#map-overlay').removeClass('hide');
@@ -34,14 +39,5 @@ $('.center-map').on('click', function() {
   COPO.utility.scrollTo('#top', 200);
   setTimeout(function(){
  	  COPO.maps.centerMapOn(checkin.lat, checkin.lng)
- 	}, 200
-  );
-  
+ 	}, 200);
 });
-
-gon.friends.forEach(function(friend) {
-  if (!friend.lastCheckin) {
-    $('i[data-friend="'+ friend.userinfo.id+'"]').remove();
-  }
-});
-
