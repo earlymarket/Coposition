@@ -25,12 +25,4 @@ RSpec.describe DashboardHelper, type: :helper do
       expect(helper.dashboard_flag('GB')).to match 'gb.png'
     end
   end
-
-  describe '#dashboard_visited_countries_title' do
-    it 'should correctly pluralize based on the number of visited countries' do
-      expect(helper.dashboard_visited_countries_title(1)).to match 'Last Country'
-      expect(helper.dashboard_visited_countries_title(0)).to match 'No Countries'
-      expect(helper.dashboard_visited_countries_title(11)).to match 'Countries Visited'
-    end
-  end
 end

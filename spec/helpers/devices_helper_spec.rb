@@ -1,24 +1,9 @@
 require "rails_helper"
 
 RSpec.describe DevicesHelper, type: :helper do
-  let(:safebuffer) { ActiveSupport::SafeBuffer }
-  let(:developer) { FactoryGirl.create :developer }
   let(:user) { FactoryGirl.create :user }
-  let(:device) do
-    device = FactoryGirl.create(:device, user_id: user.id)
-    device.developers << developer
-    device.permitted_users << user
-    device
-  end
-  let(:config) { developer.configs.create(device_id: device.id) }
-  let(:custom_config) do
-    config.update(custom: { type: "herds", mode: "power-saving" })
-    config
-  end
+  let(:device) { FactoryGirl.create(:device, user_id: user.id) }
   let(:other) { Device.update(device.id, published: true) }
-  let(:friend) { FactoryGirl.create :user }
-  let(:friendPresenter) { ::Users::FriendsPresenter.new(friend, { id: user.id, device_id: device.id }, "show_device") }
-  let(:devicesPresenter) { ::Users::DevicesPresenter.new(user, { id: device.id }, "show") }
 
   describe "#devices_last_checkin" do
     it "returns 'No Checkins found' if a checkin doesn't exist" do

@@ -11,17 +11,6 @@ module DashboardHelper
     image_tag("/flags/noflag.png")
   end
 
-  def dashboard_visited_countries_title(count)
-    case count
-    when 1
-      "Last Country Visited"
-    when 0
-      "No Countries Visited"
-    else
-      "Last #{count} Countries Visited"
-    end
-  end
-
   private
 
   def iso_countries

@@ -7,7 +7,7 @@ module DevicesHelper
       "Last reported in #{last_checkin.address} on #{humanize_date_and_time(last_checkin.created_at)}
       <i data-device='#{device.id}' class='center-map material-icons'>my_location</i>".html_safe
     else
-      "No Checkins found".html_safe
+      "No Checkins found"
     end
   end
 
@@ -26,7 +26,7 @@ module DevicesHelper
 
   def devices_cloaked_info(value)
     return unless value
-    "<div class='inline-text cloaked-info grey-text'>This device is cloaked. No friends or apps can see this device or its check-ins.</div>".html_safe
+    "<div class='inline-text cloaked-info grey-text'>This device is cloaked. No friends or apps can see this device or its check-ins.</div>"
   end
 
   def devices_choose_icon(device, icon)
@@ -34,9 +34,9 @@ module DevicesHelper
       .user_device_path(current_user.url_id, device.id, device: { icon: icon }),
       class: "col s2", method: :put, remote: true, data: { icon: icon } do
       if device.icon == icon
-        "<i class='material-icons medium active'>#{icon}</i>#{icon_label(icon)}".html_safe
+        "<i class='material-icons medium active'>#{icon}</i>#{icon_label(icon)}"
       else
-        "<i class='material-icons medium choose-icon'>#{icon}</i>#{icon_label(icon)}".html_safe
+        "<i class='material-icons medium choose-icon'>#{icon}</i>#{icon_label(icon)}"
       end
     end
   end
@@ -45,11 +45,11 @@ module DevicesHelper
 
   def icon_label(icon)
     if icon == "desktop_windows"
-      "<p class='icon-label'>desktop</p>".html_safe
+      "<p class='icon-label'>desktop</p>"
     elsif icon == "devices_other"
-      "<p class='icon-label'>other</p>".html_safe
+      "<p class='icon-label'>other</p>"
     else
-      "<p class='icon-label'>#{icon}</p>".html_safe
+      "<p class='icon-label'>#{icon}</p>"
     end
   end
 end

@@ -4,7 +4,6 @@ class Users::FriendsController < ApplicationController
 
   def show
     @presenter = ::Users::FriendsPresenter.new(current_user, params, "show")
-    @friend = @presenter.friend
     @devices = @presenter.devices
     gon.push(@presenter.index_gon)
   end

@@ -29,8 +29,4 @@ module ApplicationHelper
     flash.keys.each { |flash_type| flash.send("discard", flash_type) }
     output
   end
-
-  def name_or_email_name(user)
-    user.username.present? ? user.username : user.email.split("@").first
-  end
 end

@@ -38,6 +38,17 @@ module Users
       }
     end
 
+    def visited_countries_title
+      case count = last_countries_loaded.count
+      when 1
+        "Last Country Visited"
+      when 0
+        "No Countries Visited"
+      else
+        "Last #{count} Countries Visited"
+      end
+    end
+
     private
 
     def fogged_city_count

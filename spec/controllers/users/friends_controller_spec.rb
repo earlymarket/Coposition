@@ -24,11 +24,6 @@ RSpec.describe Users::FriendsController, type: :controller do
   end
 
   describe "GET #show" do
-    it "assigns @friend if friends" do
-      get :show, params: params
-      expect(assigns(:friend)).to eq(second_user)
-    end
-
     it "assigns friends devices if friends" do
       get :show, params: params
       expect(assigns(:devices)).to eq(second_user.devices)

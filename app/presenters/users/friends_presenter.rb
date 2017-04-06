@@ -53,6 +53,10 @@ module Users
         device_id: device, from: from, to: Time.zone.today), method: :get)
     end
 
+    def friend_name
+      friend.username.present? ? friend.username : friend.email.split("@").first
+    end
+
     private
 
     def most_recent_checkins

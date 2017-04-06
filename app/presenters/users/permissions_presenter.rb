@@ -1,5 +1,5 @@
 module Users
-  class PermissionsPresenter
+  class PermissionsPresenter  < ApplicationPresenter
     attr_reader :permissible
     attr_reader :device
     attr_reader :permissions
