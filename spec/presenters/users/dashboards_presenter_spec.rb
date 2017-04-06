@@ -17,7 +17,8 @@ describe ::Users::DashboardsPresenter do
   end
 
   describe "Interface" do
-    %i(most_frequent_areas percent_change weeks_checkins_count most_used_device last_countries gon).each do |method|
+    %i(most_frequent_areas percent_change weeks_checkins_count most_used_device
+       last_countries gon visited_countries_title).each do |method|
       it { is_expected.to respond_to method }
     end
   end
@@ -164,6 +165,27 @@ describe ::Users::DashboardsPresenter do
       allow(user).to receive(:public_info_hash)
       dashboard.send(:current_user_info)
       expect(user).to have_received(:public_info_hash)
+    end
+  end
+
+  describe "visited_countries_title" do
+    context "0 countries" do
+      it "returns 'No countries visited'" do
+        expect(dashboard.visited_countries_title).to eq "No countries visited"
+      end
+    end
+    context "1 country" do
+      it "returns 'Last country visited'" do
+        FactoryGirl.create(:checkin, device_id: device.id)
+        expect(dashboard.visited_countries_title).to eq "Last country visited"
+      end
+    end
+    context "n countries" do
+      it "returns a string containing n" do
+        FactoryGirl.create(:checkin, device_id: device.id).update(country_code: "GB")
+        FactoryGirl.create(:checkin, device_id: device.id).update(country_code: "US")
+        expect(dashboard.visited_countries_title).to match dashboard.last_countries.length.to_s
+      end
     end
   end
 end

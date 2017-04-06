@@ -41,11 +41,11 @@ module Users
     def visited_countries_title
       case count = last_countries_loaded.count
       when 1
-        "Last Country Visited"
+        "Last country visited"
       when 0
-        "No Countries Visited"
+        "No countries visited"
       else
-        "Last #{count} Countries Visited"
+        "Last #{count} countries visited"
       end
     end
 

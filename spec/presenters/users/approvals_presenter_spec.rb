@@ -15,7 +15,7 @@ describe ::Users::ApprovalsPresenter do
   end
 
   describe "Interface" do
-    %i(approvable_type approved pending devices gon).each do |method|
+    %i(approvable_type approved pending devices gon input_options pending_friends create_approval_url).each do |method|
       it { is_expected.to respond_to method }
     end
   end
@@ -157,37 +157,64 @@ describe ::Users::ApprovalsPresenter do
       expect(approvals.send(:friends_checkins)[0]).to be_kind_of Hash
     end
   end
+
+  describe "create_approval_url" do
+    it "returns a path for creating developer approval" do
+      approvals = described_class.new(user, "Developer")
+      expect(approvals.create_approval_url).to match "create_dev_approvals"
+    end
+
+    it "returns a path for creating user approval" do
+      expect(approvals.create_approval_url).to match "approvals"
+    end
+  end
+
+  describe "input_options" do
+    context "users" do
+      it "assigns placeholder" do
+        expect(approvals.input_options[:placeholder]).to match "email@email.com"
+      end
+
+      it "assigns class" do
+        expect(approvals.input_options[:class]).to match "validate"
+      end
+    end
+
+    context "developers" do
+      let(:approvals) { described_class.new(user, "Developer") }
+
+      it "assigns placeholder" do
+        expect(approvals.input_options[:placeholder]).to match "name"
+      end
+
+      it "assigns class" do
+        expect(approvals.input_options[:class]).to match "devs_typeahead"
+      end
+    end
+  end
+
+  describe "pending_friends" do
+    let(:pending) { FactoryGirl.create(:user) }
+    before do
+      user.pending_friends << pending
+    end
+
+    it "returns a string" do
+      expect(approvals.pending_friends).to be_kind_of(String)
+    end
+
+    it "returns a string which contains friends email" do
+      expect(approvals.pending_friends).to match pending.email
+    end
+
+    it "returns a string with 'and' if user has 2 pending friends" do
+      user.pending_friends << FactoryGirl.create(:user)
+      expect(approvals.pending_friends).to match "and"
+    end
+
+    it "returns a string with ',' if user has more than 2 pending friends" do
+      user.pending_friends << [FactoryGirl.create(:user), FactoryGirl.create(:user)]
+      expect(approvals.pending_friends).to match ","
+    end
+  end
 end
-
-# describe "#create_approval_url" do
-#   it "returns a different path for user approvals and for developers" do
-#     allow(helper).to receive(:current_user) { user }
-#     expect(helper.create_approval_url("Developer")).to match "create_dev_approvals"
-#     expect(helper.create_approval_url("User")).to match "approvals"
-#   end
-# end
-
-# describe "#approvals_input" do
-#   it "assigns placeholder and class key a string" do
-#     expect(developer_approvals_input[:placeholder]).to match "name"
-#     expect(user_approvals_input[:placeholder]).to match "email@email.com"
-#     expect(user_approvals_input[:class]).to match "validate"
-#     expect(developer_approvals_input[:class]).to match "devs_typeahead"
-#   end
-# end
-
-# describe "#approvals_pending_friends" do
-#   it "returns a string with emails of users who requests sent to" do
-#     expect(helper.approvals_pending_friends(user)).to be_kind_of(String)
-#     expect(helper.approvals_pending_friends(user)).to_not match ","
-#     expect(helper.approvals_pending_friends(user)).to match "and"
-#   end
-
-#   it "uses commas if the user has more than 2 pending friends" do
-#     friend = FactoryGirl.create(:user)
-#     user.pending_friends << friend
-#     expect(helper.approvals_pending_friends(user)).to match ","
-#     expect(helper.approvals_pending_friends(user)).to match "and"
-#     expect(helper.approvals_pending_friends(user)).to match friend.email
-#   end
-# end
