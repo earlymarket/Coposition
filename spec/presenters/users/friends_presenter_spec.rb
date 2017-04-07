@@ -23,7 +23,7 @@ describe ::Users::FriendsPresenter do
 
   describe "Interface" do
     %i(friend devices device show show_device index_gon show_device_gon show_checkins form_for form_path
-       form_range_filter).each do |method|
+       form_range_filter friend_name).each do |method|
       it { is_expected.to respond_to method }
     end
   end
@@ -146,6 +146,17 @@ describe ::Users::FriendsPresenter do
 
     it "returns a link containing the provided range" do
       expect(output).to match date.to_date.to_s
+    end
+  end
+
+  describe "friend_name" do
+    it "returns friends username if present" do
+      expect(friends_show_device.friend_name).to eq friend.username
+    end
+
+    it "returns start of friends email if no username" do
+      friend.update(username: "")
+      expect(friends_show_device.friend_name).to eq friend.email.split("@").first
     end
   end
 end

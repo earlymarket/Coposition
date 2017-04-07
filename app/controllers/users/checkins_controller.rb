@@ -12,7 +12,7 @@ class Users::CheckinsController < ApplicationController
   end
 
   def index
-    @presenter = ::Users::CheckinsPresenter.new(current_user, params, "index")
+    @presenter = ::Users::CheckinsPresenter.new(current_user, params)
     @device = @presenter.device
     render json: @presenter.json
   end

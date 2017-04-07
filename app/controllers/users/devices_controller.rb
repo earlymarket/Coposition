@@ -1,18 +1,18 @@
 class Users::DevicesController < ApplicationController
   before_action :authenticate_user!, :correct_url_user?, except: :shared
   before_action :published?, only: :shared
-  before_action :require_ownership, only: [:show, :destroy, :update]
+  before_action :require_ownership, only: %i(show destroy update)
 
   def index
-    @presenter = ::Users::DevicesPresenter.new(current_user, params, 'index')
+    @presenter = ::Users::Devices::DevicesIndexPresenter.new(current_user, params)
     gon.push(@presenter.index_gon)
   end
 
   def show
-    @presenter = ::Users::DevicesPresenter.new(current_user, params, 'show')
+    @presenter = ::Users::Devices::DevicesShowPresenter.new(current_user, params)
     gon.push(@presenter.show_gon)
     respond_to do |format|
-      format.html { flash[:notice] = 'Right click on the map to check-in' }
+      format.html { flash[:notice] = "Right click on the map to check-in" }
       format.any(:csv, :gpx, :geojson) { send_data @presenter.checkins, filename: @presenter.filename }
     end
   end
@@ -23,12 +23,12 @@ class Users::DevicesController < ApplicationController
   end
 
   def shared
-    @presenter = ::Users::DevicesPresenter.new(current_user, params, 'shared')
+    @presenter = ::Users::Devices::DevicesSharedPresenter.new(current_user, params)
     gon.push(@presenter.shared_gon)
   end
 
   def info
-    @presenter = ::Users::DevicesPresenter.new(current_user, params, 'info')
+    @presenter = ::Users::Devices::DevicesInfoPresenter.new(current_user, params)
     @device = @presenter.device
     @config = @presenter.config
   end
@@ -48,7 +48,7 @@ class Users::DevicesController < ApplicationController
   def destroy
     Checkin.where(device: params[:id]).delete_all
     Device.find(params[:id]).destroy
-    flash[:notice] = 'Device deleted'
+    flash[:notice] = "Device deleted"
     redirect_to user_devices_path
   end
 
@@ -68,13 +68,13 @@ class Users::DevicesController < ApplicationController
 
   def require_ownership
     return if user_owns_device?
-    flash[:notice] = 'You do not own that device'
+    flash[:notice] = "You do not own that device"
     redirect_to root_path
   end
 
   def published?
     device = Device.find(params[:id])
     return if device.published? && !device.cloaked?
-    redirect_to root_path, notice: 'Could not find shared device'
+    redirect_to root_path, notice: "Could not find shared device"
   end
 end

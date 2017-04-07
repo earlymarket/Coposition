@@ -28,11 +28,11 @@
     <br />
     That is an <%= @presenter.percent_change > 0 ? 'increase' : 'decrease' %> of <%= @presenter.percent_change %>% from last week.
   <% end %>
-  <% if @presenter.most_used.present? %>
-      Your most used device is <%= @presenter.most_used.name %>.
+  <% if @presenter.most_used_device.present? %>
+      Your most used device is <%= @presenter.most_used_device.name %>.
   <% end %>
 </p>
-<% if @presenter.last_countries_loaded %>
+<% if @presenter.last_countries %>
   <h5><%= @presenter.visited_countries_title %></h5>
   <table>
     <thead>
@@ -41,7 +41,7 @@
       </tr>
     </thead>
     <tbody>
-    <% @presenter.last_countries_loaded.each do |country| %>
+    <% @presenter.last_countries.each do |country| %>
       <tr>
         <td><%= dashboard_flag(country[:country_code]) %></td><td ><%= dashboard_country_name(country[:country_code]) %></td><td><%= humanize_date(country[:created_at]) %></td>
       </tr>
