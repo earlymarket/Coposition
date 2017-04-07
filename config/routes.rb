@@ -47,7 +47,6 @@ Rails.application.routes.draw do
       resources :users, only: [:show, :index] do
         collection do
           get :auth
-          get :me
         end
         resources :approvals, only: [:create, :index, :update, :destroy], module: :users do
           collection do
@@ -77,7 +76,6 @@ Rails.application.routes.draw do
   end
 
   # Users
-
   resources :users, only: [:show], module: :users do
     resource :dashboard, only: [:show]
     resources :devices, except: :edit do
@@ -101,6 +99,9 @@ Rails.application.routes.draw do
     end
     get '/apps', to: 'approvals#apps'
     get '/friends', to: 'approvals#friends'
+    collection do
+      get :me
+    end
   end
 
   # Devs

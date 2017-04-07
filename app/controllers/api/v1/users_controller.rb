@@ -23,8 +23,4 @@ class Api::V1::UsersController < Api::ApiController
       render status: 400, json: { error: 'Invalid webhook key supplied' }
     end
   end
-
-  def me
-    render status: 200, json: current_user
-  end
 end
