@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 ruby "2.3.1"
 
-gem "rails", "5.0.1"
+gem "rails", "5.0.2"
 gem "pg"
 gem "redis"
 gem "sass-rails", "~> 5.0"
@@ -40,16 +40,17 @@ gem "gpx"
 gem "activeadmin", git: "https://github.com/activeadmin/activeadmin"
 gem "inherited_resources", git: "https://github.com/activeadmin/inherited_resources"
 gem "activerecord-import"
+gem "sidekiq"
 gem "interactor"
 gem "doorkeeper", git: "https://github.com/earlymarket/doorkeeper"
 
 group :production do
   gem "rack-timeout"
-  gem "rails_12factor"
 end
 
-group :production, :development do
+group :development, :staging, :production do
   gem "puma"
+  gem "rails_12factor"
 end
 
 # Use Capistrano for deployment
@@ -65,6 +66,9 @@ group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem "web-console", "~> 2.0"
   gem "foreman"
+  gem "rack-mini-profiler", require: false
+  gem "flamegraph"
+  gem "stackprof"
 end
 
 group :development, :test do
@@ -86,11 +90,16 @@ end
 
 group :test do
   gem "codeclimate-test-reporter", require: nil
-  gem "capybara-webkit", "~> 1.11.1"
+  gem "capybara-webkit", "~> 1.14.0"
   gem "cucumber-rails", require: false
   gem "launchy"
   gem "database_cleaner"
   gem "simplecov", require: false
   gem "rails-controller-testing"
   gem "webmock", require: false
+end
+
+group :benchmark do
+  gem "rails-perftest"
+  gem "ruby-prof"
 end

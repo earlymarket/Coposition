@@ -8,7 +8,8 @@ class Device < ApplicationRecord
   has_many :permissions, dependent: :destroy
   has_many :developers, through: :permissions, source: :permissible, source_type: "Developer"
   has_many :permitted_users, through: :permissions, source: :permissible, source_type: "User"
-
+  has_attachment :csv, accept: :raw
+  
   validates :name, uniqueness: { scope: :user_id }, if: :user_id
 
   before_create do |dev|
@@ -112,25 +113,6 @@ class Device < ApplicationRecord
     data.merge!(remove_id.as_json)
     data.merge!(user.public_info.remove_id.as_json) if user
     subs.each { |subscription| subscription.send_data([data]) }
-  end
-
-  def broadcast_checkin_for_friends(checkin)
-    user.friends.find_each do |friend|
-      allowed_checkin = safe_checkin_info_for(permissible: friend, action: "last", type: "address")
-      next unless allowed_checkin && allowed_checkin[0]["id"] == checkin.id
-      ActionCable.server.broadcast "friends_#{friend.id}",
-                                   action: "checkin",
-                                   privilege: privilege_for(friend),
-                                   msg: checkin.as_json
-    end
-  end
-
-  def broadcast_destroy_checkin_for_friends(checkin)
-    user.friends.find_each do |friend|
-      ActionCable.server.broadcast "friends_#{friend.id}",
-                                   action: "destroy",
-                                   msg: checkin.as_json
-    end
   end
 
   def self.public_info

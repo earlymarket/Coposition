@@ -3,10 +3,37 @@
 
   <div class="bottom-panel valign-wrapper">
     <div class="buttons">
-      <%= link_to("Delete history", user_device_checkins_path(current_user.url_id, @presenter.device.id), { method: :delete, class: "btn red white-text", data: { confirm: 'Delete all checkins for this device?' } })%>
+      <a class="modal-trigger btn red white-text" id='deleteButton<%= @presenter.device.id %>' href="#delete<%= @presenter.device.id %>">
+        Delete check-ins
+      </a>
       <%= link_to("Delete device", user_device_path(current_user.url_id, @presenter.device), { method: :delete, class: "btn red white-text", data: { confirm: 'Are you sure?' } })%>
       <a id="checkinNow" class="btn green white-text" href="#" data-turbolinks="false">Checkin now</a>
       <a id="checkinFoggedNow" class="btn green white-text" href="#" data-turbolinks="false">Checkin now (fogged)</a>
+    </div>
+  </div>
+
+  <div id="delete<%=@presenter.device.id%>" class="modal delete-modal">
+    <div class="modal-content">
+      <h4 class='center-align'>Delete checkins</h4>
+      <div class='center-align'>
+        <p class='center-align'>
+          Warning, this is a permanent change that can only be undone by uploading a back-up of your location history. We strongly recommend downloading a back-up of your device's data before deleting any check-in(s).
+        </p>
+        <a class="btn" href="<%= user_device_path(current_user.url_id, @presenter.device) %>.csv?download=csv">
+          Download back-up
+        </a>
+        <p class='center-align'>
+          <% if @presenter.date_range[:from] %>
+            Currently, you are filtering to only see check-ins from <%= humanize_date(@presenter.date_range[:from]) %> to <%= humanize_date(@presenter.date_range[:to]) %>.
+          <% else %>
+            Currently, you are seeing all check-ins for this device.
+          <% end %>
+        </p>
+        <%= link_to("Delete all check-ins", user_device_checkins_path(current_user.url_id, @presenter.device.id), { method: :delete, class: "btn red white-text", data: { confirm: 'Delete all checkins for this device?' } })%>
+        <% if @presenter.date_range[:from] %>
+          <%= link_to("Delete visible check-ins", user_device_checkins_path(current_user.url_id, @presenter.device.id, from: @presenter.date_range[:from], to: @presenter.date_range[:to]), { method: :delete, class: "btn red white-text", data: { confirm: "Delete checkins from #{humanize_date(@presenter.date_range[:from])} to #{humanize_date(@presenter.date_range[:to])}?" } })%>
+        <% end %>
+      </div>
     </div>
   </div>
 

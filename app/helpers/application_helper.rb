@@ -8,7 +8,8 @@ module ApplicationHelper
   end
 
   def humanize_date(date)
-    date.strftime("%A #{date.day.ordinalize} %B")
+    return unless date
+    date.strftime("%A #{date.day.ordinalize} %B %Y")
   end
 
   def humanize_date_and_time(date)
