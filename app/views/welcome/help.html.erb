@@ -123,7 +123,13 @@
     </div>
 
     <div class="divider"></div>
-    <div id='headwayWidget'></div>
+
+    <div id='headway-widget' class="section scrollspy">
+      <h4>Changelog</h4>
+    </div>
+
+    <div class="divider"></div>
+
     <div id="more" class="section scrollspy">
       <h4><i class="material-icons">help</i> More questions</h4>
       <p>
@@ -148,8 +154,17 @@
 <script>
   COPO.smooch.initSmooch(gon.userinfo);
   var HW_config = {
-    selector: "#headwayWidget", // CSS selector where to inject the badge
-    account: "7zpZay" // your account ID
+    selector: "#headway-widget",
+    account: "7zpZay",
+    translations: {
+      title: "The Changelog",
+      readMore: "Read more",
+      labels: {
+        "new": "News",
+        "improvement": "Updates",
+        "fix": "Fixes"
+      }
+    }
   };
   Headway.init(HW_config);
 </script>
