@@ -1,3 +1,4 @@
 class CheckinSerializer < ActiveModel::Serializer
-  attributes :device_id, :lat, :lng
+  attributes :id, :device_id, :lat, :lng, :address, :city, :postal_code,
+    :created_at, :updated_at
 end
