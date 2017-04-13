@@ -6,6 +6,11 @@ class SerializingTest < ActionDispatch::PerformanceTest
   #                          output: 'tmp/performance', formats: [:flat] }
 
   test "checkins_page" do
-    get "/users/3/checkins", headers: { "X-Api-Key" => Developer.first.api_key }
+    dev = Developer.first
+    user = dev.users.first
+
+    get "/users/#{user.id}/checkins",
+      as: "json",
+      headers: { "X-Api-Key" => dev.api_key }
   end
 end
