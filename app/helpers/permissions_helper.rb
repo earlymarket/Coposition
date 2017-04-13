@@ -12,32 +12,24 @@ module PermissionsHelper
     title.html_safe
   end
 
-  def permissions_control_class(permissionable)
-    if permissionable.class != Permission
-      " master-switches permissionable-id-#{permissionable.id}"
+  def permissions_switch_class(control_object)
+    control_object.class != Permission ? "master" : "permission-switch"
+  end
+
+  def permissions_label_id(control_object, switchtype)
+    if control_object.class == Permission
+      "#{switchtype}-#{control_object.id}"
     else
-      " normal-switches permissionable-id-#{permissionable.id}"
+      "master-#{switchtype}-#{control_object.id}"
     end
   end
 
-  def permissions_switch_class(permissionable)
-    permissionable.class == Permission ? "permission-switch" : "master"
-  end
-
-  def permissions_label_id(permissionable, switchtype)
-    if permissionable.class == Permission
-      "#{switchtype}-#{permissionable.id}"
-    else
-      "master-#{switchtype}-#{permissionable.id}"
-    end
-  end
-
-  def permissions_check_box_value(permissionable, type)
-    return unless permissionable.class == Permission
+  def permissions_check_box_value(control_object, type)
+    return unless control_object.class == Permission
     if %w(disallowed last_only complete).include? type
-      permissionable.privilege == type
+      control_object.privilege == type
     else
-      permissionable[type]
+      control_object[type]
     end
   end
 end

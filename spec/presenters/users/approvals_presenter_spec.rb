@@ -192,29 +192,4 @@ describe ::Users::ApprovalsPresenter do
       end
     end
   end
-
-  describe "pending_friends" do
-    let(:pending) { FactoryGirl.create(:user) }
-    before do
-      user.pending_friends << pending
-    end
-
-    it "returns a string" do
-      expect(approvals.pending_friends).to be_kind_of(String)
-    end
-
-    it "returns a string which contains friends email" do
-      expect(approvals.pending_friends).to match pending.email
-    end
-
-    it "returns a string with 'and' if user has 2 pending friends" do
-      user.pending_friends << FactoryGirl.create(:user)
-      expect(approvals.pending_friends).to match "and"
-    end
-
-    it "returns a string with ',' if user has more than 2 pending friends" do
-      user.pending_friends << [FactoryGirl.create(:user), FactoryGirl.create(:user)]
-      expect(approvals.pending_friends).to match ","
-    end
-  end
 end

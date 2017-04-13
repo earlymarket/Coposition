@@ -122,12 +122,14 @@ describe ::Users::DashboardsPresenter do
         expect(dashboard.visited_countries_title).to eq "No countries visited"
       end
     end
+
     context "1 country" do
       it "returns 'Last country visited'" do
         FactoryGirl.create(:checkin, device_id: device.id)
         expect(dashboard.visited_countries_title).to eq "Last country visited"
       end
     end
+    
     context "n countries" do
       it "returns a string containing n" do
         FactoryGirl.create(:checkin, device_id: device.id).update(country_code: "GB")

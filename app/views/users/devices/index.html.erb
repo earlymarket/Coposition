@@ -26,14 +26,14 @@
   </div>
 </section>
 <div>
-  <% @presenter.devices.each do |device| %>
+  <% @devices_index_presenter.devices.each do |device| %>
     <div id="device<%=device.id%>">
       <%= render device %>
     </div>
     <%= render partial: "device_modals", locals: {device: device} %>
   <% end %>
 </div>
-<div class="center"><%= will_paginate @presenter.devices %><div>
+<div class="center"><%= will_paginate @devices_index_presenter.devices %><div>
 
 <script type="x-tmpl-mustache" id="markerPopupTmpl">
   <h3>Device: {{ &devicebutton }}</h3>

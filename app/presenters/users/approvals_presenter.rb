@@ -34,17 +34,6 @@ module Users
       end
     end
 
-    def pending_friends
-      string = ""
-      pending = @user.pending_friends
-      pending.each_with_index do |friend, index|
-        string += friend.email
-        break if index > pending.length - 2
-        string += index < pending.length - 2 ? ", " : " and "
-      end
-      string
-    end
-
     def create_approval_url
       if apps_page?
         Rails.application.routes.url_helpers.user_create_dev_approvals_path(@user.url_id)

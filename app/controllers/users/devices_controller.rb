@@ -4,16 +4,18 @@ class Users::DevicesController < ApplicationController
   before_action :require_ownership, only: %i(show destroy update)
 
   def index
-    @presenter = ::Users::Devices::DevicesIndexPresenter.new(current_user, params)
-    gon.push(@presenter.index_gon)
+    @devices_index_presenter = ::Users::Devices::DevicesIndexPresenter.new(current_user, params)
+    gon.push(@devices_index_presenter.index_gon)
   end
 
   def show
-    @presenter = ::Users::Devices::DevicesShowPresenter.new(current_user, params)
-    gon.push(@presenter.show_gon)
+    @device_show_presenter = ::Users::Devices::DevicesShowPresenter.new(current_user, params)
+    gon.push(@device_show_presenter.show_gon)
     respond_to do |format|
       format.html { flash[:notice] = "Right click on the map to check-in" }
-      format.any(:csv, :gpx, :geojson) { send_data @presenter.checkins, filename: @presenter.filename }
+      format.any(:csv, :gpx, :geojson) do
+        send_data @device_show_presenter.checkins, filename: @device_show_presenter.filename
+      end
     end
   end
 
@@ -23,14 +25,14 @@ class Users::DevicesController < ApplicationController
   end
 
   def shared
-    @presenter = ::Users::Devices::DevicesSharedPresenter.new(current_user, params)
-    gon.push(@presenter.shared_gon)
+    @devices_shared_presenter = ::Users::Devices::DevicesSharedPresenter.new(current_user, params)
+    gon.push(@devices_shared_presenter.shared_gon)
   end
 
   def info
-    @presenter = ::Users::Devices::DevicesInfoPresenter.new(current_user, params)
-    @device = @presenter.device
-    @config = @presenter.config
+    @devices_info_presenter = ::Users::Devices::DevicesInfoPresenter.new(current_user, params)
+    @device = @devices_info_presenter.device
+    @config = @devices_info_presenter.config
   end
 
   def create

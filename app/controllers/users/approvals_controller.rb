@@ -3,7 +3,7 @@ class Users::ApprovalsController < ApplicationController
   before_action :correct_url_user?
 
   def new
-    @presenter = Users::ApprovalsPresenter.new(current_user, params[:approvable_type])
+    @approvals_presenter = Users::ApprovalsPresenter.new(current_user, params[:approvable_type])
     @approval = Approval.new
     @developers = Developer.all.pluck(:company_name)
   end

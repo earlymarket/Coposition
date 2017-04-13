@@ -33,7 +33,7 @@ RSpec.describe Users::FriendsController, type: :controller do
       it "renders no checkins" do
         device.permission_for(user).update! privilege: "disallowed"
         get :show, params: params
-        expect((assigns :presenter).index_gon[:checkins].size).to eq 0
+        expect((assigns :friend_show_presenter).gon[:checkins].size).to eq 0
       end
     end
 
@@ -41,7 +41,7 @@ RSpec.describe Users::FriendsController, type: :controller do
       it "renders no checkins" do
         device.update! cloaked: true
         get :show, params: params
-        expect((assigns :presenter).index_gon[:checkins].size).to eq 0
+        expect((assigns :friend_show_presenter).gon[:checkins].size).to eq 0
       end
     end
 
@@ -52,19 +52,19 @@ RSpec.describe Users::FriendsController, type: :controller do
 
       it "renders one checkin" do
         get :show, params: params
-        checkins = (assigns :presenter).index_gon[:checkins]
+        checkins = (assigns :friend_show_presenter).gon[:checkins]
         expect(checkins.size).to eq 1
       end
 
       it "renders fogged checkin" do
         get :show, params: params
-        checkins = (assigns :presenter).index_gon[:checkins]
+        checkins = (assigns :friend_show_presenter).gon[:checkins]
         expect(checkins[0]["lat"].round(6)).to eq historic_checkin.fogged_lat.round(6)
       end
 
       it "renders historic checkin" do
         get :show, params: params
-        checkins = (assigns :presenter).index_gon[:checkins]
+        checkins = (assigns :friend_show_presenter).gon[:checkins]
         expect(checkins[0]["id"]).to eq historic_checkin.id
       end
     end
@@ -76,12 +76,12 @@ RSpec.describe Users::FriendsController, type: :controller do
 
       it "renders unfogged checkin" do
         get :show, params: params
-        expect((assigns :presenter).index_gon[:checkins][0]["lat"].round(6)).to eq checkin.lat.round(6)
+        expect((assigns :friend_show_presenter).gon[:checkins][0]["lat"].round(6)).to eq checkin.lat.round(6)
       end
 
       it "renders recent checkin" do
         get :show, params: params
-        expect((assigns :presenter).index_gon[:checkins][0]["id"]).to eq checkin.id
+        expect((assigns :friend_show_presenter).gon[:checkins][0]["id"]).to eq checkin.id
       end
     end
 
@@ -102,7 +102,7 @@ RSpec.describe Users::FriendsController, type: :controller do
       it "renders no checkins" do
         device.permission_for(user).update! privilege: "disallowed"
         get :show_device, params: params
-        expect((assigns :presenter).show_device_gon[:checkins].size).to eq 0
+        expect((assigns :device_show_presenter).gon[:checkins].size).to eq 0
       end
     end
 
@@ -110,7 +110,7 @@ RSpec.describe Users::FriendsController, type: :controller do
       it "fails to render" do
         device.update! cloaked: true
         get :show_device, params: params
-        expect((assigns :presenter)).to eq nil
+        expect((assigns :device_show_presenter)).to eq nil
       end
     end
 
@@ -118,8 +118,8 @@ RSpec.describe Users::FriendsController, type: :controller do
       it "renders one historic_checkin" do
         device.permission_for(user).update! privilege: "last_only", bypass_delay: false
         get :show_device, params: params
-        expect((assigns :presenter).show_device_gon[:checkins].size).to eq 1
-        expect((assigns :presenter).show_device_gon[:checkins][0]["id"]).to eq historic_checkin.id
+        expect((assigns :device_show_presenter).gon[:checkins].size).to eq 1
+        expect((assigns :device_show_presenter).gon[:checkins][0]["id"]).to eq historic_checkin.id
       end
     end
 
@@ -127,8 +127,8 @@ RSpec.describe Users::FriendsController, type: :controller do
       it "renders one recent checkin" do
         device.permission_for(user).update! privilege: "last_only", bypass_delay: true
         get :show_device, params: params
-        expect((assigns :presenter).show_device_gon[:checkins][0]["id"]).to eq checkin.id
-        expect((assigns :presenter).show_device_gon[:checkins].size).to eq 1
+        expect((assigns :device_show_presenter).gon[:checkins][0]["id"]).to eq checkin.id
+        expect((assigns :device_show_presenter).gon[:checkins].size).to eq 1
       end
     end
 
@@ -136,7 +136,7 @@ RSpec.describe Users::FriendsController, type: :controller do
       it "renders one historic fogged checkin" do
         device.permission_for(user).update! privilege: "complete", bypass_delay: false, bypass_fogging: false
         get :show_device, params: params
-        checkins = (assigns :presenter).show_device_gon[:checkins]
+        checkins = (assigns :device_show_presenter).gon[:checkins]
         expect(checkins[0]["id"]).to eq historic_checkin.id
         expect(checkins[0]["lat"].round(6)).to eq historic_checkin.fogged_lat.round(6)
         expect(checkins.size).to eq 1
@@ -147,8 +147,8 @@ RSpec.describe Users::FriendsController, type: :controller do
       it "renders two unfogged checkins" do
         device.permission_for(user).update! privilege: "complete", bypass_delay: true, bypass_fogging: true
         get :show_device, params: params
-        expect((assigns :presenter).show_device_gon[:checkins].size).to eq 2
-        expect((assigns :presenter).show_device_gon[:checkins][0]["lat"].round(6)).to eq checkin.lat.round(6)
+        expect((assigns :device_show_presenter).gon[:checkins].size).to eq 2
+        expect((assigns :device_show_presenter).gon[:checkins][0]["lat"].round(6)).to eq checkin.lat.round(6)
       end
     end
 

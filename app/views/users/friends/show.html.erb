@@ -1,5 +1,5 @@
 <div id='gonvariables'><%= Gon::Base.render_data %></div>
-<h1><%= @presenter.friend_name %>'s devices</h1>
+<h1><%= @friend_show_presenter.friend_name %>'s devices</h1>
 <section class="friends-device-index row">
   <div class="col s12">
     <div id="map-wrapper" style="position: relative;">
@@ -16,7 +16,7 @@
 </section>
 <% @devices.each do |device| %>
     <div class="card-panel row">
-      <%= link_to show_device_user_friend_path(current_user.url_id, @presenter.friend, device_id: device.id), class:"col s12" do %>
+      <%= link_to show_device_user_friend_path(current_user.url_id, @friend_show_presenter.friend, device_id: device.id), class:"col s12" do %>
         <h5 class="valign-wrapper"><i class="material-icons medium"><%=device.icon%></i>&nbsp;<%= device.name %></h5>
         <%= friends_device_last_checkin(device.safe_checkin_info_for(permissible: current_user, action: 'last')[0]) %>
       <% end %>

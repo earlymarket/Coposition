@@ -35,21 +35,21 @@ RSpec.describe Users::DevicesController, type: :controller do
   describe 'GET #index' do
     it 'assigns current_user.devices to @devices' do
       get :index, params: user_param
-      expect(assigns(:presenter).devices).to eq(user.devices)
-      expect(assigns(:presenter).devices.first).to eq(device)
+      expect(assigns(:devices_index_presenter).devices).to eq(user.devices)
+      expect(assigns(:devices_index_presenter).devices.first).to eq(device)
     end
   end
 
   describe 'GET #show' do
     it 'assigns :id.device to @device if user owns device' do
       get :show, params: params
-      expect(assigns(:presenter).device).to eq(Device.find(device.id))
+      expect(assigns(:device_show_presenter).device).to eq(Device.find(device.id))
     end
 
     it 'does not assign to @device if user does not own device' do
       get :show, params: params.merge(user_id: new_user.username)
       expect(response).to redirect_to(root_path)
-      expect(assigns(:presenter)).to eq(nil)
+      expect(assigns(:device_show_presenter)).to eq(nil)
     end
 
     it 'redirects to root path and render error message if device doesnt exist' do
@@ -103,7 +103,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       device.update(published: true)
       get :shared, params: params
       expect(response).to render_template('shared')
-      expect(assigns(:presenter).shared_gon[:checkin]['lat'].round(6)).to eq older_checkin.fogged_lat.round(6)
+      expect(assigns(:devices_shared_presenter).shared_gon[:checkin]['lat'].round(6)).to eq older_checkin.fogged_lat.round(6)
     end
 
     it 'renders page if published and checkin is unfogged if unfogged' do
@@ -111,7 +111,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       checkin
       older_checkin
       get :shared, params: params
-      expect(assigns(:presenter).shared_gon[:checkin]['lat']).to eq older_checkin.lat
+      expect(assigns(:devices_shared_presenter).shared_gon[:checkin]['lat']).to eq older_checkin.lat
     end
   end
 
