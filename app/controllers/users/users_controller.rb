@@ -4,10 +4,7 @@ class Users::UsersController < ApplicationController
   end
 
   def me
-    token = Doorkeeper::AccessToken.find_by(
-      token: request.headers["HTTP_AUTHORIZATION"].scan(/Bearer (.*)$/).flatten.last
-    )
-
-    render status: 200, json: User.find(token.resource_owner_id).public_info_hash
+    render status: 200,
+      json: User.find(doorkeeper_token.resource_owner_id).public_info_hash
   end
 end
