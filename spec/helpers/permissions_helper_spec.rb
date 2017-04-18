@@ -27,21 +27,6 @@ RSpec.describe PermissionsHelper, type: :helper do
     end
   end
 
-  describe "#permissions_control_class" do
-    it "returns a string with the permissionable id" do
-      expect(helper.permissions_control_class(developer)).to include(developer.id.to_s)
-      expect(helper.permissions_control_class(developer)).to be_a(String)
-      expect(helper.permissions_control_class(developer)).to include(developer.id.to_s)
-      expect(helper.permissions_control_class(developer)).to be_a(String)
-    end
-    it "returns a string with 'normal-switches' if given a Permission" do
-      expect(helper.permissions_control_class(permission)).to include("normal-switches")
-    end
-    it "returns a string with 'master-switches' if given something else" do
-      expect(helper.permissions_control_class(developer)).to include("master-switches")
-    end
-  end
-
   describe "#permissions_label_id" do
     it "returns the permissionable id and switch type if a Permission" do
       expect(helper.permissions_label_id(permission, "disallowed")).to include(permission.id.to_s)
