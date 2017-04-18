@@ -5,7 +5,7 @@ class ReleaseNotesController < ApplicationController
 
   def create
     ReleaseNote.create(allowed_params)
-    render 'index'
+    redirect_to release_notes_path
   end
 
   def index

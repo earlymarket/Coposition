@@ -10,10 +10,17 @@
 
 <% @release_notes.each do |note| %>  
   <h2><%= note.version %></h2>
-  <button><%= note.application %></button>
+  <a href="#" class="badge"><%= note.application %></button>
   <label><%= note.created_at %></label>
   <p><%= note.content %></p>
-  <button>edit</button>
+  <% if current_user && current_user.admin? %>
+    <%= link_to edit_release_note_path(note.id), class: 'btn' do %>
+      <i class="material-icons right">mode_edit</i>Edit
+    <% end %>
+    <%= link_to edit_release_note_path(note.id), class: 'btn red white-text' do %>
+      <i class="material-icons white-text right">delete_forever</i>Delete
+    <% end %>
+  <% end %>
 <% end %>
 
 <div class="center-align">
