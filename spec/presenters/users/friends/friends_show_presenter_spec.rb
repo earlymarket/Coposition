@@ -21,7 +21,7 @@ describe ::Users::Friends::FriendsShowPresenter do
   end
 
   describe "Interface" do
-    %i(friend devices gon friend_name).each do |method|
+    %i(friend devices gon).each do |method|
       it { is_expected.to respond_to method }
     end
   end
@@ -57,17 +57,6 @@ describe ::Users::Friends::FriendsShowPresenter do
       allow(show_presenter).to receive(:most_recent_checkins)
       show_presenter.gon
       expect(show_presenter).to have_received(:most_recent_checkins)
-    end
-  end
-
-  describe "friend_name" do
-    it "returns friends username if present" do
-      expect(show_presenter.friend_name).to eq friend.username
-    end
-
-    it "returns start of friends email if no username" do
-      friend.update(username: "")
-      expect(show_presenter.friend_name).to eq friend.email.split("@").first
     end
   end
 

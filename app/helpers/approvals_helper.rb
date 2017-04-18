@@ -1,10 +1,6 @@
 module ApprovalsHelper
   def approvals_approvable_name(approvable)
-    if approvable.respond_to? :username
-      approvable.username.present? ? approvable.username : approvable.email.split("@").first
-    else
-      approvable.company_name
-    end
+    approvable.class == User ? approvable.display_name : approvable.company_name
   end
 
   def approvals_friends_device_link(approvable_type, approvable, &block)

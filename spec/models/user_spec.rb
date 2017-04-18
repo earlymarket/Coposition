@@ -71,7 +71,7 @@ RSpec.describe User, type: :model do
     context "responds to its methods" do
       %i(url_id should_generate_new_friendly_id? approved? request_from? approval_for destroy_permissions_for
          not_coposition_developers safe_checkin_info filtered_checkins safe_checkin_info_for
-         slack_message public_info public_info_hash).each do |method|
+         slack_message public_info public_info_hash display_name).each do |method|
         it { expect(user).to respond_to(method) }
       end
     end
@@ -232,6 +232,17 @@ RSpec.describe User, type: :model do
 
       it "returns users public info" do
         expect(user.public_info).not_to respond_to(:webhook_key)
+      end
+    end
+
+    context "display_name" do
+      it "converts a user's email if their username is empty" do
+        user.update(username: "")
+        expect(user.display_name).to eq user.email.split("@").first
+      end
+
+      it "return username if present" do
+        expect(user.display_name).to eq user.username
       end
     end
   end
