@@ -1,0 +1,21 @@
+<h1>Release notes</h1>
+
+<div class="row">
+  <div class="center">
+    <%= link_to(new_release_note_path, class: "btn-floating btn-large waves-effect waves-light primary-color") do %>
+      <i class="material-icons">add</i>
+    <% end %>
+  </div>
+</div>
+
+<% @release_notes.each do |note| %>  
+  <h2><%= note.version %></h2>
+  <button><%= note.application %></button>
+  <label><%= note.created_at %></label>
+  <p><%= note.content %></p>
+  <button>edit</button>
+<% end %>
+
+<div class="center-align">
+  <%= will_paginate @release_notes %>
+<div>

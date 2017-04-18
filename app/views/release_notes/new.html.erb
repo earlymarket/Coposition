@@ -1,0 +1,13 @@
+<h1>New release note</h1>
+<%= form_for @release_note, url: {action: "create"}, html: {class: "form-group"} do |f| %>
+  <%= label(:version, "Version number", class: "control-label") %>
+  <%= f.text_field(:version, class: "form-control input-lg fifth-width", placeholder: "1.0.0") %>
+  </br>
+  <%= label(:application, "Application", class: "control-label") %>
+  <%= f.select(:application, options_for_select([['Web', 'web'], ['API', 'api'], ['Mobile', 'mobile']])) %>
+  </br>
+  <%= label :content, "Changes", class: "control-label" %>
+  <%= f.text_area(:content, class: "form-control input-lg fifth-width materialize-textarea", placeholder: "") %>
+  </br></br>
+  <%= f.submit("Add", class: "form-control btn btn-default", id: "add_button") %>
+<% end %>
