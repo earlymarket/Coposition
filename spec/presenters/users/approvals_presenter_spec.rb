@@ -15,7 +15,7 @@ describe ::Users::ApprovalsPresenter do
   end
 
   describe "Interface" do
-    %i(approvable_type approved pending devices gon input_options pending_friends create_approval_url).each do |method|
+    %i(approvable_type approved pending devices gon input_options create_approval_url).each do |method|
       it { is_expected.to respond_to method }
     end
   end
