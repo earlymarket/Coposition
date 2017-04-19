@@ -13,21 +13,14 @@
 <% @release_notes.each do |note| %>
   <div class="card">  
     <div class="card-content">
-      <span class="card-title">
-        <%= note.version %>
-      </span>
-      <label>
-        <%= humanize_date(note.created_at) %>
-      </label>
+      <span class="card-title"><%= note.version %></span>
+      <label><%= humanize_date(note.created_at) %></label>
       <%= link_to release_notes_path(application: note.application), class: 'badge' do %>
-        <span class="badge tag">
-          <%= note.application %>
-        </span>
+        <span class="badge tag"><%= note.application %></span>
       <% end %>
       <% note.content.split("-").each do |line| %>
-        <div>
-          <%= line %>
-        </div>
+        <% next unless line.present? %>
+        <div>- <%= line %></div>
       <% end %>
       <% if current_user && current_user.admin? %>
         </br>
