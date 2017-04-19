@@ -17,18 +17,17 @@
         <%= note.version %>
       </span>
       <label>
-        <%= humanize_date_and_time(note.created_at) %>
+        <%= humanize_date(note.created_at) %>
       </label>
-      </br>
       <%= link_to release_notes_path(application: note.application), class: 'badge' do %>
-        <span class="tag">
+        <span class="badge tag">
           <%= note.application %>
         </span>
       <% end %>
       <% note.content.split("-").each do |line| %>
-        <p>
+        <div>
           <%= line %>
-        </p>
+        </div>
       <% end %>
       <% if current_user && current_user.admin? %>
         </br>
