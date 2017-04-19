@@ -11,7 +11,7 @@ module Users::Devices
       @params = params
       @device = Device.find(params[:id])
       @date_range = checkins_date_range
-      return unless (download_format = params[:download])
+      return unless download_format.present?
       @filename = "device-#{device.id}-checkins-#{Time.zone.today}." + download_format
       @checkins = device.checkins.send("to_" + download_format)
     end
@@ -38,6 +38,10 @@ module Users::Devices
     end
 
     private
+
+    def download_format
+      @downlod_format ||= params[:download]
+    end
 
     def gon_show_checkins_paginated
       gon_show_checkins.paginate(page: 1, per_page: 1000)
