@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe Users::DashboardsController, type: :controller do
   include ControllerMacros
   let(:checkin) { FactoryGirl.create(:checkin, device: device) }
-  let(:device) do
+  let!(:device) do
     dev = FactoryGirl.create :device
     dev.checkins << [checkin, FactoryGirl.create(:checkin, device: dev, created_at: 10.days.ago)]
     dev
@@ -15,25 +15,17 @@ RSpec.describe Users::DashboardsController, type: :controller do
   end
   let(:second_user) { FactoryGirl.create :user }
   let(:friend_device) { FactoryGirl.create :device, user_id: second_user.id, delayed: 10 }
-  let(:checkin) { FactoryGirl.create :checkin, device: friend_device }
-  let(:historic_checkin) { FactoryGirl.create :checkin, device: friend_device, created_at: Time.now - 1.day }
-  let(:approval) do
+  let!(:checkin) { FactoryGirl.create :checkin, device: friend_device }
+  let!(:historic_checkin) { FactoryGirl.create :checkin, device: friend_device, created_at: Time.current - 1.day }
+  let!(:approval) do
     device
     Approval.link(user, second_user, "User")
     Approval.accept(second_user, user, "User")
   end
 
-  before do
-    approval
-    device
-    checkin
-    historic_checkin
-  end
-
   describe "GET #show" do
     it "loads metadata for dashboard page" do
       get :show, params: { user_id: user.id }
-      expect((assigns :dashboard_presenter).class).to eq(Users::DashboardsPresenter)
       expect((assigns :dashboard_presenter).most_used_device).to eq device
     end
 

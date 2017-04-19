@@ -21,28 +21,21 @@ RSpec.describe Users::CheckinsController, type: :controller do
   end
 
   describe "GET #index" do
-    it "assigns a device" do
-      get :index, params: index_params
-      expect(assigns(:device)).to eq device
-    end
+    before { get :index, params: index_params }
 
     it "render json hash" do
-      get :index, params: index_params
       expect(res_hash).to be_truthy
     end
 
     it "renders hash with checkins" do
-      get :index, params: index_params
       expect(res_hash[:checkins]).to be_truthy
     end
 
     it "renders hash with current user id" do
-      get :index, params: index_params
       expect(res_hash[:current_user_id]).to eq user.id
     end
 
     it "renders hash with total checkins count" do
-      get :index, params: index_params
       expect(res_hash[:total]).to eq device.checkins.count
     end
   end

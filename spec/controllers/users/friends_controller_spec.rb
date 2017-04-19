@@ -5,10 +5,10 @@ RSpec.describe Users::FriendsController, type: :controller do
 
   let(:user) { create_user }
   let(:second_user) { FactoryGirl.create :user }
-  let(:device) { FactoryGirl.create :device, user_id: second_user.id, delayed: 10 }
-  let(:checkin) { FactoryGirl.create :checkin, device: device }
-  let(:historic_checkin) { FactoryGirl.create :checkin, device: device, created_at: Time.current - 1.day }
-  let(:approval) do
+  let!(:device) { FactoryGirl.create :device, user_id: second_user.id, delayed: 10 }
+  let!(:checkin) { FactoryGirl.create :checkin, device: device }
+  let!(:historic_checkin) { FactoryGirl.create :checkin, device: device, created_at: Time.current - 1.day }
+  let!(:approval) do
     device
     Approval.link(user, second_user, "User")
     Approval.accept(second_user, user, "User")
@@ -16,19 +16,7 @@ RSpec.describe Users::FriendsController, type: :controller do
   let(:params) { { id: second_user.id, user_id: user.id, device_id: device.id } }
   let(:paginate_params) { params.merge(per_page: 1000, page: 1) }
 
-  before do
-    approval
-    device
-    checkin
-    historic_checkin
-  end
-
   describe "GET #show" do
-    it "assigns friends devices if friends" do
-      get :show, params: params
-      expect(assigns(:devices)).to eq(second_user.devices)
-    end
-
     context "permission disallowed" do
       it "renders no checkins" do
         device.permission_for(user).update! privilege: "disallowed"

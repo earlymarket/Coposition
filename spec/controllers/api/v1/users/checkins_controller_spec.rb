@@ -6,7 +6,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
   let(:developer) { FactoryGirl.create :developer }
   let(:user) { FactoryGirl.create :user }
   let(:second_user) { FactoryGirl.create :user }
-  let(:device) do
+  let!(:device) do
     device = FactoryGirl.create :device
     user.devices << device
     device
@@ -27,7 +27,6 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     create_denhams
     api_request_headers(developer, user)
     unless example.metadata[:skip_before]
-      device
       Approval.link(user, developer, 'Developer')
       Approval.accept(user, developer, 'Developer')
     end
