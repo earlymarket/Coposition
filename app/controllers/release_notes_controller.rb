@@ -1,4 +1,5 @@
 class ReleaseNotesController < ApplicationController
+  before_action :authenticate_admin!
   before_action :find_note, only: %i(edit update destroy)
 
   def new
