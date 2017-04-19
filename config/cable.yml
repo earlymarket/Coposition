@@ -6,6 +6,8 @@ development: *redis
 
 test: *redis
 
+benchmark: *redis
+
 staging:
   <<: *redis
   url: <%= ENV["REDISTOGO_URL"] %>
