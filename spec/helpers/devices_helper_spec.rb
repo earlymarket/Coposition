@@ -17,7 +17,7 @@ RSpec.describe DevicesHelper, type: :helper do
   end
 
   describe "#devices_shared_link" do
-    it "return nothing if not published" do
+    it "returns nothing if not published" do
       expect(helper.devices_shared_link(device)).to be(nil)
     end
 
@@ -25,7 +25,7 @@ RSpec.describe DevicesHelper, type: :helper do
       expect(helper.devices_shared_link(other)).to be_kind_of(String)
     end
 
-    it "return the path to the shared device if device is published" do
+    it "returns the path to the shared device if device is published" do
       # http://test.host/users/1/devices/5/shared
       expect(helper.devices_shared_link(other))
         .to match(%r{http://.+/users/#{device.user_id}/devices/#{device.id}/shared*+})

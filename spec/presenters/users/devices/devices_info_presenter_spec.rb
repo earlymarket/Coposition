@@ -4,9 +4,9 @@ describe ::Users::Devices::DevicesInfoPresenter do
   subject(:info_presenter) { described_class.new(user, id: device.id) }
   let(:user) { FactoryGirl.create(:user) }
   let(:device) do
-    d = FactoryGirl.create(:device, user_id: user.id)
-    d.config = FactoryGirl.create(:config)
-    d
+    FactoryGirl.create(:device, user_id: user.id) do |obj|
+      obj.config = FactoryGirl.create(:config)
+    end
   end
   let(:config) { device.config }
 

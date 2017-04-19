@@ -13,7 +13,7 @@ module PermissionsHelper
   end
 
   def permissions_switch_class(control_object)
-    control_object.class != Permission ? "master" : "permission-switch"
+    control_object.class == Permission ? "permission-switch" : "master"
   end
 
   def permissions_label_id(control_object, switchtype)

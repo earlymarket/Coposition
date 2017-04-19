@@ -31,8 +31,6 @@ class Users::DevicesController < ApplicationController
 
   def info
     @devices_info_presenter = ::Users::Devices::DevicesInfoPresenter.new(current_user, params)
-    @device = @devices_info_presenter.device
-    @config = @devices_info_presenter.config
   end
 
   def create

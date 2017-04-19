@@ -241,7 +241,7 @@ RSpec.describe User, type: :model do
         expect(user.display_name).to eq user.email.split("@").first
       end
 
-      it "return username if present" do
+      it "returns username if present" do
         expect(user.display_name).to eq user.username
       end
     end

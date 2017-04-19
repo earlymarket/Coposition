@@ -187,7 +187,7 @@ RSpec.describe Device, type: :model do
     end
 
     context "slack_message" do
-      it "return slack message string" do
+      it "returns slack message string" do
         msg = "A new device was created, id: #{device.id}, name: #{device.name}, user_id: #{device.user_id}. "\
               "There are now #{Device.count} devices"
         expect(device.slack_message).to eq msg

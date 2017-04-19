@@ -30,6 +30,7 @@ describe ::Users::Devices::DevicesShowPresenter do
 
   describe "checkins" do
     it "returns nil if no download params" do
+      expect(show_presenter.checkins).to be_nil
     end
 
     it "returns checkins converted to param provided" do
@@ -41,7 +42,9 @@ describe ::Users::Devices::DevicesShowPresenter do
 
   describe "filename" do
     it "returns nil if no download params" do
+      expect(show_presenter.filename).to be_nil
     end
+
     it "returns a string" do
       show_presenter = described_class.new(user, id: device.id, download: "gpx")
       expect(show_presenter.filename).to be_kind_of String
@@ -97,11 +100,8 @@ describe ::Users::Devices::DevicesShowPresenter do
     end
 
     context "with checkins" do
-      before do
-        checkins
-      end
-
       it "removes excess attributes" do
+        checkins
         expect(show_presenter.send(:gon_show_checkins_paginated)[0]).not_to respond_to(:fogged_lat)
       end
     end

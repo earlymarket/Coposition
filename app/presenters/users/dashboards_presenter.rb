@@ -1,5 +1,10 @@
 module Users
   class DashboardsPresenter
+    NUMBER_OF_CITIES = 5
+    NUMBER_OF_COUNTRIES = 10
+    MONTH_CHECKINS_LIMIT = 200
+    MONTH_CHECKINS_SAMPLE = 100
+
     def initialize(user)
       @user = user
     end
@@ -9,7 +14,7 @@ module Users
     end
 
     def most_frequent_areas
-      checkins.hash_group_and_count_by(:fogged_city).first(5)
+      checkins.hash_group_and_count_by(:fogged_city).first(NUMBER_OF_CITIES)
     end
 
     def most_used_device
@@ -19,7 +24,7 @@ module Users
     def last_countries
       last_countries_sql = "created_at IN(SELECT MAX(created_at) FROM checkins INNER JOIN devices ON"\
         " checkins.device_id = devices.id WHERE devices.user_id = #{@user.id} GROUP BY country_code)"
-      checkins.where(last_countries_sql).first 10
+      checkins.where(last_countries_sql).first NUMBER_OF_COUNTRIES
     end
 
     def gon
@@ -66,7 +71,7 @@ module Users
     end
 
     def months_checkins
-      checkins.where(created_at: 1.month.ago..Time.current).limit(200).sample(100)
+      checkins.where(created_at: 1.month.ago..Time.current).limit(MONTH_CHECKINS_LIMIT).sample(MONTH_CHECKINS_SAMPLE)
     end
 
     def current_user_info

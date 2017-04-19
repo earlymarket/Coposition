@@ -14,7 +14,7 @@
     </div>
   </div>
 </section>
-<% @devices.each do |device| %>
+<% @friend_show_presenter.devices.each do |device| %>
     <div class="card-panel row">
       <%= link_to show_device_user_friend_path(current_user.url_id, @friend_show_presenter.friend, device_id: device.id), class:"col s12" do %>
         <h5 class="valign-wrapper"><i class="material-icons medium"><%=device.icon%></i>&nbsp;<%= device.name %></h5>
@@ -22,7 +22,7 @@
       <% end %>
     </div>
 <% end %>
-<div class="center"><%= will_paginate @devices %><div>
+<div class="center"><%= will_paginate @friend_show_presenter.devices %><div>
 
 <script type="x-tmpl-mustache" id="markerPopupTmpl">
   <h3>Device: {{ &devicebutton }}</h3>
