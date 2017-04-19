@@ -36,6 +36,6 @@ class ReleaseNotesController < ApplicationController
   end
 
   def allowed_params
-    params.require(:release_note).permit(%i(version application content))
+    params.require(:release_note).permit(%i(created_at version application content))
   end
 end
