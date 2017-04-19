@@ -41,7 +41,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     it "does not return friends cloaked devices" do
       second_user.devices.each { |device| device.update! cloaked: true }
       get :index, params: params.merge(user_id: second_user.id)
-      expect(res_hash.size).to eq 0
+      expect(res_hash[:devices].size).to eq 0
     end
 
     it "does return cloaked devices if request from copo_app" do
