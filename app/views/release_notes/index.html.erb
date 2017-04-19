@@ -1,26 +1,48 @@
 <h1>Release notes</h1>
 
-<div class="row">
-  <div class="center">
-    <%= link_to(new_release_note_path, class: "btn-floating btn-large waves-effect waves-light primary-color") do %>
-      <i class="material-icons">add</i>
-    <% end %>
+<% if current_user && current_user.admin? %>
+  <div class="row">
+    <div class="center">
+      <%= link_to(new_release_note_path, class: "btn-floating btn-large waves-effect waves-light primary-color") do %>
+        <i class="material-icons">add</i>
+      <% end %>
+    </div>
   </div>
-</div>
+<% end %>
 
-<% @release_notes.each do |note| %>  
-  <h2><%= note.version %></h2>
-  <a href="#" class="badge"><%= note.application %></button>
-  <label><%= note.created_at %></label>
-  <p><%= note.content %></p>
-  <% if current_user && current_user.admin? %>
-    <%= link_to edit_release_note_path(note.id), class: 'btn' do %>
-      <i class="material-icons right">mode_edit</i>Edit
-    <% end %>
-    <%= link_to edit_release_note_path(note.id), class: 'btn red white-text' do %>
-      <i class="material-icons white-text right">delete_forever</i>Delete
-    <% end %>
-  <% end %>
+<% @release_notes.each do |note| %>
+  <div class="card">  
+    <div class="card-content">
+      <span class="card-title">
+        <%= note.version %>
+      </span>
+      <label>
+        <%= humanize_date_and_time(note.created_at) %>
+      </label>
+      </br>
+      <%= link_to release_notes_path(application: note.application), class: 'badge' do %>
+        <span class="tag">
+          <%= note.application %>
+        </span>
+      <% end %>
+      <% note.content.split("-").each do |line| %>
+        <p>
+          <%= line %>
+        </p>
+      <% end %>
+      <% if current_user && current_user.admin? %>
+        </br>
+        <div class="card-action">
+          <%= link_to edit_release_note_path(note.id), class: 'btn' do %>
+            <i class="material-icons right">mode_edit</i>Edit
+          <% end %>
+          <%= link_to release_note_path(note.id), method: :delete, class: 'btn red white-text' do %>
+            <i class="material-icons white-text right">delete_forever</i>Delete
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 <% end %>
 
 <div class="center-align">

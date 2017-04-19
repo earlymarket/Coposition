@@ -7,7 +7,16 @@
   <%= f.select(:application, options_for_select([['Web', 'web'], ['API', 'api'], ['Mobile', 'mobile']])) %>
   </br>
   <%= label :content, "Changes", class: "control-label" %>
-  <%= f.text_area(:content, class: "form-control input-lg fifth-width materialize-textarea", placeholder: "") %>
+  <%= f.text_area(:content, class: "form-control input-lg fifth-width materialize-textarea") %>
+  <%= label :created_at, "Date", class: "control-label" %>
+  <%= f.date_field(:created_at, class: "release-datepicker") %>
   </br></br>
   <%= f.submit("Add", class: "form-control btn btn-default", id: "add_button") %>
 <% end %>
+
+<script>
+  $('.release-datepicker').pickadate({
+    selectMonths: true,
+    selectYears: 2
+  });
+</script>
