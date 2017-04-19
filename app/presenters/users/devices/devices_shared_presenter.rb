@@ -27,7 +27,7 @@ module Users::Devices
     private
 
     def shared_checkin
-      @shared_checkin ||= device.checkins.before(device.delayed.to_i.minutes.ago).limit(1)
+      @shared_checkin ||= device.before_delay_checkins.limit(1)
     end
 
     def gon_shared_checkin

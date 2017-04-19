@@ -51,7 +51,7 @@ RSpec.describe Device, type: :model do
       %i(safe_checkin_info_for filtered_checkins sanitize_checkins replace_checkin_attributes
          permitted_history_for resolve_privilege privilege_for delayed_checkins_for permission_for
          can_bypass_fogging? can_bypass_delay? slack_message public_info subscriptions
-         notify_subscribers).each do |method|
+         notify_subscribers before_delay_checkins).each do |method|
         it { expect(device).to respond_to(method) }
       end
     end
@@ -155,6 +155,15 @@ RSpec.describe Device, type: :model do
 
       it "returns an association relation" do
         expect(device.delayed_checkins_for(developer)).to be_kind_of(ActiveRecord::AssociationRelation)
+      end
+    end
+
+    context "before_delay_checkins" do
+      let!(:old_checkin) { FactoryGirl.create(:checkin, created_at: 1.day.ago, device: device) }
+
+      it "returns checkins before their devices delay" do
+        device.update(delayed: 5)
+        expect(device.before_delay_checkins).to eq [old_checkin]
       end
     end
 
