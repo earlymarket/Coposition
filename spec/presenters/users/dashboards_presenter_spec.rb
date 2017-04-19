@@ -17,8 +17,30 @@ describe ::Users::DashboardsPresenter do
   end
 
   describe "Interface" do
-    %i(most_frequent_areas percent_change weeks_checkins_count most_used_device last_countries gon).each do |method|
+    %i(most_frequent_areas percent_change weeks_checkins_count most_used_device
+       last_countries gon visited_countries_title).each do |method|
       it { is_expected.to respond_to method }
+    end
+  end
+
+  describe "percent_change" do
+    it "calls percentage_increase with argument week" do
+      allow(dashboard).to receive(:checkins).and_return device.checkins
+      allow(device.checkins).to receive(:percentage_increase)
+      dashboard.percent_change
+      expect(device.checkins).to have_received(:percentage_increase).with "week"
+    end
+  end
+
+  describe "most_frequent_areas" do
+    it "calls hash_group_and_count_by" do
+      allow(Checkin).to receive(:hash_group_and_count_by).and_return []
+      dashboard.most_frequent_areas
+      expect(Checkin).to have_received(:hash_group_and_count_by).at_least(1).times
+    end
+
+    it "returns an array" do
+      expect(dashboard.most_frequent_areas).to be_kind_of Array
     end
   end
 
@@ -94,15 +116,33 @@ describe ::Users::DashboardsPresenter do
     end
   end
 
-  describe "fogged_city_count" do
-    it "calls hash_group_and_count_by" do
-      allow(Checkin).to receive(:hash_group_and_count_by).and_return []
-      dashboard.send(:fogged_city_count)
-      expect(Checkin).to have_received(:hash_group_and_count_by).at_least(1).times
+  describe "visited_countries_title" do
+    context "0 countries" do
+      it "returns 'No countries visited'" do
+        expect(dashboard.visited_countries_title).to eq "No countries visited"
+      end
     end
 
-    it "returns an array" do
-      expect(dashboard.send(:fogged_city_count)).to be_kind_of Array
+    context "1 country" do
+      it "returns 'Last country visited'" do
+        FactoryGirl.create(:checkin, device_id: device.id)
+        expect(dashboard.visited_countries_title).to eq "Last country visited"
+      end
+    end
+    
+    context "n countries" do
+      it "returns a string containing n" do
+        FactoryGirl.create(:checkin, device_id: device.id).update(country_code: "GB")
+        FactoryGirl.create(:checkin, device_id: device.id).update(country_code: "US")
+        expect(dashboard.visited_countries_title).to match dashboard.last_countries.length.to_s
+      end
+    end
+  end
+
+  describe "weeks_checkins_count" do
+    it "returns an integer" do
+      checkins
+      expect(dashboard.weeks_checkins_count).to be_kind_of Integer
     end
   end
 
@@ -137,13 +177,6 @@ describe ::Users::DashboardsPresenter do
       allow(friend).to receive(:safe_checkin_info_for).and_return []
       dashboard.send(:friends)
       expect(friend).to have_received(:safe_checkin_info_for)
-    end
-  end
-
-  describe "weeks_checkins" do
-    it "returns active record relation" do
-      checkins
-      expect(dashboard.send(:weeks_checkins)).to be_kind_of ActiveRecord::Relation
     end
   end
 

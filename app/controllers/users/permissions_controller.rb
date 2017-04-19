@@ -4,14 +4,14 @@ class Users::PermissionsController < ApplicationController
   before_action :require_ownership, only: :update
 
   def index
-    @presenter = ::Users::PermissionsPresenter.new(current_user, params, 'index')
+    @permissions_presenter = ::Users::PermissionsPresenter.new(current_user, params, "index")
     respond_to { |format| format.js }
   end
 
   def update
-    @presenter = ::Users::PermissionsPresenter.new(current_user, params, 'update')
-    @presenter.permission.update(allowed_params)
-    gon.push(@presenter.gon(params[:from]))
+    @permissions_presenter = ::Users::PermissionsPresenter.new(current_user, params, "update")
+    @permissions_presenter.permission.update(allowed_params)
+    gon.push(@permissions_presenter.gon(params[:from]))
     respond_to { |format| format.js }
   end
 
@@ -23,7 +23,7 @@ class Users::PermissionsController < ApplicationController
 
   def require_ownership
     return if user_owns_permission?
-    flash[:alert] = 'You do not control that permission'
+    flash[:alert] = "You do not control that permission"
     redirect_to root_path
   end
 end

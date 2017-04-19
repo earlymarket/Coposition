@@ -9,7 +9,6 @@ class Device < ApplicationRecord
   has_many :developers, through: :permissions, source: :permissible, source_type: "Developer"
   has_many :permitted_users, through: :permissions, source: :permissible, source_type: "User"
   has_attachment :csv, accept: :raw
-  
   validates :name, uniqueness: { scope: :user_id }, if: :user_id
 
   before_create do |dev|
@@ -76,8 +75,12 @@ class Device < ApplicationRecord
     if can_bypass_delay?(permissible)
       checkins
     else
-      checkins.before(delayed.to_i.minutes.ago)
+      before_delay_checkins
     end
+  end
+
+  def before_delay_checkins
+    checkins.where("checkins.created_at < ?", delayed.to_i.minutes.ago)
   end
 
   def permission_for(permissible)
