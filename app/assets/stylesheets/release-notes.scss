@@ -20,5 +20,11 @@
   .clear {
     position: absolute;
     color: red;
+    display: none;
+  }
+
+  .active {
+    opacity: 1;
+    display: inline-block;
   }
 }
