@@ -8,4 +8,4 @@ $(document).on("page:change", function() {
       $(".clear").removeClass("active");
     }
   }
-})
+});

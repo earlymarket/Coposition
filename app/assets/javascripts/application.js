@@ -40,7 +40,6 @@
 // -- Mapbox stuff --
 //= require mapbox.js/mapbox
 //= require leaflet.markercluster/dist/leaflet.markercluster.js
-//= require leaflet.markercluster
 //= require leaflet.locatecontrol/dist/L.Control.Locate.min
 //= require leaflet-fullscreen/dist/Leaflet.fullscreen.min
 //= require control.w3w

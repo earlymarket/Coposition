@@ -5,4 +5,4 @@ $(document).on("page:change", function() {
       selectYears: 2
     });
   }
-})
+});
