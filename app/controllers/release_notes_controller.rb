@@ -1,6 +1,5 @@
 class ReleaseNotesController < ApplicationController
   before_action :authenticate_admin!, except: :index
-  before_action :find_note, only: %i(edit update destroy)
 
   def new
     @release_note = ReleaseNote.new
@@ -17,21 +16,23 @@ class ReleaseNotesController < ApplicationController
     @release_notes = release_notes.paginate(per_page: 10, page: params[:page])
   end
 
-  def edit; end
+  def edit
+    release_note
+  end
 
   def update
-    @release_note.update(allowed_params)
+    release_note.update(allowed_params)
     redirect_to release_notes_path, notice: "Note edited"
   end
 
   def destroy
-    @release_note.destroy
+    release_note.destroy
     redirect_to release_notes_path, notice: "Note deleted"
   end
 
   private
 
-  def find_note
+  def release_note
     @release_note ||= ReleaseNote.find(params[:id])
   end
 

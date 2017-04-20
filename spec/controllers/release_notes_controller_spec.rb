@@ -27,6 +27,12 @@ RSpec.describe Users::ReleaseNotesController, type: :controller do
       get :new
       expect(assigns(:release_note)).to be_kind_of ReleaseNote
     end
+
+    it "redirects if user is not admin" do
+      user.update(admin: false)
+      get :new
+      expect(response).to redirect_to(root_path)
+    end
   end
 
   describe "POST #create" do
@@ -40,26 +46,54 @@ RSpec.describe Users::ReleaseNotesController, type: :controller do
       post_create
       expect(ReleaseNote.first.version).to eq "1.0.1"
     end
+
+    it "redirects if user is not admin" do
+      user.update(admin: false)
+      post_create
+      expect(response).to redirect_to(root_path)
+    end
   end
 
   describe "GET #edit" do
+    let(:get_edit) { get :edit, params: { id: release_note.id } }
+
     it "assigns release note" do
-      get :edit, params: { id: release_note.id }
+      get_edit
       expect(assigns(:release_note)).to eq release_note
+    end
+
+    it "redirects if user is not admin" do
+      user.update(admin: false)
+      get_edit
+      expect(response).to redirect_to(root_path)
     end
   end
 
   describe "PUT #update" do
+    let(:put_update) { put :update, params: { id: release_note.id, release_note: { application: "mobile" } } }
+
     it "update release note with provided params" do
-      expect {
-        put :update, params: { id: release_note.id, release_note: { application: "mobile" } }
-      }.to change { ReleaseNote.find(release_note).application }.to "mobile"
+      expect { put_update }.to change { ReleaseNote.find(release_note.id).application }.to "mobile"
+    end
+
+    it "redirects if user is not admin" do
+      user.update(admin: false)
+      put_update
+      expect(response).to redirect_to(root_path)
     end
   end
 
   describe "DELETE #destroy" do
+    let(:delete_destroy) { delete :destroy, params: { id: release_note.id } }
+
     it "deletes release note" do
-      expect { delete :destroy, params: { id: release_note.id } }.to change { ReleaseNote.count } .by(-1)
+      expect { delete_destroy }.to change { ReleaseNote.count } .by(-1)
+    end
+
+    it "redirects if user is not admin" do
+      user.update(admin: false)
+      delete_destroy
+      expect(response).to redirect_to(root_path)
     end
   end
 end
