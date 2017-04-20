@@ -9,14 +9,28 @@
     </div>
   </div>
 <% end %>
+<div class="row center">
+  <%= link_to release_notes_path(application: "web") do %>
+    <span class="tag web">web</span>
+  <% end %>
+  <%= link_to release_notes_path(application: "api") do %>
+    <span class="tag api">api</span>
+  <% end %>
+  <%= link_to release_notes_path(application: "mobile") do %>
+    <span class="tag mobile">mobile</span>
+  <% end %>
+  <%= link_to release_notes_path do %>
+    <span class="clear"><i class="material-icons">clear</i></span>
+  <% end %>
+</div>
 
 <% @release_notes.each do |note| %>
   <div class="card">  
     <div class="card-content">
       <span class="card-title"><%= note.version %></span>
       <label><%= humanize_date(note.created_at) %></label>
-      <%= link_to release_notes_path(application: note.application), class: 'badge' do %>
-        <span class="badge tag"><%= note.application %></span>
+      <%= link_to release_notes_path(application: note.application) do %>
+        <span class="badge tag <%= note.application %>"><%= note.application %></span>
       <% end %>
       <% note.content.split("-").each do |line| %>
         <% next unless line.present? %>

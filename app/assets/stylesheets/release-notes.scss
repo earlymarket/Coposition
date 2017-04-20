@@ -1,9 +1,24 @@
 .c-release_notes.a-index {
   .tag {
-    border: 2px solid $primary-color-darker;
-    background-color: $primary-color-darker;
     border-radius: 5px;
     color: white;
-    padding: 1px;
+    padding: 2px;
+    min-width: 3rem;
+    text-align: center;
+    display: inline-block;
+    opacity: 0.3;
+  }
+  .web {
+    background-color: $primary-color-darker;
+  }
+  .api {
+    background-color: $secondary-color-darker;
+  }
+  .mobile {
+    background-color: #008000;
+  }
+  .clear {
+    position: absolute;
+    color: red;
   }
 }
