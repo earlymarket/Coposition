@@ -25,32 +25,36 @@
   <% end %>
 </div>
 
-<% @release_notes.each do |note| %>
-  <div class="card">  
-    <div class="card-content">
-      <span class="card-title"><%= note.version %></span>
-      <label><%= humanize_date(note.created_at) %></label>
-      <%= link_to release_notes_path(application: note.application) do %>
-        <span class="badge tag <%= note.application %>"><%= note.application %></span>
-      <% end %>
-      <% note.content.split("-").each do |line| %>
-        <% next unless line.present? %>
-        <div>- <%= line %></div>
-      <% end %>
-      <% if current_user && current_user.admin? %>
-        </br>
-        <div class="card-action">
-          <%= link_to edit_release_note_path(note.id), class: 'btn' do %>
-            <i class="material-icons right">mode_edit</i>Edit
-          <% end %>
-          <%= link_to release_note_path(note.id), method: :delete, class: 'btn red white-text' do %>
-            <i class="material-icons white-text right">delete_forever</i>Delete
+<ul class="collection">
+  <% @release_notes.each do |note| %>
+    <li class="collection-item">
+      <div>
+        <div class="title">
+          <h4><%= note.version %></h4>
+          <label class="bottom">  <%= humanize_date(note.created_at) %></label>
+          <%= link_to release_notes_path(application: note.application) do %>
+            <span class="badge tag <%= note.application %>"><%= note.application %></span>
           <% end %>
         </div>
-      <% end %>
-    </div>
-  </div>
-<% end %>
+        <% note.content.split("-").each do |line| %>
+          <% next unless line.present? %>
+          <div>- <%= line %></div>
+        <% end %>
+        <% if current_user && current_user.admin? %>
+          </br>
+          <div class="card-action">
+            <%= link_to edit_release_note_path(note.id), class: 'btn' do %>
+              <i class="material-icons right">mode_edit</i>Edit
+            <% end %>
+            <%= link_to release_note_path(note.id), method: :delete, class: 'btn red white-text' do %>
+              <i class="material-icons white-text right">delete_forever</i>Delete
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </li>
+  <% end %>
+</ul>
 
 <div class="center-align">
   <%= will_paginate @release_notes %>

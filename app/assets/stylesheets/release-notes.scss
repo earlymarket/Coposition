@@ -1,4 +1,12 @@
 .c-release_notes.a-index {
+  .title {
+    display: flex;
+    flex-direction: row;
+  }
+  .bottom {
+    align-self: flex-end;
+    margin: 1.14rem 0 0.912rem 0.5rem;
+  }
   .tag {
     border-radius: 5px;
     color: white;
