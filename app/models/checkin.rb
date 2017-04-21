@@ -83,8 +83,8 @@ class Checkin < ApplicationRecord
 
   def assign_location
     existing_location = user.locations.near([lat, lng], 10).first
-    location = existing_location || Location.create(lat: lat, lng: lng)
-    location_id = location.id
+    location = existing_location || Location.create(lat: lat, lng: lng, user_id: user.id)
+    update(location_id: location.id)
   end
 
   def reverse_geocode!
