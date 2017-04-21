@@ -1,9 +1,9 @@
 <div id="gonvariables">
   <%= Gon::Base.render_data %>
 </div>
-<h1><%= @presenter.page %></h1>
+<h1><%= @approvals_presenter.page %></h1>
 <div class='center-align'>
-  <%= link_to(new_user_approval_path(approvable_type: @presenter.approvable_type), class: "btn-floating btn-large waves-effect waves-light primary-color") do %>
+  <%= link_to(new_user_approval_path(approvable_type: @approvals_presenter.approvable_type), class: "btn-floating btn-large waves-effect waves-light primary-color") do %>
       <i class="material-icons">add</i>
   <% end %>
 </div>
@@ -22,5 +22,5 @@
   </div>
 </section>
 </br>
-<%= render partial: "approved", locals: {approved: @presenter.approved, devices: @presenter.devices, approvable_type: @presenter.approvable_type} %>
-<%= render partial: "pending", locals: {pending: @presenter.pending} if @presenter.pending.present? %>
+<%= render partial: "approved", locals: {approved: @approvals_presenter.approved, devices: @approvals_presenter.devices, approvable_type: @approvals_presenter.approvable_type} %>
+<%= render partial: "pending", locals: {pending: @approvals_presenter.pending} if @approvals_presenter.pending.present? %>

@@ -165,6 +165,14 @@ ActiveRecord::Schema.define(version: 20170421051417) do
     t.boolean "bypass_delay",     default: false
   end
 
+  create_table "release_notes", force: :cascade do |t|
+    t.string   "version"
+    t.string   "content"
+    t.string   "application"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "requests", force: :cascade do |t|
     t.integer  "developer_id"
     t.datetime "created_at"

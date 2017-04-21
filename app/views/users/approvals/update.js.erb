@@ -4,9 +4,9 @@ if (COPO.utility.urlParam("redirect")) {
   window.location.replace(COPO.utility.urlParam("redirect"));
 }
 $('nav').replaceWith("<%= j (render partial: 'navbar') %>");
-$('#approved').html("<%= j (render partial: 'approved', locals: {approved: @presenter.approved, devices: @presenter.devices, approvable_type: @presenter.approvable_type}) %>");
-<% if @presenter.pending.present? %>
-  $('#pending').html("<%= j (render partial: 'pending', locals: {pending: @presenter.pending}) %>");
+$('#approved').html("<%= j (render partial: 'approved', locals: {approved: @approvals_presenter.approved, devices: @approvals_presenter.devices, approvable_type: @approvals_presenter.approvable_type}) %>");
+<% if @approvals_presenter.pending.present? %>
+  $('#pending').html("<%= j (render partial: 'pending', locals: {pending: @approvals_presenter.pending}) %>");
 <% else %>
   $('#pending').remove();
 <% end %>

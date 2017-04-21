@@ -26,6 +26,22 @@ module Users
       gon
     end
 
+    def input_options
+      if apps_page?
+        { placeholder: "App name", class: "validate devs_typeahead", required: true }
+      else
+        { placeholder: "email@email.com", class: "validate", required: true }
+      end
+    end
+
+    def create_approval_url
+      if apps_page?
+        Rails.application.routes.url_helpers.user_create_dev_approvals_path(@user.url_id)
+      else
+        Rails.application.routes.url_helpers.user_approvals_path(@user.url_id)
+      end
+    end
+
     private
 
     def apps_page?

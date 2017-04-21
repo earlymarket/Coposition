@@ -12,9 +12,8 @@ class Users::CheckinsController < ApplicationController
   end
 
   def index
-    @presenter = ::Users::CheckinsPresenter.new(current_user, params, "index")
-    @device = @presenter.device
-    render json: @presenter.json
+    checkins_presenter = ::Users::CheckinsPresenter.new(current_user, params)
+    render json: checkins_presenter.json
   end
 
   def create
