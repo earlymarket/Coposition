@@ -1,0 +1,45 @@
+- content_for :outside_container do
+  = render 'users/shared/device_show'
+  .bottom-panel.valign-wrapper
+    .buttons
+      a.modal-trigger.btn.red.white-text href="#delete#{@device_show_presenter.device.id}" id="deleteButton#{@device_show_presenter.device.id}" 
+        | Delete check-ins
+      = link_to("Delete device", user_device_path(current_user.url_id, @device_show_presenter.device), { method: :delete, class: "btn red white-text", data: { confirm: 'Are you sure?' } })
+      a#checkinNow.btn.green.white-text data-turbolinks="false" href="#"  Checkin now
+      a#checkinFoggedNow.btn.green.white-text data-turbolinks="false" href="#"  Checkin now (fogged)
+  .modal.delete-modal id="delete#{@device_show_presenter.device.id}" 
+    .modal-content
+      h4.center-align Delete checkins
+      .center-align
+        p.center-align
+          | Warning, this is a permanent change that can only be undone by uploading a back-up of your location history. We strongly recommend downloading a back-up of your device's data before deleting any check-in(s).
+        a.btn href="#{user_device_path(current_user.url_id, @device_show_presenter.device)}.csv?download=csv" 
+          | Download back-up
+        p.center-align
+          - if @device_show_presenter.date_range[:from]
+            | Currently, you are filtering to only see check-ins from #{humanize_date(@device_show_presenter.date_range[:from])} to #{humanize_date(@device_show_presenter.date_range[:to])}.
+          - else
+            | Currently, you are seeing all check-ins for this device.
+        = link_to("Delete all check-ins", user_device_checkins_path(current_user.url_id, @device_show_presenter.device.id), { method: :delete, class: "btn red white-text", data: { confirm: 'Delete all checkins for this device?' } })
+        - if @device_show_presenter.date_range[:from]
+          = link_to("Delete visible check-ins", user_device_checkins_path(current_user.url_id, @device_show_presenter.device.id, from: @device_show_presenter.date_range[:from], to: @device_show_presenter.date_range[:to]), { method: :delete, class: "btn red white-text", data: { confirm: "Delete checkins from #{humanize_date(@device_show_presenter.date_range[:from])} to #{humanize_date(@device_show_presenter.date_range[:to])}?" } })
+  /! templates
+  script#markerPopupTmpl type="x-tmpl-mustache" 
+    cdata:
+      | <h3>ID: {{ id }}  <i class="tooltipped" data-tooltip="Latitude/longitude have been changed from original values">{{ edited }}</i></h3
+      | <ul
+      | <li id="localTime">{{ created_at }}</li
+      | <h3 class="lined"><span class="lined-pad">Coordinates</span></h3
+      | <li class="ta-center">{{ &inlineCoords }}</li
+      | <h3 class="lined"><span class="lined-pad">Address</span></h3
+      | <li class="address">{{ address }}</li
+      | {{ &foggedAddress }}
+      | <li>{{ &foggle }} {{ &deletebutton }}</li
+      | </ul
+  script#createCheckinTmpl type="x-tmpl-mustache" 
+    cdata:
+      | <ul
+      | <li>Latitude: {{ lat }}</li
+      | <li>Longitude {{ lng }}</li
+      | <li>{{ &checkinLink }}</li
+      | </ul

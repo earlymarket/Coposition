@@ -1,0 +1,12 @@
+- content_for :outside_container do
+  = render 'users/shared/device_show'
+  script#markerPopupTmpl type="x-tmpl-mustache" 
+    cdata:
+      | <h3>ID: {{ id }}</h3
+      | <ul
+      | <li id="localTime">Created on: {{ created_at }}</li
+      | <h3 class="lined"><span class="lined-pad">Coordinates</span></h3
+      | <li class="ta-center">{{ lat }}, {{ lng }}</li
+      | <h3 class="lined"><span class="lined-pad">Address</span></h3
+      | <li class="address">{{ address }}</li
+      | </ul

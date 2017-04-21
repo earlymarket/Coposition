@@ -1,0 +1,31 @@
+#gonvariables
+  = Gon::Base.render_data
+h1 Your devices
+.row
+  .center
+    = link_to(new_user_device_path, class: "btn-floating btn-large waves-effect waves-light primary-color") do
+      i.material-icons add
+section.devices-index.row
+  .col.s12
+    #map-wrapper style=("position: relative;") 
+      p#map-status
+      #map-overlay.valign-wrapper.z-depth-1.hide
+        div
+          h5 style=("text-align: center;")  Nothing here yet
+          p Here you will be shown the most recent checkin for each of your devices, but you don't have any at the moment!
+          p To add a check-in, create a device by clicking the plus above or select an existing device.
+      #map
+div
+  - @devices_index_presenter.devices.each do |device|
+    div id="device#{device.id}" 
+      = render device
+    = render partial: "device_modals", locals: {device: device}
+.center
+  = will_paginate @devices_index_presenter.devices
+  div
+    script#markerPopupTmpl type="x-tmpl-mustache" 
+      cdata:
+        | <h3>Device: {{ &devicebutton }}</h3
+        | <ul
+        | <li class="address">Address: {{ address }}</li
+        | </ul

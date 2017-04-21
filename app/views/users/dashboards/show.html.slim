@@ -1,0 +1,45 @@
+#gonvariables= Gon::Base.render_data
+section.dashboard
+  h4
+    | Hello #{current_user.username}
+section.dashboard.row
+  .col.s12
+    #map-wrapper style=("position: relative;") 
+      p#map-status
+      #map-overlay.valign-wrapper.z-depth-1.hide
+        div
+          h5 style=("text-align: center;")  Nothing here yet
+          p Here you will be shown your check-ins this month and your friend's last check-ins on a map. But you don't have any at the moment!
+          p
+            | To add a check-in, go to the #{link_to('devices', user_devices_path)} page and select/create a device.
+          p
+            | To add a friend, go to your #{link_to('friends', user_friends_path)} page and send them an invite.
+      #map
+.divider
+p
+  | You checked in #{@dashboard_presenter.weeks_checkins_count || 0} times this week.
+  - if @dashboard_presenter.percent_change.present?
+    br/
+    | That is an #{@dashboard_presenter.percent_change > 0 ? 'increase' : 'decrease'} of #{@dashboard_presenter.percent_change}% from last week.
+  - if @dashboard_presenter.most_used_device.present?
+    | Your most used device is #{@dashboard_presenter.most_used_device.name}.
+- if @dashboard_presenter.last_countries
+  h5= @dashboard_presenter.visited_countries_title
+  table
+    thead
+      tr
+        td
+        td Country
+        td Last Visited
+    tbody
+      - @dashboard_presenter.last_countries.each do |country|
+        tr
+          td= dashboard_flag(country[:country_code])
+          td= dashboard_country_name(country[:country_code])
+          td= humanize_date(country[:created_at])
+  .divider
+section#dashboard-quicklinks
+  p
+    | You have #{pluralize(current_user.devices.count, 'device')}, #{pluralize(current_user.not_coposition_developers.count, 'app')} and #{pluralize(current_user.friends.count, 'friend')}.
+    | You have #{link_to(pluralize(current_user.developer_requests.count, 'app'), user_apps_path)} and
+    | \#{link_to(pluralize(current_user.friend_requests.count, 'friend'), user_friends_path)} awaiting your approval.

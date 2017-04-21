@@ -1,0 +1,104 @@
+.row
+  section.section.col.s12.m6.offset-m3
+    = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+      /! <haml_loud> devise_error_messages! </haml_loud
+      - flash[:notice] = resource.errors.full_messages.join(". ").concat(".") unless resource.errors.empty?
+      fieldset.card
+        .card-content
+          legend.card-title
+            = resource.class
+            | sign up
+          .row
+            .input-field.col.s12
+              = f.label :email, "Your email*"
+              = f.email_field :email, value: params[:email], id: "#{resource.class.to_s.downcase}_email", autofocus: true
+          .row
+            .input-field.col.s12
+              - password_label = "Your password*"
+              - if @minimum_password_length
+                - password_label.chop!
+                - password_label.concat(" (#{@minimum_password_length} characters minimum)*")
+              = f.label :password, password_label
+              = f.password_field :password, id: "#{resource.class.to_s.downcase}_password", autocomplete: "off"
+          .row
+            .input-field.col.s12
+              = f.label :password_confirmation, "Password confirmation*"
+              = f.password_field :password_confirmation, id: "#{resource.class.to_s.downcase}_password_confirmation", autocomplete: "off"
+          - if resource.respond_to? :company_name
+            .row
+              .input-field.col.s12
+                = f.label :company_name, "Company name*"
+                = f.text_field :company_name
+            .row
+              .input-field.col.s12
+                = f.label :tagline, "Company tagline"
+                = f.text_field :tagline
+          = f.attachinary_file_field :avatar
+          - if resource.respond_to? :username
+            .row
+              .input-field.col.s12
+                = f.label :username, "Optional username (4-20 characters)"
+                = f.text_field :username, id: "#{resource.class.to_s.downcase}_username"
+          - if resource.respond_to? :redirect_url
+            .row
+              .input-field.col.s12
+                = f.label :redirect_url,"Redirect url*", class: "active"
+                = f.text_field :redirect_url, placeholder: "Your Site URL"
+          .row
+            .col.s12
+              = f.button "Sign up", class: "waves-effect waves-light btn"
+          .row
+            .col.s12
+              | Already registered as a #{"#{resource.class.to_s.downcase}"}? #{link_to "Log in!", new_session_path(resource_name)}
+= render "application/video"
+javascript:
+  | $.validator.methods.email = function( value, element ) {
+      | return this.optional( element ) || /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/.test( value );
+    | }
+  
+    | $("#new_#{resource_name}").validate({
+      | onkeyup: false,
+      | rules: {
+        | '#{resource_name}[email]': {
+          | required: true,
+        | },
+        | '#{resource_name}[password]': {
+          | required: true,
+          | minlength: 8
+        | },
+        | '#{resource_name}[password_confirmation]': {
+          | required: true,
+          | equalTo: '##{raw resource.class.to_s.downcase}_password'
+        | }
+  | <haml_silent>       if resource.respond_to? :company_name
+  | </haml_silent><haml_block>      ,
+        | '#{resource_name}[company_name]': {
+          | required: true
+        | }
+  | </haml_block><haml_silent>       if resource.respond_to? :redirect_url
+  | </haml_silent><haml_block>      ,
+          | '#{resource_name}[redirect_url]': {
+            | required: true,
+            | url: true
+          | }
+  | </haml_block><haml_silent>       if resource.respond_to? :username
+  | </haml_silent><haml_block>      ,
+          | '#{resource_name}[username]': {
+            | required: false,
+            | minlength: 4,
+            | maxlength: 20
+          | }
+  | </haml_block>    },
+      | errorElement: 'div',
+      | errorPlacement: function(error, element) {
+        | var placement = $(element).data('error');
+        | if (placement) {
+          | $(placement).append(error)
+        | } else {
+          | error.insertAfter(element);
+        | }
+      | },
+      | errorClass: "invalid",
+      | validClass: "valid"
+    | });
+= render "devise/shared/links"
