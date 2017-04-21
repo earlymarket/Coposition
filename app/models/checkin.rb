@@ -27,6 +27,7 @@ class Checkin < ApplicationRecord
     if device
       reload
       assign_values
+      assign_location
       save
     else
       raise 'Checkin is not assigned to a device.'
@@ -71,6 +72,12 @@ class Checkin < ApplicationRecord
       output_postal_code: postal_code,
       output_country_code: country_code
     )
+  end
+
+  def assign_location
+    existing_location = user.locations.near([lat, lng], 10).first
+    location = existing_location || Location.create(lat: lat, lng: lng)
+    location_id = location.id
   end
 
   def reverse_geocode!
