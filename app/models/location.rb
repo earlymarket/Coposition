@@ -13,7 +13,7 @@ class Location < ApplicationRecord
   end
 
   def reverse_geocoded?
-    address != nil
+    address?
   end
 
 end
