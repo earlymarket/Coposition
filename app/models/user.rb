@@ -15,6 +15,7 @@ class User < ApplicationRecord
 
   has_many :devices, dependent: :destroy
   has_many :checkins, through: :devices
+  has_many :locations
   has_many :requests
   has_many :approvals, dependent: :destroy
   has_many :subscriptions, as: :subscriber, dependent: :destroy
