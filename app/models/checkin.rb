@@ -10,7 +10,7 @@ class Checkin < ApplicationRecord
   validates :lat, presence: :true
   validates :lng, presence: :true
   belongs_to :device
-  belongs_to :location
+  belongs_to :location, counter_cache: true
 
   delegate :user, to: :device
 
