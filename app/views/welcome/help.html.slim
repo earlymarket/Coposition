@@ -1,4 +1,5 @@
-#gonvariables= Gon::Base.render_data
+#gonvariables
+  = Gon::Base.render_data
 h1 Help Centre
 .row
   .col.s12.m9.l10
@@ -103,7 +104,7 @@ h1 Help Centre
         i.material-icons explore
         | what3words
       p
-        | w3w or 'what3words' is a unique combination of 3 words that identifies a 3mx3m square, anywhere on the planet. Learn more about #{link_to('what3words', 'http://what3words.com/about/')}.
+        | w3w or 'what3words' is a unique combination of 3 words that identifies a 3mx3m square, anywhere on the planet. Learn more about #{link_to("what3words", "http://what3words.com/about/")}.
     .divider
     #zapier.section.scrollspy
       h4
@@ -119,7 +120,7 @@ h1 Help Centre
         | Users can make use of a checkin or device trigger which fires whenever a new checkin or device is created.
         br/
         br/
-        | Get started at  #{link_to('zapier.com', 'https://zapier.com/')}
+        | Get started at  #{link_to("zapier.com", "https://zapier.com/")}
     .divider
     #more.section.scrollspy
       h4
@@ -130,20 +131,21 @@ h1 Help Centre
   .col.hide-on-small-only.m3.l2
     ul.section.table-of-contents
       li
-        a href="#checkin"  Checking in
+        a href="#checkin" Checking in
       li
-        a href="#devices"  Devices
+        a href="#devices" Devices
       li
-        a href="#friends"  Friends and Apps
+        a href="#friends" Friends and Apps
       li
-        a href="#permissions"  - Permissions
+        a href="#permissions" - Permissions
       li
-        a href="#download"  Download/Upload
+        a href="#download" Download/Upload
       li
-        a href="#w3w"  what3words
+        a href="#w3w" what3words
       li
-        a href="#zapier"  Zapier
+        a href="#zapier" Zapier
       li
-        a href="#more"  More questions
+        a href="#more" More questions
+
 javascript:
   | COPO.smooch.initSmooch(gon.userinfo);

@@ -1,4 +1,5 @@
-#gonvariables= Gon::Base.render_data
+#gonvariables
+  = Gon::Base.render_data
 h1
   = @friend_show_presenter.friend.display_name
   | 's devices
@@ -13,17 +14,16 @@ section.friends-device-index.row
       #map
 - @friend_show_presenter.devices.each do |device|
   .card-panel.row
-    = link_to show_device_user_friend_path(current_user.url_id, @friend_show_presenter.friend, device_id: device.id), class:"col s12" do
+    = link_to show_device_user_friend_path(current_user.url_id, @friend_show_presenter.friend, device_id: device.id), class: "col s12" do
       h5.valign-wrapper
         i.material-icons.medium>= device.icon
         |  #{device.name}
-      = friends_device_last_checkin(device.safe_checkin_info_for(permissible: current_user, action: 'last')[0])
+      = friends_device_last_checkin(device.safe_checkin_info_for(permissible: current_user, action: "last")[0])
 .center
   = will_paginate @friend_show_presenter.devices
   div
     script#markerPopupTmpl type="x-tmpl-mustache" 
-      cdata:
-        | <h3>Device: {{ &devicebutton }}</h3
-        | <ul
-        | <li class="address">Address: {{ address }}</li
-        | </ul
+      <h3>Device: {{ &devicebutton }}</h3>
+      <ul>
+        <li class="address">Address: {{ address }}</li>
+      </ul>

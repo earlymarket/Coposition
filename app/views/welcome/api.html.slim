@@ -2,8 +2,8 @@ h1 Getting started with Coposition
 hr/
 p
   | Create a user with the username
-  = succeed "." do
-    code testuser
+  code testuser
+  | .
 p Create a developer.
 p Note the API key.
 p All requests must include the header X-API-KEY: YourApiKey.
@@ -24,5 +24,5 @@ p
 p Returns an individual checkin.
 h3 Getting all checkins for a device
 p
-  code GET http://api.coposition-dev.com/v1/users/testuser/devices/testdevice_id/checkins?page=1&amp;per_page=50
+  code GET http://api.coposition-dev.com/v1/users/testuser/devices/testdevice_id/checkins?page=1&per_page=50
 p You can specify which page and how many checkins per page (limit 1000) to return, checkins are returned most recent first.

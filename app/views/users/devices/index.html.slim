@@ -3,7 +3,7 @@
 h1 Your devices
 .row
   .center
-    = link_to(new_user_device_path, class: "btn-floating btn-large waves-effect waves-light primary-color") do
+    = link_to new_user_device_path, class: "btn-floating btn-large waves-effect waves-light primary-color" do
       i.material-icons add
 section.devices-index.row
   .col.s12
@@ -19,13 +19,12 @@ div
   - @devices_index_presenter.devices.each do |device|
     div id="device#{device.id}" 
       = render device
-    = render partial: "device_modals", locals: {device: device}
+    = render partial: "device_modals", locals: { device: device }
 .center
   = will_paginate @devices_index_presenter.devices
   div
     script#markerPopupTmpl type="x-tmpl-mustache" 
-      cdata:
-        | <h3>Device: {{ &devicebutton }}</h3
-        | <ul
-        | <li class="address">Address: {{ address }}</li
-        | </ul
+      <h3>Device: {{ &devicebutton }}</h3>
+      <ul>
+        <li class="address">Address: {{ address }}</li>
+      </ul>

@@ -4,24 +4,25 @@
     .center-align.row id="icons#{device.id}" 
       - %w(smartphone watch laptop tablet desktop_windows devices_other).each do |icon|
         = devices_choose_icon(device, icon)
+
 .modal id="perm#{device.id}" 
   .modal-content
     div
       h4.inline-text id="#{device.id}-status" 
         = device.name
-        = attribute_icon(device.fogged, 'cloud')
-        = attribute_icon(device.delayed, 'timer')
-        = attribute_icon(device.cloaked, 'visibility_off')
-        = attribute_icon(device.published, 'public')
+        = attribute_icon(device.fogged, "cloud")
+        = attribute_icon(device.delayed, "timer")
+        = attribute_icon(device.cloaked, "visibility_off")
+        = attribute_icon(device.published, "public")
       = devices_cloaked_info(device.cloaked)
       a.right.tooltipped data-tooltip=("Permissions help") href="/help#permissions" target="_blank" 
         i.material-icons help
-    ul.permissions.collection data-id="<haml_loud" 
-      | device.id&gt;
+    ul.permissions.collection data-id=(device.id)
       li.collection-item.row.valign-wrapper.master-permissions
         .valign.col.s6
           h5 Update all permissions
-        = render partial: "users/permissions/controls", object: device, as: 'control_object'
+        = render partial: "users/permissions/controls", object: device, as: "control_object"
+
 .modal.download-modal id="download#{device.id}" 
   .modal-content
     h4.center-align Choose download format
@@ -30,6 +31,7 @@
       a.btn.device-button-small href="#{user_device_path(current_user.url_id, device)}.csv?download=csv"  csv
       a.btn.device-button-small href="#{user_device_path(current_user.url_id, device)}.gpx?download=gpx"  gpx (route)
       a.btn.device-button-small href="#{user_device_path(current_user.url_id, device)}.geojson?download=geojson"  geojson
+
 .modal.upload-modal id="upload#{device.id}" 
   .modal-content
     h4.center-align Upload checkins
@@ -38,10 +40,11 @@
     .center-align
       label Upload previously downloaded check-ins to restore data. Warning, this may overwrite existing check-ins.
       = form_tag import_user_device_checkins_path(device_id: device.id), multipart: :true do
-        = file_field_tag :file, accept: 'text/csv'
+        = file_field_tag :file, accept: "text/csv"
         = submit_tag "Import CSV", class: "btn"
+
 .modal.delay-modal id="delay#{device.id}" 
   .modal-content
     h4 Delay Controls
     label Set when new checkins will become visible to your data consumers
-    .delay-slider data-device="<haml_loud"  device.id&gt;
+    .delay-slider data-device=(device.id)

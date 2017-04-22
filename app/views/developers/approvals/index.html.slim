@@ -1,6 +1,6 @@
 h1 Users
 .center
-  = link_to(new_developers_approval_path, class: "btn-floating btn-large waves-effect waves-light primary-color") do
+  = link_to new_developers_approval_path, class: "btn-floating btn-large waves-effect waves-light primary-color" do
     i.material-icons add
 p
   - if @pending.present?

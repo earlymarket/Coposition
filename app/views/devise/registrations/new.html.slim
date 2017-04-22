@@ -1,7 +1,7 @@
 .row
   section.section.col.s12.m6.offset-m3
-    = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-      /! <haml_loud> devise_error_messages! </haml_loud
+    = form_for resource, as: resource_name, url: registration_path(resource_name) do |f|
+      /! #{devise_error_messages!}
       - flash[:notice] = resource.errors.full_messages.join(". ").concat(".") unless resource.errors.empty?
       fieldset.card
         .card-content
@@ -50,48 +50,50 @@
           .row
             .col.s12
               | Already registered as a #{"#{resource.class.to_s.downcase}"}? #{link_to "Log in!", new_session_path(resource_name)}
+
 = render "application/video"
+
 javascript:
-  | $.validator.methods.email = function( value, element ) {
+  | $.validator.methods.email = function(value, element) {
       | return this.optional( element ) || /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/.test( value );
     | }
   
     | $("#new_#{resource_name}").validate({
       | onkeyup: false,
       | rules: {
-        | '#{resource_name}[email]': {
+        | "#{resource_name}[email]": {
           | required: true,
         | },
-        | '#{resource_name}[password]': {
+        | "#{resource_name}[password]": {
           | required: true,
           | minlength: 8
         | },
-        | '#{resource_name}[password_confirmation]': {
+        | "#{resource_name}[password_confirmation]": {
           | required: true,
-          | equalTo: '##{raw resource.class.to_s.downcase}_password'
+          | equalTo: "##{raw resource.class.to_s.downcase}_password"
         | }
-  | <haml_silent>       if resource.respond_to? :company_name
-  | </haml_silent><haml_block>      ,
-        | '#{resource_name}[company_name]': {
+      - if resource.respond_to? :company_name
+        | ,
+        | "#{resource_name}[company_name]": {
           | required: true
         | }
-  | </haml_block><haml_silent>       if resource.respond_to? :redirect_url
-  | </haml_silent><haml_block>      ,
-          | '#{resource_name}[redirect_url]': {
+      - if resource.respond_to? :redirect_url
+        | ,
+          | "#{resource_name}[redirect_url]": {
             | required: true,
             | url: true
           | }
-  | </haml_block><haml_silent>       if resource.respond_to? :username
-  | </haml_silent><haml_block>      ,
-          | '#{resource_name}[username]': {
+      - if resource.respond_to? :username
+        | ,
+          | "#{resource_name}[username]": {
             | required: false,
             | minlength: 4,
             | maxlength: 20
           | }
-  | </haml_block>    },
-      | errorElement: 'div',
+      | },
+      | errorElement: "div",
       | errorPlacement: function(error, element) {
-        | var placement = $(element).data('error');
+        | var placement = $(element).data("error");
         | if (placement) {
           | $(placement).append(error)
         | } else {
@@ -101,4 +103,5 @@ javascript:
       | errorClass: "invalid",
       | validClass: "valid"
     | });
+
 = render "devise/shared/links"

@@ -1,26 +1,30 @@
 #top
-nav class=("nav-wrapper#{if controller_name == 'welcome'  action_name == 'index' then ' transparent-nav' end}") data-turbolinks-permanent="" role="navigation" 
+nav class=("nav-wrapper#{if controller_name == 'welcome' && action_name == 'index' then ' transparent-nav' end}") data-turbolinks-permanent="" role="navigation" 
   a.button-collapse data-activates="mobile-nav" href="#" 
     i.material-icons menu
-  = link_to(inline_svg('bordered-logo.svg', id: "brand-logo"), root_path, class: "valign-wrapper left")
+  = link_to inline_svg('bordered-logo.svg', id: "brand-logo"), root_path, class: "valign-wrapper left"
   ul.right.hide-on-med-and-down
     li
       a href="#"  About
-    li= link_to('Help', help_path)
-    li= link_to('API', 'https://earlymarket.github.io/copo-docs/')
+    li
+      = link_to "Help", help_path
+    li
+      = link_to "API", "https://earlymarket.github.io/copo-docs/"
+
     - if user_signed_in?
-      li= link_to("Dashboard", user_dashboard_path(current_user.url_id))
       li
-        = link_to('Devices', user_devices_path(current_user.url_id))
+        = link_to "Dashboard", user_dashboard_path(current_user.url_id)
       li
-        = link_to(navbar_indicator('Apps', current_user.developer_requests.count), user_apps_path(current_user.url_id))
+        = link_to "Devices", user_devices_path(current_user.url_id)
       li
-        = link_to(navbar_indicator('Friends', current_user.friend_requests.count), user_friends_path(current_user.url_id))
+        = link_to navbar_indicator("Apps", current_user.developer_requests.count), user_apps_path(current_user.url_id)
       li
-        = link_to(edit_user_registration_path, class: 'settings-icon valign-wrapper') do
+        = link_to navbar_indicator("Friends", current_user.friend_requests.count), user_friends_path(current_user.url_id)
+      li
+        = link_to edit_user_registration_path, class: "settings-icon valign-wrapper" do
           i.material-icons.valign settings
       li
-        = link_to(inline_svg('log-out.svg', class: 'svg-btn valign'), destroy_user_session_path, method: :delete, class: 'valign-wrapper', title: 'Log Out')
+        = link_to inline_svg("log-out.svg", class: "svg-btn valign"), destroy_user_session_path, method: :delete, class: "valign-wrapper", title: "Log Out"
     - else
       li
-        = link_to(inline_svg('log-in.svg', class: 'svg-btn valign'), new_user_session_path, class: 'valign-wrapper', title: 'User Log In')
+        = link_to inline_svg("log-in.svg", class: "svg-btn valign"), new_user_session_path, class: "valign-wrapper", title: "User Log In"

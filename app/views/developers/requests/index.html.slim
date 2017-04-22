@@ -10,12 +10,15 @@ table
   tbody
     - @requests.each do |request|
       tr
-        td= request.paid
-        td= request.action
-        td= request.controller.split("/").last
+        td
+          = request.paid
+        td
+          = request.action
+        td
+          = request.controller.split("/").last
         td
           = requests_user(request)
-        td= humanize_date_and_time request.created_at
+        td
+          = humanize_date_and_time request.created_at
 .center-align
   = will_paginate @requests
-  div

@@ -9,42 +9,45 @@ ul#mobile-nav.side-nav
         .collapsible-body
           ul
             li
-              a href="#"  Security
+              a href="#" Security
             li
-              a href="#"  Enrolled companies
+              a href="#" Enrolled companies
             li
-              a href="#"  Why use Coposition
-            li= link_to('Help', help_path)
-            li= link_to('API', 'https://earlymarket.github.io/copo-docs/')
+              a href="#" Why use Coposition
+            li
+              = link_to "Help", help_path
+            li
+              = link_to "API", "https://earlymarket.github.io/copo-docs/"
+
   - if user_signed_in?
     li
-      = link_to("Dashboard", user_dashboard_path(current_user))
+      = link_to "Dashboard", user_dashboard_path(current_user)
     li
-      = link_to("Devices", user_devices_path(current_user.url_id))
+      = link_to "Devices", user_devices_path(current_user.url_id)
     li
-      = link_to(navbar_indicator('Apps', current_user.developer_requests.count), user_apps_path(current_user.url_id))
+      = link_to navbar_indicator("Apps", current_user.developer_requests.count), user_apps_path(current_user.url_id)
     li
-      = link_to(navbar_indicator('Friends', current_user.friend_requests.count), user_friends_path(current_user.url_id))
+      = link_to navbar_indicator("Friends", current_user.friend_requests.count), user_friends_path(current_user.url_id)
     li
-      = link_to('Edit account', edit_user_registration_path)
+      = link_to "Edit account", edit_user_registration_path
     li
-      = link_to("User log out", destroy_user_session_path, method: :delete)
+      = link_to "User log out", destroy_user_session_path, method: :delete
     li
-      = link_to("Developers", developers_console_path)
+      = link_to "Developers", developers_console_path
     - if developer_signed_in?
       li
-        = link_to("Developer log out", destroy_developer_session_path, method: :delete)
+        = link_to "Developer log out", destroy_developer_session_path, method: :delete
   - elsif developer_signed_in?
     li
-      = link_to("Developer console", developers_console_path)
+      = link_to "Developer console", developers_console_path
     li
-      = link_to('Getting Started', getting_started_path)
+      = link_to "Getting Started", getting_started_path
     li
-      = link_to("Developer log out", destroy_developer_session_path, method: :delete)
+      = link_to "Developer log out", destroy_developer_session_path, method: :delete
     li
-      = link_to("User log in", new_user_session_path)
+      = link_to "User log in", new_user_session_path
   - else
     li
-      = link_to("Developers", new_developer_session_path)
+      = link_to "Developers", new_developer_session_path
     li
-      = link_to("User log in", new_user_session_path)
+      = link_to "User log in", new_user_session_path
