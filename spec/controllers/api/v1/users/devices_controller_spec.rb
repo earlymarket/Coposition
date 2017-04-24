@@ -17,10 +17,10 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   end
   let(:developer) do
     dev = create :developer
-    Approval.link(user, dev, 'Developer')
-    Approval.accept(user, dev, 'Developer')
-    Approval.link(second_user, dev, 'Developer')
-    Approval.accept(second_user, dev, 'Developer')
+    Approval.link(user, dev, "Developer")
+    Approval.accept(user, dev, "Developer")
+    Approval.link(second_user, dev, "Developer")
+    Approval.accept(second_user, dev, "Developer")
     dev
   end
   let(:params) { { user_id: user.id, format: :json } }
@@ -124,7 +124,6 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       config_count = developer.configs.count
       post :create, params: create_params
       expect(developer.configs.count).to be config_count + 1
-      expect(res_hash[:data]["user_id"]).to be user.id
       expect(res_hash[:data]["uuid"]).to eq empty_device.uuid
     end
 

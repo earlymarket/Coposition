@@ -48,7 +48,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
   private
 
   def check_user
-    render status: 403, json: { error: 'User does not own device' } unless current_user?(params[:user_id])
+    render status: 403, json: { error: "User does not own device" } unless current_user?(params[:user_id])
   end
 
   def device_params
