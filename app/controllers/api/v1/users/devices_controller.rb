@@ -1,10 +1,10 @@
 class Api::V1::Users::DevicesController < Api::ApiController
   respond_to :json
 
-  acts_as_token_authentication_handler_for User, only: %i(update create)
+  acts_as_token_authentication_handler_for User, only: [:update, :create]
 
-  before_action :check_user_approved_approvable, only: %i(index show)
-  before_action :check_user, only: %i(update create)
+  before_action :check_user_approved_approvable, only: [:index, :show]
+  before_action :check_user, only: [:update, :create]
 
   def index
     devices = if req_from_coposition_app?
