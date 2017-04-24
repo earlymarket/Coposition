@@ -17,10 +17,10 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   end
   let(:developer) do
     dev = create :developer
-    Approval.link(user, dev, 'Developer')
-    Approval.accept(user, dev, 'Developer')
-    Approval.link(second_user, dev, 'Developer')
-    Approval.accept(second_user, dev, 'Developer')
+    Approval.link(user, dev, "Developer")
+    Approval.accept(user, dev, "Developer")
+    Approval.link(second_user, dev, "Developer")
+    Approval.accept(second_user, dev, "Developer")
     dev
   end
   let(:params) { { user_id: user.id, format: :json } }
@@ -38,17 +38,24 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       expect(res_hash.first["id"]).to be device.id
     end
 
-    it "does not return friends cloaked devices" do
-      second_user.devices.each { |device| device.update! cloaked: true }
-      get :index, params: params.merge(user_id: second_user.id)
+    it "does not return cloaked devices" do
+      user.devices.each { |device| device.update! cloaked: true }
+      get :index, params: params
       expect(res_hash[:devices].size).to eq 0
     end
 
-    it "does return cloaked devices if request from copo_app" do
+    it "returns cloaked devices if request from copo_app" do
       request.headers["X-Secret-App-Key"] = "this-is-a-mobile-app"
-      second_user.devices.each { |device| device.update! cloaked: true }
-      get :index, params: params.merge(user_id: second_user.id)
-      expect(res_hash.size).to eq second_user.devices.count
+      user.devices.each { |device| device.update! cloaked: true }
+      get :index, params: params
+      expect(res_hash.size).to eq user.devices.count
+    end
+
+    it "returns devices config if request from copo app" do
+      request.headers["X-Secret-App-Key"] = "this-is-a-mobile-app"
+      FactoryGirl.create(:config, device: device)
+      get :index, params: params
+      expect(res_hash[0]["config"]["id"]).to eq device.config.id
     end
 
     it "records the request" do
@@ -117,7 +124,6 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
       config_count = developer.configs.count
       post :create, params: create_params
       expect(developer.configs.count).to be config_count + 1
-      expect(res_hash[:data]["user_id"]).to be user.id
       expect(res_hash[:data]["uuid"]).to eq empty_device.uuid
     end
 
