@@ -1,3 +1,11 @@
+class GeojsonCheckin
+  def initialize(record)
+    @type = "Feature"
+    @geometry = { "type": "Point", "coordinates": [record[0], record[1]] }
+    @properties = { "id": record[2] }
+  end
+end
+
 class Checkin < ApplicationRecord
   validates :lat, presence: :true
   validates :lng, presence: :true
