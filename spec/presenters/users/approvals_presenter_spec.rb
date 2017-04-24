@@ -15,7 +15,7 @@ describe ::Users::ApprovalsPresenter do
   end
 
   describe "Interface" do
-    %i(approvable_type approved pending devices gon).each do |method|
+    %i(approvable_type approved pending devices gon input_options create_approval_url).each do |method|
       it { is_expected.to respond_to method }
     end
   end
@@ -155,6 +155,41 @@ describe ::Users::ApprovalsPresenter do
     it "returns an array of hashes" do
       # This test should pass, for some reason calling any method on a collection proxy returns nothing
       expect(approvals.send(:friends_checkins)[0]).to be_kind_of Hash
+    end
+  end
+
+  describe "create_approval_url" do
+    it "returns a path for creating developer approval" do
+      approvals = described_class.new(user, "Developer")
+      expect(approvals.create_approval_url).to match "create_dev_approvals"
+    end
+
+    it "returns a path for creating user approval" do
+      expect(approvals.create_approval_url).to match "approvals"
+    end
+  end
+
+  describe "input_options" do
+    context "users" do
+      it "assigns placeholder" do
+        expect(approvals.input_options[:placeholder]).to match "email@email.com"
+      end
+
+      it "assigns class" do
+        expect(approvals.input_options[:class]).to match "validate"
+      end
+    end
+
+    context "developers" do
+      let(:approvals) { described_class.new(user, "Developer") }
+
+      it "assigns placeholder" do
+        expect(approvals.input_options[:placeholder]).to match "name"
+      end
+
+      it "assigns class" do
+        expect(approvals.input_options[:class]).to match "devs_typeahead"
+      end
     end
   end
 end

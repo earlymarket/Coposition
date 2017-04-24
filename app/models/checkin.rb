@@ -14,8 +14,7 @@ class Checkin < ApplicationRecord
   delegate :user, to: :device
 
   default_scope { order(created_at: :desc) }
-  scope :since, ->(date) { where('created_at > ?', date) }
-  scope :before, ->(date) { where('created_at < ?', date) }
+  scope :since, ->(date) { where("created_at > ?", date) }
 
   before_update :set_edited, if: proc { lat_changed? || lng_changed? }
 
@@ -26,7 +25,7 @@ class Checkin < ApplicationRecord
         obj.send("output_#{m}=", results.first.send(m)) if (column_names.include? m.to_s) && !obj.fogged
       end
     else
-      obj.update(address: 'Not yet geocoded')
+      obj.update(address: "Not yet geocoded")
     end
   end
 
@@ -36,7 +35,7 @@ class Checkin < ApplicationRecord
       assign_values
       save
     else
-      raise 'Checkin is not assigned to a device.'
+      raise "Checkin is not assigned to a device."
     end
   end
 
@@ -90,7 +89,7 @@ class Checkin < ApplicationRecord
   end
 
   def reverse_geocoded?
-    address != 'Not yet geocoded'
+    address != "Not yet geocoded"
   end
 
   def set_edited
@@ -109,9 +108,9 @@ class Checkin < ApplicationRecord
 
   class << self
     def limit_returned_checkins(args)
-      if args[:action] == 'index' && args[:multiple_devices]
+      if args[:action] == "index" && args[:multiple_devices]
         all
-      elsif args[:action] == 'index' && !args[:multiple_devices]
+      elsif args[:action] == "index" && !args[:multiple_devices]
         paginate(page: args[:page], per_page: args[:per_page])
       else
         limit(1)
@@ -120,7 +119,7 @@ class Checkin < ApplicationRecord
 
     def near_to(near)
       return all unless near
-      near_array = near.split(',')
+      near_array = near.split(",")
       lat = near_array[0].to_f
       lng = near_array[1].to_f
       where(lat: (lat - 0.5)..(lat + 0.5), lng: (lng - 0.5)..(lng + 0.5))
@@ -139,7 +138,7 @@ class Checkin < ApplicationRecord
 
     def unique_places_only(unique_places)
       return all unless unique_places
-      where('created_at IN(SELECT MAX(created_at) FROM checkins GROUP BY fogged_city)')
+      where("created_at IN(SELECT MAX(created_at) FROM checkins GROUP BY fogged_city)")
     end
 
     def hash_group_and_count_by(attribute)

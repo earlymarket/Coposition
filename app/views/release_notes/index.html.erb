@@ -1,0 +1,61 @@
+<h1>Release notes</h1>
+
+<% if current_user && current_user.admin? %>
+  <div class="row">
+    <div class="center">
+      <%= link_to(new_release_note_path, class: "btn-floating btn-large waves-effect waves-light primary-color") do %>
+        <i class="material-icons">add</i>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<div class="row center">
+  <%= link_to release_notes_path(application: "web") do %>
+    <span class="tag web">web</span>
+  <% end %>
+  <%= link_to release_notes_path(application: "api") do %>
+    <span class="tag api">api</span>
+  <% end %>
+  <%= link_to release_notes_path(application: "mobile") do %>
+    <span class="tag mobile">mobile</span>
+  <% end %>
+  <%= link_to release_notes_path do %>
+    <span class="clear"><i class="material-icons">clear</i></span>
+  <% end %>
+</div>
+
+<ul class="collection">
+  <% @release_notes.each do |note| %>
+    <li class="collection-item">
+      <div>
+        <div class="title">
+          <h4><%= note.version %></h4>
+          <label class="bottom">  <%= humanize_date(note.created_at) %></label>
+          <%= link_to release_notes_path(application: note.application) do %>
+            <span class="badge tag <%= note.application %>"><%= note.application %></span>
+          <% end %>
+        </div>
+        <% note.content.split("-").each do |line| %>
+          <% next unless line.present? %>
+          <div>- <%= line %></div>
+        <% end %>
+        <% if current_user && current_user.admin? %>
+          </br>
+          <div class="card-action">
+            <%= link_to edit_release_note_path(note.id), class: 'btn' do %>
+              <i class="material-icons right">mode_edit</i>Edit
+            <% end %>
+            <%= link_to release_note_path(note.id), method: :delete, class: 'btn red white-text' do %>
+              <i class="material-icons white-text right">delete_forever</i>Delete
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </li>
+  <% end %>
+</ul>
+
+<div class="center-align">
+  <%= will_paginate @release_notes %>
+<div>

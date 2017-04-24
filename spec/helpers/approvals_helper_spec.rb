@@ -9,31 +9,6 @@ RSpec.describe ApprovalsHelper, type: :helper do
   let(:user_approvals_input) { helper.approvals_input("User") }
   let(:developer_approvals_input) { helper.approvals_input("Developer") }
 
-  describe "#approvals_input" do
-    it "assigns placeholder and class key a string" do
-      expect(developer_approvals_input[:placeholder]).to match "name"
-      expect(user_approvals_input[:placeholder]).to match "email@email.com"
-      expect(user_approvals_input[:class]).to match "validate"
-      expect(developer_approvals_input[:class]).to match "devs_typeahead"
-    end
-  end
-
-  describe "#approvals_pending_friends" do
-    it "returns a string with emails of users who requests sent to" do
-      expect(helper.approvals_pending_friends(user)).to be_kind_of(String)
-      expect(helper.approvals_pending_friends(user)).to_not match ","
-      expect(helper.approvals_pending_friends(user)).to match "and"
-    end
-
-    it "uses commas if the user has more than 2 pending friends" do
-      friend = FactoryGirl.create(:user)
-      user.pending_friends << friend
-      expect(helper.approvals_pending_friends(user)).to match ","
-      expect(helper.approvals_pending_friends(user)).to match "and"
-      expect(helper.approvals_pending_friends(user)).to match friend.email
-    end
-  end
-
   describe "#approvals_approvable_name" do
     it "converts a friend's email if their username is empty" do
       friend = FactoryGirl.create(:user, username: "")
@@ -57,14 +32,6 @@ RSpec.describe ApprovalsHelper, type: :helper do
     it "doesn't add a link if approvable_type is Developer" do
       expect(helper.approvals_friends_device_link("Developer", user) { "blah" }).to_not match "<a href"
       expect(helper.approvals_friends_device_link("Developer", user) { "blah" }).to match "blah"
-    end
-  end
-
-  describe "#create_approval_url" do
-    it "returns a different path for user approvals and for developers" do
-      allow(helper).to receive(:current_user) { user }
-      expect(helper.create_approval_url("Developer")).to match "create_dev_approvals"
-      expect(helper.create_approval_url("User")).to match "approvals"
     end
   end
 

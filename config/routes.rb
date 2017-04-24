@@ -101,6 +101,9 @@ Rails.application.routes.draw do
   # Devs
   resources :developers, only: [:edit, :update]
 
+  # Release notes
+  resources :release_notes
+
   namespace :developers do
     get "/", to: "consoles#show"
     resource :console, only: [:show] do

@@ -3,18 +3,16 @@ class Users::FriendsController < ApplicationController
   before_action :correct_url_user?
 
   def show
-    @presenter = ::Users::FriendsPresenter.new(current_user, params, "show")
-    @friend = @presenter.friend
-    @devices = @presenter.devices
-    gon.push(@presenter.index_gon)
+    @friend_show_presenter = ::Users::Friends::FriendsShowPresenter.new(current_user, params)
+    gon.push(@friend_show_presenter.gon)
   end
 
   def show_device
-    @presenter = ::Users::FriendsPresenter.new(current_user, params, "show_device")
+    @device_show_presenter = ::Users::Friends::FriendsShowDevicePresenter.new(current_user, params)
     if params[:per_page] && params[:page]
-      render json: @presenter.show_checkins.as_json
+      render json: @device_show_presenter.checkins.as_json
     else
-      gon.push(@presenter.show_device_gon)
+      gon.push(@device_show_presenter.gon)
     end
   end
 

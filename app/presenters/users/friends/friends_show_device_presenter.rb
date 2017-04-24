@@ -1,32 +1,17 @@
-module Users
-  class FriendsPresenter < ApplicationPresenter
+module Users::Friends
+  class FriendsShowDevicePresenter < ApplicationPresenter
     attr_reader :friend
-    attr_reader :devices
     attr_reader :device
     attr_reader :date_range
 
-    def initialize(user, params, action)
+    def initialize(user, params)
       @user = user
       @friend = User.find(params[:id])
       @params = params
-      send action
-    end
-
-    def show
-      @devices = friend.devices.where(cloaked: false).ordered_by_checkins.paginate(page: @params[:page], per_page: 5)
-    end
-
-    def show_device
       @device = friend.devices.where(cloaked: false).find(@params[:device_id])
     end
 
-    def index_gon
-      {
-        checkins: most_recent_checkins
-      }
-    end
-
-    def show_device_gon
+    def gon
       checkins = device_checkins
       {
         checkins: checkins.paginate(page: 1, per_page: 1000),
@@ -34,7 +19,7 @@ module Users
       }
     end
 
-    def show_checkins
+    def checkins
       {
         checkins: device_checkins.paginate(page: @params[:page], per_page: @params[:per_page])
       }
@@ -55,17 +40,7 @@ module Users
 
     private
 
-    def most_recent_checkins
-      checkins =
-        devices.map do |device|
-          safe_checkins = device.safe_checkin_info_for(permissible: @user)
-          safe_checkins.first.as_json.merge(device: device.name) if safe_checkins.present?
-        end
-      checkins.compact.sort_by { |checkin| checkin["created_at"] }.reverse
-    end
-
     def device_checkins
-      device = friend.devices.find(@params[:device_id])
       @date_range = checkins_date_range
       checkins = device.permitted_history_for(@user)
       checkins = checkins.where(created_at: date_range[:from]..date_range[:to]) if date_range[:from]
