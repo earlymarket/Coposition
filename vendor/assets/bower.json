@@ -2,7 +2,7 @@
   "name": "dsl-generated dependencies",
   "dependencies": {
     "jquery": "2.2.4",
-    "mapbox.js": "latest",
+    "mapbox.js": "2.4.0",
     "leaflet-fullscreen": "latest",
     "moment": "latest",
     "leaflet.locatecontrol": "latest",
