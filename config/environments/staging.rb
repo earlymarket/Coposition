@@ -42,12 +42,15 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
   # Action Cable endpoint configuration
-  config.action_cable.url = "wss://coposition-staging.herokuapp.com/cable"
+  config.action_cable.url = if ENV["CORS_REDIRECT_PROXY"]
+    "#{ENV['CORS_REDIRECT_PROXY']}?state=#{Base64.encode64('wss://' + ENV['HEROKU_APP_NAME'] + '.herokuapp.com/cable')}"
+  else
+    "wss://coposition-staging.herokuapp.com/cable"
+  end
   config.action_cable.allowed_request_origins = [
-    "http://coposition-staging.herokuapp.com",
+    ENV["CORS_REDIRECT_PROXY"],
     "https://coposition-staging.herokuapp.com",
-    "http://coposition-staging-pr-*.herokuapp.com",
-    "https://coposition-staging-pr-*.herokuapp.com",
+    "https://coposition-staging-pr-*.herokuapp.com"
   ]
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
