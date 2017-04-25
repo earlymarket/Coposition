@@ -179,21 +179,21 @@ html lang="en"
       /!
 
     javascript:
-      | $(".cell-wrapper").slick({
-        | autoplay: true,
-        | arrows: false,
-        | dots: true,
-        | mobileFirst: true,
-        | responsive: [{
-          | breakpoint: 600,
-          | settings: "unslick"
-        | }]
-      | });
+      $(".cell-wrapper").slick({
+        autoplay: true,
+        arrows: false,
+        dots: true,
+        mobileFirst: true,
+        responsive: [{
+          breakpoint: 600,
+          settings: "unslick"
+        }]
+      });
 
-      | $(window).resize(function () {
-        | $(".cell-wrapper").slick("resize");
-      | });
+      $(window).resize(function () {
+        $(".cell-wrapper").slick("resize");
+      });
 
-      | $(window).on("orientationchange", function () {
-        | $(".cell-wrapper").slick("resize");
-      | });
+      $(window).on("orientationchange", function () {
+        $(".cell-wrapper").slick("resize");
+      });

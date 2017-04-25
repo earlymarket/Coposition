@@ -9,36 +9,36 @@ br/
   = f.button "Add", class: "waves-effect waves-light btn", type: "submit"
 
 javascript:
-  | var substringMatcher = function(strs) {
-    | return function findMatches(q, cb) {
-      | var matches, substringRegex;
+  var substringMatcher = function(strs) {
+    return function findMatches(q, cb) {
+      var matches, substringRegex;
 
       // an array that will be populated with substring matches
-      | matches = [];
+      matches = [];
 
       // regex used to determine if a string contains the substring `q`
-      | substrRegex = new RegExp(q, "i");
+      substrRegex = new RegExp(q, "i");
 
       // iterate through the pool of strings and for any string that
       // contains the substring `q`, add it to the `matches` array
-      | $.each(strs, function(i, str) {
-        | if (substrRegex.test(str)) {
-          | matches.push(str);
-        | }
-      | });
+      $.each(strs, function(i, str) {
+        if (substrRegex.test(str)) {
+          matches.push(str);
+        }
+      });
 
-      | cb(matches);
-    | };
-  | };
+      cb(matches);
+    };
+  };
 
-  | var devs = #{raw @developers.to_json};
+  var devs = #{raw @developers.to_json};
 
-  | $(".search .devs_typeahead").typeahead({
-    | hint: true,
-    | highlight: true,
-    | minLength: 1
-  | },
-  | {
-    | name: "devs",
-    | source: substringMatcher(devs)
-  | });
+  $(".search .devs_typeahead").typeahead({
+    hint: true,
+    highlight: true,
+    minLength: 1
+  },
+  {
+    name: "devs",
+    source: substringMatcher(devs)
+  });

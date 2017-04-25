@@ -54,54 +54,54 @@
 = render "application/video"
 
 javascript:
-  | $.validator.methods.email = function(value, element) {
-      | return this.optional( element ) || /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/.test( value );
-    | }
+  $.validator.methods.email = function(value, element) {
+      return this.optional( element ) || /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/.test( value );
+    }
   
-    | $("#new_#{resource_name}").validate({
-      | onkeyup: false,
-      | rules: {
-        | "#{resource_name}[email]": {
-          | required: true,
-        | },
-        | "#{resource_name}[password]": {
-          | required: true,
-          | minlength: 8
-        | },
-        | "#{resource_name}[password_confirmation]": {
-          | required: true,
-          | equalTo: "##{raw resource.class.to_s.downcase}_password"
-        | }
+    $("#new_#{resource_name}").validate({
+      onkeyup: false,
+      rules: {
+        "#{resource_name}[email]": {
+          required: true,
+        },
+        "#{resource_name}[password]": {
+          required: true,
+          minlength: 8
+        },
+        "#{resource_name}[password_confirmation]": {
+          required: true,
+          equalTo: "##{raw resource.class.to_s.downcase}_password"
+        }
       - if resource.respond_to? :company_name
-        | ,
-        | "#{resource_name}[company_name]": {
-          | required: true
-        | }
+        ,
+        "#{resource_name}[company_name]": {
+          required: true
+        }
       - if resource.respond_to? :redirect_url
-        | ,
-          | "#{resource_name}[redirect_url]": {
-            | required: true,
-            | url: true
-          | }
+        ,
+          "#{resource_name}[redirect_url]": {
+            required: true,
+            url: true
+          }
       - if resource.respond_to? :username
-        | ,
-          | "#{resource_name}[username]": {
-            | required: false,
-            | minlength: 4,
-            | maxlength: 20
-          | }
-      | },
-      | errorElement: "div",
-      | errorPlacement: function(error, element) {
-        | var placement = $(element).data("error");
-        | if (placement) {
-          | $(placement).append(error)
-        | } else {
-          | error.insertAfter(element);
-        | }
-      | },
-      | errorClass: "invalid",
-      | validClass: "valid"
-    | });
+        ,
+          "#{resource_name}[username]": {
+            required: false,
+            minlength: 4,
+            maxlength: 20
+          }
+      },
+      errorElement: "div",
+      errorPlacement: function(error, element) {
+        var placement = $(element).data("error");
+        if (placement) {
+          $(placement).append(error)
+        } else {
+          error.insertAfter(element);
+        }
+      },
+      errorClass: "invalid",
+      validClass: "valid"
+    });
 
 = render "devise/shared/links"
