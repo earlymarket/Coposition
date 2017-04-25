@@ -21,16 +21,14 @@
                 | Approved since #{humanize_date(approval.approval_date) unless approval.nil?}
         .col.s4
           - if current_user.devices.exists?
-            a.permissions-trigger.btn-flat.right.permissions-button data-id="<haml_loud" href="#perm#{approvable.id}" 
-              | approvable.id&gt;
-              = succeed "Permissions" do
-                i.material-icons.right lock
+            a.permissions-trigger.btn-flat.right.permissions-button data-id=(approvable.id) href="#perm#{approvable.id}"
+              i.material-icons.right lock
+              | Permissions
             .modal id="perm#{approvable.id}" 
               .modal-content
                 h4.modal-content
                   | Permissions controls for #{approvals_approvable_name(approvable)}
-                ul.permissions.collection data-id="<haml_loud" 
-                  | approvable.id&gt;
+                ul.permissions.collection data-id=(approvable.id)
                   li.collection-item.row.valign-wrapper.master-permissions
                     .valign.col.s6
                       h5 Update all permissions
