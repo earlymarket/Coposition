@@ -21,7 +21,9 @@ class Developer < ApplicationRecord
   end
 
   after_create do |dev|
-    dev.oauth_application.create(name: dev.company_name, redirect_url: dev.redirect_url)
+    app = Doorkeeper::Application.new(name: dev.company_name, redirect_uri: dev.redirect_url)
+    app.owner = dev
+    app.save
   end
 
   def slack_message
