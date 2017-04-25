@@ -20,6 +20,10 @@ class Developer < ApplicationRecord
     dev.api_key ||= SecureRandom.uuid
   end
 
+  after_create do |dev|
+    dev.oauth_application.create(name: dev.company_name, redirect_url: dev.redirect_url)
+  end
+
   def slack_message
     "A new developer registered, id: #{id}, company_name: #{company_name}, there are now #{Developer.count} developers."
   end
