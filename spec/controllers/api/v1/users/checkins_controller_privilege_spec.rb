@@ -5,24 +5,18 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
 
   let(:developer) { FactoryGirl.create :developer }
   let(:user) { FactoryGirl.create :user }
-  let(:device) { FactoryGirl.create :device, user_id: user.id, delayed: 10 }
-  let(:second_device) { FactoryGirl.create :device, user_id: user.id, delayed: 10, name: "Second device" }
-  let(:checkin) { FactoryGirl.create :checkin, device_id: device.id }
-  let(:historic_checkin) { FactoryGirl.create :checkin, device_id: device.id, created_at: Time.now - 1.day }
-  let(:second_checkin) { FactoryGirl.create :checkin, device_id: second_device.id, created_at: Time.now - 1.minute }
-  let(:second_historic) { FactoryGirl.create :checkin, device_id: second_device.id, created_at: Time.now - 1.hour }
+  let!(:device) { FactoryGirl.create :device, user_id: user.id, delayed: 10 }
+  let!(:second_device) { FactoryGirl.create :device, user_id: user.id, delayed: 10, name: "Second device" }
+  let!(:checkin) { FactoryGirl.create :checkin, device_id: device.id }
+  let!(:historic_checkin) { FactoryGirl.create :checkin, device_id: device.id, created_at: Time.now - 1.day }
+  let!(:second_checkin) { FactoryGirl.create :checkin, device_id: second_device.id, created_at: Time.now - 1.minute }
+  let!(:second_historic) { FactoryGirl.create :checkin, device_id: second_device.id, created_at: Time.now - 1.hour }
   let(:params) { { user_id: user.id } }
 
   before do
     request.headers['X-Api-Key'] = developer.api_key
-    device
-    second_device
     Approval.link(user, developer, 'Developer')
     Approval.accept(user, developer, 'Developer')
-    historic_checkin # oldest (before delay)
-    second_historic # older (before delay)
-    second_checkin # old
-    checkin # most recent
   end
 
   context 'with 3 checkins: 2 old, 1 new, on 2 devices' do

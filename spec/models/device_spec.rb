@@ -51,7 +51,7 @@ RSpec.describe Device, type: :model do
       %i(safe_checkin_info_for filtered_checkins sanitize_checkins replace_checkin_attributes
          permitted_history_for resolve_privilege privilege_for delayed_checkins_for permission_for
          can_bypass_fogging? can_bypass_delay? slack_message public_info subscriptions
-         notify_subscribers).each do |method|
+         notify_subscribers before_delay_checkins).each do |method|
         it { expect(device).to respond_to(method) }
       end
     end
@@ -158,6 +158,15 @@ RSpec.describe Device, type: :model do
       end
     end
 
+    context "before_delay_checkins" do
+      let!(:old_checkin) { FactoryGirl.create(:checkin, created_at: 1.day.ago, device: device) }
+
+      it "returns checkins before their devices delay" do
+        device.update(delayed: 5)
+        expect(device.before_delay_checkins).to eq [old_checkin]
+      end
+    end
+
     context "permission_for" do
       it "returns a permission" do
         expect(device.permission_for(developer)).to be_kind_of Permission
@@ -187,7 +196,7 @@ RSpec.describe Device, type: :model do
     end
 
     context "slack_message" do
-      it "return slack message string" do
+      it "returns slack message string" do
         msg = "A new device was created, id: #{device.id}, name: #{device.name}, user_id: #{device.user_id}. "\
               "There are now #{Device.count} devices"
         expect(device.slack_message).to eq msg

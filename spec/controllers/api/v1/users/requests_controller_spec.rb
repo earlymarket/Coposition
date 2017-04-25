@@ -29,7 +29,7 @@ RSpec.describe Api::V1::Users::RequestsController, type: :controller do
     get :index, params: dev_params
     expect(res_hash.first['developer_id']).to eq(developer.id)
     get :index, params: dev_params.merge(developer_id: 99999)
-    expect(response.body).to eq('[]')
+    expect(res_hash[:requests]).to eq([])
   end
 
   it 'should get the second to last request related to this user' do

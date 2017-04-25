@@ -78,12 +78,6 @@ RSpec.describe Checkin, type: :model do
         expect(Checkin.since(1.hour.ago)).to eq [checkin]
       end
     end
-
-    context "before" do
-      it "returns checkins before a certain datetime" do
-        expect(Checkin.before(1.hour.ago)).to eq [new_checkin]
-      end
-    end
   end
 
   describe "public instance methods" do

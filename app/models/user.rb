@@ -119,6 +119,10 @@ class User < ApplicationRecord
     "A new user has registered, id: #{id}, name: #{username}, there are now #{User.count} users."
   end
 
+  def display_name
+    username.present? ? username : email.split("@").first
+  end
+
   def public_info
     # Clears out any potentially sensitive attributes
     # Returns a normal ActiveRecord relation

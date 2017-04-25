@@ -23,17 +23,17 @@
 
 <div class="divider"></div>
 <p>
-  You checked in <%= @presenter.weeks_checkins_count || 0 %> times this week.
-  <% if @presenter.percent_change.present? %>
+  You checked in <%= @dashboard_presenter.weeks_checkins_count || 0 %> times this week.
+  <% if @dashboard_presenter.percent_change.present? %>
     <br />
-    That is an <%= @presenter.percent_change > 0 ? 'increase' : 'decrease' %> of <%= @presenter.percent_change %>% from last week.
+    That is an <%= @dashboard_presenter.percent_change > 0 ? 'increase' : 'decrease' %> of <%= @dashboard_presenter.percent_change %>% from last week.
   <% end %>
-  <% if @presenter.most_used.present? %>
-      Your most used device is <%= @presenter.most_used.name %>.
+  <% if @dashboard_presenter.most_used_device.present? %>
+      Your most used device is <%= @dashboard_presenter.most_used_device.name %>.
   <% end %>
 </p>
-<% if @presenter.last_countries_loaded %>
-  <h5><%= dashboard_visited_countries_title(@presenter.last_countries_loaded.count) %></h5>
+<% if @dashboard_presenter.last_countries %>
+  <h5><%= @dashboard_presenter.visited_countries_title %></h5>
   <table>
     <thead>
       <tr>
@@ -41,7 +41,7 @@
       </tr>
     </thead>
     <tbody>
-    <% @presenter.last_countries_loaded.each do |country| %>
+    <% @dashboard_presenter.last_countries.each do |country| %>
       <tr>
         <td><%= dashboard_flag(country[:country_code]) %></td><td ><%= dashboard_country_name(country[:country_code]) %></td><td><%= humanize_date(country[:created_at]) %></td>
       </tr>
