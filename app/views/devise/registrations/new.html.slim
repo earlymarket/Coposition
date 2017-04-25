@@ -72,18 +72,18 @@ javascript:
           required: true,
           equalTo: "##{raw resource.class.to_s.downcase}_password"
         }
-      - if resource.respond_to? :company_name
+      #{{ if resource.respond_to? :company_name }}
         ,
         "#{resource_name}[company_name]": {
           required: true
         }
-      - if resource.respond_to? :redirect_url
+      #{{ if resource.respond_to? :redirect_url }}
         ,
           "#{resource_name}[redirect_url]": {
             required: true,
             url: true
           }
-      - if resource.respond_to? :username
+      #{{ if resource.respond_to? :username }}
         ,
           "#{resource_name}[username]": {
             required: false,
