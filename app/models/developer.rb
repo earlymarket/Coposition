@@ -26,6 +26,8 @@ class Developer < ApplicationRecord
     app.save
   end
 
+  after_update :set_application_attributes, if: proc { redirect_url_changed? || company_name_changed? }
+
   def slack_message
     "A new developer registered, id: #{id}, company_name: #{company_name}, there are now #{Developer.count} developers."
   end
@@ -55,5 +57,9 @@ class Developer < ApplicationRecord
     key = type[:coposition] ? "coposition_api_key" : "mobile_app_api_key"
     FactoryGirl.create(:developer, api_key: Rails.application.secrets[key]) if Rails.env.test?
     find_by(api_key: Rails.application.secrets[key])
+  end
+
+  def set_application_attributes
+    oauth_application.update(name: company_name, redirect_uri: redirect_url)
   end
 end
