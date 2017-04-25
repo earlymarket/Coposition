@@ -32,7 +32,7 @@
 //= require typeahead.js/dist/typeahead.bundle.min
 //= require ion.rangeSlider/js/ion.rangeSlider.min
 //= require clipboard/dist/clipboard.min
-// = require slick-carousel/slick/slick.min
+//= require slick-carousel/slick/slick.min
 
 // STILL more up to date version
 //= require nouislider.min
@@ -40,7 +40,6 @@
 // -- Mapbox stuff --
 //= require mapbox.js/mapbox
 //= require leaflet.markercluster/dist/leaflet.markercluster.js
-//= require leaflet.markercluster
 //= require leaflet.locatecontrol/dist/L.Control.Locate.min
 //= require leaflet-fullscreen/dist/Leaflet.fullscreen.min
 //= require control.w3w

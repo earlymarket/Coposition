@@ -6,20 +6,9 @@ module DashboardHelper
   def dashboard_flag(code)
     no_flag = %w(AX AS AI AQ AW BM BV IO KY CX CC CK FK FO GF PF TF GI GL GP GU GG HM IM JE
                  MO MQ YT MS AN NC NU NF MP PS PN PR RE BL SH MF PM GS SJ TK TC UM VG VI WF)
-    return image_tag('/flags/noflag.png') if no_flag.any? { |flagless| flagless.casecmp(code.upcase).zero? }
+    return image_tag("/flags/noflag.png") if no_flag.any? { |flagless| flagless.casecmp(code.upcase).zero? }
     return image_tag("/flags/#{code.downcase}.png") if iso_countries.fetch(code.upcase.to_sym, false)
-    image_tag('/flags/noflag.png')
-  end
-
-  def dashboard_visited_countries_title(count)
-    case count
-    when 1
-      'Last Country Visited'
-    when 0
-      'No Countries Visited'
-    else
-      "Last #{count} Countries Visited"
-    end
+    image_tag("/flags/noflag.png")
   end
 
   private

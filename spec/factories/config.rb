@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :config do
-    custom "config"
+    custom { { "key" => "value" } }
   end
 end

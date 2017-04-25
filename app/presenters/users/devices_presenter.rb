@@ -33,7 +33,7 @@ module Users
 
     def shared
       @device = Device.find(@params[:id])
-      @checkin = device.checkins.before(device.delayed.to_i.minutes.ago).first
+      @checkin = device.before_delay_checkins.first
       @checkin&.reverse_geocode!
     end
 

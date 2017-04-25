@@ -7,7 +7,11 @@ class Api::V1::Users::DevicesController < Api::ApiController
   before_action :check_user, only: [:update, :create]
 
   def index
-    devices = req_from_coposition_app? ? @user.devices : @user.devices.public_info.where(cloaked: false)
+    devices = if req_from_coposition_app?
+      @user.devices.map { |device| { data: device, config: device.config } }
+    else
+      @user.devices.public_info.where(cloaked: false)
+    end
     render json: devices
   end
 
@@ -23,8 +27,8 @@ class Api::V1::Users::DevicesController < Api::ApiController
 
   def show
     device = @user.devices.where(id: params[:id]).first
-    if !req_from_coposition_app?
-      return unless device_exists? device && !device.cloaked?
+    unless req_from_coposition_app?
+      return unless device_exists?(device) && !device.cloaked?
       device = device.public_info unless @dev.configures_device?(device)
     end
     render json: { data: device, config: configuration(device) }
@@ -44,7 +48,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
   private
 
   def check_user
-    render status: 403, json: { error: 'User does not own device' } unless current_user?(params[:user_id])
+    render status: 403, json: { error: "User does not own device" } unless current_user?(params[:user_id])
   end
 
   def device_params

@@ -10,8 +10,8 @@ class ApplicationController < ActionController::Base
   end
 
   def approvals_presenter_and_gon(type)
-    @presenter = Users::ApprovalsPresenter.new(current_user, type)
-    gon.push(@presenter.gon)
+    @approvals_presenter = Users::ApprovalsPresenter.new(current_user, type)
+    gon.push(@approvals_presenter.gon)
   end
 
   def correct_url_user?

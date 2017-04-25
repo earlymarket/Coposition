@@ -19,11 +19,11 @@
       <a class="right tooltipped" target="_blank" data-tooltip='Permissions help' href="/help#permissions"><i class="material-icons">help</i></a>
     </div>
     <ul class="permissions collection" data-id=<%=device.id%>>
-      <li class="collection-item row valign-wrapper  master-permissions">
+      <li class="collection-item row valign-wrapper master-permissions">
         <div class='valign col s6'>
           <h5>Update all permissions </h5>
         </div>
-        <%= render partial: "users/permissions/controls", object: device, as: 'permissionable' %>
+        <%= render partial: "users/permissions/controls", object: device, as: 'control_object' %>
       </li>
     </ul>
   </div>

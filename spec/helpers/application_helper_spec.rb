@@ -65,15 +65,4 @@ RSpec.describe ApplicationHelper, type: :helper do
       expect(flash.instance_values['discard'].instance_values['hash'].keys.include?('errors')).to be true
     end
   end
-
-  describe '#name_or_email_name' do
-    it 'should return the start of the users email if no username' do
-      user.update(username: '')
-      expect(user.email).to include helper.name_or_email_name(user)
-    end
-
-    it 'should return the username user has a username' do
-      expect(helper.name_or_email_name(user)).to match user.username
-    end
-  end
 end
