@@ -4,12 +4,30 @@
 <p>
   Hello <%= current_developer.company_name %>
 </p>
+
+<hr>
+
+<h5> API details </h5>
+<table>
+  <tbody>
+    <tr>
+      <td>ID</td>
+      <td><%= current_developer.id %> </td>
+    </tr>
+    <tr>
+      <td>API key</td>
+      <td><%= current_developer.api_key %> </td>
+    </tr>
+    <tr>
+      <td>oAuth UID</td>
+      <td><%= current_developer.oauth_application.uid %> </td>
+    </tr>
+  </tbody>
+</table>
+
+<hr>
+
 <p>
-  ID: <%= current_developer.id %> 
-  <br>
-  API key: <code id="key"><%= current_developer.api_key %></code>
-  <br>
-  Oauth uid: <code><%= current_developer.oauth_application.uid %></code>
   <br>
   You've made <span id="requests-today"><%= pluralize(@requests_today, 'request') %></span> in the last day.
   <br>
