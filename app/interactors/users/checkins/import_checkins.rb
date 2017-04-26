@@ -5,6 +5,7 @@ module Users::Checkins
 
     def call
       if file && valid_file?
+        context.count = CSV.read(path).length
         device.update(csv: File.open(path, "r"))
         ImportWorker.perform_async(device.id)
       else

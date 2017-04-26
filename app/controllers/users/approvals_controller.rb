@@ -13,7 +13,10 @@ class Users::ApprovalsController < ApplicationController
       current_user: current_user,
       approvable: approval_params[:approvable]
     )
-    approvals_presenter_and_gon("User") if result.success?
+    if result.success?
+      approvals_presenter_and_gon("User")
+      result.approval.create_activity :create, owner: current_user, parameters: params
+    end
     redirect_to(result.path, result.message)
   end
 
@@ -30,6 +33,7 @@ class Users::ApprovalsController < ApplicationController
     if result.approvable_type == "Developer"
       result.approvable.notify_if_subscribed("new_approval", approval_zapier_data(result.approval))
     end
+    result.approval.create_activity :update, owner: current_user, parameters: params
     approvals_presenter_and_gon(result.approvable_type)
   end
 

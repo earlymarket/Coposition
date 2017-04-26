@@ -3,10 +3,12 @@
 <ul class="collection">
 <% @activities.each do |activity| %>
   <li class="collection-item">
-    <h6><%= activity.owner.username %>
+    <h6><%= activity.owner.class.name == "User" ? activity.owner.username : activity.owner.company_name %>
     <label><%= humanize_date_and_time(activity.created_at) %></label>
     </h6>
     <%= render_activity activity %>
   </li>
 <% end %>
 </ul>
+
+<div class="center"><%= will_paginate @activities %><div>

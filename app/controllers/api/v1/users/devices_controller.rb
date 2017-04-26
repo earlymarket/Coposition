@@ -19,7 +19,6 @@ class Api::V1::Users::DevicesController < Api::ApiController
     result = ::Users::Devices::CreateDevice.call(user: @user, developer: @dev, params: params)
     if result.success?
       device = result.device
-      device.create_activity :create, owner: device.user, parameters: params
       render json: { data: device, config: configuration(device) }
     else
       render status: 400, json: { error: result.error }

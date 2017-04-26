@@ -13,6 +13,7 @@ class Api::V1::Users::PermissionsController < Api::ApiController
   def update
     permission = Permission.find(params[:id])
     permission.update(allowed_params)
+    permission.create_activity :update, owner: current_user, parameters: allowed_params
     render json: permission
   end
 

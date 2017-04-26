@@ -1,0 +1,9 @@
+Uploaded check-in cache
+<% if activity.trackable %>
+  <br/>
+    Device name: <%= activity.trackable.name %>
+<% else %>
+  , device has since been destroyed.
+<% end %>
+<br/>
+  Params: <%= activity.parameters %>

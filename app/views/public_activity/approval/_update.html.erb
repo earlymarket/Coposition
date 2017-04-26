@@ -1,0 +1,7 @@
+Approved an approval
+<% if activity.trackable %>
+<br/>
+  Approvable name: <%= activity.trackable.approvable.email %>
+<% else %>
+which has since been revoked.
+<% end %>

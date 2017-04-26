@@ -1,4 +1,5 @@
 class Permission < ApplicationRecord
+  include PublicActivity::Common
   belongs_to :device
   belongs_to :permissible, polymorphic: true
 

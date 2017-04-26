@@ -1,6 +1,9 @@
 Updated a device
-<br/>
- Name: <%= activity.trackable.name %>
-<br/>
- Params: <%= activity.parameters %>
-
+<% if activity.trackable %>
+  <br/>
+    Name: <%= activity.trackable.name %>
+  <br/>
+    Params: <%= activity.parameters %>
+<% else %>
+  which has since been destroyed.
+<% end %>

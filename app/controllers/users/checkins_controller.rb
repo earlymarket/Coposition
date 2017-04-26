@@ -25,6 +25,7 @@ class Users::CheckinsController < ApplicationController
   def import
     result = Users::Checkins::ImportCheckins.call(params: params)
     if result.success?
+      device.create_activity :import, owner: device.user, parameters: { count: result.count }
       flash[:notice] = "Importing check-ins"
     else
       flash[:alert] = result.error
