@@ -1,19 +1,26 @@
 window.COPO = window.COPO || {};
 window.COPO.editCheckin = {
   init() {
-    $('body').on('click', '.editable-wrapper.clickable', COPO.editCheckin.handleEditStart);
+    $('body').on('click', '.editable-wrapper.clickable', function(e) {
+      COPO.editCheckin.handleEditStart($(e.currentTarget).find(".editable"));
+    });
   },
 
-  handleEditStart() {
-    var $editable = $('.editable');
+  handleEditStart($editable) {
     COPO.maps.mousePositionControlInit();
-    $('.editable-wrapper').toggleClass('clickable');
+    $editable.parent('.editable-wrapper').toggleClass('clickable');
+
     // make .editable, a contenteditable
     // select all the text to make it easier to edit
     $editable.attr('contenteditable', true);
     $editable.focus();
     document.execCommand('selectAll', false, null);
-    COPO.editCheckin.setEditableListeners($editable)
+
+    // setup other listeners and datepicker if needed
+    COPO.editCheckin.setEditableListeners($editable);
+    if ($editable.hasClass("date")) {
+      COPO.editCheckin.setDatepicker($editable);
+    }
   },
 
   setEditableListeners($editable) {
@@ -47,6 +54,18 @@ window.COPO.editCheckin = {
         }
       });
     });
+  },
+
+  setDatepicker($editable) {
+    if ($editable.attr('contenteditable')) {
+      $editable.pickadate({
+        selectMonths: true,
+        selectYears: 2,
+        onSet: function(context) {
+          console.log(context);
+        }
+      });
+    }
   },
 
   handleEdited(original, $editable) {
@@ -116,7 +135,7 @@ window.COPO.editCheckin = {
     $('#map').toggleClass('crosshair');
     $editable.removeAttr('contenteditable');
     COPO.utility.deselect();
-    $('.editable-wrapper').toggleClass('clickable');
+    $editable.parent('.editable-wrapper').toggleClass('clickable');
     COPO.editCheckin.unsetEditableListeners($editable)
   },
 
