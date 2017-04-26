@@ -19,6 +19,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
     result = ::Users::Devices::CreateDevice.call(user: @user, developer: @dev, params: params)
     if result.success?
       device = result.device
+      device.create_activity :create, owner: device.user, parameters: params
       render json: { data: device, config: configuration(device) }
     else
       render status: 400, json: { error: result.error }
@@ -39,6 +40,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
     return unless device_exists? device
     device.update(device_params)
     if device.save
+      device.create_activity :update, owner: device.user, parameters: device_params
       render json: { data: device, config: configuration(device) }
     else
       render status: 400, json: { error: device.errors }

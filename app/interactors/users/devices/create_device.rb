@@ -40,6 +40,7 @@ module Users::Devices
       @device.update(allowed_params.merge(user: user))
       create_device_permissions
       create_device_config
+      create_device_activity
       @device
     end
 
@@ -54,6 +55,10 @@ module Users::Devices
 
     def create_checkin
       @device.checkins.create(checkin_params) if params[:create_checkin]
+    end
+
+    def create_device_activity
+      @device.create_activity :create, owner: user, params: allowed_params
     end
 
     def checkin_params

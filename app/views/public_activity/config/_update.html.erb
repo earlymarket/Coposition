@@ -1,0 +1,8 @@
+Updated a config
+<br/>
+  Device: <%= Device.find(activity.trackable.device_id).name %>
+<br/>
+  Developer: <%= Developer.find(activity.trackable.developer_id).company_name %> 
+<br/>
+  Params: <%= activity.parameters %>
+

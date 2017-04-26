@@ -1,0 +1,12 @@
+<h1>Activities</h1>
+
+<ul class="collection">
+<% @activities.each do |activity| %>
+  <li class="collection-item">
+    <h6><%= activity.owner.username %>
+    <label><%= humanize_date_and_time(activity.created_at) %></label>
+    </h6>
+    <%= render_activity activity %>
+  </li>
+<% end %>
+</ul>

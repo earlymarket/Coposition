@@ -12,6 +12,7 @@ module Users::Devices
         @device.update(allowed_params)
       end
       check_for_errors
+      create_activity
       context.device = @device
       context.notice = notice
     end
@@ -34,6 +35,10 @@ module Users::Devices
 
     def check_for_errors
       context.fail!(error: @device.errors.messages) if @device.errors.any?
+    end
+
+    def create_activity
+      @device.create_activity :update, owner: @device.user, params: allowed_params
     end
 
     def boolean_to_state(boolean)
