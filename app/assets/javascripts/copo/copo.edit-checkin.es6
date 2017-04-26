@@ -28,14 +28,14 @@ window.COPO.editCheckin = {
     // if they click the popup, stop editing
     $('.leaflet-popup').on('click', function (e) {
       if (e.target.className !== 'editable') {
-        COPO.editCheckin.handleCoordsEdited(original, $editable);
+        COPO.editCheckin.handleEdited(original, $editable);
       }
     });
 
     // if they hit enter or esc, stop editing
     $editable.on('keydown', function (e) {
       if (e.which === 27 || e.which === 13 ) {
-        COPO.editCheckin.handleCoordsEdited(original, $editable);
+        COPO.editCheckin.handleEdited(original, $editable);
       }
     });
 
@@ -47,6 +47,18 @@ window.COPO.editCheckin = {
         }
       });
     });
+  },
+
+  handleEdited(original, $editable) {
+    if ($editable.hasClass("date")) {
+      COPO.editCheckin.handleDateEdited(original, $editable);
+    } else {
+      COPO.editCheckin.handleCoordsEdited(original, $editable);
+    }
+  },
+
+  handleDateEdited(original, $editable) {
+    COPO.editCheckin.handleEditEnd($editable);
   },
 
   handleCoordsEdited(original, $editable) {

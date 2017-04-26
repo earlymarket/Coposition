@@ -203,6 +203,7 @@ window.COPO.maps = {
     checkinTemp.inlineCoords = COPO.utility.renderInlineCoords(checkin);
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
+    checkinTemp.inlineDate = COPO.utility.renderInlineDate(checkin, checkinTemp);
     var template = $('#markerPopupTmpl').html();
     return Mustache.render(template, checkinTemp);
   },
