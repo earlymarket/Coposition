@@ -19,6 +19,9 @@ class Api::V1::Users::PermissionsController < Api::ApiController
 
   def update_all
     permissions = Permission.where(device_id: params[:device_id]).not_coposition_developers
+    permissions.each do |permission|
+      permission.create_activity :update, owner: current_user, parameters: allowed_params
+    end
     permissions.update_all(allowed_params.to_h)
     render json: permissions
   end
