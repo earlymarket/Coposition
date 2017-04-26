@@ -105,7 +105,7 @@ Rails.application.routes.draw do
   # Release notes
   resources :release_notes
 
-  resources :activities
+  resources :activities, only: :index
   
   namespace :developers do
     get "/", to: "consoles#show"
