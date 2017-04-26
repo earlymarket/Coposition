@@ -10,7 +10,7 @@
     div class=("#{permissions_switch_class(control_object)} radio col") data-id=(control_object.id) data-attribute="privilege" data-switchtype="complete"
       = radio_button_tag control_object.id, "complete", permissions_check_box_value(control_object, "complete"), class: "with-gap", id: permissions_label_id(control_object, "complete")
       label for="#{permissions_label_id(control_object, 'complete')}" id="#{permissions_label_id(control_object, 'complete')}"  Full history
-  div class=("#{permissions_switch_class(control_object)} switch disable") data-id=(control_object.id) data-attribute="bypass_fogging" data-switchtype="bypass_fogging")
+  div class=("#{permissions_switch_class(control_object)} switch disable") data-id=(control_object.id) data-attribute="bypass_fogging" data-switchtype="bypass_fogging"
     = check_box_tag permissions_label_id(control_object, "bypass-fogging"), "", permissions_check_box_value(control_object, "bypass_fogging")
     label for="#{permissions_label_id(control_object, 'bypass-fogging')}" id="#{permissions_label_id(control_object, 'bypass-fogging')}" 
       | Bypass Fogging

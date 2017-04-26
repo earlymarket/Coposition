@@ -15,7 +15,7 @@
               i.material-icons.right> perm_device_info
               | Device info
           .col.s3
-            = link_to user_device_path(current_user.url_id, device.id, device: { fogged: !device.fogged }), { method: :put, id:"fogButton#{device.id}", remote: true, class: "device-toggle fogButton valign-wrapper", data: { confirm: "Are you sure? Turning fogging off will allow you friends/apps to see your precise location", fogged: device.fogged? } } do
+            = link_to user_device_path(current_user.url_id, device.id, device: { fogged: !device.fogged }), { method: :put, id: "fogButton#{device.id}", remote: true, class: "device-toggle fogButton valign-wrapper", data: { confirm: "Are you sure? Turning fogging off will allow you friends/apps to see your precise location", fogged: device.fogged? } } do
               = attribute_icon device.fogged, "cloud"
               |  Fogging
           .col.s3
@@ -29,11 +29,11 @@
               i.material-icons.right lock
               | Permissions
           .col.s3
-            = link_to user_device_path(current_user.url_id, device.id, device: { cloaked: !device.cloaked }), { method: :put, id:"cloakedButton#{device.id}", remote: true, class: "device-toggle valign-wrapper cloakedButton", data: { confirm: "Are you sure? Cloaking a device will hide it and all of it's check-ins from all of your apps and friends", cloaked: device.cloaked? } } do
+            = link_to user_device_path(current_user.url_id, device.id, device: { cloaked: !device.cloaked }), { method: :put, id: "cloakedButton#{device.id}", remote: true, class: "device-toggle valign-wrapper cloakedButton", data: { confirm: "Are you sure? Cloaking a device will hide it and all of it's check-ins from all of your apps and friends", cloaked: device.cloaked? } } do
               = attribute_icon(device.cloaked, "visibility_off")
               |  Cloaking
           .col.s3
-            = link_to user_device_path(current_user.url_id, device.id, device: { published: !device.published }), { method: :put, id:"publishedButton#{device.id}", remote: true, class: "device-toggle valign-wrapper sharedButton", data: { published: device.published? } } do
+            = link_to user_device_path(current_user.url_id, device.id, device: { published: !device.published }), { method: :put, id: "publishedButton#{device.id}", remote: true, class: "device-toggle valign-wrapper sharedButton", data: { published: device.published? } } do
               = attribute_icon(device.published, "public")
               |  Sharing
       .row
