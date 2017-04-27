@@ -58,11 +58,25 @@ window.COPO.editCheckin = {
 
   setDatepicker($editable) {
     if ($editable.attr('contenteditable')) {
-      $editable.pickadate({
+      let marker = COPO.maps.findMarker(
+        $editable.parents(".leaflet-popup").find("#marker_id").val()
+      );
+      map.closePopup();
+
+      $("#date-range-toggle").pickadate({
         selectMonths: true,
-        selectYears: 2,
+        selectYears: 15,
+        closeOnSelect: true,
         onSet: function(context) {
-          console.log(context);
+          if ("select" in context) {
+            if (this.get("value")) {
+              let date = new Date($editable.text());
+              date.setDate(this.get("value"));
+              $editable.text(
+                date.toDateString + ' ' + date.toLocaleTimeString + ' UTC+0000'
+              );
+            }
+          }
         }
       });
     }

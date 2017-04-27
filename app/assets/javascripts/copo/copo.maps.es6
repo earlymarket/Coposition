@@ -180,7 +180,7 @@ window.COPO.maps = {
       id: checkin.id,
       lat: checkin.lat.toFixed(6),
       lng: checkin.lng.toFixed(6),
-      created_at: moment.utc(checkin.created_at).format("ddd, Do MMM YYYY, HH:mm:ss") + ' (UTC+00:00)',
+      created_at: moment.utc(checkin.created_at).format("ddd MMM D YYYY HH:mm:ss") + ' UTC+0000',
       address: address,
       marker: marker._leaflet_id
     };
@@ -460,13 +460,15 @@ window.COPO.maps = {
   },
 
   findMarker(leafletId) {
+    let result = COPO.maps.allMarkers[COPO.maps.allMarkers.length - 1];
+
     COPO.maps.allMarkers.eachLayer(function(marker) {
       if (marker._leaflet_id == leafletId) {
-        return marker;
+        result = marker;
       }
     });
 
-    return COPO.maps.allMarkers[COPO.maps.allMarkers.length - 1];
+    return result;
   },
 
   userToLatlng(user) {
