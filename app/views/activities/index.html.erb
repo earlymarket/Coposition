@@ -17,7 +17,7 @@
 <% end %>
 
 <ul class="collection">
-  <% @activities.each do |activity| %>
+  <% @activities_presenter.activities.each do |activity| %>
     <li class="collection-item">
       <h6>
         <% if activity.owner.class.name == "User" %>
@@ -33,4 +33,4 @@
   <% end %>
 </ul>
 
-<div class="center"><%= will_paginate @activities %><div>
+<div class="center"><%= will_paginate @activities_presenter.activities %><div>
