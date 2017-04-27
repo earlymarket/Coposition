@@ -1,5 +1,6 @@
 class Users::Devise::SessionsController < Devise::SessionsController
   protect_from_forgery with: :exception, unless: :req_from_coposition_app?
+  skip_before_action :require_no_authentication, if: :req_from_coposition_app?
   respond_to :json
 
   def create
