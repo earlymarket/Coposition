@@ -156,7 +156,7 @@ window.COPO.maps = {
       let checkin = this.options.checkin;
       COPO.maps.dateToLocal(checkin);
       if (!marker._popup) {
-        var template = COPO.maps.buildMarkerPopup(checkin);
+        var template = COPO.maps.buildMarkerPopup(checkin, marker);
         marker.bindPopup(L.Util.template(template, checkin));
         marker.openPopup();
       }
@@ -171,7 +171,7 @@ window.COPO.maps = {
     });
   },
 
-  buildMarkerPopup(checkin) {
+  buildMarkerPopup(checkin, marker) {
     let address = checkin.city;
     if (checkin.address) {
       address = COPO.utility.commaToNewline(checkin.address)
@@ -182,6 +182,7 @@ window.COPO.maps = {
       lng: checkin.lng.toFixed(6),
       created_at: moment.utc(checkin.created_at).format("ddd, Do MMM YYYY, HH:mm:ss") + ' (UTC+00:00)',
       address: address,
+      marker: marker._leaflet_id
     };
 
     var foggedClass;
@@ -456,6 +457,16 @@ window.COPO.maps = {
     }
     markerOptions = $.extend({}, defaults, markerOptions)
     return L.marker([checkin.lat, checkin.lng], markerOptions)
+  },
+
+  findMarker(leafletId) {
+    COPO.maps.allMarkers.eachLayer(function(marker) {
+      if (marker._leaflet_id == leafletId) {
+        return marker;
+      }
+    });
+
+    return COPO.maps.allMarkers[COPO.maps.allMarkers.length - 1];
   },
 
   userToLatlng(user) {
