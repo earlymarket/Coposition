@@ -1,6 +1,21 @@
+<div id='gonvariables'>
+  <%= Gon::Base.render_data %>
+</div>
+
 <h1>Activities</h1>
 
 <%= link_to("Clear", activities_path) %>
+<%= form_tag(activities_path, method: "get") do %>
+  <div class="row">
+    <div class="col s6 input-field search">
+      <%= text_field_tag(:owner_id, "", class: "validate users_typeahead", required: true) %>
+    </div>
+    <%= hidden_field_tag :owner_type, value: "User" %>
+    <%= hidden_field_tag :search, value: true %>
+    <%= button_tag "Search", class: "waves-effect waves-light btn", type: "submit" %>
+  </div>
+<% end %>
+
 <ul class="collection">
   <% @activities.each do |activity| %>
     <li class="collection-item">
