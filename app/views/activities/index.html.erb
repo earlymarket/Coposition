@@ -1,14 +1,21 @@
 <h1>Activities</h1>
 
+<%= link_to("Clear", activities_path) %>
 <ul class="collection">
-<% @activities.each do |activity| %>
-  <li class="collection-item">
-    <h6><%= activity.owner.class.name == "User" ? activity.owner.username : activity.owner.company_name %>
-    <label><%= humanize_date_and_time(activity.created_at) %></label>
-    </h6>
-    <%= render_activity activity %>
-  </li>
-<% end %>
+  <% @activities.each do |activity| %>
+    <li class="collection-item">
+      <h6>
+        <% if activity.owner.class.name == "User" %>
+          <%= link_to(activity.owner.username , activities_path(filter: { owner_type: "User", owner_id: activity.owner.id })) %>
+        <% else %>
+          <%= link_to(activity.owner.company_name , activities_path(filter: { owner_type: "Developer", owner_id: activity.owner.id })) %> 
+        <% end %>
+        <label><%= humanize_date_and_time(activity.created_at) %></label>
+        <label><%= link_to(activity.key , activities_path(filter: { key: activity.key })) %></label>
+      </h6>
+      <%= render_activity activity %>
+    </li>
+  <% end %>
 </ul>
 
 <div class="center"><%= will_paginate @activities %><div>

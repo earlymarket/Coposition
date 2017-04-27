@@ -1,4 +1,4 @@
-Rejected an approval
+Rejected an <%= activity.trackable ? link_to("approval" , activities_path(filter: { trackable_type: "Approval", trackable_id: activity.trackable.id })) : "approval" %>
 <br/>
   Params: <%= activity.parameters %>
 

@@ -1,7 +1,7 @@
 Updated a device
 <% if activity.trackable %>
   <br/>
-    Name: <%= activity.trackable.name %>
+    Name: <%= link_to(activity.trackable.name , activities_path(filter: { trackable_type: "Device", trackable_id: activity.trackable.id })) %>
   <br/>
     Params: <%= activity.parameters %>
 <% else %>

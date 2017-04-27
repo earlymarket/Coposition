@@ -1,4 +1,5 @@
-Updated a permission
+Updated a
+<%= activity.trackable ? link_to("permission" , activities_path(filter: { trackable_type: "Permission", trackable_id: activity.trackable.id })) : "permission" %>
 <% if activity.trackable %>
   <br/>
     Device name: <%= activity.trackable.device.name %>
