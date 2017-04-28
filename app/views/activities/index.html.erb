@@ -20,7 +20,6 @@
   <%= check_box_tag(:Config, true, params["Config"] == "true") %>
   <%= label_tag "Config", "Config activity" %>
   <br/>
-  <%= hidden_field_tag :owner_type, "User" %>
   <%= hidden_field_tag :search, true %>
   <%= button_tag "Filter", class: "waves-effect waves-light btn", type: "submit" %>
 <% end %>
