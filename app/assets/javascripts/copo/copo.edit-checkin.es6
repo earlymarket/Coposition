@@ -71,9 +71,18 @@ window.COPO.editCheckin = {
           if ("select" in context) {
             if (this.get("value")) {
               let date = new Date($editable.text());
-              date.setDate(this.get("value"));
-              $editable.text(
-                date.toDateString + ' ' + date.toLocaleTimeString + ' UTC+0000'
+              let newDate = new Date(this.get("value"));
+
+              date.setDate(newDate.getDate());
+              date.setMonth(newDate.getMonth());
+              date.setFullYear(newDate.getFullYear());
+
+              this.close();
+              marker.openPopup();
+
+              // open market popup back again and set new date
+              $(".editable-wrapper.clickable > .editable.date").text(
+                date.toDateString() + ' ' + date.toLocaleTimeString() + " UTC+0000"
               );
             }
           }
