@@ -1,4 +1,4 @@
-Updated a <%= activity.trackable ? link_to("config" , activities_path(filter: { trackable_type: "Config", trackable_id: activity.trackable.id })) : "config" %>
+Updated a <%= link_to_activity(activity) %>
 <% if activity.trackable %>
   <br/>
     Device: <%= activity.trackable.device.name %>

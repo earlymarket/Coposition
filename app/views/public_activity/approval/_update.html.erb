@@ -1,4 +1,4 @@
-Approved an <%= activity.trackable ? link_to("approval" , activities_path(filter: { trackable_type: "Approval", trackable_id: activity.trackable.id })) : "approval" %>
+Approved an <%= link_to_activity(activity) %>
 <% if activity.trackable %>
 <br/>
   Approvable name: <%= activity.trackable.approvable.email %>

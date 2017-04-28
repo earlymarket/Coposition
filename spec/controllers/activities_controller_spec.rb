@@ -19,5 +19,11 @@ RSpec.describe ActivitiesController, type: :controller do
       get :index
       expect(response).to have_http_status(302)
     end
+
+    it "assigns activities presenter" do
+      user
+      get :index
+      expect(assigns(:activities_presenter)).to be_kind_of ActivitiesPresenter
+    end
   end
 end

@@ -1,15 +1,17 @@
-require 'rails_helper'
+require "rails_helper"
 
-# Specs in this file have access to a helper object that includes
-# the ActivitiesHelper. For example:
-#
-# describe ActivitiesHelper do
-#   describe "string concat" do
-#     it "concats two strings with spaces" do
-#       expect(helper.concat_strings("this","that")).to eq("this that")
-#     end
-#   end
-# end
 RSpec.describe ActivitiesHelper, type: :helper do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:device) { FactoryGirl.create(:device) }
+  let!(:activity) { FactoryGirl.create(:activity, trackable_id: device.id) }
+
+  describe "link_to_activity" do
+    it "returns a link if activity trackable exists" do
+      expect(helper.link_to_activity(activity)).to match "/activities?"
+    end
+
+    it "returns a trackable type if trackable no longer exists" do
+      activity = FactoryGirl.create :activity
+      expect(helper.link_to_activity(activity)).to match activity.trackable_type
+    end
+  end
 end
