@@ -7,10 +7,10 @@ class ActivitiesPresenter
   end
 
   def activities
-    if @params[:search]
-      activities = find_user_activities
+    activities = if @params[:search]
+      filter_trackable_types.present? ? load_activities.where(trackable_type: filter_trackable_types) : load_activities
     else
-      activities = filter_params ? PublicActivity::Activity.where(filter_params) : PublicActivity::Activity.all
+      filter_params ? PublicActivity::Activity.where(filter_params) : PublicActivity::Activity.all
     end
     activities.order("created_at desc").paginate(per_page: 15, page: @params[:page])
   end
@@ -26,8 +26,16 @@ class ActivitiesPresenter
     @params.require(:filter).permit(:trackable_type, :trackable_id, :owner_type, :owner_id, :key)
   end
 
-  def find_user_activities
-    user = User.find_by(email: @params[:owner_id])
-    PublicActivity::Activity.where(owner_id: user.id, owner_type: "User")
+  def load_activities
+    return PublicActivity::Activity.all unless (user = User.find_by(email: @params[:owner_id]))
+    PublicActivity::Activity.all.where(owner_id: user.id, owner_type: "User")
+  end
+
+  def filter_trackable_types
+    @params.select { |_param, value| value == "true" }.keys.select { |key| trackable_types.include? key }
+  end
+
+  def trackable_types
+    %w(Device Config Approval Permission)
   end
 end
