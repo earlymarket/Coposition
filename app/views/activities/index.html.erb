@@ -3,22 +3,21 @@
 </div>
 
 <h1>Activities</h1>
-
 <%= link_to("Clear", activities_path) %>
 <%= form_tag(activities_path, method: "get") do %>
   <div class="input-field search">
-    <%= text_field_tag(:owner_id, "", class: "validate users_typeahead", placeholder: "User email", required: false) %>
+    <%= text_field_tag(:owner_id, params["owner_id"], class: "validate users_typeahead", placeholder: "User email", required: false) %>
   </div>
-  <%= check_box_tag(:Device, true, false) %>
+  <%= check_box_tag(:Device, true, params["Device"] == "true") %>
   <%= label_tag "Device", "Device activity" %>
   <br/>
-  <%= check_box_tag(:Approval, true, false) %>
+  <%= check_box_tag(:Approval, true, params["Approval"] == "true") %>
   <%= label_tag "Approval", "Approval activity" %>
   <br/>
-  <%= check_box_tag(:Permission, true, false) %>
+  <%= check_box_tag(:Permission, true, params["Permission"] == "true") %>
   <%= label_tag "Permission", "Permission activity" %>
   <br/>
-  <%= check_box_tag(:Config, true, false) %>
+  <%= check_box_tag(:Config, true, params["Config"] == "true") %>
   <%= label_tag "Config", "Config activity" %>
   <br/>
   <%= hidden_field_tag :owner_type, "User" %>
