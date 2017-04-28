@@ -43,6 +43,8 @@ gem "inherited_resources", git: "https://github.com/activeadmin/inherited_resour
 gem "activerecord-import"
 gem "sidekiq"
 gem "interactor"
+gem "rollbar"
+gem "oj"
 
 group :production do
   gem "rack-timeout"
