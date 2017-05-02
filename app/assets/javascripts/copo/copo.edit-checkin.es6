@@ -16,79 +16,78 @@ window.COPO.editCheckin = {
     $editable.focus();
     document.execCommand('selectAll', false, null);
 
-    // setup other listeners and datepicker if needed
+    // setup other listeners
     COPO.editCheckin.setEditableListeners($editable);
-    if ($editable.hasClass("date")) {
-      COPO.editCheckin.setDatepicker($editable);
-    }
   },
 
   setEditableListeners($editable) {
     var original = $editable.text();
 
-    // mousing over the map shows crosshair to quickly set latlng
-    $('#map').toggleClass('crosshair');
-    map.on('click', function(e) {
-      COPO.editCheckin.handleMapClick($editable, e);
-    });
+    if ($editable.hasClass("date")) {
+      // if user edits date input setup datepicker
+      COPO.editCheckin.setDatepicker($editable);
+    } else {
+      // otherwise mousing over the map shows crosshair to quickly set latlng
+      $('#map').toggleClass('crosshair');
+      map.on('click', function(e) {
+        COPO.editCheckin.handleMapClick($editable, e);
+      });
+    }
 
-    // if they click the popup, stop editing
+    // if user clicks the popup, stop editing
     $('.leaflet-popup').on('click', function (e) {
       if (e.target.className !== 'editable') {
         COPO.editCheckin.handleEdited(original, $editable);
       }
     });
 
-    // if they hit enter or esc, stop editing
+    // if user hits enter or esc, stop editing
     $editable.on('keydown', function (e) {
       if (e.which === 27 || e.which === 13 ) {
         COPO.editCheckin.handleEdited(original, $editable);
       }
     });
 
-    // if they click another marker, remove all the listeners
+    // if user clicks another marker, remove all the listeners
     COPO.maps.allMarkers.eachLayer(function(marker) {
       marker.on('click', function(e) {
-        if ($editable.attr('contenteditable')) {
-          COPO.editCheckin.handleEditEnd($editable);
-        }
+        COPO.editCheckin.handleEditEnd($editable);
       });
     });
   },
 
   setDatepicker($editable) {
-    if ($editable.attr('contenteditable')) {
-      let marker = COPO.maps.findMarker(
-        $editable.parents(".leaflet-popup").find("#marker_id").val()
-      );
-      map.closePopup();
+    let marker = COPO.maps.findMarker(
+      $editable.parents(".leaflet-popup").find("#marker_id").val()
+    );
+    map.closePopup();
 
-      $("#date-range-toggle").pickadate({
-        selectMonths: true,
-        selectYears: 15,
-        closeOnSelect: true,
-        onSet: function(context) {
-          if ("select" in context) {
-            if (this.get("value")) {
-              let date = new Date($editable.text());
-              let newDate = new Date(this.get("value"));
+    $("#date-range-toggle").pickadate({
+      selectMonths: true,
+      selectYears: 15,
+      closeOnSelect: true,
+      onSet: function(context) {
+        if ("select" in context) {
+          if (this.get("value")) {
+            let date = new Date($editable.text());
+            let newDate = new Date(this.get("value"));
 
-              date.setDate(newDate.getDate());
-              date.setMonth(newDate.getMonth());
-              date.setFullYear(newDate.getFullYear());
+            date.setDate(newDate.getDate());
+            date.setMonth(newDate.getMonth());
+            date.setFullYear(newDate.getFullYear());
 
-              this.close();
-              marker.openPopup();
+            // close datepicker first
+            this.close();
 
-              // open market popup back again and set new date
-              $(".editable-wrapper.clickable > .editable.date").text(
-                date.toDateString() + ' ' + date.toLocaleTimeString() + " UTC+0000"
-              );
-            }
+            // open marker popup back again and set new date
+            marker.openPopup();
+            $(".editable-wrapper.clickable > .editable.date").text(
+              date.toDateString() + ' ' + date.toLocaleTimeString() + " UTC+0000"
+            );
           }
         }
-      });
-    }
+      }
+    });
   },
 
   handleEdited(original, $editable) {
@@ -141,7 +140,7 @@ window.COPO.editCheckin = {
 
   updateCheckin(response) {
     // tries to find the checkin in gon and update it with the response
-    checkin = _.find(gon.checkins, _.matchesProperty('id',response.id));
+    checkin = _.find(gon.checkins, _.matchesProperty('id', response.id));
     checkin.lat = response.lat;
     checkin.lng = response.lng;
     checkin.edited = response.edited;
