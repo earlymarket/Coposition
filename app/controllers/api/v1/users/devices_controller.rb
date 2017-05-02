@@ -39,7 +39,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
     return unless device_exists? device
     device.update(device_params)
     if device.save
-      device.create_activity :update, owner: device.user, parameters: device_params
+      device.create_activity :update, owner: device.user, parameters: device_params.to_h
       render json: { data: device, config: configuration(device) }
     else
       render status: 400, json: { error: device.errors }

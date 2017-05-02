@@ -40,7 +40,7 @@ module Users::Devices
     def create_activity
       @device.create_activity :update,
         owner: @device.user,
-        parameters: params[:delayed] ? { delayed: params[:delayed] } : allowed_params
+        parameters: params[:delayed] ? { delayed: params[:delayed] } : allowed_params.to_h
     end
 
     def boolean_to_state(boolean)

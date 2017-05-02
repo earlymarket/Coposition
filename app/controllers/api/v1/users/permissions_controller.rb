@@ -13,14 +13,14 @@ class Api::V1::Users::PermissionsController < Api::ApiController
   def update
     permission = Permission.find(params[:id])
     permission.update(allowed_params)
-    permission.create_activity :update, owner: current_user, parameters: allowed_params
+    permission.create_activity :update, owner: current_user, parameters: allowed_params.to_h
     render json: permission
   end
 
   def update_all
     permissions = Permission.where(device_id: params[:device_id]).not_coposition_developers
     permissions.each do |permission|
-      permission.create_activity :update, owner: current_user, parameters: allowed_params
+      permission.create_activity :update, owner: current_user, parameters: allowed_params.to_h
     end
     permissions.update_all(allowed_params.to_h)
     render json: permissions
