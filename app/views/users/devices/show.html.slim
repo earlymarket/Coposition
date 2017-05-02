@@ -25,20 +25,27 @@
           = link_to "Delete visible check-ins", user_device_checkins_path(current_user.url_id, @device_show_presenter.device.id, from: @device_show_presenter.date_range[:from], to: @device_show_presenter.date_range[:to]), { method: :delete, class: "btn red white-text", data: { confirm: "Delete checkins from #{humanize_date(@device_show_presenter.date_range[:from])} to #{humanize_date(@device_show_presenter.date_range[:to])}?" } }
   /! templates
   script#markerPopupTmpl type="x-tmpl-mustache" 
-    <h3>ID: {{ id }}  <i class="tooltipped" data-tooltip="Latitude/longitude have been changed from original values">{{ edited }}</i></h3>
-    <ul>
-      <li id="localTime">{{ created_at }}</li>
-      <h3 class="lined"><span class="lined-pad">Coordinates</span></h3>
-      <li class="ta-center">{{ &inlineCoords }}</li>
-      <h3 class="lined"><span class="lined-pad">Address</span></h3>
-      <li class="address">{{ address }}</li>
+    h3 
+      | ID: {{ id }}  
+      i.tooltipped data-tooltip=("Latitude/longitude have been changed from original values") {{ edited }}
+    ul
+      li#localTime
+        | {{ created_at }}
+      h3.lined
+        span.lined-pad Coordinates
+      li.ta-center
+        | {{ &inlineCoords }}
+      h3.lined
+        span.lined-pad Address
+      li.address
+        | {{ address }}
       | {{ &foggedAddress }}
-      <li>{{ &foggle }} {{ &deletebutton }}</li>
-    </ul>
+      li
+        | {{ &foggle }} {{ &deletebutton }}
 
   script#createCheckinTmpl type="x-tmpl-mustache" 
-    <ul>
-      <li>Latitude: {{ lat }}</li>
-      <li>Longitude: {{ lng }}</li>
-      <li>{{ &checkinLink }}</li>
-    </ul>
+    ul
+      li Latitude: {{ lat }}
+      li Longitude: {{ lng }}
+      li 
+        | {{ &checkinLink }}

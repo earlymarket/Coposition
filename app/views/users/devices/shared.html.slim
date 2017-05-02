@@ -3,32 +3,33 @@
   #map
   script#nullPopupTemplate type="x-tmpl-mustache" 
     | {{ &avatar }}
-    <div>{{ name }}'s device "{{ device.name }}" has no visible location yet</div>
+    div 
+      | {{ name }}'s device "{{ device.name }}" has no visible location yet
 
   script#fullPopupTemplate type="x-tmpl-mustache" 
-    <table>
-      <tr>
-        <td class="popup-label">{{ &avatar }}</td>
-        <td class="title">{{ friend }}'s last reported location</td>
-      </tr>
-      <tr>
-        <td class="popup-label">Device:</td>
-        <td>{{ device.name }}</td>
-      </tr>
-      <tr>
-        <td class="popup-label">Created on:</td>
-        <td>{{ created_at }}</td>
-      </tr>
-      <tr>
-        <td class="popup-label">Latitude:</td>
-        <td>{{ lat }}</td>
-      </tr>
-      <tr>
-        <td class="popup-label">Longitude:</td>
-        <td>{{ lng }}</td>
-      </tr>
-      <tr>
-        <td class="popup-label">Address:</td>
-        <td class="address">{{ address }}</td>
-      </tr>
-    </table>
+    table
+      tr
+        td.popup-label 
+          | {{ &avatar }}
+        td.title 
+          | {{ friend }}'s last reported location
+      tr
+        td.popup-label Device:
+        td 
+          | {{ device.name }}
+      tr
+        td.popup-label Created on:
+        td 
+          | {{ created_at }}
+      tr
+        td.popup-label Latitude:
+        td 
+          | {{ lat }}
+      tr
+        td.popup-label Longitude:
+        td 
+          | {{ lng }}
+      tr
+        td.popup-label Address:
+        td.address 
+          | {{ address }}

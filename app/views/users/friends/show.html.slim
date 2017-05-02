@@ -23,7 +23,6 @@ section.friends-device-index.row
   = will_paginate @friend_show_presenter.devices
   div
     script#markerPopupTmpl type="x-tmpl-mustache" 
-      <h3>Device: {{ &devicebutton }}</h3>
-      <ul>
-        <li class="address">Address: {{ address }}</li>
-      </ul>
+      h3 Device: {{ &devicebutton }}
+      ul
+        li.address Address: {{ address }}
