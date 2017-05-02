@@ -14,10 +14,10 @@ RSpec.describe ActivitiesController, type: :controller do
       expect(response).to have_http_status(302)
     end
 
-    context "admin user" do
+    context "when admin user" do
       before { user }
 
-      it "returns http success if admin" do
+      it "returns http success" do
         get :index
         expect(response).to have_http_status(:success)
       end
