@@ -15,16 +15,16 @@ RSpec.describe User, type: :model do
     end
 
     it "is invalid with too short a username" do
-      expect(FactoryGirl.build(:user, username: "tom")).not_to be_valid
+      expect(build(:user, username: "tom")).not_to be_valid
     end
 
     it "is invalid with symbols in username" do
-      expect(FactoryGirl.build(:user, username: "tom@")).not_to be_valid
+      expect(build(:user, username: "tom@")).not_to be_valid
     end
 
     it "is invalid without a unique username" do
       create(:user, username: "tommo")
-      expect(FactoryGirl.build(:user, username: "tommo")).not_to be_valid
+      expect(build(:user, username: "tommo")).not_to be_valid
     end
   end
 
@@ -38,7 +38,7 @@ RSpec.describe User, type: :model do
   end
 
   describe "callbacks" do
-    let(:new_user) { FactoryGirl.build(:user) }
+    let(:new_user) { build(:user) }
     let(:second_user) { create(:user) }
 
     it "generates token before create" do

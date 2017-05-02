@@ -11,11 +11,11 @@ RSpec.describe Checkin, type: :model do
     end
 
     it "is invalid without a lat" do
-      expect(FactoryGirl.build(:checkin, lat: nil)).not_to be_valid
+      expect(build(:checkin, lat: nil)).not_to be_valid
     end
 
     it "is invalid without a lng" do
-      expect(FactoryGirl.build(:checkin, lng: nil)).not_to be_valid
+      expect(build(:checkin, lng: nil)).not_to be_valid
     end
   end
 
@@ -32,7 +32,7 @@ RSpec.describe Checkin, type: :model do
 
   describe "callbacks" do
     context "after_create" do
-      let(:new_checkin) { FactoryGirl.build(:checkin, device: nil) }
+      let(:new_checkin) { build(:checkin, device: nil) }
 
       it "generates values after create" do
         allow(new_checkin).to receive(:assign_values)

@@ -21,7 +21,7 @@ RSpec.describe Device, type: :model do
 
     it "is invalid without a unique username" do
       create(:device, name: "laptop", user: user)
-      expect(FactoryGirl.build(:device, name: "laptop", user: user)).not_to be_valid
+      expect(build(:device, name: "laptop", user: user)).not_to be_valid
     end
   end
 

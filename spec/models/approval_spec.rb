@@ -8,7 +8,7 @@ RSpec.describe Approval, type: :model do
 
   describe "factory" do
     it "creates a valid checkin" do
-      approval = FactoryGirl.build(:approval)
+      approval = build(:approval)
       expect(approval).to be_valid
     end
   end
@@ -27,7 +27,7 @@ RSpec.describe Approval, type: :model do
 
   describe "callbacks" do
     context "before_create" do
-      let(:new_approval) { FactoryGirl.build(:approval, user: user) }
+      let(:new_approval) { build(:approval, user: user) }
 
       it "fails if user trying to add themselves" do
         new_approval.assign_attributes(approvable: user, approvable_type: "User")

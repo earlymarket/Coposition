@@ -6,7 +6,7 @@ RSpec.describe Subscription, type: :model do
 
   describe "factory" do
     it "creates a valid subscription" do
-      sub = FactoryGirl.build(:subscription)
+      sub = build(:subscription)
       expect(sub).to be_valid
     end
   end
