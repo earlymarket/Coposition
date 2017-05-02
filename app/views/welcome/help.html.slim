@@ -6,29 +6,29 @@ h1 Help Centre
     #checkin.section.scrollspy
       h4
         i.material-icons pin_drop
-        | Checking in
+        |  Checking in
       p
         | You can start checking in either via the Coposition website, the Coposition app or an app that is using Coposition.
-        | You can create a checkin on the coposition website by selecting a device from your
+        | You can create a checkin on the coposition website by selecting a device from your 
         | #{current_user ? link_to('devices', user_devices_path(current_user.url_id)) : 'devices'}
-        | and then either right clicking on the map or clicking on the marker in the control panel to the left hand side of the map and then selecting the blue starred marker that appears on the map which indicates your current location.
+        |  and then either right clicking on the map or clicking on the marker in the control panel to the left hand side of the map and then selecting the blue starred marker that appears on the map which indicates your current location.
         | If you do not have any devices, you will be given the option to create a checkin when creating a new device, the checkin will indicate you current location.
     .divider
     #devices.section.scrollspy
       h4
         i.material-icons devices
-        | Devices
+        |  Devices
       #fogging.section.scrollspy
         h5
           i.material-icons cloud
-          | Fogging
+          |  Fogging
         p
           | Fogging allows you additional control over how much of your location data your data consumers (friends and apps) can see. Fogging a checkin or a device will mean that your data consumers will not be shown your exact location or coordinates, instead they will see a location usually localised to the nearest city/town or a randomised location within 50km of your actual location if there are no settlements nearby.
           | Fogging is enabled by default when you create a device. Whilst on, you can choose to allow certain friends or apps to see precise data by enabling bypass fogging via permissions.
       #delay.section.scrollspy
         h5
           i.material-icons timer
-          | Delay
+          |  Delay
         p
           | Delay allows you additional control over when your data consumers (friends and apps) can view your location data. Delay represents how long after creation your consumers will be able to see your data.
         blockquote
@@ -38,25 +38,25 @@ h1 Help Centre
       #cloaking.section.scrollspy
         h5
           i.material-icons visibility_off
-          | Cloaking
+          |  Cloaking
         p
           | Cloaking a device hides it and all of its check-ins from all of your friends and apps. It also disables the device's shared page if the device is shared.
       #sharing.section.scrollspy
         h5
           i.material-icons public
-          | Sharing
+          |  Sharing
         p
           | Sharing a device generates a publicly available page with this device's latest location. Fogging and delay still apply.
       #uuid.section.scrollspy
         h5
           i.material-icons perm_device_information
-          | Device UUID
+          |  Device UUID
         p
           | Device UUID is a unique identifier for existing Coposition devices and is primarily used in the developer API. Some apps may request a device UUID to sync this device to their app or some hardware (eg. a tracking device) may come pre-packaged with a Coposition UUID that you can use to sync the hardware to your coposition account.
       #configuration.section.scrollspy
         h5
           i.material-icons settings
-          | Device configuration
+          |  Device configuration
         p
           | Device configuration is used by some apps to apply additional device setttings.
         blockquote
@@ -65,7 +65,7 @@ h1 Help Centre
     #friends.section.scrollspy
       h4
         i.material-icons recent_actors
-        | Friends and Apps
+        |  Friends and Apps
       #addingFriends.section.scrollspy
         h5
           i.material-icons add_circle
@@ -78,7 +78,7 @@ h1 Help Centre
       #permissions.section.scrollspy
         h5
           i.material-icons lock
-          | Permissions
+          |  Permissions
         p
           | Permissions allow you additional controls over how much of your data a specific consumer (friend or app) can see for a specific device.
           br/
@@ -95,21 +95,21 @@ h1 Help Centre
     #download.section.scrollspy
       h4
         i.material-icons file_download
-        | Download/Upload
+        |  Download/Upload
       p
         | You can download your check-ins in a variety of formats in order to have a permanent local copy of your data. If you wish, you can also use this as a data backup, and reupload check-ins at a later date to overwrite any changes or deletions you may have made. Check-ins must be uploaded in CSV format.
     .divider
     #w3w.section.scrollspy
       h4
         i.material-icons explore
-        | what3words
+        |  what3words
       p
         | w3w or 'what3words' is a unique combination of 3 words that identifies a 3mx3m square, anywhere on the planet. Learn more about #{link_to("what3words", "http://what3words.com/about/")}.
     .divider
     #zapier.section.scrollspy
       h4
         i.material-icons flash_on
-        | Zapier
+        |  Zapier
       p
         | Yes! We currently have zapier triggers available for both developers and users.
         br/
@@ -125,7 +125,7 @@ h1 Help Centre
     #more.section.scrollspy
       h4
         i.material-icons help
-        | More questions
+        |  More questions
       p
         | Click 'How can we help?' below to chat directly to our Coposition support team.
   .col.hide-on-small-only.m3.l2

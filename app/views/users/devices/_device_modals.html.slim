@@ -28,15 +28,21 @@
     h4.center-align Choose download format
     .center-align
       label Download all the check-ins on this device in one of the following formats:
+      br
+      br
       a.btn.device-button-small href="#{user_device_path(current_user.url_id, device)}.csv?download=csv"  csv
+      br
+      br
       a.btn.device-button-small href="#{user_device_path(current_user.url_id, device)}.gpx?download=gpx"  gpx (route)
+      br
+      br
       a.btn.device-button-small href="#{user_device_path(current_user.url_id, device)}.geojson?download=geojson"  geojson
 
 .modal.upload-modal id="upload#{device.id}" 
   .modal-content
-    h4.center-align Upload checkins
     a.right.tooltipped data-tooltip=("Upload help") href="/help#download" target="_blank" 
       i.material-icons help
+    h4.center-align Upload checkins
     .center-align
       label Upload previously downloaded check-ins to restore data. Warning, this may overwrite existing check-ins.
       = form_tag import_user_device_checkins_path(device_id: device.id), multipart: :true do

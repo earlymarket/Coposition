@@ -3,21 +3,21 @@ br/
 p
   | Hello #{current_developer.company_name}
 p
-  | ID: #{current_developer.id} -- API key:
+  | ID: #{current_developer.id} -- API key: 
   code#key
     = current_developer.api_key
   br/
-  | You've made
+  | You've made 
   span#requests-today
     = pluralize(@requests_today, "request")
-  | in the last day.
+  |  in the last day.
   br/
-  | You've made
+  | You've made 
   span#unpaid
     = pluralize(@unpaid, "request")
-  | since you last paid.
+  |  since you last paid.
   br/
-  | See your
+  | See your 
   = link_to "request history", developers_requests_path, class: "waves-effect waves-light"
   | .
 = link_to "Generate new api_key", key_developers_console_path, class: "btn waves-effect waves-light", method: "post", remote: true, data: { confirm: "Are you sure? You will need to replace any instances of your old api key with the newly generated key." }
@@ -25,7 +25,7 @@ p
 = link_to "Refresh", developers_console_path, class: "btn waves-effect waves-light", remote: true
 hr/
 p
-  | See your app's current
+  | See your app's current 
   = link_to "users", developers_approvals_path, class: "waves-effect waves-light"
 = link_to "New user", new_developers_approval_path, class: "btn"
 hr/
