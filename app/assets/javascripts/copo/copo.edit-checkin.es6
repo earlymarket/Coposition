@@ -99,6 +99,14 @@ window.COPO.editCheckin = {
   },
 
   handleDateEdited(original, $editable) {
+    if (original !== $editable.text()) {
+      var url = $editable.data('url');
+      var data = { checkin: { created_at: $editable.text()} }
+      COPO.editCheckin.putUpdateCheckin(url, data);
+    } else {
+      // reverse the edit
+      $editable.text(original);
+    }
     COPO.editCheckin.handleEditEnd($editable);
   },
 
@@ -159,6 +167,11 @@ window.COPO.editCheckin = {
     COPO.utility.deselect();
     $editable.parent('.editable-wrapper').toggleClass('clickable');
     COPO.editCheckin.unsetEditableListeners($editable)
+
+    // since changing date could update last checkin, need to refresh them all
+    if (!COPO.maps.queueCalled && $editable.hasClass("date")) {
+      COPO.maps.queueRefresh(gon.checkins)
+    }
   },
 
   unsetEditableListeners($editable) {

@@ -23,8 +23,9 @@
 
   <%= render partial: "navbar" %>
   <%= render partial: "mobilenav" %>
+
   <main>
-  <%= javascript_tag(raw render_flash) %>
+    <%= javascript_tag(raw render_flash) %>
     <div class="outside-container">
       <%= yield :outside_container %>
     </div>
@@ -32,6 +33,7 @@
       <%= yield %>
     </div>
   </main>
+
   <%= render partial: "footer" %>
 </body>
 </html>

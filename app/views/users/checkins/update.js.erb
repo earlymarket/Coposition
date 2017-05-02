@@ -1,5 +1,5 @@
 <%= raw render_flash %>
-var checkin = _.find(gon.checkins, _.matchesProperty('id',<%= @checkin.id %>));
+var checkin = _.find(gon.checkins, _.matchesProperty('id', <%= @checkin.id %>));
 checkin.fogged = <%= @checkin.fogged %>
 //change open popups
 
@@ -16,5 +16,5 @@ if(<%= @checkin.fogged %>){
   });
 }
 
-//refresh the state of all markers
-if(!COPO.maps.queueCalled) { COPO.maps.queueRefresh(gon.checkins) }
+// refresh the state of all markers
+if (!COPO.maps.queueCalled) { COPO.maps.queueRefresh(gon.checkins) }
