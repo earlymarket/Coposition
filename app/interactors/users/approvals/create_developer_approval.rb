@@ -8,7 +8,7 @@ module Users::Approvals
       context.developer = developer
       context.approval = approval
       if developer && approval.save
-        create_activity_and_notify_developer
+        create_activity
       else
         context.fail!(error: approval_create_error)
       end
@@ -16,7 +16,7 @@ module Users::Approvals
 
     private
 
-    def create_activity_and_notify_developer
+    def create_activity
       approval.create_activity :create, owner: current_user, parameters: { approvable: approvable }
     end
 

@@ -7,7 +7,6 @@ module Users::Approvals
 
     def call
       if approval && approval.save
-        context.approval = approval
         context.message = { notice: "Friend request sent" }
         context.path = user_friends_path(user_id: current_user.id)
         create_activity

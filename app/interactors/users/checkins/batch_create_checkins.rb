@@ -11,10 +11,15 @@ module Users::Checkins
         end
         Checkin.import checkins
       end
+      create_activity(checkins)
       context.checkins = Checkin.find(checkins.ids)
     end
 
     private
+
+    def create_activity(checkins)
+      device.create_activity :batch_create, owner: device.user, parameters: { count: checkins.count }
+    end
 
     def checkin_create(hash)
       checkin = Checkin.new(hash.slice("lat", "lng", "created_at", "fogged"))

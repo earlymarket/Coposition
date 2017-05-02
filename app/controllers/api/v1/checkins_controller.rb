@@ -46,8 +46,6 @@ class Api::V1::CheckinsController < Api::ApiController
   def batch_create
     result = ::Users::Checkins::BatchCreateCheckins.call(device: @device, post_content: request.raw_post)
     if result.success?
-      @device.create_activity :batch_create,
-        owner: @device.user, parameters: { developer: @dev.company_name, count: result.checkins.count }
       render json: { data: result.checkins, message: "Checkins created" }, status: 200
     else
       render json: { error: "Checkins not created" }, status: 422

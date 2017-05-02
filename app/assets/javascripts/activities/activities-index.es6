@@ -1,6 +1,6 @@
 $(document).on('page:change', function() {
   if (window.COPO.utility.currentPage('activities', 'index')) {
-    let substringMatcher = (strs) => {
+    const substringMatcher = (strs) => {
       return (q, cb) => {
         let matches = [];
         let substrRegex = new RegExp(q, 'i');
