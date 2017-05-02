@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Users::Devise::SessionsController, type: :controller do
   include ControllerMacros
 
-  let(:user) { FactoryGirl.create(:user) }
+  let(:user) { create(:user) }
   let(:params) { { user: { email: user.email, password: user.password }, format: :json } }
 
   describe 'api authentication' do

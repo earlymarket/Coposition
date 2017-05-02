@@ -1,10 +1,10 @@
 require "rails_helper"
 
 RSpec.describe Approval, type: :model do
-  let(:user) { FactoryGirl.create(:user) }
-  let(:friend) { FactoryGirl.create(:user) }
-  let(:developer) { FactoryGirl.create(:developer) }
-  let(:approval) { FactoryGirl.create(:approval, user: user) }
+  let(:user) { create(:user) }
+  let(:friend) { create(:user) }
+  let(:developer) { create(:developer) }
+  let(:approval) { create(:approval, user: user) }
 
   describe "factory" do
     it "creates a valid checkin" do

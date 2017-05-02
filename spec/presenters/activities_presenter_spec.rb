@@ -3,13 +3,13 @@ require "rails_helper"
 describe ::ActivitiesPresenter do
   subject(:activities) { described_class.new(params) }
   let(:params) { {} }
-  let(:user) { FactoryGirl.create(:user) }
-  let(:second_user) { FactoryGirl.create(:user) }
-  let(:device) { FactoryGirl.create(:device) }
-  let(:second_device) { FactoryGirl.create(:device) }
-  let!(:activity) { FactoryGirl.create(:activity, owner_id: user.id, trackable_type: "Approval") }
+  let(:user) { create(:user) }
+  let(:second_user) { create(:user) }
+  let(:device) { create(:device) }
+  let(:second_device) { create(:device) }
+  let!(:activity) { create(:activity, owner_id: user.id, trackable_type: "Approval") }
   let!(:second_activity) do
-    FactoryGirl.create(:activity, owner_id: second_user.id, trackable_type: "Device", trackable_id: device.id)
+    create(:activity, owner_id: second_user.id, trackable_type: "Device", trackable_id: device.id)
   end
 
   describe "Interface" do

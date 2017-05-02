@@ -1,13 +1,13 @@
 require "rails_helper"
 
 RSpec.describe User, type: :model do
-  let(:device) { FactoryGirl.create(:device) }
+  let(:device) { create(:device) }
   let(:user) do
-    us = FactoryGirl.create(:user)
+    us = create(:user)
     us.devices << device
     us
   end
-  let(:second_user) { FactoryGirl.create(:user) }
+  let(:second_user) { create(:user) }
 
   describe "factory" do
     it "creates a valid user" do
@@ -23,7 +23,7 @@ RSpec.describe User, type: :model do
     end
 
     it "is invalid without a unique username" do
-      FactoryGirl.create(:user, username: "tommo")
+      create(:user, username: "tommo")
       expect(FactoryGirl.build(:user, username: "tommo")).not_to be_valid
     end
   end
@@ -39,7 +39,7 @@ RSpec.describe User, type: :model do
 
   describe "callbacks" do
     let(:new_user) { FactoryGirl.build(:user) }
-    let(:second_user) { FactoryGirl.create(:user) }
+    let(:second_user) { create(:user) }
 
     it "generates token before create" do
       allow(new_user).to receive(:generate_token)
@@ -62,7 +62,7 @@ RSpec.describe User, type: :model do
   end
 
   describe "public instance methods" do
-    let(:developer) { FactoryGirl.create(:developer) }
+    let(:developer) { create(:developer) }
     let(:approve_dev) do
       Approval.link(user, developer, "Developer")
       Approval.accept(user, developer, "Developer")
@@ -158,7 +158,7 @@ RSpec.describe User, type: :model do
 
     context "not_coposition_developers" do
       it "returns all developers except coposition developers" do
-        dev = FactoryGirl.create(:developer)
+        dev = create(:developer)
         Approval.link(user, dev, "Developer")
         Approval.accept(user, dev, "Developer")
         expect(user.not_coposition_developers).to include(dev)
@@ -195,7 +195,7 @@ RSpec.describe User, type: :model do
 
     context "safe_checkin_info_for" do
       before do
-        FactoryGirl.create(:checkin, device: device)
+        create(:checkin, device: device)
         approve_dev
       end
 

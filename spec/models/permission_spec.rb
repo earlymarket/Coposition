@@ -39,8 +39,8 @@ RSpec.describe Permission, type: :model do
 
       it "returns a permission not belonging to a copo developer" do
         dev = Developer.default(coposition: true)
-        device = FactoryGirl.create(:device)
-        perm = FactoryGirl.create(:permission, device: device, permissible: dev)
+        device = create(:device)
+        perm = create(:permission, device: device, permissible: dev)
         expect(Permission.not_coposition_developers).not_to include perm
       end
     end

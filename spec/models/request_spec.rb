@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe Request, type: :model do
-  let(:developer) { FactoryGirl.create(:developer) }
-  let(:request) { FactoryGirl.create :request, developer: developer }
+  let(:developer) { create(:developer) }
+  let(:request) { create :request, developer: developer }
 
   describe "factory" do
     it "creates a valid request" do
@@ -21,7 +21,7 @@ RSpec.describe Request, type: :model do
   describe "Scopes" do
     before do
       request
-      FactoryGirl.create(:request, developer: developer, created_at: 1.day.ago)
+      create(:request, developer: developer, created_at: 1.day.ago)
     end
 
     it "returns requests ordered by created at descending by default" do

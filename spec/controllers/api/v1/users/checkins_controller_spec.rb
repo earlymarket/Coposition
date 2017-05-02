@@ -3,17 +3,17 @@ require 'rails_helper'
 RSpec.describe Api::V1::CheckinsController, type: :controller do
   include ControllerMacros, CityMacros
 
-  let(:developer) { FactoryGirl.create :developer }
-  let(:user) { FactoryGirl.create :user }
-  let(:second_user) { FactoryGirl.create :user }
+  let(:developer) { create :developer }
+  let(:user) { create :user }
+  let(:second_user) { create :user }
   let!(:device) do
-    device = FactoryGirl.create :device
+    device = create :device
     user.devices << device
     device
   end
-  let(:checkin) { FactoryGirl.create :checkin, device: device }
-  let(:subscription) { FactoryGirl.create :subscription, subscriber: user }
-  let(:friend_sub) { FactoryGirl.create :subscription, subscriber: second_user, event: 'friend_new_checkin' }
+  let(:checkin) { create :checkin, device: device }
+  let(:subscription) { create :subscription, subscriber: user }
+  let(:friend_sub) { create :subscription, subscriber: second_user, event: 'friend_new_checkin' }
   let(:create_headers) { request.headers['X-UUID'] = device.uuid }
   let(:address) { 'The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK' }
   let(:params) { { user_id: user.id, device_id: device.id } }
@@ -146,7 +146,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
   describe 'GET #index when the device has 31 checkins' do
     before do
       31.times do
-        FactoryGirl.create :checkin, device: device
+        create :checkin, device: device
       end
       device.permission_for(developer).update(privilege: 'complete')
     end

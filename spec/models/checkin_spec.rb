@@ -1,9 +1,9 @@
 require "rails_helper"
 
 RSpec.describe Checkin, type: :model do
-  let(:user) { FactoryGirl.create(:user) }
-  let(:device) { FactoryGirl.create(:device, user: user) }
-  let(:checkin) { FactoryGirl.create :checkin, device: device }
+  let(:user) { create(:user) }
+  let(:device) { create(:device, user: user) }
+  let(:checkin) { create :checkin, device: device }
 
   describe "factory" do
     it "creates a valid checkin" do
@@ -62,7 +62,7 @@ RSpec.describe Checkin, type: :model do
   end
 
   describe "Scopes" do
-    let(:new_checkin) { FactoryGirl.create(:checkin, device: device, created_at: 1.day.ago) }
+    let(:new_checkin) { create(:checkin, device: device, created_at: 1.day.ago) }
 
     before do
       checkin
@@ -178,7 +178,7 @@ RSpec.describe Checkin, type: :model do
       end
     end
 
-    let(:second_checkin) { FactoryGirl.create :checkin, device: device, created_at: 1.week.ago }
+    let(:second_checkin) { create :checkin, device: device, created_at: 1.week.ago }
 
     before do
       checkin

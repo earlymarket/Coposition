@@ -3,21 +3,21 @@ require "rails_helper"
 describe ::Users::Friends::FriendsShowDevicePresenter do
   subject(:show_device_presenter) { described_class.new(user, id: friend.id, device_id: device.id) }
   let(:user) do
-    us = FactoryGirl.create(:user)
+    us = create(:user)
     us.friends << friend
     friend.friends << us
     us
   end
-  let(:friend) { FactoryGirl.create(:user) }
+  let(:friend) { create(:user) }
   let(:device) do
-    device = FactoryGirl.create(:device, user_id: friend.id)
+    device = create(:device, user_id: friend.id)
     device.permitted_users << user
     device
   end
   let(:checkins) do
-    FactoryGirl.create(:checkin, device_id: device.id)
-    FactoryGirl.create(:checkin, device_id: device.id).reverse_geocode!
-    FactoryGirl.create(:checkin, device_id: device.id)
+    create(:checkin, device_id: device.id)
+    create(:checkin, device_id: device.id).reverse_geocode!
+    create(:checkin, device_id: device.id)
   end
 
   describe "Interface" do

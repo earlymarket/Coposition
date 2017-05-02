@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe Api::V1::SubscriptionsController, type: :controller do
   include ControllerMacros
 
-  let(:user) { FactoryGirl.create :user }
-  let(:subscription) { FactoryGirl.create :subscription, subscriber: user }
+  let(:user) { create :user }
+  let(:subscription) { create :subscription, subscriber: user }
   let(:params) { { target_url: "http://#{Faker::Internet.domain_name}/", event: 'new_checkin' } }
   let(:destroy_params) { params.merge(id: subscription.id) }
 

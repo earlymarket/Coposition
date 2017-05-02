@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe Developer, type: :model do
-  let(:user) { FactoryGirl.create(:user) }
-  let(:developer) { FactoryGirl.create(:developer) }
+  let(:user) { create(:user) }
+  let(:developer) { create(:developer) }
 
   describe "factory" do
     it "creates a valid developer" do
@@ -57,7 +57,7 @@ RSpec.describe Developer, type: :model do
 
     context "subscribed_to" do
       it "returns subscription if developer is subscribed to event" do
-        FactoryGirl.create(:subscription, subscriber: developer)
+        create(:subscription, subscriber: developer)
         expect(developer.subscribed_to("new_checkin")).to be_kind_of Subscription
       end
 
@@ -78,7 +78,7 @@ RSpec.describe Developer, type: :model do
 
       it "calls send_data on subscription" do
         developer.update(zapier_enabled: true)
-        FactoryGirl.create(:subscription, subscriber: developer)
+        create(:subscription, subscriber: developer)
         allow(user).to receive(:to_json)
         developer.notify_if_subscribed("new_checkin", user)
         expect(user).to have_received(:to_json)
@@ -87,13 +87,13 @@ RSpec.describe Developer, type: :model do
 
     context "configures_device?" do
       it "returns true if developer owns device config" do
-        device = FactoryGirl.create(:device)
+        device = create(:device)
         developer.configs.create(device: device)
         expect(developer.configures_device?(device)).to eq true
       end
 
       it "returns false if develpoer does not own device config" do
-        device = FactoryGirl.create(:device)
+        device = create(:device)
         expect(developer.configures_device?(device)).to eq false
       end
     end
