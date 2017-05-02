@@ -1,10 +1,10 @@
 $(document).on('page:change', function() {
   if (window.COPO.utility.currentPage('activities', 'index')) {
-    var substringMatcher = function(strs) {
-      return function findMatches(q, cb) {
+    let substringMatcher = (strs) => {
+      return (q, cb) => {
         let matches = [];
         let substrRegex = new RegExp(q, 'i');
-        $.each(strs, function(i, str) {
+        $.each(strs, (i, str) => {
           if (substrRegex.test(str)) {
             matches.push(str);
           }

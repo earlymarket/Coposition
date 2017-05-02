@@ -19,7 +19,6 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
       if result.approvable_type == "Developer"
         result.approvable.notify_if_subscribed("new_approval", approval_zapier_data(result.approval))
       end
-      result.approval.create_activity :update, owner: @user, parameters: params.to_h
       render json: result.approval.reload
     else
       render status: 404, json: { error: "Approval does not exist" }

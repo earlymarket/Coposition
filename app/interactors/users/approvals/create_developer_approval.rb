@@ -7,11 +7,22 @@ module Users::Approvals
     def call
       context.developer = developer
       context.approval = approval
-      return if developer && approval.save
-      context.fail!(error: approval ? approval.errors[:base].first : "Developer not found")
+      if developer && approval.save
+        create_activity_and_notify_developer
+      else
+        context.fail!(error: approval_create_error)
+      end
     end
 
     private
+
+    def create_activity_and_notify_developer
+      approval.create_activity :create, owner: current_user, parameters: { approvable: approvable }
+    end
+
+    def approval_create_error
+      approval ? approval.errors[:base].first : "Developer not found"
+    end
 
     def developer
       @developer ||= Developer.find_by(company_name: approvable)

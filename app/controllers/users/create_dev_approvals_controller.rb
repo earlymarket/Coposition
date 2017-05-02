@@ -8,7 +8,6 @@ class Users::CreateDevApprovalsController < ApplicationController
     )
     if result.success?
       approvals_presenter_and_gon("Developer")
-      result.approval.create_activity :create, owner: current_user, parameters: params.to_h
       result.developer.notify_if_subscribed("new_approval", approval_zapier_data(result.approval))
       redirect_to(user_apps_path, notice: "Developer approved")
     else
