@@ -2,6 +2,8 @@ class ActivitiesPresenter
   attr_reader :activities
   attr_reader :gon
 
+  TRACKABLE_TYPES = %w(Device Config Approval Permission).freeze
+
   def initialize(params)
     @params = params
   end
@@ -32,10 +34,6 @@ class ActivitiesPresenter
   end
 
   def filter_trackable_types
-    @params.select { |_param, value| value == "true" }.keys.select { |key| trackable_types.include? key }
-  end
-
-  def trackable_types
-    %w(Device Config Approval Permission)
+    @params.keys.select { |key| TRACKABLE_TYPES.include?(key) && @params[key] == "true" }
   end
 end

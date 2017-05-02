@@ -1,15 +1,15 @@
 $(document).on('page:change', function() {
   if (window.COPO.utility.currentPage('activities', 'index')) {
     const substringMatcher = (strs) => {
-      return (q, cb) => {
+      return (query, callback) => {
         let matches = [];
-        let substrRegex = new RegExp(q, 'i');
+        let substrRegex = new RegExp(query, 'i');
         $.each(strs, (i, str) => {
           if (substrRegex.test(str)) {
             matches.push(str);
           }
         });
-        cb(matches);
+        callback(matches);
       };
     };
 
