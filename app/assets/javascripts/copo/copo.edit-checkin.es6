@@ -16,13 +16,6 @@ window.COPO.editCheckin = {
     $editable.focus();
     document.execCommand('selectAll', false, null);
 
-    // setup other listeners
-    COPO.editCheckin.setEditableListeners($editable);
-  },
-
-  setEditableListeners($editable) {
-    var original = $editable.text();
-
     if ($editable.hasClass("date")) {
       // if user edits date input setup datepicker
       COPO.editCheckin.setDatepicker($editable);
@@ -33,6 +26,13 @@ window.COPO.editCheckin = {
         COPO.editCheckin.handleMapClick($editable, e);
       });
     }
+
+    // setup other listeners
+    COPO.editCheckin.setEditableListeners($editable);
+  },
+
+  setEditableListeners($editable) {
+    var original = $editable.text();
 
     // if user clicks the popup, stop editing
     $('.leaflet-popup').on('click', function (e) {
@@ -81,7 +81,9 @@ window.COPO.editCheckin = {
 
             // open marker popup back again and set new date
             marker.openPopup();
-            $(".editable-wrapper.clickable > .editable.date").text(
+            $editable = $(".editable-wrapper.clickable > .editable.date");
+            COPO.editCheckin.setEditableListeners($editable);
+            $editable.text(
               date.toDateString() + ' ' + date.toLocaleTimeString() + " UTC+0000"
             );
           }
@@ -148,13 +150,19 @@ window.COPO.editCheckin = {
 
   updateCheckin(response) {
     // tries to find the checkin in gon and update it with the response
-    checkin = _.find(gon.checkins, _.matchesProperty('id', response.id));
-    checkin.lat = response.lat;
-    checkin.lng = response.lng;
-    checkin.edited = response.edited;
+    checkin = _.find(gon.checkins, _.matchesProperty('id', response.checkin.id));
+    checkin.lat = response.checkin.lat;
+    checkin.lng = response.checkin.lng;
+    checkin.edited = response.checkin.edited;
     checkin.lastEdited = true;
-    checkin.address = response.address;
-    checkin.fogged_city = response.fogged_city;
+    checkin.address = response.checkin.address;
+    checkin.fogged_city = response.checkin.fogged_city;
+    if (checkin.created_at !== response.checkin.created_at) {
+      checkin.created_at = response.checkin.created_at;
+      gon.checkins.sort(function(a, b) {
+        a.created_at - b.created_at;
+      });
+    }
     // delete the localDate so we generate fresh timezone data
     delete checkin.localDate;
     COPO.maps.refreshMarkers(gon.checkins);
@@ -167,11 +175,6 @@ window.COPO.editCheckin = {
     COPO.utility.deselect();
     $editable.parent('.editable-wrapper').toggleClass('clickable');
     COPO.editCheckin.unsetEditableListeners($editable)
-
-    // since changing date could update last checkin, need to refresh them all
-    if (!COPO.maps.queueCalled && $editable.hasClass("date")) {
-      COPO.maps.queueRefresh(gon.checkins)
-    }
   },
 
   unsetEditableListeners($editable) {
