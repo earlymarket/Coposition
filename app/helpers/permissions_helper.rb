@@ -1,14 +1,19 @@
 module PermissionsHelper
   include ApprovalsHelper
   def permissions_permissible_title(permissible)
-    title_start = "<div class='valign-wrapper'>#{avatar_for(permissible)}"
-    title = title_start + "<p class='permissible-name'>#{approvals_approvable_name(permissible)}</p></div>"
+    title_start = '<div class="valign-wrapper">'
+    title = title_start + avatar_for(permissible)
+    title += '<p class="permissible-name">'
+    title += approvals_approvable_name(permissible)
+    title += '</p></div>'
     title.html_safe
   end
 
   def permissions_device_title(device)
-    title_start = "<div class='valign-wrapper'><i class='material-icons small'>#{device.icon}</i>"
-    title = title_start + "<p class='permissible-name'>#{device.name}</p></div>"
+    title_start = '<div class="valign-wrapper"><i class="material-icons small">'
+    title = title_start + device.icon + '</i>'
+    title += '<p class="permissible-name">'
+    title += device.name + '</p></div>'
     title.html_safe
   end
 
