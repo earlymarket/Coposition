@@ -16,7 +16,7 @@ module Users::Checkins
     private
 
     def create_activity
-      device.create_activity :import, owner: device.user, parameters: { count: CSV.read(path).length }
+      CreateActivity.call(entity: device, action: :import, owner: device.user, params: { count: CSV.read(path).length })
     end
 
     def file
