@@ -2,7 +2,11 @@
   "name": "dsl-generated dependencies",
   "dependencies": {
     "jquery": "2.2.4",
+<<<<<<< HEAD
     "mapbox.js": "2.4.0",
+=======
+    "mapbox.js": "3.1.0",
+>>>>>>> dev
     "leaflet-fullscreen": "latest",
     "moment": "latest",
     "leaflet.locatecontrol": "latest",
@@ -12,7 +16,7 @@
     "typeahead.js": "latest",
     "mustache.js": "latest",
     "jquery-Mustache": "latest",
-    "leaflet.markercluster": "0.5.0",
+    "leaflet.markercluster": "latest",
     "clipboard": "latest",
     "slick-carousel": "latest"
   }
