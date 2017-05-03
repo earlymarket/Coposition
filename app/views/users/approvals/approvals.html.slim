@@ -5,6 +5,7 @@ h1
 .center-align
   = link_to new_user_approval_path(approvable_type: @approvals_presenter.approvable_type), class: "btn-floating btn-large waves-effect waves-light primary-color" do
     i.material-icons add
+
 section.friends-index.row.hide
   .col.s12
     #map-wrapper style=("position: relative;") 
@@ -14,7 +15,7 @@ section.friends-index.row.hide
           h5 style=("text-align: center;")  Nothing here yet
           p Your friends have not shared any devices or checkins yet!
       #map
-
+br/
 = render partial: "approved", locals: { approved: @approvals_presenter.approved, devices: @approvals_presenter.devices, approvable_type: @approvals_presenter.approvable_type }
 - if @approvals_presenter.pending.present?
   = render partial: "pending", locals: { pending: @approvals_presenter.pending } 
