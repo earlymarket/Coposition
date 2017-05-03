@@ -11,7 +11,10 @@ class Users::PermissionsController < ApplicationController
   def update
     @permissions_presenter = ::Users::PermissionsPresenter.new(current_user, params, "update")
     @permissions_presenter.permission.update(allowed_params)
-    @permissions_presenter.permission.create_activity :update, owner: current_user, parameters: allowed_params.to_h
+    CreateActivity.call(entity: @permissions_presenter.permission,
+                        action: :update,
+                        owner: current_user,
+                        params: allowed_params.to_h)
     gon.push(@permissions_presenter.gon(params[:from]))
     respond_to { |format| format.js }
   end

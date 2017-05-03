@@ -17,7 +17,7 @@ module Users::Approvals
     private
 
     def create_activity
-      approval.create_activity :create, owner: current_user, parameters: { approvable: approvable }
+      CreateActivity.call(entity: approval, action: :create, owner: current_user, params: { approvable: approvable })
     end
 
     def approval_create_error

@@ -13,7 +13,10 @@ class Api::V1::ConfigsController < Api::ApiController
 
   def update
     configuration.update(custom: custom_params)
-    configuration.create_activity :update, owner: configuration.device.user, parameters: custom_params.to_h
+    CreateActivity.call(entity: configuration,
+                        action: :update,
+                        owner: configuration.device.user,
+                        params: custom_params.to_h)
     render json: configuration
   end
 

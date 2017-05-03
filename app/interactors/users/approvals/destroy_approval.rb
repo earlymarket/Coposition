@@ -16,7 +16,10 @@ module Users::Approvals
     private
 
     def create_destroy_activity
-      approval.create_activity :destroy, owner: current_user, parameters: { approvable: approvable.email }
+      CreateActivity.call(entity: approval,
+                          action: :destroy,
+                          owner: current_user,
+                          params: { approvable: approvable.email })
     end
 
     def destroy_friend_side
