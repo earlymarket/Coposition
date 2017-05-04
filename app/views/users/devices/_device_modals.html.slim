@@ -27,7 +27,7 @@
   .modal-content
     h4.center-align Choose download format
     .center-align
-      label Download all the check-ins on this device in one of the following formats:
+      label Download all the check-ins on this device. Choose the CSV format if you are downloading in order to back up your checkins so you can re-upload them in the future.
       br/
       br/
       a.btn.device-button-small href="#{user_device_path(current_user.url_id, device)}.csv?download=csv"  csv
@@ -44,7 +44,7 @@
       i.material-icons help
     h4.center-align Upload checkins
     .center-align
-      label Upload previously downloaded check-ins to restore data. Warning, this may overwrite existing check-ins.
+      label Upload previously downloaded check-ins in the CSV data format to restore data. Warning, this may overwrite existing check-ins.
       = form_tag import_user_device_checkins_path(device_id: device.id), multipart: :true do
         = file_field_tag :file, accept: "text/csv"
         = submit_tag "Import CSV", class: "btn"
