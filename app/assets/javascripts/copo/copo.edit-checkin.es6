@@ -157,7 +157,7 @@ window.COPO.editCheckin = {
     checkin.lastEdited = true;
     checkin.address = response.checkin.address;
     if (checkin.created_at !== response.checkin.created_at) {
-      checkin.created_at = response.checkin.created_at;
+      checkin.created_at = moment.utc(response.checkin.created_at).format("ddd MMM D YYYY HH:mm:ss") + ' UTC+0000';
       gon.checkins.sort(function(a, b) {
         a.created_at - b.created_at;
       });
