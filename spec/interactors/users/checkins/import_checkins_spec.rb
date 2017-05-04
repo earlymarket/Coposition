@@ -6,6 +6,7 @@ RSpec.describe Users::Checkins::ImportCheckins, type: :interactor do
   let(:device) { FactoryGirl.create :device }
   let(:params) { { file: file, device_id: device.id } }
   let(:file) { fixture_file_upload("files/test_file.csv", "text/csv") }
+  let(:invalid_file) { fixture_file_upload("files/test_file.csv", "text/pdf") }
 
   describe "call" do
     context "when given valid params" do
@@ -34,6 +35,18 @@ RSpec.describe Users::Checkins::ImportCheckins, type: :interactor do
       end
     end
 
+    context "when given invalid file format" do
+      let(:params) { { file: invalid_file, device_id: device.id } }
+
+      it "fails" do
+        expect(context).to be_a_failure
+      end
+
+      it "gives error message" do
+        expect(context.error).to eq "Invalid file format"
+      end
+    end
+
     context "when given invalid CSV" do
       before { allow(CSV).to receive(:foreach).and_return false }
 
@@ -42,7 +55,7 @@ RSpec.describe Users::Checkins::ImportCheckins, type: :interactor do
       end
 
       it "gives error message" do
-        expect(context.error).to eq "Invalid CSV file format"
+        expect(context.error).to eq "Invalid file format"
       end
     end
   end

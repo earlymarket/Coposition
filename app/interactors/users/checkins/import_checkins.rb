@@ -27,7 +27,7 @@ module Users::Checkins
     end
 
     def valid_file?
-      return false unless File.extname(path) == ".csv"
+      return false unless file.content_type == "text/csv"
       CSV.foreach(path, headers: true) do |csv|
         return csv.headers == Checkin.column_names
       end
