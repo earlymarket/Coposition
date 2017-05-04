@@ -11,17 +11,19 @@ window.COPO.editCheckin = {
     $editable.parent('.editable-wrapper').toggleClass('clickable');
 
     // make .editable, a contenteditable
-    // select all the text to make it easier to edit
     $editable.attr('contenteditable', true);
-    $editable.focus();
-    document.execCommand('selectAll', false, null);
 
     if ($editable.hasClass("date")) {
-      // if user edits date input setup datepicker
-      COPO.editCheckin.setDatepicker($editable);
+      // if user edits date input set datepicker and open
+      var $input = COPO.editCheckin.setDatepicker($editable);
+      // map.closePopup();
+      $input.pickadate("open");
     } else {
-      // otherwise mousing over the map shows crosshair to quickly set latlng
-      $('#map').toggleClass('crosshair');
+      // select all the text to make it easier to edit
+      $editable.focus();
+      document.execCommand('selectAll', false, null);
+      // mousing over the map shows crosshair to quickly set latlng
+      $('#map').addClass('crosshair');
       map.on('click', function(e) {
         COPO.editCheckin.handleMapClick($editable, e);
       });
@@ -57,12 +59,12 @@ window.COPO.editCheckin = {
   },
 
   setDatepicker($editable) {
-    let marker = COPO.maps.findMarker(
-      $editable.parents(".leaflet-popup").find("#marker_id").val()
-    );
-    map.closePopup();
+    // let marker = COPO.maps.findMarker(
+    //   $editable.parents(".leaflet-popup").find("#marker_id").val()
+    // );
 
-    $("#date-range-toggle").pickadate({
+    // $editable.parents(".leaflet-popup-pane")
+    return $("body").pickadate({
       selectMonths: true,
       selectYears: 15,
       closeOnSelect: true,
@@ -76,16 +78,16 @@ window.COPO.editCheckin = {
             date.setMonth(newDate.getMonth());
             date.setFullYear(newDate.getFullYear());
 
-            // close datepicker first
-            this.close();
-
             // open marker popup back again and set new date
-            marker.openPopup();
-            $editable = $(".editable-wrapper.clickable > .editable.date");
-            COPO.editCheckin.setEditableListeners($editable);
+            // marker.openPopup();
+            // $editable = $(".editable-wrapper.clickable > .editable.date");
+            // COPO.editCheckin.setEditableListeners($editable);
             $editable.text(
               date.toDateString() + ' ' + date.toLocaleTimeString() + " UTC+0000"
             );
+
+            // remove datepicker with respect to next one
+            this.stop();
           }
         }
       }
@@ -169,7 +171,7 @@ window.COPO.editCheckin = {
 
   handleEditEnd($editable) {
     map.removeControl(COPO.maps.mousePositionControl);
-    $('#map').toggleClass('crosshair');
+    $('#map').removeClass('crosshair');
     $editable.removeAttr('contenteditable');
     COPO.utility.deselect();
     $editable.parent('.editable-wrapper').toggleClass('clickable');
