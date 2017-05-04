@@ -55,392 +55,402 @@ $lg-breakpoint: 600px;
 }
 
 
-  #quicklinks {
+#quicklinks {
 
-    // font-size and padding
-    $quicklinks-size: 0.7rem;
+  // font-size and padding
+  $quicklinks-size: 0.7rem;
 
-    display: flex;
-    background: black;
-    color: white;
-    text-transform: uppercase;
-    font-size: $quicklinks-size;
-    padding: 0;
+  display: flex;
+  background: black;
+  color: white;
+  text-transform: uppercase;
+  font-size: $quicklinks-size;
+  padding: 0;
 
-    .quicklinks-items > * {
-      margin-right: $quicklinks-size;
-      line-height: 1.5rem;
+  .quicklinks-items > * {
+    margin-right: $quicklinks-size;
+    line-height: 1.5rem;
+  }
+
+  .current {
+    color: #00d646;
+  }
+
+  // on large screens split the quicklinks between left and right
+
+  @media (min-width: $lg-breakpoint) {
+    line-height: 0.8rem;
+    .lg-items-left {
+      float: left;
     }
 
+    .lg-items-right {
+      float: right;
+      margin-left: $quicklinks-size;
+      margin-right: 0;
+    }
+  }
+
+}
+
+#top-menu {
+  display: none;
+}
+
+.c-welcome.a-index {
+  #top-menu {
+    display: block;
+  }
+}
+
+#top-menu {
+  padding: 0.6rem 0;
+  position: relative;
+  z-index: 100;
+  background: white;
+
+  i {
+    font-size: 48px;
+  }
+
+  .top-menu-left {
+    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media (min-width: $lg-breakpoint) {
+      float: none;
+    }
+
+    .brandname {
+      @extend .font-heavy;
+      font-size: 1.4rem;
+      display: inline-block;
+      color: black;
+
+      @media (min-width: $lg-breakpoint) {
+        font-size: 2.4rem;
+        margin-left: 1rem;
+      }
+    }
+  }
+
+  .top-menu-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: center;
+
+    > * {
+      margin-left: 2vw;
+      font-size: 1rem;
+    }
+
+  }
+
+  #mobile-menu {
+    visibility: hidden;
+    margin: 0;
+    padding: 0;
+    height: 0;
+    width: 0;
+  }
+
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin: 0;
+    padding: 0.6rem;
+    padding-right: 7.1429%;
+    width: 100%;
+    background: white;
+    list-style: none;
+    display: block;
+    z-index: 100;
+    text-align: right;
+
+    @media (min-width: $lg-breakpoint) {
+      display: none;
+    }
+  }
+
+  .dropdown > * {
+    padding: 0.5rem 0;
+    text-transform: capitalize;
     .current {
       color: #00d646;
     }
-
-    // on large screens split the quicklinks between left and right
-
-    @media (min-width: $lg-breakpoint) {
-      line-height: 0.8rem;
-      .lg-items-left {
-        float: left;
-      }
-
-      .lg-items-right {
-        float: right;
-        margin-left: $quicklinks-size;
-        margin-right: 0;
-      }
-    }
-
   }
 
-  #top-menu {
-    padding: 0.6rem 0;
+  #mobile-menu:checked ~ .dropdown {
+    display: none;
+  }
+
+}
+
+#take-control {
+  background: image-url('bg.jpg');
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+  height: auto;
+
+  @media (min-width: $lg-breakpoint) {
+    height: 768px;
+  }
+
+  .ringed-logo {
+    position: absolute;
+    top: -139px;
+    left: calc(-596px + 10vw);
+
+    @media (min-width: $lg-breakpoint) {
+      top: 0;
+      left: calc(50vw - 600px);
+      z-index: 10;
+    }
+  }
+
+  .take-control-content {
     position: relative;
     z-index: 100;
-    background: white;
-
-    i {
-      font-size: 48px;
-    }
-
-    .top-menu-left {
-      float: left;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      @media (min-width: $lg-breakpoint) {
-        float: none;
-      }
-
-      .brandname {
-        @extend .font-heavy;
-        font-size: 1.4rem;
-        display: inline-block;
-        color: black;
-
-        @media (min-width: $lg-breakpoint) {
-          font-size: 2.4rem;
-          margin-left: 1rem;
-        }
-      }
-    }
-
-    .top-menu-right {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      text-align: center;
-
-      > * {
-        margin-left: 2vw;
-        font-size: 1rem;
-      }
-
-    }
-
-    #mobile-menu {
-      visibility: hidden;
-      margin: 0;
-      padding: 0;
-      height: 0;
-      width: 0;
-    }
-
-    .dropdown {
-      position: absolute;
-      top: 100%;
-      right: 0;
-      margin: 0;
-      padding: 0.6rem;
-      padding-right: 7.1429%;
-      width: 100%;
-      background: white;
-      list-style: none;
-      display: block;
-      z-index: 100;
-      text-align: right;
-
-      @media (min-width: $lg-breakpoint) {
-        display: none;
-      }
-    }
-
-    .dropdown > * {
-      padding: 0.5rem 0;
-      text-transform: capitalize;
-      .current {
-        color: #00d646;
-      }
-    }
-
-    #mobile-menu:checked ~ .dropdown {
-      display: none;
-    }
-
   }
 
-  #take-control {
-    background: image-url('bg.jpg');
-    background-size: cover;
-    position: relative;
-    overflow: hidden;
-    height: auto;
-
-    @media (min-width: $lg-breakpoint) {
-      height: 768px;
-    }
-
-    .ringed-logo {
-      position: absolute;
-      top: -139px;
-      left: calc(-596px + 10vw);
-
-      @media (min-width: $lg-breakpoint) {
-        top: 0;
-        left: calc(50vw - 600px);
-        z-index: 10;
-      }
-    }
-
-    .take-control-content {
-      position: relative;
-      z-index: 100;
-    }
-
-    .take-control-left {
-      text-align: center;
-    }
-
-    .take-control-phones {
-      width: 100%;
-      max-width: 382px;
-    }
-
-    .take-control-content {
-      color: white;
-      margin-top: 130px;
-      margin-bottom: 1rem;
-      margin-left: 10%;
-      width: 80%;
-
-      .title {
-        @extend .font-heavy;
-        font-size: 2.2rem;
-      }
-
-      .pitch {
-        @extend .font-light;
-        font-size: 1.2rem;
-      }
-
-      @media (min-width: $lg-breakpoint) {
-        margin-top: 260px;
-        margin-left: 0;
-        width: 50%;
-
-
-      }
-    }
-  }
-
-  #callouts {
-    color: white;
+  .take-control-left {
     text-align: center;
-
-    > .cell {
-      padding: 5em 2em;
-      background: #252525;
-
-      .title {
-        font-size: 1rem;
-      }
-
-      .text {
-        @extend .font-light;
-        font-size: 1rem;
-        color: #959595;
-      }
-
-    }
-
-    > .cell-contrast {
-      background: #1a1a1a;
-    }
-
-    .gh-logo {
-      font-size: 65px;
-      color: #008ecf;
-    }
-
   }
 
-  #location-map {
-    display: flex;
-    height: auto;
-    background-image: linear-gradient(90deg, #08244f, #1d727a);
-    color: white;
-    padding: 2rem;
+  .take-control-phones {
+    width: 100%;
+    max-width: 382px;
+  }
 
-    @media (min-width: $lg-breakpoint) {
-      min-height: 75vh;
+  .take-control-content {
+    color: white;
+    margin-top: 130px;
+    margin-bottom: 1rem;
+    margin-left: 10%;
+    width: 80%;
+
+    .title {
+      @extend .font-heavy;
+      font-size: 2.2rem;
     }
 
-    .map {
-      background-image: image-url('location-callout-map.png');
-      background-size: 100%;
-      background-position: center;
-      background-repeat: no-repeat;
+    .pitch {
+      @extend .font-light;
+      font-size: 1.2rem;
+    }
+
+    @media (min-width: $lg-breakpoint) {
+      margin-top: 260px;
+      margin-left: 0;
+      width: 50%;
+
+
+    }
+  }
+}
+
+#callouts {
+  color: white;
+  text-align: center;
+
+  > .cell {
+    padding: 5em 2em;
+    background: #252525;
+
+    .title {
+      font-size: 1rem;
     }
 
     .text {
-      .caption {
-        @extend .font-heavy;
-        font-size: 1.8rem;
-      }
-
-      .btn {
-        background: #fb1d4f;
-      }
+      @extend .font-light;
+      font-size: 1rem;
+      color: #959595;
     }
+
   }
 
-  #benefits {
-    text-align: center;
-    padding: 5em 0;
-    color: white;
-    background: #252525;
-
-    .headline {
-      padding: 0 2rem;
-
-      .tagline {
-        @extend .font-light;
-      }
-    }
-
-    .cell-wrapper {
-      display: block;
-      @media (min-width: $lg-breakpoint) {
-        display: flex;
-        flex-flow: row wrap;
-      }
-    }
-    .cell {
-      // display: flex;
-      width: 300px;
-      flex-grow: 1;
-      text-align: center;
-      padding: 0 2rem;
-
-      .cell-title {
-        font-size: 1rem;
-      }
-
-      .cell-description {
-        font-size: 1rem;
-        @extend .font-light;
-        color: #959595;
-        max-width: 300px;
-        margin: 1rem auto;
-      }
-    }
+  > .cell-contrast {
+    background: #1a1a1a;
   }
 
-  #get-enabled {
-    background-image: image-url('enabled-tile.png'), linear-gradient(#dbfdff 10%, rgba(224, 255, 255, 0.3), #dbfdff);
-    background-blend-mode: overlay;
-    position: relative;
-    @media (min-width: $lg-breakpoint) {
-      height: 600px;
-    }
-
-    .valign-wrapper {
-      justify-content: center;
-    }
-
-    .card {
-      position: relative;
-      background: white;
-      height: 100%;
-      padding: 1rem;
-      text-align: left;
-      @media (min-width: $lg-breakpoint) {
-        width: 57.1429%; // matches 8-14 grid
-        min-width: 530px; // since the page breaks at 600px, this allows 35px padding for the trustmark
-        padding: 2rem 6rem;
-        box-shadow: 0 3px 4px darkgray;
-        text-align: center;
-        height: initial;
-      }
-
-      #trustmark {
-        @media (min-width: $lg-breakpoint) {
-          position: absolute;
-          top: -30px;
-          left: -30px;
-        }
-      }
-
-      .card-title {
-        font-size: 2rem;
-      }
-
-      .card-pitch, .card-description {
-        @extend .font-light;
-      }
-
-      .card-pitch {
-        font-size: 1.3rem;
-      }
-
-      .card-description {
-        font-size: 0.9rem;
-      }
-    }
+  .gh-logo {
+    font-size: 65px;
+    color: #008ecf;
   }
 
-  #bottom-callout {
-    background-image: image-url('logo-rings-footer'), linear-gradient(90deg, #08244f, #1d727a);
-    background-position: top center;
+}
+
+#location-map {
+  display: flex;
+  height: auto;
+  background-image: linear-gradient(90deg, #08244f, #1d727a);
+  color: white;
+  padding: 2rem;
+
+  @media (min-width: $lg-breakpoint) {
+    min-height: 75vh;
+  }
+
+  .map {
+    background-image: image-url('location-callout-map.png');
+    background-size: 100%;
+    background-position: center;
     background-repeat: no-repeat;
-    color: white;
-    height: 600px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    .wrapper {
-      max-width: 40rem;
-      text-align: center;
-      position: relative;
-      padding: 0 2rem;
-
-      .wrapper-pitch {
-        font-size: 1.3rem;
-      }
-
-      .wrapper-description {
-        @extend .font-medium;
-        font-size: 1.2rem;
-        color: #008ecf;
-      }
-    }
   }
 
-  #bottom-bar {
-    text-align: center;
-    background: #141414;
-    color: white;
-    padding: 3rem 0;
+  .text {
+    .caption {
+      @extend .font-heavy;
+      font-size: 1.8rem;
+    }
 
-    .copy-notice {
-      font-size: 0.8rem;
+    .btn {
+      background: #fb1d4f;
+    }
+  }
+}
+
+#benefits {
+  text-align: center;
+  padding: 5em 0;
+  color: white;
+  background: #252525;
+
+  .headline {
+    padding: 0 2rem;
+
+    .tagline {
       @extend .font-light;
     }
   }
+
+  .cell-wrapper {
+    display: block;
+    @media (min-width: $lg-breakpoint) {
+      display: flex;
+      flex-flow: row wrap;
+    }
+  }
+  .cell {
+    // display: flex;
+    width: 300px;
+    flex-grow: 1;
+    text-align: center;
+    padding: 0 2rem;
+
+    .cell-title {
+      font-size: 1rem;
+    }
+
+    .cell-description {
+      font-size: 1rem;
+      @extend .font-light;
+      color: #959595;
+      max-width: 300px;
+      margin: 1rem auto;
+    }
+  }
+}
+
+#get-enabled {
+  background-image: image-url('enabled-tile.png'), linear-gradient(#dbfdff 10%, rgba(224, 255, 255, 0.3), #dbfdff);
+  background-blend-mode: overlay;
+  position: relative;
+  @media (min-width: $lg-breakpoint) {
+    height: 600px;
+  }
+
+  .valign-wrapper {
+    justify-content: center;
+  }
+
+  .card {
+    position: relative;
+    background: white;
+    height: 100%;
+    padding: 1rem;
+    text-align: left;
+    @media (min-width: $lg-breakpoint) {
+      width: 57.1429%; // matches 8-14 grid
+      min-width: 530px; // since the page breaks at 600px, this allows 35px padding for the trustmark
+      padding: 2rem 6rem;
+      box-shadow: 0 3px 4px darkgray;
+      text-align: center;
+      height: initial;
+    }
+
+    #trustmark {
+      @media (min-width: $lg-breakpoint) {
+        position: absolute;
+        top: -30px;
+        left: -30px;
+      }
+    }
+
+    .card-title {
+      font-size: 2rem;
+    }
+
+    .card-pitch, .card-description {
+      @extend .font-light;
+    }
+
+    .card-pitch {
+      font-size: 1.3rem;
+    }
+
+    .card-description {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+#bottom-callout {
+  background-image: image-url('logo-rings-footer'), linear-gradient(90deg, #08244f, #1d727a);
+  background-position: top center;
+  background-repeat: no-repeat;
+  color: white;
+  height: 600px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .wrapper {
+    max-width: 40rem;
+    text-align: center;
+    position: relative;
+    padding: 0 2rem;
+
+    .wrapper-pitch {
+      font-size: 1.3rem;
+    }
+
+    .wrapper-description {
+      @extend .font-medium;
+      font-size: 1.2rem;
+      color: #008ecf;
+    }
+  }
+}
+
+#bottom-bar {
+  text-align: center;
+  background: #141414;
+  color: white;
+  padding: 3rem 0;
+
+  .copy-notice {
+    font-size: 0.8rem;
+    @extend .font-light;
+  }
+}
 
 
 // base styling
