@@ -44,6 +44,8 @@ gem "activerecord-import"
 gem "sidekiq"
 gem "interactor"
 gem "public_activity"
+gem "rollbar"
+gem "oj"
 
 group :production do
   gem "rack-timeout"
