@@ -1,5 +1,6 @@
 class Users::Devise::SessionsController < Devise::SessionsController
   protect_from_forgery with: :exception, unless: :req_from_coposition_app?
+  skip_before_action :require_no_authentication, if: :req_from_coposition_app?
   respond_to :json
 
   def create
@@ -28,14 +29,14 @@ class Users::Devise::SessionsController < Devise::SessionsController
   end
 
   def destroy_auth_token
-    user = User.find_by(authentication_token: request.headers['X-User-Token'])
+    user = User.find_by(authentication_token: request.headers["X-User-Token"])
 
     if user.nil?
-      render status: 404, json: { error: 'Invalid token.' }
+      render status: 404, json: { error: "Invalid token." }
     else
       user.authentication_token = nil
       user.save!
-      render status: 200, json: { message: 'Signed out' }
+      render status: 200, json: { message: "Signed out" }
     end
   end
 
@@ -43,8 +44,8 @@ class Users::Devise::SessionsController < Devise::SessionsController
     if (@user = User.find_by(email: email)) && @user.valid_password?(password)
       @user
     else
-      render status: 400, json: { error: 'The request MUST contain the user email and password.' }
-      return false
+      render status: 400, json: { error: "The request MUST contain the user email and password." }
+      false
     end
   end
 
