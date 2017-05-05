@@ -6,6 +6,7 @@ module Users::Checkins
     def call
       if file && valid_file?
         device.update(csv: File.open(path, "r"))
+        create_activity
         ImportWorker.perform_async(device.id)
       else
         context.fail!(error: error)
@@ -13,6 +14,10 @@ module Users::Checkins
     end
 
     private
+
+    def create_activity
+      CreateActivity.call(entity: device, action: :import, owner: device.user, params: { count: CSV.read(path).length })
+    end
 
     def file
       @file ||= params[:file]

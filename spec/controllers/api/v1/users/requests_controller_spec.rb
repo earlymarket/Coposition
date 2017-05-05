@@ -6,7 +6,7 @@ RSpec.describe Api::V1::Users::RequestsController, type: :controller do
   let(:developer) { create_developer }
   let(:second_dev) { create_developer }
   let(:user) do
-    us = FactoryGirl.create :user
+    us = create :user
     Approval.link(us, developer, 'Developer')
     Approval.link(us, second_dev, 'Developer')
     Approval.accept(us, developer, 'Developer')

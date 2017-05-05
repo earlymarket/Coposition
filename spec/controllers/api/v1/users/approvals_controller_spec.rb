@@ -3,10 +3,10 @@ require "rails_helper"
 RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
   include ControllerMacros
 
-  let(:user) { FactoryGirl.create :user }
-  let(:developer) { FactoryGirl.create :developer }
-  let(:second_user) { FactoryGirl.create :user }
-  let(:apprvl) { FactoryGirl.create(:approval, user: user, approvable_id: developer.id, approvable_type: "Developer") }
+  let(:user) { create :user }
+  let(:developer) { create :developer }
+  let(:second_user) { create :user }
+  let(:apprvl) { create(:approval, user: user, approvable_id: developer.id, approvable_type: "Developer") }
 
   let(:params) { { user_id: user.id, format: :json } }
   let(:dev_approval_create_params) do

@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe Config, type: :model do
   describe "factory" do
     it "creates a valid config" do
-      conf = FactoryGirl.build(:config)
+      conf = build(:config)
       expect(conf).to be_valid
     end
   end

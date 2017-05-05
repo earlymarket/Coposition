@@ -3,8 +3,8 @@ require "rails_helper"
 RSpec.describe Users::Checkins::UpdateCheckin, type: :interactor do
   subject(:update_context) { described_class.call(params: params) }
 
-  let(:checkin) { FactoryGirl.create :checkin, device: device }
-  let(:device) { FactoryGirl.create :device, fogged: false }
+  let(:checkin) { create :checkin, device: device }
+  let(:device) { create :device, fogged: false }
   let(:params) { ActionController::Parameters.new(id: checkin.id, checkin: { lat: checkin.lat + 10 }) }
 
   describe "call" do

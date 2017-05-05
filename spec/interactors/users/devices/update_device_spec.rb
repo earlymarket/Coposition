@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe Users::Devices::UpdateDevice, type: :interactor do
   subject(:update_context) { described_class.call(params: params) }
 
-  let(:device) { FactoryGirl.create :device }
+  let(:device) { create :device }
   let(:params) { ActionController::Parameters.new(id: device.id, device: { fogged: false }) }
 
   describe "call" do
@@ -71,7 +71,7 @@ RSpec.describe Users::Devices::UpdateDevice, type: :interactor do
 
     context "with invalid params" do
       let(:params) do
-        FactoryGirl.create(:device, name: "laptop", user: device.user)
+        create(:device, name: "laptop", user: device.user)
         ActionController::Parameters.new(id: device.id, device: { name: "laptop" })
       end
 

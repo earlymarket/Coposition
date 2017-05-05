@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe Users::Checkins::ImportCheckins, type: :interactor do
   subject(:context) { described_class.call(params: params) }
 
-  let(:device) { FactoryGirl.create :device }
+  let(:device) { create :device }
   let(:params) { { file: file, device_id: device.id } }
   let(:file) { fixture_file_upload("files/test_file.csv", "text/csv") }
   let(:invalid_file) { fixture_file_upload("files/test_file.csv", "text/pdf") }

@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe Users::CreateDevApprovalsController, type: :controller do
   include ControllerMacros
   let(:user) { create_user }
-  let(:developer) { FactoryGirl.create :developer }
-  let(:approval) { FactoryGirl.create :approval, user: user }
+  let(:developer) { create :developer }
+  let(:approval) { create :approval, user: user }
   let(:approval_create_params) do
     { user_id: user.id, approval: { approvable: developer.company_name, approvable_type: 'Developer' } }
   end

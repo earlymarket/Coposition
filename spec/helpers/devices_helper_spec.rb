@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe DevicesHelper, type: :helper do
-  let(:user) { FactoryGirl.create :user }
-  let(:device) { FactoryGirl.create(:device, user_id: user.id) }
+  let(:user) { create :user }
+  let(:device) { create(:device, user_id: user.id) }
   let(:other) { Device.update(device.id, published: true) }
 
   describe "#devices_last_checkin" do
@@ -11,7 +11,7 @@ RSpec.describe DevicesHelper, type: :helper do
     end
 
     it "returns the last checkin address if it exists" do
-      checkin = FactoryGirl.create(:checkin, device_id: device.id)
+      checkin = create(:checkin, device_id: device.id)
       expect(helper.devices_last_checkin(device)).to include(checkin.address)
     end
   end

@@ -1,0 +1,44 @@
+<div id='gonvariables'>
+  <%= Gon::Base.render_data %>
+</div>
+
+<h1>Activities</h1>
+<%= link_to("Clear", activities_path) %>
+<%= form_tag(activities_path, method: "get") do %>
+  <div class="input-field search">
+    <%= text_field_tag(:owner_id, params["owner_id"], class: "validate users_typeahead", placeholder: "User email", required: false) %>
+  </div>
+  <%= check_box_tag(:Device, true, params["Device"] == "true") %>
+  <%= label_tag "Device", "Device activity" %>
+  <br/>
+  <%= check_box_tag(:Approval, true, params["Approval"] == "true") %>
+  <%= label_tag "Approval", "Approval activity" %>
+  <br/>
+  <%= check_box_tag(:Permission, true, params["Permission"] == "true") %>
+  <%= label_tag "Permission", "Permission activity" %>
+  <br/>
+  <%= check_box_tag(:Config, true, params["Config"] == "true") %>
+  <%= label_tag "Config", "Config activity" %>
+  <br/>
+  <%= hidden_field_tag :search, true %>
+  <%= button_tag "Filter", class: "waves-effect waves-light btn", type: "submit" %>
+<% end %>
+
+<ul class="collection">
+  <% @activities_presenter.activities.each do |activity| %>
+    <li class="collection-item">
+      <h6>
+        <% if activity.owner.class.name == "User" %>
+          <%= link_to(activity.owner.username , activities_path(filter: { owner_type: "User", owner_id: activity.owner.id })) %>
+        <% else %>
+          <%= link_to(activity.owner.company_name , activities_path(filter: { owner_type: "Developer", owner_id: activity.owner.id })) %> 
+        <% end %>
+        <label><%= humanize_date_and_time(activity.created_at) %></label>
+        <label><%= link_to(activity.key , activities_path(filter: { key: activity.key })) %></label>
+      </h6>
+      <%= render_activity activity %>
+    </li>
+  <% end %>
+</ul>
+
+<div class="center"><%= will_paginate @activities_presenter.activities %><div>

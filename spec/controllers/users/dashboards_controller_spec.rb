@@ -2,10 +2,10 @@ require "rails_helper"
 
 RSpec.describe Users::DashboardsController, type: :controller do
   include ControllerMacros
-  let(:checkin) { FactoryGirl.create(:checkin, device: device) }
+  let(:checkin) { create(:checkin, device: device) }
   let!(:device) do
-    dev = FactoryGirl.create :device
-    dev.checkins << [checkin, FactoryGirl.create(:checkin, device: dev, created_at: 10.days.ago)]
+    dev = create :device
+    dev.checkins << [checkin, create(:checkin, device: dev, created_at: 10.days.ago)]
     dev
   end
   let(:user) do
@@ -13,10 +13,10 @@ RSpec.describe Users::DashboardsController, type: :controller do
     user.devices << device
     user
   end
-  let(:second_user) { FactoryGirl.create :user }
-  let(:friend_device) { FactoryGirl.create :device, user_id: second_user.id, delayed: 10 }
-  let!(:checkin) { FactoryGirl.create :checkin, device: friend_device }
-  let!(:historic_checkin) { FactoryGirl.create :checkin, device: friend_device, created_at: Time.current - 1.day }
+  let(:second_user) { create :user }
+  let(:friend_device) { create :device, user_id: second_user.id, delayed: 10 }
+  let!(:checkin) { create :checkin, device: friend_device }
+  let!(:historic_checkin) { create :checkin, device: friend_device, created_at: Time.current - 1.day }
   let!(:approval) do
     device
     Approval.link(user, second_user, "User")

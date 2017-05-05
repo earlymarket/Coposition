@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe ApplicationHelper, type: :helper do
   include CityMacros
 
-  let(:user) { FactoryGirl.create(:user) }
-  let(:developer) { FactoryGirl.create(:developer) }
-  let(:checkin) { FactoryGirl.create(:checkin) }
+  let(:user) { create(:user) }
+  let(:developer) { create(:developer) }
+  let(:checkin) { create(:checkin) }
 
   describe '#humanize_date and #humanize_date_and_time' do
     it 'should accept a date' do
