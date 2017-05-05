@@ -1,5 +1,23 @@
 $(document).on('ready page:change', function() {
   if (window.COPO.utility.currentPage('welcome', 'index')) {
+    $(".cell-wrapper").slick({
+      autoplay: true,
+      arrows: false,
+      dots: true,
+      mobileFirst: true,
+      responsive: [{
+        breakpoint: 600,
+        settings: "unslick"
+      }]
+    });
+
+    $(window).resize(function () {
+      $(".cell-wrapper").slick("resize");
+    });
+
+    $(window).on("orientationchange", function () {
+      $(".cell-wrapper").slick("resize");
+    });
     //$("main").css('padding-top', '120px');
 
     // // Click and hover event for the main button on landing page
