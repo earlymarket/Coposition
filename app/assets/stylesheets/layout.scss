@@ -8,6 +8,7 @@ body {
 
 main {
   flex: 1 0 auto;
+  display: block;
 }
 
 footer.page-footer{
@@ -99,16 +100,6 @@ $lg-breakpoint: 600px;
 }
 
 #top-menu {
-  display: none;
-}
-
-.c-welcome.a-index {
-  #top-menu {
-    display: block;
-  }
-}
-
-#top-menu {
   padding: 0.6rem 0;
   position: relative;
   z-index: 100;
@@ -178,6 +169,9 @@ $lg-breakpoint: 600px;
 
     @media (min-width: $lg-breakpoint) {
       display: none;
+    }
+    .dropdown-item {
+      color: black;
     }
   }
 
@@ -556,6 +550,10 @@ a {
 }
 
 @media (min-width: $lg-breakpoint) {
+  main {
+    padding-top: 120px;
+  }
+
   .lg-hide {
     display: none;
   }
@@ -575,11 +573,22 @@ a {
   .lg-show-flex {
     display: flex;
   }
+  #top-menu {
+    display: none;
+  }
 }
 
 @media (max-width: 599px) {
   .sm-hide {
     display: none !important;
+  }
+
+  #top-menu {
+    display: block;
+  }
+
+  main {
+    padding-top: 73px;
   }
 }
 

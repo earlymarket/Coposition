@@ -1,6 +1,6 @@
 $(document).on('ready page:change', function() {
   if (window.COPO.utility.currentPage('welcome', 'index')) {
-    $("main").css('padding-top', '120px');
+    //$("main").css('padding-top', '120px');
 
     // // Click and hover event for the main button on landing page
     // $(".landing-section .start-btn").unbind('click').click(function(e) {
@@ -42,7 +42,10 @@ $(document).on('ready page:change', function() {
     // }
 
   } else {
-    // Normalize the other pages
-    $("main").css('padding-top', '21px');
+    if(window.innerWidth<660){
+      ("main").css('padding-top', '80px');
+    } else {
+      $("main").css('padding-top', '21px');
+    }
   }
 });
