@@ -16,13 +16,12 @@ window.COPO.editCheckin = {
 
     if ($editable.hasClass("date")) {
       // if user edits date input set datepicker and open
-      var $input = COPO.editCheckin.setDatepicker($editable);
-      // map.closePopup();
-      $input.pickadate("open");
+      COPO.editCheckin.setDatepicker($editable).pickadate("open");
     } else {
       // select all the text to make it easier to edit
       $editable.focus();
       document.execCommand('selectAll', false, null);
+
       // mousing over the map shows crosshair to quickly set latlng
       $('#map').addClass('crosshair');
       map.on('click', function(e) {
@@ -60,11 +59,6 @@ window.COPO.editCheckin = {
   },
 
   setDatepicker($editable) {
-    // let marker = COPO.maps.findMarker(
-    //   $editable.parents(".leaflet-popup").find("#marker_id").val()
-    // );
-
-    // $editable.parents(".leaflet-popup-pane")
     return $("body").pickadate({
       selectMonths: true,
       selectYears: 15,
@@ -80,9 +74,6 @@ window.COPO.editCheckin = {
             date.setFullYear(newDate.getFullYear());
 
             // open marker popup back again and set new date
-            // marker.openPopup();
-            // $editable = $(".editable-wrapper.clickable > .editable.date");
-            // COPO.editCheckin.setEditableListeners($editable);
             $editable.text(
               date.toDateString() + ' ' + date.toLocaleTimeString() + " UTC+0000"
             );
@@ -160,9 +151,9 @@ window.COPO.editCheckin = {
     checkin.lastEdited = true;
     checkin.address = response.checkin.address;
     if (checkin.created_at !== response.checkin.created_at) {
-      checkin.created_at = moment.utc(response.checkin.created_at).format("ddd MMM D YYYY HH:mm:ss") + ' UTC+0000';
+      checkin.created_at = response.checkin.created_at;
       gon.checkins.sort(function(a, b) {
-        a.created_at - b.created_at;
+        return (new Date(b.created_at)) - (new Date(a.created_at));
       });
     }
     // delete the localDate so we generate fresh timezone data

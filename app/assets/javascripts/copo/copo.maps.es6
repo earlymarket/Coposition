@@ -459,18 +459,6 @@ window.COPO.maps = {
     return L.marker([checkin.lat, checkin.lng], markerOptions)
   },
 
-  findMarker(leafletId) {
-    let result = COPO.maps.allMarkers[COPO.maps.allMarkers.length - 1];
-
-    COPO.maps.allMarkers.eachLayer(function(marker) {
-      if (marker._leaflet_id == leafletId) {
-        result = marker;
-      }
-    });
-
-    return result;
-  },
-
   userToLatlng(user) {
     let checkin = user.lastCheckin;
     if (checkin) {
