@@ -2,6 +2,7 @@ window.COPO = window.COPO || {};
 window.COPO.editCheckin = {
   init() {
     $('body').on('click', '.editable-wrapper.clickable', function(e) {
+      e.stopPropagation();
       COPO.editCheckin.handleEditStart($(e.currentTarget).find(".editable"));
     });
   },
