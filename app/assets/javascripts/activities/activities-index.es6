@@ -1,18 +1,6 @@
 $(document).on('page:change', function() {
-  if (window.COPO.utility.currentPage('activities', 'index')) {
-    const substringMatcher = (strs) => {
-      return (query, callback) => {
-        let matches = [];
-        let substrRegex = new RegExp(query, 'i');
-        $.each(strs, (i, str) => {
-          if (substrRegex.test(str)) {
-            matches.push(str);
-          }
-        });
-        callback(matches);
-      };
-    };
-
+  const U = window.COPO.utility;
+  if (U.currentPage('activities', 'index')) {
     $('.search .users_typeahead').typeahead({
       hint: true,
       highlight: true,
@@ -20,7 +8,7 @@ $(document).on('page:change', function() {
     },
     {
       name: 'users',
-      source: substringMatcher(gon.users)
+      source: U.substringMatcher(gon.users)
     });
   }
 })

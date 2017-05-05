@@ -321,6 +321,7 @@ GEM
     notiffany (0.1.1)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    oj (3.0.2)
     orm_adapter (0.5.0)
     parser (2.4.0.0)
       ast (~> 2.2)
@@ -419,6 +420,8 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+    rollbar (2.14.1)
+      multi_json
     rspec-core (3.5.2)
       rspec-support (~> 3.5.0)
     rspec-expectations (3.5.0)
@@ -565,6 +568,7 @@ DEPENDENCIES
   letter_opener
   meta_request
   newrelic_rpm
+  oj
   pg
   pry
   pry-byebug
@@ -582,6 +586,7 @@ DEPENDENCIES
   redis
   rename
   responders (~> 2.0)
+  rollbar
   rspec-rails
   rubocop
   rubocop-rspec
