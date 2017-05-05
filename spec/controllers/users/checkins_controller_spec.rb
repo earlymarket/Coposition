@@ -166,7 +166,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
     it "returns an alert message and rediercts if invalid file" do
       allow(CSV).to receive(:foreach).and_return(false)
       post :import, params: params.merge(file: file)
-      expect(flash[:alert]).to match("Invalid CSV file format")
+      expect(flash[:alert]).to match("Invalid file format")
       expect(response).to redirect_to(user_devices_path(user.url_id))
     end
 

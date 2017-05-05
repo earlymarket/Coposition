@@ -27,6 +27,7 @@ module Users::Checkins
     end
 
     def valid_file?
+      return false unless file.content_type == "text/csv"
       CSV.foreach(path, headers: true) do |csv|
         return csv.headers == Checkin.column_names
       end
@@ -34,7 +35,7 @@ module Users::Checkins
 
     def error
       return "You must choose a CSV file to upload" unless file
-      "Invalid CSV file format"
+      "Invalid file format"
     end
   end
 end
