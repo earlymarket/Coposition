@@ -1,6 +1,6 @@
 <div id="approved">
   <% if current_user.pending_friends.present? && approvable_type == 'User' %>
-    You have sent <%= pluralize(current_user.pending_friends.count, 'friend request') %> to <%= current_user.pending_friends.to_sentence %>.
+    You have sent <%= pluralize(current_user.pending_friends.count, 'friend request') %> to <%= current_user.pending_friends.pluck(:email).to_sentence %>.
   <% end %>
 
   <% approved.each do |approvable| %>
