@@ -189,6 +189,14 @@ $lg-breakpoint: 600px;
 
 }
 
+#login-background {
+  background: image-url('bg.jpg');
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+}
+
 #take-control {
   background: image-url('bg.jpg');
   background-size: cover;
