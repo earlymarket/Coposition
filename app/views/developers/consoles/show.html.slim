@@ -1,0 +1,34 @@
+h1 Developer console
+br/
+p
+  | Hello #{current_developer.company_name}
+p
+  | ID: #{current_developer.id} -- API key: 
+  code#key
+    = current_developer.api_key
+  br/
+  | You've made 
+  span#requests-today
+    = pluralize(@requests_today, "request")
+  |  in the last day.
+  br/
+  | You've made 
+  span#unpaid
+    = pluralize(@unpaid, "request")
+  |  since you last paid.
+  br/
+  | See your 
+  = link_to "request history", developers_requests_path, class: "waves-effect waves-light"
+  | .
+= link_to "Generate new api_key", key_developers_console_path, class: "btn waves-effect waves-light", method: "post", remote: true, data: { confirm: "Are you sure? You will need to replace any instances of your old api key with the newly generated key." }
+= link_to "Pay now", pay_developers_requests_path, class: "btn waves-effect waves-light", method: "put", remote: true
+= link_to "Refresh", developers_console_path, class: "btn waves-effect waves-light", remote: true
+hr/
+p
+  | See your app's current 
+  = link_to "users", developers_approvals_path, class: "waves-effect waves-light"
+= link_to "New user", new_developers_approval_path, class: "btn"
+hr/
+= link_to "Guide to getting started", getting_started_path, class: "btn waves-effect waves-light"
+= link_to "Edit your profile", edit_developer_path(current_developer.id), class: "btn waves-effect waves-light"
+= link_to "Sign out", destroy_developer_session_path, method: :delete, class: "btn"

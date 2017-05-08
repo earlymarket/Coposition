@@ -1,7 +1,0 @@
-Approved an <%= link_to_activity(activity) %>
-<% if activity.trackable %>
-<br/>
-  Approvable name: <%= activity.trackable.approvable.email %>
-<% else %>
-  which has since been revoked.
-<% end %>

@@ -1,0 +1,35 @@
+- content_for :outside_container do
+  = Gon::Base.render_data
+  #map
+  script#nullPopupTemplate type="x-tmpl-mustache" 
+    | {{ &avatar }}
+    div 
+      | {{ name }}'s device "{{ device.name }}" has no visible location yet
+
+  script#fullPopupTemplate type="x-tmpl-mustache" 
+    table
+      tr
+        td.popup-label 
+          | {{ &avatar }}
+        td.title 
+          | {{ friend }}'s last reported location
+      tr
+        td.popup-label Device:
+        td 
+          | {{ device.name }}
+      tr
+        td.popup-label Created on:
+        td 
+          | {{ created_at }}
+      tr
+        td.popup-label Latitude:
+        td 
+          | {{ lat }}
+      tr
+        td.popup-label Longitude:
+        td 
+          | {{ lng }}
+      tr
+        td.popup-label Address:
+        td.address 
+          | {{ address }}

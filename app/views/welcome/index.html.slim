@@ -1,0 +1,83 @@
+- content_for :outside_container do
+  section.landing-section.splash
+    .valign-wrapper.parallax-container
+      .valign.center
+        = inline_svg 'coposition.svg'
+        h1 CONTROL YOUR LOCATION DATA
+        h5 Worry free location data management
+        /! <a class="start-btn btn-large">What is Coposition?</a
+        = inline_svg 'what-is.svg', class: "start-btn"
+      = render "application/video"
+  section.landing-section.promotion.container
+    article.row
+      .col.m9.l6
+        .row
+          .center.card.col.m10.offset-l1.offset-m3.active
+            i.medium.material-icons group
+            h4 What is Coposition?
+            p Coposition is the new way for users and developers to manage location data. Built with customer privacy and developer's ease in mind, Coposition is the location service you can trust.
+        .row
+          .center.card.col.m10.offset-l1.offset-m3
+            i.medium.material-icons pin_drop
+            h4 For developers
+            p Location data management should be easy and intuitive, not painful and complicated. Coposition allows you the developer to focus on developing your app while we take care of the location data for you.
+        .row
+          .center.card.col.m10.offset-l1.offset-m3
+            i.medium.material-icons view_carousel
+            h4 For the users
+            p Add and manage location data of multiple devices all in one place while using advanced features such as fogging and delays to protect your privacy.
+  .divider
+  /!
+    section.landing-section.buffer-1
+      .row parallax-container"
+        .parallax
+          = image_tag "background.jpg"
+  section#security.landing-section.full-width.container
+    article.row
+      .col.m9.l6
+        h3 Secure and Trustworthy
+        p Security of your data is of utmost importance to us that's why we strive to put security at the top of our priorities. You never have to worry about your location data being used for purposes you did not consent to.
+        h5 Fogging and Delay
+        p You can also send delayed location data to an app. That app will then only know your location at a predetermined time in the past.
+        /! a.btn.wave-light Learn more
+      .col.m12.l6.image-container.iphone-map.center
+        = image_tag "iphone-map.png", class: "slideInRight"
+  .divider
+  section#api.landing-section.full-width.container
+    article.row
+      .col.m12.l6.image-container.cloud-cp
+        /! = image_tag "placeholder.png" class: "float-left slideInLeft"
+      .col.m9.l6
+        h3 Easy but powerful
+        p Coposition provides a single easy to use dashboard for managing your location data settings between all the devices you own and all the apps that ask for your location data.
+        h5 Easy to use API
+        p Our HTTP API enables you, the developer, to focus on what matters for your app and we'll take care of managing your user's location data and geocoding for you while freeing up valuable bandwidth and processing power you would be using otherwise.
+        /! = link_to "Learn more", api_path, class: "btn wave-light"
+  section.landing-section.buffer-2
+    .row.parallax-container
+      .parallax= image_tag("picture-map.jpg")
+  section.landing-section.container.already-using
+    h3.center Apps already using Coposition
+    article.row.center
+      .col.s12.m4.app
+        /! = image_tag "placeholder.png"
+      .col.s12.m4.app
+        /! = image_tag "placeholder.png"
+      .col.s12.m4.app
+        /! = image_tag "placeholder.png"
+  .divider
+  section#start.landing-section.full-width.center
+    article.row
+      .col.m10.l8.offset-l2.offset-m1
+        h4 Ready to start using Coposition?
+      .row
+        form.col.m10.l8.offset-l2.offset-m1
+          .row
+            .input-field.col.s12.m5
+              input#email.validate placeholder="Email" type="text"
+            .input-field.col.s12.m4
+              input#username.validate placeholder=("Username (Optional)") type="text"
+            .col.s12.m3
+              button.btn-large.waves-effect.waves-light name="action" type="submit" 
+                | Sign up
+                i.material-icons.right send

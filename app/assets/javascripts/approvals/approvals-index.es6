@@ -1,6 +1,6 @@
 $(document).on('page:change', function() {
   var U  = window.COPO.utility;
-  if (U.currentPage('approvals', 'index')) {
+  if (U.currentPage('approvals', 'index') && typeof gon != "undefined") {
     const M  = window.COPO.maps;
     U.gonFix();
     const PAGE = "friends" in gon ? 'friends' : 'apps';

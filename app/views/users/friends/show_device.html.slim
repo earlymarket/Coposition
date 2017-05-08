@@ -1,0 +1,14 @@
+- content_for :outside_container do
+  = render "users/shared/device_show"
+  script#markerPopupTmpl type="x-tmpl-mustache" 
+    h3 ID: {{ id }}
+    ul
+      li#localTime Created on: {{ created_at }}
+      h3.lined
+        span.lined-pad Coordinates
+      li.ta-center
+        | {{ lat }}, {{ lng }}
+      h3.lined
+        span.lined-pad Address
+      li.address
+        | {{ address }}
