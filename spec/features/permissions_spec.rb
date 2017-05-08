@@ -54,7 +54,7 @@ RSpec.feature "Permissions", type: :feature do
   end
 
   def and_they_log_out
-    click_on "Log Out"
+    click_on "Log Out", match: :first
   end
 
   def and_they_have_added_me
