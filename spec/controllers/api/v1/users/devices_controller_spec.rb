@@ -53,7 +53,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
 
     it "returns devices config if request from copo app" do
       request.headers["X-Secret-App-Key"] = "this-is-a-mobile-app"
-      FactoryGirl.create(:config, device: device)
+      create(:config, device: device)
       get :index, params: params
       expect(res_hash[0]["config"]["id"]).to eq device.config.id
     end
@@ -65,7 +65,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
 
   describe "GET show" do
     before do
-      device.config = FactoryGirl.create(:config)
+      device.config = create(:config)
     end
 
     it "returns the correct device" do

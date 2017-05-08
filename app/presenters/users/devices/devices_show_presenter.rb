@@ -12,7 +12,7 @@ module Users::Devices
       @device = Device.find(params[:id])
       @date_range = checkins_date_range
       return unless download_format.present?
-      @filename = "device-#{device.id}-checkins-#{Time.zone.today}." + download_format
+      @filename = "device-#{device.id}-checkins-#{DateTime.current}." + download_format
       @checkins = device.checkins.send("to_" + download_format)
     end
 

@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.feature "Approvals", type: :feature do
-  let(:friend) { FactoryGirl.create :user }
+  let(:friend) { create :user }
 
   background do
     given_i_am_signed_in

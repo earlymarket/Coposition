@@ -26,7 +26,7 @@ module DevicesHelper
 
   def devices_cloaked_info(value)
     return unless value
-    "<div class='inline-text cloaked-info grey-text'>This device is cloaked. No friends or apps can see this device or its check-ins.</div>"
+    "<div class='inline-text cloaked-info grey-text'>This device is cloaked. No friends or apps can see this device or its check-ins.</div>".html_safe
   end
 
   def devices_choose_icon(device, icon)

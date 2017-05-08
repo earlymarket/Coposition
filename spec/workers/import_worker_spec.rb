@@ -2,9 +2,9 @@ require "rails_helper"
 
 RSpec.describe ImportWorker, type: :worker do
   subject(:import) { ImportWorker.new }
-  let(:device) { FactoryGirl.create(:device, csv: File.open(file.path, "r")) }
+  let(:device) { create(:device, csv: File.open(file.path, "r")) }
   let(:file) { fixture_file_upload("files/test_file.csv", "text/csv") }
-  let(:checkin) { FactoryGirl.create :checkin, device: device }
+  let(:checkin) { create :checkin, device: device }
   let(:params) { { "lat" => 10, "lng" => 10 } }
 
   describe "perform" do

@@ -8,6 +8,7 @@ module Developers::Approvals
       if user && approval.id
         context.notice = "Successfully sent"
         context.approval = approval
+        CreateActivity.call(entity: approval, action: :create, owner: developer, params: params.to_h)
       else
         context.fail!(alert: alert)
       end
