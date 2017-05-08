@@ -21,12 +21,16 @@ $(document).on('ready page:change', function() {
       $(".cell-wrapper").slick("resize");
     });
   } else {
-    $(window).resize(function () {
+    var resize = function(){
       if(window.innerWidth<660){
         $("main").css('padding-top', '80px');
       } else {
         $("main").css('padding-top', '21px');
       }
+    }
+    resize();
+    $(window).resize(function () {
+      resize();
     })
   }
 });
