@@ -44,6 +44,7 @@ gem "activerecord-import"
 gem "sidekiq"
 gem "interactor"
 gem "slim"
+gem "public_activity"
 gem "rollbar"
 gem "oj"
 

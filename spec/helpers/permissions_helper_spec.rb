@@ -2,9 +2,9 @@ require "rails_helper"
 
 RSpec.describe PermissionsHelper, type: :helper do
   let(:safebuffer) { ActiveSupport::SafeBuffer }
-  let(:user) { FactoryGirl.create(:user) }
-  let(:developer) { FactoryGirl.create(:developer) }
-  let(:device) { FactoryGirl.create(:device, user_id: user.id) }
+  let(:user) { create(:user) }
+  let(:developer) { create(:developer) }
+  let(:device) { create(:device, user_id: user.id) }
   let(:permission) do
     device.developers << developer
     Permission.last

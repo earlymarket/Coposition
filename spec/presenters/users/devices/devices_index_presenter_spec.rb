@@ -2,12 +2,12 @@ require "rails_helper"
 
 describe ::Users::Devices::DevicesIndexPresenter do
   subject(:index_presenter) { described_class.new(user, id: device.id) }
-  let(:user) { FactoryGirl.create(:user) }
-  let(:device) { FactoryGirl.create(:device, user_id: user.id) }
+  let(:user) { create(:user) }
+  let(:device) { create(:device, user_id: user.id) }
   let(:checkins) do
-    FactoryGirl.create(:checkin, device_id: device.id)
-    FactoryGirl.create(:checkin, device_id: device.id).reverse_geocode!
-    FactoryGirl.create(:checkin, device_id: device.id)
+    create(:checkin, device_id: device.id)
+    create(:checkin, device_id: device.id).reverse_geocode!
+    create(:checkin, device_id: device.id)
   end
 
   describe "Interface" do
@@ -76,8 +76,8 @@ describe ::Users::Devices::DevicesIndexPresenter do
     end
 
     it "returns one checkin for each device" do
-      FactoryGirl.create(:device, user: user)
-      FactoryGirl.create(:checkin, device: Device.last)
+      create(:device, user: user)
+      create(:checkin, device: Device.last)
       checkins = index_presenter.send(:gon_index_checkins)
       devices_count = Device.joins(:checkins).distinct.all.count
       expect(checkins.length).to eq devices_count

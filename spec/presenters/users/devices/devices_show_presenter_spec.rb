@@ -2,12 +2,12 @@ require "rails_helper"
 
 describe ::Users::Devices::DevicesShowPresenter do
   subject(:show_presenter) { described_class.new(user, id: device.id) }
-  let(:user) { FactoryGirl.create(:user) }
-  let(:device) { FactoryGirl.create(:device, user_id: user.id) }
+  let(:user) { create(:user) }
+  let(:device) { create(:device, user_id: user.id) }
   let(:checkins) do
-    FactoryGirl.create(:checkin, device_id: device.id)
-    FactoryGirl.create(:checkin, device_id: device.id).reverse_geocode!
-    FactoryGirl.create(:checkin, device_id: device.id)
+    create(:checkin, device_id: device.id)
+    create(:checkin, device_id: device.id).reverse_geocode!
+    create(:checkin, device_id: device.id)
   end
 
   describe "Interface" do

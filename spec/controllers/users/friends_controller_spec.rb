@@ -4,10 +4,10 @@ RSpec.describe Users::FriendsController, type: :controller do
   include ControllerMacros
 
   let(:user) { create_user }
-  let(:second_user) { FactoryGirl.create :user }
-  let!(:device) { FactoryGirl.create :device, user_id: second_user.id, delayed: 10 }
-  let!(:checkin) { FactoryGirl.create :checkin, device: device }
-  let!(:historic_checkin) { FactoryGirl.create :checkin, device: device, created_at: Time.current - 1.day }
+  let(:second_user) { create :user }
+  let!(:device) { create :device, user_id: second_user.id, delayed: 10 }
+  let!(:checkin) { create :checkin, device: device }
+  let!(:historic_checkin) { create :checkin, device: device, created_at: Time.current - 1.day }
   let!(:approval) do
     device
     Approval.link(user, second_user, "User")

@@ -14,6 +14,10 @@ class Users::DevicesController < ApplicationController
     respond_to do |format|
       format.html { flash[:notice] = "Right click on the map to check-in" }
       format.any(:csv, :gpx, :geojson) do
+        CreateActivity.call(entity: @device_show_presenter.device,
+                            action: :show,
+                            owner: current_user,
+                            params: { format: params[:format], count: @device_show_presenter.device.checkins.count })
         send_data @device_show_presenter.checkins, filename: @device_show_presenter.filename
       end
     end
