@@ -59,6 +59,7 @@ window.COPO.editCheckin = {
   },
 
   setDatepicker($editable) {
+    var original = $editable.text();
     return $("body").pickadate({
       selectMonths: true,
       selectYears: 15,
@@ -82,6 +83,9 @@ window.COPO.editCheckin = {
             this.stop();
           }
         }
+      },
+      onClose: function(context) {
+        COPO.editCheckin.handleEdited(original, $editable);
       }
     });
   },
