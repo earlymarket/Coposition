@@ -24,6 +24,7 @@
         .row
           .input-field.col.s12
             = f.label :avatar, "Upload a new avatar", class: "active"
+            br/
             = f.attachinary_file_field :avatar
         - if devise_mapping.confirmable? && resource.pending_reconfirmation?
           div

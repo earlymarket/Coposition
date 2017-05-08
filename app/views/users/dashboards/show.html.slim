@@ -20,10 +20,9 @@ section.dashboard.row
 p
   | You checked in #{@dashboard_presenter.weeks_checkins_count || 0} times this week.
   - if @dashboard_presenter.percent_change.present?
-    br/
-    | That is an #{@dashboard_presenter.percent_change > 0 ? "increase" : "decrease"} of #{@dashboard_presenter.percent_change}% from last week.
+    |  That is an #{@dashboard_presenter.percent_change > 0 ? "increase" : "decrease"} of #{@dashboard_presenter.percent_change}% from last week.
   - if @dashboard_presenter.most_used_device.present?
-    | Your most used device is #{@dashboard_presenter.most_used_device.name}.
+    |  Your most used device is #{@dashboard_presenter.most_used_device.name}.
 - if @dashboard_presenter.last_countries
   h5
     = @dashboard_presenter.visited_countries_title
@@ -46,5 +45,5 @@ p
 section#dashboard-quicklinks
   p
     | You have #{pluralize(current_user.devices.count, "device")}, #{pluralize(current_user.not_coposition_developers.count, "app")} and #{pluralize(current_user.friends.count, "friend")}.
-    | You have #{link_to(pluralize(current_user.developer_requests.count, "app"), user_apps_path)} and 
+    |  You have #{link_to(pluralize(current_user.developer_requests.count, "app"), user_apps_path)} and 
     | #{link_to(pluralize(current_user.friend_requests.count, "friend"), user_friends_path)} awaiting your approval.
