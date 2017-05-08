@@ -5,8 +5,9 @@
   .pure-u-6-14.copy-notice Copyright © 2017 Coposition
   /!
   .pure-u-6-14
-    = link_to "Release notes", release_notes_path
-    |  
+    - if Rails.env == "test" || params[:admin] || signed_in?
+      = link_to "Release notes", release_notes_path
+      |  
     a href="https://github.com/earlymarket/Coposition" 
       i.fa.fa-github-square.fa-2x aria-hidden="true"
     |  
