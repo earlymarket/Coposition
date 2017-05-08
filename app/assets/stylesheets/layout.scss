@@ -33,7 +33,7 @@ nav {
 html, button, input, select, textarea,
 .pure-g [class *= "pure-u"] {
     /* Set your content font stack here: */
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', sans-serif !important;
 }
 
 /* apply a natural box layout model to all elements, but allowing components to change */
@@ -347,7 +347,7 @@ $lg-breakpoint: 600px;
     padding: 0 2rem;
 
     .cell-title {
-      @extend .font-light;
+      @extend .font-heavy;
       color: white;
       font-size: 1rem;
     }
@@ -374,7 +374,7 @@ $lg-breakpoint: 600px;
     justify-content: center;
   }
 
-  .card {
+  .enabled-card {
     position: relative;
     background: white;
     height: 100%;
@@ -397,20 +397,22 @@ $lg-breakpoint: 600px;
       }
     }
 
-    .card-title {
+    .enabled-title {
       font-size: 2rem;
     }
 
-    .card-pitch, .card-description {
+    .enabled-pitch, .enabled-description {
       @extend .font-light;
     }
 
-    .card-pitch {
+    .enabled-pitch {
+      text-align: center;
       font-size: 1.3rem;
       color: black;
     }
 
-    .card-description {
+    .enabled-description {
+      text-align: center;
       font-size: 0.9rem;
       color: black;
     }
@@ -436,11 +438,14 @@ $lg-breakpoint: 600px;
     padding: 0 2rem;
 
     .wrapper-pitch {
+      text-align: center;
+      color: white;
       font-size: 1.3rem;
     }
 
     .wrapper-description {
       @extend .font-medium;
+      text-align: center;
       font-size: 1.2rem;
       color: #008ecf;
     }
