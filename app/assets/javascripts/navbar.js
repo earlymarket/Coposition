@@ -3,7 +3,7 @@ $(document).on('page:change', function() {
   $(".button-collapse").sideNav();
   $(document).unbind('scroll');
 
-  if (window.COPO.utility.currentPage('welcome', 'index')) {
+  if (window.COPO.utility.currentPage('welcome', 'index') || window.COPO.utility.currentPage('welcome', 'devs')) {
     $(document).scroll(function(e) {
       if($(window).scrollTop() > 10){
         $("nav").removeClass('transparent-nav');

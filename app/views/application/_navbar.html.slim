@@ -1,33 +1,3 @@
-/ #top
-/ nav class=("nav-wrapper#{if controller_name == 'welcome' && action_name == 'index' then ' transparent-nav' end}") data-turbolinks-permanent="" role="navigation" 
-/   a.button-collapse data-activates="mobile-nav" href="#" 
-/     i.material-icons menu
-/   = link_to inline_svg('bordered-logo.svg', id: "brand-logo"), root_path, class: "valign-wrapper left"
-/   ul.right.hide-on-med-and-down
-/     li
-/       a href="#"  About
-/     li
-/       = link_to "Help", help_path
-/     li
-/       = link_to "API", "https://earlymarket.github.io/copo-docs/"
-
-/     - if user_signed_in?
-/       li
-/         = link_to "Dashboard", user_dashboard_path(current_user.url_id)
-/       li
-/         = link_to "Devices", user_devices_path(current_user.url_id)
-/       li
-/         = link_to navbar_indicator("Apps", current_user.developer_requests.count), user_apps_path(current_user.url_id)
-/       li
-/         = link_to navbar_indicator("Friends", current_user.friend_requests.count), user_friends_path(current_user.url_id)
-/       li
-/         = link_to edit_user_registration_path, class: "settings-icon valign-wrapper" do
-/           i.material-icons.valign settings
-/       li
-/         = link_to inline_svg("log-out.svg", class: "svg-btn valign"), destroy_user_session_path, method: :delete, class: "valign-wrapper", title: "Log Out"
-/     - else
-/       li
-/         = link_to inline_svg("log-in.svg", class: "svg-btn valign"), new_user_session_path, class: "valign-wrapper", title: "User Log In"
 nav
   #quicklinks.pure-g.sm-hide
     /!
@@ -35,20 +5,21 @@ nav
     .pure-u-1-14
     /!
     .pure-u-12-14.quicklinks-items
-      a.lg-items-left.current href="#"  users
-      a.lg-items-left href="./devs"  developers
-      span.lg-items-right
-        - if user_signed_in?
-          = link_to "Log Out", destroy_user_session_path, method: :delete, class: "lg-items-right"
-          = link_to "Dashboard", user_dashboard_path(current_user.url_id), class: "lg-items-right"
-          = link_to "Devices", user_devices_path(current_user.url_id), class: "lg-items-right"
-          = link_to navbar_indicator("Apps", current_user.developer_requests.count), user_apps_path(current_user.url_id), class: "lg-items-right"
-          = link_to navbar_indicator("Friends", current_user.friend_requests.count), user_friends_path(current_user.url_id), class: "lg-items-right"
-          = link_to "Account", edit_user_registration_path, class: "lg-items-right"
-        - else
-          = link_to "Log In", new_user_session_path, class: "lg-items-right"
-        = link_to "Help", help_path, class: "lg-items-right"
-        = link_to "API", "https://earlymarket.github.io/copo-docs/", class: "lg-items-right"
+      = link_to "users", root_path, class: "lg-items-left current"
+      = link_to "devs", devs_path, class: "lg-items-left"
+      - if Rails.env == "test" || params[:admin] || signed_in?
+        span.lg-items-right
+          - if user_signed_in?
+            = link_to "Log Out", destroy_user_session_path, method: :delete, class: "lg-items-right"
+            = link_to "Dashboard", user_dashboard_path(current_user.url_id), class: "lg-items-right"
+            = link_to "Devices", user_devices_path(current_user.url_id), class: "lg-items-right"
+            = link_to navbar_indicator("Apps", current_user.developer_requests.count), user_apps_path(current_user.url_id), class: "lg-items-right"
+            = link_to navbar_indicator("Friends", current_user.friend_requests.count), user_friends_path(current_user.url_id), class: "lg-items-right"
+            = link_to "Account", edit_user_registration_path, class: "lg-items-right"
+          - else
+            = link_to "Log In", new_user_session_path, class: "lg-items-right"
+          = link_to "Help", help_path, class: "lg-items-right"
+          = link_to "API", "https://earlymarket.github.io/copo-docs/", class: "lg-items-right"
     .pure-u-1-14
   #top-menu.pure-g
     .pure-u-1-14
@@ -66,26 +37,27 @@ nav
             a.dropdown-item.current href="#"  users
           li
             a.dropdown-item href="./devs"  developers
-          - if user_signed_in?
+          - if Rails.env == "test" || params[:admin] || signed_in?
+            - if user_signed_in?
+              li
+                = link_to "Log Out", destroy_user_session_path, method: :delete, class: "dropdown-item right"
+              li
+                = link_to "Dashboard", user_dashboard_path(current_user.url_id), class: "dropdown-item"
+              li
+                = link_to "Devices", user_devices_path(current_user.url_id), class: "dropdown-item"
+              li
+                = link_to navbar_indicator("Apps", current_user.developer_requests.count), user_apps_path(current_user.url_id), class: "dropdown-item"
+              li
+                = link_to navbar_indicator("Friends", current_user.friend_requests.count), user_friends_path(current_user.url_id), class: "dropdown-item"
+              li
+                = link_to "Account", edit_user_registration_path, class: "dropdown-item"
+            - else
+              li
+                = link_to "Log In", new_user_session_path, class: "dropdown-item"
             li
-              = link_to "Log Out", destroy_user_session_path, method: :delete, class: "dropdown-item right"
+              = link_to "Help", help_path, class: "dropdown-item"
             li
-              = link_to "Dashboard", user_dashboard_path(current_user.url_id), class: "dropdown-item"
-            li
-              = link_to "Devices", user_devices_path(current_user.url_id), class: "dropdown-item"
-            li
-              = link_to navbar_indicator("Apps", current_user.developer_requests.count), user_apps_path(current_user.url_id), class: "dropdown-item"
-            li
-              = link_to navbar_indicator("Friends", current_user.friend_requests.count), user_friends_path(current_user.url_id), class: "dropdown-item"
-            li
-              = link_to "Account", edit_user_registration_path, class: "dropdown-item"
-          - else
-            li
-              = link_to "Log In", new_user_session_path, class: "dropdown-item"
-          li
-            = link_to "Help", help_path, class: "dropdown-item"
-          li
-            = link_to "API", "https://earlymarket.github.io/copo-docs/", class: "dropdown-item"
+              = link_to "API", "https://earlymarket.github.io/copo-docs/", class: "dropdown-item"
     /!
     .pure-u-1-14
     /!

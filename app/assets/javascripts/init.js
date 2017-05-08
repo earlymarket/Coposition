@@ -40,9 +40,8 @@ $(document).on('ready page:change', function() {
   $('ul.tabs').tabs();
 
   // Attachinary init
-  $('.attachinary-input').attachinary()
+  $('.attachinary-input').attachinary();
   // Event listeners
-  setup();
 
   // dodgy hack to fix the multiple sidenav problem
   // works by deleting and recreating the nav dom node
@@ -58,48 +57,3 @@ $(document).on('ready page:change', function() {
   $('.scrollspy').scrollSpy();
 
 });
-
-
-function setup() {
-  addEventListeners();
-  responsiveVideo();
-}
-
-function addEventListeners() {
-  addClickListeners();
-  addWindowResizeListeners();
-}
-
-function addClickListeners() {
-  $(".landing-section .start-btn").click(function(e) {
-    var offset = $(".landing-section.splash").height();
-    $("body").animate({ scrollTop: offset });
-  });
-}
-
-function addWindowResizeListeners() {
-  $(window).resize(function(e) {
-    responsiveVideo();
-  });
-}
-
-function responsiveVideo() {
-  var ratio = 1920/1080;
-  var $h = $(".promo").height();
-  var $w = $(".promo").width();
-  var rRatio = $w/$h;
-
-  if(rRatio < ratio) {
-    // Aspect ratio is lower than 16:9
-    $(".promo video").css({
-      width: 'auto',
-      height: '100%'
-    });
-  }else{
-    // Aspect ratio is higher than 16:9
-    $(".promo video").css({
-      width: '100%',
-      height: 'auto'
-    });
-  }
-}
