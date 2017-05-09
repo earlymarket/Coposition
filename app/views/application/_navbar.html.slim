@@ -34,9 +34,9 @@ nav
         input#mobile-menu checked="checked" type="checkbox"
         ul.dropdown
           li
-            a.dropdown-item.current href="#"  users
+            = link_to "Users", root_path, class: "dropdown-item current"
           li
-            a.dropdown-item href="./devs"  developers
+            = link_to "Developers", devs_path, class: "dropdown-item"
           - if Rails.env == "test" || params[:admin] || signed_in?
             - if user_signed_in?
               li
