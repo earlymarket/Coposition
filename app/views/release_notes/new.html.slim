@@ -7,7 +7,7 @@ h1 New release note
   = f.select(:application, options_for_select([['Web', 'web'], ['API', 'api'], ['Mobile', 'mobile']]))
   br/
   = label :content, "Changes"
-  = f.text_area(:content, class: "materialize-textarea", placeholder: "- List \n- Notes \n- Like this")
+  = f.text_area(:content, class: "materialize-textarea", placeholder: "- Some <b>bold text</b>.<br/>\n- New line with some  <i>italic text</i>.<br/>\n- A third line.")
   = label :created_at, "Date"
   = f.date_field(:created_at, class: "release-datepicker")
   br/

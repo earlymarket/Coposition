@@ -31,11 +31,8 @@ ul.collection
           = link_to release_notes_path(application: note.application) do
             span class=("#{note.application} badge tag")
               = note.application
-        - note.content.split("-").each do |line|
-          - next unless line.present?
-          div
-            | - 
-            = line
+        div
+          = note.content.html_safe
         - if current_user && current_user.admin?
           .card-action
             = link_to edit_release_note_path(note.id), class: 'btn' do
