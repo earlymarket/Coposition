@@ -173,6 +173,11 @@ $lg-breakpoint: 600px;
     .dropdown-item {
       color: black;
     }
+    li {
+      float: none;
+      padding: 0.5rem 0;
+      line-height: 1.15;
+    }
   }
 
   .dropdown > * {
@@ -280,6 +285,7 @@ $lg-breakpoint: 600px;
       @extend .font-light;
       font-size: 1rem;
       color: #959595;
+      text-align: center;
     }
 
   }
