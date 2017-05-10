@@ -43,6 +43,8 @@ gem "inherited_resources", git: "https://github.com/activeadmin/inherited_resour
 gem "activerecord-import"
 gem "sidekiq"
 gem "interactor"
+gem "slim"
+gem "public_activity"
 gem "rollbar"
 gem "oj"
 
@@ -71,6 +73,7 @@ group :development do
   gem "rack-mini-profiler", require: false
   gem "flamegraph"
   gem "stackprof"
+  gem "slim-rails"
 end
 
 group :development, :test do
@@ -88,6 +91,7 @@ group :development, :test do
   gem "coffeelint"
   gem "rails_best_practices", require: false
   gem "dotenv-rails"
+  gem "slim_lint", require: false
 end
 
 group :test do

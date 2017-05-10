@@ -1,0 +1,20 @@
+h1
+  = @devices_info_presenter.device.name
+table
+  tbody
+    tr
+      td UUID
+      td
+        = @devices_info_presenter.device.uuid
+    tr
+      td Created at
+      td
+        = @devices_info_presenter.config.created_at
+    tr
+      td
+        h4 Device configuration
+    tr
+      td Developer
+      td
+        = @devices_info_presenter.config.developer.company_name
+    = @devices_info_presenter.config_rows

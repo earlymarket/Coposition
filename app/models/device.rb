@@ -1,5 +1,5 @@
 class Device < ApplicationRecord
-  include SlackNotifiable, RemoveId
+  include SlackNotifiable, RemoveId, PublicActivity::Common
 
   belongs_to :user
   has_one :config, dependent: :destroy

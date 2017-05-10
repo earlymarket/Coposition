@@ -3,16 +3,16 @@ require "rails_helper"
 RSpec.describe Users::PermissionsController, type: :controller do
   include ControllerMacros
 
-  let(:device) { FactoryGirl.create :device }
+  let(:device) { create :device }
   let(:user) do
     u = create_user
-    device.checkins << FactoryGirl.create(:checkin, device: device)
+    device.checkins << create(:checkin, device: device)
     u.devices << device
     u
   end
   let(:second_user) { create_user }
-  let(:friend) { FactoryGirl.create :user }
-  let(:developer) { FactoryGirl.create :developer }
+  let(:friend) { create :user }
+  let(:developer) { create :developer }
   let(:permission) do
     device.developers << developer
     device.permitted_users << friend

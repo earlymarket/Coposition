@@ -1,0 +1,11 @@
+| Created an 
+= link_to_activity(activity)
+- if activity.trackable
+  br
+  |  User name: 
+  = activity.trackable.user.email
+  br
+  |  Approvable name: 
+  = activity.trackable.approvable.email
+- else
+  |  which has since been revoked. 

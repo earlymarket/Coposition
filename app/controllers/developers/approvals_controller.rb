@@ -13,8 +13,8 @@ class Developers::ApprovalsController < ApplicationController
   def create
     result = Developers::Approvals::CreateApproval.call(developer: current_developer, params: allowed_params)
     if result.success?
-      flash[:notice] = 'Successfully sent'
-      current_developer.notify_if_subscribed('new_approval', approval_zapier_data(result.approval))
+      flash[:notice] = "Successfully sent"
+      current_developer.notify_if_subscribed("new_approval", approval_zapier_data(result.approval))
     else
       flash[:alert] = result.alert
     end

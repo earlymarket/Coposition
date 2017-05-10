@@ -5,7 +5,7 @@ RSpec.describe Developers::ConsolesController, type: :controller do
 
   let(:developer) do
     dev = create_developer
-    dev.requests << FactoryGirl.create(:request)
+    dev.requests << create(:request)
     dev
   end
   let(:developer_params) { { developer_id: developer.id } }

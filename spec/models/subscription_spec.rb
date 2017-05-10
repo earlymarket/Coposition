@@ -1,12 +1,12 @@
 require "rails_helper"
 
 RSpec.describe Subscription, type: :model do
-  let(:developer) { FactoryGirl.create(:developer) }
-  let(:subscription) { FactoryGirl.create(:subscription) }
+  let(:developer) { create(:developer) }
+  let(:subscription) { create(:subscription) }
 
   describe "factory" do
     it "creates a valid subscription" do
-      sub = FactoryGirl.build(:subscription)
+      sub = build(:subscription)
       expect(sub).to be_valid
     end
   end

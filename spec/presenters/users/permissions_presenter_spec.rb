@@ -5,23 +5,23 @@ describe ::Users::PermissionsPresenter do
     described_class.new(user, { id: permission.id, device_id: device.id, from: "devices" }, "index" )
   end
   let(:user) do
-    us = FactoryGirl.create(:user)
+    us = create(:user)
     us.friends << friend
     us.developers << developer
     us
   end
   let(:permission) { device.permissions.last }
-  let(:developer) { FactoryGirl.create(:developer) }
-  let(:friend) { FactoryGirl.create(:user) }
+  let(:developer) { create(:developer) }
+  let(:friend) { create(:user) }
   let(:device) do
-    device = FactoryGirl.create(:device, user_id: user.id)
+    device = create(:device, user_id: user.id)
     device.permitted_users << friend
     device
   end
   let(:checkins) do
-    FactoryGirl.create(:checkin, device_id: device.id)
-    FactoryGirl.create(:checkin, device_id: device.id).reverse_geocode!
-    FactoryGirl.create(:checkin, device_id: device.id)
+    create(:checkin, device_id: device.id)
+    create(:checkin, device_id: device.id).reverse_geocode!
+    create(:checkin, device_id: device.id)
   end
 
   describe "Interface" do
@@ -177,8 +177,8 @@ describe ::Users::PermissionsPresenter do
       end
 
       it "returns only one checkin per device" do
-        FactoryGirl.create(:device, user: user)
-        FactoryGirl.create(:checkin, device: Device.last)
+        create(:device, user: user)
+        create(:checkin, device: Device.last)
         devices_count = Device.joins(:checkins).distinct.all.count
         expect(permissions.send(:devices_index_checkins).length).to eq devices_count
       end

@@ -1,0 +1,14 @@
+| Updated a 
+= link_to_activity(activity)
+- if activity.trackable
+  br
+  |  Device: 
+  = activity.trackable.device.name
+  br
+  |  Developer: 
+  = activity.trackable.developer.company_name
+- else
+  |  which has since been destroyed. 
+br
+|  Params: 
+= activity.parameters
