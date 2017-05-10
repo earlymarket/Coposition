@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.feature "Developers", type: :feature do
-  let(:developer) { FactoryGirl.create :developer }
+  let(:developer) { create :developer }
 
   scenario "Developer signs up" do
     given_i_fill_in_sign_up_details

@@ -4,14 +4,14 @@ RSpec.describe Developers::ApprovalsController, type: :controller do
   include ControllerMacros
 
   let(:developer) { create_developer }
-  let(:user) { FactoryGirl.create :user }
-  let(:second_user) { FactoryGirl.create :user }
+  let(:user) { create :user }
+  let(:second_user) { create :user }
   let(:approval) do
-    app = FactoryGirl.create :approval
+    app = create :approval
     app.update(approvable: developer, user: user, approvable_type: 'Developer', status: 'accepted')
     app
   end
-  let(:subscription) { FactoryGirl.create :subscription, event: 'new_approval', subscriber: developer }
+  let(:subscription) { create :subscription, event: 'new_approval', subscriber: developer }
   let(:developer_params) { { developer_id: developer.id } }
   let(:approval_create_params) do
     developer_params.merge(approval: { user: user.email, approvable_type: 'Developer' })

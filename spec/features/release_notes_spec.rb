@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.feature "ReleaseNotes", type: :feature do
-  let(:admin) { FactoryGirl.create :user, admin: true }
-  let!(:release_note) { FactoryGirl.create :release_note }
+  let(:admin) { create :user, admin: true }
+  let!(:release_note) { create :release_note }
 
   background do
     given_i_am_signed_in

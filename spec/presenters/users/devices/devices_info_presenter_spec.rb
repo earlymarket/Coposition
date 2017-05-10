@@ -2,10 +2,10 @@ require "rails_helper"
 
 describe ::Users::Devices::DevicesInfoPresenter do
   subject(:info_presenter) { described_class.new(user, id: device.id) }
-  let(:user) { FactoryGirl.create(:user) }
+  let(:user) { create(:user) }
   let(:device) do
-    FactoryGirl.create(:device, user_id: user.id) do |obj|
-      obj.config = FactoryGirl.create(:config)
+    create(:device, user_id: user.id) do |obj|
+      obj.config = create(:config)
     end
   end
   let(:config) { device.config }

@@ -3,9 +3,9 @@ require "rails_helper"
 RSpec.describe Users::Devices::CreateDevice, type: :interactor do
   subject(:create_context) { described_class.call(user: user, developer: developer, params: params) }
 
-  let(:user) { FactoryGirl.create :user }
-  let(:developer) { FactoryGirl.create :developer }
-  let(:device) { FactoryGirl.create :device, user: nil }
+  let(:user) { create :user }
+  let(:developer) { create :developer }
+  let(:device) { create :device, user: nil }
   let(:params) do
     ActionController::Parameters.new(
       device: { name: "laptop", icon: "laptop", uuid: device.uuid, location: "51.5,-0.21" }
@@ -45,7 +45,7 @@ RSpec.describe Users::Devices::CreateDevice, type: :interactor do
 
     context "when given a taken device name" do
       before do
-        FactoryGirl.create(:device, name: "laptop", user: user)
+        create(:device, name: "laptop", user: user)
       end
 
       it "fails" do
@@ -59,7 +59,7 @@ RSpec.describe Users::Devices::CreateDevice, type: :interactor do
 
     context "when given a device assigned to another user" do
       before do
-        device.update(user: FactoryGirl.create(:user))
+        device.update(user: create(:user))
       end
 
       it "fails" do

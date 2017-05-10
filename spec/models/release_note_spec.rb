@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe ReleaseNote, type: :model do
-  let!(:release_note) { FactoryGirl.create :release_note }
+  let!(:release_note) { create :release_note }
 
   describe "factory" do
     it "creates a valid request" do
@@ -11,7 +11,7 @@ RSpec.describe ReleaseNote, type: :model do
 
   describe "Scopes" do
     it "returns requests ordered by created at descending by default" do
-      FactoryGirl.create :release_note
+      create :release_note
       expect(ReleaseNote.first.created_at).to be > ReleaseNote.last.created_at
     end
   end

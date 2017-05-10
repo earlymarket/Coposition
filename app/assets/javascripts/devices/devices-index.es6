@@ -8,7 +8,7 @@ $(document).on('page:change', function() {
     U.gonFix();
     COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions)
     COPO.delaySlider.initSliders(gon.devices);
-    gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');
+    gon.checkins && gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');
 
     $('body').on('click', '.edit-button', function (e) {
       e.preventDefault();

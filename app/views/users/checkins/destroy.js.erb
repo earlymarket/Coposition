@@ -1,5 +1,0 @@
-<%= raw render_flash %>
-var checkin = _.find(gon.checkins, _.matchesProperty('id',<%= @checkin.id %>));
-_.remove(gon.checkins, checkin);
-
-COPO.maps.refreshMarkers(gon.checkins);

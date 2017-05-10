@@ -168,5 +168,13 @@ COPO.utility = {
 
   validateLatLng(coord) {
     return Math.abs(coord) < 180;
-  }
+  },
+
+  substringMatcher(strs) {
+    return (query, callback) => {
+      let substrRegex = new RegExp(query, 'i');
+      let matches = strs.filter(str => substrRegex.test(str));
+      callback(matches);
+    };
+  },
 };

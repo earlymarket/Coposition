@@ -1,0 +1,28 @@
+= form_for @developer, url: { action: "update" }, html: { class: "card col s12 m10 offset-m1", multipart: true } do |f|
+  .card-content
+    legend.card-title Edit account
+    .row
+      .input-field.col.s12
+        = f.label :company_name
+        br/
+        = f.text_field :company_name
+    .row
+      .input-field.col.s12
+        = f.label :tagline
+        br/
+        = f.text_field :tagline
+    .row
+      .input-field.col.s12
+        = f.label :redirect_url
+        br/
+        = f.text_field :redirect_url
+    .row
+      .input-field.col.s12
+        = f.check_box :zapier_enabled
+        = f.label :zapier_enabled, "Zapier enabled?"
+    .row
+      .input-field.col.s12
+        = f.label :avatar, "Upload a new logo", class: "active"
+        br/
+        = f.attachinary_file_field :avatar
+    = f.submit "Update", class: "btn btn-success m-m"

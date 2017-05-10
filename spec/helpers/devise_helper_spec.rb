@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe DeviseHelper, type: :helper do
-  let(:user) { FactoryGirl.create(:user) }
+  let(:user) { create(:user) }
 
   describe "devise_error_messages!" do
 
