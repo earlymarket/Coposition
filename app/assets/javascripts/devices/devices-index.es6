@@ -89,7 +89,7 @@ $(document).on('page:change', function() {
         const device_id = this.dataset.device;
         const checkin = gon.checkins.find((checkin) => checkin.device_id.toString() === device_id);
         if(checkin) {
-          U.scrollTo('#top', 200);
+          U.scrollTo('#quicklinks', 200);
           setTimeout(() => M.centerMapOn(checkin.lat, checkin.lng), 200);
         }
       });
