@@ -8,7 +8,7 @@ $(document).on('ready page:change', function() {
 
   // We're calling this later now in the dodgy hack
   // // materialize accordion init
-  // $('.collapsible').collapsible();
+  $('.collapsible').collapsible();
 
   // materialize parallax init
   $('.parallax').parallax();
