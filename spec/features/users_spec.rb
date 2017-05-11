@@ -62,7 +62,7 @@ RSpec.feature "Users", type: :feature do
   end
 
   def when_i_visit_edit_page
-    click_on "settings"
+    click_on "Account", match: :first
   end
 
   def and_i_edit_my_username
@@ -77,10 +77,10 @@ RSpec.feature "Users", type: :feature do
   end
 
   def when_i_log_out
-    click_on "Log Out"
+    click_on "Log Out", match: :first
   end
 
   def then_i_should_be_logged_out
-    expect(page).to have_text "User Log In"
+    expect(page).to have_text "Log In"
   end
 end

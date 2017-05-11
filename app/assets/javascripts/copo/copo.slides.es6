@@ -10,6 +10,6 @@ window.COPO.slides = {
     };
     this.id = setInterval(this.ping.bind(this), interval);
     this.stop = () => { clearInterval(this.id) };
-    $(document).one('page:before-unload', this.stop.bind(this) );
+    $(document).one('turbolinks:before-render', this.stop.bind(this) );
   }
 };

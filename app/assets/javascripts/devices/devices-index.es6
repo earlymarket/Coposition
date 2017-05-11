@@ -108,7 +108,7 @@ $(document).on('page:change', function() {
     }
     initPage();
 
-    $(document).on('page:before-unload', function(){
+    $(document).one('turbolinks:before-render', function(){
       COPO.permissions.switchesOff();
       $(window).off("resize");
       $('body').off('click', '.edit-button');

@@ -1,58 +1,19 @@
-footer.page-footer
-  .container
-    .row
-      .col.l6.s12
-        h5.white-text.brand Coposition
-    .row
-      .col.m4.s12
-        h5 API
-        ul
-          - if developer_signed_in?
-            li
-              = link_to('Developer console', developers_console_path)
-            li
-              = link_to('Getting Started', getting_started_path)
-            li
-              = link_to('Log out', destroy_developer_session_path, method: :delete)
-          - else
-            li
-              = link_to('Developer log in', new_developer_session_path)
-          li
-            = link_to('Release notes', release_notes_path)
-      /!
-        .col.m4.s12
-          h5 Learn More
-          ul
-            li
-              a href="#!"
-                Link 1
-            li
-              a href="#!"
-                Link 2
-            li
-              a href="#!"
-                Link 3
-            li
-              a href="#!"
-                Link 4
+#bottom-bar.pure-g
+  /!
+  .pure-u-1-12
+  /!
+  .pure-u-5-12.copy-notice Copyright © 2017 Coposition
+  /!
+  .pure-u-5-12
+    - if Rails.env == "test" || params[:admin] || signed_in?
+      = link_to "Release notes", release_notes_path
+      |  
+    a href="https://github.com/earlymarket/Coposition" 
+      i.fa.fa-github-square.fa-2x aria-hidden="true"
+    |  
+    a href="https://twitter.com/coposition" 
+      i.fa.fa-twitter-square.fa-2x aria-hidden="true" 
 
-      /!
-        .col.m4.s12
-          h5 About
-          ul
-            li
-              a href="#!"
-                Link 1
-            li
-              a href="#!"
-                Link 2
-            li
-              a href="#!"
-                Link 3
-            li
-              a href="#!"
-                Link 4
-
-  .footer-copyright
-    .container
-      | © 2016 Coposition
+  /!
+  .pure-u-1-12
+  /!

@@ -51,7 +51,7 @@
             .col.s12
               | Already registered as a #{"#{resource.class.to_s.downcase}"}? #{link_to "Log in!", new_session_path(resource_name)}
 
-= render "application/video"
+= render "application/background"
 
 javascript:
   $.validator.methods.email = function(value, element) {

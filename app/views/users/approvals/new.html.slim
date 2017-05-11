@@ -1,3 +1,5 @@
+#gonvariables
+  = Gon::Base.render_data
 br/
 | Enter the #{@approvals_presenter.approvable_type} you would like to add.
 br/
@@ -7,16 +9,3 @@ br/
       = f.text_field :approvable, @approvals_presenter.input_options
   = f.hidden_field :approvable_type, value: @approvals_presenter.approvable_type
   = f.button "Add", class: "waves-effect waves-light btn", type: "submit"
-
-javascript:
-  var devs = #{raw @developers.to_json};
-
-  $(".search .devs_typeahead").typeahead({
-    hint: true,
-    highlight: true,
-    minLength: 1
-  },
-  {
-    name: 'devs',
-    source: window.COPO.utility.substringMatcher(devs)
-  });
