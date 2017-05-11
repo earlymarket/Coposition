@@ -18,7 +18,7 @@ $(document).on('page:change', function() {
         const friend_id = this.dataset.friend;
         const friend = gon.friends.find(friend => friend.userinfo.id.toString() === friend_id);
         const checkin = friend.lastCheckin;
-        U.scrollTo('#top', 200);
+        U.scrollTo('#quicklinks', 200);
         setTimeout(() => M.centerMapOn(checkin.lat, checkin.lng), 200);
       });
       M.initMap();

@@ -46,7 +46,7 @@
     return friend.userinfo.id.toString() === friend_id
   });
   var checkin = friend.lastCheckin;
-  COPO.utility.scrollTo('#top', 200);
+  COPO.utility.scrollTo('#quicklinks', 200);
   setTimeout(function(){
  	  COPO.maps.centerMapOn(checkin.lat, checkin.lng)
  	}, 200);
