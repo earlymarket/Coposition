@@ -2,9 +2,9 @@ nav
   #quicklinks.pure-g.sm-hide
     /!
       | INLINE SPACE. DO NOT REMOVE.
-    .pure-u-1-14
+    .pure-u-1-12
     /!
-    .pure-u-12-14.quicklinks-items
+    .pure-u-10-12.quicklinks-items
       = link_to "users", root_path, class: "lg-items-left"
       = link_to "devs", devs_path, class: "lg-items-left current"
       - if Rails.env == "test" || params[:admin] || signed_in?
@@ -17,11 +17,11 @@ nav
             = link_to "Log In", new_developer_session_path, class: "lg-items-right"
           = link_to "Getting Started", getting_started_path, class: "lg-items-right"
           = link_to "API", "https://earlymarket.github.io/copo-docs/", class: "lg-items-right"
-    .pure-u-1-14
+    .pure-u-1-12
   #top-menu.pure-g
-    .pure-u-1-14
+    .pure-u-1-12
     /!
-    .pure-u-12-14
+    .pure-u-10-12
       .top-menu-left
         = image_tag "copo-logo.png", width: 60, class: "sm-hide"
         h1.brandname Coposition
@@ -50,5 +50,5 @@ nav
             li
               = link_to "API", "https://earlymarket.github.io/copo-docs/", class: "dropdown-item"
     /!
-    .pure-u-1-14
+    .pure-u-1-12
     /!
