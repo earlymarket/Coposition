@@ -72,6 +72,6 @@ RSpec.feature "Developers", type: :feature do
   end
 
   def then_i_should_not_be_signed_in
-    expect(page).to have_text "Developer log in"
+    expect(page).to have_text "Log In"
   end
 end

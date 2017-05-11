@@ -30,7 +30,7 @@ $(document).on('page:change', function() {
       $('#map-overlay').removeClass('hide');
     }
 
-    $(document).on('page:before-unload', function(){
+    $(document).one('turbolinks:before-render', function(){
       COPO.permissions.switchesOff();
     })
   }

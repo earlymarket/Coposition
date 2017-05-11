@@ -5,7 +5,7 @@ class Users::ApprovalsController < ApplicationController
   def new
     @approvals_presenter = Users::ApprovalsPresenter.new(current_user, params[:approvable_type])
     @approval = Approval.new
-    @developers = Developer.all.pluck(:company_name)
+    gon.push(devs: Developer.all.pluck(:company_name))
   end
 
   def create

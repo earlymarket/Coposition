@@ -1,14 +1,10 @@
 class WelcomeController < ApplicationController
   def index
-    render 'placeholder_users', layout: false unless Rails.env == "test" ||
-                                                     params[:admin] ||
-                                                     signed_in?
+    render "placeholder_users"
   end
 
   def devs
-    render 'placeholder_devs', layout: false unless Rails.env == "test" ||
-                                                    params[:admin] ||
-                                                    signed_in?
+    render "placeholder_devs"
   end
 
   def api

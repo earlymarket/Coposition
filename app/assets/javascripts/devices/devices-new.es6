@@ -16,7 +16,7 @@ $(document).on('page:change', () => {
         $PREVIEW.fadeOut("fast", () => $PREVIEW.addClass("hide"));
         $ADD_BUTTON.removeClass('disabled').prop('disabled', false);
         if (typeof map !== "undefined") {
-          $(document).off('page:before-unload', COPO.maps.removeMap);
+          $(document).off('turbolinks:before-render', COPO.maps.removeMap);
           COPO.maps.removeMap();
         }
       }
@@ -59,7 +59,7 @@ $(document).on('page:change', () => {
       }
     }
 
-    $(document).on('page:before-unload', function(){
+    $(document).one('turbolinks:before-render', function(){
       $CREATE_CHECKIN.off('change');
     })
   }
