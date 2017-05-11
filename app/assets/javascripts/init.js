@@ -43,17 +43,6 @@ $(document).on('ready page:change', function() {
   $('.attachinary-input').attachinary();
   // Event listeners
 
-  // dodgy hack to fix the multiple sidenav problem
-  // works by deleting and recreating the nav dom node
-  // inspired by this attrocity:
-  // https://github.com/Dogfalo/materialize/issues/1894
-  (function () {
-    var oldMenu = $('.button-collapse').remove()
-    $('nav').prepend(oldMenu)
-    $(".button-collapse").sideNav();
-    $('.collapsible').collapsible();
-  }());
-
   $('.scrollspy').scrollSpy();
 
 });
