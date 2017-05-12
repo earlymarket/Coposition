@@ -154,6 +154,7 @@ window.COPO.editCheckin = {
     checkin.edited = response.checkin.edited;
     checkin.lastEdited = true;
     checkin.address = response.checkin.address;
+    checkin.fogged_city = response.checkin.fogged_city;
     if (checkin.created_at !== response.checkin.created_at) {
       checkin.created_at = response.checkin.created_at;
       gon.checkins.sort(function(a, b) {
