@@ -15,6 +15,7 @@ ActiveAdmin.register User do
     column :friend_count do |user|
       user.friends.count
     end
+    column :zapier_enabled
     column :admin
     actions
   end
