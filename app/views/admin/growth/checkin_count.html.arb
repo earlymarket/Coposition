@@ -1,0 +1,10 @@
+table do
+  thead do
+    tr do
+      %w[Sunday Monday Tuesday Wednesday Thursday Friday Saturday].each &method(:th)
+    end
+  end
+  tbody do
+    # ...
+  end
+end
