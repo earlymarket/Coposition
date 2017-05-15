@@ -10,7 +10,7 @@ ActiveAdmin.register User do
       user.devices.count
     end
     column :app_count do |_|
-      "Not set"
+      user.developers.count
     end
     column :friend_count do |user|
       user.friends.count
