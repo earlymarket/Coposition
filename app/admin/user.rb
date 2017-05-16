@@ -1,23 +1,27 @@
 ActiveAdmin.register User do
-  permit_params :email, :username, :password, :password_confirmation, :admimn
+  permit_params :email, :username, :password, :password_confirmation, :admin
 
   index do
     selectable_column
     id_column
     column :email
     column :username
-    column :current_sign_in_at
-    column :sign_in_count
-    column :created_at
+    column :device_count do |user|
+      user.devices.count
+    end
+    column :app_count do |_|
+      "Not set"
+    end
+    column :friend_count do |user|
+      user.friends.count
+    end
+    column :zapier_enabled
     column :admin
     actions
   end
 
   filter :email
   filter :username
-  filter :current_sign_in_at
-  filter :sign_in_count
-  filter :created_at
 
   form do |f|
     f.inputs "User Details" do
@@ -29,5 +33,4 @@ ActiveAdmin.register User do
     end
     f.actions
   end
-
 end
