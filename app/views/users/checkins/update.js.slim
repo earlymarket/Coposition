@@ -7,7 +7,7 @@
 | ;
 //change open popups
 
-- if(@checkin.fogged)
+- if (@checkin.fogged)
   | var $foggedAddress = '<div class="foggedAddress"><h3 class="lined">';
   | $foggedAddress += '<span class="lined-pad">Fogged Address<span></h3><li>
   = j @checkin.fogged_city
@@ -24,5 +24,5 @@
     $(this).remove()
   | });
 
-//refresh the state of all markers
-| if(!COPO.maps.queueCalled) { COPO.maps.queueRefresh(gon.checkins) }
+// refresh the state of all markers
+| if (!COPO.maps.queueCalled) { COPO.maps.queueRefresh(gon.checkins) }

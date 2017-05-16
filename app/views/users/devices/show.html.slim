@@ -29,8 +29,10 @@
       | ID: {{ id }}  
       i.tooltipped data-tooltip=("Latitude/longitude have been changed from original values") {{ edited }}
     ul
-      li#localTime
-        | {{ created_at }}
+      h3.lined
+        span.lined-pad Date
+      li.ta-center
+        | {{ &inlineDate }}
       h3.lined
         span.lined-pad Coordinates
       li.ta-center
