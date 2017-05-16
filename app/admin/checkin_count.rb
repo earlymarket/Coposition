@@ -1,28 +1,11 @@
-ActiveAdmin.register_page "Checkin Count", namespace: :growth do
+ActiveAdmin.register_page "Checkin Count" do
   content do
-    redirect_to :index
+    render "index", layout: "active_admin"
   end
 
-  page_action :index do
-    @collection = ItemsByMonthsQuery.new(table: "checkins").all
-    render :index, layout: 'active_admin'
+  controller do
+    def index
+      params[:collection] = ItemsByMonthsQuery.new(table: "checkins").all
+    end
   end
-
-  # controller do
-  #   def scoped_collection
-  #     ItemsByMonthsQuery.new(table: "checkins").all
-  #   end
-  # end
-
-  # index pagination_total: false do
-  #   column :month, sortable: false do |item|
-  #     item["month"]
-  #   end
-  #   column :total, sortable: false do |item|
-  #     item["total"]
-  #   end
-  #   column :growth, sortable: false do |item|
-  #     item["growth"]
-  #   end
-  # end
 end
