@@ -76,12 +76,14 @@ class Users::CheckinsController < ApplicationController
 
   def require_checkin_ownership
     return if user_owns_checkin?
+
     flash[:alert] = "You do not own that check-in."
     redirect_to root_path
   end
 
   def require_device_ownership
     return if current_user.devices.exists?(params[:device_id])
+
     flash[:alert] = "You do not own this device."
     redirect_to root_path
   end

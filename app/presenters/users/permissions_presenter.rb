@@ -1,5 +1,5 @@
 module Users
-  class PermissionsPresenter  < ApplicationPresenter
+  class PermissionsPresenter < ApplicationPresenter
     attr_reader :permissible
     attr_reader :device
     attr_reader :permissions
@@ -18,8 +18,12 @@ module Users
 
     def devices_index
       @device = Device.find(@params[:device_id])
-      @permissions = device.permissions.includes(:permissible)
-                            .order(:permissible_type, :permissible_id).not_coposition_developers.reverse
+      @permissions =
+        device
+        .permissions
+        .includes(:permissible)
+        .order(:permissible_type, :permissible_id)
+        .not_coposition_developers.reverse
     end
 
     def approvals_index(from)
@@ -68,9 +72,10 @@ module Users
     private
 
     def devices_index_checkins
-      @devices.includes(:checkins).map do |device|
-        device.checkins.first.as_json.merge(device: device.name) if device.checkins.present?
-      end.compact
+      @devices
+        .includes(:checkins)
+        .map { |device| device.checkins.first.as_json.merge(device: device.name) if device.checkins.present? }
+        .compact
     end
 
     def approvals_permissions(type)

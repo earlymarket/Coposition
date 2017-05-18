@@ -11,13 +11,11 @@ class Users::DevicesController < ApplicationController
   def show
     @device_show_presenter = ::Users::Devices::DevicesShowPresenter.new(current_user, params)
     gon.push(@device_show_presenter.show_gon)
+
     respond_to do |format|
       format.html { flash[:notice] = "Right click on the map to check-in" }
       format.any(:csv, :gpx, :geojson) do
-        CreateActivity.call(entity: @device_show_presenter.device,
-                            action: :show,
-                            owner: current_user,
-                            params: { format: params[:format], count: @device_show_presenter.device.checkins.count })
+        create_activity
         send_data @device_show_presenter.checkins, filename: @device_show_presenter.filename
       end
     end
@@ -60,7 +58,9 @@ class Users::DevicesController < ApplicationController
     result = ::Users::Devices::UpdateDevice.call(params: params)
     @device = result.device
     flash[:notice] = result.notice
+
     return unless request.format.json?
+
     if result.success?
       render status: 200, json: {}
     else
@@ -70,15 +70,27 @@ class Users::DevicesController < ApplicationController
 
   private
 
+  def create_activity
+    CreateActivity.call(
+      entity: @device_show_presenter.device,
+      action: :show,
+      owner: current_user,
+      params: { format: params[:format], count: @device_show_presenter.device.checkins.count }
+    )
+  end
+
   def require_ownership
     return if user_owns_device?
+
     flash[:notice] = "You do not own that device"
     redirect_to root_path
   end
 
   def published?
     device = Device.find(params[:id])
+
     return if device.published? && !device.cloaked?
+
     redirect_to root_path, notice: "Could not find shared device"
   end
 end
