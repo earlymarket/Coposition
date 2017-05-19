@@ -5,8 +5,11 @@
       a.modal-trigger.btn.red.white-text href="#delete#{@device_show_presenter.device.id}" id="deleteButton#{@device_show_presenter.device.id}" 
         | Delete check-ins
       = link_to "Delete device", user_device_path(current_user.url_id, @device_show_presenter.device), { method: :delete, class: "btn red white-text", data: { confirm: "Are you sure?" } }
-      a#checkinNow.btn.green.white-text data-turbolinks="false" href="#"  Checkin now
-      a#checkinFoggedNow.btn.green.white-text data-turbolinks="false" href="#"  Checkin now (fogged)
+      a#checkinNow.btn.green.white-text data-turbolinks="false" href="#" Checkin now
+      a#checkinFoggedNow.btn.green.white-text data-turbolinks="false" href="#" Checkin now (fogged)
+    .buttons
+      - Checkin::EXPORT_FORMATS.each do |format|
+        = link_to "Download checkins (#{format})", user_device_path(current_user.url_id, @device_show_presenter.device, format: format, download: format), { class: "btn green white-text" }
   .modal.delete-modal id="delete#{@device_show_presenter.device.id}" 
     .modal-content
       h4.center-align Delete checkins
