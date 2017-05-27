@@ -1,0 +1,17 @@
+table do
+  thead do
+    tr do
+      %w[Month Total Growth].each &method(:th)
+    end
+  end
+
+  tbody do
+    params[:collection].each do |item|
+      tr do
+        th item['month']
+        th item['total']
+        th '%.2f %' % (item['growth'].to_i * 100)
+      end
+    end
+  end
+end
