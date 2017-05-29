@@ -4,6 +4,7 @@ ActiveAdmin.register Device do
   index do
     selectable_column
     id_column
+
     column :user_id
     column :checkin_count do |device|
       device.checkins.count
@@ -19,6 +20,7 @@ ActiveAdmin.register Device do
 
       configurer.present? ? configurer.email : "Not set"
     end
+
     actions
   end
 
