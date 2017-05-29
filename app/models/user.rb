@@ -102,6 +102,10 @@ class User < ApplicationRecord
     args[:device] ? args[:device].filtered_checkins(args) : safe_checkin_info_for(args)
   end
 
+  def filtered_locations(args)
+    args[:device] ? args[:device].filtered_locations(args) : locations_for(args)
+  end
+
   def safe_checkin_info_for(args)
     args[:multiple_devices] = true
     # sort_by slows this query down A LOT
@@ -114,7 +118,12 @@ class User < ApplicationRecord
     end
   end
 
-  ##############
+  def locations_for(args)
+    args[:multiple_devices] = true
+    locations = devices.flat_map { |device| device.filtered_locations(args) }
+                       .sort_by  { |key| key["created_at"] }.reverse
+    locations.paginate(page: args[:page], per_page: args[:per_page])
+  end
 
   def slack_message
     "A new user has registered, id: #{id}, name: #{username}, there are now #{User.count} users."

@@ -22,6 +22,14 @@ class Device < ApplicationRecord
     sanitize_checkins(sanitized, args)
   end
 
+  def filtered_locations(args)
+    filtered_locations = args[:copo_app] ? locations : locations
+    filtered_locations.near_to(args[:near])
+                      .limit_returned_locations(args)
+                      .unscope(:order)
+                      .distinct
+  end
+
   def filtered_checkins(args)
     sanitized = args[:copo_app] ? checkins : permitted_history_for(args[:permissible])
     sanitized.since_time(args[:time_amount], args[:time_unit])
