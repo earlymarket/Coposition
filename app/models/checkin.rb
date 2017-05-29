@@ -19,6 +19,8 @@ class Checkin < ApplicationRecord
 
   before_update :set_edited, if: proc { lat_changed? || lng_changed? }
 
+  after_destroy :decrement_checkin_count
+
   reverse_geocoded_by :lat, :lng do |obj, results|
     if results.present?
       results.first.methods.each do |m|
@@ -39,6 +41,11 @@ class Checkin < ApplicationRecord
     else
       raise "Checkin is not assigned to a device."
     end
+  end
+
+  def decrement_checkin_count
+    location.save
+    location.destroy if location.checkins_count <= 0
   end
 
   def assign_values

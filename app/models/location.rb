@@ -1,5 +1,5 @@
 class Location < ApplicationRecord
-  belongs_to :user, dependent: :destroy
+  belongs_to :user
   has_many :checkins
   has_many :devices, through: :checkins
   validates_presence_of :lat, :lng
@@ -17,5 +17,4 @@ class Location < ApplicationRecord
   def reverse_geocoded?
     address?
   end
-
 end
