@@ -22,7 +22,7 @@ class Location < ApplicationRecord
       if args[:multiple_devices]
         all.distinct
       else
-        uniq.paginate(page: args[:page], per_page: args[:per_page])
+        distinct.paginate(page: args[:page], per_page: args[:per_page])
       end
     end
 

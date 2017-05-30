@@ -9,7 +9,7 @@ class Api::V1::Users::LocationsController < Api::ApiController
     locations = @user.filtered_locations(filter_arguments)
     paginated_response_headers(locations)
 
-    respond_with locations
+    respond_with locations: locations
   end
 
   private
