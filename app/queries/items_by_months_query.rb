@@ -1,4 +1,12 @@
 class ItemsByMonthsQuery
+  ACTIVE_USERS_BY_MONTHS = <<-ACTIVE_USERS
+    (select MAX(c.created_at) as created_at, u.id
+    from checkins as c
+    join devices as d on d.id = c.device_id
+    join users as u on u.id = d.user_id
+    group by EXTRACT(MONTH from c.created_at), u.id)
+  ACTIVE_USERS
+
   attr_reader :table, :options
 
   def initialize(table:, **options)
@@ -26,19 +34,9 @@ class ItemsByMonthsQuery
 
   def data_source
     if options[:active_users]
-      active_users_by_months
+      ACTIVE_USERS_BY_MONTHS
     else
       table
     end
-  end
-
-  def active_users_by_months
-    <<-ACTIVE_USERS
-      (select MAX(c.created_at) as created_at, u.id
-      from checkins as c
-      join devices as d on d.id = c.device_id
-      join users as u on u.id = d.user_id
-      group by EXTRACT(MONTH from c.created_at), u.id)
-    ACTIVE_USERS
   end
 end
