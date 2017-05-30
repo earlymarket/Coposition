@@ -20,7 +20,7 @@ class Location < ApplicationRecord
   class << self
     def limit_returned_locations(args)
       if args[:multiple_devices]
-        all.uniq
+        all.distinct
       else
         uniq.paginate(page: args[:page], per_page: args[:per_page])
       end
@@ -32,6 +32,12 @@ class Location < ApplicationRecord
       lat = near_array[0].to_f
       lng = near_array[1].to_f
       where(lat: (lat - 0.5)..(lat + 0.5), lng: (lng - 0.5)..(lng + 0.5))
+    end
+
+    def most_frequent(most)
+      return all unless most
+      frequent_locations = unscope(:order).distinct.sort_by(&:checkins_count).reverse.first(10).pluck(:id)
+      Location.where(id: frequent_locations)
     end
   end
 end

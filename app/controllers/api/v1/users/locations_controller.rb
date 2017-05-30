@@ -30,7 +30,7 @@ class Api::V1::Users::LocationsController < Api::ApiController
       page: params[:page],
       per_page: per_page,
       type: params[:type],
-      near: params[:near],
+      near: params[:near]
     }
   end
 

@@ -23,11 +23,11 @@ class Device < ApplicationRecord
   end
 
   def filtered_locations(args)
-    filtered_locations = args[:copo_app] ? locations : locations
-    filtered_locations.near_to(args[:near])
-                      .limit_returned_locations(args)
-                      .unscope(:order)
-                      .distinct
+    locations.near_to(args[:near])
+             .most_frequent(args[:type])
+             .limit_returned_locations(args)
+             .unscope(:order)
+             .distinct
   end
 
   def filtered_checkins(args)

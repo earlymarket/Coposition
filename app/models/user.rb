@@ -119,10 +119,12 @@ class User < ApplicationRecord
   end
 
   def locations_for(args)
-    args[:multiple_devices] = true
-    locations = devices.flat_map { |device| device.filtered_locations(args) }
-                       .sort_by  { |key| key["created_at"] }.reverse
-    locations.paginate(page: args[:page], per_page: args[:per_page])
+    locations.near_to(args[:near])
+             .most_frequent(args[:type])
+             .limit_returned_locations(args)
+             .unscope(:order)
+             .distinct
+             .paginate(page: args[:page], per_page: args[:per_page])
   end
 
   def slack_message
