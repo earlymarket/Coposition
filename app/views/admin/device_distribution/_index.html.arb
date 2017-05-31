@@ -3,7 +3,7 @@ h2 "All"
 table do
   thead do
     tr do
-      %w[Devices Consumers Percent].each &method(:th)
+      HEADERS.each &method(:th)
     end
   end
 
@@ -23,7 +23,7 @@ h2 "Active"
 table do
   thead do
     tr do
-      %w[Devices Consumers Percent].each &method(:th)
+      HEADERS.each &method(:th)
     end
   end
 
