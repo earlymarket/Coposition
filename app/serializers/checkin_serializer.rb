@@ -18,7 +18,7 @@ class CheckinSerializer < ActiveModel::Serializer
     h = super
 
     (object.attribute_names.map(&:to_sym) - FILTERED_SET).each do |key|
-      h[key] = object.attributes[key]
+      h[key] = object.attributes[key.to_s]
     end
 
     h
