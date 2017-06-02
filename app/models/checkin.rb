@@ -7,10 +7,9 @@ class GeojsonCheckin
 end
 
 class Checkin < ApplicationRecord
-  EXPORT_FORMATS = %i(csv gpx geojson)
-
   validates :lat, presence: :true
   validates :lng, presence: :true
+
   belongs_to :device
 
   delegate :user, to: :device
