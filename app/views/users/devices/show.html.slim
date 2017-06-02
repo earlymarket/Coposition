@@ -8,8 +8,8 @@
       a#checkinNow.btn.green.white-text data-turbolinks="false" href="#" Checkin now
       a#checkinFoggedNow.btn.green.white-text data-turbolinks="false" href="#" Checkin now (fogged)
     .buttons
-      - Checkin::EXPORT_FORMATS.each do |format|
-        = link_to "Download checkins (#{format})", user_device_path(current_user.url_id, @device_show_presenter.device, format: format, download: format), { class: "btn green white-text" }
+      a.modal-trigger.btn.green.white-text.downloadButton data-tooltip=("Download range") href="#download#{@device_show_presenter.device.id}" id="downloadButton#{@device_show_presenter.device.id}"
+        | Download checkins
   .modal.delete-modal id="delete#{@device_show_presenter.device.id}" 
     .modal-content
       h4.center-align Delete checkins
@@ -54,3 +54,5 @@
       li Longitude: {{ lng }}
       li 
         | {{ &checkinLink }}
+
+= render "device_modals", device: @device_show_presenter.device
