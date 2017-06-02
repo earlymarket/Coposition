@@ -1,0 +1,33 @@
+h2 "Fogged"
+
+table do
+  thead do
+    tr do
+      BOOLEAN_HEADERS.each &method(:th)
+    end
+  end
+
+  tbody do
+    tr do
+      th '%.2f %' % params[:fogged][:on]
+      th '%.2f %' % params[:fogged][:off]
+    end
+  end
+end
+
+h2 "Cloaked"
+
+table do
+  thead do
+    tr do
+      BOOLEAN_HEADERS.each &method(:th)
+    end
+  end
+
+  tbody do
+    tr do
+      th '%.2f %' % params[:cloaked][:on]
+      th '%.2f %' % params[:cloaked][:off]
+    end
+  end
+end
