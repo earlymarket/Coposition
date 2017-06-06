@@ -28,7 +28,10 @@
     button.right.modal-close X
     h4.center-align Choose download format
     .center-align
-      label Download all the check-ins on this device. Choose the CSV format if you are downloading in order to back up your checkins so you can re-upload them in the future.
+      - if params[:from].present?
+        label Download check-ins within the selected date range. Choose the CSV format if you are downloading in order to back up your check-ins so you can re-upload them in the future.
+      - else
+        label Download all the check-ins on this device. Choose the CSV format if you are downloading in order to back up your checkins so you can re-upload them in the future.
       br
       br
       a.btn.device-button-small href="#{user_device_path(current_user.url_id, device)}.csv?download=csv&from=#{params[:from]}&to=#{params[:to]}" csv
