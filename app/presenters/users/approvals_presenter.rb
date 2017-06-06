@@ -6,6 +6,21 @@ module Users
     attr_reader :devices
     attr_reader :page
 
+    PIN_COLORS = {
+      yellow:        "#FFEC00",
+      yellow_orange: "#FBBA00",
+      orange:        "#F49306",
+      orange_red:    "#EB6909",
+      red:           "#E3001B",
+      red_violet:    "#E3004F",
+      violet:        "#93117E",
+      violet_blue:   "#162A83",
+      blue:          "#006BB3",
+      blue_green:    "#019690",
+      green:         "#009136",
+      yellow_green:  "#96BF0B"
+    }.freeze
+
     def initialize(user, approvable_type)
       @user = user
       @approvable_type = approvable_type
@@ -66,10 +81,11 @@ module Users
       return unless approvable_type == "User"
 
       friends = @user.friends.includes(:devices)
-      friends.map do |friend|
+      friends.map.with_index do |friend, index|
         {
           userinfo: friend.public_info_hash,
-          lastCheckin: friend.safe_checkin_info_for(permissible: @user, action: "last")[0]
+          lastCheckin: friend.safe_checkin_info_for(permissible: @user, action: "last")[0],
+          pinColor: PIN_COLORS.to_a[index % PIN_COLORS.size][1]
         }
       end
     end
