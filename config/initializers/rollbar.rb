@@ -14,6 +14,16 @@ Rollbar.configure do |config|
       environment: "production"
     }
   }
+
+  config.exception_level_filters["ActionController::RoutingError"] = lambda do |e|
+    e.message =~ %r{No route matches \[[A-Z]+\] "/(.+)"}
+    case Regexp.last_match[1].split("/").first.to_s.downcase
+    when %w(myadmin phpmyadmin w00tw00t pma cgi-bin xmlrpc.php wp wordpress cfide)
+      "ignore"
+    else
+      "warning"
+    end
+  end
   # By default, Rollbar will try to call the `current_user` controller method
   # to fetch the logged-in user object, and then call that object's `id`,
   # `username`, and `email` methods to fetch those properties. To customize:
