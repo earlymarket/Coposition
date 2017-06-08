@@ -1,5 +1,7 @@
 ActiveAdmin.register_page "Consumer Count" do
-  HEADERS = %w[Month Total Growth]
+  CONSUMER_COUNT_HEADERS = %w[Month Total Growth]
+
+  menu parent: "Reports"
 
   content do
     render "index", layout: "active_admin"

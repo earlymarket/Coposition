@@ -1,7 +1,9 @@
 ActiveAdmin.register_page "Device Distribution" do
   DEVICE_NUMBERS = [0, 1, 2, 3, 4, 5]
   DISTRIBUTION_TYPES = %i(full active).freeze
-  HEADERS = %w[Devices Consumers Percent]
+  DEVICE_DISTRIBUTION_HEADERS = %w[Devices Consumers Percent]
+
+  menu parent: "Reports"
 
   content do
     render "index", layout: "active_admin"
@@ -20,7 +22,9 @@ ActiveAdmin.register_page "Device Distribution" do
 
     def active_distribution
       total = ActiveRecord::Base.connection.execute(
-        "select distinct ds.id from #{ItemsByMonthsQuery::ACTIVE_USERS_BY_MONTHS} ds"
+        "select distinct ds.id \
+        from #{ItemsByMonthsQuery::ACTIVE_USERS_BY_MONTHS} ds \
+        where EXTRACT(MONTH from ds.created_at) = EXTRACT(MONTH from now())"
       ).count
 
       build_collection(active_device_distribution, total)

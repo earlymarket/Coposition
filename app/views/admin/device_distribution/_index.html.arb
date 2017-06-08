@@ -3,7 +3,7 @@ h2 "All"
 table do
   thead do
     tr do
-      HEADERS.each &method(:th)
+      DEVICE_DISTRIBUTION_HEADERS.each &method(:th)
     end
   end
 

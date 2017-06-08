@@ -24,7 +24,7 @@ class ItemsByMonthsQuery
         from #{data_source} as ds
         group by month
       ) s
-      order by month;
+      order by month desc;
     EOQ
 
     ActiveRecord::Base.connection.execute(query)

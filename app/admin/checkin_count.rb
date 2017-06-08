@@ -1,5 +1,7 @@
 ActiveAdmin.register_page "Checkin Count" do
-  HEADERS = %w[Month Total Growth]
+  CHECKIN_COUNT_HEADERS = %w[Month Total Growth]
+
+  menu parent: "Reports"
 
   content do
     render "index", layout: "active_admin"

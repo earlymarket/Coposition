@@ -1,7 +1,7 @@
 table do
   thead do
     tr do
-      HEADERS.each &method(:th)
+      CHECKIN_COUNT_HEADERS.each &method(:th)
     end
   end
 
