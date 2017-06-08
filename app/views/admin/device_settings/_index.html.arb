@@ -95,7 +95,7 @@ h2 "Delay"
 table do
   thead do
     tr do
-      DELAY.each &method(:th)
+      DELAY.map{ |delay| delay || 'Empty' }.each &method(:th)
     end
   end
 
