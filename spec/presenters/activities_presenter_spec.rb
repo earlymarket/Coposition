@@ -34,8 +34,8 @@ describe ::ActivitiesPresenter do
     end
 
     it "returns activities belonging to specified trackable" do
-      activities = described_class.new(ActionController::Parameters.new(filter: { trackable_type: "Device",
-                                                                                  trackable_id: device.id }))
+      activities = described_class.new(ActionController::Parameters.new(filter: true, trackable_type: "Device",
+                                                                        trackable_id: device.id))
       expect(activities.activities).to eq [second_activity]
     end
   end
