@@ -1,6 +1,8 @@
 ActiveAdmin.register Approval, as: "Friendship" do
   actions :all, except: [:new, :create]
 
+  permit_params :approval_date, :user_id, :approvable_type, :status
+
   controller do
     def scoped_collection
       end_of_association_chain.where id: Approval.find_by_sql(
