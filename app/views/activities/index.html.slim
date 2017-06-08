@@ -25,15 +25,15 @@ ul.collection
     li.collection-item
       h6
         - if activity.owner.class.name == "User"
-          = link_to(activity.owner.username , activities_path(filter: { owner_type: "User", owner_id: activity.owner.id }))
+          = link_to(activity.owner.username , activities_path(owner_type: "User", owner_id: activity.owner.id, filter: true))
           |  
         - else
-          = link_to(activity.owner.company_name , activities_path(filter: { owner_type: "Developer", owner_id: activity.owner.id }))
+          = link_to(activity.owner.company_name , activities_path(owner_type: "Developer", owner_id: activity.owner.id, filter: true))
         label
           = humanize_date_and_time(activity.created_at)
           |  
         label
-          = link_to(activity.key , activities_path(filter: { key: activity.key }))
+          = link_to(activity.key , activities_path(key: activity.key, filter: true))
       = render_activity activity
 .center
   = will_paginate @activities_presenter.activities
