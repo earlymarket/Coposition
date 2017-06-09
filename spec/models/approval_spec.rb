@@ -6,6 +6,24 @@ RSpec.describe Approval, type: :model do
   let(:developer) { FactoryGirl.create(:developer) }
   let(:approval) { FactoryGirl.create(:approval, user: user) }
 
+  describe "#status" do
+    context "when status is in the list of allowed" do
+      let(:approval) { FactoryGirl.build(:approval, user: user) }
+
+      it "is valid approval" do
+        expect(approval).to be_valid
+      end
+    end
+
+    context "when status is not in the list of allowed" do
+      let(:approval) { FactoryGirl.build(:approval, user: user, status: "random") }
+
+      it "is not valid approval" do
+        expect(approval).not_to be_valid
+      end
+    end
+  end
+
   describe "factory" do
     it "creates a valid checkin" do
       approval = FactoryGirl.build(:approval)
