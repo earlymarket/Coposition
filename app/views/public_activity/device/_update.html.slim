@@ -2,7 +2,7 @@
 - if activity.trackable
   br
   |  Name: 
-  = link_to(activity.trackable.name , activities_path(filter: { trackable_type: "Device", trackable_id: activity.trackable.id }))
+  = link_to(activity.trackable.name , activities_path(filter: true, trackable_type: "Device", trackable_id: activity.trackable.id))
   br
   |  Params: 
   = activity.parameters

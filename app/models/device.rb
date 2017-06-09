@@ -3,12 +3,13 @@ class Device < ApplicationRecord
 
   belongs_to :user
   has_one :config, dependent: :destroy
-  has_one :configurer, through: :configs, source: :developer
+  has_one :configurer, through: :config, source: :developer
   has_many :checkins, dependent: :destroy
   has_many :permissions, dependent: :destroy
   has_many :developers, through: :permissions, source: :permissible, source_type: "Developer"
   has_many :permitted_users, through: :permissions, source: :permissible, source_type: "User"
   has_attachment :csv, accept: :raw
+
   validates :name, uniqueness: { scope: :user_id }, if: :user_id
 
   before_create do |dev|

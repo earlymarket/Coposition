@@ -18,7 +18,10 @@ module Users::Checkins
     private
 
     def create_activity(checkins)
-      CreateActivity.call(entity: device, action: :batch_create, owner: device.user, params: { count: checkins.count })
+      CreateActivity.call(entity: device,
+                          action: :batch_create,
+                          owner: device.user,
+                          params: { count: checkins.ids.count })
     end
 
     def checkin_create(hash)

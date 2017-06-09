@@ -49,9 +49,9 @@ module Users
     end
 
     def permissions
-      devices.map do |device|
-        device.permissions.where(permissible_type: approvable_type).not_coposition_developers
-      end.inject(:+)
+      devices
+        .map { |device| device.permissions.where(permissible_type: approvable_type).not_coposition_developers }
+        .inject(:+)
     end
 
     def users_approved
@@ -64,6 +64,7 @@ module Users
 
     def friends_checkins
       return unless approvable_type == "User"
+
       friends = @user.friends.includes(:devices)
       friends.map do |friend|
         {

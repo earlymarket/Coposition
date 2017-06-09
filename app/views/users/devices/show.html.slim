@@ -5,8 +5,11 @@
       a.modal-trigger.btn.red.white-text href="#delete#{@device_show_presenter.device.id}" id="deleteButton#{@device_show_presenter.device.id}" 
         | Delete check-ins
       = link_to "Delete device", user_device_path(current_user.url_id, @device_show_presenter.device), { method: :delete, class: "btn red white-text", data: { confirm: "Are you sure?" } }
-      a#checkinNow.btn.green.white-text data-turbolinks="false" href="#"  Checkin now
-      a#checkinFoggedNow.btn.green.white-text data-turbolinks="false" href="#"  Checkin now (fogged)
+      a#checkinNow.btn.blue.white-text data-turbolinks="false" href="#" Checkin now
+      a#checkinFoggedNow.btn.blue.white-text data-turbolinks="false" href="#" Checkin now (fogged)
+    .buttons
+      a.modal-trigger.btn.green.white-text.downloadButton data-tooltip=("Download range") href="#download#{@device_show_presenter.device.id}" id="downloadButton#{@device_show_presenter.device.id}"
+        | Download checkins
   .modal.delete-modal id="delete#{@device_show_presenter.device.id}" 
     .modal-content
       h4.center-align Delete checkins
@@ -29,8 +32,10 @@
       | ID: {{ id }}  
       i.tooltipped data-tooltip=("Latitude/longitude have been changed from original values") {{ edited }}
     ul
-      li#localTime
-        | {{ created_at }}
+      h3.lined
+        span.lined-pad Date
+      li.ta-center
+        | {{ &inlineDate }}
       h3.lined
         span.lined-pad Coordinates
       li.ta-center
@@ -49,3 +54,5 @@
       li Longitude: {{ lng }}
       li 
         | {{ &checkinLink }}
+
+= render "device_modals", device: @device_show_presenter.device

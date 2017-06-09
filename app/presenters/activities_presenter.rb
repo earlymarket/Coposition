@@ -12,7 +12,7 @@ class ActivitiesPresenter
     activities = if @params[:search]
       filter_trackable_types.present? ? load_activities.where(trackable_type: filter_trackable_types) : load_activities
     else
-      filter_params ? PublicActivity::Activity.where(filter_params) : PublicActivity::Activity.all
+      filter_params || PublicActivity::Activity.all
     end
     activities.order("created_at desc").paginate(per_page: 15, page: @params[:page])
   end
@@ -24,8 +24,10 @@ class ActivitiesPresenter
   private
 
   def filter_params
-    return false unless @params[:filter]
-    @params.require(:filter).permit(:trackable_type, :trackable_id, :owner_type, :owner_id, :key)
+    return false unless @params["filter"]
+    return PublicActivity::Activity.where(key: @params["key"]) if @params["key"]
+    return PublicActivity::Activity.where(owner_id: @params["owner_id"], owner_type: @params["owner_type"]) if @params["owner_type"]
+    PublicActivity::Activity.where(trackable_type: @params["trackable_type"], trackable_id: @params["trackable_id"])
   end
 
   def load_activities

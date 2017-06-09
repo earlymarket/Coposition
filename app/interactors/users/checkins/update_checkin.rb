@@ -25,7 +25,7 @@ module Users::Checkins
     end
 
     def allowed_params
-      params.require(:checkin).permit(:lat, :lng, :device_id, :fogged)
+      params.require(:checkin).permit(:lat, :lng, :created_at, :device_id, :fogged)
     end
   end
 end

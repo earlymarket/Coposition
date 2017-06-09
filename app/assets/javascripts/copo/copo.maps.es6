@@ -156,7 +156,7 @@ window.COPO.maps = {
       let checkin = this.options.checkin;
       COPO.maps.dateToLocal(checkin);
       if (!marker._popup) {
-        var template = COPO.maps.buildMarkerPopup(checkin);
+        var template = COPO.maps.buildMarkerPopup(checkin, marker);
         marker.bindPopup(L.Util.template(template, checkin));
         marker.openPopup();
       }
@@ -171,7 +171,7 @@ window.COPO.maps = {
     });
   },
 
-  buildMarkerPopup(checkin) {
+  buildMarkerPopup(checkin, marker) {
     let address = checkin.city;
     if (checkin.address) {
       address = COPO.utility.commaToNewline(checkin.address)
@@ -180,8 +180,9 @@ window.COPO.maps = {
       id: checkin.id,
       lat: checkin.lat.toFixed(6),
       lng: checkin.lng.toFixed(6),
-      created_at: moment.utc(checkin.created_at).format("ddd, Do MMM YYYY, HH:mm:ss") + ' (UTC+00:00)',
+      created_at: moment.utc(checkin.created_at).format("ddd MMM D YYYY HH:mm:ss") + ' UTC+0000',
       address: address,
+      marker: marker._leaflet_id
     };
 
     var foggedClass;
@@ -203,6 +204,7 @@ window.COPO.maps = {
     checkinTemp.inlineCoords = COPO.utility.renderInlineCoords(checkin);
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
+    checkinTemp.inlineDate = COPO.utility.renderInlineDate(checkin, checkinTemp);
     var template = $('#markerPopupTmpl').html();
     return Mustache.render(template, checkinTemp);
   },
