@@ -35,9 +35,10 @@ class Api::ApiController < ActionController::API
   end
 
   def check_user_approved_approvable
-    @permissible = find_permissible
     return if req_from_coposition_app?
-    if !@user.approved?(@dev)
+
+    @permissible = find_permissible
+    if !(@user.approved?(@dev) && )
       render status: 401, json: { error: "approval_status: #{@user.approval_for(@dev).status}" }
     elsif !@user.approved?(@permissible)
       render status: 401, json: { error: "approval_status: #{@user.approval_for(@permissible).status}" }

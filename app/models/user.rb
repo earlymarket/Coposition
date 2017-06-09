@@ -18,17 +18,34 @@ class User < ApplicationRecord
   has_many :requests
   has_many :approvals, dependent: :destroy
   has_many :subscriptions, as: :subscriber, dependent: :destroy
-  has_many :developers, -> { where "status = 'accepted'" }, through: :approvals, source: :approvable,
-                                                           source_type: "Developer"
+  has_many :developers,
+    -> { where "status = 'accepted'" },
+    through: :approvals,
+    source: :approvable,
+    source_type: "Developer"
+  has_many :complete_developers,
+    -> { where "status = 'complete'" },
+    through: :approvals,
+    source: :approvable,
+    source_type: "Developer"
   has_many :developer_approvals, -> { where(status: "accepted", approvable_type: "Developer") }, class_name: "Approval"
   has_many :friends, -> { where "status = 'accepted'" }, through: :approvals, source: :approvable, source_type: "User"
   has_many :friend_approvals, -> { where(status: "accepted", approvable_type: "User") }, class_name: "Approval"
-  has_many :pending_friends, -> { where "status = 'pending'" }, through: :approvals, source: :approvable,
-                                                               source_type: "User"
-  has_many :friend_requests, -> { where "status = 'requested'" }, through: :approvals, source: :approvable,
-                                                                 source_type: "User"
-  has_many :developer_requests, -> { where "status = 'developer-requested'" }, through: :approvals, source: :approvable,
-                                                                              source_type: "Developer"
+  has_many :pending_friends,
+    -> { where "status = 'pending'" },
+    through: :approvals,
+    source: :approvable,
+    source_type: "User"
+  has_many :friend_requests,
+    -> { where "status = 'requested'" },
+    through: :approvals,
+    source: :approvable,
+    source_type: "User"
+  has_many :developer_requests,
+    -> { where "status = 'developer-requested'" },
+    through: :approvals,
+    source: :approvable,
+    source_type: "Developer"
   has_many :permissions, as: :permissible, dependent: :destroy
   has_many :permitted_devices, through: :permissions, source: :permissible, source_type: "Device"
 
@@ -54,7 +71,7 @@ class User < ApplicationRecord
   end
 
   def approved?(permissible)
-    developers.include?(permissible) || friends.include?(permissible)
+    approved_dev?(permissible) || approved_user?(permissible)
   end
 
   def request_from?(approvable)
@@ -139,6 +156,14 @@ class User < ApplicationRecord
   end
 
   private
+
+  def approved_dev?(permissible)
+    complete_developers.include?(permissible)
+  end
+
+  def approved_user?(permissible)
+    friends.include?(permissible)
+  end
 
   def generate_token
     self.webhook_key = SecureRandom.uuid
