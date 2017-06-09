@@ -5,12 +5,12 @@ class Developer < ApplicationRecord
 
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
 
+  has_one :oauth_application, class_name: "Doorkeeper::Application", as: :owner, dependent: :destroy
   has_many :requests, dependent: :destroy
   has_many :permissions, as: :permissible, dependent: :destroy
   has_many :devices, through: :permissions
   has_many :subscriptions, as: :subscriber, dependent: :destroy
   has_many :approvals, as: :approvable, dependent: :destroy
-  has_one :oauth_application, class_name: "Doorkeeper::Application", as: :owner, dependent: :destroy
   has_many :pending_requests, -> { where "status = 'developer-requested'" }, through: :approvals, source: :user
   has_many :users, -> { where "status = 'accepted'" }, through: :approvals
   has_many :configs

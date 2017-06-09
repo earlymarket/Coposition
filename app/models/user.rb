@@ -71,7 +71,7 @@ class User < ApplicationRecord
   end
 
   def approved?(permissible)
-    approved_dev?(permissible) || approved_user?(permissible)
+    authorized_dev?(permissible) || approved_user?(permissible)
   end
 
   def request_from?(approvable)
@@ -157,8 +157,12 @@ class User < ApplicationRecord
 
   private
 
-  def approved_dev?(permissible)
+  def authorized_dev?(permissible)
     complete_developers.include?(permissible)
+  end
+
+  def approved_dev?(permissible)
+    developers.include?(permissible)
   end
 
   def approved_user?(permissible)
