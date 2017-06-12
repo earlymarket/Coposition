@@ -20,6 +20,7 @@ class Location < ApplicationRecord
   class << self
     def limit_returned_locations(args)
       if args[:multiple_devices]
+        binding.pry
         all.distinct
       else
         distinct.paginate(page: args[:page], per_page: args[:per_page])

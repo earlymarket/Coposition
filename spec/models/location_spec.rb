@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe Location, type: :model do
-  let(:location) { FactoryGirl.create(:location) }
-  let(:second_location) { FactoryGirl.create(:location) }
+  let!(:location) { FactoryGirl.create(:location) }
+  let!(:second_location) { FactoryGirl.create(:location, created_at: Date.yesterday) }
 
   describe "factory" do
     it "creates a valid location" do
@@ -60,11 +60,6 @@ RSpec.describe Location, type: :model do
   end
 
   describe "public class methods" do
-    before do
-      location
-      second_location
-    end
-
     context "responds to its methods" do
       %i(limit_returned_locations near_to most_frequent).each do |method|
         it { expect(Location).to respond_to(method) }
@@ -79,7 +74,7 @@ RSpec.describe Location, type: :model do
 
       it "returns paginated locations if not multiple devices" do
         result = Location.limit_returned_locations(multiple_devices: false, per_page: 1, page: 1)
-        expect(result).to eq [Location.second]
+        expect(result).to eq [Location.first]
       end
     end
 
