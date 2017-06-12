@@ -3,8 +3,8 @@ require "rails_helper"
 RSpec.describe Api::V1::UsersController, type: :controller do
   include ControllerMacros
 
-  let(:dev) { FactoryGirl.create :developer }
-  let(:user) { FactoryGirl.create :user }
+  let(:dev) { create :developer }
+  let(:user) { create :user }
 
   describe "#show" do
     context "without an API key" do

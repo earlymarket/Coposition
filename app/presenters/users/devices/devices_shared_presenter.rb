@@ -32,6 +32,7 @@ module Users::Devices
 
     def gon_shared_checkin
       return unless shared_checkin.present?
+
       if device.fogged?
         shared_checkin.select(FOGGED_FIELDS)[0]
       else

@@ -136,7 +136,7 @@ $(document).on('page:change', function () {
         map.on('mouseout', this.unpause.bind(this));
         $(document).on('timer:ping', this.cycleNext.bind(this))
         // Cleanup
-        $(document).one('page:before-unload', function () {
+        $(document).one('turbolinks:before-render', function () {
           $(document).off('timer:ping');
         });
       },

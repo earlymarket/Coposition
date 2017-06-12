@@ -32,17 +32,21 @@ gem "will_paginate-materialize", git: "https://github.com/t-harps/will_paginate-
 gem "jquery-validation-rails"
 gem "inline_svg"
 gem "gon", "~> 6.1.0"
-gem "cloudinary", "~> 1.1.3"
-gem "attachinary", "~> 1.3.1"
+gem "cloudinary", "~> 1.7.0"
+gem "attachinary", git: "https://github.com/earlymarket/attachinary"
 gem "sprockets", ">= 3.0.0"
 gem "sprockets-es6"
 gem "bower-rails", "~> 0.10.0"
 gem "gpx"
-gem "activeadmin", git: "https://github.com/activeadmin/activeadmin"
+gem "activeadmin"
 gem "inherited_resources", git: "https://github.com/activeadmin/inherited_resources"
 gem "activerecord-import"
 gem "sidekiq"
 gem "interactor"
+gem "slim"
+gem "public_activity"
+gem "rollbar"
+gem "oj"
 
 group :production do
   gem "rack-timeout"
@@ -69,6 +73,7 @@ group :development do
   gem "rack-mini-profiler", require: false
   gem "flamegraph"
   gem "stackprof"
+  gem "slim-rails"
 end
 
 group :development, :test do
@@ -86,6 +91,7 @@ group :development, :test do
   gem "coffeelint"
   gem "rails_best_practices", require: false
   gem "dotenv-rails"
+  gem "slim_lint", require: false
 end
 
 group :test do

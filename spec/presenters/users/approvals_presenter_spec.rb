@@ -3,14 +3,14 @@ require "rails_helper"
 describe ::Users::ApprovalsPresenter do
   subject(:approvals) { described_class.new(user, "User") }
   let(:user) do
-    us = FactoryGirl.create(:user)
+    us = create(:user)
     Approval.add_friend(us, friend)
     Approval.add_friend(friend, us)
     us
   end
-  let(:friend) { FactoryGirl.create(:user) }
+  let(:friend) { create(:user) }
   let(:device) do
-    device = FactoryGirl.create(:device, user_id: user.id)
+    device = create(:device, user_id: user.id)
     device.permitted_users << friend
   end
 

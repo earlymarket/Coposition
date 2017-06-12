@@ -23,9 +23,9 @@ RSpec.describe UserMailer, type: :mailer do
   end
 
   describe 'add_user_email' do
-    let(:user) { FactoryGirl.create :user }
-    let(:added_user) { FactoryGirl.create :user }
-    let(:developer) { FactoryGirl.create :developer }
+    let(:user) { create :user }
+    let(:added_user) { create :user }
+    let(:developer) { create :developer }
     let(:friend_mail) { UserMailer.add_user_email(user, added_user, false) }
     let(:developer_mail) { UserMailer.add_user_email(developer, added_user, true) }
 

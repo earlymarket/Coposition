@@ -1,6 +1,6 @@
 $(document).on('page:change', function() {
   var U  = window.COPO.utility;
-  if (U.currentPage('approvals', 'index')) {
+  if (U.currentPage('approvals', 'index') && typeof gon != "undefined") {
     const M  = window.COPO.maps;
     U.gonFix();
     const PAGE = "friends" in gon ? 'friends' : 'apps';
@@ -18,7 +18,7 @@ $(document).on('page:change', function() {
         const friend_id = this.dataset.friend;
         const friend = gon.friends.find(friend => friend.userinfo.id.toString() === friend_id);
         const checkin = friend.lastCheckin;
-        U.scrollTo('#top', 200);
+        U.scrollTo('#quicklinks', 200);
         setTimeout(() => M.centerMapOn(checkin.lat, checkin.lng), 200);
       });
       M.initMap();
@@ -30,7 +30,7 @@ $(document).on('page:change', function() {
       $('#map-overlay').removeClass('hide');
     }
 
-    $(document).on('page:before-unload', function(){
+    $(document).one('turbolinks:before-render', function(){
       COPO.permissions.switchesOff();
     })
   }

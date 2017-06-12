@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   ActiveAdmin.routes(self)
   mount ActionCable.server => "/cable"
   root to: "welcome#index"
@@ -105,6 +106,8 @@ Rails.application.routes.draw do
   # Release notes
   resources :release_notes
 
+  resources :activities, only: :index
+  
   namespace :developers do
     get "/", to: "consoles#show"
     resource :console, only: [:show] do

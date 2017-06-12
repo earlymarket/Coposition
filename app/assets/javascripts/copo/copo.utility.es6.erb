@@ -52,6 +52,14 @@ COPO.utility = {
             </span>`;
   },
 
+  renderInlineDate(checkin, tempData) {
+    const url = `${window.location.pathname}/checkins/${checkin.id}`;
+    return `<span class="editable-wrapper clickable">
+              <span class="editable date" data-url="${url}">${tempData.created_at}</span>
+              <i class="material-icons grey-text edit-coords">mode_edit</i>
+            </span>`;
+  },
+
   geocodeCheckinLink(checkin) {
     return COPO.utility.ujsLink('get',
       'Get address' ,
@@ -160,5 +168,13 @@ COPO.utility = {
 
   validateLatLng(coord) {
     return Math.abs(coord) < 180;
-  }
+  },
+
+  substringMatcher(strs) {
+    return (query, callback) => {
+      let substrRegex = new RegExp(query, 'i');
+      let matches = strs.filter(str => substrRegex.test(str));
+      callback(matches);
+    };
+  },
 };

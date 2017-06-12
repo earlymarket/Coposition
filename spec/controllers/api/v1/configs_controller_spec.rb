@@ -4,11 +4,11 @@ RSpec.describe Api::V1::ConfigsController, type: :controller do
   include ControllerMacros
 
   let(:developer) do
-    developer = FactoryGirl.create :developer
+    developer = create :developer
     developer.configs.create(device: device)
     developer
   end
-  let(:device) { FactoryGirl.create :device }
+  let(:device) { create :device }
   let(:params) { { id: device.id } }
   let(:custom_params) { { type: "tracker", freq: "1000" } }
   let(:update_params) { params.merge(config: { custom: custom_params }) }
@@ -26,7 +26,7 @@ RSpec.describe Api::V1::ConfigsController, type: :controller do
 
   describe "#show" do
     before do
-      request.headers["X-Api-Key"] = (FactoryGirl.create :developer).api_key
+      request.headers["X-Api-Key"] = (create :developer).api_key
     end
 
     it "returns nothing if developer doesn't control device" do

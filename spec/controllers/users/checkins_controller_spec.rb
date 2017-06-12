@@ -4,9 +4,9 @@ RSpec.describe Users::CheckinsController, type: :controller do
   include ControllerMacros
 
   let(:user) { create_user }
-  let(:device) { FactoryGirl.create :device, user_id: user.id }
+  let(:device) { create :device, user_id: user.id }
   let(:new_user) { create_user }
-  let(:checkin) { FactoryGirl.create :checkin, device: device }
+  let(:checkin) { create :checkin, device: device }
   let(:params) { { user_id: user.username, device_id: device.id, id: checkin.id } }
   let(:other_user_params) { params.merge(user_id: new_user.id) }
   let(:create_params) { params.merge(checkin: { lat: checkin.lat, lng: checkin.lng }) }
@@ -115,9 +115,9 @@ RSpec.describe Users::CheckinsController, type: :controller do
     context "with date params" do
       before(:example) {
         # create 3 days of checkins
-        FactoryGirl.create(:checkin, device: device, created_at: 3.days.ago)
-        FactoryGirl.create(:checkin, device: device, created_at: 2.days.ago)
-        FactoryGirl.create(:checkin, device: device, created_at: 1.day.ago)
+        create(:checkin, device: device, created_at: 3.days.ago)
+        create(:checkin, device: device, created_at: 2.days.ago)
+        create(:checkin, device: device, created_at: 1.day.ago)
       }
 
       it "deletes 3 checkins when 3 days in range specified" do
@@ -166,7 +166,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
     it "returns an alert message and rediercts if invalid file" do
       allow(CSV).to receive(:foreach).and_return(false)
       post :import, params: params.merge(file: file)
-      expect(flash[:alert]).to match("Invalid CSV file format")
+      expect(flash[:alert]).to match("Invalid file format")
       expect(response).to redirect_to(user_devices_path(user.url_id))
     end
 

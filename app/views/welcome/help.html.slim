@@ -1,0 +1,153 @@
+#gonvariables
+  = Gon::Base.render_data
+h1 Help Centre
+.row
+  .col.s12.m9.l10
+    #checkin.section.scrollspy
+      h4
+        i.material-icons pin_drop
+        |  Checking in
+      p
+        | You can start checking in either via the Coposition website, the Coposition app or an app that is using Coposition.
+        | You can create a checkin on the coposition website by selecting a device from your 
+        | #{current_user ? link_to('devices', user_devices_path(current_user.url_id)) : 'devices'}
+        |  and then either right clicking on the map or clicking on the marker in the control panel to the left hand side of the map and then selecting the blue starred marker that appears on the map which indicates your current location.
+        | If you do not have any devices, you will be given the option to create a checkin when creating a new device, the checkin will indicate you current location.
+    .divider
+    #devices.section.scrollspy
+      h4
+        i.material-icons devices
+        |  Devices
+      #fogging.section.scrollspy
+        h5
+          i.material-icons cloud
+          |  Fogging
+        p
+          | Fogging allows you additional control over how much of your location data your data consumers (friends and apps) can see. Fogging a checkin or a device will mean that your data consumers will not be shown your exact location or coordinates, instead they will see a location usually localised to the nearest city/town or a randomised location within 50km of your actual location if there are no settlements nearby.
+          | Fogging is enabled by default when you create a device. Whilst on, you can choose to allow certain friends or apps to see precise data by enabling bypass fogging via permissions.
+      #delay.section.scrollspy
+        h5
+          i.material-icons timer
+          |  Delay
+        p
+          | Delay allows you additional control over when your data consumers (friends and apps) can view your location data. Delay represents how long after creation your consumers will be able to see your data.
+        blockquote
+          | E.g. if you created a checkin at 11:00 on a device with a delay of 5 minutes, your friends/apps would not be able see this checkin until 11:05.
+        p
+          | Delay is not set when you first create a device. Once you have set a delay you can choose to allow certain friends or apps to see your data immediately by enabling bypass delay via permissions.
+      #cloaking.section.scrollspy
+        h5
+          i.material-icons visibility_off
+          |  Cloaking
+        p
+          | Cloaking a device hides it and all of its check-ins from all of your friends and apps. It also disables the device's shared page if the device is shared.
+      #sharing.section.scrollspy
+        h5
+          i.material-icons public
+          |  Sharing
+        p
+          | Sharing a device generates a publicly available page with this device's latest location. Fogging and delay still apply.
+      #uuid.section.scrollspy
+        h5
+          i.material-icons perm_device_information
+          |  Device UUID
+        p
+          | Device UUID is a unique identifier for existing Coposition devices and is primarily used in the developer API. Some apps may request a device UUID to sync this device to their app or some hardware (eg. a tracking device) may come pre-packaged with a Coposition UUID that you can use to sync the hardware to your coposition account.
+      #configuration.section.scrollspy
+        h5
+          i.material-icons settings
+          |  Device configuration
+        p
+          | Device configuration is used by some apps to apply additional device setttings.
+        blockquote
+          | E.g. a tracking device might have additional settings such as how often the tracker sends checkins, which you could update via the associated tracking app.
+    .divider
+    #friends.section.scrollspy
+      h4
+        i.material-icons recent_actors
+        |  Friends and Apps
+      #addingFriends.section.scrollspy
+        h5
+          i.material-icons add_circle
+          | Adding new friends/apps
+        p
+          | To add a new friend, visit the friends page and click the orange plus at the top of the page. You can then enter an email address, either of an existing user or of a friend you would like to invite to use Coposition. This will send an email either notifying the user that they have received a friend request or that you have invited them to sign up with Coposition.
+          br/
+          br/
+          | To add a new app, visit the apps page and click the orange plus at the top of the page. You can then enter the name of the app and choose the correct app from the dropdown which appears.
+      #permissions.section.scrollspy
+        h5
+          i.material-icons lock
+          |  Permissions
+        p
+          | Permissions allow you additional controls over how much of your data a specific consumer (friend or app) can see for a specific device.
+          br/
+          br/
+          | Disable access stops a consumer from seeing any location data for a device.
+          br/
+          br/
+          | Bypass fogging/delay allows a consumer to see precise location data for a device regardless or whether it is fogged and/or delayed.
+        blockquote
+          | E.g. you might decide that you want a particular friend to be able to see your exact location for a fogged device. You can achieve this by enabling 'bypass fogging' for that friend on that device. This will allow them alone to see the device's data location as if it were not fogged.
+        p
+          | Last checkin only/Full history allows you control over whether the consumer can see just the most recent checkin for a device or all of it's checkins. Fogging and delay still apply.
+    .divider
+    #download.section.scrollspy
+      h4
+        i.material-icons file_download
+        |  Download/Upload
+      p
+        | You can download your check-ins in a variety of formats in order to have a permanent local copy of your data. If you wish, you can also use this as a data backup, and reupload check-ins at a later date to overwrite any changes or deletions you may have made. Check-ins must be uploaded in CSV format.
+      p
+        | When uploading check-ins from a CSV file, it is possible that existing check-ins will be overwritten. This will only occur if you download your check-in history, and then re-upload this same history having edited the CSV file you downloaded.
+    .divider
+    #w3w.section.scrollspy
+      h4
+        i.material-icons explore
+        |  what3words
+      p
+        | w3w or 'what3words' is a unique combination of 3 words that identifies a 3mx3m square, anywhere on the planet. Learn more about #{link_to("what3words", "http://what3words.com/about/")}.
+    .divider
+    #zapier.section.scrollspy
+      h4
+        i.material-icons flash_on
+        |  Zapier
+      p
+        | Yes! We currently have zapier triggers available for both developers and users.
+        br/
+        br/
+        | Developers can make use of an approval trigger which fires every time an approval is created by a developer or accepted by a user.
+        br/
+        br/
+        | Users can make use of a checkin or device trigger which fires whenever a new checkin or device is created.
+        br/
+        br/
+        | Get started at  #{link_to("zapier.com", "https://zapier.com/")}
+    .divider
+    #more.section.scrollspy
+      h4
+        i.material-icons help
+        |  More questions
+      p
+        | Click 'How can we help?' below to chat directly to our Coposition support team.
+  .col.hide-on-small-only.m3.l2
+    ul.section.table-of-contents
+      li
+        a href="#checkin" Checking in
+      li
+        a href="#devices" Devices
+      li
+        a href="#friends" Friends and Apps
+      li
+        a href="#permissions" - Permissions
+      li
+        a href="#download" Download/Upload
+      li
+        a href="#w3w" what3words
+      li
+        a href="#zapier" Zapier
+      li
+        a href="#more" More questions
+
+javascript:
+  COPO.smooch.initSmooch(gon.userinfo);

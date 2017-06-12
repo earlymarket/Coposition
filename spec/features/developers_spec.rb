@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.feature "Developers", type: :feature do
-  let(:developer) { FactoryGirl.create :developer }
+  let(:developer) { create :developer }
 
   scenario "Developer signs up" do
     given_i_fill_in_sign_up_details
@@ -72,6 +72,6 @@ RSpec.feature "Developers", type: :feature do
   end
 
   def then_i_should_not_be_signed_in
-    expect(page).to have_text "Developer log in"
+    expect(page).to have_text "Log In"
   end
 end

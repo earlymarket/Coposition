@@ -1,0 +1,20 @@
+.col.s6.permission
+  label Check-in history access
+  .row
+    div class=("#{permissions_switch_class(control_object)} radio col") data-id=(control_object.id) data-attribute="privilege" data-switchtype="disallowed"
+      = radio_button_tag control_object.id, "disallowed", permissions_check_box_value(control_object, "disallowed"), class: "with-gap", id: permissions_label_id(control_object, "disallowed")
+      label for="#{permissions_label_id(control_object, 'disallowed')}" id="#{permissions_label_id(control_object, 'disallowed')}"  Disable
+    div class=("#{permissions_switch_class(control_object)} radio col") data-id=(control_object.id) data-attribute="privilege" data-switchtype="last_only"
+      = radio_button_tag control_object.id, "last_only", permissions_check_box_value(control_object, "last_only"), class: "with-gap", id: permissions_label_id(control_object, "last_only")
+      label for="#{permissions_label_id(control_object, 'last_only')}" id="#{permissions_label_id(control_object, 'last_only')}"  Last
+    div class=("#{permissions_switch_class(control_object)} radio col") data-id=(control_object.id) data-attribute="privilege" data-switchtype="complete"
+      = radio_button_tag control_object.id, "complete", permissions_check_box_value(control_object, "complete"), class: "with-gap", id: permissions_label_id(control_object, "complete")
+      label for="#{permissions_label_id(control_object, 'complete')}" id="#{permissions_label_id(control_object, 'complete')}"  Full history
+  div class=("#{permissions_switch_class(control_object)} switch disable") data-id=(control_object.id) data-attribute="bypass_fogging" data-switchtype="bypass_fogging"
+    = check_box_tag permissions_label_id(control_object, "bypass-fogging"), "", permissions_check_box_value(control_object, "bypass_fogging")
+    label for="#{permissions_label_id(control_object, 'bypass-fogging')}" id="#{permissions_label_id(control_object, 'bypass-fogging')}" 
+      | Bypass Fogging
+  div class=("#{permissions_switch_class(control_object)} switch disable") data-id=(control_object.id) data-attribute="bypass_delay" data-switchtype="bypass_delay"
+    = check_box_tag permissions_label_id(control_object, "bypass-delay"), "", permissions_check_box_value(control_object, "bypass_delay")
+    label for="#{permissions_label_id(control_object, 'bypass-delay')}" id="#{permissions_label_id(control_object, 'bypass-delay')}" 
+      | Bypass Delay

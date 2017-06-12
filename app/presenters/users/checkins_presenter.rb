@@ -10,8 +10,9 @@ module Users
 
     def json
       {
-        checkins: checkins.paginate(page: @params[:page], per_page: per_page)
-                          .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :device_id),
+        checkins: checkins
+          .paginate(page: @params[:page], per_page: per_page)
+          .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :device_id),
         current_user_id: @user.id,
         total: checkins.count
       }

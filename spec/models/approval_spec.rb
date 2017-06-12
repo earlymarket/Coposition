@@ -1,14 +1,14 @@
 require "rails_helper"
 
 RSpec.describe Approval, type: :model do
-  let(:user) { FactoryGirl.create(:user) }
-  let(:friend) { FactoryGirl.create(:user) }
-  let(:developer) { FactoryGirl.create(:developer) }
-  let(:approval) { FactoryGirl.create(:approval, user: user) }
+  let(:user) { create(:user) }
+  let(:friend) { create(:user) }
+  let(:developer) { create(:developer) }
+  let(:approval) { create(:approval, user: user) }
 
   describe "factory" do
     it "creates a valid checkin" do
-      approval = FactoryGirl.build(:approval)
+      approval = build(:approval)
       expect(approval).to be_valid
     end
   end
@@ -27,7 +27,7 @@ RSpec.describe Approval, type: :model do
 
   describe "callbacks" do
     context "before_create" do
-      let(:new_approval) { FactoryGirl.build(:approval, user: user) }
+      let(:new_approval) { build(:approval, user: user) }
 
       it "fails if user trying to add themselves" do
         new_approval.assign_attributes(approvable: user, approvable_type: "User")

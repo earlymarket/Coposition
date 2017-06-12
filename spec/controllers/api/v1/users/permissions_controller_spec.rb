@@ -2,19 +2,19 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::Users::PermissionsController, type: :controller do
   include ControllerMacros
-  let(:device) { FactoryGirl.create :device }
-  let(:second_device) { FactoryGirl.create :device }
+  let(:device) { create :device }
+  let(:second_device) { create :device }
   let(:user) do
-    u = FactoryGirl.create :user
+    u = create :user
     u.devices << device
     u
   end
   let(:second_user) do
-    u = FactoryGirl.create :user
+    u = create :user
     u.devices << second_device
     u
   end
-  let(:developer) { FactoryGirl.create :developer }
+  let(:developer) { create :developer }
   let(:permission) do
     device.permitted_users << second_user
     device.developers << developer

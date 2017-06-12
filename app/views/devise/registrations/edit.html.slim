@@ -1,0 +1,54 @@
+.row
+  = form_for resource, as: resource_name, url: registration_path(resource_name), html: { method: :put } do |f|
+    = devise_error_messages!
+    .card.col.s12.m10.offset-m1
+      .card-content
+        legend.card-title Edit account
+        .row
+          .input-field.col.s12
+            = f.label :email, class: "active"
+            = f.email_field :email, autofocus: true
+        .row
+          .input-field.col.s12
+            = f.label :username, class: "active"
+            = f.text_field :username, autofocus: true
+        .row
+          .input-field.col.s12
+            = f.label :webhook_key, class: "active"
+            = f.text_field :webhook_key, readonly: true
+        .row
+          .input-field.col.s12
+            = f.check_box :zapier_enabled
+            = f.label :zapier_enabled, "Zapier enabled?"
+        br/
+        .row
+          .input-field.col.s12
+            = f.label :avatar, "Upload a new avatar", class: "active"
+            br/
+            = f.attachinary_file_field :avatar
+        - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+          div
+            | Currently waiting confirmation for: #{resource.unconfirmed_email}
+        .row
+          .input-field.col.s12
+            = f.label :password, "New password (leave blank if you don't want to change it)"
+            = f.password_field :password, autocomplete: "off"
+        .row
+          .input-field.col.s12
+            = f.label :password_confirmation, "Confirm new password"
+            = f.password_field :password_confirmation, autocomplete: "off"
+        .row
+          .input-field.col.s12
+            = f.label :current_password, "Current password (we need your current password to confirm your changes)"
+            = f.password_field :current_password, autocomplete: "off", required: true
+        = f.button "Update", class: "btn waves-effect waves-light"
+
+  = form_for resource, as: resource_name, url: registration_path(resource_name), html: { method: :delete } do |f|
+    .card.col.s12.m10.offset-m1
+      .card-content
+        legend.card-title Cancel my account
+        .row
+          .input-field.col.s12
+            = f.label :password, "Current Password"
+            = f.password_field :password, autocomplete: "off", required: true
+        = f.button "Cancel my account", class: "btn red white-text", data: { confirm: "Are you sure?" }

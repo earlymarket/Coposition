@@ -3,8 +3,8 @@ require "rails_helper"
 RSpec.describe Developers::Approvals::CreateApproval, type: :interactor do
   subject(:create_context) { described_class.call(developer: developer, params: { user: user.email }) }
 
-  let(:developer) { FactoryGirl.create :developer }
-  let(:user) { FactoryGirl.create :user }
+  let(:developer) { create :developer }
+  let(:user) { create :user }
 
   describe "call" do
     context "when given valid arguments" do

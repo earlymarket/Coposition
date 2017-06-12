@@ -3,16 +3,16 @@ require "rails_helper"
 RSpec.describe Device, type: :model do
   let(:developer) { create :developer }
   let(:device) do
-    dev = FactoryGirl.create(:device, user: user)
+    dev = create(:device, user: user)
     Approval.link(user, developer, "Developer")
     Approval.accept(user, developer, "Developer")
     dev.developers << developer
     dev
   end
   let(:checkin) do
-    FactoryGirl.create(:checkin, device: device)
+    create(:checkin, device: device)
   end
-  let(:user) { FactoryGirl.create(:user) }
+  let(:user) { create(:user) }
 
   describe "factory" do
     it "creates a valid device" do
@@ -20,8 +20,8 @@ RSpec.describe Device, type: :model do
     end
 
     it "is invalid without a unique username" do
-      FactoryGirl.create(:device, name: "laptop", user: user)
-      expect(FactoryGirl.build(:device, name: "laptop", user: user)).not_to be_valid
+      create(:device, name: "laptop", user: user)
+      expect(build(:device, name: "laptop", user: user)).not_to be_valid
     end
   end
 
@@ -58,7 +58,7 @@ RSpec.describe Device, type: :model do
 
     context "safe_checkin_info_for" do
       before do
-        FactoryGirl.create(:checkin, device: device)
+        create(:checkin, device: device)
       end
 
       it "calls sanitize_checkins" do
@@ -84,7 +84,7 @@ RSpec.describe Device, type: :model do
 
     context "filtered_checkins" do
       before do
-        FactoryGirl.create(:checkin, device: device)
+        create(:checkin, device: device)
       end
 
       it "returns an association relation" do
@@ -94,7 +94,7 @@ RSpec.describe Device, type: :model do
 
     context "sanitize_checkins" do
       before do
-        FactoryGirl.create(:checkin, device: device)
+        create(:checkin, device: device)
       end
 
       it "returns an association relation" do
@@ -105,7 +105,7 @@ RSpec.describe Device, type: :model do
 
     context "replace_checkin_attributes" do
       before do
-        FactoryGirl.create(:checkin, device: device)
+        create(:checkin, device: device)
       end
 
       it "returns an association relation" do
@@ -121,7 +121,7 @@ RSpec.describe Device, type: :model do
 
     context "permitted_history_for" do
       before do
-        FactoryGirl.create(:checkin, device: device)
+        create(:checkin, device: device)
       end
 
       it "calls resolve_privilege" do
@@ -142,7 +142,7 @@ RSpec.describe Device, type: :model do
 
     context "resolve_privilege" do
       before do
-        FactoryGirl.create(:checkin, device: device)
+        create(:checkin, device: device)
       end
 
       it "returns an association relation" do
@@ -160,7 +160,7 @@ RSpec.describe Device, type: :model do
 
     context "delayed_checkins_for" do
       before do
-        FactoryGirl.create(:checkin, device: device)
+        create(:checkin, device: device)
       end
 
       it "returns an association relation" do
@@ -169,7 +169,7 @@ RSpec.describe Device, type: :model do
     end
 
     context "before_delay_checkins" do
-      let!(:old_checkin) { FactoryGirl.create(:checkin, created_at: 1.day.ago, device: device) }
+      let!(:old_checkin) { create(:checkin, created_at: 1.day.ago, device: device) }
 
       it "returns checkins before their devices delay" do
         device.update(delayed: 5)
@@ -225,7 +225,7 @@ RSpec.describe Device, type: :model do
 
     context "subscriptions" do
       it "returns subscriptions to a certain event" do
-        subscrp = FactoryGirl.create(:subscription, subscriber: user)
+        subscrp = create(:subscription, subscriber: user)
         expect(device.subscriptions("new_checkin")).to eq [subscrp]
       end
     end
@@ -242,7 +242,7 @@ RSpec.describe Device, type: :model do
 
       it "calls remove_id if zapier_enabled and subscriptions" do
         user.update(zapier_enabled: true)
-        FactoryGirl.create(:subscription, subscriber: user)
+        create(:subscription, subscriber: user)
         allow(device).to receive(:remove_id).and_return(device)
         device.notify_subscribers("new_checkin", checkin)
         expect(device).to have_received(:remove_id)
@@ -295,8 +295,8 @@ RSpec.describe Device, type: :model do
     context "ordered_by_checkins" do
       it "returns devices in order of most recent checkin created" do
         checkin
-        new_device = FactoryGirl.create(:device, user: user)
-        FactoryGirl.create(:checkin, device: new_device, created_at: 1.day.ago)
+        new_device = create(:device, user: user)
+        create(:checkin, device: new_device, created_at: 1.day.ago)
         expect(Device.ordered_by_checkins).to eq [device, new_device]
       end
     end
