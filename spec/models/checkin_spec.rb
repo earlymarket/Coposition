@@ -3,11 +3,7 @@ require "rails_helper"
 RSpec.describe Checkin, type: :model do
   let(:user) { create(:user) }
   let(:device) { create(:device, user: user) }
-  let(:checkin) do
-    c = create :checkin, device: device
-    c.assign_location
-    c
-  end
+  let(:checkin) { create :checkin, device: device }
 
   describe "factory" do
     it "creates a valid checkin" do
@@ -32,6 +28,10 @@ RSpec.describe Checkin, type: :model do
       assc = described_class.reflect_on_association(:device)
       expect(assc.macro).to eq :belongs_to
     end
+
+    it "belongs to a location" do
+      expect(checkin.location).to be_kind_of Location
+    end
   end
 
   describe "callbacks" do
@@ -43,6 +43,13 @@ RSpec.describe Checkin, type: :model do
         new_checkin.device = device
         new_checkin.save
         expect(new_checkin).to have_received(:assign_values)
+      end
+
+      it "generates location after create" do
+        allow(new_checkin).to receive(:assign_location)
+        new_checkin.device = device
+        new_checkin.save
+        expect(new_checkin).to have_received(:assign_location)
       end
 
       it "fails to generate values after create if no device" do
@@ -86,7 +93,7 @@ RSpec.describe Checkin, type: :model do
 
   describe "public instance methods" do
     context "responds to its methods" do
-      %i(decrement_checkin_count assign_values update_output assign_output_to_fogged assign_output_to_unfogged reverse_geocode!
+      %i(decrement_checkin_count assign_values assign_location update_output assign_output_to_fogged assign_output_to_unfogged reverse_geocode!
          reverse_geocoded? set_edited nearest_city).each do |method|
         it { expect(checkin).to respond_to(method) }
       end
