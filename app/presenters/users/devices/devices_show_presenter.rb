@@ -10,7 +10,7 @@ module Users::Devices
       @user = user
       @params = params
       @device = Device.find(params[:id])
-      @date_range = checkins_date_range
+      @date_range = first_load ? first_load_range : checkins_date_range
 
       set_data_for_download if download_format.present?
     end
@@ -18,6 +18,7 @@ module Users::Devices
     def show_gon
       {
         checkins: gon_show_checkins_paginated,
+        first_load: first_load,
         device: device.id,
         current_user_id: user.id,
         total: gon_show_checkins.count
@@ -47,14 +48,25 @@ module Users::Devices
       @downlod_format ||= params[:download]
     end
 
+    def first_load
+      @first_load ||= params[:first_load]
+    end
+
     def gon_show_checkins_paginated
       gon_show_checkins
         .paginate(page: 1, per_page: 1000)
         .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :edited)
     end
 
+    def first_load_range
+      checkins = device.checkins.limit(5000)
+      { from: checkins.last.created_at.beginning_of_day, to: checkins.first.created_at.end_of_day }
+    end
+
     def gon_show_checkins
-      date_range[:from] ? device.checkins.where(created_at: date_range[:from]..date_range[:to]) : device.checkins
+      checkins = device.checkins
+      return checkins.limit(5000) if first_load
+      date_range[:from] ? checkins.where(created_at: date_range[:from]..date_range[:to]) : checkins
     end
   end
 end

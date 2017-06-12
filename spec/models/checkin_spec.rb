@@ -3,7 +3,11 @@ require "rails_helper"
 RSpec.describe Checkin, type: :model do
   let(:user) { create(:user) }
   let(:device) { create(:device, user: user) }
-  let(:checkin) { create :checkin, device: device }
+  let(:checkin) do
+    c = create :checkin, device: device
+    c.assign_location
+    c
+  end
 
   describe "factory" do
     it "creates a valid checkin" do
@@ -82,9 +86,18 @@ RSpec.describe Checkin, type: :model do
 
   describe "public instance methods" do
     context "responds to its methods" do
-      %i(assign_values update_output assign_output_to_fogged assign_output_to_unfogged reverse_geocode!
+      %i(decrement_checkin_count assign_values update_output assign_output_to_fogged assign_output_to_unfogged reverse_geocode!
          reverse_geocoded? set_edited nearest_city).each do |method|
         it { expect(checkin).to respond_to(method) }
+      end
+    end
+
+    context "decrement_checkin_count" do
+      it "destroys the location this checkin belongs to if checkin count is zero" do
+        checkin.location.update(checkins_count: 0)
+        checkin.decrement_checkin_count
+        checkin.reload
+        expect(checkin.location).to eq nil
       end
     end
 
