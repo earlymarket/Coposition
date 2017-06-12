@@ -74,12 +74,12 @@ RSpec.describe Location, type: :model do
     context "limit_returned_locations" do
       it "returns all locations if multiple devices argument" do
         result = Location.limit_returned_locations(multiple_devices: true)
-        expect(result).to eq [second_location, location]
+        expect(result).to eq [Location.first, Location.second]
       end
 
       it "returns paginated locations if not multiple devices" do
         result = Location.limit_returned_locations(multiple_devices: false, per_page: 1, page: 1)
-        expect(result).to eq [location]
+        expect(result).to eq [Location.second]
       end
     end
 
