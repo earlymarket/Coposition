@@ -18,10 +18,12 @@
       <td>API key</td>
       <td id="key"><%= current_developer.api_key %> </td>
     </tr>
-    <tr>
-      <td>oAuth UID</td>
-      <td><%= current_developer.oauth_application.uid %> </td>
-    </tr>
+    <%- if current_developer.oauth_application %>
+      <tr>
+        <td>oAuth UID</td>
+        <td><%= current_developer.oauth_application.uid %> </td>
+      </tr>
+    <% end %>
   </tbody>
 </table>
 
