@@ -9,4 +9,8 @@ class UserMailer < ApplicationMailer
     @from = from_developer ? approvable.company_name : approvable.email
     mail(to: user.email, subject: "Coposition approval request from #{@from}")
   end
+
+  def no_activity_email(user)
+    mail(to: user.email, subject: 'Coposition activity')
+  end
 end
