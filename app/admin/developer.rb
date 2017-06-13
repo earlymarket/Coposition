@@ -21,12 +21,14 @@ ActiveAdmin.register Developer do
     end
     Permission::PRIVELEGE_TYPES.each do |type|
       column "#{type}_approved_percent".to_sym do |dev|
+        return "n/a" if (total = dev.users.count).zero?
+
         percent = dev
           .permissions
           .includes(device: :user)
           .select{ |p| p.privilege == type.to_s }
           .map{ |p| p.device.user }
-          .uniq.size * 100 / dev.users.count
+          .uniq.size * 100 / total
 
         "%.2f %" % percent
       end
