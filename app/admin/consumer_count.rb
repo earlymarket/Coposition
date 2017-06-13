@@ -20,7 +20,7 @@ ActiveAdmin.register_page "Consumer Count" do
       # add headers
       csv << HEADERS
       collection.each do |item|
-        csv << [item["month"], item["total"], "%.2f %" % (item["growth"].to_i * 100)]
+        csv << [item["month"], item["total"], "%.2f %" % item["growth"].to_i]
       end
     end
     # send file to user
