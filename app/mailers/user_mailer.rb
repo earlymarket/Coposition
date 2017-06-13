@@ -1,7 +1,7 @@
 class UserMailer < ApplicationMailer
   def invite_email(address)
     @url = "https://coposition.com/users/sign_up?email=#{address}"
-    mail(to: address, subject: 'Coposition invite')
+    mail(to: address, subject: "Coposition invite")
   end
 
   def add_user_email(approvable, user, from_developer)
@@ -11,6 +11,7 @@ class UserMailer < ApplicationMailer
   end
 
   def no_activity_email(user)
-    mail(to: user.email, subject: 'Coposition activity')
+    @url = "https://coposition.com/users/#{user.id}/devices"
+    mail(to: user.email, subject: "Coposition activity")
   end
 end
