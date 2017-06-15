@@ -64,8 +64,9 @@ RSpec.describe User, type: :model do
   describe "public instance methods" do
     let(:developer) { FactoryGirl.create(:developer) }
     let(:approve_dev) do
-      Approval.link(user, developer, "Developer")
+      approval = Approval.link(user, developer, "Developer")
       Approval.accept(user, developer, "Developer")
+      approval.update(status: "complete")
     end
 
     context "responds to its methods" do

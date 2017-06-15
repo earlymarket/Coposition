@@ -5,7 +5,8 @@ describe ::Users::DashboardsPresenter do
 
   let(:user) do
     us = FactoryGirl.create(:user)
-    us.friends << friend
+    Approval.add_friend(us, friend)
+    Approval.add_friend(friend, us)
     us
   end
   let(:friend) { FactoryGirl.create(:user) }
@@ -165,18 +166,6 @@ describe ::Users::DashboardsPresenter do
 
     it "returns an array" do
       expect(dashboard.send(:friends)).to be_kind_of Array
-    end
-
-    it "calls public_info_hash" do
-      allow(friend).to receive(:public_info_hash)
-      dashboard.send(:friends)
-      expect(friend).to have_received(:public_info_hash)
-    end
-
-    it "calls safe_checkin_info_for" do
-      allow(friend).to receive(:safe_checkin_info_for).and_return []
-      dashboard.send(:friends)
-      expect(friend).to have_received(:safe_checkin_info_for)
     end
   end
 

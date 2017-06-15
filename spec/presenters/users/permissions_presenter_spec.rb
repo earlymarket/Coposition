@@ -6,8 +6,9 @@ describe ::Users::PermissionsPresenter do
   end
   let(:user) do
     us = FactoryGirl.create(:user)
-    us.friends << friend
-    us.developers << developer
+    Approval.add_friend(us, friend)
+    Approval.add_friend(friend, us)
+    Approval.add_developer(us, developer)
     us
   end
   let(:permission) { device.permissions.last }

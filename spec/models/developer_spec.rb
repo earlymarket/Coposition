@@ -21,11 +21,16 @@ RSpec.describe Developer, type: :model do
   end
 
   describe "callbacks" do
+    let(:new_developer) { FactoryGirl.build(:developer) }
     context "before_create" do
-      let(:new_developer) { FactoryGirl.build(:developer) }
-
       it "generates an api key" do
         expect { new_developer.save }.to change { new_developer.api_key }
+      end
+    end
+
+    context "after_create" do
+      it "generates new oauth application" do
+        expect { new_developer.save }.to change { Doorkeeper::Application.count }.by 1
       end
     end
   end
