@@ -1,4 +1,4 @@
-ActiveAdmin.register_page "Consumer Count" do
+ActiveAdmin.register_page "Monthly new users" do
   CONSUMER_COUNT_HEADERS = %w[Month Total Growth]
 
   menu parent: "Reports"
@@ -30,6 +30,6 @@ ActiveAdmin.register_page "Consumer Count" do
   end
 
   action_item :csv do
-    link_to "Export to CSV", admin_consumer_count_csv_path, method: :get
+    link_to "Export to CSV", admin_monthly_new_users_csv_path, method: :get
   end
 end

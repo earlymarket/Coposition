@@ -1,4 +1,4 @@
-ActiveAdmin.register_page "Checkin Count" do
+ActiveAdmin.register_page "Monthly check-ins" do
   CHECKIN_COUNT_HEADERS = %w[Month Total Growth]
 
   menu parent: "Reports"
@@ -30,6 +30,6 @@ ActiveAdmin.register_page "Checkin Count" do
   end
 
   action_item :csv do
-    link_to "Export to CSV", admin_checkin_count_csv_path, method: :get
+    link_to "Export to CSV", admin_monthly_check_ins_csv_path, method: :get
   end
 end
