@@ -12,9 +12,9 @@ module Oauth
       return unless (application = authorization.pre_auth.client.application)
       return unless (developer = application.owner)
 
-      developer.approvals
-        .find_by(user_id: current_resource_owner.id)
-        .update_column(:status, "complete")
+      approval = developer.approvals.find_by(user_id: current_resource_owner.id)
+      approval = Approval.add_developer(current_resource_owner, developer) unless approval
+      approval.update(:status, "complete")
     end
 
     def pre_auth
