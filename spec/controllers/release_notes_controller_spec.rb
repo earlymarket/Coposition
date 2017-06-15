@@ -8,7 +8,7 @@ RSpec.describe Users::ReleaseNotesController, type: :controller do
     User.last.update(admin: true)
     User.last
   end
-  let!(:release_note) { FactoryGirl.create :release_note }
+  let!(:release_note) { create :release_note }
 
   describe "GET #index" do
     it "assigns release notes" do

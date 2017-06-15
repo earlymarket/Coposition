@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe Permission, type: :model do
   describe "factory" do
     it "creates a valid permission" do
-      perm = FactoryGirl.build(:permission)
+      perm = build(:permission)
       expect(perm).to be_valid
     end
   end
@@ -22,7 +22,7 @@ RSpec.describe Permission, type: :model do
 
   describe "Callbacks" do
     it "changes privilege level before create" do
-      new_permission = FactoryGirl.build(:permission)
+      new_permission = build(:permission)
       expect { new_permission.save }.to change { new_permission.privilege }
     end
   end
@@ -39,8 +39,8 @@ RSpec.describe Permission, type: :model do
 
       it "returns a permission not belonging to a copo developer" do
         dev = Developer.default(coposition: true)
-        device = FactoryGirl.create(:device)
-        perm = FactoryGirl.create(:permission, device: device, permissible: dev)
+        device = create(:device)
+        perm = create(:permission, device: device, permissible: dev)
         expect(Permission.not_coposition_developers).not_to include perm
       end
     end

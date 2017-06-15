@@ -1,0 +1,10 @@
+| Downloaded checkins 
+- if activity.trackable
+  br
+  |  Device name: 
+  = link_to(activity.trackable.name , activities_path(filter: true, trackable_type: "Device", trackable_id: activity.trackable.id))
+- else
+  |  , device has since been destroyed. 
+br
+|  Params: 
+= activity.parameters

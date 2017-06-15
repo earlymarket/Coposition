@@ -8,7 +8,7 @@ $(document).on('page:change', function() {
     U.gonFix();
     COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions)
     COPO.delaySlider.initSliders(gon.devices);
-    gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');
+    gon.checkins && gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');
 
     $('body').on('click', '.edit-button', function (e) {
       e.preventDefault();
@@ -89,7 +89,7 @@ $(document).on('page:change', function() {
         const device_id = this.dataset.device;
         const checkin = gon.checkins.find((checkin) => checkin.device_id.toString() === device_id);
         if(checkin) {
-          U.scrollTo('#top', 200);
+          U.scrollTo('#quicklinks', 200);
           setTimeout(() => M.centerMapOn(checkin.lat, checkin.lng), 200);
         }
       });
@@ -108,7 +108,7 @@ $(document).on('page:change', function() {
     }
     initPage();
 
-    $(document).on('page:before-unload', function(){
+    $(document).one('turbolinks:before-render', function(){
       COPO.permissions.switchesOff();
       $(window).off("resize");
       $('body').off('click', '.edit-button');

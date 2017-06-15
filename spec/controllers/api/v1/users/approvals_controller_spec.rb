@@ -3,10 +3,10 @@ require "rails_helper"
 RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
   include ControllerMacros
 
-  let(:user) { FactoryGirl.create :user }
-  let(:developer) { FactoryGirl.create :developer }
-  let(:second_user) { FactoryGirl.create :user }
-  let(:apprvl) { FactoryGirl.create(:approval, user: user, approvable_id: developer.id, approvable_type: "Developer") }
+  let(:user) { create :user }
+  let(:developer) { create :developer }
+  let(:second_user) { create :user }
+  let(:apprvl) { create(:approval, user: user, approvable_id: developer.id, approvable_type: "Developer") }
 
   let(:params) { { user_id: user.id, format: :json } }
   let(:dev_approval_create_params) do
@@ -102,10 +102,10 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
       it "approves a friend request" do
         request.headers["X-Secret-App-Key"] = "this-is-a-mobile-app"
         Approval.link(second_user, user, "User")
-        expect(Approval.last.status).to eq "requested"
+        expect(user.approval_for(second_user).status).to eq "requested"
         post :create, params: friend_approval_create_params
-        expect(Approval.first.status).to eq "accepted"
-        expect(Approval.last.status).to eq "accepted"
+        expect(user.approval_for(second_user).status).to eq "accepted"
+        expect(second_user.approval_for(user).status).to eq "accepted"
       end
     end
 

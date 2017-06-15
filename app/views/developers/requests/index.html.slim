@@ -1,0 +1,24 @@
+h1 Requests
+table
+  thead
+    tr
+      td paid
+      td Action
+      td Controller
+      td User
+      td Created at
+  tbody
+    - @requests.each do |request|
+      tr
+        td
+          = request.paid
+        td
+          = request.action
+        td
+          = request.controller.split("/").last
+        td
+          = requests_user(request)
+        td
+          = humanize_date_and_time request.created_at
+.center-align
+  = will_paginate @requests

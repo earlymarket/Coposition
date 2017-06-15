@@ -9,12 +9,12 @@ describe ::Users::DashboardsPresenter do
     Approval.add_friend(friend, us)
     us
   end
-  let(:friend) { FactoryGirl.create(:user) }
-  let(:device) { FactoryGirl.create(:device, user_id: user.id) }
+  let(:friend) { create(:user) }
+  let(:device) { create(:device, user_id: user.id) }
   let(:checkins) do
-    FactoryGirl.create(:checkin, device_id: device.id)
-    FactoryGirl.create(:checkin, device_id: device.id).reverse_geocode!
-    FactoryGirl.create(:checkin, device_id: device.id)
+    create(:checkin, device_id: device.id)
+    create(:checkin, device_id: device.id).reverse_geocode!
+    create(:checkin, device_id: device.id)
   end
 
   describe "Interface" do
@@ -63,7 +63,7 @@ describe ::Users::DashboardsPresenter do
 
     it "returns another device if that device has more checkins" do
       checkins
-      FactoryGirl.create(:device, user_id: user.id)
+      create(:device, user_id: user.id)
       expect(dashboard.most_used_device).to eq device
     end
   end
@@ -126,15 +126,15 @@ describe ::Users::DashboardsPresenter do
 
     context "1 country" do
       it "returns 'Last country visited'" do
-        FactoryGirl.create(:checkin, device_id: device.id)
+        create(:checkin, device_id: device.id)
         expect(dashboard.visited_countries_title).to eq "Last country visited"
       end
     end
     
     context "n countries" do
       it "returns a string containing n" do
-        FactoryGirl.create(:checkin, device_id: device.id).update(country_code: "GB")
-        FactoryGirl.create(:checkin, device_id: device.id).update(country_code: "US")
+        create(:checkin, device_id: device.id).update(country_code: "GB")
+        create(:checkin, device_id: device.id).update(country_code: "US")
         expect(dashboard.visited_countries_title).to match dashboard.last_countries.length.to_s
       end
     end

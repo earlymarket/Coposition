@@ -1,6 +1,7 @@
 class Approval < ApplicationRecord
   STATUSES = %w(developer-requested requested pending accepted complete)
 
+  include PublicActivity::Common
   belongs_to :user
   belongs_to :approvable, polymorphic: true
 
@@ -39,10 +40,10 @@ class Approval < ApplicationRecord
       Approval.create(user: user, approvable: approvable,
                       approvable_type: approvable_type, status: "developer-requested")
     else
-      Approval.create(user: user, approvable: approvable,
-                      approvable_type: approvable_type, status: "pending")
       Approval.create(user: approvable, approvable: user,
                       approvable_type: approvable_type, status: "requested")
+      Approval.create(user: user, approvable: approvable,
+                      approvable_type: approvable_type, status: "pending")
     end
   end
 

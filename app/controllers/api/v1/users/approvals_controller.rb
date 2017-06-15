@@ -5,9 +5,9 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
 
   def create
     resource_exists?(approvable_type, approvable)
-    Approval.link(@user, approvable, approvable_type)
+    approval = Approval.link(@user, approvable, approvable_type)
     accept_if_friend_request_or_adding_developer if req_from_coposition_app?
-    approval = @user.approval_for(approvable)
+    CreateActivity.call(entity: approval, action: :create, owner: @user, params: params.to_h) if approval.id
     @dev.notify_if_subscribed("new_approval", approval_zapier_data(approval))
     render json: approval
   end

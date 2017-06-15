@@ -5,23 +5,23 @@ RSpec.describe Users::ApprovalsController, type: :controller do
 
   let(:user) do
     user = create_user
-    user.devices << FactoryGirl.create(:device)
+    user.devices << create(:device)
     user
   end
   let(:friend) do
-    friend = FactoryGirl.create :user
-    friend.devices << FactoryGirl.create(:device)
+    friend = create :user
+    friend.devices << create(:device)
     friend
   end
-  let(:developer) { FactoryGirl.create :developer }
+  let(:developer) { create :developer }
   let(:approval) do
-    app = FactoryGirl.create :approval
+    app = create :approval
     app.update(user: user)
     app.save
     app
   end
   let(:approval_two) do
-    app = FactoryGirl.create :approval
+    app = create :approval
     app.update(user: friend)
     app.save
     app

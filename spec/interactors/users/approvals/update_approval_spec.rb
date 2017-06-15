@@ -3,9 +3,9 @@ require "rails_helper"
 RSpec.describe Users::Approvals::UpdateApproval, type: :interactor do
   subject(:update_context) { described_class.call(current_user: user, params: { id: friend_approval.id }) }
 
-  let(:user) { FactoryGirl.create :user }
-  let(:friend) { FactoryGirl.create :user }
-  let(:developer) { FactoryGirl.create :developer }
+  let(:user) { create :user }
+  let(:friend) { create :user }
+  let(:developer) { create :developer }
   let(:friend_approval) do
     Approval.add_friend(user, friend)
     user.approval_for(friend)

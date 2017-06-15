@@ -1,0 +1,14 @@
+| Updated a 
+= link_to_activity(activity)
+- if activity.trackable
+  br
+  |  Device name: 
+  = activity.trackable.device.name
+  br
+  |  Permissible name: 
+  = activity.trackable.permissible.email
+- else
+  |  which has since been destroyed. 
+br
+|  Params: 
+= activity.parameters

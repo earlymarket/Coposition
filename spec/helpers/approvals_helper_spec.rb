@@ -12,13 +12,13 @@ RSpec.describe ApprovalsHelper, type: :helper do
 
   describe "#approvals_approvable_name" do
     it "converts a friend's email if their username is empty" do
-      friend = FactoryGirl.create(:user, username: "")
+      friend = create(:user, username: "")
       expect(friend.email).to include(helper.approvals_approvable_name(friend))
       expect(helper.approvals_approvable_name(friend).length < friend.email.length).to be
     end
 
     it "gives a company name if passed a developer" do
-      dev = FactoryGirl.create(:developer)
+      dev = create(:developer)
       expect(helper.approvals_approvable_name(dev)).to be dev.company_name
     end
   end

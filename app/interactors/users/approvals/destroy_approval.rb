@@ -8,11 +8,19 @@ module Users::Approvals
       context.fail! unless approval
       current_user.destroy_permissions_for(approvable)
       destroy_friend_side if approvable_type == "User"
+      create_destroy_activity
       approval.destroy
       context.approvable_type = approvable_type
     end
 
     private
+
+    def create_destroy_activity
+      CreateActivity.call(entity: approval,
+                          action: :destroy,
+                          owner: current_user,
+                          params: { approvable: approvable.email })
+    end
 
     def destroy_friend_side
       approvable.destroy_permissions_for(current_user)

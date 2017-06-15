@@ -10,14 +10,14 @@ module ControllerMacros
 
   def create_user
     @request.env['devise.mapping'] = Devise.mappings[:user]
-    user = FactoryGirl.create(:user)
+    user = create(:user)
     sign_in user
     user
   end
 
   def create_developer
     @request.env['devise.mapping'] = Devise.mappings[:developer]
-    developer = FactoryGirl.create(:developer)
+    developer = create(:developer)
     sign_in developer
     developer
   end

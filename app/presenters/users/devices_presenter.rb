@@ -8,6 +8,32 @@ module Users
     attr_reader :config
     attr_reader :date_range
 
+    FOGGED_FIELD_SET = %w(
+      id
+      created_at
+      updated_at
+      device_id
+      fogged_lat AS lat
+      fogged_lng AS lng
+      fogged_city AS address
+      fogged_city AS city
+      fogged_country_code AS postal_code
+      fogged_country_code AS country_code
+    ).freeze
+
+    OUTPUT_FIELD_SET = %w(
+      id
+      created_at
+      updated_at
+      device_id
+      output_lat AS lat
+      output_lng AS lng
+      output_address AS address
+      output_city AS city
+      output_postal_code AS postal_code
+      output_country_code AS country_code
+    ).freeze
+
     def initialize(user, params, action)
       @user = user
       @params = params
@@ -83,29 +109,29 @@ module Users
     private
 
     def gon_index_checkins
-      checkins = user.devices.map do |device|
-        device.checkins.first.as_json.merge(device: device.name) if device.checkins.exists?
-      end.compact
+      checkins =
+        user
+        .devices
+        .map { |device| device.checkins.first.as_json.merge(device: device.name) if device.checkins.exists? }
+        .compact
       checkins.sort_by { |checkin| checkin["created_at"] }.reverse
     end
 
     def gon_shared_checkin
       return unless @checkin
+
       checkin = Checkin.where(id: @checkin.id)
       if device.fogged?
-        checkin.select("id", "created_at", "updated_at", "device_id", "fogged_lat AS lat", "fogged_lng AS lng",
-          "fogged_city AS address", "fogged_city AS city", "fogged_country_code AS postal_code",
-          "fogged_country_code AS country_code")[0]
+        checkin.select(FOGGED_FIELD_SET)[0]
       else
-        checkin.select("id", "created_at", "updated_at", "device_id", "output_lat AS lat", "output_lng AS lng",
-          "output_address AS address", "output_city AS city", "output_postal_code AS postal_code",
-          "output_country_code AS country_code")[0]
+        checkin.select(OUTPUT_FIELD_SET)[0]
       end
     end
 
     def gon_show_checkins_paginated
-      gon_show_checkins.paginate(page: 1, per_page: 1000)
-                       .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :edited)
+      gon_show_checkins
+        .paginate(page: 1, per_page: 1000)
+        .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :edited)
     end
 
     def gon_show_checkins

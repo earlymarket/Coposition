@@ -9,7 +9,7 @@ gem "sass-rails", "~> 5.0"
 gem "uglifier", ">= 1.3.0"
 gem "coffee-rails", "~> 4.1.0"
 gem "jquery-rails"
-gem "active_model_serializers", git: "https://github.com/rails-api/active_model_serializers.git"
+gem "active_model_serializers", "~> 0.10.5"
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem "turbolinks"
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -32,18 +32,22 @@ gem "will_paginate-materialize", git: "https://github.com/t-harps/will_paginate-
 gem "jquery-validation-rails"
 gem "inline_svg"
 gem "gon", "~> 6.1.0"
-gem "cloudinary", "~> 1.1.3"
-gem "attachinary", "~> 1.3.1"
+gem "cloudinary", "~> 1.7.0"
+gem "attachinary", git: "https://github.com/earlymarket/attachinary"
 gem "sprockets", ">= 3.0.0"
 gem "sprockets-es6"
 gem "bower-rails", "~> 0.10.0"
 gem "gpx"
-gem "activeadmin", git: "https://github.com/activeadmin/activeadmin"
+gem "activeadmin"
 gem "inherited_resources", git: "https://github.com/activeadmin/inherited_resources"
 gem "activerecord-import"
 gem "sidekiq"
 gem "interactor"
 gem "doorkeeper", git: "https://github.com/earlymarket/doorkeeper"
+gem "slim"
+gem "public_activity"
+gem "rollbar"
+gem "oj"
 
 group :production do
   gem "rack-timeout"
@@ -70,6 +74,7 @@ group :development do
   gem "rack-mini-profiler", require: false
   gem "flamegraph"
   gem "stackprof"
+  gem "slim-rails"
 end
 
 group :development, :test do
@@ -87,10 +92,11 @@ group :development, :test do
   gem "coffeelint"
   gem "rails_best_practices", require: false
   gem "dotenv-rails"
+  gem "slim_lint", require: false
 end
 
 group :test do
-  gem "codeclimate-test-reporter", require: nil
+  gem "codeclimate-test-reporter", "0.6.0", require: nil
   gem "capybara-webkit", "~> 1.14.0"
   gem "cucumber-rails", require: false
   gem "launchy"

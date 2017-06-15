@@ -1,52 +1,113 @@
 window.COPO = window.COPO || {};
 window.COPO.editCheckin = {
   init() {
-    $('body').on('click', '.editable-wrapper.clickable', COPO.editCheckin.handleEditStart);
+    $('body').on('click', '.editable-wrapper.clickable', function(e) {
+      e.stopPropagation();
+      COPO.editCheckin.handleEditStart($(e.currentTarget).find(".editable"));
+    });
   },
 
-  handleEditStart() {
-    var $editable = $('.editable');
+  handleEditStart($editable) {
     COPO.maps.mousePositionControlInit();
-    $('.editable-wrapper').toggleClass('clickable');
+    $editable.parent('.editable-wrapper').toggleClass('clickable');
+
     // make .editable, a contenteditable
-    // select all the text to make it easier to edit
     $editable.attr('contenteditable', true);
-    $editable.focus();
-    document.execCommand('selectAll', false, null);
-    COPO.editCheckin.setEditableListeners($editable)
+
+    if ($editable.hasClass("date")) {
+      // if user edits date input set datepicker and open
+      COPO.editCheckin.setDatepicker($editable).pickadate("open");
+    } else {
+      // select all the text to make it easier to edit
+      $editable.focus();
+      document.execCommand('selectAll', false, null);
+
+      // mousing over the map shows crosshair to quickly set latlng
+      $('#map').addClass('crosshair');
+      map.on('click', function(e) {
+        COPO.editCheckin.handleMapClick($editable, e);
+      });
+    }
+
+    // setup other listeners
+    COPO.editCheckin.setEditableListeners($editable);
   },
 
   setEditableListeners($editable) {
     var original = $editable.text();
 
-    // mousing over the map shows crosshair to quickly set latlng
-    $('#map').toggleClass('crosshair');
-    map.on('click', function(e) {
-      COPO.editCheckin.handleMapClick($editable, e);
-    });
-
-    // if they click the popup, stop editing
+    // if user clicks the popup, stop editing
     $('.leaflet-popup').on('click', function (e) {
       if (e.target.className !== 'editable') {
-        COPO.editCheckin.handleCoordsEdited(original, $editable);
+        COPO.editCheckin.handleEdited(original, $editable);
       }
     });
 
-    // if they hit enter or esc, stop editing
+    // if user hits enter or esc, stop editing
     $editable.on('keydown', function (e) {
       if (e.which === 27 || e.which === 13 ) {
-        COPO.editCheckin.handleCoordsEdited(original, $editable);
+        COPO.editCheckin.handleEdited(original, $editable);
       }
     });
 
-    // if they click another marker, remove all the listeners
+    // if user clicks another marker, remove all the listeners
     COPO.maps.allMarkers.eachLayer(function(marker) {
       marker.on('click', function(e) {
-        if ($editable.attr('contenteditable')) {
-          COPO.editCheckin.handleEditEnd($editable);
-        }
+        COPO.editCheckin.handleEditEnd($editable);
       });
     });
+  },
+
+  setDatepicker($editable) {
+    var original = $editable.text();
+    return $("body").pickadate({
+      selectMonths: true,
+      selectYears: 15,
+      closeOnSelect: true,
+      onSet: function(context) {
+        if ("select" in context) {
+          if (this.get("value")) {
+            let date = new Date($editable.text());
+            let newDate = new Date(this.get("value"));
+
+            date.setDate(newDate.getDate());
+            date.setMonth(newDate.getMonth());
+            date.setFullYear(newDate.getFullYear());
+
+            // open marker popup back again and set new date
+            $editable.text(
+              date.toDateString() + ' ' + date.toLocaleTimeString() + " UTC+0000"
+            );
+
+            // remove datepicker with respect to next one
+            this.stop();
+          }
+        }
+      },
+      onClose: function(context) {
+        COPO.editCheckin.handleEdited(original, $editable);
+      }
+    });
+  },
+
+  handleEdited(original, $editable) {
+    if ($editable.hasClass("date")) {
+      COPO.editCheckin.handleDateEdited(original, $editable);
+    } else {
+      COPO.editCheckin.handleCoordsEdited(original, $editable);
+    }
+  },
+
+  handleDateEdited(original, $editable) {
+    if (original !== $editable.text()) {
+      var url = $editable.data('url');
+      var data = { checkin: { created_at: $editable.text()} }
+      COPO.editCheckin.putUpdateCheckin(url, data);
+    } else {
+      // reverse the edit
+      $editable.text(original);
+    }
+    COPO.editCheckin.handleEditEnd($editable);
   },
 
   handleCoordsEdited(original, $editable) {
@@ -87,13 +148,19 @@ window.COPO.editCheckin = {
 
   updateCheckin(response) {
     // tries to find the checkin in gon and update it with the response
-    checkin = _.find(gon.checkins, _.matchesProperty('id',response.id));
-    checkin.lat = response.lat;
-    checkin.lng = response.lng;
-    checkin.edited = response.edited;
+    checkin = _.find(gon.checkins, _.matchesProperty('id', response.checkin.id));
+    checkin.lat = response.checkin.lat;
+    checkin.lng = response.checkin.lng;
+    checkin.edited = response.checkin.edited;
     checkin.lastEdited = true;
-    checkin.address = response.address;
-    checkin.fogged_city = response.fogged_city;
+    checkin.address = response.checkin.address;
+    checkin.fogged_city = response.checkin.fogged_city;
+    if (checkin.created_at !== response.checkin.created_at) {
+      checkin.created_at = response.checkin.created_at;
+      gon.checkins.sort(function(a, b) {
+        return (new Date(b.created_at)) - (new Date(a.created_at));
+      });
+    }
     // delete the localDate so we generate fresh timezone data
     delete checkin.localDate;
     COPO.maps.refreshMarkers(gon.checkins);
@@ -101,10 +168,10 @@ window.COPO.editCheckin = {
 
   handleEditEnd($editable) {
     map.removeControl(COPO.maps.mousePositionControl);
-    $('#map').toggleClass('crosshair');
+    $('#map').removeClass('crosshair');
     $editable.removeAttr('contenteditable');
     COPO.utility.deselect();
-    $('.editable-wrapper').toggleClass('clickable');
+    $editable.parent('.editable-wrapper').toggleClass('clickable');
     COPO.editCheckin.unsetEditableListeners($editable)
   },
 

@@ -4,8 +4,8 @@ RSpec.describe Developers::RequestsController, type: :controller do
   include ControllerMacros
 
   let(:developer) { create_developer }
-  before do
-    req = FactoryGirl.create :request
+  let!(:request) do
+    req = create :request
     developer.requests << req
     req
   end
