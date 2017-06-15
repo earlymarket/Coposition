@@ -30,6 +30,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     unless example.metadata[:skip_before]
       Approval.link(user, developer, 'Developer')
       Approval.accept(user, developer, 'Developer')
+      Approval.last.update(status: "complete")
     end
   end
 
@@ -53,6 +54,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
         device
         Approval.link(user, developer, 'Developer')
         Approval.accept(user, developer, 'Developer')
+        Approval.last.update(status: "complete")
         get :last, params: params.merge(permissible_id: second_user.id)
         expect(res_hash[:error]).to eq 'approval_status: No Approval'
       end

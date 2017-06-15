@@ -17,6 +17,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     request.headers['X-Api-Key'] = developer.api_key
     Approval.link(user, developer, 'Developer')
     Approval.accept(user, developer, 'Developer')
+    Approval.last.update(status: "complete")
   end
 
   context 'with 3 checkins: 2 old, 1 new, on 2 devices' do

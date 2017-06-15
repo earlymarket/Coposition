@@ -3,27 +3,27 @@ module ControllerMacros
 
   included do
     before do
-      request.headers['HTTP_AUTHORIZATION'] =
+      request.headers["HTTP_AUTHORIZATION"] =
         "Bearer #{Doorkeeper::AccessToken.create(scopes: 'public').token}"
     end
   end
 
   def create_user
-    @request.env['devise.mapping'] = Devise.mappings[:user]
+    @request.env["devise.mapping"] = Devise.mappings[:user]
     user = create(:user)
     sign_in user
     user
   end
 
   def create_developer
-    @request.env['devise.mapping'] = Devise.mappings[:developer]
+    @request.env["devise.mapping"] = Devise.mappings[:developer]
     developer = create(:developer)
     sign_in developer
     developer
   end
 
   def res_hash
-    # Check if it's a different request
+    # Check if it"s a different request
     if response != @res
       @res = response.dup
       json = JSON(response.body)
@@ -33,8 +33,8 @@ module ControllerMacros
   end
 
   def api_request_headers(developer, user)
-    request.headers['X-Api-Key'] = developer.api_key
-    request.headers['X-User-Token'] = user.authentication_token
-    request.headers['X-User-Email'] = user.email
+    request.headers["X-Api-Key"] = developer.api_key
+    request.headers["X-User-Token"] = user.authentication_token
+    request.headers["X-User-Email"] = user.email
   end
 end
