@@ -1,6 +1,4 @@
 class UserMailer < ApplicationMailer
-  include AbstractController::Callbacks
-
   def invite_email(address)
     @url = "https://coposition.com/users/sign_up?email=#{address}"
     mail(to: address, subject: "Coposition invite")
