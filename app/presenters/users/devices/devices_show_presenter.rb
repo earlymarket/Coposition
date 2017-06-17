@@ -53,7 +53,7 @@ module Users::Devices
     end
 
     def first_load_range
-      checkins = device.checkins.limit(5000)
+      return { from: nil, to: nil } if (checkins = device.checkins.limit(5000)).size.zero?
       { from: checkins.last.created_at.beginning_of_day, to: checkins.first.created_at.end_of_day }
     end
 
