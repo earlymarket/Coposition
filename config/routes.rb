@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   ActiveAdmin.routes(self)
   mount ActionCable.server => "/cable"
   root to: "welcome#index"
@@ -10,6 +9,8 @@ Rails.application.routes.draw do
   get "/help", to: "welcome#help"
   get "/getting_started", to: "welcome#getting_started"
   get "/devs", to: "welcome#devs"
+  get "settings/unsubscribe"
+  patch "settings/update"
 
   # Devise
 
