@@ -28,6 +28,8 @@ RSpec.describe UserMailer, type: :mailer do
     let(:developer) { create :developer }
     let(:friend_mail) { UserMailer.add_user_email(user, added_user, false) }
     let(:developer_mail) { UserMailer.add_user_email(developer, added_user, true) }
+    let(:friend_mail_body) { CGI.unescapeHTML(friend_mail.body.encoded) }
+    let(:developer_mail_body) { CGI.unescapeHTML(developer_mail.body.encoded) }
 
     it "renders the subject" do
       expect(friend_mail.subject).to match("approval request")
@@ -38,15 +40,15 @@ RSpec.describe UserMailer, type: :mailer do
     end
 
     it "renders the senders email" do
-      expect(friend_mail.body.encoded).to match(user.email)
-      expect(developer_mail.body.encoded).to match(developer.company_name)
+      expect(friend_mail_body).to match(user.email)
+      expect(developer_mail_body).to match(developer.company_name)
     end
 
     it "renders the correct page url" do
       friends_url_string = "/users/#{added_user.id}/friends"
       apps_url_string = "/users/#{added_user.id}/apps"
-      expect(friend_mail.body.encoded).to match(friends_url_string)
-      expect(developer_mail.body.encoded).to match(apps_url_string)
+      expect(friend_mail_body).to match(friends_url_string)
+      expect(developer_mail_body).to match(apps_url_string)
     end
   end
 
