@@ -62,7 +62,11 @@ window.COPO.maps = {
         });
       } else {
         $('.myProgress').remove();
-        gon.first_load ? Materialize.toast('Up to last 5k check-ins loaded', 3000) : Materialize.toast('Check-ins loaded', 3000)
+        if (gon.first_load && total >= 5000) {
+          Materialize.toast('Last 5000 check-ins shown. Select a date range to load more.' , 3000)
+        } else {
+          Materialize.toast('Check-ins loaded', 3000)
+        }
         window.COPO.maps.fitBounds();
       };
     }
