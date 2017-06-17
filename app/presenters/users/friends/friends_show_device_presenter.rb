@@ -9,12 +9,15 @@ module Users::Friends
       @friend = User.find(params[:id])
       @params = params
       @device = friend.devices.where(cloaked: false).find(@params[:device_id])
+
+      @date_range = first_load ? first_load_range : checkins_date_range
     end
 
     def gon
       checkins = device_checkins
       {
         checkins: checkins.paginate(page: 1, per_page: 1000),
+        first_load: first_load,
         total: checkins.size
       }
     end
@@ -38,12 +41,24 @@ module Users::Friends
         device_id: device, from: from, to: Time.zone.today), method: :get)
     end
 
+    def first_load
+      @first_load ||= params[:first_load]
+    end
+
+    def first_load_range
+      return { from: nil, to: nil } if (checkins = device.checkins.limit(5000)).size.zero?
+      { from: checkins.last.created_at.beginning_of_day, to: checkins.first.created_at.end_of_day }
+    end
+
     private
 
     def device_checkins
-      @date_range = checkins_date_range
       checkins = device.permitted_history_for(@user)
-      checkins = checkins.where(created_at: date_range[:from]..date_range[:to]) if date_range[:from]
+      if first_load
+        checkins = checkins.limit(5000)
+      elsif date_range[:from]
+        checkins = checkins.where(created_at: date_range[:from]..date_range[:to])
+      end
       device.replace_checkin_attributes(checkins, @user)
     end
   end
