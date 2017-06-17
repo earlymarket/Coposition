@@ -11,6 +11,7 @@ class Checkin < ApplicationRecord
   validates :lng, presence: :true
 
   belongs_to :device
+  belongs_to :location, counter_cache: true
 
   delegate :user, to: :device
 
@@ -18,6 +19,8 @@ class Checkin < ApplicationRecord
   scope :since, ->(date) { where("created_at > ?", date) }
 
   before_update :set_edited, if: proc { lat_changed? || lng_changed? }
+
+  after_destroy :decrement_checkin_count
 
   reverse_geocoded_by :lat, :lng do |obj, results|
     if results.present?
@@ -34,10 +37,16 @@ class Checkin < ApplicationRecord
     if device
       reload
       assign_values
+      assign_location
       save
     else
       raise "Checkin is not assigned to a device."
     end
+  end
+
+  def decrement_checkin_count
+    location.save
+    location.destroy if location.checkins_count <= 0
   end
 
   def assign_values
@@ -78,6 +87,12 @@ class Checkin < ApplicationRecord
       output_postal_code: postal_code,
       output_country_code: country_code
     )
+  end
+
+  def assign_location
+    existing_location = user.locations.near([lat, lng], 0.01, units: :km).first
+    location = existing_location || Location.create(lat: lat, lng: lng, user_id: user.id)
+    update(location_id: location.id)
   end
 
   def reverse_geocode!
