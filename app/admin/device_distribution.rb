@@ -48,7 +48,7 @@ ActiveAdmin.register_page "Device Distribution" do
       {
         devices: number,
         consumers: distr,
-        percent: total.zero? ? "n/a" : distr * 100 / total
+        percent: total.zero? ? 0 : distr * 100 / total
       }
     end
 
