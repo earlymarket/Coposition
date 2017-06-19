@@ -6,8 +6,7 @@ class SettingsController < ApplicationController
 
   def update
     User.find(params[:id]).update(user_params)
-    flash[:notice] = "Subscription Cancelled"
-    redirect_to root_url
+    redirect_to root_url, notice: "Subscription Cancelled"
   end
 
   private
