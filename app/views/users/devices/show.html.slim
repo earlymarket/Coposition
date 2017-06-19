@@ -3,11 +3,11 @@
   .bottom-panel.valign-wrapper
     .buttons
       a.modal-trigger.btn.red.white-text href="#delete#{@device_show_presenter.device.id}" id="deleteButton#{@device_show_presenter.device.id}" 
-        | Delete
+        | Delete...
       a.modal-trigger.btn.blue.white-text href="#checkin#{@device_show_presenter.device.id}" id="checkinButton#{@device_show_presenter.device.id}"
-        | Checkin
+        | Check-in
       a.modal-trigger.btn.green.white-text.downloadButton data-tooltip=("Download range") href="#download#{@device_show_presenter.device.id}" id="downloadButton#{@device_show_presenter.device.id}"
-        | Download checkins
+        | Download
 
   .modal.checkin-modal id="checkin#{@device_show_presenter.device.id}"
     .modal-content
@@ -16,6 +16,8 @@
         p.center-align
           | You're going to check-in now
         a#checkinNow.btn.blue.white-text data-turbolinks="false" href="#" Checkin now
+        br
+        br
         a#checkinFoggedNow.btn.blue.white-text data-turbolinks="false" href="#" Checkin now (fogged)
 
   .modal.delete-modal id="delete#{@device_show_presenter.device.id}"
