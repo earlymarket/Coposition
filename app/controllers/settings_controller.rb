@@ -5,14 +5,9 @@ class SettingsController < ApplicationController
   end
 
   def update
-    @user = User.find(params[:id])
-    if @user.update(user_params)
-      flash[:notice] = "Subscription Cancelled"
-      redirect_to root_url
-    else
-      flash[:alert] = "There was a problem"
-      render :unsubscribe
-    end
+    User.find(params[:id]).update(user_params)
+    flash[:notice] = "Subscription Cancelled"
+    redirect_to root_url
   end
 
   private
