@@ -32,7 +32,7 @@ table do
       tr do
         th item['devices']
         th item['consumers']
-        th '%.2f %' % item['percent']
+        th item['percent']
       end
     end
   end

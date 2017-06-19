@@ -57,7 +57,7 @@ ActiveAdmin.register_page "Device Distribution" do
         <<-DEV_DISTR
           select users.id, count(devices) dev_count
           from users
-          join devices on devices.user_id = users.id
+          left join devices on devices.user_id = users.id
           group by users.id
         DEV_DISTR
       )
@@ -68,7 +68,7 @@ ActiveAdmin.register_page "Device Distribution" do
         <<-DEV_DISTR
           select ds.id, count(devices) dev_count
           from #{ItemsByMonthsQuery::ACTIVE_USERS_BY_MONTHS} ds
-          join devices on devices.user_id = ds.id
+          left join devices on devices.user_id = ds.id
           where EXTRACT(MONTH from ds.created_at) = EXTRACT(MONTH from now())
           group by ds.id
         DEV_DISTR
