@@ -11,7 +11,7 @@ describe ::Users::Devices::DevicesShowPresenter do
   end
 
   describe "Interface" do
-    %i(user device checkins filename show_gon form_for form_path form_range_filter).each do |method|
+    %i(user device checkins filename date_range show_gon form_for form_path form_range_filter).each do |method|
       it { is_expected.to respond_to method }
     end
   end
@@ -51,6 +51,25 @@ describe ::Users::Devices::DevicesShowPresenter do
     end
   end
 
+  describe "date_range" do
+    before { checkins }
+
+    it "returns date of first and last check-in being shown on first load" do
+      show_presenter = described_class.new(user, id: device.id, first_load: true)
+      expect(show_presenter.date_range).to eq from: Checkin.last.created_at.beginning_of_day, to: Checkin.first.created_at.end_of_day
+    end
+
+    it "returns date selected if params provided" do
+      show_presenter = described_class.new(user, id: device.id, from: Date.yesterday.strftime, to: Date.today.strftime)
+      expect(show_presenter.date_range).to eq from: Date.yesterday.beginning_of_day, to: Date.today.end_of_day
+    end
+
+    it "returns nil range if no date range" do
+      show_presenter = described_class.new(user, id: device.id)
+      expect(show_presenter.date_range).to eq from: nil, to: nil
+    end
+  end
+
   describe "show_gon" do
     it "returns a hash" do
       expect(show_presenter.show_gon).to be_kind_of Hash
@@ -59,7 +78,7 @@ describe ::Users::Devices::DevicesShowPresenter do
     it "calls gon_show_checkins" do
       allow(show_presenter).to receive(:gon_show_checkins).and_return device.checkins
       show_presenter.show_gon
-      expect(show_presenter).to have_received(:gon_show_checkins).twice
+      expect(show_presenter).to have_received(:gon_show_checkins).exactly(3).times
     end
   end
 
