@@ -69,9 +69,11 @@ module Users::Devices
     end
 
     def gon_show_checkins
-      checkins = device.checkins
-      return checkins.limit(5000) if first_load
-      date_range[:from] ? checkins.where(created_at: date_range[:from]..date_range[:to]) : checkins
+      @gon_show_checkins ||= if date_range[:from]
+        device.checkins.where(created_at: date_range[:from]..date_range[:to])
+      else
+        device.checkins
+      end
     end
   end
 end
