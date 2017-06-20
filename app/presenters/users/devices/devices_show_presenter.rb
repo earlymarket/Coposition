@@ -21,7 +21,8 @@ module Users::Devices
         first_load: first_load,
         device: device.id,
         current_user_id: user.id,
-        total: gon_show_checkins.count
+        total: gon_show_checkins.count,
+        all: all_checkins?
       }
     end
 
@@ -50,6 +51,10 @@ module Users::Devices
 
     def first_load
       @first_load ||= params[:first_load]
+    end
+
+    def all_checkins?
+      gon_show_checkins.count == device.checkins.count
     end
 
     def first_load_range
