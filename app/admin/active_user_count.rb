@@ -1,5 +1,5 @@
-ActiveAdmin.register_page "Monthly new users" do
-  CONSUMER_COUNT_HEADERS = %w[Month Total Growth]
+ActiveAdmin.register_page "Active consumers" do
+  ACTIVE_USER_HEADERS = %w[Month Total Growth]
 
   menu parent: "Reports"
 
@@ -9,12 +9,12 @@ ActiveAdmin.register_page "Monthly new users" do
 
   controller do
     def index
-      params[:collection] = ItemsByMonthsQuery.new(table: "users").all
+      params[:collection] = ItemsByMonthsQuery.new(table: nil, active_users: true).all
     end
   end
 
   page_action :csv, method: :get do
-    collection = ItemsByMonthsQuery.new(table: "users").all
+    collection = ItemsByMonthsQuery.new(table: nil, active_users: true).all
 
     csv = CSV.generate(encoding: "UTF-8") do |csv|
       # add headers
@@ -26,10 +26,10 @@ ActiveAdmin.register_page "Monthly new users" do
     # send file to user
     send_data csv.encode("UTF-8"),
       type: "text/csv; charset=windows-1251; header=present",
-      disposition: "attachment; filename=users_#{DateTime.now.to_s}.csv"
+      disposition: "attachment; filename=active_users_#{DateTime.now.to_s}.csv"
   end
 
   action_item :csv do
-    link_to "Export to CSV", admin_monthly_new_users_csv_path, method: :get
+    link_to "Export to CSV", admin_active_consumers_csv_path, method: :get
   end
 end
