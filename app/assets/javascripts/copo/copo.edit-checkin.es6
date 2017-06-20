@@ -64,6 +64,7 @@ window.COPO.editCheckin = {
       selectMonths: true,
       selectYears: 15,
       closeOnSelect: true,
+      max: new Date(),
       onSet: function(context) {
         if ("select" in context) {
           if (this.get("value")) {
