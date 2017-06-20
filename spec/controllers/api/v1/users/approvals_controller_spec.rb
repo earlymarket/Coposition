@@ -112,7 +112,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
     context "making a request to #update" do
       it "is able to approve a developer approval request" do
         put :update, params: approval_update_params
-        expect(user.approved?(developer)).to be true
+        expect(user.approval_for(developer).status).to eq "accepted"
       end
 
       it "returns the new approval" do
@@ -137,7 +137,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
 
       it "is not able to approve an approval that does not belong to you" do
         second_user.approvals.create(approvable_id: developer.id)
-        put :update, params: approval_update_params.merge(id: second_user.approvals.last.id)
+        put :update, params: approval_update_params.merge(id: second_user.approvals.first.id)
         expect(res_hash[:error]).to match("does not exist")
         expect(response.status).to be 404
         expect(user.approved?(developer)).to be false

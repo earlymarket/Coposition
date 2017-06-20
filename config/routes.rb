@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  use_doorkeeper do
+    controllers applications: "oauth/applications",
+      authorizations: "oauth/authorizations"
+  end
 
   ActiveAdmin.routes(self)
   mount ActionCable.server => "/cable"
@@ -28,7 +32,7 @@ Rails.application.routes.draw do
   # API
 
   namespace :api, path: "", constraints: { subdomain: "api" }, defaults: { format: "json" } do
-    scope module: :v1, constraints: ApiConstraint.new(version: 1, default: true) do
+    scope module: :v1, constraints: Constraints::ApiConstraint.new(version: 1, default: true) do
       resources :subscriptions, only: [:create, :destroy]
       resources :configs, only: [:index, :show, :update]
       resource :uuid, only: [:show]
@@ -76,7 +80,6 @@ Rails.application.routes.draw do
   end
 
   # Users
-
   resources :users, only: [:show], module: :users do
     resource :dashboard, only: [:show]
     resources :devices, except: :edit do
@@ -97,6 +100,9 @@ Rails.application.routes.draw do
     end
     get "/apps", to: "approvals#index", defaults: { approvable_type: "Developer" }
     get "/friends", to: "approvals#index", defaults: { approvable_type: "User" }
+    collection do
+      get :me
+    end
   end
 
   # Devs
