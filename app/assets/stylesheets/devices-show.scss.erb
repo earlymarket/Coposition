@@ -92,6 +92,11 @@
     margin: 0;
   }
 
+  .delete-buttons {
+    display: flex;
+    justify-content: space-around;
+  }
+
   .buttons {
     margin: 10px;
     margin-top: 30px;
@@ -99,6 +104,16 @@
     justify-content: space-around;
     margin-left: 25%;
     margin-right: 25%;
+    @media screen and (max-width: 800px){
+      margin-left: 5%;
+      margin-right: 5%;
+    }
+    @media screen and (max-width: 500px){
+      .modal-trigger {
+        padding: 0 1rem;
+        font-size: 10px;
+      }
+    }
   }
 
   .disabled-icon {
