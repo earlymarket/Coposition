@@ -1,0 +1,39 @@
+h2 "All"
+
+table do
+  thead do
+    tr do
+      DEVICE_DISTRIBUTION_HEADERS.each &method(:th)
+    end
+  end
+
+  tbody do
+    params[:full].each do |item|
+      tr do
+        th item['devices']
+        th item['consumers']
+        th item['percent']
+      end
+    end
+  end
+end
+
+h2 "Active"
+
+table do
+  thead do
+    tr do
+      DEVICE_DISTRIBUTION_HEADERS.each &method(:th)
+    end
+  end
+
+  tbody do
+    params[:active].each do |item|
+      tr do
+        th item['devices']
+        th item['consumers']
+        th item['percent']
+      end
+    end
+  end
+end

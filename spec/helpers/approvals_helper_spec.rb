@@ -2,8 +2,9 @@ require "rails_helper"
 
 RSpec.describe ApprovalsHelper, type: :helper do
   let(:user) do
-    user = create(:user)
-    user.pending_friends << [create(:user), create(:user)]
+    user = FactoryGirl.create(:user)
+    Approval.add_friend(user, FactoryGirl.create(:user))
+    Approval.add_friend(user, FactoryGirl.create(:user))
     user
   end
   let(:user_approvals_input) { helper.approvals_input("User") }
