@@ -21,6 +21,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
     Approval.accept(user, dev, "Developer")
     Approval.link(second_user, dev, "Developer")
     Approval.accept(second_user, dev, "Developer")
+    Approval.update_all(status: "complete")
     dev
   end
   let(:params) { { user_id: user.id, format: :json } }

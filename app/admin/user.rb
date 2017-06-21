@@ -4,6 +4,7 @@ ActiveAdmin.register User do
   index do
     selectable_column
     id_column
+
     column :email
     column :username
     column :device_count do |user|
@@ -17,6 +18,7 @@ ActiveAdmin.register User do
     end
     column :zapier_enabled
     column :admin
+
     actions
   end
 

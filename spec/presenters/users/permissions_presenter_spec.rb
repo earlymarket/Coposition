@@ -5,9 +5,10 @@ describe ::Users::PermissionsPresenter do
     described_class.new(user, { id: permission.id, device_id: device.id, from: "devices" }, "index" )
   end
   let(:user) do
-    us = create(:user)
-    us.friends << friend
-    us.developers << developer
+    us = FactoryGirl.create(:user)
+    Approval.add_friend(us, friend)
+    Approval.add_friend(friend, us)
+    Approval.add_developer(us, developer)
     us
   end
   let(:permission) { device.permissions.last }

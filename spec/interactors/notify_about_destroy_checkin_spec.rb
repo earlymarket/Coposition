@@ -1,8 +1,6 @@
 require "rails_helper"
 
 describe NotifyAboutDestroyCheckin do
-  include ControllerMacros
-
   let(:device) { create :device }
   let(:checkin) { create :checkin, device: device }
   let(:friend) { create :user }

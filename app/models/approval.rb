@@ -1,7 +1,11 @@
 class Approval < ApplicationRecord
+  STATUSES = %w(developer-requested requested pending accepted complete)
+
   include PublicActivity::Common
   belongs_to :user
   belongs_to :approvable, polymorphic: true
+
+  validates :status, inclusion: { in: STATUSES, message: "%{value} is not a valid status" }
 
   before_create do
     if approvable_type == "User" && user == approvable

@@ -51,7 +51,7 @@ window.COPO.maps = {
     };
 
     function loadCheckins(page) {
-      if (total > gon.checkins.length && gon.checkins.length < 2000) {
+      if (total > gon.checkins.length) {
         updateProgress(gon.checkins.length, total);
         getCheckinData(page).then(function(data) {
           if (window.gon.total === undefined) return;
@@ -62,9 +62,19 @@ window.COPO.maps = {
         });
       } else {
         $('.myProgress').remove();
-        Materialize.toast('Check-ins loaded', 3000);
+        toastMessage()
         window.COPO.maps.fitBounds();
       };
+    }
+
+    function toastMessage() {
+      if (gon.first_load && total >= 5000) {
+        Materialize.toast('Last 5000 check-ins shown. Select a date range to load more.' , 3000)
+      } else if (gon.all) {
+        Materialize.toast('All check-ins loaded', 3000)
+      } else {
+        Materialize.toast('Check-ins loaded', 3000)
+      }
     }
 
     function updateProgress(checkins, total) {

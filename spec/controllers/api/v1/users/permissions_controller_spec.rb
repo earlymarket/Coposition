@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::Users::PermissionsController, type: :controller do
   include ControllerMacros
+
   let(:device) { create :device }
   let(:second_device) { create :device }
   let(:user) do

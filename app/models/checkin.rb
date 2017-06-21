@@ -17,7 +17,7 @@ class Checkin < ApplicationRecord
   default_scope { order(created_at: :desc) }
   scope :since, ->(date) { where("created_at > ?", date) }
 
-  before_update :set_edited, if: proc { lat_changed? || lng_changed? }
+  before_update :set_edited, if: proc { lat_changed? || lng_changed? || created_at_changed? }
 
   reverse_geocoded_by :lat, :lng do |obj, results|
     if results.present?

@@ -4,6 +4,7 @@ class Api::ApiController < ActionController::API
   rescue_from ::ActionController::ParameterMissing, with: :render_400_and_error
 
   before_action :find_user, :authenticate
+  before_action :doorkeeper_authorize! # Require access token for all actions
 
   private
 
@@ -34,8 +35,9 @@ class Api::ApiController < ActionController::API
   end
 
   def check_user_approved_approvable
-    @permissible = find_permissible
     return if req_from_coposition_app?
+
+    @permissible = find_permissible
     if !@user.approved?(@dev)
       render status: 401, json: { error: "approval_status: #{@user.approval_for(@dev).status}" }
     elsif !@user.approved?(@permissible)

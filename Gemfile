@@ -9,7 +9,7 @@ gem "sass-rails", "~> 5.0"
 gem "uglifier", ">= 1.3.0"
 gem "coffee-rails", "~> 4.1.0"
 gem "jquery-rails"
-gem "active_model_serializers", git: "https://github.com/rails-api/active_model_serializers.git"
+gem "active_model_serializers", "~> 0.10.5"
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem "turbolinks"
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -43,6 +43,7 @@ gem "inherited_resources", git: "https://github.com/activeadmin/inherited_resour
 gem "activerecord-import"
 gem "sidekiq"
 gem "interactor"
+gem "doorkeeper", git: "https://github.com/earlymarket/doorkeeper"
 gem "slim"
 gem "public_activity"
 gem "rollbar"
@@ -95,7 +96,7 @@ group :development, :test do
 end
 
 group :test do
-  gem "codeclimate-test-reporter", require: nil
+  gem "codeclimate-test-reporter", "0.6.0", require: nil
   gem "capybara-webkit", "~> 1.14.0"
   gem "cucumber-rails", require: false
   gem "launchy"
