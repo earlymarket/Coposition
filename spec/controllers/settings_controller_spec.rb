@@ -13,7 +13,7 @@ RSpec.describe SettingsController, type: :controller do
   end
 
   describe "PUT #update" do
-    context "with subscription = false" do
+    context "with subscription set to false" do
       it "returns http redirect" do
         unsubscribe
         expect(response).to have_http_status(:redirect)
