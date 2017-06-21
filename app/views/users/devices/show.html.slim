@@ -33,15 +33,16 @@
             | Currently, you are filtering to only see check-ins from #{humanize_date(@device_show_presenter.date_range[:from])} to #{humanize_date(@device_show_presenter.date_range[:to])}.
           - else
             | Currently, you are seeing all check-ins for this device.
-        .delete-buttons
-          = link_to "Delete all check-ins", user_device_checkins_path(current_user.url_id, @device_show_presenter.device.id), { method: :delete, class: "btn red white-text", data: { confirm: "Delete all checkins for this device?" } }
-          - if @device_show_presenter.date_range[:from]
-            = link_to "Delete visible check-ins", user_device_checkins_path(current_user.url_id, @device_show_presenter.device.id, from: @device_show_presenter.date_range[:from], to: @device_show_presenter.date_range[:to]), { method: :delete, class: "btn red white-text", data: { confirm: "Delete checkins from #{humanize_date(@device_show_presenter.date_range[:from])} to #{humanize_date(@device_show_presenter.date_range[:to])}?" } }
+        = link_to "Delete all check-ins", user_device_checkins_path(current_user.url_id, @device_show_presenter.device.id), { method: :delete, class: "btn red white-text", data: { confirm: "Delete all checkins for this device?" } }
+        - if @device_show_presenter.date_range[:from]
+          br
+          br
+          = link_to "Delete visible check-ins", user_device_checkins_path(current_user.url_id, @device_show_presenter.device.id, from: @device_show_presenter.date_range[:from], to: @device_show_presenter.date_range[:to]), { method: :delete, class: "btn red white-text", data: { confirm: "Delete checkins from #{humanize_date(@device_show_presenter.date_range[:from])} to #{humanize_date(@device_show_presenter.date_range[:to])}?" } }
       br
       h4.center-align Delete device
       .center-align
         p.center-align
-          | Delete entire device. You will no longer be able to create check-ins with this device.
+          | You will no longer be able to create check-ins with this device.
         = link_to "Delete device", user_device_path(current_user.url_id, @device_show_presenter.device), { method: :delete, class: "btn red white-text", data: { confirm: "Are you sure?" } }
   /! templates
   script#markerPopupTmpl type="x-tmpl-mustache" 
