@@ -68,16 +68,15 @@ window.COPO.editCheckin = {
       onSet: function(context) {
         if ("select" in context) {
           if (this.get("value")) {
-            let date = new Date($editable.text());
+            let date = new Date($editable.data().date);
             let newDate = new Date(this.get("value"));
 
             date.setDate(newDate.getDate());
             date.setMonth(newDate.getMonth());
             date.setFullYear(newDate.getFullYear());
-
             // open marker popup back again and set new date
             $editable.text(
-              date.toDateString() + ' ' + date.toLocaleTimeString() + " UTC+0000"
+              date.toUTCString() + " UTC+0000"
             );
 
             // remove datepicker with respect to next one
