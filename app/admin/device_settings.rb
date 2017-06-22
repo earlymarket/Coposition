@@ -91,7 +91,7 @@ ActiveAdmin.register_page "Device Settings" do
     end
 
     def battery_stats
-      return ["n/a"] * BATTERY_SAVING.size if automated_devices.size.zero?
+      return ["n/a"] * BATTERY_SAVING.size if Device.count.zero?
 
       BATTERY_SAVING.map do |battery|
         '%.2f %' % (
@@ -103,7 +103,7 @@ ActiveAdmin.register_page "Device Settings" do
     end
 
     def delay_stats
-      return ["n/a"] * DELAY.size if automated_devices.size.zero?
+      return ["n/a"] * DELAY.size if Device.count.zero?
 
       DELAY.map do |delay|
         '%.2f %' % (
