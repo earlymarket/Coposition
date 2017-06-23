@@ -104,9 +104,6 @@ group :test do
   gem "simplecov", require: false
   gem "rails-controller-testing"
   gem "webmock", require: false
-end
-
-group :benchmark do
   gem "rails-perftest"
   gem "ruby-prof"
 end
