@@ -7,7 +7,8 @@ PERFORMANCE_GOALS = [
   { test: "CreateCheckinTest#test_checkins_create", value: 0.012 },
   { test: "PageTest#test_landing_page", value: 0.002 },
   { test: "SerializingTest#test_checkins_page", value: 0.006 },
-  { test: "ShowDeviceTest#test_show_device", value: 0.01 }
+  { test: "ShowDeviceTest#test_show_device", value: 0.01 },
+  { test: "ShowFriendsTest#test_show_friends", value: 0.01 }
 ]
 
 def wall_time_exceeded(test_name, max_wall_time)
