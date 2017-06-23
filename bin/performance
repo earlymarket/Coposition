@@ -4,7 +4,8 @@ require "rubygems"
 require "csv"
 
 PERFORMANCE_GOALS = [
-  { test: "CreateCheckinTest#test_checkins_create", value: 0.012 },
+  { test: "CreateCheckinTest#test_checkin_create", value: 0.012 },
+  { test: "CreateCheckinTest#test_fogged_checkin_create", value: 0.012 },
   { test: "PageTest#test_landing_page", value: 0.002 },
   { test: "SerializingTest#test_checkins_page", value: 0.006 },
   { test: "ShowDeviceTest#test_show_device", value: 0.01 },
