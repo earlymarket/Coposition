@@ -14,7 +14,7 @@ module Oauth
 
       developer.approvals.find_by(user_id: current_resource_owner.id).tap do |approval|
         approval ||= Approval.add_developer(current_resource_owner, developer)
-        approval.update(:status, "complete")
+        approval.update(status: "complete")
       end
     end
 
