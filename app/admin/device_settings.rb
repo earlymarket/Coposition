@@ -31,7 +31,7 @@ ActiveAdmin.register_page "Device Settings" do
       return { on: "n/a", off: "n/a" } if Device.count.zero?
 
       {
-        on: '%.2f %' % (num = Device.where(fogged: true).count * 100 / Device.count),
+        on: '%.2f %' % (num = Device.where(fogged: true).count.to_f * 100 / Device.count),
         off: '%.2f %' % (100 - num)
       }
     end
@@ -40,7 +40,7 @@ ActiveAdmin.register_page "Device Settings" do
       return { on: "n/a", off: "n/a" } if Device.count.zero?
 
       {
-        on: '%.2f %' % (num = Device.where(cloaked: true).count * 100 / Device.count),
+        on: '%.2f %' % (num = Device.where(cloaked: true).count.to_f * 100 / Device.count),
         off: '%.2f %' % (100 - num)
       }
     end
@@ -49,7 +49,7 @@ ActiveAdmin.register_page "Device Settings" do
       return { on: "n/a", off: "n/a" } if Device.count.zero?
 
       {
-        on: '%.2f %' % (num = Device.automated.size * 100 / Device.count),
+        on: '%.2f %' % (num = Device.automated.size.to_f * 100 / Device.count),
         off: '%.2f %' % (100 - num)
       }
     end
@@ -61,7 +61,7 @@ ActiveAdmin.register_page "Device Settings" do
         '%.2f' % (
           automated_devices
             .select { |dev| dev.config && dev.config.custom && dev.config.custom["intervalType"] == type }
-            .size / automated_devices.size
+            .size.to_f / automated_devices.size
         )
       end
     end
@@ -73,7 +73,7 @@ ActiveAdmin.register_page "Device Settings" do
         '%.2f %' % (
           automated_devices
             .select { |dev| dev.config && dev.config.custom && dev.config.custom["timeInterval"] == interval }
-            .size * 100 / automated_devices.size
+            .size.to_f * 100 / automated_devices.size
         )
       end
     end
@@ -85,7 +85,7 @@ ActiveAdmin.register_page "Device Settings" do
         '%.2f %' % (
           automated_devices
             .select { |dev| dev.config && dev.config.custom && dev.config.custom["distanceInterval"] == interval }
-            .size * 100 / automated_devices.size
+            .size.to_f * 100 / automated_devices.size
         )
       end
     end
@@ -97,7 +97,7 @@ ActiveAdmin.register_page "Device Settings" do
         '%.2f %' % (
           Device
             .select { |dev| dev.config && dev.config.custom && dev.config.custom["batterySaving"] == battery }
-            .size * 100 / Device.count
+            .size.to_f * 100 / Device.count
         )
       end
     end
@@ -107,7 +107,7 @@ ActiveAdmin.register_page "Device Settings" do
 
       DELAY.map do |delay|
         '%.2f %' % (
-          Device.where(delayed: delay).count * 100 / Device.count
+          Device.where(delayed: delay).count.to_f * 100 / Device.count
         )
       end
     end
