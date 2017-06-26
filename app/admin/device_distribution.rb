@@ -48,7 +48,7 @@ ActiveAdmin.register_page "Device Distribution" do
       {
         devices: number,
         consumers: distr,
-        percent: total.zero? ? "n/a" : "%.2f %" % (distr * 100 / total)
+        percent: total.zero? ? "n/a" : "%.2f %" % (distr.to_f * 100 / total)
       }
     end
 
@@ -83,7 +83,7 @@ ActiveAdmin.register_page "Device Distribution" do
       # add headers
       csv << HEADERS
       collection.each do |item|
-        csv << [item[:devices], item[:consumers], "%.2f %" % item[:percent].to_i]
+        csv << [item[:devices], item[:consumers], item[:percent]]
       end
     end
     # send file to user
@@ -99,7 +99,7 @@ ActiveAdmin.register_page "Device Distribution" do
       # add headers
       csv << HEADERS
       collection.each do |item|
-        csv << [item[:devices], item[:consumers], "%.2f %" % item[:percent].to_i]
+        csv << [item[:devices], item[:consumers], item[:percent]]
       end
     end
     # send file to user

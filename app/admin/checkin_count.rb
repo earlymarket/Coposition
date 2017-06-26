@@ -20,7 +20,7 @@ ActiveAdmin.register_page "Monthly check-ins" do
       # add headers
       csv << HEADERS
       collection.each do |item|
-        csv << [item["month"], item["total"], "%.2f %" % item["growth"].to_i]
+        csv << [item["month"], item["total"], "%.2f %" % item["growth"].to_f]
       end
     end
     # send file to user

@@ -29,7 +29,7 @@ ActiveAdmin.register Developer do
             .includes(device: :user)
             .select{ |p| p.privilege == type.to_s }
             .map{ |p| p.device.user }
-            .uniq.size * 100 / total
+            .uniq.size.to_f * 100 / total
 
           "%.2f %" % percent
         end
