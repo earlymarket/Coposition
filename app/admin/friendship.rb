@@ -23,10 +23,10 @@ ActiveAdmin.register Approval, as: "Friendship" do
     id_column
 
     column :approval do |apr|
-      apr.user.username
+      apr.user.present? ? apr.user.email : "Not found"
     end
     column :approved do |apr|
-      apr.approvable.username
+      apr.approvable.present? ? apr.approvable.email : "Not found"
     end
     column :date do |apr|
       apr.approval_date
