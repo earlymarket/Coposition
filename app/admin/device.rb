@@ -1,6 +1,8 @@
 ActiveAdmin.register Device do
   permit_params :name, :user_id
 
+  config.per_page = [10, 50, 100]
+
   index do
     selectable_column
     id_column
