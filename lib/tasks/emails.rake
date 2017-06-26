@@ -1,5 +1,5 @@
 namespace :scheduler do
-  desc "Adds a random avatar to a user."
+  desc "Sends activity email and deletes old activities"
   task check_activity: :environment do
     check_activity
     destroy_activities
