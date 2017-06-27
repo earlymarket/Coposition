@@ -7,6 +7,11 @@ class Users::Devise::SessionsController < Devise::SessionsController
     req_from_coposition_app? ? respond_with_auth_token : super
   end
 
+  def new
+    session[:return_to] = params[:return_to]
+    super
+  end
+
   def destroy
     req_from_coposition_app? ? destroy_auth_token : super
   end
@@ -50,6 +55,7 @@ class Users::Devise::SessionsController < Devise::SessionsController
   end
 
   def after_sign_in_path_for(resource)
+    return session[:return_to] if session[:return_to]
     stored_location_for(resource) || user_dashboard_path(resource)
   end
 end
