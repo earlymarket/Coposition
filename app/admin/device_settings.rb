@@ -1,8 +1,8 @@
 ActiveAdmin.register_page "Device Settings" do
   BOOLEAN_HEADERS = %w(Flag On Off).freeze
   INTERVAL_TYPES = %w(distance time).freeze
-  TIME_INTERVALS = [10, 30, 60, 300, 18000, 36000, 216000, 5184000].freeze
-  DISTANCE_INTERVALS = [50, 100, 200, 500, 1000].freeze
+  TIME_INTERVALS = %w(10 30 60 300 18000 36000 216000 5184000).freeze
+  DISTANCE_INTERVALS = %w(50 100 200 500 1000).freeze
   BATTERY_SAVING = %w(false low high).freeze
   DELAY = [nil, 5, 10, 30, 60, 360, 1440].freeze
 
