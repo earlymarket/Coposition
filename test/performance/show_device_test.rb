@@ -1,7 +1,7 @@
 require "benchmark_helper"
 
 class Users::DevicesController < ApplicationController
-  skip_before_action :authenticate_user!
+  skip_before_action :authenticate_user!, raise: false
 end
 
 class ShowDeviceTest < ActionDispatch::PerformanceTest
