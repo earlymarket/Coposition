@@ -8,9 +8,9 @@ Doorkeeper.configure do
     # Put your resource owner authentication logic here.
     # Example implementation:
     if session["warden.user.user.key"] && session["warden.user.user.key"][0]
-      User.find(session["warden.user.user.key"][0][0]) || redirect_to(new_user_session_url)
+      User.find(session["warden.user.user.key"][0][0]) || redirect_to(new_user_session_url(return_to: request.fullpath))
     else
-      redirect_to(new_user_session_url)
+      redirect_to(new_user_session_url(return_to: request.fullpath))
     end
   end
 
