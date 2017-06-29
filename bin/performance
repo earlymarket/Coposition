@@ -20,7 +20,7 @@ def wall_time_acceptable(test_name, wall_time)
   puts "For #{test_name}: wall time count is #{wall_time}."
 end
 
-`bin/rails test:real_world_benchmark RAILS_ENV=test`
+`RUBYOPT=W1 bin/rails test:real_world_benchmark RAILS_ENV=test`
 
 PERFORMANCE_GOALS.each do |goal|
   avg = []
