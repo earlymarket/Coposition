@@ -106,4 +106,5 @@ group :test do
   gem "webmock", require: false
   gem "rails-perftest"
   gem "ruby-prof"
+  gem "minitest", "~> 5.10", "!= 5.10.2"
 end
