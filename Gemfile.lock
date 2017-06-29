@@ -310,7 +310,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
     mini_portile2 (2.2.0)
-    minitest (5.10.2)
+    minitest (5.10.1)
     multi_json (1.12.1)
     multi_test (0.1.2)
     nenv (0.3.0)
@@ -590,6 +590,7 @@ DEPENDENCIES
   launchy
   letter_opener
   meta_request
+  minitest (~> 5.10, != 5.10.2)
   newrelic_rpm
   oj
   pg

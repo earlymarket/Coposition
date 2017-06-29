@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+
+require "rubygems"
+require "csv"
+
+PERFORMANCE_GOALS = [
+  { test: "CreateCheckinTest#test_checkin_create", value: 0.012 },
+  { test: "CreateCheckinTest#test_fogged_checkin_create", value: 0.012 },
+  { test: "PageTest#test_landing_page", value: 0.002 },
+  { test: "SerializingTest#test_checkins_page", value: 0.006 },
+  { test: "ShowDeviceTest#test_show_device", value: 0.01 },
+  { test: "ShowFriendsTest#test_show_friends", value: 0.01 }
+]
+
+def wall_time_exceeded(test_name, max_wall_time)
+  puts "Wall time limit exceeded in test: #{test_name}. You should keep amount of wall time below #{max_wall_time}."
+end
+
+def wall_time_acceptable(test_name, wall_time)
+  puts "For #{test_name}: wall time count is #{wall_time}."
+end
+
+`RUBYOPT=W1 bin/rails test:real_world_benchmark RAILS_ENV=benchmark`
+
+PERFORMANCE_GOALS.each do |goal|
+  avg = []
+
+  CSV.foreach("tmp/performance/#{goal[:test]}_wall_time.csv") do |row|
+    next if row[0] == "measurement"
+
+    avg << row[0]
+  end
+
+  measurement = avg.reduce(:+).to_f / avg.size rescue 0.0
+  if measurement > goal[:value]
+    wall_time_exceeded(goal[:test], goal[:value])
+    exit(1)
+  else
+    wall_time_acceptable(goal[:test], measurement)
+  end
+end
