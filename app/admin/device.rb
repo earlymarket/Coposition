@@ -1,4 +1,5 @@
 ActiveAdmin.register Device do
+  remove_filter :checkins
   permit_params :name, :user_id
 
   config.per_page = [10, 50, 100]
