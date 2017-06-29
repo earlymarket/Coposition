@@ -18,7 +18,7 @@ end
 
 def smooch_message(user)
   convo_api = SmoochApi::ConversationApi.new
-  message = SmoochApi::MessagePost.new(role: "appMaker", type: "text", text: "You have not checked in the last 7 days")
+  message = SmoochApi::MessagePost.new(role: "appMaker", type: "text", text: "You have not checked in in the last 7 days")
   user.devices.each do |device|
     next unless device.config.custom && (id = device.config.custom["smoochId"])
     begin
