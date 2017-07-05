@@ -2,7 +2,11 @@ class User < ApplicationRecord
   extend FriendlyId
   include ApprovalMethods, SlackNotifiable, RemoveId
 
+  PUBLIC_ATTRIBUTES = %i(id username slug email)
+
   acts_as_token_authenticatable
+
+  attr_accessor :public_profile
 
   friendly_id :username, use: %i(finders slugged)
 
@@ -143,16 +147,27 @@ class User < ApplicationRecord
   def public_info
     # Clears out any potentially sensitive attributes
     # Returns a normal ActiveRecord relation
-    User.select(%i(id username slug email)).find(id)
+    User.select(PUBLIC_ATTRIBUTES).find(id)
   end
 
   def self.public_info
-    all.select(%i(id username slug email))
+    all.select(PUBLIC_ATTRIBUTES)
   end
 
   def public_info_hash
     # Converts to hash and attaches avatar
     public_info.attributes.merge(avatar: avatar || { public_id: "no_avatar" })
+  end
+
+  def copo_app_access_token
+    copo_app = Developer.default(mobile: true).oauth_application
+    return nil unless oauth_application
+
+    Doorkeeper::AccessToken
+      .where(resource_owner_id: id)
+      .where(application_id: oauth_application.id)
+      .first
+      .token
   end
 
   private
