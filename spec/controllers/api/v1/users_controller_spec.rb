@@ -42,12 +42,26 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
         context "when request from coposition app" do
           let(:dev) { create :developer, api_key: Rails.application.secrets.mobile_app_key }
+          let(:application) { double "application" }
+          let(:access_token) { double "access_token", token: "token" }
+
+          before do
+            request.headers["X-Secret-App-Key"] = dev.api_key
+
+            allow(dev).to receive(:oauth_application) { application }
+            allow(Doorkeeper::AccessToken).to receive(:where) { Doorkeeper::AccessToken }
+            allow(Doorkeeper::AccessToken).to receive(:first) { access_token }
+
+            get :show, params: { id: user.id, format: :json }
+          end
 
           it "assigns private profile of User.id(:id) to @user" do
-            get :show, params: { id: user.id, format: :json }
-
             expect(assigns(:user)).to eq(user)
             expect(assigns(:user).connection_code). to eq(user.connection_code)
+          end
+
+          it "returns copo_app_access_token with other serializable fields" do
+            expect(res_hash[:user]["copo_app_access_token"]).to eq "token"
           end
         end
       end

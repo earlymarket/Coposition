@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   acts_as_token_authenticatable
 
-  attr_accessor :public_profile
+  attr_accessor :private_profile
 
   friendly_id :username, use: %i(finders slugged)
 
@@ -161,11 +161,11 @@ class User < ApplicationRecord
 
   def copo_app_access_token
     copo_app = Developer.default(mobile: true).oauth_application
-    return nil unless oauth_application
+    return nil unless copo_app
 
     Doorkeeper::AccessToken
       .where(resource_owner_id: id)
-      .where(application_id: oauth_application.id)
+      .where(application_id: copo_app.id)
       .first
       .token
   end

@@ -6,7 +6,7 @@ class Api::V1::UsersController < Api::ApiController
   before_action :doorkeeper_authorize!, unless: :req_from_coposition_app?, only: :show
 
   def show
-    @user.public_profile = req_from_coposition_app?
+    @user.private_profile = req_from_coposition_app?
     respond_with @user
   end
 
