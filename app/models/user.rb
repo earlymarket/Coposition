@@ -164,8 +164,7 @@ class User < ApplicationRecord
     return nil unless copo_app
 
     Doorkeeper::AccessToken
-      .where(resource_owner_id: id)
-      .where(application_id: copo_app.id)
+      .where(["resource_owner_id = ? AND application_id = ?", id, copo_app.id])
       .first
       &.token
   end
