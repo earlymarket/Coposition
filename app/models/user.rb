@@ -167,7 +167,7 @@ class User < ApplicationRecord
       .where(resource_owner_id: id)
       .where(application_id: copo_app.id)
       .first
-      .token
+      &.token
   end
 
   private
