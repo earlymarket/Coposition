@@ -13,6 +13,6 @@ class UserSerializer < ActiveModel::Serializer
   private
 
   def attribute_list
-    object.private_profile ? object.attribute_names.map(&:to_sym): User::PUBLIC_ATTRIBUTES
+    object.private_profile ? object.attribute_names.map(&:to_sym) : User::PUBLIC_ATTRIBUTES
   end
 end
