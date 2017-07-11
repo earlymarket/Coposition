@@ -21,7 +21,7 @@ ActiveAdmin.register Developer do
     end
     Permission::PRIVELEGE_TYPES.each do |type|
       column "#{type}_approved_percent".to_sym do |dev|
-        if (total = dev.users.count).zero?
+        if (total = dev.users.map(&:devices).flatten.count).zero?
           "n/a"
         else
           percent = dev
