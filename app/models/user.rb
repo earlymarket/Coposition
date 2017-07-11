@@ -95,7 +95,9 @@ class User < ApplicationRecord
 
   def not_coposition_developers
     copo_keys = [Rails.application.secrets["coposition_api_key"], Rails.application.secrets["mobile_app_api_key"]]
-    developers.where.not(api_key: copo_keys)
+    developers
+      .where.not(api_key: copo_keys)
+      .includes(:requests)
   end
 
   ## Devices

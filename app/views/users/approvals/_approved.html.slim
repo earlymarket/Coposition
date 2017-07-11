@@ -19,6 +19,9 @@
                 = approvable.try(:tagline)
               div
                 | Approved since #{humanize_date(approval.approval_date) unless approval.nil?}
+              - if approvable_type == "Developer"
+                div
+                  | Last API request (of #{approvable.api_requests(current_user).count}): #{approvable.api_requests(current_user).last&.created_at || "None"}
         .col.s4
           - if current_user.devices.exists?
             a.permissions-trigger.btn-flat.right.permissions-button data-id=(approvable.id) href="#perm#{approvable.id}"
