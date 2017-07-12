@@ -50,7 +50,7 @@ ActiveAdmin.register_page "Device Settings" do
       return { on: "n/a", off: "n/a" } if Device.count.zero?
 
       {
-        on: '%.2f %' % (num = Device.automated.size.to_f * 100 / Device.count),
+        on: '%.2f %' % (num = automated_devices.size.to_f * 100 / Device.count),
         off: '%.2f %' % (100 - num)
       }
     end
@@ -60,7 +60,7 @@ ActiveAdmin.register_page "Device Settings" do
 
       {
         on: '%.2f %' % (
-          num = Device
+          num = Device.includes(:config)
             .select { |dev| dev.config && dev.config.custom && dev.config.custom["smartInterval"] == true }
             .size.to_f * 100 / Device.count
         ),
@@ -87,7 +87,7 @@ ActiveAdmin.register_page "Device Settings" do
       TIME_INTERVALS.map do |interval|
         '%.2f %' % (
           devices
-            .select { |dev| dev.config && dev.config.custom && dev.config.custom["timeInterval"] == interval.to_i }
+            .select { |dev| dev.config.custom["timeInterval"] == interval.to_i }
             .size.to_f * 100 / devices.size
         )
       end
@@ -99,20 +99,21 @@ ActiveAdmin.register_page "Device Settings" do
       DISTANCE_INTERVALS.map do |interval|
         '%.2f %' % (
           automated_devices
-            .select { |dev| dev.config && dev.config.custom && dev.config.custom["distanceInterval"] == interval.to_i }
+            .select { |dev| dev.config.custom["distanceInterval"] == interval.to_i }
             .size.to_f * 100 / automated_devices.size
         )
       end
     end
 
     def battery_stats
-      devices = Device.all { |dev| dev.config.custom["batterySaving"].present? }
+      devices = Device.includes(:config)
+        .select { |dev| dev.config && dev.config.custom && dev.config.custom["batterySaving"].present? }
       return ["n/a"] * BATTERY_SAVING.size if devices.size.zero?
 
       BATTERY_SAVING.map do |battery|
         '%.2f %' % (
           devices
-            .select { |dev| dev.config && dev.config.custom && dev.config.custom["batterySaving"] == battery }
+            .select { |dev| dev.config.custom["batterySaving"] == battery }
             .size.to_f * 100 / devices.size
         )
       end
@@ -128,8 +129,15 @@ ActiveAdmin.register_page "Device Settings" do
       end
     end
 
-    def automated_devices &block
-      @automated ||= Device.automated &block
+    def automated_devices
+      @automated ||= configured_devices
+        .select { |dev| dev.config && dev.config.custom && dev.config.custom["active"] == true }
+
+      block_given? ? @automated.select { |dev| yield dev } : @automated
+    end
+
+    def configured_devices
+      @configured_devices ||= Device.includes(:config)
     end
   end
 end

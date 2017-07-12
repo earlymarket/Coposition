@@ -16,13 +16,6 @@ class Device < ApplicationRecord
     dev.uuid = SecureRandom.uuid
   end
 
-  def self.automated
-    collection = includes(:config)
-      .select { |dev| dev.config && dev.config.custom && dev.config.custom["active"] == true }
-
-    block_given? ? collection.select { |dev| yield dev } : collection
-  end
-
   def safe_checkin_info_for(args)
     sanitized = filtered_checkins(args)
     sanitize_checkins(sanitized, args)
