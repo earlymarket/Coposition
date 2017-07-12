@@ -17,8 +17,10 @@ class Device < ApplicationRecord
   end
 
   def self.automated
-    includes(:config)
+    collection = includes(:config)
       .select { |dev| dev.config && dev.config.custom && dev.config.custom["active"] == true }
+
+    block_given? ? collection.select { |dev| yield dev } : collection
   end
 
   def safe_checkin_info_for(args)
