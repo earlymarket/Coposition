@@ -8,7 +8,10 @@ $(document).on('ready page:change', function() {
 
   // We're calling this later now in the dodgy hack
   // // materialize accordion init
-  $('.collapsible').collapsible();
+  $('.collapsible').collapsible({
+    onOpen: function(el) { if (el.data("onOpen")) window[el.data("onOpen")](); },
+    onClose: function(el) { if (el.data("onClose")) window[el.data("onClose")](); }
+  });
 
   // materialize parallax init
   $('.parallax').parallax();
