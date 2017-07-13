@@ -9,8 +9,20 @@ $(document).on('ready page:change', function() {
   // We're calling this later now in the dodgy hack
   // // materialize accordion init
   $('.collapsible').collapsible({
-    onOpen: function(el) { if (el.data("onOpen")) window[el.data("onOpen")](); },
-    onClose: function(el) { if (el.data("onClose")) window[el.data("onClose")](); }
+    onOpen: function(el) {
+      collapsible = el.find(".collapsible-header");
+
+      if (collapsible.data("onopen")) {
+        window[collapsible.data("onopen")]();
+      }
+    },
+    onClose: function(el) {
+      collapsible = el.find(".collapsible-header");
+
+      if (collapsible.data("onclose")) {
+        window[collapsible.data("onclose")]();
+      }
+    }
   });
 
   // materialize parallax init
