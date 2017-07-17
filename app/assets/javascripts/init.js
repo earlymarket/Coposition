@@ -6,6 +6,9 @@ $(document).on('ready page:change', function() {
     belowOrigin: true
   });
 
+  // All modals should be initialized starting from 0.98
+  $('.modal').modal();
+
   // We're calling this later now in the dodgy hack
   // // materialize accordion init
   $('.collapsible').collapsible({
