@@ -4,7 +4,7 @@ class Api::V1::CheckinsController < Api::ApiController
   skip_before_action :find_user, only: [:create, :batch_create]
   before_action :device_exists?, only: [:create, :batch_create]
   before_action :check_user_approved_approvable, :find_device, except: [:create, :batch_create]
-  before_action :doorkeeper_authorize!, unless: :req_from_coposition_app?, except: [:create, :batch_create]
+  before_action -> { doorkeeper_authorize! :public }, unless: :req_from_coposition_app?, except: [:create, :batch_create]
 
   MAX_PER_PAGE = 1000
 
