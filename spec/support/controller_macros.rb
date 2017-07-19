@@ -1,13 +1,6 @@
 module ControllerMacros
   extend ActiveSupport::Concern
 
-  included do
-    before do
-      request.headers["HTTP_AUTHORIZATION"] =
-        "Bearer #{Doorkeeper::AccessToken.create(scopes: 'public').token}"
-    end
-  end
-
   def create_user
     @request.env["devise.mapping"] = Devise.mappings[:user]
     user = create(:user)
@@ -33,6 +26,8 @@ module ControllerMacros
   end
 
   def api_request_headers(developer, user)
+    request.headers["HTTP_AUTHORIZATION"] =
+      "Bearer #{Doorkeeper::AccessToken.create(resource_owner_id: user.id, scopes: 'public').token}"
     request.headers["X-Api-Key"] = developer.api_key
     request.headers["X-User-Token"] = user.authentication_token
     request.headers["X-User-Email"] = user.email
