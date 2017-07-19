@@ -1,13 +1,6 @@
 module ControllerMacros
   extend ActiveSupport::Concern
 
-  # included do
-  #   before do
-  #     request.headers["HTTP_AUTHORIZATION"] =
-  #       "Bearer #{Doorkeeper::AccessToken.create(scopes: 'public').token}"
-  #   end
-  # end
-
   def create_user
     @request.env["devise.mapping"] = Devise.mappings[:user]
     user = create(:user)
