@@ -30,7 +30,10 @@ class Users::Devise::SessionsController < Devise::SessionsController
 
     return unless valid_request?(email, password)
 
-    render status: 200, json: @user.public_info.as_json.merge(authentication_token: @user.authentication_token)
+    render status: 200, json: @user.public_info.as_json.merge(
+      authentication_token: @user.authentication_token,
+      access_token: @user.copo_app_access_token
+    )
   end
 
   def destroy_auth_token
