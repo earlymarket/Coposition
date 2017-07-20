@@ -18,7 +18,7 @@ namespace :oauth do
       default_application,
       user.id,
       "public",
-      7200,  # default value from server config settings
+      nil,  # default value from server config settings
       true)  # not a default value, enabling refresh tokens here
   end
 
