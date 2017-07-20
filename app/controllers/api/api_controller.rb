@@ -40,9 +40,9 @@ class Api::ApiController < ActionController::API
     return if req_from_coposition_app?
 
     if !@user.approved?(@dev)
-      render status: 401, json: { error: "approval_status: #{@user.approval_for(@dev).status}" }
+      render status: 401, json: { error: "Developer approval_status: #{@user.approval_for(@dev).status}" }
     elsif !@user.approved?(@permissible)
-      render status: 401, json: { error: "approval_status: #{@user.approval_for(@permissible).status}" }
+      render status: 401, json: { error: "Friend approval_status: #{@user.approval_for(@permissible).status}" }
     end
   end
 
