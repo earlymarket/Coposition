@@ -129,7 +129,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
       approval.update(status: "developer-requested", approvable_id: developer.id, approvable_type: "Developer")
       request.accept = "text/javascript"
       put :update, params: approve_reject_params
-      expect(Approval.last.status).to eq "accepted"
+      expect(Approval.find_by(approvable_id: developer.id).status).to eq "accepted"
     end
   end
 
