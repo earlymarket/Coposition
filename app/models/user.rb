@@ -71,7 +71,9 @@ class User < ApplicationRecord
   ## Approvals
 
   def approve_coposition_mobile_app
-    Approval.add_developer(self, Developer.default(mobile: true))
+    mobile_dev = Developer.default(mobile: true)
+    Approval.add_developer(self, mobile_dev).update(status: "complete")
+    Doorkeeper::AccessToken.find_or_create_for(mobile_dev.oauth_application, id, "public", nil, true)
   end
 
   def approved?(permissible)
