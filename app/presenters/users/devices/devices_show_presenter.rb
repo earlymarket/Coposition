@@ -17,7 +17,7 @@ module Users::Devices
 
     def show_gon
       {
-        checkins: gon_show_checkins_paginated,
+        checkins: ActiveRecord::Base.connection.execute(gon_show_checkins_paginated.to_sql).to_a,
         first_load: first_load,
         device: device.id,
         current_user_id: user.id,
@@ -64,7 +64,6 @@ module Users::Devices
 
     def gon_show_checkins_paginated
       gon_show_checkins
-        .paginate(page: 1, per_page: 1000)
         .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :edited)
     end
 
