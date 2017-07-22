@@ -16,7 +16,7 @@ module Users::Friends
     def gon
       checkins = device_checkins
       {
-        checkins: checkins.paginate(page: 1, per_page: 1000),
+        checkins: ActiveRecord::Base.connection.execute(checkins.to_sql).to_a,
         first_load: first_load,
         total: checkins.size
       }
