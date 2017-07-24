@@ -382,7 +382,7 @@ window.COPO.maps = {
 
   friendsCheckinsToCluster: (markerArr) => {
     let cluster = markerArr.map(marker => {
-      let color;
+      let color = marker.pinColor;
       if (moment(marker.lastCheckin && marker.lastCheckin['created_at']).isBefore(moment().subtract(1, 'day'))) {
         color = 'grey';
       }

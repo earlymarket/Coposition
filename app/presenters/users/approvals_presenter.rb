@@ -7,18 +7,18 @@ module Users
     attr_reader :page
 
     PIN_COLORS = {
-      yellow:        "#FFEC00",
-      yellow_orange: "#FBBA00",
-      orange:        "#F49306",
-      orange_red:    "#EB6909",
-      red:           "#E3001B",
-      red_violet:    "#E3004F",
-      violet:        "#93117E",
-      violet_blue:   "#162A83",
-      blue:          "#006BB3",
-      blue_green:    "#019690",
-      green:         "#009136",
-      yellow_green:  "#96BF0B"
+      orange:       "#F39434",
+      red:          "#D6144F",
+      pink:         "#CF7FB3",
+      blue:         "#3893D1",
+      cian:         "#1F71A1",
+      navy:         "#254394",
+      yellow:       "#F0E746",
+      light_purple: "#9A74B2",
+      light_blue:   "#99CBEE",
+      green:        "#37A837",
+      purple:       "#6E3E91",
+      light_green:  "#99C444"
     }.freeze
 
     def initialize(user, approvable_type)
@@ -85,7 +85,7 @@ module Users
         {
           userinfo: friend.public_info_hash,
           lastCheckin: friend.safe_checkin_info_for(permissible: @user, action: "last")[0],
-          pinColor: PIN_COLORS.to_a[index % PIN_COLORS.size][1]
+          pinColor: PIN_COLORS.to_a[index % PIN_COLORS.size][0]
         }
       end
     end
