@@ -44,7 +44,7 @@ describe ::Users::Friends::FriendsShowDevicePresenter do
     end
 
     it "calls device_checkins" do
-      allow(show_device_presenter).to receive(:device_checkins).and_return [checkins]
+      allow(show_device_presenter).to receive(:device_checkins).and_return device.checkins
       show_device_presenter.gon
       expect(show_device_presenter).to have_received(:device_checkins)
     end
