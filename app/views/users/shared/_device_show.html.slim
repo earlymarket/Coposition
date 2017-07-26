@@ -11,7 +11,7 @@ ul#filters.date-select.collapsible
   li
     #date-range-toggle.collapsible-header data-onOpen="dateRangeOpen" data-onClose="dateRangeClose"
       | Select a date range
-      span.collapse-mark +
+      i.collapse-mark.material-icons.right expand_more
     .collapsible-body
       = form_for @device_show_presenter.form_for, url: @device_show_presenter.form_path, class: "form-group", method: :get do |f|
         = f.label "From"
@@ -31,8 +31,8 @@ ul#filters.date-select.collapsible
 
 javascript:
   dateRangeOpen = function() {
-    $(".collapse-mark").text("-");
+    $(".collapse-mark").text("expand_less");
   }
   dateRangeClose = function() {
-    $(".collapse-mark").text("+");
+    $(".collapse-mark").text("expand_more");
   }

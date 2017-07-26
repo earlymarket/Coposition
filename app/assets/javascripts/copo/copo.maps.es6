@@ -1,6 +1,7 @@
 window.COPO = window.COPO || {};
 window.COPO.maps = {
   queueCalled: false,
+  windowFocused: true,
 
   initMap(customOptions) {
     if (document.getElementById('map')._leaflet) return;
@@ -10,10 +11,18 @@ window.COPO.maps = {
       maxZoom: 18,
       minZoom: 1
     }
-
+    COPO.maps.windowFocus()
     var options = $.extend(defaultOptions, customOptions);
     window.map = L.mapbox.map('map', 'mapbox.light', options );
     $(document).one('turbolinks:before-render', COPO.maps.removeMap);
+  },
+
+  windowFocus() {
+    $(window).focus(() => {
+        COPO.maps.windowFocused = true;
+    }).blur(() => {
+        COPO.maps.windowFocused = false;
+    });
   },
 
   initMarkers(checkins, total) {
@@ -62,14 +71,18 @@ window.COPO.maps = {
         });
       } else {
         $('.myProgress').remove();
-        toastMessage()
+        COPO.maps.windowFocused ? toastMessages() : toastMessage()
         window.COPO.maps.fitBounds();
       };
     }
 
     function toastMessage() {
+      $(window).one('focus', toastMessages)
+    }
+
+    function toastMessages() {
       if (gon.first_load && total >= 5000) {
-        Materialize.toast('Last 5000 check-ins shown. Select a date range to load more.' , 3000)
+        Materialize.toast('Last 5000 check-ins shown. Select a date range to load more.', 3000)
       } else if (gon.all) {
         Materialize.toast('All check-ins loaded', 3000)
       } else {
