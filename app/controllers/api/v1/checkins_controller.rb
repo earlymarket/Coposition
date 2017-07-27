@@ -65,7 +65,7 @@ class Api::V1::CheckinsController < Api::ApiController
   end
 
   def allowed_params
-    params.require(:checkin).permit(:lat, :lng, :created_at, :fogged)
+    params.require(:checkin).permit(:lat, :lng, :created_at, :fogged, :speed, :altitude)
   end
 
   def find_device
