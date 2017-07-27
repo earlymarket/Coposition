@@ -10,6 +10,8 @@ class CheckinSerializer < ActiveModel::Serializer
     country_code
     created_at
     updated_at
+    speed
+    altitude
   )
 
   attributes *FILTERED_SET
