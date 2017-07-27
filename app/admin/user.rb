@@ -1,6 +1,22 @@
 ActiveAdmin.register User do
   permit_params :email, :username, :password, :password_confirmation, :admin
 
+  member_action :smooch_message, method: :post do
+    convo_api = SmoochApi::ConversationApi.new
+    message = SmoochApi::MessagePost.new(role: "appMaker", type: "text", text: params[:message])
+    resource.devices.each do |device|
+      next unless device.config && device.config.custom && (id = device.config.custom["smoochId"])
+
+      begin
+        convo_api.post_message(id, message)
+      rescue SmoochApi::ApiError => e
+        puts "Exception when calling ConversationApi->post_message: #{e}"
+      end
+    end
+
+    redirect_to resource_path, notice: "Message was sent"
+  end
+
   index do
     selectable_column
     id_column
@@ -34,5 +50,14 @@ ActiveAdmin.register User do
       f.input :admin
     end
     f.actions
+  end
+
+  show do
+    default_main_content
+
+    panel "Smooch" do
+      para "Send some smooch message for this user."
+      render "smooch_form"
+    end
   end
 end
