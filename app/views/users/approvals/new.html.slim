@@ -1,7 +1,7 @@
 #gonvariables
   = Gon::Base.render_data
 br/
-| Enter the #{@approvals_presenter.approvable_type} you would like to add.
+= approvals_new_text(@approvals_presenter.approvable_type)
 br/
 = form_for @approval, url: @approvals_presenter.create_approval_url do |f|
   .row

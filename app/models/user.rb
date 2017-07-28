@@ -32,6 +32,11 @@ class User < ApplicationRecord
     through: :approvals,
     source: :approvable,
     source_type: "Developer"
+  has_many :approved_developers,
+    -> { where "status = 'accepted'" },
+    through: :approvals,
+    source: :approvable,
+    source_type: "Developer"
   has_many :developer_approvals, -> { where(status: "accepted", approvable_type: "Developer") }, class_name: "Approval"
   has_many :friends, -> { where "status = 'accepted'" }, through: :approvals, source: :approvable, source_type: "User"
   has_many :friend_approvals, -> { where(status: "accepted", approvable_type: "User") }, class_name: "Approval"
@@ -93,11 +98,6 @@ class User < ApplicationRecord
       permission = device.permission_for(approvable)
       permission&.destroy
     end
-  end
-
-  def not_coposition_developers
-    copo_keys = [Rails.application.secrets["coposition_api_key"], Rails.application.secrets["mobile_app_api_key"]]
-    developers.where.not(api_key: copo_keys)
   end
 
   ## Devices

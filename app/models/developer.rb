@@ -59,6 +59,11 @@ class Developer < ApplicationRecord
     find_by(api_key: Rails.application.secrets[key])
   end
 
+  def self.not_coposition_developers
+    copo_keys = [Rails.application.secrets["coposition_api_key"], Rails.application.secrets["mobile_app_api_key"]]
+    where.not(api_key: copo_keys)
+  end
+
   def set_application_attributes
     oauth_application.update(name: company_name, redirect_uri: redirect_url)
   end

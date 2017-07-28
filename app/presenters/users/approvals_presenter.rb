@@ -3,6 +3,7 @@ module Users
     attr_reader :approvable_type
     attr_reader :approved
     attr_reader :pending
+    attr_reader :complete
     attr_reader :devices
     attr_reader :page
 
@@ -11,6 +12,7 @@ module Users
       @approvable_type = approvable_type
       @page = apps_page? ? "Apps" : "Friends"
       @approved = users_approved
+      @complete = users_complete
       @pending = users_requests
       @devices = user.devices
     end
@@ -54,8 +56,12 @@ module Users
         .inject(:+)
     end
 
+    def users_complete
+      apps_page? ? @user.complete_developers.not_coposition_developers.public_info : nil
+    end
+
     def users_approved
-      apps_page? ? @user.not_coposition_developers.public_info : @user.friends.public_info
+      apps_page? ? @user.approved_developers.not_coposition_developers.public_info : @user.friends.public_info
     end
 
     def users_requests
