@@ -1,6 +1,9 @@
 #approved
   - if approvable_type == "Developer"
-    h5 Requiring Authentication
+    h5 
+      a href="/help#friends" target="_blank" 
+        i.material-icons.right.tooltipped data-tooltip=("Authenticating apps") help
+        | Requiring Authentication
     p You have not authenticated these apps. These apps do not have access to your Coposition data. You can set their permissions before you authenticate them.
   - if current_user.pending_friends.present? && approvable_type == "User"
     | You have sent #{pluralize(current_user.pending_friends.count, "friend request")} to #{current_user.pending_friends.pluck(:email).to_sentence}.
