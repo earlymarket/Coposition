@@ -1,6 +1,6 @@
-h5 Authenticated Applications
-p These applications have access to your Coposition data, as set by your permissions.
 #complete
+  h5 Authenticated Applications
+  p These applications have access to your Coposition data, as set by your permissions.
   - complete.each do |approvable|
     - approval = current_user.approval_for(approvable)
     .card-panel
@@ -15,7 +15,7 @@ p These applications have access to your Coposition data, as set by your permiss
               .tagline
                 = approvable.try(:tagline)
               div
-                | Approved since #{humanize_date(approval.approval_date) unless approval.nil?}
+                | Connected since #{humanize_date(approval.approval_date) unless approval.nil?}
         .col.s4
           - if current_user.devices.exists?
             a.permissions-trigger.btn-flat.right.permissions-button data-id=(approvable.id) href="#perm#{approvable.id}"

@@ -1,7 +1,7 @@
-- if approvable_type == "Developer"
-  h5 Requiring Authentication
-  p You have not authenticated these apps. These apps do not have access to your Coposition data. You can set their permissions before you authenticate them.
 #approved
+  - if approvable_type == "Developer"
+    h5 Requiring Authentication
+    p You have not authenticated these apps. These apps do not have access to your Coposition data. You can set their permissions before you authenticate them.
   - if current_user.pending_friends.present? && approvable_type == "User"
     | You have sent #{pluralize(current_user.pending_friends.count, "friend request")} to #{current_user.pending_friends.pluck(:email).to_sentence}.
   - approved.each do |approvable|
@@ -21,7 +21,7 @@
               .tagline
                 = approvable.try(:tagline)
               div
-                | Approved since #{humanize_date(approval.approval_date) unless approval.nil?}
+                | Connected since #{humanize_date(approval.approval_date) unless approval.nil?}
         .col.s4
           - if current_user.devices.exists?
             a.permissions-trigger.btn-flat.right.permissions-button data-id=(approvable.id) href="#perm#{approvable.id}"
@@ -39,6 +39,6 @@
         .col.s4
           - if approvable_type == "Developer"
             = link_to "Authenticate", approvable.redirect_url, class: "btn-flat right", target: :_blank
-            = button_to "Disconnect", user_approval_path(current_user.url_id, approval), method: :delete, remote: true, class: "btn-flat right", data: { confirm: "Are you sure?" }
+            = button_to "Disconnect", user_approval_path(current_user.url_id, approval), method: :delete, remote: true, class: "btn-flat right", data: { confirm: "Are you sure you wish to disconnect this app? You can add this app again by clicking CONNECT NEW APP. " }
           - else
             = button_to "Revoke Approval", user_approval_path(current_user.url_id, approval), method: :delete, remote: true, class: "btn-flat right", data: { confirm: "Are you sure? They will no longer have access to any of your data." }

@@ -10,9 +10,19 @@
 = j (render partial: 'navbar')
 | ");
 
-| $('#approved').html("
-= j (render partial: 'approved', locals: { approved: @approvals_presenter.approved, devices: @approvals_presenter.devices, approvable_type: @approvals_presenter.approvable_type })
-| ");
+- if @approvals_presenter.approved.present?
+  | $('#approved').html("
+  = j (render partial: 'approved', locals: { approved: @approvals_presenter.approved, devices: @approvals_presenter.devices, approvable_type: @approvals_presenter.approvable_type })
+  | ");
+- else
+  | $('#approved').remove();
+
+- if @approvals_presenter.complete.present?
+  | $('#complete').html("
+  = j (render partial: 'complete', locals: { complete: @approvals_presenter.complete })
+  | ");
+- else
+  | $('#complete').remove();
 
 - if @approvals_presenter.pending.present?
   | $('#pending').html("
