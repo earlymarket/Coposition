@@ -4,17 +4,19 @@ ActiveAdmin.register User do
   member_action :smooch_message, method: :post do
     convo_api = SmoochApi::ConversationApi.new
     message = SmoochApi::MessagePost.new(role: "appMaker", type: "text", text: params[:message])
-    resource.devices.each do |device|
-      next unless device.config && device.config.custom && (id = device.config.custom["smoochId"])
-
-      begin
-        convo_api.post_message(id, message)
-      rescue SmoochApi::ApiError => e
-        puts "Exception when calling ConversationApi->post_message: #{e}"
-      end
-    end
-
+    ::Users::SendSmoochMessage.call(user: resource, message: message, api: convo_api)
     redirect_to resource_path, notice: "Message was sent"
+  end
+
+  batch_action :smooch_message, method: :post, form: {
+    message:  :textarea
+  } do |ids, inputs|
+    convo_api = SmoochApi::ConversationApi.new
+    message = SmoochApi::MessagePost.new(role: "appMaker", type: "text", text: inputs[:message])
+    batch_action_collection.find(ids).each do |user|
+      ::Users::SendSmoochMessage.call(user: user, message: message, api: convo_api)
+    end
+    redirect_to collection_path, alert: "Messages sent"
   end
 
   index do

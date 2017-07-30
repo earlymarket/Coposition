@@ -19,14 +19,7 @@ end
 def smooch_message(user)
   convo_api = SmoochApi::ConversationApi.new
   message = SmoochApi::MessagePost.new(role: "appMaker", type: "text", text: "You have not checked in in the last 7 days")
-  user.devices.each do |device|
-    next unless device.config.custom && (id = device.config.custom["smoochId"])
-    begin
-      convo_api.post_message(id, message)
-    rescue SmoochApi::ApiError => e
-      puts "Exception when calling ConversationApi->post_message: #{e}"
-    end
-  end
+  ::Users::SendSmoochMessage.call(user: user, message: message, api: convo_api)
 end
 
 def destroy_activities
