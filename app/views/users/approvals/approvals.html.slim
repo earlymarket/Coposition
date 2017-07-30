@@ -19,8 +19,7 @@ section.friends-index.row.hide
 br/
 - if !@approvals_presenter.approved.present? && !@approvals_presenter.complete.present? && @approvals_presenter.approvable_type === "Developer"
   p.center You are not currently connected to any applications. Add applications to start controlling their access to your data.
-- if @approvals_presenter.approved.present?
-  = render partial: "approved", locals: { approved: @approvals_presenter.approved, devices: @approvals_presenter.devices, approvable_type: @approvals_presenter.approvable_type }
+= render partial: "approved", locals: { approved: @approvals_presenter.approved, devices: @approvals_presenter.devices, approvable_type: @approvals_presenter.approvable_type }
 - if @approvals_presenter.complete.present?
   = render partial: "complete", locals: { complete: @approvals_presenter.complete } 
 - if @approvals_presenter.pending.present?

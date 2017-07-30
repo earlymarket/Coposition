@@ -1,5 +1,5 @@
 #approved
-  - if approvable_type == "Developer"
+  - if @approvals_presenter.approved.present? && approvable_type == "Developer"
     h5 
       a href="/help#friends" target="_blank" 
         i.material-icons.right.tooltipped data-tooltip=("Authenticating apps") help

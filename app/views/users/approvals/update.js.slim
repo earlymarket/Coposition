@@ -10,17 +10,16 @@
 = j (render partial: 'navbar')
 | ");
 
-- if @approvals_presenter.approved.present?
-  | if ($('#approved').length) {
-  | $('#approved').html("
-  = j (render partial: 'approved', locals: { approved: @approvals_presenter.approved, devices: @approvals_presenter.devices, approvable_type: @approvals_presenter.approvable_type })
+- if current_user.pending_friends.present? && approvable_type == "User"
+  | $('.requested').html("
+  = "You have sent #{pluralize(current_user.pending_friends.count, "friend request")} to #{current_user.pending_friends.pluck(:email).to_sentence}."
   | ");
-  | } else {
-  | $('.container').append("
-  = j (render partial: 'approved', locals: { approved: @approvals_presenter.approved, devices: @approvals_presenter.devices, approvable_type: @approvals_presenter.approvable_type })
-  | ");
-  | }
-- else
+
+| $('#approved').html("
+= j (render partial: 'approved', locals: { approved: @approvals_presenter.approved, devices: @approvals_presenter.devices, approvable_type: @approvals_presenter.approvable_type })
+| ");
+
+- if !@approvals_presenter.approved.present?
   | $('#approved').remove();
 
 - if @approvals_presenter.complete.present?

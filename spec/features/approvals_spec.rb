@@ -80,7 +80,7 @@ RSpec.feature "Approvals", type: :feature do
   end
 
   def when_i_revoke_the_approval
-    click_on "Revoke Approval", match: :first
+    click_on "Disconnect", match: :first
   end
 
   def then_i_should_have_no_approved_apps
