@@ -69,7 +69,7 @@ RSpec.feature "Permissions", type: :feature do
     click_on "Friends", match: :first
     expect(page).to have_text "Pending Requests"
     click_on "Approve"
-    expect(page).to have_text "Approved since"
+    expect(page).to have_text "Connected since"
   end
 
   def and_i_am_on_the_devices_page

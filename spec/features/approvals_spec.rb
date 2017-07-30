@@ -41,7 +41,7 @@ RSpec.feature "Approvals", type: :feature do
     fill_in "developer_password", with: "password"
     fill_in "developer_password_confirmation", with: "password"
     fill_in "developer_company_name", with: "fake company"
-    fill_in "developer_redirect_url", with: "http://example.com"
+    fill_in "developer_redirect_url", with: "https://example.com"
     click_on "Sign up"
   end
 
