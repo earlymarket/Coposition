@@ -72,7 +72,7 @@ RSpec.feature "Approvals", type: :feature do
   end
 
   def then_i_should_have_one_approved_app
-    expect(page).to have_text "Approved since", count: 1
+    expect(page).to have_text "Connected since", count: 1
   end
 
   def then_i_should_see_request_sent
@@ -84,6 +84,6 @@ RSpec.feature "Approvals", type: :feature do
   end
 
   def then_i_should_have_no_approved_apps
-    expect(page).not_to have_text "Approved since"
+    expect(page).not_to have_text "Connected since"
   end
 end

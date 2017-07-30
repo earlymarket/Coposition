@@ -107,7 +107,7 @@ describe ::Users::ApprovalsPresenter do
       it "calls Developer.not_coposition_developers" do
         allow(Developer).to receive(:not_coposition_developers).and_return user.developers
         approvals.send(:users_approved)
-        expect(Developer).to have_received(:not_coposition_developers).twice
+        expect(Developer).to have_received(:not_coposition_developers).at_least(1).times
       end
 
       it "calls Developer.public_info" do
