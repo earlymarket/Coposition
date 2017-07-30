@@ -104,16 +104,16 @@ describe ::Users::ApprovalsPresenter do
     context "developers" do
       let(:approvals) { described_class.new(user, "Developer") }
 
-      it "calls user.not_coposition_developers" do
-        allow(user).to receive(:not_coposition_developers).and_return user.developers
+      it "calls Developer.not_coposition_developers" do
+        allow(Developer).to receive(:not_coposition_developers).and_return user.developers
         approvals.send(:users_approved)
-        expect(user).to have_received(:not_coposition_developers).twice
+        expect(Developer).to have_received(:not_coposition_developers).twice
       end
 
       it "calls Developer.public_info" do
         allow(Developer).to receive(:public_info)
         approvals.send(:users_approved)
-        expect(Developer).to have_received(:public_info).twice
+        expect(Developer).to have_received(:public_info).at_least(1).times
       end
     end
   end
