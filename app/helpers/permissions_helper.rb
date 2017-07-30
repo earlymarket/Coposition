@@ -5,7 +5,9 @@ module PermissionsHelper
     title += avatar_for(permissible)
     title += '<p class="permissible-name">'
     title += approvals_approvable_name(permissible)
-    title += '</p></div>'
+    title += "</p>"
+    title += '<p class="auth">(authenticated)</p>' if current_user.approval_for(permissible).status == "complete"
+    title += "</div>"
     title.html_safe
   end
 
