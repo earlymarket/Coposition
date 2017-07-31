@@ -25,7 +25,7 @@ module Users
       @user = user
       @approvable_type = approvable_type
       @page = apps_page? ? "Apps" : "Friends"
-      @approved = users_approved
+      @approved = add_color_info(users_approved)
       @pending = users_requests
       @devices = user.devices
     end
@@ -87,6 +87,12 @@ module Users
           lastCheckin: friend.safe_checkin_info_for(permissible: @user, action: "last")[0],
           pinColor: PIN_COLORS.to_a[index % PIN_COLORS.size][0]
         }
+      end
+    end
+
+    def add_color_info(list)
+      list.each_with_index do |item, index|
+        item.pin_color = PIN_COLORS.to_a[index % PIN_COLORS.size][0]
       end
     end
   end

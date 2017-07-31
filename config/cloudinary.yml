@@ -7,7 +7,7 @@ development:
   static_image_support: false
   custom_transforms: {
     avatar: {
-      transformation: ['60x60cAvatar'],
+      transformation: ['list-pin-'],
       format: 'png'
     }
   }
@@ -20,7 +20,7 @@ staging:
   static_image_support: true
   custom_transforms: {
     avatar: {
-      transformation: ['60x60cAvatar'],
+      transformation: ['list-pin-'],
       format: 'png'
     }
   }
@@ -33,7 +33,7 @@ production:
   static_image_support: true
   custom_transforms: {
     avatar: {
-      transformation: ['60x60cAvatar'],
+      transformation: ['list-pin-'],
       format: 'png'
     }
   }
@@ -46,7 +46,7 @@ test:
   static_image_support: false
   custom_transforms: {
     avatar: {
-      transformation: ['60x60cAvatar'],
+      transformation: ['list-pin-'],
       format: 'png'
     }
   }
