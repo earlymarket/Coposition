@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe ::Users::ApprovalsPresenter do
-  subject(:approvals) { described_class.new(user, "User") }
+  subject(:approvals) { described_class.new(user, approvable_type: "User") }
   let(:user) do
     us = create(:user)
     Approval.add_friend(us, friend)
@@ -102,7 +102,7 @@ describe ::Users::ApprovalsPresenter do
     end
 
     context "developers" do
-      let(:approvals) { described_class.new(user, "Developer") }
+      let(:approvals) { described_class.new(user, approvable_type: "Developer") }
 
       it "calls Developer.not_coposition_developers" do
         allow(Developer).to receive(:not_coposition_developers).and_return user.developers
@@ -132,7 +132,7 @@ describe ::Users::ApprovalsPresenter do
     end
 
     context "developers" do
-      let(:approvals) { described_class.new(user, "Developer") }
+      let(:approvals) { described_class.new(user, approvable_type: "Developer") }
 
       it "calls user.developer_requests" do
         allow(user).to receive(:developer_requests)
@@ -144,7 +144,7 @@ describe ::Users::ApprovalsPresenter do
 
   describe "friends_checkins" do
     it "returns nil if approvable_type is developer" do
-      approvals = described_class.new(user, "Developer")
+      approvals = described_class.new(user, approvable_type: "Developer")
       expect(approvals.send(:friends_checkins)).to eq nil
     end
 
@@ -160,7 +160,7 @@ describe ::Users::ApprovalsPresenter do
 
   describe "create_approval_url" do
     it "returns a path for creating developer approval" do
-      approvals = described_class.new(user, "Developer")
+      approvals = described_class.new(user, approvable_type: "Developer")
       expect(approvals.create_approval_url).to match "create_dev_approvals"
     end
 
@@ -181,7 +181,7 @@ describe ::Users::ApprovalsPresenter do
     end
 
     context "developers" do
-      let(:approvals) { described_class.new(user, "Developer") }
+      let(:approvals) { described_class.new(user, approvable_type: "Developer") }
 
       it "assigns placeholder" do
         expect(approvals.input_options[:placeholder]).to match "name"

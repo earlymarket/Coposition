@@ -7,9 +7,10 @@ module Users
     attr_reader :devices
     attr_reader :page
 
-    def initialize(user, approvable_type)
+    def initialize(user, params)
       @user = user
-      @approvable_type = approvable_type
+      @approvable_type = params[:approvable_type]
+      @order = params[:order_by]
       @page = apps_page? ? "Apps" : "Friends"
       @approved = users_approved
       @complete = users_complete
@@ -57,7 +58,14 @@ module Users
     end
 
     def users_complete
-      apps_page? ? @user.complete_developers.not_coposition_developers.public_info : nil
+      return nil unless apps_page?
+      if @order == "approval_date"
+        Developer
+          .where(id: @user.approvals.where(status: "complete").order(:approval_date).pluck(:approvable_id))
+          .not_coposition_developers.public_info
+      else
+        @user.complete_developers.not_coposition_developers.public_info.order(@order)
+      end
     end
 
     def users_approved
