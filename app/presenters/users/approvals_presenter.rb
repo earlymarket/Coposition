@@ -58,14 +58,12 @@ module Users
     end
 
     def users_complete
-      return nil unless apps_page?
+      return nil unless apps_page? && @user.complete_developers.present?
       if @order == "approval_date"
-        Developer
-          .where(id: @user.approvals.where(status: "complete").order(:approval_date).pluck(:approvable_id))
-          .not_coposition_developers.public_info
+        Developer.where(id: @user.approvals.where(status: "complete").order(:approval_date).pluck(:approvable_id))
       else
-        @user.complete_developers.not_coposition_developers.public_info.order(@order)
-      end
+        @user.complete_developers.order(@order)
+      end.not_coposition_developers.public_info
     end
 
     def users_approved
