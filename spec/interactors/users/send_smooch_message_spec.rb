@@ -6,7 +6,7 @@ RSpec.describe Users::SendSmoochMessage, type: :interactor do
   let(:user) do
     u = create :user
     d = create :device, user: u
-    create :config, device: d, custom: { smoochId: "1" }
+    create :config, device: d, custom: { smoochId: "1" }.to_json
     u
   end
   let(:api) { SmoochApi::ConversationApi.new }
@@ -15,7 +15,18 @@ RSpec.describe Users::SendSmoochMessage, type: :interactor do
   describe "call" do
     context "when given valid params" do
       it "succeeds" do
+        allow(api).to receive(:post_message)
         expect(send_context).to be_a_success
+      end
+    end
+
+    context "when given invalid params" do
+      it "fails" do
+        expect(send_context).to be_a_failure
+      end
+
+      it "provides an alert message" do
+        expect(send_context.alert).to match "Not Found"
       end
     end
   end

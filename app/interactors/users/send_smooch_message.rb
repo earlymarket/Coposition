@@ -10,7 +10,7 @@ module Users
         begin
           api.post_message(id, message)
         rescue SmoochApi::ApiError => e
-          puts "Exception when calling ConversationApi->post_message: #{e}"
+          context.fail!(alert: e.to_s)
         end
       end
     end
