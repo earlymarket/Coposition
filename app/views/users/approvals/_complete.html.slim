@@ -3,7 +3,7 @@
   p These applications have access to your Coposition data, as set by your permissions.
   .row
     = link_to "Order by (a-z)", user_apps_path(order_by: :company_name), class: "col s3 btn-flat"
-    = link_to "Order by (approval date)", user_apps_path(order_by: :approval_date), class: "col s3 btn-flat"
+    = link_to "Order by (connected date)", user_apps_path(order_by: :approval_date), class: "col s4 btn-flat"
   - complete.each do |approvable|
     - approval = current_user.approval_for(approvable)
     .card-panel
