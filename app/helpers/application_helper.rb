@@ -1,4 +1,6 @@
 module ApplicationHelper
+  DEFAULT_TRANSFORMATION = "60x60cAvatar"
+
   def attribute_icon(value, icon)
     if value
       "<i class='material-icons enabled-icon'>#{icon}</i>".html_safe
@@ -18,7 +20,7 @@ module ApplicationHelper
 
   def avatar_for(resource, options = {})
     options = options.reverse_merge(Rails.application.config_for(:cloudinary)["custom_transforms"]["avatar"])
-    options = add_color_if_present(options, resource.pin_color.to_s) if resource.pin_color
+    options = add_color_if_present(options, resource)
     resource.avatar? ? cl_image_tag(resource.avatar.public_id, options) : cl_image_tag("no_avatar", options)
   end
 
@@ -35,10 +37,15 @@ module ApplicationHelper
 
   private
 
-  def add_color_if_present(options, color)
+  def add_color_if_present(options, resource)
     return options unless options["transformation"] && options["transformation"][0]
 
-    options["transformation"][0] = options["transformation"][0] + color
+    if resource.respond_to?(:pin_color)
+      options["transformation"][0] = options["transformation"][0] + pin_color
+    else
+      options["transformation"][0] = DEFAULT_TRANSFORMATION
+    end
+
     options
   end
 end

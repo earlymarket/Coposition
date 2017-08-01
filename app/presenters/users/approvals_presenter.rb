@@ -92,6 +92,8 @@ module Users
 
     def add_color_info(list)
       list.each_with_index do |item, index|
+        next unless item.respond_to?(:pin_color)
+
         item.pin_color = PIN_COLORS.to_a[index % PIN_COLORS.size][0]
       end
     end
