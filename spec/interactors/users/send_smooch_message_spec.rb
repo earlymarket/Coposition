@@ -26,7 +26,7 @@ RSpec.describe Users::SendSmoochMessage, type: :interactor do
       end
 
       it "provides an alert message" do
-        expect(send_context.alert).to match "Not Found"
+        expect(send_context.alert).to match "Unauthorized"
       end
     end
   end
