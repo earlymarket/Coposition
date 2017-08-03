@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170426093847) do
+ActiveRecord::Schema.define(version: 20170617165411) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,8 +58,8 @@ ActiveRecord::Schema.define(version: 20170426093847) do
   end
 
   create_table "attachinary_files", force: :cascade do |t|
-    t.string   "attachinariable_type"
     t.integer  "attachinariable_id"
+    t.string   "attachinariable_type"
     t.string   "scope"
     t.string   "public_id"
     t.string   "version"
@@ -228,11 +228,11 @@ ActiveRecord::Schema.define(version: 20170426093847) do
     t.string   "webhook_key"
     t.boolean  "admin",                  default: false, null: false
     t.boolean  "zapier_enabled",         default: false
+    t.boolean  "subscription",           default: true
     t.index ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
     t.index ["slug"], name: "index_users_on_slug", unique: true, using: :btree
     t.index ["webhook_key"], name: "index_users_on_webhook_key", unique: true, using: :btree
   end
-
 end

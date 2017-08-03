@@ -17,6 +17,7 @@ class Location < ApplicationRecord
   def reverse_geocoded?
     address?
   end
+
   class << self
     def limit_returned_locations(args)
       if args[:multiple_devices]

@@ -14,10 +14,13 @@ RSpec.describe Location, type: :model do
   describe "validation" do
     it "is not valid without lat" do
       location = Location.create(lng: -0.513069)
+
       expect(location).not_to be_valid
     end
+
     it "is not valid without lng" do
       location = Location.create(lat: 51.588330)
+
       expect(location).not_to be_valid
     end
   end
@@ -25,6 +28,7 @@ RSpec.describe Location, type: :model do
   describe "associations" do
     it "belongs to a user" do
       assc = described_class.reflect_on_association(:user)
+
       expect(assc.macro).to eq :belongs_to
     end
   end
@@ -43,6 +47,7 @@ RSpec.describe Location, type: :model do
 
       it "does nothing if address present" do
         location.reverse_geocode!
+
         expect { location.reverse_geocode! }.not_to change { location.address }
       end
     end
@@ -54,6 +59,7 @@ RSpec.describe Location, type: :model do
 
       it "returns true if address present" do
         location.reverse_geocode!
+
         expect(location.reverse_geocoded?).to eq true
       end
     end
@@ -69,12 +75,14 @@ RSpec.describe Location, type: :model do
     context "limit_returned_locations" do
       it "returns all locations if multiple devices argument" do
         result = Location.limit_returned_locations(multiple_devices: true)
+
         expect(result).to eq Location.all.distinct
       end
 
       it "returns paginated locations if not multiple devices" do
         result = Location.limit_returned_locations(multiple_devices: false, per_page: 1, page: 1)
-        expect(result).to eq [Location.all.distinct.first]
+
+        expect(result).to eq [Location.distinct.first]
       end
     end
 
@@ -89,6 +97,7 @@ RSpec.describe Location, type: :model do
 
       it "returns locations near lat/lng provided" do
         loc = FactoryGirl.create(:location, lat: 10, lng: 10)
+
         expect(Location.near_to("10, 10")).to eq [loc]
       end
     end
