@@ -23,7 +23,7 @@ RSpec.describe Api::V1::Users::LocationsController, type: :controller do
       60.times do
         FactoryGirl.create :location, lat: rand * 180 - rand * 180,
                                       lng: rand * 180 - rand * 180,
-                                      user: user,
+                                      device: device,
                                       checkins_count: rand(100)
       end
       device.permission_for(developer).update(privilege: "complete")
@@ -77,7 +77,7 @@ RSpec.describe Api::V1::Users::LocationsController, type: :controller do
 
     context "with type most visited param" do
       before do
-        FactoryGirl.create :location, checkins_count: 100, lat: 10.0, lng: 10.0, user: user
+        FactoryGirl.create :location, checkins_count: 100, lat: 10.0, lng: 10.0, device: device
       end
 
       it "returns the 10 most visited locations" do

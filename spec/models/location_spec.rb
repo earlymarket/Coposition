@@ -26,8 +26,8 @@ RSpec.describe Location, type: :model do
   end
 
   describe "associations" do
-    it "belongs to a user" do
-      assc = described_class.reflect_on_association(:user)
+    it "belongs to a device" do
+      assc = described_class.reflect_on_association(:device)
 
       expect(assc.macro).to eq :belongs_to
     end

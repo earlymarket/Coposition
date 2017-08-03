@@ -1,7 +1,9 @@
 class Location < ApplicationRecord
-  belongs_to :user
+  belongs_to :device
+
   has_many :checkins
-  has_many :devices, through: :checkins
+  has_one :user, through: :device
+
   validates_presence_of :lat, :lng
 
   reverse_geocoded_by :lat, :lng
