@@ -91,6 +91,8 @@ module Users
     end
 
     def add_color_info(list)
+      return unless list
+
       list.each_with_index do |item, index|
         next unless item.respond_to?(:pin_color)
 
