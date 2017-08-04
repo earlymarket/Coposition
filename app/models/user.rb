@@ -15,7 +15,7 @@ class User < ApplicationRecord
 
   has_many :devices, dependent: :destroy
   has_many :checkins, through: :devices
-  has_many :locations, dependent: :destroy
+  has_many :locations, through: :devices
   has_many :requests
   has_many :approvals, dependent: :destroy
   has_many :subscriptions, as: :subscriber, dependent: :destroy
@@ -119,12 +119,13 @@ class User < ApplicationRecord
   end
 
   def locations_for(args)
-    locations.near_to(args[:near])
-             .most_frequent(args[:type])
-             .limit_returned_locations(args)
-             .unscope(:order)
-             .distinct
-             .paginate(page: args[:page], per_page: args[:per_page])
+    locations
+      .near_to(args[:near])
+      .most_frequent(args[:type])
+      .limit_returned_locations(args)
+      .unscope(:order)
+      .distinct
+      .paginate(page: args[:page], per_page: args[:per_page])
   end
 
   def slack_message

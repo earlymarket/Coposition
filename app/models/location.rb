@@ -31,6 +31,7 @@ class Location < ApplicationRecord
 
     def near_to(near)
       return all unless near
+
       near_array = near.split(",")
       lat = near_array[0].to_f
       lng = near_array[1].to_f
@@ -39,6 +40,7 @@ class Location < ApplicationRecord
 
     def most_frequent(most)
       return all unless most
+
       frequent_locations = unscope(:order).distinct.sort_by(&:checkins_count).reverse.first(10).pluck(:id)
       Location.where(id: frequent_locations)
     end

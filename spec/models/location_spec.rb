@@ -82,7 +82,7 @@ RSpec.describe Location, type: :model do
       it "returns paginated locations if not multiple devices" do
         result = Location.limit_returned_locations(multiple_devices: false, per_page: 1, page: 1)
 
-        expect(result).to eq [Location.distinct.first]
+        expect(result).to eq [Location.distinct[0]]
       end
     end
 

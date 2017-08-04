@@ -31,11 +31,11 @@ RSpec.describe Api::V1::Users::LocationsController, type: :controller do
 
     context "with no page param given" do
       it "fetches the most recent locations (up to 30 locations)" do
-        get :index, params: params, format: "json"
+        get :index, params: params.merge(per_page: 30), format: "json"
 
         expect(response.header["X-Next-Page"]).to eq "2"
         expect(response.header["X-Current-Page"]).to eq "1"
-        expect(response.header["X-Total-Entries"]).to eq user.locations.count.to_s
+        expect(response.header["X-Total-Entries"]).to eq device.locations.count.to_s
         expect(response.header["X-Per-Page"]).to eq "30"
         expect(res_hash[:locations].size).to eq 30
       end

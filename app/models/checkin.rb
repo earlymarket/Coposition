@@ -90,8 +90,8 @@ class Checkin < ApplicationRecord
   end
 
   def assign_location
-    existing_location = user.locations.near([lat, lng], 0.01, units: :km).first
-    location = existing_location || Location.create(lat: lat, lng: lng, user_id: user.id)
+    existing_location = device.locations.near([lat, lng], 0.01, units: :km).first
+    location = existing_location || Location.create(lat: lat, lng: lng, device_id: device.id)
     update(location_id: location.id)
   end
 
