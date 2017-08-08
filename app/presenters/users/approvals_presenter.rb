@@ -26,7 +26,7 @@ module Users
       @approvable_type = approvable_type
       @page = apps_page? ? "Apps" : "Friends"
       @approved = add_color_info(users_approved)
-      @pending = users_requests
+      @pending = add_color_info(users_requests)
       @devices = user.devices
     end
 
