@@ -3,8 +3,8 @@ ActiveAdmin.register_page "Device Settings" do
   INTERVAL_TYPES = %w(distance time).freeze
   TIME_INTERVALS = %w(10 30 60 300 18000 36000 216000 5184000).freeze
   DISTANCE_INTERVALS = %w(50 100 200 500 1000).freeze
-  BATTERY_SAVING = %w(false low high).freeze
-  DELAY = [nil, 5, 10, 30, 60, 360, 1440].freeze
+  BATTERY_SAVING = %w(false true low high).freeze
+  DELAY = [nil, 0, 5, 10, 30, 60, 360, 1440].freeze
 
   content do
     render "index", layout: "active_admin"
@@ -15,7 +15,8 @@ ActiveAdmin.register_page "Device Settings" do
       params[:booleans] = [
         { name: "Fogged", values: fogged_stats },
         { name: "Cloaked", values: cloaked_stats },
-        { name: "Active", values: active_stats }
+        { name: "Auto", values: active_stats },
+        { name: "Smart", values: smart_stats }
       ]
 
       params[:interval_type] = interval_stats
@@ -49,7 +50,20 @@ ActiveAdmin.register_page "Device Settings" do
       return { on: "n/a", off: "n/a" } if Device.count.zero?
 
       {
-        on: '%.2f %' % (num = Device.automated.size.to_f * 100 / Device.count),
+        on: '%.2f %' % (num = automated_devices.size.to_f * 100 / Device.count),
+        off: '%.2f %' % (100 - num)
+      }
+    end
+
+    def smart_stats
+      return { on: "n/a", off: "n/a" } if Device.count.zero?
+
+      {
+        on: '%.2f %' % (
+          num = Device.includes(:config)
+            .select { |dev| dev.config && dev.config.custom && dev.config.custom["smartInterval"] == true }
+            .size.to_f * 100 / Device.count
+        ),
         off: '%.2f %' % (100 - num)
       }
     end
@@ -58,22 +72,23 @@ ActiveAdmin.register_page "Device Settings" do
       return ["n/a"] * INTERVAL_TYPES.size if automated_devices.size.zero?
 
       INTERVAL_TYPES.map do |type|
-        '%.2f' % (
+        '%.2f %' % (
           automated_devices
             .select { |dev| dev.config && dev.config.custom && dev.config.custom["intervalType"] == type }
-            .size.to_f / automated_devices.size
+            .size.to_f * 100 / automated_devices.size
         )
       end
     end
 
     def time_stats
-      return ["n/a"] * TIME_INTERVALS.size if automated_devices.size.zero?
+      devices = automated_devices { |dev| dev.config.custom["timeInterval"].present? }
+      return ["n/a"] * TIME_INTERVALS.size if devices.size.zero?
 
       TIME_INTERVALS.map do |interval|
         '%.2f %' % (
-          automated_devices
-            .select { |dev| dev.config && dev.config.custom && dev.config.custom["timeInterval"] == interval }
-            .size.to_f * 100 / automated_devices.size
+          devices
+            .select { |dev| dev.config.custom["timeInterval"] == interval.to_i }
+            .size.to_f * 100 / devices.size
         )
       end
     end
@@ -84,20 +99,22 @@ ActiveAdmin.register_page "Device Settings" do
       DISTANCE_INTERVALS.map do |interval|
         '%.2f %' % (
           automated_devices
-            .select { |dev| dev.config && dev.config.custom && dev.config.custom["distanceInterval"] == interval }
+            .select { |dev| dev.config.custom["distanceInterval"] == interval.to_i }
             .size.to_f * 100 / automated_devices.size
         )
       end
     end
 
     def battery_stats
-      return ["n/a"] * BATTERY_SAVING.size if Device.count.zero?
+      devices = Device.includes(:config)
+        .select { |dev| dev.config && dev.config.custom && dev.config.custom["batterySaving"].present? }
+      return ["n/a"] * BATTERY_SAVING.size if devices.size.zero?
 
       BATTERY_SAVING.map do |battery|
         '%.2f %' % (
-          Device
-            .select { |dev| dev.config && dev.config.custom && dev.config.custom["batterySaving"] == battery }
-            .size.to_f * 100 / Device.count
+          devices
+            .select { |dev| dev.config.custom["batterySaving"] == battery }
+            .size.to_f * 100 / devices.size
         )
       end
     end
@@ -113,7 +130,14 @@ ActiveAdmin.register_page "Device Settings" do
     end
 
     def automated_devices
-      @automated ||= Device.automated
+      @automated ||= configured_devices
+        .select { |dev| dev.config && dev.config.custom && dev.config.custom["active"] == true }
+
+      block_given? ? @automated.select { |dev| yield dev } : @automated
+    end
+
+    def configured_devices
+      @configured_devices ||= Device.includes(:config)
     end
   end
 end
