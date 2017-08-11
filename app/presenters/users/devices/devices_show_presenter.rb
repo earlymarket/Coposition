@@ -1,5 +1,7 @@
 module Users::Devices
   class DevicesShowPresenter < ApplicationPresenter
+    FIRST_LOAD_MAX = 5000
+
     attr_reader :user
     attr_reader :device
     attr_reader :checkins
@@ -18,6 +20,7 @@ module Users::Devices
     def show_gon
       {
         checkins: gon_show_checkins_paginated,
+        locations: gon_show_locations,
         first_load: first_load,
         device: device.id,
         current_user_id: user.id,
@@ -59,14 +62,24 @@ module Users::Devices
     end
 
     def first_load_range
-      checkins = device.checkins.limit(5000)
+      checkins = device.checkins.limit(FIRST_LOAD_MAX)
       { from: checkins.last.created_at.beginning_of_day, to: checkins.first.created_at.end_of_day }
     end
 
     def gon_show_checkins
       checkins = device.checkins
-      return checkins.limit(5000) if first_load
+      return checkins.limit(FIRST_LOAD_MAX) if first_load
+
       date_range[:from] ? checkins.where(created_at: date_range[:from]..date_range[:to]) : checkins
+    end
+
+    def gon_show_locations
+      locations = device.locations.limit_returned_locations(multiple_devices: false)
+      return locations.limit(FIRST_LOAD_MAX) if first_load
+
+      date_range[:from] ?
+        locations.joins(:checkins).where("checkins.created_at": date_range[:from]..date_range[:to]) :
+        locations
     end
   end
 end
