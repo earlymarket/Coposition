@@ -17,6 +17,8 @@ window.COPO.editCheckin = {
     if ($editable.hasClass("date")) {
       // if user edits date input set datepicker and open
       COPO.editCheckin.setDatepicker($editable).pickadate("open");
+    } else if ($editable.hasClass("time")) {
+      COPO.editCheckin.setTimePicker($editable).pickatime("open");
     } else {
       // select all the text to make it easier to edit
       $editable.focus();
@@ -90,8 +92,34 @@ window.COPO.editCheckin = {
     });
   },
 
+  setTimePicker ($editable) {
+    var original = $editable.text();
+    return $("body").pickatime({
+      closeOnSelect: true,
+      max: new Date(),
+      onSet: function(context) {
+        if ("select" in context) {
+          if (this.get("select")) {
+            let date = new Date($editable.data().date);
+            let newTime = this.get("select");
+            date.setUTCHours(newTime.hour, newTime.mins);
+            // open marker popup back again and set new date
+            $editable.text(
+              date.toUTCString() + " UTC+0000"
+            );
+            // remove datepicker with respect to next one
+            this.stop();
+          }
+        }
+      },
+      onClose: function(context) {
+        COPO.editCheckin.handleEdited(original, $editable);
+      }
+    });
+  },
+
   handleEdited(original, $editable) {
-    if ($editable.hasClass("date")) {
+    if ($editable.hasClass("date") || $editable.hasClass("time")) {
       COPO.editCheckin.handleDateEdited(original, $editable);
     } else {
       COPO.editCheckin.handleCoordsEdited(original, $editable);
