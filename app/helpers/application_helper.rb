@@ -40,7 +40,7 @@ module ApplicationHelper
   def add_color_if_present(options, resource)
     return options unless options["transformation"] && options["transformation"][0]
 
-    if resource.respond_to?(:pin_color)
+    if resource.respond_to?(:pin_color) && resource.pin_color
       options["transformation"][0] = options["transformation"][0] + resource.pin_color.to_s
     else
       options["transformation"][0] = DEFAULT_TRANSFORMATION

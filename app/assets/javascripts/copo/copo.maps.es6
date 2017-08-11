@@ -366,8 +366,8 @@ window.COPO.maps = {
     color ? iconClass = `map-pin-${ color }` : iconClass = 'map-pin'
     return L.icon({
       iconUrl: $.cloudinary.url(public_id, {format: 'png', transformation: iconClass}),
-      iconSize: [36,36],
-      iconAnchor: [18,32]
+      iconSize: [50,50],
+      iconAnchor: [25,46]
     })
   },
 
