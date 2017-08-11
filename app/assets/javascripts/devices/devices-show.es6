@@ -7,7 +7,7 @@ $(document).on('page:change', function() {
     var M = window.COPO.maps;
     U.gonFix();
     M.initMap();
-    M.initMarkers(gon.checkins, gon.total);
+    initMarkers();
     M.initControls();
     COPO.datePicker.init();
 
@@ -42,6 +42,19 @@ $(document).on('page:change', function() {
 
     function onLocationFound(p) {
       currentCoords = p.latlng;
+    }
+
+    function initMarkers() {
+      switchToLocations = false;
+      if (page === 'user' && gon.total > 10000) {
+        switchToLocations = confirm("This will take a long time to load, would you like to view locations instead?");
+      }
+
+      if (switchToLocations) {
+        M.initMarkers(gon.locations);
+      } else {
+        M.initMarkers(gon.checkins, gon.total);
+      }
     }
   }
 });
