@@ -6,7 +6,7 @@ module Users::Devices
 
     def call
       if params[:delayed]
-        update_delay(params[:delayed])
+        device.update(delayed: params[:delayed])
       else
         device.update(allowed_params)
       end
@@ -51,12 +51,8 @@ module Users::Devices
       boolean ? "on" : "off"
     end
 
-    def update_delay(mins)
-      mins.to_i.zero? ? device.update(delayed: nil) : device.update(delayed: mins)
-    end
-
     def humanize_delay
-      if device.delayed.nil?
+      if device.delayed.zero?
         "#{device.name} is not delayed."
       else
         "#{device.name} delayed by #{humanize_minutes(device.delayed)}."

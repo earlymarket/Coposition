@@ -9,7 +9,7 @@ window.COPO.delaySlider = {
         var device = _.find(devices, _.matchesProperty('id', device_id));
 
         noUiSlider.create(delaySlider, {
-          start: [ device.delayed || 0 ],
+          start: [ device.delayed ],
           range: {
             'min': [ 0, 5 ],
             '50%': [ 5, 1435 ],
