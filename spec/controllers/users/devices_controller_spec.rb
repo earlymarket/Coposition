@@ -223,7 +223,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       put :update, params: params.merge(delayed: 0)
 
       device.reload
-      expect(device.delayed).to be nil
+      expect(device.delayed).to be 0
     end
 
     it "updates device name" do
