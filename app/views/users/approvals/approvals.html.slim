@@ -16,6 +16,6 @@ section.friends-index.row.hide
           p Your friends have not shared any devices or checkins yet!
       #map
 br/
-= render partial: "approved", locals: { approved: @approvals_presenter.approved, devices: @approvals_presenter.devices, approvable_type: @approvals_presenter.approvable_type }
+= render "approved", approved: @approvals_presenter.approved, devices: @approvals_presenter.devices, approvable_type: @approvals_presenter.approvable_type
 - if @approvals_presenter.pending.present?
-  = render partial: "pending", locals: { pending: @approvals_presenter.pending } 
+  = render "pending", pending: @approvals_presenter.pending

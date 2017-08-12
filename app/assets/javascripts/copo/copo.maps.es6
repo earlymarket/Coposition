@@ -366,8 +366,8 @@ window.COPO.maps = {
     color ? iconClass = `map-pin-${ color }` : iconClass = 'map-pin'
     return L.icon({
       iconUrl: $.cloudinary.url(public_id, {format: 'png', transformation: iconClass}),
-      iconSize: [36,52],
-      iconAnchor: [18,49]
+      iconSize: [50,50],
+      iconAnchor: [25,46]
     })
   },
 
@@ -382,11 +382,7 @@ window.COPO.maps = {
 
   friendsCheckinsToCluster: (markerArr) => {
     let cluster = markerArr.map(marker => {
-      let color;
-      if (moment(marker.lastCheckin && marker.lastCheckin['created_at']).isBefore(moment().subtract(1, 'day'))) {
-        color = 'grey';
-      }
-      return COPO.maps.makeMapPin(marker, color);
+      return COPO.maps.makeMapPin(marker, marker.pinColor);
     }).filter(marker => marker);
     return L.markerClusterGroup().addLayers(cluster)
   },

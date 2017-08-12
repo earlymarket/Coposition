@@ -6,19 +6,18 @@
     .card-panel
       .row
         .col.s8.row.valign-wrapper
-          span
-            .ib.valign.col.s2.avatar
+          .ib.col.s3.avatar
+            = approvals_friends_device_link(approvable_type, approvable) do
+              = avatar_for(approvable)
+          .ib.col.s9
+            h5.ib
               = approvals_friends_device_link(approvable_type, approvable) do
-                = avatar_for(approvable)
-            .ib.col.s9
-              h5.ib
-                = approvals_friends_device_link(approvable_type, approvable) do
-                  = approvals_approvable_name(approvable)
-                = approvals_friends_locator(approvable_type, approvable)
-              .tagline
-                = approvable.try(:tagline)
-              div
-                | Approved since #{humanize_date(approval.approval_date) unless approval.nil?}
+                = approvals_approvable_name(approvable)
+              = approvals_friends_locator(approvable_type, approvable)
+            .tagline
+              = approvable.try(:tagline)
+            div
+              | Approved since #{humanize_date(approval.approval_date) unless approval.nil?}
         .col.s4
           - if current_user.devices.exists?
             a.permissions-trigger.btn-flat.right.permissions-button data-id=(approvable.id) href="#perm#{approvable.id}"
