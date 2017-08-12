@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170617165411) do
+ActiveRecord::Schema.define(version: 20170812142320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,8 +58,8 @@ ActiveRecord::Schema.define(version: 20170617165411) do
   end
 
   create_table "attachinary_files", force: :cascade do |t|
-    t.integer  "attachinariable_id"
     t.string   "attachinariable_type"
+    t.integer  "attachinariable_id"
     t.string   "scope"
     t.string   "public_id"
     t.string   "version"
@@ -141,7 +141,7 @@ ActiveRecord::Schema.define(version: 20170617165411) do
     t.integer "user_id"
     t.string  "name"
     t.boolean "fogged",    default: true
-    t.integer "delayed"
+    t.integer "delayed",   default: 0
     t.string  "alias"
     t.boolean "published", default: false
     t.boolean "cloaked",   default: false

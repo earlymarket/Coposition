@@ -4,7 +4,7 @@ ActiveAdmin.register_page "Device Settings" do
   TIME_INTERVALS = %w(10 30 60 300 1800 3600 21600 86400).freeze
   DISTANCE_INTERVALS = %w(50 100 200 500 1000).freeze
   BATTERY_SAVING = %w(false true low high).freeze
-  DELAY = [nil, 0, 5, 10, 30, 60, 360, 1440].freeze
+  DELAY = [0, 5, 10, 30, 60, 360, 1440].freeze
 
   content do
     render "index", layout: "active_admin"
