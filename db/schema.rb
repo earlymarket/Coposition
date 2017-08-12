@@ -95,9 +95,6 @@ ActiveRecord::Schema.define(version: 20170812142320) do
     t.string   "output_country_code"
     t.string   "fogged_country_code"
     t.boolean  "edited",              default: false
-    t.integer  "location_id"
-    t.integer  "speed"
-    t.integer  "altitude"
     t.index ["device_id"], name: "index_checkins_on_device_id", using: :btree
   end
 
@@ -115,21 +112,6 @@ ActiveRecord::Schema.define(version: 20170812142320) do
     t.text     "custom"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-  end
-
-  create_table "delayed_jobs", force: :cascade do |t|
-    t.integer  "priority",   default: 0, null: false
-    t.integer  "attempts",   default: 0, null: false
-    t.text     "handler",                null: false
-    t.text     "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string   "locked_by"
-    t.string   "queue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
   end
 
   create_table "developers", force: :cascade do |t|
@@ -177,17 +159,6 @@ ActiveRecord::Schema.define(version: 20170812142320) do
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", using: :btree
     t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
-  end
-
-  create_table "locations", force: :cascade do |t|
-    t.string   "name"
-    t.float    "lat"
-    t.float    "lng"
-    t.string   "address"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-    t.integer  "user_id"
-    t.integer  "checkins_count"
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
