@@ -59,7 +59,7 @@ ActiveAdmin.register_page "Device Settings" do
     end
 
     def smart_stats
-      devices = copo_mobile_devices { |dev| dev.config.custom["smartInterval"].present? }
+      devices = copo_mobile_devices { |dev| !dev.config.custom["smartInterval"].nil? }
       return { on: "n/a", off: "n/a" } if devices.count.zero?
 
       {
@@ -73,7 +73,7 @@ ActiveAdmin.register_page "Device Settings" do
     end
 
     def interval_stats
-      devices = copo_mobile_devices { |dev| dev.config.custom["intervalType"].present? }
+      devices = copo_mobile_devices { |dev| !dev.config.custom["intervalType"].nil? }
       return ["n/a"] * INTERVAL_TYPES.size if devices.size.zero?
 
       INTERVAL_TYPES.map do |type|
@@ -86,7 +86,7 @@ ActiveAdmin.register_page "Device Settings" do
     end
 
     def time_stats
-      devices = copo_mobile_devices { |dev| dev.config.custom["timeInterval"].present? }
+      devices = copo_mobile_devices { |dev| !dev.config.custom["timeInterval"].nil? }
       return ["n/a"] * TIME_INTERVALS.size if devices.size.zero?
 
       TIME_INTERVALS.map do |interval|
@@ -99,7 +99,7 @@ ActiveAdmin.register_page "Device Settings" do
     end
 
     def distance_stats
-      devices = copo_mobile_devices { |dev| dev.config.custom["distanceInterval"].present? }
+      devices = copo_mobile_devices { |dev| !dev.config.custom["distanceInterval"].nil? }
       return ["n/a"] * DISTANCE_INTERVALS.size if devices.size.zero?
 
       DISTANCE_INTERVALS.map do |interval|
@@ -112,7 +112,7 @@ ActiveAdmin.register_page "Device Settings" do
     end
 
     def battery_stats
-      devices = copo_mobile_devices { |dev| dev.config.custom["batterySaving"].present? }
+      devices = copo_mobile_devices { |dev| !dev.config.custom["batterySaving"].nil? }
       return ["n/a"] * BATTERY_SAVING.size if devices.size.zero?
 
       BATTERY_SAVING.map do |battery|
@@ -136,8 +136,8 @@ ActiveAdmin.register_page "Device Settings" do
 
     def copo_mobile_devices
       @copo_mobile_devices ||= Device.includes(:config)
-        .select { |dev| dev.config && dev.config.custom && dev.config.custom["active"].present? }
-      
+        .select { |dev| dev.config && dev.config.custom && !dev.config.custom["active"].nil? }
+
       block_given? ? @copo_mobile_devices.select { |dev| yield dev } : @copo_mobile_devices
     end
   end

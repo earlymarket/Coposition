@@ -62,10 +62,11 @@ module Users
     end
 
     def friends
-      @user.friends.map do |friend|
+      @user.friends.map.with_index do |friend, index|
         {
           userinfo: friend.public_info_hash,
-          lastCheckin: friend.safe_checkin_info_for(permissible: @user, action: "last")[0]
+          lastCheckin: friend.safe_checkin_info_for(permissible: @user, action: "last")[0],
+          pinColor: ApprovalsPresenter::PIN_COLORS.to_a[index % ApprovalsPresenter::PIN_COLORS.size][0]
         }
       end
     end
