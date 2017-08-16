@@ -56,6 +56,7 @@ RSpec.feature "Checkins", type: :feature do
   end
 
   def and_i_click_delete_checkins
+    find("div#toast-container").click
     click_on "Delete"
   end
 
