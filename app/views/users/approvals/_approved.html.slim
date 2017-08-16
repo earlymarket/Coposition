@@ -42,6 +42,8 @@
         .col.s4
           - if approvable_type == "Developer"
             = link_to "Authenticate", approvable.redirect_url, class: "btn-flat right", target: :_blank
-            = button_to "Disconnect", user_approval_path(current_user.url_id, approval), method: :delete, remote: true, class: "btn-flat right", data: { confirm: "Are you sure you wish to disconnect this app? You can add this app again by clicking CONNECT NEW APP. " }
           - else
             = button_to "Revoke Approval", user_approval_path(current_user.url_id, approval), method: :delete, remote: true, class: "btn-flat right", data: { confirm: "Are you sure? They will no longer have access to any of your data." }
+        .col.s4
+          - if approvable_type == "Developer"
+            = button_to "Disconnect", user_approval_path(current_user.url_id, approval), method: :delete, remote: true, class: "btn-flat right", data: { confirm: "Are you sure you wish to disconnect this app? You can add this app again by clicking CONNECT NEW APP. " }
