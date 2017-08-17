@@ -89,7 +89,7 @@ window.COPO.editCheckin = {
     return $("body").pickatime({
       closeOnSelect: true,
       interval: 1,
-      formatLabel: 'hh:i <sm!all>UTC</sm!all>',
+      formatLabel: 'HH:i <sm!all>UTC</sm!all>',
       onSet: function(context) {
         if ("select" in context) {
           if (this.get("select")) {
