@@ -17,8 +17,6 @@ window.COPO.editCheckin = {
     if ($editable.hasClass("datetime")) {
       // if user edits date input set datepicker and open
       COPO.editCheckin.setDatepicker($editable).pickadate("open");
-    } else if ($editable.hasClass("time")) {
-      COPO.editCheckin.setTimePicker($editable).pickatime("open");
     } else {
       // select all the text to make it easier to edit
       $editable.focus();
@@ -81,15 +79,8 @@ window.COPO.editCheckin = {
             );
             this.stop();
             COPO.editCheckin.setTimePicker($editable, date, original).pickatime("open");
-            
-            // remove datepicker with respect to next one
-            // this.stop();
           }
         }
-      },
-      onClose: function(context) {
-        //COPO.editCheckin.setTimePicker($editable).pickatime("open");
-        //COPO.editCheckin.handleEdited(original, $editable);
       }
     });
   },

@@ -209,7 +209,6 @@ window.COPO.maps = {
         return `<a href="${window.location.pathname}/show_device?device_id=${checkin.device_id}" title="Device map">${checkin.device}</a>`
       }
     }
-    checkinTemp.time = moment(checkin.created_at).format('HH:mm:ss') + ', UTC';
     checkinTemp.edited = checkin.edited ? '(edited)' : ''
     checkinTemp.inlineCoords = COPO.utility.renderInlineCoords(checkin);
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
