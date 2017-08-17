@@ -194,7 +194,6 @@ window.COPO.maps = {
       address: address,
       marker: marker._leaflet_id
     };
-
     var foggedClass;
     checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
     checkinTemp.foggedAddress = function() {
@@ -224,7 +223,7 @@ window.COPO.maps = {
     if (checkin.localDate) {
       map.once('popupopen', function() { $('#localTime').html(checkin.localDate) });
     } else {
-      let created_at = Date.parse(checkin.created_at)/1000;
+      let created_at = Date.parse(moment.utc(checkin.created_at))/1000;
       let coords = [checkin.lat, checkin.lng];
       $.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${checkin.lat},${checkin.lng}&timestamp=${created_at}&key=AIzaSyCEjHZhLTdiy7jbRTDU3YADs8a1yXKTwqI`)
       .done((data) => {

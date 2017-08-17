@@ -14,7 +14,7 @@ window.COPO.editCheckin = {
     // make .editable, a contenteditable
     $editable.attr('contenteditable', true);
 
-    if ($editable.hasClass("date")) {
+    if ($editable.hasClass("datetime")) {
       // if user edits date input set datepicker and open
       COPO.editCheckin.setDatepicker($editable).pickadate("open");
     } else if ($editable.hasClass("time")) {
@@ -66,7 +66,6 @@ window.COPO.editCheckin = {
       selectMonths: true,
       selectYears: 15,
       closeOnSelect: true,
-      max: new Date(),
       onSet: function(context) {
         if ("select" in context) {
           if (this.get("value")) {
@@ -80,32 +79,34 @@ window.COPO.editCheckin = {
             $editable.text(
               date.toUTCString() + " UTC+0000"
             );
-
-            // remove datepicker with respect to next one
             this.stop();
+            COPO.editCheckin.setTimePicker($editable, date, original).pickatime("open");
+            
+            // remove datepicker with respect to next one
+            // this.stop();
           }
         }
       },
       onClose: function(context) {
-        COPO.editCheckin.handleEdited(original, $editable);
+        //COPO.editCheckin.setTimePicker($editable).pickatime("open");
+        //COPO.editCheckin.handleEdited(original, $editable);
       }
     });
   },
 
-  setTimePicker ($editable) {
-    var original = $editable.text();
+  setTimePicker ($editable, newDate, original) {
     return $("body").pickatime({
       closeOnSelect: true,
-      max: new Date(),
+      interval: 1,
+      formatLabel: 'hh:i <sm!all>UTC</sm!all>',
       onSet: function(context) {
         if ("select" in context) {
           if (this.get("select")) {
-            let date = new Date($editable.data().date);
             let newTime = this.get("select");
-            date.setUTCHours(newTime.hour, newTime.mins);
+            newDate.setUTCHours(newTime.hour, newTime.mins);
             // open marker popup back again and set new date
             $editable.text(
-              date.toUTCString() + " UTC+0000"
+              newDate.toUTCString() + " UTC+0000"
             );
             // remove datepicker with respect to next one
             this.stop();
@@ -119,7 +120,7 @@ window.COPO.editCheckin = {
   },
 
   handleEdited(original, $editable) {
-    if ($editable.hasClass("date") || $editable.hasClass("time")) {
+    if ($editable.hasClass("datetime")) {
       COPO.editCheckin.handleDateEdited(original, $editable);
     } else {
       COPO.editCheckin.handleCoordsEdited(original, $editable);
@@ -184,7 +185,7 @@ window.COPO.editCheckin = {
     checkin.address = response.checkin.address;
     checkin.fogged_city = response.checkin.fogged_city;
     if (checkin.created_at !== response.checkin.created_at) {
-      checkin.created_at = response.checkin.created_at;
+      checkin.created_at = moment.utc(response.checkin.created_at).format("ddd MMM D YYYY HH:mm:ss") + ' UTC+0000';
       gon.checkins.sort(function(a, b) {
         return (new Date(b.created_at)) - (new Date(a.created_at));
       });
