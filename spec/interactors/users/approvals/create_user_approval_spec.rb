@@ -48,8 +48,8 @@ RSpec.describe Users::Approvals::CreateUserApproval, type: :interactor do
         expect(create_context.message).to eq notice: "User not signed up with Coposition, invite email sent!"
       end
 
-      it "provides the root path" do
-        expect(create_context.path).to eq "/"
+      it "provides the approvals path" do
+        expect(create_context.path).to eq "/users/#{user.id}/friends"
       end
     end
   end

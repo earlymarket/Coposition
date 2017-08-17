@@ -19,6 +19,11 @@
 = j (render partial: 'approved', locals: { approved: @approvals_presenter.approved, devices: @approvals_presenter.devices, approvable_type: @approvals_presenter.approvable_type })
 | ");
 
+- if !@approvals_presenter.approved.present? && !@approvals_presenter.complete.present? && @approvals_presenter.approvable_type === "Developer"
+  | $('.container').append("
+  | <p class='center'> You are not currently connected to any applications. Add applications to start controlling their access to your data.</p>
+  | ");
+
 - if !@approvals_presenter.approved.present?
   | $('#approved').remove();
 

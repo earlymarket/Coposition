@@ -22,17 +22,21 @@ nav {
 
 // custom toast styling
 
-@media only screen and (min-width : 1261px) {
-.toast {
-width: 100%; } }
+@media only screen and (min-width : 601px) {
+  .toast {
+    width: 100%;
+  }
+}
 
-@media only screen and (min-width : 1261px) {
-#toast-container {
-min-width: 50%;
-bottom: 0%;
-top: 90%;
-right: 25%;
-left: 25%; } }
+@media only screen and (min-width : 601px) {
+  #toast-container {
+    min-width: 50%;
+    bottom: 0%;
+    top: 75%;
+    right: 25%;
+    left: 25%;
+  }
+}
 
 // custom slick styling for our dark background
 
