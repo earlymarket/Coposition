@@ -21,8 +21,9 @@
                 = approvals_friends_device_link(approvable_type, approvable) do
                   = approvals_approvable_name(approvable)
                 = approvals_friends_locator(approvable_type, approvable)
-              .tagline
-                = approvable.try(:tagline)
+              - if approvable.try(:tagline)
+                .tagline
+                  = approvable.tagline
               div
                 | Connected since #{humanize_date(approval.approval_date) unless approval.nil?}
         .col.s4

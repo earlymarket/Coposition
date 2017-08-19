@@ -10,11 +10,6 @@
 = j (render partial: 'navbar')
 | ");
 
-- if current_user.pending_friends.present? && @approvals_presenter.approvable_type == "User"
-  | $('.requested').html("
-  = "You have sent #{pluralize(current_user.pending_friends.count, "friend request")} to #{current_user.pending_friends.pluck(:email).to_sentence}."
-  | ");
-
 | $('#approved').html("
 = j (render partial: 'approved', locals: { approved: @approvals_presenter.approved, devices: @approvals_presenter.devices, approvable_type: @approvals_presenter.approvable_type })
 | ");

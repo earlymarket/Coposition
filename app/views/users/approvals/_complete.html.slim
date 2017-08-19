@@ -16,7 +16,7 @@
               h5.ib
                 = approvals_approvable_name(approvable)
               .tagline
-                = approvable.try(:tagline)
+                = approvable.tagline
               div
                 | Connected since #{humanize_date(approval.approval_date) unless approval.nil?}
         .col.s4
@@ -34,4 +34,4 @@
                       h5 Update all permissions
                     = render partial: "users/permissions/controls", object: approvable, as: "control_object"
         .col.s4
-          = button_to "Revoke App", user_approval_path(current_user.url_id, approval), method: :delete, remote: true, class: "btn-flat right", data: { confirm: "Are you sure? You will have to authenticate this app before it can access your data again. You can temporarily disable this application's access with the permissions controls." }
+          = button_to "Revoke App", user_approval_path(current_user.url_id, approval), method: :delete, remote: true, class: "btn-flat right", data: { confirm: "Are you sure? If you continue, you will have to authenticate this app again before it can access your data. You can temporarily disable this application's access with the permissions controls. Click OK to revoke this app." }

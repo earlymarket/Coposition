@@ -11,8 +11,8 @@ class Approval < ApplicationRecord
     if approvable_type == "User" && user == approvable
       errors.add(:base, "Adding self")
       throw(:abort)
-    elsif Approval.exists?(user: user, approvable: approvable, approvable_type: approvable_type)
-      errors.add(:base, "Approval/Request exists")
+    elsif (approval = Approval.find_by(user: user, approvable: approvable, approvable_type: approvable_type))
+      errors.add(:base, approval.status == "pending" ? "Friend request already sent" : "Friendship already present")
       throw(:abort)
     end
   end
