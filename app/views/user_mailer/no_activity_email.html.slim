@@ -1,4 +1,6 @@
-h1 Hi there!
+h1 
+  | Hi 
+  = @email
 p
   | We have not received any check-ins from any of your devices this week, visit 
   = link_to "this link", @url
@@ -6,3 +8,4 @@ p
 p Coposition Support
 p 
   = link_to "Unsubscribe", settings_unsubscribe_url(id: @unsubscribe)
+  = link_to "Forgot your password?", @forgot_password
