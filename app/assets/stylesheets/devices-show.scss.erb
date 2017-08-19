@@ -150,13 +150,13 @@
   }
 
   .leaflet-popup-content {
-
+    width: 250px;
     h3, ul {
       margin: 0;
     }
 
     .editable {
-      font-size: 0.9rem;
+      font-size: 0.8rem;
     }
 
     .edit-coords {
@@ -166,6 +166,9 @@
 
     .editable-wrapper.clickable {
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       .editable {
         border-bottom: #ff8f00 2px dotted;
@@ -179,6 +182,10 @@
     li.address, .foggedAddress > li {
       white-space: pre-wrap;
       font-family: "Fira Mono", monospace;
+    }
+
+    .datetime {
+      margin: 0;
     }
   }
 

@@ -34,6 +34,8 @@
 //= require clipboard/dist/clipboard.min
 //= require slick-carousel/slick/slick.min
 //= require pickadate/lib/picker.time
+//= require bootstrap/dist/js/bootstrap.min
+//= require eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min
 
 // STILL more up to date version
 //= require nouislider.min

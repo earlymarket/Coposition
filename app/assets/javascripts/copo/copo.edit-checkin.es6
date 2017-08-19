@@ -16,7 +16,23 @@ window.COPO.editCheckin = {
 
     if ($editable.hasClass("datetime")) {
       // if user edits date input set datepicker and open
-      COPO.editCheckin.setDatepicker($editable).pickadate("open");
+      console.log("show")
+      $('.datetime').on("dp.hide", (e) => {
+        let oldDate = moment(e.date)
+        let newDate = moment($editable.data().date)
+        if (newDate._i === oldDate._i) {
+          console.log('no change')
+        } else {
+          console.log('handling date edited')
+          var confirmText = "Are you sure? This will place this check-in in the future.";
+          if (Date.parse(newDate) < Date.now() || confirm(confirmText)) {
+            var url = $editable.data('url');
+            var data = { checkin: { created_at: newDate.toString()} }
+            COPO.editCheckin.putUpdateCheckin(url, data);
+          }
+        }
+      }).show()
+      //COPO.editCheckin.setDatepicker($editable).pickadate("open");
     } else {
       // select all the text to make it easier to edit
       $editable.focus();
@@ -55,6 +71,22 @@ window.COPO.editCheckin = {
       marker.on('click', function(e) {
         COPO.editCheckin.handleEditEnd($editable);
       });
+    });
+  },
+
+  setDateTimePicker(checkin) {
+    $('.datetime').datetimepicker({
+      format: "dd, MMM Do YY, HH:mm Z",
+      defaultDate: moment.utc(checkin.created_at),
+      viewDate: $('#localTime').text(),
+      showTodayButton: true,
+      showClear: true,
+      showClose: true,
+      sideBySide: true,
+      icons: {
+        previous: 'chevron-left',
+        right: 'chevron-right'
+      }
     });
   },
 
@@ -120,6 +152,7 @@ window.COPO.editCheckin = {
 
   handleDateEdited(original, $editable) {
     if (original !== $editable.text()) {
+      console.log('handling date edited')
       var confirmText = "Are you sure? This will place this check-in in the future.";
       if (Date.parse($editable.text()) < Date.now() || confirm(confirmText)) {
         var url = $editable.data('url');

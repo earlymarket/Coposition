@@ -15,6 +15,7 @@
     "leaflet.markercluster": "latest",
     "clipboard": "latest",
     "slick-carousel": "latest",
-    "pickadate": "latest"
+    "pickadate": "latest",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.47"
   }
 }

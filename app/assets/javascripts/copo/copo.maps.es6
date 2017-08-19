@@ -172,6 +172,7 @@ window.COPO.maps = {
         var template = COPO.maps.buildMarkerPopup(checkin, marker);
         marker.bindPopup(L.Util.template(template, checkin));
         marker.openPopup();
+        COPO.editCheckin.setDateTimePicker(checkin)
       }
       if (window.COPO.utility.currentPage('devices', 'show')) {
         $.get({
@@ -235,7 +236,7 @@ window.COPO.maps = {
           let offsetStr = COPO.maps.formatOffset(parseInt(data.rawOffset) + data.dstOffset);
           let localDate = `${date} (UTC${offsetStr})`;
           checkin.localDate = localDate;
-          $('#localTime').html(localDate);
+          $('#localTime').val(localDate);
         }
       });
     }
