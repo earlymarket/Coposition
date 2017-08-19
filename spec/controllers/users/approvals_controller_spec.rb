@@ -90,7 +90,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         approval_two.update(status: "accepted", approvable_id: user.id, approvable_type: "User")
         approval_count = Approval.count
         post :create, params: friend_approval_create_params
-        expect(flash[:alert]).to match "exists"
+        expect(flash[:alert]).to match "present"
         expect(Approval.count).to eq approval_count
       end
     end

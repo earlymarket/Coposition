@@ -12,7 +12,7 @@ class Approval < ApplicationRecord
       errors.add(:base, "Adding self")
       throw(:abort)
     elsif (approval = Approval.find_by(user: user, approvable: approvable, approvable_type: approvable_type))
-      errors.add(:base, approval.status == "pending" ? "Friend request already sent" : "Friendship already present")
+      errors.add(:base, approval.status == "pending" ? "Friend request already sent" : "Approval already present")
       throw(:abort)
     end
   end

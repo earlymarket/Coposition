@@ -29,7 +29,7 @@ RSpec.describe Users::Approvals::CreateUserApproval, type: :interactor do
       end
 
       it "provides an alert message" do
-        expect(create_context.message).to eq alert: "Error: Approval/Request exists"
+        expect(create_context.message).to eq alert: "Error: Friend request already sent"
       end
 
       it "provides a path" do
