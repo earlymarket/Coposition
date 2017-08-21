@@ -128,11 +128,11 @@ class Device < ApplicationRecord
   end
 
   def self.last_checkins
-    all.map { |device| device.checkins.first if device.checkins.exists? }.compact.sort_by(&:created_at).reverse
+    all.map { |device| device.past_checkins.first if device.past_checkins.exists? }.compact.sort_by(&:created_at).reverse
   end
 
   def self.geocode_last_checkins
-    all.each { |device| device.checkins.first.reverse_geocode! if device.checkins.exists? }
+    all.each { |device| device.past_checkins.first.reverse_geocode! if device.past_checkins.exists? }
   end
 
   def self.ordered_by_checkins

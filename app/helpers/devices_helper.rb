@@ -1,7 +1,7 @@
 module DevicesHelper
   def devices_last_checkin(device)
-    if device.checkins.exists?
-      last_checkin = device.checkins.first
+    if device.past_checkins.exists?
+      last_checkin = device.past_checkins.first
       postcode = last_checkin.postal_code
       last_checkin.address = last_checkin.address.gsub(" " + postcode, "") if postcode
       "Last reported in #{last_checkin.address} on #{humanize_date_and_time(last_checkin.created_at)}
