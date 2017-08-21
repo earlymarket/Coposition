@@ -60,7 +60,9 @@ window.COPO.editCheckin = {
 
   setDatepicker($editable) {
     var original = $editable.text();
-    return $("body").pickadate({
+    let formattedDate = moment($editable.data('date')).format('YYYY/MM/DD')
+    return $(".datepicker").data('value', formattedDate).pickadate({
+      formatSubmit: 'yyyy/mm/dd',
       selectMonths: true,
       selectYears: 15,
       closeOnSelect: true,
@@ -77,35 +79,35 @@ window.COPO.editCheckin = {
             $editable.text(
               date.toUTCString() + " UTC+0000"
             );
-            this.stop();
-            COPO.editCheckin.setTimePicker($editable, date, original).pickatime("open");
+            COPO.editCheckin.setTimePicker($editable, date, original).pickatime('show');
+            $('.picker__clear')[2].disabled = true
           }
         }
+      },
+      onClose: function() {
+        COPO.editCheckin.handleEditEnd($editable);
+        this.stop();
       }
     });
   },
 
   setTimePicker ($editable, newDate, original) {
-    return $("body").pickatime({
-      closeOnSelect: true,
-      interval: 1,
-      formatLabel: 'HH:i <sm!all>UTC</sm!all>',
-      onSet: function(context) {
-        if ("select" in context) {
-          if (this.get("select")) {
-            let newTime = this.get("select");
-            newDate.setUTCHours(newTime.hour, newTime.mins);
-            // open marker popup back again and set new date
-            $editable.text(
-              newDate.toUTCString() + " UTC+0000"
-            );
-            // remove datepicker with respect to next one
-            this.stop();
-          }
-        }
+    let timeString = moment($editable.text()).format('HH:mm')
+    return $(".timepicker").pickatime({
+      cleartext: 'UTC time',
+      default: timeString,
+      twelvehour: false,
+      afterDone: () => {
+        let newTime = $('.timepicker').val().split(":")
+        newDate.setUTCHours(newTime[0], newTime[1])
+        $editable.text(
+          newDate.toUTCString() + " UTC+0000"
+        );
+        COPO.editCheckin.handleDateEdited(original, $editable)
       },
-      onClose: function(context) {
-        COPO.editCheckin.handleEdited(original, $editable);
+      afterHide: () => {
+        $editable.text(original);
+        $(".timepicker").pickatime('remove')
       }
     });
   },

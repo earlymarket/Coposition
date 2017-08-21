@@ -33,7 +33,6 @@
 //= require ion.rangeSlider/js/ion.rangeSlider.min
 //= require clipboard/dist/clipboard.min
 //= require slick-carousel/slick/slick.min
-//= require pickadate/lib/picker.time
 
 // STILL more up to date version
 //= require nouislider.min

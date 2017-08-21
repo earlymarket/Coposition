@@ -26,3 +26,6 @@ ul#filters.date-select.collapsible
         = link_to "Clear", @device_show_presenter.form_path, { method: :get, class: "btn-flat right" }
         = hidden_field_tag(:device_id, @device_show_presenter.device.id)
 #map
+
+input.hide.timepicker type='text'
+input.hide.datepicker
