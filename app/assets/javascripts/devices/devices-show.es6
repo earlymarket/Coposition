@@ -45,7 +45,7 @@ $(document).on('page:change', function() {
     }
 
     function initMarkers() {
-      switchToLocations = false;
+      var switchToLocations = false;
       if (page === 'user' && gon.total > 10000) {
         switchToLocations = confirm("This will take a long time to load, would you like to view locations instead?");
       }
