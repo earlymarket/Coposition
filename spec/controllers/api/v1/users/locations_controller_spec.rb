@@ -14,8 +14,12 @@ RSpec.describe Api::V1::Users::LocationsController, type: :controller do
   before do
     api_request_headers(developer, user)
 
-    Approval.link(user, developer, 'Developer')
-    Approval.accept(user, developer, 'Developer')
+    Approval.create(
+      user: user,
+      approvable: developer,
+      approvable_type: "Developer",
+      status: "developer-requested"
+    ).complete!
   end
 
   describe "GET #index when the device has 31 locations" do
