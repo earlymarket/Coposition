@@ -1,9 +1,13 @@
 ActiveAdmin.register Device do
+  remove_filter :checkins
   permit_params :name, :user_id
+
+  config.per_page = [10, 50, 100]
 
   index do
     selectable_column
     id_column
+
     column :user_id
     column :checkin_count do |device|
       device.checkins.count
@@ -19,6 +23,7 @@ ActiveAdmin.register Device do
 
       configurer.present? ? configurer.email : "Not set"
     end
+
     actions
   end
 

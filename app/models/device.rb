@@ -90,7 +90,7 @@ class Device < ApplicationRecord
   end
 
   def before_delay_checkins
-    checkins.where("checkins.created_at < ?", delayed.to_i.minutes.ago)
+    checkins.where("checkins.created_at < ?", delayed.minutes.ago)
   end
 
   def permission_for(permissible)

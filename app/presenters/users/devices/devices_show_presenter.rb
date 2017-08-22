@@ -19,12 +19,13 @@ module Users::Devices
 
     def show_gon
       {
-        checkins: gon_show_checkins_paginated,
+        checkins: ActiveRecord::Base.connection.execute(gon_show_checkins_paginated.to_sql).to_a,
         locations: gon_show_locations,
         first_load: first_load,
         device: device.id,
         current_user_id: user.id,
-        total: gon_show_checkins.count
+        total: gon_show_checkins.count,
+        all: all_checkins?
       }
     end
 
@@ -55,31 +56,43 @@ module Users::Devices
       @first_load ||= params[:first_load]
     end
 
+    def all_checkins?
+      gon_show_checkins.count == device.checkins.count
+    end
+
     def gon_show_checkins_paginated
       gon_show_checkins
-        .paginate(page: 1, per_page: 1000)
         .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :edited)
     end
 
     def first_load_range
-      checkins = device.checkins.limit(FIRST_LOAD_MAX)
+      return { from: nil, to: nil } if (checkins = device.checkins.limit(FIRST_LOAD_MAX)).size.zero?
+
       { from: checkins.last.created_at.beginning_of_day, to: checkins.first.created_at.end_of_day }
     end
 
     def gon_show_checkins
       checkins = device.checkins
-      return checkins.limit(FIRST_LOAD_MAX) if first_load
 
-      date_range[:from] ? checkins.where(created_at: date_range[:from]..date_range[:to]) : checkins
+      @gon_show_checkins ||= if first_load
+        checkins.limit(FIRST_LOAD_MAX)
+      elsif date_range[:from]
+        checkins.where(created_at: date_range[:from]..date_range[:to])
+      else
+        checkins
+      end
     end
 
     def gon_show_locations
       locations = device.locations.limit_returned_locations(multiple_devices: false)
-      return locations.limit(FIRST_LOAD_MAX) if first_load
 
-      date_range[:from] ?
-        locations.joins(:checkins).where("checkins.created_at": date_range[:from]..date_range[:to]) :
+      @gon_show_locations ||= if first_load
+        locations.limit(FIRST_LOAD_MAX) if first_load
+      elsif date_range[:from]
+        locations.joins(:checkins).where("checkins.created_at": date_range[:from]..date_range[:to])
+      else
         locations
+      end
     end
   end
 end

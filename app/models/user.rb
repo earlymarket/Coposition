@@ -2,7 +2,11 @@ class User < ApplicationRecord
   extend FriendlyId
   include ApprovalMethods, SlackNotifiable, RemoveId
 
+  PUBLIC_ATTRIBUTES = %i(id username slug email)
+
   acts_as_token_authenticatable
+
+  attr_accessor :private_profile, :pin_color
 
   friendly_id :username, use: %i(finders slugged)
 
@@ -19,17 +23,34 @@ class User < ApplicationRecord
   has_many :requests
   has_many :approvals, dependent: :destroy
   has_many :subscriptions, as: :subscriber, dependent: :destroy
-  has_many :developers, -> { where "status = 'accepted'" }, through: :approvals, source: :approvable,
-                                                           source_type: "Developer"
+  has_many :developers,
+    -> { where "status in (?)", %w[accepted complete] },
+    through: :approvals,
+    source: :approvable,
+    source_type: "Developer"
+  has_many :complete_developers,
+    -> { where "status = 'complete'" },
+    through: :approvals,
+    source: :approvable,
+    source_type: "Developer"
   has_many :developer_approvals, -> { where(status: "accepted", approvable_type: "Developer") }, class_name: "Approval"
   has_many :friends, -> { where "status = 'accepted'" }, through: :approvals, source: :approvable, source_type: "User"
   has_many :friend_approvals, -> { where(status: "accepted", approvable_type: "User") }, class_name: "Approval"
-  has_many :pending_friends, -> { where "status = 'pending'" }, through: :approvals, source: :approvable,
-                                                               source_type: "User"
-  has_many :friend_requests, -> { where "status = 'requested'" }, through: :approvals, source: :approvable,
-                                                                 source_type: "User"
-  has_many :developer_requests, -> { where "status = 'developer-requested'" }, through: :approvals, source: :approvable,
-                                                                              source_type: "Developer"
+  has_many :pending_friends,
+    -> { where "status = 'pending'" },
+    through: :approvals,
+    source: :approvable,
+    source_type: "User"
+  has_many :friend_requests,
+    -> { where "status = 'requested'" },
+    through: :approvals,
+    source: :approvable,
+    source_type: "User"
+  has_many :developer_requests,
+    -> { where "status = 'developer-requested'" },
+    through: :approvals,
+    source: :approvable,
+    source_type: "Developer"
   has_many :permissions, as: :permissible, dependent: :destroy
   has_many :permitted_devices, through: :permissions, source: :permissible, source_type: "Device"
 
@@ -51,11 +72,13 @@ class User < ApplicationRecord
   ## Approvals
 
   def approve_coposition_mobile_app
-    Approval.add_developer(self, Developer.default(mobile: true))
+    mobile_dev = Developer.default(mobile: true)
+    Approval.add_developer(self, mobile_dev).update(status: "complete")
+    Doorkeeper::AccessToken.find_or_create_for(mobile_dev.oauth_application, id, "public", nil, true)
   end
 
   def approved?(permissible)
-    developers.include?(permissible) || friends.include?(permissible)
+    authorized_dev?(permissible) || approved_user?(permissible)
   end
 
   def request_from?(approvable)
@@ -139,11 +162,11 @@ class User < ApplicationRecord
   def public_info
     # Clears out any potentially sensitive attributes
     # Returns a normal ActiveRecord relation
-    User.select(%i(id username slug email)).find(id)
+    User.select(PUBLIC_ATTRIBUTES).find(id)
   end
 
   def self.public_info
-    all.select(%i(id username slug email))
+    all.select(PUBLIC_ATTRIBUTES)
   end
 
   def public_info_hash
@@ -151,7 +174,29 @@ class User < ApplicationRecord
     public_info.attributes.merge(avatar: avatar || { public_id: "no_avatar" })
   end
 
+  def copo_app_access_token
+    copo_app = Developer.default(mobile: true).oauth_application
+    return nil unless copo_app
+
+    Doorkeeper::AccessToken
+      .where(["resource_owner_id = ? AND application_id = ?", id, copo_app.id])
+      .first
+      &.token
+  end
+
   private
+
+  def authorized_dev?(permissible)
+    complete_developers.include?(permissible)
+  end
+
+  def approved_dev?(permissible)
+    developers.include?(permissible)
+  end
+
+  def approved_user?(permissible)
+    friends.include?(permissible)
+  end
 
   def generate_token
     self.webhook_key = SecureRandom.uuid

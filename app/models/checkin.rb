@@ -1,7 +1,7 @@
 class GeojsonCheckin
   def initialize(record)
     @type = "Feature"
-    @geometry = { "type": "Point", "coordinates": [record[0], record[1]] }
+    @geometry = { "type": "Point", "coordinates": [record[1], record[0]] }
     @properties = { "id": record[2] }
   end
 end
@@ -18,7 +18,7 @@ class Checkin < ApplicationRecord
   default_scope { order(created_at: :desc) }
   scope :since, ->(date) { where("created_at > ?", date) }
 
-  before_update :set_edited, if: proc { lat_changed? || lng_changed? }
+  before_update :set_edited, if: proc { lat_changed? || lng_changed? || created_at_changed? }
 
   after_destroy :decrement_checkin_count
 
@@ -192,11 +192,15 @@ class Checkin < ApplicationRecord
     end
 
     def to_geojson
-      [].tap do |geojson_checkins|
-        all.pluck(:lat, :lng, :id).each do |record|
-          geojson_checkins << GeojsonCheckin.new(record)
-        end
-      end.as_json
+      {
+        "type": "FeatureCollection",
+        "features":
+          [].tap do |geojson_checkins|
+            all.pluck(:lat, :lng, :id).each do |record|
+              geojson_checkins << GeojsonCheckin.new(record)
+            end
+          end
+      }.to_json
     end
   end
 end

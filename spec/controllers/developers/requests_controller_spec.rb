@@ -4,10 +4,11 @@ RSpec.describe Developers::RequestsController, type: :controller do
   include ControllerMacros
 
   let(:developer) { create_developer }
-  let!(:request) do
-    req = create :request
-    developer.requests << req
-    req
+  
+  before do
+    request = create :request
+    developer.requests << request
+    request
   end
 
   describe "PUT #pay" do

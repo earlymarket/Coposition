@@ -287,21 +287,11 @@ RSpec.describe Checkin, type: :model do
       end
     end
 
-    context "to_csv" do
-      it "returns a csv string" do
-        expect(Checkin.to_csv).to be_kind_of(String)
-      end
-    end
-
-    context "to_gpx" do
-      it "returns a gpx string" do
-        expect(Checkin.to_gpx).to be_kind_of(String)
-      end
-    end
-
-    context "to_geojson" do
-      it "returns an array" do
-        expect(Checkin.to_geojson).to be_kind_of(Array)
+    context "to_download methods" do
+      %i[to_csv to_gpx to_geojson].each do |method|
+        it "returns a string" do
+          expect(Checkin.send(method)).to be_kind_of(String)
+        end
       end
     end
   end

@@ -5,19 +5,28 @@ class Developer < ApplicationRecord
 
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
 
+  has_one :oauth_application, class_name: "Doorkeeper::Application", as: :owner, dependent: :destroy
   has_many :requests, dependent: :destroy
   has_many :permissions, as: :permissible, dependent: :destroy
   has_many :devices, through: :permissions
   has_many :subscriptions, as: :subscriber, dependent: :destroy
   has_many :approvals, as: :approvable, dependent: :destroy
   has_many :pending_requests, -> { where "status = 'developer-requested'" }, through: :approvals, source: :user
-  has_many :users, -> { where "status = 'accepted'" }, through: :approvals
+  has_many :users, -> { where "status in (?)", %w[accepted complete] }, through: :approvals
   has_many :configs
   has_many :configurable_devices, through: :configs, source: :device
 
   before_create do |dev|
     dev.api_key ||= SecureRandom.uuid
   end
+
+  after_create do |dev|
+    app = Doorkeeper::Application.new(name: dev.company_name, redirect_uri: dev.redirect_url)
+    app.owner = dev
+    app.save
+  end
+
+  after_update :set_application_attributes, if: proc { redirect_url_changed? || company_name_changed? }
 
   def slack_message
     "A new developer registered, id: #{id}, company_name: #{company_name}, there are now #{Developer.count} developers."
@@ -46,7 +55,11 @@ class Developer < ApplicationRecord
 
   def self.default(type)
     key = type[:coposition] ? "coposition_api_key" : "mobile_app_api_key"
-    FactoryGirl.create(:developer, api_key: Rails.application.secrets[key]) if Rails.env.test?
+    FactoryGirl.create(:developer, api_key: Rails.application.secrets[key]) if Rails.env.test? || Rails.env.benchmark?
     find_by(api_key: Rails.application.secrets[key])
+  end
+
+  def set_application_attributes
+    oauth_application.update(name: company_name, redirect_uri: redirect_url)
   end
 end

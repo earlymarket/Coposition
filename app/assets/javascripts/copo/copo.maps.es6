@@ -62,13 +62,19 @@ window.COPO.maps = {
         });
       } else {
         $('.myProgress').remove();
-        if (gon.first_load && total >= 5000) {
-          Materialize.toast('Last 5000 check-ins shown. Select a date range to load more.' , 3000)
-        } else {
-          Materialize.toast('Check-ins loaded', 3000)
-        }
+        toastMessage()
         window.COPO.maps.fitBounds();
       };
+    }
+
+    function toastMessage() {
+      if (gon.first_load && total >= 5000) {
+        Materialize.toast('Last 5000 check-ins shown. Select a date range to load more.' , 3000)
+      } else if (gon.all) {
+        Materialize.toast('All check-ins loaded', 3000)
+      } else {
+        Materialize.toast('Check-ins loaded', 3000)
+      }
     }
 
     function updateProgress(checkins, total) {
@@ -360,8 +366,8 @@ window.COPO.maps = {
     color ? iconClass = `map-pin-${ color }` : iconClass = 'map-pin'
     return L.icon({
       iconUrl: $.cloudinary.url(public_id, {format: 'png', transformation: iconClass}),
-      iconSize: [36,52],
-      iconAnchor: [18,49]
+      iconSize: [50,50],
+      iconAnchor: [25,46]
     })
   },
 
@@ -376,11 +382,7 @@ window.COPO.maps = {
 
   friendsCheckinsToCluster: (markerArr) => {
     let cluster = markerArr.map(marker => {
-      let color;
-      if (moment(marker.lastCheckin && marker.lastCheckin['created_at']).isBefore(moment().subtract(1, 'day'))) {
-        color = 'grey';
-      }
-      return COPO.maps.makeMapPin(marker, color);
+      return COPO.maps.makeMapPin(marker, marker.pinColor);
     }).filter(marker => marker);
     return L.markerClusterGroup().addLayers(cluster)
   },

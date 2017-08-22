@@ -1,11 +1,14 @@
 class Permission < ApplicationRecord
   include PublicActivity::Common
+
+  PRIVELEGE_TYPES = %i(disallowed last_only complete).freeze
+
   belongs_to :device
   belongs_to :permissible, polymorphic: true
 
   before_create { |p| p.privilege = :last_only }
 
-  enum privilege: %i(disallowed last_only complete)
+  enum privilege: PRIVELEGE_TYPES
 
   def self.not_coposition_developers
     keys = [Rails.application.secrets["coposition_api_key"], Rails.application.secrets["mobile_app_api_key"]]

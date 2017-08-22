@@ -3,14 +3,24 @@
   .bottom-panel.valign-wrapper
     .buttons
       a.modal-trigger.btn.red.white-text href="#delete#{@device_show_presenter.device.id}" id="deleteButton#{@device_show_presenter.device.id}" 
-        | Delete check-ins
-      = link_to "Delete device", user_device_path(current_user.url_id, @device_show_presenter.device), { method: :delete, class: "btn red white-text", data: { confirm: "Are you sure?" } }
-      a#checkinNow.btn.blue.white-text data-turbolinks="false" href="#" Checkin now
-      a#checkinFoggedNow.btn.blue.white-text data-turbolinks="false" href="#" Checkin now (fogged)
-    .buttons
+        | Delete...
+      a.modal-trigger.btn.blue.white-text href="#checkin#{@device_show_presenter.device.id}" id="checkinButton#{@device_show_presenter.device.id}"
+        | Check-in
       a.modal-trigger.btn.green.white-text.downloadButton data-tooltip=("Download range") href="#download#{@device_show_presenter.device.id}" id="downloadButton#{@device_show_presenter.device.id}"
-        | Download checkins
-  .modal.delete-modal id="delete#{@device_show_presenter.device.id}" 
+        | Download
+
+  .modal.checkin-modal id="checkin#{@device_show_presenter.device.id}"
+    .modal-content
+      h4.center-align Checkin
+      .center-align
+        p.center-align
+          | You're going to check-in now
+        a#checkinNow.btn.blue.white-text data-turbolinks="false" href="#" Checkin now
+        br
+        br
+        a#checkinFoggedNow.btn.blue.white-text data-turbolinks="false" href="#" Checkin now (fogged)
+
+  .modal.delete-modal id="delete#{@device_show_presenter.device.id}"
     .modal-content
       h4.center-align Delete checkins
       .center-align
@@ -25,7 +35,15 @@
             | Currently, you are seeing all check-ins for this device.
         = link_to "Delete all check-ins", user_device_checkins_path(current_user.url_id, @device_show_presenter.device.id), { method: :delete, class: "btn red white-text", data: { confirm: "Delete all checkins for this device?" } }
         - if @device_show_presenter.date_range[:from]
+          br
+          br
           = link_to "Delete visible check-ins", user_device_checkins_path(current_user.url_id, @device_show_presenter.device.id, from: @device_show_presenter.date_range[:from], to: @device_show_presenter.date_range[:to]), { method: :delete, class: "btn red white-text", data: { confirm: "Delete checkins from #{humanize_date(@device_show_presenter.date_range[:from])} to #{humanize_date(@device_show_presenter.date_range[:to])}?" } }
+      br
+      h4.center-align Delete device
+      .center-align
+        p.center-align
+          | You will no longer be able to create check-ins with this device.
+        = link_to "Delete device", user_device_path(current_user.url_id, @device_show_presenter.device), { method: :delete, class: "btn red white-text", data: { confirm: "Are you sure?" } }
   /! templates
   script#markerPopupTmpl type="x-tmpl-mustache" 
     h3 

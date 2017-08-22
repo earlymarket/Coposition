@@ -3,9 +3,9 @@ require "rails_helper"
 describe ::Users::Friends::FriendsShowDevicePresenter do
   subject(:show_device_presenter) { described_class.new(user, id: friend.id, device_id: device.id) }
   let(:user) do
-    us = create(:user)
-    us.friends << friend
-    friend.friends << us
+    us = FactoryGirl.create(:user)
+    Approval.add_friend(us, friend)
+    Approval.add_friend(friend, us)
     us
   end
   let(:friend) { create(:user) }
@@ -44,7 +44,7 @@ describe ::Users::Friends::FriendsShowDevicePresenter do
     end
 
     it "calls device_checkins" do
-      allow(show_device_presenter).to receive(:device_checkins).and_return [checkins]
+      allow(show_device_presenter).to receive(:device_checkins).and_return device.checkins
       show_device_presenter.gon
       expect(show_device_presenter).to have_received(:device_checkins)
     end

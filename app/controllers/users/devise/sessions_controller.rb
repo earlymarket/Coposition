@@ -7,6 +7,11 @@ class Users::Devise::SessionsController < Devise::SessionsController
     req_from_coposition_app? ? respond_with_auth_token : super
   end
 
+  def new
+    session[:return_to] = params[:return_to]
+    super
+  end
+
   def destroy
     req_from_coposition_app? ? destroy_auth_token : super
   end
@@ -25,7 +30,10 @@ class Users::Devise::SessionsController < Devise::SessionsController
 
     return unless valid_request?(email, password)
 
-    render status: 200, json: @user.public_info.as_json.merge(authentication_token: @user.authentication_token)
+    render status: 200, json: @user.public_info.as_json.merge(
+      authentication_token: @user.authentication_token,
+      access_token: @user.copo_app_access_token
+    )
   end
 
   def destroy_auth_token
@@ -41,7 +49,7 @@ class Users::Devise::SessionsController < Devise::SessionsController
   end
 
   def valid_request?(email, password)
-    if (@user = User.find_by(email: email)) && @user.valid_password?(password)
+    if (@user = User.find_for_authentication(email: email)) && @user.valid_password?(password)
       @user
     else
       render status: 400, json: { error: "The request MUST contain the user email and password." }
@@ -50,6 +58,7 @@ class Users::Devise::SessionsController < Devise::SessionsController
   end
 
   def after_sign_in_path_for(resource)
+    return session[:return_to] if session[:return_to]
     stored_location_for(resource) || user_dashboard_path(resource)
   end
 end

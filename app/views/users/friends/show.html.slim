@@ -14,7 +14,7 @@ section.friends-device-index.row
       #map
 - @friend_show_presenter.devices.each do |device|
   .card-panel.row
-    = link_to show_device_user_friend_path(current_user.url_id, @friend_show_presenter.friend, device_id: device.id), class: "col s12" do
+    = link_to show_device_user_friend_path(current_user.url_id, @friend_show_presenter.friend, device_id: device.id, first_load: true), class: "col s12" do
       h5.valign-wrapper
         i.material-icons.medium>= device.icon
         |  #{device.name}
