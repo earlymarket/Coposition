@@ -34,6 +34,6 @@ namespace :oauth do
   end
 
   def default_developer
-    @default_developer ||= Developer.find 8
+    @default_developer ||= Developer.default(mobile: true)
   end
 end
