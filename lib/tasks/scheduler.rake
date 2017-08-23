@@ -10,8 +10,16 @@ def check_activity
   return unless Time.current.friday?
   User.all.each do |user|
     last = user.checkins.first.created_at if user.checkins.exists?
-    UserMailer.no_activity_email(user).deliver_now if last && last < 1.week.ago
+    next unless last && last < 1.week.ago
+    UserMailer.no_activity_email(user).deliver_now
+    smooch_message(user)
   end
+end
+
+def smooch_message(user)
+  convo_api = SmoochApi::ConversationApi.new
+  message = SmoochApi::MessagePost.new(role: "appMaker", type: "text", text: "You have not checked in in the last 7 days")
+  ::Users::SendSmoochMessage.call(user: user, message: message, api: convo_api)
 end
 
 def destroy_activities
@@ -19,6 +27,6 @@ def destroy_activities
   User.all.each do |user|
     activities = PublicActivity::Activity.where(key: "device.update", owner_id: user.id)
     recent = activities.order("created_at DESC").limit(10)
-    activities.destroy_all("created_at < ?", recent.last.created_at) if recent.exists?
+    activities.where("created_at < ?", recent.last.created_at).destroy_all if recent.exists?
   end
 end

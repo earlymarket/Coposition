@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   acts_as_token_authenticatable
 
-  attr_accessor :private_profile
+  attr_accessor :private_profile, :pin_color
 
   friendly_id :username, use: %i(finders slugged)
 

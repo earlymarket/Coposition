@@ -23,4 +23,4 @@ br/
 - if @approvals_presenter.complete.present?
   = render partial: "complete", locals: { complete: @approvals_presenter.complete } 
 - if @approvals_presenter.pending.present?
-  = render partial: "pending", locals: { pending: @approvals_presenter.pending } 
+  = render "pending", pending: @approvals_presenter.pending
