@@ -84,7 +84,7 @@ module Users::Devices
     end
 
     def gon_show_locations
-      locations = device.locations.limit_returned_locations(multiple_devices: false)
+      locations = device.locations
 
       @gon_show_locations ||= if first_load
         locations.limit(FIRST_LOAD_MAX) if first_load
