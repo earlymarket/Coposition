@@ -8,7 +8,7 @@ $(document).on('page:change', function() {
     U.gonFix();
     M.initMap();
     initMarkers();
-    M.initControls();
+    M.initControls(['geocoder', 'locate', 'w3w', 'fullscreen', 'path', 'locations', 'layers']);
     COPO.datePicker.init();
 
     map.on('locationfound', onLocationFound);

@@ -33,7 +33,10 @@ window.COPO.maps = {
   },
 
   loadAllCheckins(checkins, total) {
-    if (total === undefined) return;
+    if (total === undefined) {
+      $('.cached-icon').addClass('locations-active');
+      return;
+    }
     loadCheckins(2);
 
     function getCheckinData(page) {
@@ -269,6 +272,27 @@ window.COPO.maps = {
 
   fullscreenControlInit() {
     L.control.fullscreen().addTo(window.map);
+  },
+
+  locationsControlInit() {
+    const locationsControl = L.Control.extend({
+      options: {
+        position: 'topleft'
+      },
+      onAdd: (map) => {
+        var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+        container.innerHTML = `
+        <a class="leaflet-control-locations leaflet-bar-locations" href="#" onclick="return false;" title="Show locations">
+          <i class="material-icons cached-icon">cached</i>
+        </a>
+        `;
+        container.onclick = function() {
+          COPO.maps.locationsControlClick();
+        }
+        return container;
+      }
+    });
+    map.addControl(new locationsControl());
   },
 
   layersControlInit() {
@@ -537,4 +561,14 @@ window.COPO.maps = {
       callback(true);
     })
   },
+
+  locationsControlClick() {
+    if ($('.cached-icon').hasClass('locations-active')) {
+      $('.cached-icon').removeClass('locations-active');
+      COPO.maps.refreshMarkers(gon.checkins);
+    } else {
+      $('.cached-icon').addClass('locations-active');
+      COPO.maps.refreshMarkers(gon.locations);
+    }
+  }
 }

@@ -58,8 +58,8 @@ ActiveRecord::Schema.define(version: 20170812142320) do
   end
 
   create_table "attachinary_files", force: :cascade do |t|
-    t.string   "attachinariable_type"
     t.integer  "attachinariable_id"
+    t.string   "attachinariable_type"
     t.string   "scope"
     t.string   "public_id"
     t.string   "version"
