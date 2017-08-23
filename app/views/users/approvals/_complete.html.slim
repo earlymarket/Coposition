@@ -9,16 +9,15 @@
     .card-panel
       .row
         .col.s8.row.valign-wrapper
-          span
-            .ib.valign.col.s3.avatar
-              = avatar_for(approvable)
-            .ib.col.s9
-              h5.ib
-                = approvals_approvable_name(approvable)
-              .tagline
-                = approvable.tagline
-              div
-                | Connected since #{humanize_date(approval.approval_date) unless approval.nil?}
+          .ib.valign.col.s3.avatar
+            = avatar_for(approvable)
+          .ib.col.s9
+            h5.ib
+              = approvals_approvable_name(approvable)
+            .tagline
+              = approvable.tagline
+            div
+              | Connected since #{humanize_date(approval.approval_date) unless approval.nil?}
         .col.s4
           - if current_user.devices.exists?
             a.permissions-trigger.btn-flat.right.permissions-button data-id=(approvable.id) href="#perm#{approvable.id}"
