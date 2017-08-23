@@ -18,6 +18,10 @@
     margin-bottom: 1rem;
   }
 
+  #complete {
+    margin-bottom: 1rem;
+  }
+
   .avatar {
     a {
       display: inline-block;
@@ -29,6 +33,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    min-height: 1.5rem;
   }
 
   .card-panel {

@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe ::Users::ApprovalsPresenter do
-  subject(:approvals) { described_class.new(user, "User") }
+  subject(:approvals) { described_class.new(user, approvable_type: "User") }
   let(:user) do
     us = create(:user)
     Approval.add_friend(us, friend)
@@ -15,8 +15,8 @@ describe ::Users::ApprovalsPresenter do
   end
 
   describe "Interface" do
-    %i(approvable_type approved pending devices gon input_options create_approval_url).each do |method|
-      it { is_expected.to respond_to method }
+    %i[approvable_type approved complete pending complete devices gon input_options create_approval_url].each do |meth|
+      it { is_expected.to respond_to meth }
     end
   end
 
@@ -29,6 +29,12 @@ describe ::Users::ApprovalsPresenter do
   describe "approved" do
     it "returns users_approved" do
       expect(approvals.approved).to eq approvals.send(:users_approved)
+    end
+  end
+
+  describe "complete" do
+    it "returns users_complete" do
+      expect(approvals.complete).to eq approvals.send(:users_complete)
     end
   end
 
@@ -102,18 +108,46 @@ describe ::Users::ApprovalsPresenter do
     end
 
     context "developers" do
-      let(:approvals) { described_class.new(user, "Developer") }
+      let(:approvals) { described_class.new(user, approvable_type: "Developer") }
 
-      it "calls user.not_coposition_developers" do
-        allow(user).to receive(:not_coposition_developers).and_return user.developers
+      it "calls Developer.not_coposition_developers" do
+        allow(Developer).to receive(:not_coposition_developers).and_return user.developers
         approvals.send(:users_approved)
-        expect(user).to have_received(:not_coposition_developers).twice
+        expect(Developer).to have_received(:not_coposition_developers).at_least(1).times
       end
 
       it "calls Developer.public_info" do
         allow(Developer).to receive(:public_info)
         approvals.send(:users_approved)
-        expect(Developer).to have_received(:public_info).twice
+        expect(Developer).to have_received(:public_info).at_least(1).times
+      end
+    end
+  end
+
+  describe "users_complete" do
+    context "users" do
+      it "returns nil" do
+        expect(approvals.send(:users_complete)).to eq nil
+      end
+    end
+
+    context "developers" do
+      let(:approvals) { described_class.new(user, approvable_type: "Developer") }
+
+      it "returns an ActiveRecord AssociationRelation" do
+        expect(approvals.send(:users_complete)).to be_kind_of ActiveRecord::AssociationRelation
+      end
+
+      it "calls Developer.not_coposition_developers" do
+        allow(Developer).to receive(:not_coposition_developers).and_return user.developers
+        approvals.send(:users_complete)
+        expect(Developer).to have_received(:not_coposition_developers).at_least(1).times
+      end
+
+      it "calls Developer.public_info" do
+        allow(Developer).to receive(:public_info)
+        approvals.send(:users_complete)
+        expect(Developer).to have_received(:public_info).at_least(1).times
       end
     end
   end
@@ -132,7 +166,7 @@ describe ::Users::ApprovalsPresenter do
     end
 
     context "developers" do
-      let(:approvals) { described_class.new(user, "Developer") }
+      let(:approvals) { described_class.new(user, approvable_type: "Developer") }
 
       it "calls user.developer_requests" do
         allow(user).to receive(:developer_requests)
@@ -144,7 +178,7 @@ describe ::Users::ApprovalsPresenter do
 
   describe "friends_checkins" do
     it "returns nil if approvable_type is developer" do
-      approvals = described_class.new(user, "Developer")
+      approvals = described_class.new(user, approvable_type: "Developer")
       expect(approvals.send(:friends_checkins)).to eq nil
     end
 
@@ -160,7 +194,7 @@ describe ::Users::ApprovalsPresenter do
 
   describe "create_approval_url" do
     it "returns a path for creating developer approval" do
-      approvals = described_class.new(user, "Developer")
+      approvals = described_class.new(user, approvable_type: "Developer")
       expect(approvals.create_approval_url).to match "create_dev_approvals"
     end
 
@@ -181,7 +215,7 @@ describe ::Users::ApprovalsPresenter do
     end
 
     context "developers" do
-      let(:approvals) { described_class.new(user, "Developer") }
+      let(:approvals) { described_class.new(user, approvable_type: "Developer") }
 
       it "assigns placeholder" do
         expect(approvals.input_options[:placeholder]).to match "name"

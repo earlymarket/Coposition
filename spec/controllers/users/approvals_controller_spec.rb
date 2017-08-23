@@ -108,7 +108,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     it "assigns current users apps, devices, pending with Developer type" do
       approval.update(status: "accepted", approvable_id: developer.id, approvable_type: "Developer")
       get :index, params: user_params.merge(approvable_type: "Developer")
-      expect(assigns(:approvals_presenter).approved).to eq user.not_coposition_developers
+      expect(assigns(:approvals_presenter).approved).to eq user.approved_developers.not_coposition_developers
       expect(assigns(:approvals_presenter).devices).to eq user.devices
       expect(assigns(:approvals_presenter).pending).to eq user.developer_requests
     end

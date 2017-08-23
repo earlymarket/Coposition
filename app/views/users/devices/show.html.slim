@@ -2,7 +2,7 @@
   = render "users/shared/device_show"
   .bottom-panel.valign-wrapper
     .buttons
-      a.modal-trigger.btn.red.white-text href="#delete#{@device_show_presenter.device.id}" id="deleteButton#{@device_show_presenter.device.id}" 
+      a.modal-trigger.btn.red.white-text.delete href="#delete#{@device_show_presenter.device.id}" id="deleteButton#{@device_show_presenter.device.id}" 
         | Delete...
       a.modal-trigger.btn.blue.white-text href="#checkin#{@device_show_presenter.device.id}" id="checkinButton#{@device_show_presenter.device.id}"
         | Check-in

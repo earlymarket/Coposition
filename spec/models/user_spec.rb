@@ -29,7 +29,8 @@ RSpec.describe User, type: :model do
   end
 
   describe "Associations" do
-    %w(devices checkins requests approvals subscriptions developers friends permissions permitted_devices).each do |asoc|
+    %w(devices checkins requests approvals subscriptions developers approved_developers
+       complete_developers friends permissions permitted_devices).each do |asoc|
       it "has many #{asoc}" do
         assc = described_class.reflect_on_association(asoc.to_sym)
         expect(assc.macro).to eq :has_many
@@ -71,8 +72,8 @@ RSpec.describe User, type: :model do
 
     context "responds to its methods" do
       %i(url_id should_generate_new_friendly_id? approved? request_from? approval_for destroy_permissions_for
-         not_coposition_developers safe_checkin_info filtered_checkins safe_checkin_info_for
-         slack_message public_info public_info_hash display_name).each do |method|
+         safe_checkin_info filtered_checkins safe_checkin_info_for slack_message public_info public_info_hash
+        display_name).each do |method|
         it { expect(user).to respond_to(method) }
       end
     end
@@ -154,15 +155,6 @@ RSpec.describe User, type: :model do
         Approval.add_friend(user, second_user)
         user.destroy_permissions_for(second_user)
         expect(user.devices.last.permissions).to be_empty
-      end
-    end
-
-    context "not_coposition_developers" do
-      it "returns all developers except coposition developers" do
-        dev = create(:developer)
-        Approval.link(user, dev, "Developer")
-        Approval.accept(user, dev, "Developer")
-        expect(user.not_coposition_developers).to include(dev)
       end
     end
 
