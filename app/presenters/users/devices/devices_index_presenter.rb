@@ -34,7 +34,7 @@ module Users::Devices
 
     def gon_index_checkins
       checkins = user_devices.map do |device|
-        device.checkins.first.as_json.merge(device: device.name) if device.checkins.exists?
+        device.past_checkins.first.as_json.merge(device: device.name) if device.past_checkins.exists?
       end
       checkins.compact.sort_by { |checkin| checkin["created_at"] }.reverse
     end

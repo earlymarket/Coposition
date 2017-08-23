@@ -22,7 +22,7 @@ class Device < ApplicationRecord
   end
 
   def filtered_checkins(args)
-    sanitized = args[:copo_app] ? checkins : permitted_history_for(args[:permissible])
+    sanitized = args[:copo_app] ? past_checkins : permitted_history_for(args[:permissible])
     sanitized.since_time(args[:time_amount], args[:time_unit])
              .near_to(args[:near])
              .on_date(args[:date])
@@ -84,6 +84,10 @@ class Device < ApplicationRecord
     checkins.where("checkins.created_at < ?", delayed.minutes.ago)
   end
 
+  def past_checkins
+    checkins.where("checkins.created_at < ?", Time.current)
+  end
+
   def permission_for(permissible)
     permissions.find_by(permissible_id: permissible.id, permissible_type: permissible.class.to_s)
   end
@@ -124,11 +128,11 @@ class Device < ApplicationRecord
   end
 
   def self.last_checkins
-    all.map { |device| device.checkins.first if device.checkins.exists? }.compact.sort_by(&:created_at).reverse
+    all.map { |device| device.past_checkins.first if device.past_checkins.exists? }.compact.sort_by(&:created_at).reverse
   end
 
   def self.geocode_last_checkins
-    all.each { |device| device.checkins.first.reverse_geocode! if device.checkins.exists? }
+    all.each { |device| device.past_checkins.first.reverse_geocode! if device.past_checkins.exists? }
   end
 
   def self.ordered_by_checkins

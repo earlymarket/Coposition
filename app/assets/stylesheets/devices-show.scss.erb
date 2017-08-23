@@ -23,8 +23,16 @@
     }
   }
 
+  #hidden {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
   /* Header - Day of the week */
-  .picker__weekday-display { background-color: $primary-color-darker; }
   /* Body - Today info */
   .picker__date-display { background-color: $primary-color; }
   /* Buttons of actions */
@@ -173,6 +181,12 @@
     }
   }
 
+}
+
+.picker__list-item {
+  small {
+    float: right;
+  }
 }
 
 .c-devices.a-show {

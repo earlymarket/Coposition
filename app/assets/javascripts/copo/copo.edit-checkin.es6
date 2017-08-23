@@ -14,7 +14,7 @@ window.COPO.editCheckin = {
     // make .editable, a contenteditable
     $editable.attr('contenteditable', true);
 
-    if ($editable.hasClass("date")) {
+    if ($editable.hasClass("datetime")) {
       // if user edits date input set datepicker and open
       COPO.editCheckin.setDatepicker($editable).pickadate("open");
     } else {
@@ -60,11 +60,12 @@ window.COPO.editCheckin = {
 
   setDatepicker($editable) {
     var original = $editable.text();
-    return $("body").pickadate({
+    let formattedDate = moment($editable.data('date')).format('YYYY/MM/DD')
+    return $(".datepicker").data('value', formattedDate).pickadate({
+      formatSubmit: 'yyyy/mm/dd',
       selectMonths: true,
       selectYears: 15,
       closeOnSelect: true,
-      max: new Date(),
       onSet: function(context) {
         if ("select" in context) {
           if (this.get("value")) {
@@ -78,20 +79,41 @@ window.COPO.editCheckin = {
             $editable.text(
               date.toUTCString() + " UTC+0000"
             );
-
-            // remove datepicker with respect to next one
-            this.stop();
+            COPO.editCheckin.setTimePicker($editable, date, original).pickatime('show');
+            $('.picker__clear')[2].disabled = true
           }
         }
       },
-      onClose: function(context) {
-        COPO.editCheckin.handleEdited(original, $editable);
+      onClose: function() {
+        COPO.editCheckin.handleEditEnd($editable);
+        this.stop();
+      }
+    });
+  },
+
+  setTimePicker ($editable, newDate, original) {
+    let timeString = moment($editable.text()).format('HH:mm')
+    return $(".timepicker").pickatime({
+      cleartext: 'UTC time',
+      default: timeString,
+      twelvehour: false,
+      afterDone: () => {
+        let newTime = $('.timepicker').val().split(":")
+        newDate.setUTCHours(newTime[0], newTime[1])
+        $editable.text(
+          newDate.toUTCString() + " UTC+0000"
+        );
+        COPO.editCheckin.handleDateEdited(original, $editable)
+      },
+      afterHide: () => {
+        $editable.text(original);
+        $(".timepicker").pickatime('remove')
       }
     });
   },
 
   handleEdited(original, $editable) {
-    if ($editable.hasClass("date")) {
+    if ($editable.hasClass("datetime")) {
       COPO.editCheckin.handleDateEdited(original, $editable);
     } else {
       COPO.editCheckin.handleCoordsEdited(original, $editable);
@@ -99,7 +121,8 @@ window.COPO.editCheckin = {
   },
 
   handleDateEdited(original, $editable) {
-    if (original !== $editable.text()) {
+    var confirmText = "Are you sure? This will place this check-in in the future.";
+    if (original !== $editable.text() && (Date.parse($editable.text()) < Date.now() || confirm(confirmText))) {
       var url = $editable.data('url');
       var data = { checkin: { created_at: $editable.text()} }
       COPO.editCheckin.putUpdateCheckin(url, data);
@@ -156,7 +179,7 @@ window.COPO.editCheckin = {
     checkin.address = response.checkin.address;
     checkin.fogged_city = response.checkin.fogged_city;
     if (checkin.created_at !== response.checkin.created_at) {
-      checkin.created_at = response.checkin.created_at;
+      checkin.created_at = moment.utc(response.checkin.created_at).format("ddd MMM D YYYY HH:mm:ss") + ' UTC+0000';
       gon.checkins.sort(function(a, b) {
         return (new Date(b.created_at)) - (new Date(a.created_at));
       });

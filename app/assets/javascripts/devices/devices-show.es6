@@ -14,7 +14,7 @@ $(document).on('page:change', function() {
     map.on('locationfound', onLocationFound);
 
     if (page === 'user') {
-      $('.modal-trigger').leanModal();
+      $('.modal-trigger').modal();
       M.createCheckinPopup();
       M.rightClickListener();
       M.checkinNowListeners(getLocation);
