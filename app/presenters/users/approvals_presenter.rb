@@ -3,6 +3,7 @@ module Users
     attr_reader :approvable_type
     attr_reader :approved
     attr_reader :pending
+    attr_reader :complete
     attr_reader :devices
     attr_reader :page
 
@@ -21,11 +22,13 @@ module Users
       light_green:  "#99C444"
     }.freeze
 
-    def initialize(user, approvable_type)
+    def initialize(user, params)
       @user = user
-      @approvable_type = approvable_type
+      @approvable_type = params[:approvable_type]
+      @order = params[:order_by]
       @page = apps_page? ? "Apps" : "Friends"
       @approved = add_color_info(users_approved)
+      @complete = users_complete
       @pending = add_color_info(users_requests)
       @devices = user.devices
     end
@@ -69,8 +72,17 @@ module Users
         .inject(:+)
     end
 
+    def users_complete
+      return nil unless apps_page? && @user.complete_developers.present?
+      if @order == "approval_date"
+        Developer.where(id: @user.approvals.where(status: "complete").order(:approval_date).pluck(:approvable_id))
+      else
+        @user.complete_developers.order(@order)
+      end.not_coposition_developers.public_info
+    end
+
     def users_approved
-      apps_page? ? @user.not_coposition_developers.public_info : @user.friends.public_info
+      apps_page? ? @user.approved_developers.not_coposition_developers.public_info : @user.friends.public_info
     end
 
     def users_requests

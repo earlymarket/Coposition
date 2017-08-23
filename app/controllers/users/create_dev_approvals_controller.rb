@@ -7,9 +7,9 @@ class Users::CreateDevApprovalsController < ApplicationController
       approvable: allowed_params[:approvable]
     )
     if result.success?
-      approvals_presenter_and_gon("Developer")
+      approvals_presenter_and_gon(approvable_type: "Developer")
       result.developer.notify_if_subscribed("new_approval", approval_zapier_data(result.approval))
-      redirect_to(user_apps_path, notice: "Developer approved")
+      redirect_to(user_apps_path, notice: "App connected")
     else
       redirect_to new_user_approval_path(approvable_type: "Developer"), alert: "Error: #{result.error}"
     end

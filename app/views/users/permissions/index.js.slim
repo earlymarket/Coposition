@@ -18,7 +18,7 @@
     | title = "";
     - if @permissions_presenter.device.present?
       | title = '
-      = permissions_permissible_title(permission.permissible)
+      = permissions_permissible_title(current_user, permission.permissible)
       | ';
     - else
       | title = '

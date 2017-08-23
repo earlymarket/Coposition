@@ -62,14 +62,13 @@ RSpec.feature "Permissions", type: :feature do
     click_on "add"
     fill_in "approval_approvable", with: "tommo@email.com"
     click_button "Add"
-    expect(page).to have_text "You have sent"
   end
 
   def and_i_approve_the_friend_request
     click_on "Friends", match: :first
     expect(page).to have_text "Pending Requests"
     click_on "Approve"
-    expect(page).to have_text "Approved since"
+    expect(page).to have_text "Connected since"
   end
 
   def and_i_am_on_the_devices_page
