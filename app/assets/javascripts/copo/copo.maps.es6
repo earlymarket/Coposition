@@ -124,21 +124,24 @@ window.COPO.maps = {
   },
 
   renderAllMarkers(checkins) {
-    let markers = checkins.slice(1).map(checkin => COPO.maps.makeMarker(checkin));
+    let lastCheckin = checkins.filter((checkin) => Date.parse(checkin.created_at) < Date.now())[0]
+    let markers = checkins.filter(checkin => checkin !== lastCheckin).map(checkin => {
+      return COPO.maps.makeMarker(checkin)
+    })
     // allMarkers is used for calculating bounds
     COPO.maps.allMarkers = L.markerClusterGroup().addLayers(markers);
-    COPO.maps.addLastCheckinMarker(checkins);
+    COPO.maps.addLastCheckinMarker(lastCheckin)
     // markers and last are distinct because we want the last checkin
     // to always be displayed unclustered
     COPO.maps.markers = L.markerClusterGroup().addLayers(markers, { chunkedLoading: true });
     map.addLayer(COPO.maps.markers);
   },
 
-  addLastCheckinMarker(checkins) {
-    if (!checkins.length) return;
-    COPO.maps.last = COPO.maps.makeMarker(checkins[0], {
+  addLastCheckinMarker(checkin) {
+    if (!checkin) return
+    COPO.maps.last = COPO.maps.makeMarker(checkin, {
       icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#47b8e0' }),
-      title: 'ID: ' + checkins[0].id + ' - Most recent',
+      title: 'ID: ' + checkin.id + ' - Most recent',
       alt: 'lastCheckin',
       zIndexOffset: 1000
     });
@@ -194,7 +197,6 @@ window.COPO.maps = {
       address: address,
       marker: marker._leaflet_id
     };
-
     var foggedClass;
     checkin.fogged ? foggedClass = 'fogged enabled-icon' : foggedClass = ' disabled-icon';
     checkinTemp.foggedAddress = function() {
@@ -210,6 +212,7 @@ window.COPO.maps = {
         return `<a href="${window.location.pathname}/show_device?device_id=${checkin.device_id}" title="Device map">${checkin.device}</a>`
       }
     }
+    checkinTemp.future = Date.parse(checkin.created_at) > Date.now() ? '(future)' : ''
     checkinTemp.edited = checkin.edited ? '(edited)' : ''
     checkinTemp.inlineCoords = COPO.utility.renderInlineCoords(checkin);
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
@@ -223,7 +226,7 @@ window.COPO.maps = {
     if (checkin.localDate) {
       map.once('popupopen', function() { $('#localTime').html(checkin.localDate) });
     } else {
-      let created_at = Date.parse(checkin.created_at)/1000;
+      let created_at = Date.parse(moment.utc(checkin.created_at))/1000;
       let coords = [checkin.lat, checkin.lng];
       $.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${checkin.lat},${checkin.lng}&timestamp=${created_at}&key=AIzaSyCEjHZhLTdiy7jbRTDU3YADs8a1yXKTwqI`)
       .done((data) => {
@@ -455,8 +458,9 @@ window.COPO.maps = {
   },
 
   makeMarker(checkin, markerOptions) {
+    let colour = (Date.parse(checkin.created_at) < Date.now()) ? '#ff6900' : '#939393'
     let defaults = {
-      icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#ff6900' }),
+      icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : colour }),
       title: 'ID: ' + checkin.id,
       alt: 'ID: ' + checkin.id,
       checkin: checkin
