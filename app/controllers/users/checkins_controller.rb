@@ -18,8 +18,12 @@ class Users::CheckinsController < ApplicationController
 
   def create
     @checkin = device.checkins.create(allowed_params)
-    NotifyAboutCheckin.call(device: device, checkin: @checkin)
-    flash[:notice] = "Checked in."
+    if @checkin.save
+      NotifyAboutCheckin.call(device: device, checkin: @checkin)
+      flash[:notice] = "Checked in."
+    else
+      flash[:alert] = "Invalid latitude/longitude."
+    end
   end
 
   def import

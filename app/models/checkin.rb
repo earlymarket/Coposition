@@ -7,8 +7,8 @@ class GeojsonCheckin
 end
 
 class Checkin < ApplicationRecord
-  validates :lat, presence: :true
-  validates :lng, presence: :true
+  validates :lat, presence: :true, inclusion: { in: -90..90, message: "Latitude must be between -90 and 90" }
+  validates :lng, presence: :true, inclusion: { in: -180..180, message: "longitude must be between -180 and 180" }
 
   belongs_to :device
 

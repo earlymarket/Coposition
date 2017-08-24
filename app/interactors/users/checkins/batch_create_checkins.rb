@@ -32,7 +32,7 @@ module Users::Checkins
     end
 
     def valid_hash(checkin)
-      checkin.lat? && checkin.lng?
+      checkin.lat? && checkin.lng? && checkin.lat.abs <= 90 && checkin.lng.abs <= 180
     end
   end
 end
