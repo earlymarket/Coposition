@@ -1,5 +1,7 @@
 module Users::Devices
   class DevicesShowPresenter < ApplicationPresenter
+    FIRST_LOAD_MAX = 5000
+
     attr_reader :user
     attr_reader :device
     attr_reader :checkins
@@ -10,7 +12,7 @@ module Users::Devices
       @user = user
       @params = params
       @device = Device.find(params[:id])
-      @date_range = first_load ? first_load_range : checkins_date_range
+      @date_range = first_load && device.checkins.any? ? first_load_range : checkins_date_range
 
       set_data_for_download if download_format.present?
     end
@@ -18,6 +20,7 @@ module Users::Devices
     def show_gon
       {
         checkins: ActiveRecord::Base.connection.execute(gon_show_checkins_paginated.to_sql).to_a,
+        locations: gon_show_locations,
         first_load: first_load,
         device: device.id,
         current_user_id: user.id,
@@ -57,21 +60,38 @@ module Users::Devices
       gon_show_checkins.count == device.checkins.count
     end
 
-    def first_load_range
-      return { from: nil, to: nil } if (checkins = device.checkins.limit(5000)).size.zero?
-      { from: checkins.last.created_at.beginning_of_day, to: checkins.first.created_at.end_of_day }
-    end
-
     def gon_show_checkins_paginated
       gon_show_checkins
         .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :edited)
     end
 
+    def first_load_range
+      return { from: nil, to: nil } if (checkins = device.checkins.limit(FIRST_LOAD_MAX)).size.zero?
+
+      { from: checkins.last.created_at.beginning_of_day, to: checkins.first.created_at.end_of_day }
+    end
+
     def gon_show_checkins
-      @gon_show_checkins ||= if date_range[:from]
-        device.checkins.where(created_at: date_range[:from]..date_range[:to])
+      checkins = device.checkins
+
+      @gon_show_checkins ||= if first_load
+        checkins.limit(FIRST_LOAD_MAX)
+      elsif date_range[:from]
+        checkins.where(created_at: date_range[:from]..date_range[:to])
       else
-        device.checkins
+        checkins
+      end
+    end
+
+    def gon_show_locations
+      locations = device.locations
+
+      @gon_show_locations ||= if first_load
+        locations.limit(FIRST_LOAD_MAX) if first_load
+      elsif date_range[:from]
+        locations.joins(:checkins).where("checkins.created_at": date_range[:from]..date_range[:to]).uniq
+      else
+        locations
       end
     end
   end

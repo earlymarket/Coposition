@@ -7,8 +7,10 @@ $(document).on('page:change', function() {
     var M = window.COPO.maps;
     U.gonFix();
     M.initMap();
-    M.initMarkers(gon.checkins, gon.total);
-    M.initControls();
+    initMarkers();
+    var controls = ['geocoder', 'locate', 'w3w', 'fullscreen', 'path']
+    page === 'user' ? controls.push('locations', 'layers') : controls.push('layers')
+    M.initControls(controls);
     COPO.datePicker.init();
 
     map.on('locationfound', onLocationFound);
@@ -42,6 +44,19 @@ $(document).on('page:change', function() {
 
     function onLocationFound(p) {
       currentCoords = p.latlng;
+    }
+
+    function initMarkers() {
+      var switchToLocations = false;
+      if (page === 'user' && gon.total > 5000) {
+        switchToLocations = confirm("This will take a long time to load, would you like to view locations instead?");
+      }
+
+      if (switchToLocations) {
+        M.initMarkers(gon.locations);
+      } else {
+        M.initMarkers(gon.checkins, gon.total);
+      }
     }
   }
 });

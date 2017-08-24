@@ -15,8 +15,11 @@ class UserMailer < ApplicationMailer
   def no_activity_email(user)
     return unless user.subscription
     @unsubscribe = unsubscribe_link(user)
+    @inactive_devices = user.devices.inactive
+    @email = user.email
     @url = "https://coposition.com/users/#{user.id}/devices"
-    mail(to: user.email, subject: "Coposition activity")
+    @forgot_password = "https://coposition.com/users/password/new"
+    mail(to: @email, subject: "Coposition activity")
   end
 
   private
