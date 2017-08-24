@@ -89,7 +89,7 @@ module Users::Devices
       @gon_show_locations ||= if first_load
         locations.limit(FIRST_LOAD_MAX) if first_load
       elsif date_range[:from]
-        locations.joins(:checkins).where("checkins.created_at": date_range[:from]..date_range[:to])
+        locations.joins(:checkins).where("checkins.created_at": date_range[:from]..date_range[:to]).uniq
       else
         locations
       end
