@@ -8,7 +8,9 @@ window.COPO.maps = {
 
     var defaultOptions = {
       maxZoom: 18,
-      minZoom: 1
+      minZoom: 1,
+      worldCopyJump: true,
+      maxBounds: [[-90, -180], [90, 180]]
     }
 
     var options = $.extend(defaultOptions, customOptions);
