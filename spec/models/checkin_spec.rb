@@ -17,6 +17,14 @@ RSpec.describe Checkin, type: :model do
     it "is invalid without a lng" do
       expect(build(:checkin, lng: nil)).not_to be_valid
     end
+
+    it "is invalid with an invalid lat" do
+      expect(build(:checkin, lat: 100)).not_to be_valid
+    end
+
+    it "is invalid with an invalid lng" do
+      expect(build(:checkin, lng: -190)).not_to be_valid
+    end
   end
 
   describe "Associations" do

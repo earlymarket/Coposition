@@ -59,6 +59,12 @@ RSpec.describe Users::CheckinsController, type: :controller do
       post :create, params: create_params
       expect(assigns(:checkin)).to eq device.checkins.first
     end
+
+    it "returns an alert if inavlid lat/lng given" do
+      checkin.lat = 200
+      post :create, params: create_params
+      expect(flash[:alert]).to match("Invalid")
+    end
   end
 
   describe "GET #show" do

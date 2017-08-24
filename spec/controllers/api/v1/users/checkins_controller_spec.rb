@@ -287,7 +287,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       create_headers
       post :create, params: { checkin: { lat: Faker::Address.latitude } }
       expect(response.status).to eq(400)
-      expect(res_hash[:error]).to eq('You must provide a lat and lng')
+      expect(res_hash[:error]).to eq('You must provide a valid lat and lng')
     end
 
     it 'returns 400 if you POST a checkin with invalid uuid' do
