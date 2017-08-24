@@ -48,7 +48,7 @@ RSpec.describe Device, type: :model do
 
   describe "public instance methods" do
     context "responds to its methods" do
-      %i(safe_checkin_info_for filtered_checkins sanitize_checkins replace_checkin_attributes
+      %i(safe_checkin_info_for filtered_locations filtered_checkins sanitize_checkins replace_checkin_attributes
          permitted_history_for resolve_privilege privilege_for delayed_checkins_for permission_for
          can_bypass_fogging? can_bypass_delay? slack_message public_info subscriptions
          notify_subscribers before_delay_checkins).each do |method|
@@ -69,6 +69,16 @@ RSpec.describe Device, type: :model do
 
       it "returns an association relation" do
         expect(device.safe_checkin_info_for(permissible: developer)).to be_kind_of(ActiveRecord::AssociationRelation)
+      end
+    end
+
+    context "filtered_locations" do
+      before do
+        FactoryGirl.create(:location, user: user)
+      end
+
+      it "returns an association relation" do
+        expect(device.filtered_locations(permissible: developer)).to be_kind_of(ActiveRecord::AssociationRelation)
       end
     end
 

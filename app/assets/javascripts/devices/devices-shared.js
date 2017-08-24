@@ -53,6 +53,5 @@ $(document).on('page:change', function() {
       }
       COPO.maps.w3w.setCoordinates(coords);
     }
-
   }
 });

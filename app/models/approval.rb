@@ -66,4 +66,9 @@ class Approval < ApplicationRecord
     update(status: "accepted", approval_date: Time.current)
     user.approve_devices(approvable)
   end
+
+  def complete!
+    update(status: "complete", approval_date: Time.current)
+    user.approve_devices(approvable)
+  end
 end
