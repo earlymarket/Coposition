@@ -1,6 +1,7 @@
 module Users::Devices
   class DevicesShowPresenter < ApplicationPresenter
-    FIRST_LOAD_MAX = 5000
+    FIRST_LOAD_MAX = 5_000
+    MAX_CHECKIN_COUNT = 18_000
 
     attr_reader :user
     attr_reader :device
@@ -19,7 +20,7 @@ module Users::Devices
 
     def show_gon
       {
-        checkins: ActiveRecord::Base.connection.execute(gon_show_checkins_paginated.to_sql).to_a,
+        checkins: raw_paginated_checkins,
         locations: gon_show_locations,
         first_load: first_load,
         device: device.id,
@@ -57,7 +58,7 @@ module Users::Devices
     end
 
     def all_checkins?
-      gon_show_checkins.count == device.checkins.count
+      raw_paginated_checkins.count == device.checkins.count
     end
 
     def gon_show_checkins_paginated
@@ -80,6 +81,14 @@ module Users::Devices
         checkins.where(created_at: date_range[:from]..date_range[:to])
       else
         checkins
+      end
+    end
+
+    def raw_paginated_checkins
+      if gon_show_checkins.count <= MAX_CHECKIN_COUNT
+        ActiveRecord::Base.connection.execute(gon_show_checkins_paginated.to_sql).to_a
+      else
+        []
       end
     end
 

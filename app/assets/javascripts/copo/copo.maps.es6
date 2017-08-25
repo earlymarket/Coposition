@@ -1,6 +1,8 @@
 window.COPO = window.COPO || {};
 window.COPO.maps = {
   queueCalled: false,
+  MAX_CHECKINS_TO_LOAD: 18000,
+  MAX_CHECKINS_TO_DISPLAY: 50000,
 
   initMap(customOptions) {
     if (document.getElementById('map')._leaflet) return;
@@ -35,6 +37,7 @@ window.COPO.maps = {
   loadAllCheckins(checkins, total) {
     if (total === undefined) {
       $('.cached-icon').addClass('locations-active');
+      toastMessage();
       return;
     }
     loadCheckins(2);
@@ -65,18 +68,20 @@ window.COPO.maps = {
         });
       } else {
         $('.myProgress').remove();
-        toastMessage()
+        toastMessage();
         window.COPO.maps.fitBounds();
       };
     }
 
     function toastMessage() {
       if (gon.first_load && total >= 5000) {
-        Materialize.toast('Last 5000 check-ins shown. Select a date range to load more.' , 3000)
+        Materialize.toast('Last 5000 check-ins shown. Select a date range to load more.' , 3000);
       } else if (gon.all) {
-        Materialize.toast('All check-ins loaded', 3000)
+        Materialize.toast('All check-ins loaded', 3000);
+      } else if (total === undefined) {
+        Materialize.toast('There were too many check-ins to load, locations are shown', 3000);
       } else {
-        Materialize.toast('Check-ins loaded', 3000)
+        Materialize.toast('Check-ins loaded', 3000);
       }
     }
 
@@ -564,8 +569,16 @@ window.COPO.maps = {
 
   locationsControlClick() {
     if ($('.cached-icon').hasClass('locations-active')) {
-      $('.cached-icon').removeClass('locations-active');
-      COPO.maps.refreshMarkers(gon.checkins);
+      if (gon.total <= COPO.maps.MAX_CHECKINS_TO_LOAD) {
+        $('.cached-icon').removeClass('locations-active');
+        COPO.maps.refreshMarkers(gon.checkins);
+      } else if (gon.total > COPO.maps.MAX_CHECKINS_TO_LOAD && gon.total <= COPO.maps.MAX_CHECKINS_TO_DISPLAY) {
+        var waitToLoad = false;
+        waitToLoad = confirm("This may take a long time to load, would you like to view check-ins anyway?");
+        if (waitToLoad) {}
+      } else {
+        alert("Sorry, we cannot display that many check-ins, please select a shorter time range if you would like to view check-ins");
+      }
     } else {
       $('.cached-icon').addClass('locations-active');
       COPO.maps.refreshMarkers(gon.locations);

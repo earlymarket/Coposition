@@ -1,5 +1,6 @@
 $(document).on('page:change', function() {
   var U = window.COPO.utility;
+
   if (U.currentPage('friends', 'show_device') || U.currentPage('devices', 'show')) {
     var page = U.currentPage('devices', 'show') ? 'user' : 'friend'
     var fogged = false;
@@ -47,12 +48,7 @@ $(document).on('page:change', function() {
     }
 
     function initMarkers() {
-      var switchToLocations = false;
-      if (page === 'user' && gon.total > 5000) {
-        switchToLocations = confirm("This will take a long time to load, would you like to view locations instead?");
-      }
-
-      if (switchToLocations) {
+      if (gon.total > M.MAX_CHECKINS_TO_LOAD) {
         M.initMarkers(gon.locations);
       } else {
         M.initMarkers(gon.checkins, gon.total);
