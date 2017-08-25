@@ -188,7 +188,7 @@ class Checkin < ApplicationRecord
         gpx.routes << GPX::Route.new.tap do |route|
           all.pluck(:altitude, :lat, :lng, :created_at).each do |record|
             route.points << GPX::Point.new(
-              elevation: record[0], lat: record[1], lon: record[2], time: Time.parse.utc(record[3])
+              elevation: record[0], lat: record[1], lon: record[2], time: record[3]
             )
           end
         end
