@@ -21,6 +21,7 @@ module Users::Devices
       {
         checkins: ActiveRecord::Base.connection.execute(gon_show_checkins_paginated.to_sql).to_a,
         locations: gon_show_locations,
+        cities: gon_show_cities,
         first_load: first_load,
         device: device.id,
         current_user_id: user.id,
@@ -81,6 +82,15 @@ module Users::Devices
       else
         checkins
       end
+    end
+
+    def gon_show_cities
+      ids = device.checkins.unscope(:order).select("DISTINCT ON(fogged_city) *").map(&:id)
+      @gon_show_cities ||= Checkin
+                           .where(id: ids)
+                           .select("created_at", "fogged_lat AS lat", "fogged_lng AS lng",
+                             "fogged_city AS city", "fogged_country_code AS postal_code",
+                             "fogged_country_code AS country_code")
     end
 
     def gon_show_locations

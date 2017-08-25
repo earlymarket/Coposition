@@ -169,7 +169,7 @@ window.COPO.maps = {
       let checkin = this.options.checkin;
       COPO.maps.dateToLocal(checkin);
       if (!marker._popup) {
-        var template = COPO.maps.buildMarkerPopup(checkin, marker);
+        var template = checkin.id ? COPO.maps.buildCheckinPopup(checkin, marker) : COPO.maps.buildCityPopup(checkin, marker)
         marker.bindPopup(L.Util.template(template, checkin));
         marker.openPopup();
       }
@@ -184,7 +184,7 @@ window.COPO.maps = {
     });
   },
 
-  buildMarkerPopup(checkin, marker) {
+  buildCheckinPopup(checkin, marker) {
     let address = checkin.city;
     if (checkin.address) {
       address = COPO.utility.commaToNewline(checkin.address)
@@ -219,6 +219,19 @@ window.COPO.maps = {
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
     checkinTemp.inlineDate = COPO.utility.renderInlineDate(checkin, checkinTemp);
     var template = $('#markerPopupTmpl').html();
+    return Mustache.render(template, checkinTemp);
+  },
+
+  buildCityPopup(checkin, marker) {
+    var checkinTemp = {
+      id: checkin.id,
+      lat: checkin.lat.toFixed(6),
+      lng: checkin.lng.toFixed(6),
+      created_at: moment.utc(checkin.created_at).format("ddd MMM D YYYY HH:mm:ss") + ' UTC+0000',
+      address: checkin.city,
+      marker: marker._leaflet_id
+    };
+    var template = $('#cityPopupTmpl').html();
     return Mustache.render(template, checkinTemp);
   },
 
@@ -568,7 +581,7 @@ window.COPO.maps = {
       COPO.maps.refreshMarkers(gon.checkins);
     } else {
       $('.cached-icon').addClass('locations-active');
-      COPO.maps.refreshMarkers(gon.locations);
+      COPO.maps.refreshMarkers(gon.cities);
     }
   }
 }
