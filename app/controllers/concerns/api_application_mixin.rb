@@ -28,4 +28,8 @@ module ApiApplicationMixin
   def approval_zapier_data(approval)
     [approval.user.public_info.as_json.merge(approval.as_json)]
   end
+
+  def doorkeeper_unauthorized_render_options(*)
+    { json: { error: "Not authorized" } }
+  end
 end

@@ -106,7 +106,7 @@ RSpec.describe Developer, type: :model do
 
   describe "public class methods" do
     context "responds to its methods" do
-      %i(public_info default).each do |method|
+      %i(public_info default not_coposition_developers).each do |method|
         it { expect(Developer).to respond_to(method) }
       end
     end
@@ -120,6 +120,13 @@ RSpec.describe Developer, type: :model do
     context "default" do
       it "returns a developer" do
         expect(Developer.default(coposition: true)).to be_kind_of Developer
+      end
+    end
+
+    context "not_coposition_developers" do
+      it "returns all developers except coposition developers" do
+        dev = create(:developer)
+        expect(Developer.not_coposition_developers).to include(dev)
       end
     end
   end

@@ -5,8 +5,8 @@ RSpec.describe Users::DevicesController, type: :controller do
 
   let(:empty_device) { create :device, user: nil }
   let(:device) { create :device, delayed: 10, user: nil }
-  let(:checkin) { create(:checkin, lat: 10.5, lng: 10.5, device: device) }
-  let(:older_checkin) { create(:checkin, created_at: 1.hour.ago, device: device) }
+  let(:checkin) { create(:checkin, lat: 10.5, lng: 10.5, device: user.devices.last) }
+  let(:older_checkin) { create(:checkin, created_at: 1.hour.ago, device: user.devices.last) }
   let(:developer) do
     dev = create :developer
     dev.configs.create(device: device)
@@ -223,7 +223,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       put :update, params: params.merge(delayed: 0)
 
       device.reload
-      expect(device.delayed).to be nil
+      expect(device.delayed).to be 0
     end
 
     it "updates device name" do

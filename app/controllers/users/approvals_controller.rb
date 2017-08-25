@@ -3,9 +3,9 @@ class Users::ApprovalsController < ApplicationController
   before_action :correct_url_user?
 
   def new
-    @approvals_presenter = Users::ApprovalsPresenter.new(current_user, params[:approvable_type])
+    @approvals_presenter = Users::ApprovalsPresenter.new(current_user, params)
     @approval = Approval.new
-    gon.push(devs: Developer.all.pluck(:company_name))
+    gon.push(devs: (Developer.all - current_user.developers).pluck(:company_name))
   end
 
   def create
@@ -13,12 +13,12 @@ class Users::ApprovalsController < ApplicationController
       current_user: current_user,
       approvable: approval_params[:approvable]
     )
-    approvals_presenter_and_gon("User") if result.success?
+    approvals_presenter_and_gon(approvable_type: "User") if result.success?
     redirect_to(result.path, result.message)
   end
 
   def index
-    approvals_presenter_and_gon(params[:approvable_type])
+    approvals_presenter_and_gon(params)
     render "approvals"
   end
 
@@ -30,7 +30,7 @@ class Users::ApprovalsController < ApplicationController
     if result.approvable_type == "Developer"
       result.approvable.notify_if_subscribed("new_approval", approval_zapier_data(result.approval))
     end
-    approvals_presenter_and_gon(result.approvable_type)
+    approvals_presenter_and_gon(approvable_type: result.approvable_type)
   end
 
   def destroy
@@ -38,7 +38,7 @@ class Users::ApprovalsController < ApplicationController
       current_user: current_user,
       params: params
     )
-    approvals_presenter_and_gon(result.approvable_type)
+    approvals_presenter_and_gon(approvable_type: result.approvable_type)
     render "update"
   end
 

@@ -2,9 +2,10 @@
   = Gon::Base.render_data
 h1.title
   = @approvals_presenter.page
-.center-align
-  = link_to new_user_approval_path(approvable_type: @approvals_presenter.approvable_type), class: "btn-floating btn-large waves-effect waves-light primary-color" do
-    i.material-icons add
+.right-align
+  = link_to new_user_approval_path(approvable_type: @approvals_presenter.approvable_type), class: "btn btn-large waves-effect waves-light primary-color" do
+    i.material-icons.right add
+    = approvals_add_text(@approvals_presenter.approvable_type)
 
 section.friends-index.row.hide
   .col.s12
@@ -16,6 +17,10 @@ section.friends-index.row.hide
           p Your friends have not shared any devices or checkins yet!
       #map
 br/
+- if !@approvals_presenter.approved.present? && !@approvals_presenter.complete.present? && @approvals_presenter.approvable_type === "Developer"
+  p.center You are not currently connected to any applications. Add applications to start controlling their access to your data.
 = render partial: "approved", locals: { approved: @approvals_presenter.approved, devices: @approvals_presenter.devices, approvable_type: @approvals_presenter.approvable_type }
+- if @approvals_presenter.complete.present?
+  = render partial: "complete", locals: { complete: @approvals_presenter.complete } 
 - if @approvals_presenter.pending.present?
-  = render partial: "pending", locals: { pending: @approvals_presenter.pending } 
+  = render "pending", pending: @approvals_presenter.pending

@@ -10,6 +10,11 @@
     }
   }
 
+  .hyperlink {
+    text-decoration: underline;
+    color: $primary-color;
+  }
+
   #map-overlay {
     position: absolute;
     z-index: 1500;

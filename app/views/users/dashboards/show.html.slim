@@ -44,6 +44,6 @@ p
   .divider
 section#dashboard-quicklinks
   p
-    | You have #{pluralize(current_user.devices.count, "device")}, #{pluralize(current_user.not_coposition_developers.count, "app")} and #{pluralize(current_user.friends.count, "friend")}.
-    |  You have #{link_to(pluralize(current_user.developer_requests.count, "app"), user_apps_path)} and 
-    | #{link_to(pluralize(current_user.friend_requests.count, "friend"), user_friends_path)} awaiting your approval.
+    | You have #{link_to(pluralize(current_user.devices.count, "device"), user_devices_path, class: "hyperlink")}, #{link_to(pluralize(current_user.developers.not_coposition_developers.count, "connected app"), user_apps_path, class: "hyperlink")} and #{link_to(pluralize(current_user.friends.count, "friend"), user_friends_path, class: "hyperlink")}.
+    |  You have #{link_to(pluralize(current_user.developer_requests.count, "app"), user_apps_path, class: "hyperlink")} and 
+    | #{link_to(pluralize(current_user.friend_requests.count, "friend"), user_friends_path, class: "hyperlink")} awaiting your approval.

@@ -18,8 +18,12 @@ class Users::CheckinsController < ApplicationController
 
   def create
     @checkin = device.checkins.create(allowed_params)
-    NotifyAboutCheckin.call(device: device, checkin: @checkin)
-    flash[:notice] = "Checked in."
+    if @checkin.save
+      NotifyAboutCheckin.call(device: device, checkin: @checkin)
+      flash[:notice] = "Checked in."
+    else
+      flash[:alert] = "Invalid latitude/longitude."
+    end
   end
 
   def import
@@ -43,7 +47,7 @@ class Users::CheckinsController < ApplicationController
   end
 
   def destroy
-    @checkin.delete
+    @checkin.destroy
     NotifyAboutDestroyCheckin.call(device: device, checkin: @checkin)
     flash[:notice] = "Check-in deleted."
   end
@@ -51,7 +55,7 @@ class Users::CheckinsController < ApplicationController
   def destroy_all
     checkins = device.checkins
     checkins = checkins.where(created_at: date_range) if params[:from]
-    checkins.delete_all
+    checkins.destroy_all
     flash[:notice] = "History deleted."
     redirect_to user_device_path(current_user.url_id, device.id)
   end

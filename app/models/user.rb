@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   acts_as_token_authenticatable
 
-  attr_accessor :private_profile
+  attr_accessor :private_profile, :pin_color
 
   friendly_id :username, use: %i(finders slugged)
 
@@ -19,6 +19,7 @@ class User < ApplicationRecord
 
   has_many :devices, dependent: :destroy
   has_many :checkins, through: :devices
+  has_many :locations, through: :devices
   has_many :requests
   has_many :approvals, dependent: :destroy
   has_many :subscriptions, as: :subscriber, dependent: :destroy
@@ -29,6 +30,11 @@ class User < ApplicationRecord
     source_type: "Developer"
   has_many :complete_developers,
     -> { where "status = 'complete'" },
+    through: :approvals,
+    source: :approvable,
+    source_type: "Developer"
+  has_many :approved_developers,
+    -> { where "status = 'accepted'" },
     through: :approvals,
     source: :approvable,
     source_type: "Developer"
@@ -95,11 +101,6 @@ class User < ApplicationRecord
     end
   end
 
-  def not_coposition_developers
-    copo_keys = [Rails.application.secrets["coposition_api_key"], Rails.application.secrets["mobile_app_api_key"]]
-    developers.where.not(api_key: copo_keys)
-  end
-
   ## Devices
 
   def approve_devices(permissible)
@@ -124,6 +125,10 @@ class User < ApplicationRecord
     args[:device] ? args[:device].filtered_checkins(args) : safe_checkin_info_for(args)
   end
 
+  def filtered_locations(args)
+    args[:device] ? args[:device].filtered_locations(args) : locations_for(args)
+  end
+
   def safe_checkin_info_for(args)
     args[:multiple_devices] = true
     # sort_by slows this query down A LOT
@@ -136,7 +141,15 @@ class User < ApplicationRecord
     end
   end
 
-  ##############
+  def locations_for(args)
+    locations
+      .near_to(args[:near])
+      .most_frequent(args[:type])
+      .limit_returned_locations(args)
+      .unscope(:order)
+      .distinct
+      .paginate(page: args[:page], per_page: args[:per_page])
+  end
 
   def slack_message
     "A new user has registered, id: #{id}, name: #{username}, there are now #{User.count} users."

@@ -1,7 +1,9 @@
 .c-approvals {
   .center-map {
+    margin-left: 5px;
     color: $primary-color-darker;
     cursor: pointer;
+    vertical-align: middle;
   }
 
   .title {
@@ -16,8 +18,14 @@
     margin-bottom: 1rem;
   }
 
+  #complete {
+    margin-bottom: 1rem;
+  }
+
   .avatar {
-    margin-right: 1rem;
+    a {
+      display: inline-block;
+    }
   }
 
   .tagline {
@@ -25,6 +33,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    min-height: 1.5rem;
   }
 
   .card-panel {

@@ -33,7 +33,10 @@ window.COPO.maps = {
   },
 
   loadAllCheckins(checkins, total) {
-    if (total === undefined) return;
+    if (total === undefined) {
+      $('.cached-icon').addClass('locations-active');
+      return;
+    }
     loadCheckins(2);
 
     function getCheckinData(page) {
@@ -271,6 +274,27 @@ window.COPO.maps = {
     L.control.fullscreen().addTo(window.map);
   },
 
+  locationsControlInit() {
+    const locationsControl = L.Control.extend({
+      options: {
+        position: 'topleft'
+      },
+      onAdd: (map) => {
+        var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+        container.innerHTML = `
+        <a class="leaflet-control-locations leaflet-bar-locations" href="#" onclick="return false;" title="Show locations">
+          <i class="material-icons cached-icon">cached</i>
+        </a>
+        `;
+        container.onclick = function() {
+          COPO.maps.locationsControlClick();
+        }
+        return container;
+      }
+    });
+    map.addControl(new locationsControl());
+  },
+
   layersControlInit() {
     let map = window.map;
     L.control.layers({
@@ -366,8 +390,8 @@ window.COPO.maps = {
     color ? iconClass = `map-pin-${ color }` : iconClass = 'map-pin'
     return L.icon({
       iconUrl: $.cloudinary.url(public_id, {format: 'png', transformation: iconClass}),
-      iconSize: [36,52],
-      iconAnchor: [18,49]
+      iconSize: [50,50],
+      iconAnchor: [25,46]
     })
   },
 
@@ -382,11 +406,7 @@ window.COPO.maps = {
 
   friendsCheckinsToCluster: (markerArr) => {
     let cluster = markerArr.map(marker => {
-      let color;
-      if (moment(marker.lastCheckin && marker.lastCheckin['created_at']).isBefore(moment().subtract(1, 'day'))) {
-        color = 'grey';
-      }
-      return COPO.maps.makeMapPin(marker, color);
+      return COPO.maps.makeMapPin(marker, marker.pinColor);
     }).filter(marker => marker);
     return L.markerClusterGroup().addLayers(cluster)
   },
@@ -541,4 +561,14 @@ window.COPO.maps = {
       callback(true);
     })
   },
+
+  locationsControlClick() {
+    if ($('.cached-icon').hasClass('locations-active')) {
+      $('.cached-icon').removeClass('locations-active');
+      COPO.maps.refreshMarkers(gon.checkins);
+    } else {
+      $('.cached-icon').addClass('locations-active');
+      COPO.maps.refreshMarkers(gon.locations);
+    }
+  }
 }

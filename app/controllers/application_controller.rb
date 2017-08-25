@@ -9,8 +9,8 @@ class ApplicationController < ActionController::Base
     redirect_to root_path, alert: exception.message
   end
 
-  def approvals_presenter_and_gon(type)
-    @approvals_presenter = Users::ApprovalsPresenter.new(current_user, type)
+  def approvals_presenter_and_gon(params)
+    @approvals_presenter = Users::ApprovalsPresenter.new(current_user, params)
     gon.push(@approvals_presenter.gon)
   end
 

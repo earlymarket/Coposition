@@ -8,6 +8,7 @@ class Device < ApplicationRecord
   has_many :permissions, dependent: :destroy
   has_many :developers, through: :permissions, source: :permissible, source_type: "Developer"
   has_many :permitted_users, through: :permissions, source: :permissible, source_type: "User"
+  has_many :locations
   has_attachment :csv, accept: :raw
 
   validates :name, uniqueness: { scope: :user_id }, if: :user_id
@@ -16,14 +17,17 @@ class Device < ApplicationRecord
     dev.uuid = SecureRandom.uuid
   end
 
-  def self.automated
-    includes(:config)
-      .select { |dev| dev.config && dev.config.custom && dev.config.custom["active"] == true }
-  end
-
   def safe_checkin_info_for(args)
     sanitized = filtered_checkins(args)
     sanitize_checkins(sanitized, args)
+  end
+
+  def filtered_locations(args)
+    locations.near_to(args[:near])
+             .most_frequent(args[:type])
+             .limit_returned_locations(args)
+             .unscope(:order)
+             .distinct
   end
 
   def filtered_checkins(args)
@@ -86,7 +90,7 @@ class Device < ApplicationRecord
   end
 
   def before_delay_checkins
-    checkins.where("checkins.created_at < ?", delayed.to_i.minutes.ago)
+    delayed ? checkins.where("checkins.created_at < ?", delayed.minutes.ago) : checkins
   end
 
   def permission_for(permissible)
@@ -141,5 +145,12 @@ class Device < ApplicationRecord
     ordered_devices = all.index_by(&:id).values_at(*device_ids)
     ordered_devices += all
     ordered_devices.uniq
+  end
+
+  def self.inactive
+    last_checkins_ids = Device.last_checkins.map(&:id)
+    old_last_checkins = Checkin.where("id IN (?) AND created_at < ?", last_checkins_ids, 3.months.ago)
+    device_ids = old_last_checkins.map(&:device_id)
+    Device.where(id: device_ids)
   end
 end

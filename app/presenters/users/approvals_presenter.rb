@@ -3,15 +3,33 @@ module Users
     attr_reader :approvable_type
     attr_reader :approved
     attr_reader :pending
+    attr_reader :complete
     attr_reader :devices
     attr_reader :page
 
-    def initialize(user, approvable_type)
+    PIN_COLORS = {
+      orange:       "#F39434",
+      red:          "#D6144F",
+      pink:         "#CF7FB3",
+      blue:         "#3893D1",
+      cian:         "#1F71A1",
+      navy:         "#254394",
+      yellow:       "#F0E746",
+      light_purple: "#9A74B2",
+      light_blue:   "#99CBEE",
+      green:        "#37A837",
+      purple:       "#6E3E91",
+      light_green:  "#99C444"
+    }.freeze
+
+    def initialize(user, params)
       @user = user
-      @approvable_type = approvable_type
+      @approvable_type = params[:approvable_type]
+      @order = params[:order_by]
       @page = apps_page? ? "Apps" : "Friends"
-      @approved = users_approved
-      @pending = users_requests
+      @approved = add_color_info(users_approved)
+      @complete = users_complete
+      @pending = add_color_info(users_requests)
       @devices = user.devices
     end
 
@@ -54,8 +72,17 @@ module Users
         .inject(:+)
     end
 
+    def users_complete
+      return nil unless apps_page? && @user.complete_developers.present?
+      if @order == "approval_date"
+        Developer.where(id: @user.approvals.where(status: "complete").order(:approval_date).pluck(:approvable_id))
+      else
+        @user.complete_developers.order(@order)
+      end.not_coposition_developers.public_info
+    end
+
     def users_approved
-      apps_page? ? @user.not_coposition_developers.public_info : @user.friends.public_info
+      apps_page? ? @user.approved_developers.not_coposition_developers.public_info : @user.friends.public_info
     end
 
     def users_requests
@@ -66,11 +93,22 @@ module Users
       return unless approvable_type == "User"
 
       friends = @user.friends.includes(:devices)
-      friends.map do |friend|
+      friends.map.with_index do |friend, index|
         {
           userinfo: friend.public_info_hash,
-          lastCheckin: friend.safe_checkin_info_for(permissible: @user, action: "last")[0]
+          lastCheckin: friend.safe_checkin_info_for(permissible: @user, action: "last")[0],
+          pinColor: PIN_COLORS.to_a[index % PIN_COLORS.size][0]
         }
+      end
+    end
+
+    def add_color_info(list)
+      return unless list
+
+      list.each_with_index do |item, index|
+        next unless item.respond_to?(:pin_color)
+
+        item.pin_color = PIN_COLORS.to_a[index % PIN_COLORS.size][0]
       end
     end
   end
