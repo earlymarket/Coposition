@@ -71,7 +71,7 @@ class Users::CheckinsController < ApplicationController
   end
 
   def allowed_params
-    params.require(:checkin).permit(:lat, :lng, :device_id, :fogged)
+    params.require(:checkin).permit(:lat, :lng, :device_id, :fogged, :speed, :altitude)
   end
 
   def find_checkin
