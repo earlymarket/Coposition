@@ -9,7 +9,9 @@ RSpec.describe Users::CheckinsController, type: :controller do
   let(:checkin) { create :checkin, device: device }
   let(:params) { { user_id: user.username, device_id: device.id, id: checkin.id } }
   let(:other_user_params) { params.merge(user_id: new_user.id) }
-  let(:create_params) { params.merge(checkin: { lat: checkin.lat, lng: checkin.lng }) }
+  let(:create_params) do
+    params.merge(checkin: { lat: checkin.lat, lng: checkin.lng, speed: checkin.speed, altitude: checkin.altitude })
+  end
   let(:index_params) { params.merge(page: 1, per_page: 1000) }
   let(:update_lat_params) { params.merge(checkin: { lat: 10 }) }
 

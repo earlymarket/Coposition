@@ -42,7 +42,7 @@ class Users::CheckinsController < ApplicationController
 
   def update
     result = Users::Checkins::UpdateCheckin.call(params: params)
-    @checkin = result.checkin
+    @checkin = result.checkin if result.checkin.save
     render status: 200, json: @checkin if params[:checkin]
   end
 
@@ -71,7 +71,7 @@ class Users::CheckinsController < ApplicationController
   end
 
   def allowed_params
-    params.require(:checkin).permit(:lat, :lng, :device_id, :fogged)
+    params.require(:checkin).permit(:lat, :lng, :device_id, :fogged, :speed, :altitude)
   end
 
   def find_checkin
