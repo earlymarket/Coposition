@@ -94,7 +94,7 @@ class Checkin < ApplicationRecord
     existing_location = device.locations.near([lat, lng], 0.1, units: :km).first
     location = existing_location || Location.create(lat: lat, lng: lng, device_id: device.id)
 
-    update(location_id: location.id)
+    assign_attributes(location_id: location.id)
   end
 
   def reverse_geocode!
@@ -186,8 +186,10 @@ class Checkin < ApplicationRecord
     def to_gpx
       GPX::GPXFile.new.tap do |gpx|
         gpx.routes << GPX::Route.new.tap do |route|
-          all.pluck(:lat, :lng, :created_at).each do |record|
-            route.points << GPX::Point.new(elevation: 0, lat: record[0], lon: record[1], time: record[2])
+          all.pluck(:altitude, :lat, :lng, :created_at).each do |record|
+            route.points << GPX::Point.new(
+              elevation: record[0], lat: record[1], lon: record[2], time: record[3]
+            )
           end
         end
       end.to_s

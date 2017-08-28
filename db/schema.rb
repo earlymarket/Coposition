@@ -58,8 +58,8 @@ ActiveRecord::Schema.define(version: 20170812142320) do
   end
 
   create_table "attachinary_files", force: :cascade do |t|
-    t.integer  "attachinariable_id"
     t.string   "attachinariable_type"
+    t.integer  "attachinariable_id"
     t.string   "scope"
     t.string   "public_id"
     t.string   "version"
@@ -96,6 +96,8 @@ ActiveRecord::Schema.define(version: 20170812142320) do
     t.string   "fogged_country_code"
     t.boolean  "edited",              default: false
     t.integer  "location_id"
+    t.integer  "speed"
+    t.integer  "altitude"
     t.index ["device_id"], name: "index_checkins_on_device_id", using: :btree
   end
 
