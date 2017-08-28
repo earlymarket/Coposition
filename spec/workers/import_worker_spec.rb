@@ -5,7 +5,7 @@ RSpec.describe ImportWorker, type: :worker do
   let(:device) { create(:device, csv: File.open(file.path, "r")) }
   let(:file) { fixture_file_upload("files/test_file.csv", "text/csv") }
   let(:checkin) { create :checkin, device: device }
-  let(:params) { { "lat" => 10, "lng" => 10 } }
+  let(:params) { { "lat" => 10, "lng" => 10, "speed" => 10, "altitude" => 10 } }
 
   describe "perform" do
     it "pushes a job on to the queue" do
