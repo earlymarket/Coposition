@@ -1,5 +1,5 @@
 = raw render_flash
-- if @checkin.id
+- if @checkin["id"]
   | gon.checkins.unshift(
   = raw @checkin.to_json
   | );

@@ -21,6 +21,6 @@ class ImportWorker
   end
 
   def attributes_from_row(row)
-    row.to_hash.slice("lat", "lng", "created_at", "fogged")
+    row.to_hash.slice("lat", "lng", "speed", "altitude", "created_at", "fogged")
   end
 end

@@ -94,7 +94,7 @@ class Checkin < ApplicationRecord
     existing_location = device.locations.near([lat, lng], 0.1, units: :km).first
     location = existing_location || Location.create(lat: lat, lng: lng, device_id: device.id)
 
-    update(location_id: location.id)
+    assign_attributes(location_id: location.id)
   end
 
   def reverse_geocode!
