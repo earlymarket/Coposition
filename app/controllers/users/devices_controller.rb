@@ -14,6 +14,7 @@ class Users::DevicesController < ApplicationController
 
     respond_to do |format|
       format.html { flash[:notice] = "Right click on the map to check-in" }
+      format.json { render status: 200, json: @device_show_presenter.show_gon[:checkins] }
       format.any(:csv, :gpx, :geojson) do
         create_activity
         send_data @device_show_presenter.checkins, filename: @device_show_presenter.filename

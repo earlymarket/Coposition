@@ -1,7 +1,7 @@
 window.COPO = window.COPO || {};
 window.COPO.maps = {
   queueCalled: false,
-  MAX_CHECKINS_TO_LOAD: 18000,
+  MAX_CHECKINS_TO_LOAD: 20000,
   MAX_CHECKINS_TO_DISPLAY: 50000,
 
   initMap(customOptions) {
@@ -575,7 +575,7 @@ window.COPO.maps = {
       } else if (gon.total > COPO.maps.MAX_CHECKINS_TO_LOAD && gon.total <= COPO.maps.MAX_CHECKINS_TO_DISPLAY) {
         var waitToLoad = false;
         waitToLoad = confirm("This may take a long time to load, would you like to view check-ins anyway?");
-        if (waitToLoad) {}
+        if (waitToLoad) { COPO.maps.fetchMoreCheckins(); }
       } else {
         alert("Sorry, we cannot display that many check-ins, please select a shorter time range if you would like to view check-ins");
       }
@@ -583,5 +583,17 @@ window.COPO.maps = {
       $('.cached-icon').addClass('locations-active');
       COPO.maps.refreshMarkers(gon.locations);
     }
+  },
+
+  fetchMoreCheckins() {
+    $.ajax({
+      url: '/users/' + gon.current_user_id + '/devices/' + gon.device + '?checkin_limit=' + COPO.maps.MAX_CHECKINS_TO_DISPLAY + '.json',
+      type: 'GET',
+      dataType: 'json',
+      success: function(data) {
+        $('.cached-icon').removeClass('locations-active');
+        COPO.maps.refreshMarkers(data);
+      }
+    });
   }
 }

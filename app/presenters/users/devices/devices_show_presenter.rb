@@ -1,7 +1,7 @@
 module Users::Devices
   class DevicesShowPresenter < ApplicationPresenter
     FIRST_LOAD_MAX = 5_000
-    MAX_CHECKIN_COUNT = 18_000
+    MAX_CHECKIN_COUNT = 20_000
 
     attr_reader :user
     attr_reader :device
@@ -85,7 +85,7 @@ module Users::Devices
     end
 
     def raw_paginated_checkins
-      if gon_show_checkins.count <= MAX_CHECKIN_COUNT
+      if gon_show_checkins.count <= (params[:checkin_limit].to_i || MAX_CHECKIN_COUNT)
         ActiveRecord::Base.connection.execute(gon_show_checkins_paginated.to_sql).to_a
       else
         []
