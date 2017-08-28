@@ -59,7 +59,7 @@ RSpec.describe Users::CheckinsController, type: :controller do
 
     it "assigns new checkin to @checkin" do
       post :create, params: create_params
-      expect(assigns(:checkin)).to eq device.checkins.first
+      expect(assigns(:checkin)["id"]).to eq device.checkins.first.id
     end
 
     it "returns an alert if inavlid lat/lng given" do

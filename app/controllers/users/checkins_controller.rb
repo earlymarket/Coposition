@@ -17,8 +17,9 @@ class Users::CheckinsController < ApplicationController
   end
 
   def create
-    @checkin = device.checkins.create(allowed_params)
-    if @checkin.save
+    checkin = device.checkins.create(allowed_params)
+    if checkin.save
+      @checkin = ActiveRecord::Base.connection.execute(Checkin.where(id: checkin).to_sql).first
       NotifyAboutCheckin.call(device: device, checkin: @checkin)
       flash[:notice] = "Checked in."
     else
