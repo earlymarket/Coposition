@@ -20,7 +20,6 @@ module Users::Devices
     def show_gon
       {
         checkins: ActiveRecord::Base.connection.execute(gon_show_checkins_paginated.to_sql).to_a,
-        locations: gon_show_locations,
         cities: gon_show_cities,
         first_load: first_load,
         device: device.id,
@@ -85,24 +84,17 @@ module Users::Devices
     end
 
     def gon_show_cities
-      ids = device.checkins.unscope(:order).select("DISTINCT ON(fogged_city) *").map(&:id)
-      @gon_show_cities ||= Checkin
-                           .where(id: ids)
-                           .select("created_at", "fogged_lat AS lat", "fogged_lng AS lng",
-                             "fogged_city AS city", "fogged_country_code AS postal_code",
-                             "fogged_country_code AS country_code")
-    end
-
-    def gon_show_locations
-      locations = device.locations
-
-      @gon_show_locations ||= if first_load
-        locations.limit(FIRST_LOAD_MAX) if first_load
-      elsif date_range[:from]
-        locations.joins(:checkins).where("checkins.created_at": date_range[:from]..date_range[:to]).uniq
-      else
-        locations
-      end
+      checkins = gon_show_checkins.unscope(:order)
+      counts = checkins.group(:fogged_city).count
+      # Unordered
+      # @gon_show_cities ||= checkins.select("DISTINCT ON(fogged_city) created_at, fogged_lat AS lat, fogged_lng AS lng,
+      #                                       fogged_city AS city, fogged_country_code AS postal_code,
+      #                                       fogged_country_code AS country_code, NULL AS count")
+      ids = checkins.select("DISTINCT ON(fogged_city) *").map(&:id)
+      @gon_show_cities ||= Checkin.where(id: ids)
+                                  .select("created_at", "fogged_lat AS lat", "fogged_lng AS lng", "fogged_city AS city",
+                                    "fogged_country_code AS country_code")
+      @gon_show_cities.each { |checkin| checkin["id"] = counts[checkin.city] }
     end
   end
 end

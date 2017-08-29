@@ -170,8 +170,10 @@ class Checkin < ApplicationRecord
     def to_gpx
       GPX::GPXFile.new.tap do |gpx|
         gpx.routes << GPX::Route.new.tap do |route|
-          all.pluck(:lat, :lng, :created_at).each do |record|
-            route.points << GPX::Point.new(elevation: 0, lat: record[0], lon: record[1], time: record[2])
+          all.pluck(:altitude, :lat, :lng, :created_at).each do |record|
+            route.points << GPX::Point.new(
+              elevation: record[0], lat: record[1], lon: record[2], time: record[3]
+            )
           end
         end
       end.to_s

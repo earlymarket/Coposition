@@ -8,7 +8,8 @@ window.COPO.maps = {
 
     var defaultOptions = {
       maxZoom: 18,
-      minZoom: 1
+      minZoom: 1,
+      worldCopyJump: true
     }
 
     var options = $.extend(defaultOptions, customOptions);
@@ -169,7 +170,7 @@ window.COPO.maps = {
       let checkin = this.options.checkin;
       COPO.maps.dateToLocal(checkin);
       if (!marker._popup) {
-        var template = checkin.id ? COPO.maps.buildCheckinPopup(checkin, marker) : COPO.maps.buildCityPopup(checkin, marker)
+        var template = checkin.address ? COPO.maps.buildCheckinPopup(checkin, marker) : COPO.maps.buildCityPopup(checkin, marker)
         marker.bindPopup(L.Util.template(template, checkin));
         marker.openPopup();
       }
@@ -244,7 +245,7 @@ window.COPO.maps = {
       $.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${checkin.lat},${checkin.lng}&timestamp=${created_at}&key=AIzaSyCEjHZhLTdiy7jbRTDU3YADs8a1yXKTwqI`)
       .done((data) => {
         if (data.status === 'OK') {
-          let date = moment.utc((created_at + data.rawOffset + data.dstOffset)*1000).format("ddd, Do MMM YYYY, HH:mm:ss");
+          let date = moment((created_at + data.rawOffset + data.dstOffset)*1000).format("ddd, Do MMM YYYY, HH:mm:ss");
           let offsetStr = COPO.maps.formatOffset(parseInt(data.rawOffset) + data.dstOffset);
           let localDate = `${date} (UTC${offsetStr})`;
           checkin.localDate = localDate;
@@ -385,9 +386,8 @@ window.COPO.maps = {
       },
 
       onMouseMove: function(e) {
-        let lng = e.latlng.lng.toFixed(6)
-        let lat = e.latlng.lat.toFixed(6)
-        let value = `${lng}, ${lat}`;
+        let latlng = COPO.maps.getBoundedLatlng(e)
+        let value = `${latlng.lng.toFixed(6)}, ${latlng.lat.toFixed(6)}`;
         this.container.innerHTML = value;
       }
     });
@@ -554,9 +554,10 @@ window.COPO.maps = {
 
   rightClickListener() {
     map.on('contextmenu', function(e) {
+      let latlng = COPO.maps.getBoundedLatlng(e)
       var coords = {
-        lat: e.latlng.lat.toFixed(6),
-        lng: e.latlng.lng.toFixed(6),
+        lat: latlng.lat.toFixed(6),
+        lng: latlng.lng.toFixed(6),
         checkinLink: window.COPO.utility.createCheckinLink(e.latlng)
       };
       var template = $('#createCheckinTmpl').html();
@@ -564,6 +565,17 @@ window.COPO.maps = {
       var popup = L.popup().setLatLng(e.latlng).setContent(content);
       popup.openOn(map);
     })
+  },
+
+  getBoundedLatlng (e) {
+    let lng = e.latlng.lng
+    let lat = e.latlng.lat
+    if (lng > 180) {
+      lng = lng - 360
+    } else if (lng < -180) {
+      lng = (parseFloat(lng) + 360)
+    }
+    return { lng: lng, lat: lat }
   },
 
   checkinNowListeners(callback) {

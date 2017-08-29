@@ -41,15 +41,15 @@ class Device < ApplicationRecord
   def replace_checkin_attributes(sanitized, permissible)
     if can_bypass_fogging?(permissible)
       sanitized.select(:id, :created_at, :updated_at, :device_id, :lat,
-        :lng, :address, :city, :postal_code, :country_code)
+        :lng, :address, :city, :postal_code, :country_code, :speed, :altitude)
     elsif fogged
       sanitized.select("id", "created_at", "updated_at", "device_id", "fogged_lat AS lat", "fogged_lng AS lng",
         "fogged_city AS address", "fogged_city AS city", "fogged_country_code AS postal_code",
-        "fogged_country_code AS country_code")
+        "fogged_country_code AS country_code", "null AS speed", "null AS altitude")
     else
       sanitized.select("id", "created_at", "updated_at", "device_id", "output_lat AS lat", "output_lng AS lng",
         "output_address AS address", "output_city AS city", "output_postal_code AS postal_code",
-        "output_country_code AS country_code")
+        "output_country_code AS country_code", "speed", "altitude")
     end
   end
 

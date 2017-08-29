@@ -90,7 +90,7 @@ RSpec.describe Checkin, type: :model do
 
   describe "public instance methods" do
     context "responds to its methods" do
-      %i(decrement_checkin_count assign_values assign_location update_output assign_output_to_fogged assign_output_to_unfogged reverse_geocode!
+      %i(assign_values update_output assign_output_to_fogged assign_output_to_unfogged reverse_geocode!
          reverse_geocoded? set_edited nearest_city).each do |method|
         it { expect(checkin).to respond_to(method) }
       end

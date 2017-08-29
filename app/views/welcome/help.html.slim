@@ -8,11 +8,11 @@ h1 Help Centre
         i.material-icons pin_drop
         |  Checking in
       p
-        | You can start checking in either via the Coposition website, the Coposition app or an app that is using Coposition.
+        | You can start checking in either via the Coposition website, the Coposition app or an app that is using Coposition. 
         | You can create a checkin on the coposition website by selecting a device from your 
-        | #{current_user ? link_to('devices', user_devices_path(current_user.url_id)) : 'devices'}
+        | #{current_user ? link_to('devices', user_devices_path(current_user.url_id), class: 'link') : 'devices'}
         |  and then either right clicking on the map or clicking on the marker in the control panel to the left hand side of the map and then selecting the blue starred marker that appears on the map which indicates your current location.
-        | If you do not have any devices, you will be given the option to create a checkin when creating a new device, the checkin will indicate you current location.
+      p If you do not have any devices, you will be given the option to create a checkin when creating a new device, the checkin will indicate you current location.
     .divider
     #devices.section.scrollspy
       h4
@@ -24,7 +24,7 @@ h1 Help Centre
           |  Fogging
         p
           | Fogging allows you additional control over how much of your location data your data consumers (friends and apps) can see. Fogging a checkin or a device will mean that your data consumers will not be shown your exact location or coordinates, instead they will see a location usually localised to the nearest city/town or a randomised location within 50km of your actual location if there are no settlements nearby.
-          | Fogging is enabled by default when you create a device. Whilst on, you can choose to allow certain friends or apps to see precise data by enabling bypass fogging via permissions.
+        p Fogging is enabled by default when you create a device. Whilst on, you can choose to allow certain friends or apps to see precise data by enabling bypass fogging via permissions.
       #delay.section.scrollspy
         h5
           i.material-icons timer
@@ -100,13 +100,30 @@ h1 Help Centre
         | You can download your check-ins in a variety of formats in order to have a permanent local copy of your data. If you wish, you can also use this as a data backup, and reupload check-ins at a later date to overwrite any changes or deletions you may have made. Check-ins must be uploaded in CSV format.
       p
         | When uploading check-ins from a CSV file, it is possible that existing check-ins will be overwritten. This will only occur if you download your check-in history, and then re-upload this same history having edited the CSV file you downloaded.
+      h5 CSV
+      p
+        | Simple comma-separated values in rows. This is the best format for doing analysis (eg. filtering or mathematical) on the data. CSV is usually viewed with a spreadsheet programme.
+      p The CSV file downloaded will include the following headers:
+      blockquote
+        | id, lat, lng, created_at, updated_at, uuid, device_id, address, city, postal_code, country_code, fogged, fogged_lat, fogged_lng, fogged_city, output_lat, output_lng, output_address, output_city, output_postal_code, output_country_code, fogged_country_code, edited
+      p To view a CSV file, you can use #{link_to("Google Sheets", "http://google.com/sheets", class: "link")}.
+      h5 GeoJson
+      p
+        | GeoJSON is a format for encoding a variety of geographic data structures. It is a useful format for many mapping programmes. Learn more about #{link_to("GeoJson", "https://macwright.org/2015/03/23/geojson-second-bite.html", class: 'link')}.
+      p Coposition returns your check-ins as a #{link_to("FeatureCollection", "https://macwright.org/2015/03/23/geojson-second-bite.html#featurecollection", class: 'link')}, with each individual check-in an individual feature which includes the latitude, longitude and id of the check-in.
+      p To visualise, use #{link_to("Geojson Lint", "http://geojsonlint.com/", class: "link")}.
+      h5 GPX
+      p A standard XML format for GPS data. A useful format for GPS devices and online mapping.
+      p Coposition creates a GPX route where each of your check-ins is represented by a GPX point. These points include your elavation, latitude, longitude and time the check-in was created.
+      p You can learn more about the official GPX schema #{link_to("here", "http://www.topografix.com/gpx.asp", class: "link")}.
+      p To visualise, use #{link_to("GPS visualizer", "http://www.gpsvisualizer.com/", class: "link")}.
     .divider
     #w3w.section.scrollspy
       h4
         i.material-icons explore
         |  what3words
       p
-        | w3w or 'what3words' is a unique combination of 3 words that identifies a 3mx3m square, anywhere on the planet. Learn more about #{link_to("what3words", "http://what3words.com/about/")}.
+        | w3w or 'what3words' is a unique combination of 3 words that identifies a 3mx3m square, anywhere on the planet. Learn more about #{link_to("what3words", "http://what3words.com/about/", class: 'link')}.
     .divider
     #zapier.section.scrollspy
       h4
@@ -122,7 +139,7 @@ h1 Help Centre
         | Users can make use of a checkin or device trigger which fires whenever a new checkin or device is created.
         br/
         br/
-        | Get started at  #{link_to("zapier.com", "https://zapier.com/")}
+        | Get started at  #{link_to("zapier.com", "https://zapier.com/", class: 'link')}
     .divider
     #more.section.scrollspy
       h4
