@@ -232,6 +232,7 @@ window.COPO.maps = {
       address: checkin.city,
       marker: marker._leaflet_id
     };
+    checkinTemp.inlineDate = `<span id="localTime">${checkinTemp.created_at}</span>`
     var template = $('#cityPopupTmpl').html();
     return Mustache.render(template, checkinTemp);
   },
