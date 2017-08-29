@@ -1,8 +1,6 @@
 window.COPO = window.COPO || {};
 window.COPO.maps = {
-  queueCalled: false,
-  MAX_CHECKINS_TO_LOAD: 20000,
-  MAX_CHECKINS_TO_DISPLAY: 50000,
+  queueCalled: false
 
   initMap(customOptions) {
     if (document.getElementById('map')._leaflet) return;
@@ -36,7 +34,7 @@ window.COPO.maps = {
 
   loadAllCheckins(checkins, total) {
     if (total === undefined) {
-      $('.cached-icon').addClass('locations-active');
+      COPO.maps.locationsShown();
       toastMessage();
       return;
     }
@@ -569,10 +567,10 @@ window.COPO.maps = {
 
   locationsControlClick() {
     if ($('.cached-icon').hasClass('locations-active')) {
-      if (gon.total <= COPO.maps.MAX_CHECKINS_TO_LOAD) {
-        $('.cached-icon').removeClass('locations-active');
+      if (gon.total <= gon.MAX_CHECKINS_TO_LOAD) {
+        COPO.maps.locationsHidden();
         COPO.maps.refreshMarkers(gon.checkins);
-      } else if (gon.total > COPO.maps.MAX_CHECKINS_TO_LOAD && gon.total <= COPO.maps.MAX_CHECKINS_TO_DISPLAY) {
+      } else if (gon.total > gon.MAX_CHECKINS_TO_LOAD && gon.total <= gon.MAX_CHECKINS_TO_DISPLAY) {
         var waitToLoad = false;
         waitToLoad = confirm("This may take a long time to load, would you like to view check-ins anyway?");
         if (waitToLoad) { COPO.maps.fetchMoreCheckins(); }
@@ -580,20 +578,28 @@ window.COPO.maps = {
         alert("Sorry, we cannot display that many check-ins, please select a shorter time range if you would like to view check-ins");
       }
     } else {
-      $('.cached-icon').addClass('locations-active');
+      COPO.maps.locationsShown();
       COPO.maps.refreshMarkers(gon.locations);
     }
   },
 
   fetchMoreCheckins() {
     $.ajax({
-      url: '/users/' + gon.current_user_id + '/devices/' + gon.device + '?checkin_limit=' + COPO.maps.MAX_CHECKINS_TO_DISPLAY + '.json',
+      url: '/users/' + gon.current_user_id + '/devices/' + gon.device + '?checkin_limit=' + gon.MAX_CHECKINS_TO_DISPLAY + '.json',
       type: 'GET',
       dataType: 'json',
       success: function(data) {
-        $('.cached-icon').removeClass('locations-active');
+        COPO.maps.locationsHidden();
         COPO.maps.refreshMarkers(data);
       }
     });
+  },
+
+  locationsShown() {
+    $('.cached-icon').addClass('locations-active');
+  },
+
+  locationsHidden() {
+    $('.cached-icon').removeClass('locations-active');
   }
 }
