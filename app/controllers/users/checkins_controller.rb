@@ -21,7 +21,7 @@ class Users::CheckinsController < ApplicationController
     if checkin.save
       @checkin = ActiveRecord::Base.connection.execute(Checkin.where(id: checkin).to_sql).first
       NotifyAboutCheckin.call(device: device, checkin: @checkin)
-      flash[:notice] = "Checked in."
+      flash[:notice] = "Checked in. Refresh page to update cities."
     else
       flash[:alert] = "Invalid latitude/longitude."
     end
@@ -50,7 +50,7 @@ class Users::CheckinsController < ApplicationController
   def destroy
     @checkin.destroy
     NotifyAboutDestroyCheckin.call(device: device, checkin: @checkin)
-    flash[:notice] = "Check-in deleted."
+    flash[:notice] = "Check-in deleted. Refresh page to update cities."
   end
 
   def destroy_all
