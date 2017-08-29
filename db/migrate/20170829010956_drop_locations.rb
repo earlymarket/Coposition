@@ -5,6 +5,8 @@ class DropLocations < ActiveRecord::Migration[5.0]
       t.float :lat
       t.float :lng
       t.string :address
+      t.integer :device_id
+      t.integer :checkins_count
       t.timestamps
     end
   end
