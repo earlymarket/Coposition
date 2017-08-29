@@ -78,7 +78,7 @@ describe ::Users::Devices::DevicesShowPresenter do
     it "calls gon_show_checkins" do
       allow(show_presenter).to receive(:gon_show_checkins).and_return device.checkins
       show_presenter.show_gon
-      expect(show_presenter).to have_received(:gon_show_checkins).exactly(3).times
+      expect(show_presenter).to have_received(:gon_show_checkins).exactly(5).times
     end
   end
 

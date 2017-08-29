@@ -1,6 +1,6 @@
 window.COPO = window.COPO || {};
 window.COPO.maps = {
-  queueCalled: false
+  queueCalled: false,
 
   initMap(customOptions) {
     if (document.getElementById('map')._leaflet) return;
@@ -567,10 +567,10 @@ window.COPO.maps = {
 
   locationsControlClick() {
     if ($('.cached-icon').hasClass('locations-active')) {
-      if (gon.total <= gon.MAX_CHECKINS_TO_LOAD) {
+      if (gon.total <= gon.MAX_CHECKINS_TO_DISPLAY) {
         COPO.maps.locationsHidden();
         COPO.maps.refreshMarkers(gon.checkins);
-      } else if (gon.total > gon.MAX_CHECKINS_TO_LOAD && gon.total <= gon.MAX_CHECKINS_TO_DISPLAY) {
+      } else if (gon.total > gon.MAX_CHECKINS_TO_DISPLAY && gon.total <= gon.MAX_CHECKINS_TO_LOAD) {
         var waitToLoad = false;
         waitToLoad = confirm("This may take a long time to load, would you like to view check-ins anyway?");
         if (waitToLoad) { COPO.maps.fetchMoreCheckins(); }
@@ -585,7 +585,7 @@ window.COPO.maps = {
 
   fetchMoreCheckins() {
     $.ajax({
-      url: '/users/' + gon.current_user_id + '/devices/' + gon.device + '?checkin_limit=' + gon.MAX_CHECKINS_TO_DISPLAY + '.json',
+      url: '/users/' + gon.current_user_id + '/devices/' + gon.device + '?checkin_limit=' + gon.MAX_CHECKINS_TO_LOAD,
       type: 'GET',
       dataType: 'json',
       success: function(data) {

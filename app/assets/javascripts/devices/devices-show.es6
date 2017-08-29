@@ -48,7 +48,7 @@ $(document).on('page:change', function() {
     }
 
     function initMarkers() {
-      if (gon.total > M.MAX_CHECKINS_TO_LOAD) {
+      if (gon.total > gon.MAX_CHECKINS_TO_DISPLAY) {
         M.initMarkers(gon.locations);
       } else {
         M.initMarkers(gon.checkins, gon.total);
