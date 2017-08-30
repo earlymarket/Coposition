@@ -154,6 +154,11 @@ GEM
     colorize (0.8.1)
     concurrent-ruby (1.0.5)
     connection_pool (2.2.1)
+    countries (2.1.2)
+      i18n_data (~> 0.8.0)
+      money (~> 6.9)
+      sixarm_ruby_unaccent (~> 1.1)
+      unicode_utils (~> 1.4)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     cucumber (2.4.0)
@@ -261,6 +266,7 @@ GEM
       domain_name (~> 0.5)
     http_parser.rb (0.6.0)
     i18n (0.8.4)
+    i18n_data (0.8.0)
     inline_svg (1.2.1)
       activesupport (>= 3.0)
       nokogiri (>= 1.6)
@@ -313,6 +319,8 @@ GEM
     mime-types-data (3.2016.0521)
     mini_portile2 (2.2.0)
     minitest (5.10.1)
+    money (6.9.0)
+      i18n (>= 0.6.4, < 0.9)
     multi_json (1.12.1)
     multi_test (0.1.2)
     nenv (0.3.0)
@@ -486,6 +494,7 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.1)
+    sixarm_ruby_unaccent (1.2.0)
     slack-notifier (2.2.1)
     slim (3.0.8)
       temple (>= 0.7.6, < 0.9)
@@ -535,6 +544,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.4)
     unicode-display_width (1.2.1)
+    unicode_utils (1.4.0)
     uniform_notifier (1.10.0)
     warden (1.2.7)
       rack (>= 1.0)
@@ -573,6 +583,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   coffeelint
   colorize
+  countries
   cucumber-rails
   database_cleaner
   derailed

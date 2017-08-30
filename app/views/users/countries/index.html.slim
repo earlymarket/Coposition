@@ -1,0 +1,8 @@
+h1.title Your countries
+div
+  - if @countries.any?
+    ul
+      - @countries.each do |country|
+        li
+          p= country[:country]
+          p Visited at: #{country[:visited_at]}
