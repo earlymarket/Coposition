@@ -34,7 +34,8 @@ module Oauth
     end
 
     def token
-      @token ||= AccessToken.by_token(request.POST["token"]) || AccessToken.by_refresh_token(request.POST["token"])
+      token = request.POST["token"]
+      @token ||= Doorkeeper::AccessToken.by_token(token) || Doorkeeper::AccessToken.by_refresh_token(token)
     end
 
     def strategy
