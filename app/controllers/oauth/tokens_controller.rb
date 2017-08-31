@@ -1,5 +1,14 @@
 module Oauth
   class TokensController < Doorkeeper::ApplicationMetalController
+    def create
+      response = authorize_response
+      headers.merge! response.headers
+      self.response_body = response.body.to_json
+      self.status        = response.status
+    rescue Errors::DoorkeeperError => e
+      handle_token_exception e
+    end
+
     def revoke
       if authorized?
         User.find(token.resource_owner_id).approval_for(token.application.owner).update(status: "accepted")
@@ -26,6 +35,14 @@ module Oauth
 
     def token
       @token ||= AccessToken.by_token(request.POST["token"]) || AccessToken.by_refresh_token(request.POST["token"])
+    end
+
+    def strategy
+      @strategy ||= server.token_request params[:grant_type]
+    end
+
+    def authorize_response
+      @authorize_response ||= strategy.authorize
     end
   end
 end
