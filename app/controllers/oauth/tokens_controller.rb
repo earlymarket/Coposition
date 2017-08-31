@@ -2,7 +2,7 @@ module Oauth
   class TokensController < Doorkeeper::ApplicationMetalController
     def revoke
       if authorized?
-        current_resource_owner.approval_for(token.application.owner).update("accepted")
+        User.find(token.resource_owner_id).approval_for(token.application.owner).update("accepted")
         revoke_token
       end
       render json: {}, status: 200
