@@ -80,7 +80,7 @@ class User < ApplicationRecord
     mobile_dev = Developer.default(mobile: true)
     mobile_dev.approvals.find_by(user_id: id).tap do |approval|
       approval ||= Approval.add_developer(self, mobile_dev)
-      approval.update(status: "complete")
+      approval.complete!
     end
     Doorkeeper::AccessToken.find_or_create_for(mobile_dev.oauth_application, id, "public", nil, true)
   end
