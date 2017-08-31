@@ -97,6 +97,8 @@ class User < ApplicationRecord
     approvals.find_by(approvable_id: approvable.id, approvable_type: approvable.class.to_s) || NoApproval.new
   end
 
+  ## Permissions
+
   def destroy_permissions_for(approvable)
     devices.each do |device|
       permission = device.permission_for(approvable)
