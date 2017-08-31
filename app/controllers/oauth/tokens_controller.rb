@@ -27,13 +27,5 @@ module Oauth
     def token
       @token ||= AccessToken.by_token(request.POST["token"]) || AccessToken.by_refresh_token(request.POST["token"])
     end
-
-    def strategy
-      @strategy ||= server.token_request params[:grant_type]
-    end
-
-    def authorize_response
-      @authorize_response ||= strategy.authorize
-    end
   end
 end
