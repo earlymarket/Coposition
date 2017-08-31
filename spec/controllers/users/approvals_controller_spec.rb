@@ -34,6 +34,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     user_params.merge(approval: { approvable: friend.email.upcase, approvable_type: "User" })
   end
   let(:approve_reject_params) { user_params.merge(id: approval.id) }
+  let(:approve_revoke_params) { approve_reject_params.merge(revoke: true) }
   let(:invite_params) do
     user_params.merge(invite: "", approval: { approvable: "new@email.com", approvable_type: "User" })
   end
@@ -159,6 +160,14 @@ RSpec.describe Users::ApprovalsController, type: :controller do
       request.accept = "text/javascript"
       delete :destroy, params: approve_reject_params
       expect(Permission.count).to eq permission_count - 2
+    end
+
+    it "updates an existing approval to accepted" do
+      approval.update(status: "complete", approvable_id: developer.id, approvable_type: "Developer")
+      request.accept = "text/javascript"
+      expect {
+        delete :destroy, params: approve_revoke_params
+      }.to change { Approval.find(approval.id).status }.to "accepted"
     end
   end
 end
