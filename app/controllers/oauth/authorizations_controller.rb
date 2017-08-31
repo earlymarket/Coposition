@@ -6,6 +6,12 @@ module Oauth
       redirect_or_render auth
     end
 
+    def destroy
+      auth = authorization.authorize
+      revoke_application_owner auth
+      redirect_or_render authorization.deny
+    end
+
     private
 
     def approve_application_owner(authorization)
@@ -14,8 +20,15 @@ module Oauth
 
       developer.approvals.find_by(user_id: current_resource_owner.id).tap do |approval|
         approval ||= Approval.add_developer(current_resource_owner, developer)
-        approval.update(status: "complete")
+        approval.complete!
       end
+    end
+
+    def revoke_application_owner(authorization)
+      return unless (application = authorization.pre_auth.client.application)
+      return unless (developer = application.owner)
+
+      current_resource_owner.approval_for(developer).update(status: "accepted")
     end
 
     def pre_auth
