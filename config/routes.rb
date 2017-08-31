@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   use_doorkeeper do
     controllers applications: "oauth/applications",
-      authorizations: "oauth/authorizations"
+                authorizations: "oauth/authorizations",
+                tokens: "oauth/tokens"
   end
 
   ActiveAdmin.routes(self)
