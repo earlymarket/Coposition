@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   get "/api", to: "welcome#api"
   get "/help", to: "welcome#help"
   get "/getting_started", to: "welcome#getting_started"
+  get "/terms", to: "welcome#terms"
   get "/devs", to: "welcome#devs"
   get "settings/unsubscribe"
   patch "settings/update"
