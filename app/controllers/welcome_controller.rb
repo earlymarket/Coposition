@@ -16,4 +16,7 @@ class WelcomeController < ApplicationController
 
   def getting_started
   end
+
+  def terms
+  end
 end
