@@ -33,7 +33,7 @@ module Users::Approvals
 
     def destroy_access_tokens
       application = approvable.oauth_application
-      Doorkeeper::AccessToken.where(application_id: application.id, resource_owner_id: current_user.id).destroy_all
+      Doorkeeper::AccessToken.where(application_id: application.id, resource_owner_id: current_user.id).each(&:revoke)
     end
 
     def destroy_friend_side
