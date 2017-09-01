@@ -4,8 +4,7 @@ RSpec.describe Device, type: :model do
   let(:developer) { create :developer }
   let(:device) do
     dev = create(:device, user: user)
-    Approval.link(user, developer, "Developer")
-    Approval.accept(user, developer, "Developer")
+    Approval.add_developer(user, developer)
     dev.developers << developer
     dev
   end
@@ -50,9 +49,20 @@ RSpec.describe Device, type: :model do
     context "responds to its methods" do
       %i(safe_checkin_info_for filtered_locations filtered_checkins sanitize_checkins replace_checkin_attributes
          permitted_history_for resolve_privilege privilege_for delayed_checkins_for permission_for
-         can_bypass_fogging? can_bypass_delay? slack_message public_info subscriptions
+         can_bypass_fogging? can_bypass_delay? slack_message public_info subscriptions complete_permissions
          notify_subscribers before_delay_checkins).each do |method|
         it { expect(device).to respond_to(method) }
+      end
+    end
+
+    context "complete_permissions" do
+      it "doesn't return connected developers permissions" do
+        expect(device.complete_permissions).not_to include device.permission_for developer
+      end
+
+      it "returns authenticated developers permissions" do
+        device.user.approval_for(developer).complete!
+        expect(device.complete_permissions).to include device.permission_for developer
       end
     end
 
