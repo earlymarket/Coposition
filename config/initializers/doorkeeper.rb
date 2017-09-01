@@ -8,11 +8,6 @@ Doorkeeper.configure do
     # Put your resource owner authentication logic here.
     # Example implementation:
     current_user || redirect_to(new_user_session_url(return_to: request.fullpath))
-    # if session["warden.user.user.key"] && session["warden.user.user.key"][0]
-    #   User.find(session["warden.user.user.key"][0][0]) || redirect_to(new_user_session_url(return_to: request.fullpath))
-    # else
-    #   redirect_to(new_user_session_url(return_to: request.fullpath))
-    # end
   end
 
   # If you want to restrict access to the web interface for adding oauth authorized applications, you need to declare the block below.
