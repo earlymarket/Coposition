@@ -69,12 +69,36 @@ h1 Help Centre
       #addingFriends.section.scrollspy
         h5
           i.material-icons add_circle
-          | Adding new friends/apps
+          |  Adding friends
         p
-          | To add a new friend, visit the friends page and click the orange plus at the top of the page. You can then enter an email address, either of an existing user or of a friend you would like to invite to use Coposition. This will send an email either notifying the user that they have received a friend request or that you have invited them to sign up with Coposition.
-          br/
-          br/
-          | To add a new app, visit the apps page and click the orange plus at the top of the page. You can then enter the name of the app and choose the correct app from the dropdown which appears.
+          | To add a friend, visit the friends page and click the orange plus at the top of the page. You can then enter an email address, either of an existing user or of a friend you would like to invite to use Coposition. This will send an email either notifying the user that they have received a friend request or that you have invited them to sign up with Coposition.
+        h5
+          i.material-icons add_circle
+          |  Adding apps
+        p
+          | To allow external applications to access your location data, you must authorise their access to your Coposition account.
+        p
+          | Connecting and authenticating an external application, to allow access to your location data, can be started from the external application or from the Coposition website. Starting the process through the Coposition website is recommended, in order to customise the application’s access to your devices and location data before authenticating the app and giving the app developers access to your data.
+        p To connect online: 
+        ul.browser-default
+          li  From your #{current_user ? link_to('Apps', user_apps_path(current_user.url_id), class: 'link') : 'Apps'} tab, click the <i>CONNECT NEW APP</i> button in the top right corner. 
+          li  Enter the app you would like to connect to. Potential matches will be displayed as you start typing.
+          li  Select the app you’d like to connect to, and click <i>ADD</i>. You will return to the #{current_user ? link_to('Apps', user_apps_path(current_user.url_id), class: 'link') : 'apps'} tab and will see this app listed in your apps <i>Requiring Authentication</i>. These apps cannot access your data, but you can edit their <i>PERMISSIONS</i> to limit their data access as you please once authentication is completed. You can also <i>DISCONNECT</i> from these apps. 
+        p To authorise online:
+        ul.browser-default
+          li  Apps listed as Requiring Authentication give you the option to <i>AUTHENTICATE</i>. Clicking this will take you to the external app where you will be able to authorise the external application to access your Coposition data.
+        p To connect and authorise from an external app:
+        ul.browser-default
+          li  Every external app will handle this slightly differently, but they will ask you to permit their access to your Coposition account. You will be taken to a Coposition page and asked to login to your Coposition account.
+          li  After entering your Coposition account email address and password you will then be asked to authorise or deny the application’s access to your data. If you deny access, you can always complete the process again.
+        p Once you have authenticated an external app, you can manage its access to device data (and turn off access completely) from the #{current_user ? link_to('Apps', user_apps_path(current_user.url_id), class: 'link') : 'apps'}  and #{current_user ? link_to('Devices', user_devices_path(current_user.url_id), class: 'link') : 'Devices'}  tabs online, and from the Permissions screen in the Coposition mobile app.
+        p You can turn off an external application’s access to your device data without revoking the authentication you have given that app. Think of it this way:
+        blockquote 
+          p <b>Connected:</b>
+          | The external app knows that you have a Coposition account. It cannot make a request for your location data.
+        blockquote 
+          p <b>Authenticated:</b>
+          | The external app has the ability to request your data. You can still manage your settings to ensure that your Coposition account says ‘no’ to this request!
       #permissions.section.scrollspy
         h5
           i.material-icons lock
