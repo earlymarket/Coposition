@@ -97,6 +97,14 @@ class Device < ApplicationRecord
     permissions.find_by(permissible_id: permissible.id, permissible_type: permissible.class.to_s)
   end
 
+  def complete_permissions
+    if (approved_ids = user.approved_developers.pluck(:id)).present?
+      permissions.where.not(["permissible_type = ? AND permissible_id IN (?)", "Developer", approved_ids])
+    else
+      permissions
+    end
+  end
+
   def can_bypass_fogging?(permissible)
     permission_for(permissible).bypass_fogging
   end
