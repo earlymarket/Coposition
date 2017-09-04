@@ -260,6 +260,8 @@ GEM
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     http_parser.rb (0.6.0)
+    httparty (0.15.6)
+      multi_xml (>= 0.5.2)
     i18n (0.8.4)
     inline_svg (1.2.1)
       activesupport (>= 3.0)
@@ -315,6 +317,7 @@ GEM
     minitest (5.10.1)
     multi_json (1.12.1)
     multi_test (0.1.2)
+    multi_xml (0.6.0)
     nenv (0.3.0)
     netrc (0.11.0)
     newrelic_rpm (4.2.0.334)
@@ -588,6 +591,7 @@ DEPENDENCIES
   gon (~> 6.1.0)
   gpx
   guard-livereload (~> 2.4)
+  httparty
   inherited_resources!
   inline_svg
   interactor

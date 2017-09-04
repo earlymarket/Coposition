@@ -48,7 +48,8 @@ gem "slim"
 gem "public_activity"
 gem "rollbar"
 gem "oj"
-gem 'smooch-api', '~> 1.8.0'
+gem "smooch-api", "~> 1.8.0"
+gem "httparty"
 
 group :production do
   gem "rack-timeout"
