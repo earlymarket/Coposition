@@ -50,6 +50,7 @@ gem "rollbar"
 gem "oj"
 gem "smooch-api", "~> 1.8.0"
 gem "httparty"
+gem "dotenv-rails"
 
 group :production do
   gem "rack-timeout"
@@ -93,7 +94,6 @@ group :development, :test do
   gem "rubocop-rspec", require: false
   gem "coffeelint"
   gem "rails_best_practices", require: false
-  gem "dotenv-rails"
   gem "slim_lint", require: false
 end
 
