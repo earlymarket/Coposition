@@ -1,8 +1,17 @@
-h1.title Your countries
-div
-  - if @countries.any?
-    ul
-      - @countries.each do |country|
-        li
-          p= country[:country]
-          p Visited at: #{country[:visited_at]}
+h5
+  = countries_presenter.visited_countries_title(countries_presenter.last_countries_no_limits)
+table
+  thead
+    tr
+      td
+      td Country
+      td Last Visited
+  tbody
+    - countries_presenter.last_countries_no_limits.each do |country|
+      tr
+        td
+          = dashboard_flag(country[:country_code])
+        td
+          = dashboard_country_name(country[:country_code])
+        td
+          = humanize_date(country[:created_at])
