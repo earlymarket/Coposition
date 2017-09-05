@@ -1,6 +1,8 @@
 module Users::Devices
   class DevicesShowPresenter < ApplicationPresenter
-    FIRST_LOAD_MAX = 5000
+    FIRST_LOAD_MAX = 5_000
+    MAX_CHECKINS_TO_DISPLAY = 10_000
+    MAX_CHECKINS_TO_LOAD = 14_000
 
     attr_reader :user
     attr_reader :device
@@ -19,12 +21,13 @@ module Users::Devices
 
     def show_gon
       {
-        checkins: ActiveRecord::Base.connection.execute(gon_show_checkins_paginated.to_sql).to_a,
+        checkins: raw_paginated_checkins,
         cities: gon_show_cities,
         first_load: first_load,
         device: device.id,
         current_user_id: user.id,
         total: gon_show_checkins.count,
+        max: MAX_CHECKINS_TO_LOAD,
         all: all_checkins?
       }
     end
@@ -62,7 +65,16 @@ module Users::Devices
 
     def gon_show_checkins_paginated
       gon_show_checkins
+        .paginate(page: 1, per_page: 5000)
         .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :edited)
+    end
+
+    def raw_paginated_checkins
+      if gon_show_checkins.count <= MAX_CHECKINS_TO_DISPLAY
+        ActiveRecord::Base.connection.execute(gon_show_checkins_paginated.to_sql).to_a
+      else
+        []
+      end
     end
 
     def first_load_range
