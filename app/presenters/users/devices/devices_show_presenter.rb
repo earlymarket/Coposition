@@ -1,6 +1,8 @@
 module Users::Devices
   class DevicesShowPresenter < ApplicationPresenter
-    FIRST_LOAD_MAX = 5000
+    FIRST_LOAD_MAX = 5_000
+    MAX_CHECKINS_TO_DISPLAY = 20_000
+    MAX_CHECKINS_TO_LOAD = 50_000
 
     attr_reader :user
     attr_reader :device
@@ -19,12 +21,14 @@ module Users::Devices
 
     def show_gon
       {
-        checkins: ActiveRecord::Base.connection.execute(gon_show_checkins_paginated.to_sql).to_a,
-        locations: gon_show_locations,
+        checkins: raw_paginated_checkins,
+        cities: gon_show_cities,
+        counts: gon_cities_counts,
         first_load: first_load,
         device: device.id,
         current_user_id: user.id,
         total: gon_show_checkins.count,
+        max: MAX_CHECKINS_TO_LOAD,
         all: all_checkins?
       }
     end
@@ -62,7 +66,16 @@ module Users::Devices
 
     def gon_show_checkins_paginated
       gon_show_checkins
+        .paginate(page: 1, per_page: 5000)
         .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :edited)
+    end
+
+    def raw_paginated_checkins
+      if gon_show_checkins.count <= MAX_CHECKINS_TO_DISPLAY
+        ActiveRecord::Base.connection.execute(gon_show_checkins_paginated.to_sql).to_a
+      else
+        []
+      end
     end
 
     def first_load_range
@@ -83,16 +96,16 @@ module Users::Devices
       end
     end
 
-    def gon_show_locations
-      locations = device.locations
+    def gon_show_cities
+      checkins = gon_show_checkins.unscope(:order)
+      city_checkins = Checkin.where(id: checkins.select("DISTINCT ON(fogged_city) *").map(&:id))
+      city_checkins_sql = city_checkins.select("created_at", "fogged_lat AS lat", "fogged_lng AS lng",
+        "fogged_city AS city", "fogged_country_code AS country_code", "null AS id").to_sql
+      ActiveRecord::Base.connection.execute(city_checkins_sql)
+    end
 
-      @gon_show_locations ||= if first_load
-        locations.limit(FIRST_LOAD_MAX) if first_load
-      elsif date_range[:from]
-        locations.joins(:checkins).where("checkins.created_at": date_range[:from]..date_range[:to]).uniq
-      else
-        locations
-      end
+    def gon_cities_counts
+      gon_show_checkins.unscope(:order).group(:fogged_city).count
     end
   end
 end

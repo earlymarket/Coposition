@@ -66,6 +66,23 @@
       li
         | {{ &foggle }} {{ &deletebutton }}
 
+  script#cityPopupTmpl type="x-tmpl-mustache" 
+    h3.ta-center
+      | {{ address }}
+    ul
+      h3.lined
+        span.lined-pad First visited
+      li.ta-center
+        | {{ &inlineDate }}
+      h3.lined
+        span.lined-pad Number of check-ins
+      li.ta-center
+        | {{ id }}
+      h3.lined
+        span.lined-pad Coordinates
+      li.ta-center
+        | {{ lat }}, {{ lng }}
+
   script#createCheckinTmpl type="x-tmpl-mustache" 
     ul
       li Latitude: {{ lat }}

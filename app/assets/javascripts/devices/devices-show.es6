@@ -48,12 +48,12 @@ $(document).on('page:change', function() {
 
     function initMarkers() {
       var switchToLocations = false;
-      if (page === 'user' && gon.total > 5000) {
-        switchToLocations = confirm("This will take a long time to load, would you like to view locations instead?");
+      if (page === 'user' && gon.total > 20000) {
+        switchToLocations = confirm("This will take a long time to load, would you like to view cities instead?");
       }
 
       if (switchToLocations) {
-        M.initMarkers(gon.locations);
+        M.initMarkers(gon.cities);
       } else {
         M.initMarkers(gon.checkins, gon.total);
       }
