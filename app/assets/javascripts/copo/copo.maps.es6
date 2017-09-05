@@ -237,7 +237,7 @@ window.COPO.maps = {
 
   buildCityPopup(checkin, marker) {
     var checkinTemp = {
-      id: checkin.id,
+      id: gon.counts[checkin.city],
       lat: checkin.lat.toFixed(6),
       lng: checkin.lng.toFixed(6),
       created_at: moment.utc(checkin.created_at).format("ddd MMM D YYYY HH:mm:ss") + ' UTC+0000',
