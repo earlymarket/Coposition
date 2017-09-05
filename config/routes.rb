@@ -56,7 +56,6 @@ Rails.application.routes.draw do
         collection do
           get :auth
         end
-        resources :locations, only: :index, module: :users
         resources :approvals, only: [:create, :index, :update, :destroy], module: :users do
           collection do
             get :status
