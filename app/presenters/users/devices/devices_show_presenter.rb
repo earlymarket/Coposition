@@ -1,8 +1,8 @@
 module Users::Devices
   class DevicesShowPresenter < ApplicationPresenter
     FIRST_LOAD_MAX = 5_000
-    MAX_CHECKINS_TO_DISPLAY = 10_000
-    MAX_CHECKINS_TO_LOAD = 14_000
+    MAX_CHECKINS_TO_DISPLAY = 20_000
+    MAX_CHECKINS_TO_LOAD = 50_000
 
     attr_reader :user
     attr_reader :device
