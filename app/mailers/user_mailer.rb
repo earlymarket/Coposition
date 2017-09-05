@@ -1,7 +1,24 @@
 class UserMailer < ApplicationMailer
   def invite_email(address)
-    @url = "https://coposition.com/users/sign_up?email=#{address}"
-    mail(to: address, subject: "Coposition invite")
+    data = JSON.parse({
+      "personalizations": [
+        {
+          "to": [{ "email": address }],
+          "substitutions": { "-address-": address },
+          "subject": "Coposition Invite"
+        }
+      ],
+      "from": { "email": "coposition@support.com" },
+      "template_id": "b97d0595-a77e-46ae-838b-ceb1c6785fee"
+    }.to_json)
+    sg = SendGrid::API.new(api_key: ENV["SENDGRID_API_KEY"])
+    sg.client.mail._("send").post(request_body: data)
+
+    # sg = SendGrid::API.new(api_key: ENV["SENDGRID_API_KEY"])
+    # response = sg.client._("templates/b97d0595-a77e-46ae-838b-ceb1c6785fee").get()
+    # binding.pry
+    # @url = "https://coposition.com/users/sign_up?email=#{address}"
+    # mail(to: address, subject: "Coposition invite")
   end
 
   def add_user_email(approvable, user, from_developer)
