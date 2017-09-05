@@ -24,7 +24,7 @@ window.COPO.maps = {
       COPO.maps.bindMarkerListeners(checkins);
       COPO.maps.loadAllCheckins(checkins, total);
       if (COPO.maps.allMarkers.getLayers().length) {
-        map.fitBounds(COPO.maps.allMarkers.getBounds());
+        map.fitBounds(COPO.maps.allMarkers.getBounds().pad(0.5));
       } else {
         map.once('locationfound', function(e) {
           map.panTo(e.latlng);
@@ -35,20 +35,30 @@ window.COPO.maps = {
 
   loadAllCheckins(checkins, total) {
     if (total === undefined) {
-      $('.cached-icon').addClass('locations-active');
+      if (checkins.length) $('.cached-icon').addClass('locations-active');
       return;
     }
-    loadCheckins(2);
+    if (total >= gon.max) {
+      COPO.maps.refreshMarkers(gon.cities);
+      $('.cached-icon').addClass('locations-active');
+      toastMessage()
+      window.COPO.maps.fitBounds();
+      return;
+    } else if (checkins.length === 0) {
+      loadCheckins(1);
+    } else {
+      loadCheckins(2);
+    }
 
     function getCheckinData(page) {
       if (window.COPO.utility.currentPage('devices', 'show')) {
         if (window.location.search.length !== 0) {
-          return $.getJSON(`${window.location.pathname}/checkins${window.location.search}&page=${page}&per_page=1000`)
+          return $.getJSON(`${window.location.pathname}/checkins${window.location.search}&page=${page}&per_page=5000`)
         } else {
-          return $.getJSON(`${window.location.pathname}/checkins?page=${page}&per_page=1000`)
+          return $.getJSON(`${window.location.pathname}/checkins?page=${page}&per_page=5000`)
         }
       } else if (window.COPO.utility.currentPage('friends', 'show_device')) {
-        return $.getJSON(`${window.location.pathname}${window.location.search}&page=${page}&per_page=1000`)
+        return $.getJSON(`${window.location.pathname}${window.location.search}&page=${page}&per_page=5000`)
       } else {
         console.log('Page not recognised. No incremental loading.');
       }
@@ -74,6 +84,8 @@ window.COPO.maps = {
     function toastMessage() {
       if (gon.first_load && total >= 5000) {
         Materialize.toast('Last 5000 check-ins shown. Select a date range to load more.' , 3000)
+      } else if (total >= gon.max) {
+        Materialize.toast('There were too many check-ins to load, cities are shown', 3000);
       } else if (gon.all) {
         Materialize.toast('All check-ins loaded', 3000)
       } else {
@@ -94,7 +106,7 @@ window.COPO.maps = {
 
   fitBounds() {
     if (COPO.maps.allMarkers.getLayers().length) {
-      map.fitBounds(COPO.maps.allMarkers.getBounds())
+      map.fitBounds(COPO.maps.allMarkers.getBounds().pad(0.5))
     }
   },
 
@@ -170,7 +182,7 @@ window.COPO.maps = {
       let checkin = this.options.checkin;
       COPO.maps.dateToLocal(checkin);
       if (!marker._popup) {
-        var template = COPO.maps.buildMarkerPopup(checkin, marker);
+        var template = checkin.address ? COPO.maps.buildCheckinPopup(checkin, marker) : COPO.maps.buildCityPopup(checkin, marker)
         marker.bindPopup(L.Util.template(template, checkin));
         marker.openPopup();
       }
@@ -185,7 +197,7 @@ window.COPO.maps = {
     });
   },
 
-  buildMarkerPopup(checkin, marker) {
+  buildCheckinPopup(checkin, marker) {
     let address = checkin.city;
     if (checkin.address) {
       address = COPO.utility.commaToNewline(checkin.address)
@@ -220,6 +232,20 @@ window.COPO.maps = {
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
     checkinTemp.inlineDate = COPO.utility.renderInlineDate(checkin, checkinTemp);
     var template = $('#markerPopupTmpl').html();
+    return Mustache.render(template, checkinTemp);
+  },
+
+  buildCityPopup(checkin, marker) {
+    var checkinTemp = {
+      id: gon.counts[checkin.city],
+      lat: checkin.lat.toFixed(6),
+      lng: checkin.lng.toFixed(6),
+      created_at: moment.utc(checkin.created_at).format("ddd MMM D YYYY HH:mm:ss") + ' UTC+0000',
+      address: checkin.city,
+      marker: marker._leaflet_id
+    };
+    checkinTemp.inlineDate = `<span id="localTime">${checkinTemp.created_at}</span>`
+    var template = $('#cityPopupTmpl').html();
     return Mustache.render(template, checkinTemp);
   },
 
@@ -578,9 +604,10 @@ window.COPO.maps = {
     if ($('.cached-icon').hasClass('locations-active')) {
       $('.cached-icon').removeClass('locations-active');
       COPO.maps.refreshMarkers(gon.checkins);
+      if (gon.checkins.length < gon.total) COPO.maps.loadAllCheckins(gon.checkins, gon.total);
     } else {
       $('.cached-icon').addClass('locations-active');
-      COPO.maps.refreshMarkers(gon.locations);
+      COPO.maps.refreshMarkers(gon.cities);
     }
   }
 }
