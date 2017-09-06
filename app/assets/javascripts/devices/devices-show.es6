@@ -47,7 +47,11 @@ $(document).on('page:change', function() {
     }
 
     function initMarkers() {
-      if (page === 'user' && gon.total > 10000) {
+      if (page === 'user' && gon.total > 50000) {
+        M.initMarkers(gon.cities);
+        return;
+      }
+      if (page === 'user' && gon.total > 20000) {
         sweetAlert(
           {
             title: "Show cities?",
