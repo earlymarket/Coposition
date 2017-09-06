@@ -35,12 +35,12 @@ window.COPO.maps = {
 
   loadAllCheckins(checkins, total) {
     if (total === undefined) {
-      if (checkins.length) $('.cached-icon').addClass('locations-active');
+      if (checkins.length) $('.cached-icon').addClass('cities-active');
       return;
     }
     if (total >= gon.max) {
       COPO.maps.refreshMarkers(gon.cities);
-      $('.cached-icon').addClass('locations-active');
+      $('.cached-icon').addClass('cities-active');
       toastMessage()
       window.COPO.maps.fitBounds();
       return;
@@ -309,7 +309,7 @@ window.COPO.maps = {
       onAdd: (map) => {
         var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
         container.innerHTML = `
-        <a class="leaflet-control-locations leaflet-bar-locations" href="#" onclick="return false;" title="Show locations">
+        <a class="leaflet-control-locations leaflet-bar-locations" href="#" onclick="return false;" title="Show cities">
           <i class="material-icons cached-icon">cached</i>
         </a>
         `;
@@ -601,12 +601,12 @@ window.COPO.maps = {
   },
 
   locationsControlClick() {
-    if ($('.cached-icon').hasClass('locations-active')) {
-      $('.cached-icon').removeClass('locations-active');
+    if ($('.cached-icon').hasClass('cities-active')) {
+      $('.cached-icon').removeClass('cities-active');
       COPO.maps.refreshMarkers(gon.checkins);
       if (gon.checkins.length < gon.total) COPO.maps.loadAllCheckins(gon.checkins, gon.total);
     } else {
-      $('.cached-icon').addClass('locations-active');
+      $('.cached-icon').addClass('cities-active');
       COPO.maps.refreshMarkers(gon.cities);
     }
   }
