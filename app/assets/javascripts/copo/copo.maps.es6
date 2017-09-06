@@ -606,6 +606,7 @@ window.COPO.maps = {
 
   locationsControlClick() {
     if ($('.cached-icon').hasClass('cities-active')) {
+      Materialize.toast('Loading check-ins.' , 3000)
       $('.cached-icon').removeClass('cities-active');
       COPO.maps.refreshMarkers(gon.checkins);
       if (gon.checkins.length < gon.total) COPO.maps.loadAllCheckins(gon.checkins, gon.total);
