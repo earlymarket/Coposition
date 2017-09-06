@@ -19,18 +19,22 @@ window.COPO.maps = {
 
   initMarkers(checkins, total) {
     map.once('ready', function() {
-      COPO.maps.generatePath(checkins);
-      COPO.maps.renderAllMarkers(checkins);
-      COPO.maps.bindMarkerListeners(checkins);
-      COPO.maps.loadAllCheckins(checkins, total);
-      if (COPO.maps.allMarkers.getLayers().length) {
-        map.fitBounds(COPO.maps.allMarkers.getBounds().pad(0.5));
-      } else {
-        map.once('locationfound', function(e) {
-          map.panTo(e.latlng);
-        })
-      }
+      COPO.maps.initMarkersMapLoaded(checkins, total)
     });
+  },
+
+  initMarkersMapLoaded(checkins, total) {
+    COPO.maps.generatePath(checkins);
+    COPO.maps.renderAllMarkers(checkins);
+    COPO.maps.bindMarkerListeners(checkins);
+    COPO.maps.loadAllCheckins(checkins, total);
+    if (COPO.maps.allMarkers.getLayers().length) {
+      map.fitBounds(COPO.maps.allMarkers.getBounds().pad(0.5));
+    } else {
+      map.once('locationfound', function(e) {
+        map.panTo(e.latlng);
+      })
+    }
   },
 
   loadAllCheckins(checkins, total) {
