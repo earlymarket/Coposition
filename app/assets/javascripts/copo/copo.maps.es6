@@ -605,9 +605,11 @@ window.COPO.maps = {
       $('.cached-icon').removeClass('cities-active');
       COPO.maps.refreshMarkers(gon.checkins);
       if (gon.checkins.length < gon.total) COPO.maps.loadAllCheckins(gon.checkins, gon.total);
+      COPO.maps.fitBounds();
     } else {
       $('.cached-icon').addClass('cities-active');
       COPO.maps.refreshMarkers(gon.cities);
+      COPO.maps.fitBounds();
     }
   }
 }
