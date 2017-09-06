@@ -26,6 +26,7 @@ p
 - if @dashboard_presenter.last_countries
   h5
     = @dashboard_presenter.visited_countries_title
+  p = link_to "View All", user_countries_path(current_user.url_id)
   table
     thead
       tr
@@ -41,7 +42,6 @@ p
             = dashboard_country_name(country[:country_code])
           td
             = humanize_date(country[:created_at])
-  p = link_to "View more", user_countries_path(current_user.url_id)
   .divider
 section#dashboard-quicklinks
   p
