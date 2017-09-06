@@ -1,24 +1,16 @@
 class UserMailer < ApplicationMailer
   def invite_email(address)
-    data = JSON.parse({
-      "personalizations": [
-        {
-          "to": [{ "email": address }],
-          "substitutions": { "-address-": address },
-          "subject": "Coposition Invite"
-        }
-      ],
-      "from": { "email": "coposition@support.com" },
-      "template_id": "b97d0595-a77e-46ae-838b-ceb1c6785fee"
-    }.to_json)
-    sg = SendGrid::API.new(api_key: ENV["SENDGRID_API_KEY"])
-    sg.client.mail._("send").post(request_body: data)
+    invite_mail = SendGrid::Mail.new
+    invite_mail.from = SendGrid::Email.new(email: "coposition@support.com")
+    invite_mail.subject = "Coposition Invite"
+    personalization = SendGrid::Personalization.new
+    personalization.add_to(SendGrid::Email.new(email: address))
+    personalization.add_substitution(SendGrid::Substitution.new(key: "-address-", value: address))
+    invite_mail.add_personalization(personalization)
+    invite_mail.template_id = "b97d0595-a77e-46ae-838b-ceb1c6785fee"
 
-    # sg = SendGrid::API.new(api_key: ENV["SENDGRID_API_KEY"])
-    # response = sg.client._("templates/b97d0595-a77e-46ae-838b-ceb1c6785fee").get()
-    # binding.pry
-    # @url = "https://coposition.com/users/sign_up?email=#{address}"
-    # mail(to: address, subject: "Coposition invite")
+    sg = SendGrid::API.new(api_key: ENV["SENDGRID_API_KEY"])
+    sg.client.mail._("send").post(request_body: invite_mail.to_json)
   end
 
   def add_user_email(approvable, user, from_developer)
