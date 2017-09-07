@@ -16,4 +16,4 @@ asset 'jquery-Mustache'
 asset 'leaflet.markercluster'
 asset 'clipboard'
 asset 'slick-carousel'
-asset 'sweetalert'
+asset 'sweetalert', "1.1.3"
