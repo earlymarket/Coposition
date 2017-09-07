@@ -46,7 +46,8 @@ window.COPO.editCheckin = {
       let coords = data.split(', ')
       data = { checkin: {lat: coords[0], lng: coords[1]} }
     } else {
-      data = { checkin: { created_at: data } }
+      let date = new Date(data).toUTCString() + " UTC+0000"
+      data = { checkin: { created_at: date } }
     }
     COPO.editCheckin.putUpdateCheckin(url, data);
   },
@@ -120,7 +121,7 @@ window.COPO.editCheckin = {
     if (original !== $editable.text()) {
       var url = $editable.data('url');
       var data = { checkin: { created_at: $editable.text()} }
-      COPO.editCheckin.addRevertButton('date', url, original)
+      COPO.editCheckin.addRevertButton('date', url, $editable.data().date)
       COPO.editCheckin.putUpdateCheckin(url, data);
     } else {
       // reverse the edit
@@ -175,7 +176,7 @@ window.COPO.editCheckin = {
 
   updateCheckin(response) {
     // tries to find the checkin in gon and update it with the response
-    checkin = _.find(gon.checkins, _.matchesProperty('id', response.checkin.id));
+    let checkin = _.find(gon.checkins, _.matchesProperty('id', response.checkin.id));
     checkin.lat = response.checkin.lat;
     checkin.lng = response.checkin.lng;
     checkin.edited = response.checkin.edited;
