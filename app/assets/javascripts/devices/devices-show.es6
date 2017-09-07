@@ -9,7 +9,7 @@ $(document).on('page:change', function() {
     M.initMap();
     initMarkers();
     var controls = ['geocoder', 'locate', 'w3w', 'fullscreen', 'path']
-    page === 'user' ? controls.push('locations', 'layers') : controls.push('layers')
+    page === 'user' ? controls.push('cities', 'layers') : controls.push('layers')
     M.initControls(controls);
     COPO.datePicker.init();
 
@@ -47,6 +47,9 @@ $(document).on('page:change', function() {
     }
 
     function initMarkers() {
+      M.initMarkers(gon.cities);
+      return;
+      
       if (page === 'user' && gon.total > 50000) {
         M.initMarkers(gon.cities);
         return;
