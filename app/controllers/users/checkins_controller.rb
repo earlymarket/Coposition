@@ -42,6 +42,7 @@ class Users::CheckinsController < ApplicationController
   end
 
   def update
+    gon.push(original: Checkin.find(params[:id]))
     result = Users::Checkins::UpdateCheckin.call(params: params)
     @checkin = result.checkin if result.checkin.save
     render status: 200, json: @checkin if params[:checkin]
