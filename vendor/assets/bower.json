@@ -15,6 +15,6 @@
     "leaflet.markercluster": "latest",
     "clipboard": "latest",
     "slick-carousel": "latest",
-    "sweetalert": "latest"
+    "sweetalert": "1.1.3"
   }
 }
