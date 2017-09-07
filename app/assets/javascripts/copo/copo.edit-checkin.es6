@@ -5,6 +5,11 @@ window.COPO.editCheckin = {
       e.stopPropagation();
       COPO.editCheckin.handleEditStart($(e.currentTarget).find(".editable"));
     });
+
+    $('body').on('click', '.revert', function(e) {
+      $('.revert').remove()
+      COPO.editCheckin.handleRevert($(e.currentTarget))
+    });
   },
 
   handleEditStart($editable) {
@@ -31,6 +36,19 @@ window.COPO.editCheckin = {
 
     // setup other listeners
     COPO.editCheckin.setEditableListeners($editable);
+  },
+
+  handleRevert($revert) {
+    let data = $revert.data().original
+    let url = $revert.data().url
+    let type = $revert.data().type
+    if (type === 'coords') {
+      let coords = data.split(', ')
+      data = { checkin: {lat: coords[0], lng: coords[1]} }
+    } else {
+      data = { checkin: { created_at: data } }
+    }
+    COPO.editCheckin.putUpdateCheckin(url, data);
   },
 
   setEditableListeners($editable) {
@@ -102,6 +120,7 @@ window.COPO.editCheckin = {
     if (original !== $editable.text()) {
       var url = $editable.data('url');
       var data = { checkin: { created_at: $editable.text()} }
+      COPO.editCheckin.addRevertButton('date', url, original)
       COPO.editCheckin.putUpdateCheckin(url, data);
     } else {
       // reverse the edit
@@ -115,6 +134,7 @@ window.COPO.editCheckin = {
     if (original !== $editable.text() && coords.length === 2 && coords.every(COPO.utility.validateLatLng)) {
       var url = $editable.data('url');
       var data = { checkin: { lat: coords[0], lng: coords[1]} }
+      COPO.editCheckin.addRevertButton('coords', url, original)
       COPO.editCheckin.putUpdateCheckin(url, data);
     } else {
       // reverse the edit
@@ -129,9 +149,15 @@ window.COPO.editCheckin = {
         confirmText += latlng.lat.toFixed(6) + ", " + latlng.lng.toFixed(6) + ").";
     if (confirm(confirmText)) {
       var data = { checkin: {lat: latlng.lat, lng: latlng.lng} }
+      COPO.editCheckin.addRevertButton('coords', $editable.data('url'), $editable.text())
       COPO.editCheckin.putUpdateCheckin($editable.data('url'), data);
     }
     COPO.editCheckin.handleEditEnd($editable);
+  },
+
+  addRevertButton(type, url, original) {
+    $('.revert').remove()
+    $('.buttons').append(COPO.utility.revertCheckinUpdate(type, url, original))
   },
 
   putUpdateCheckin(url, data) {

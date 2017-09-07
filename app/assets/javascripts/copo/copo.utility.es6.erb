@@ -44,6 +44,12 @@ COPO.utility = {
       .attr('id', fogId + checkin.id).attr('class', foggedClass).prop('outerHTML')
   },
 
+  revertCheckinUpdate(type, url, original) {
+    return `<a class="btn red white-text revert" data-type="${type}" data-url="${url}" data-original="${original}">
+              Revert last edit
+            </a>`;
+  },
+
   renderInlineCoords(checkin) {
     const url = `${window.location.pathname}/checkins/${checkin.id}`;
     return `<span class="editable-wrapper tooltipped clickable" data-tooltip="Click to edit coordinates">
