@@ -1,3 +1,15 @@
+p
+  - if params[:last_visited]
+    | Last Visited
+  - else
+    = link_to "Last Visited", user_countries_path(current_user.url_id,last_visited: true)
+  |  /
+  '
+  - if params[:last_visited]
+    = link_to "Full History", user_countries_path(current_user.url_id)
+  - else
+    | Full History
+
 h5 Countries visited
 table
   thead
@@ -6,11 +18,14 @@ table
       td Country
       td Last Visited
   tbody
-    - countries_presenter.last_countries_no_limits.each do |country|
+    - countries.each do |country|
       tr
         td
-          = dashboard_flag(country[:country_code])
+          = dashboard_flag(country["country_code"])
         td
-          = dashboard_country_name(country[:country_code])
+          = dashboard_country_name(country["country_code"])
         td
-          = humanize_date(country[:created_at])
+          = humanize_date_str(country["min_date"])
+          |  -
+          '
+          = humanize_date_str(country["max_date"])
