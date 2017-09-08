@@ -1,7 +1,7 @@
-class CreateActivity
+class CreateSendgridTemplate
   include Interactor
 
-  delegate :to, :subject, :id, :subsitutions, :content, to: :context
+  delegate :to, :subject, :id, :substitutions, :content, to: :context
 
   def call
     mail.from = SendGrid::Email.new(email: "coposition@support.com")
@@ -14,8 +14,8 @@ class CreateActivity
 
   def add_substitutions
     personalization.add_to(SendGrid::Email.new(email: to))
-    subsitutions.each do |subsitution|
-      personalization.add_substitution(SendGrid::Substitution.new(key: subsitution.key, value: subsitution.value))
+    substitutions.each do |substitution|
+      personalization.add_substitution(SendGrid::Substitution.new(key: substitution[:key], value: substitution[:value]))
     end
     mail.add_personalization(personalization)
   end

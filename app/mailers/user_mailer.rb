@@ -42,7 +42,8 @@ class UserMailer < ApplicationMailer
     content = "<p>You have not checked in on the following devices in over 3 months:</p>"
     content += "<ul>"
     inactive.each do |device|
-      content += "<li><a href=#{url + '/' + device.id.to_s}>" + device.name + "</a></li>"
+      content += "<li><a href='https://coposition.com/users/#{user.id}/devices/' + device.id.to_s}>"
+      content += device.name + "</a></li>"
     end
     content += "</ul>"
     content
@@ -50,7 +51,7 @@ class UserMailer < ApplicationMailer
 
   def send_mail(result)
     sg = SendGrid::API.new(api_key: ENV["SENDGRID_API_KEY"])
-    sg.client.mail._("send").post(request_body: result.mail.to_json)
+    sg.client.mail._("send").post(request_body: result.template.to_json)
   end
 
   def unsubscribe_link(user)
