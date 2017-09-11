@@ -28,6 +28,7 @@ class CountriesVisitPeriodQuery
       WHERE
         devices.user_id = #{user.id}
       WINDOW w AS (PARTITION BY ch.country_code)
+      ORDER BY min_date DESC
     EOQ
   end
 
@@ -39,6 +40,7 @@ class CountriesVisitPeriodQuery
         MAX(ch.min_date) as min_date
       FROM (#{full_history_query}) ch
       GROUP BY ch.country_code
+      ORDER BY min_date DESC
     EOQ
   end
 end
