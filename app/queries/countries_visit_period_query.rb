@@ -22,7 +22,8 @@ class CountriesVisitPeriodQuery
         ch.country_code,
         MIN(ch.created_at) OVER w as min_date,
         MAX(ch.created_at) OVER w as max_date
-      FROM checkins as ch
+      FROM
+        (SELECT * FROM checkins ORDER BY created_at) as ch
       INNER JOIN
         devices ON ch.device_id = devices.id
       WHERE
