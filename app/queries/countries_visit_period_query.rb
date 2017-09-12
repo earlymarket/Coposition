@@ -19,17 +19,22 @@ class CountriesVisitPeriodQuery
   def full_history_query
     <<-EOQ
       SELECT
-        ch.country_code,
-        MIN(ch.created_at) OVER w as min_date,
-        MAX(ch.created_at) OVER w as max_date
-      FROM
-        (SELECT * FROM checkins ORDER BY created_at) as ch
-      INNER JOIN
-        devices ON ch.device_id = devices.id
-      WHERE
-        devices.user_id = #{user.id}
-      WINDOW w AS (PARTITION BY ch.country_code)
-      ORDER BY min_date DESC
+        _ch.country_code, _ch.min_date, _ch.max_date
+      FROM (SELECT
+          __ch.country_code,
+          MIN(__ch.created_at) OVER w as min_date,
+          MAX(__ch.created_at) OVER w as max_date
+        FROM
+          (SELECT * FROM checkins ORDER BY created_at) as __ch
+        INNER JOIN
+          devices ON __ch.device_id = devices.id
+        WHERE
+          devices.user_id = #{user.id}
+        WINDOW w AS (PARTITION BY __ch.country_code)
+      ) as _ch
+      GROUP BY
+        _ch.country_code, _ch.min_date, _ch.max_date
+      ORDER BY _ch.max_date DESC
     EOQ
   end
 
@@ -41,7 +46,7 @@ class CountriesVisitPeriodQuery
         MAX(ch.min_date) as min_date
       FROM (#{full_history_query}) ch
       GROUP BY ch.country_code
-      ORDER BY min_date DESC
+      ORDER BY ch.max_date DESC
     EOQ
   end
 end
