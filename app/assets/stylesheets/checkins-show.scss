@@ -1,0 +1,73 @@
+.c-checkins.a-show {
+  #map {
+    position:absolute;
+    top:64px;
+    bottom:0px;
+    width:100%;
+  }
+
+  .popup-topbox {
+    margin-bottom: 1.8rem;
+  }
+
+  .popup-label {
+    text-align: right;
+    font-weight: bold;
+  }
+
+  .address {
+    white-space: pre;
+  }
+
+  .leaflet-popup-content {
+    .left {
+      margin-top: -10px;
+    }
+  }
+
+  table {
+    font-size: 1rem;
+
+    .title {
+      font-size: 1.4rem;
+      font-weight: bold;
+      vertical-align: middle;
+      white-space: normal;
+    }
+    td {
+      padding: 0.1rem 0.5rem;
+      vertical-align: top;
+      white-space: nowrap;
+    }
+
+    h3, ul {
+      margin: 0;
+    }
+
+    .editable {
+      font-size: 0.9rem;
+    }
+
+    .edit-coords {
+      font-size: 14px;
+      display: none;
+    }
+
+    .editable-wrapper.clickable {
+      cursor: pointer;
+
+      .editable {
+        border-bottom: #ff8f00 2px dotted;
+      }
+
+      .edit-coords {
+        display: inline-block;
+      }
+    }
+
+    li.address, .foggedAddress > li {
+      white-space: pre-wrap;
+      font-family: "Fira Mono", monospace;
+    }
+  }
+}
