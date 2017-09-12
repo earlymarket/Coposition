@@ -106,7 +106,6 @@ window.COPO.maps = {
     }
   },
 
-
   removeMap() {
     map.remove();
   },
