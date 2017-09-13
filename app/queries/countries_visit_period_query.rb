@@ -19,38 +19,45 @@ class CountriesVisitPeriodQuery
   def full_history_query
     <<-EOQ
       SELECT
-        _ch.country_code, _ch.min_date, _ch.max_date
+        visits.country_code, visits.min_date, visits.max_date
       FROM (
         SELECT
-          __ch.country_code,
-          MIN(__ch.created_at) OVER w as min_date,
-          MAX(__ch.created_at) OVER w as max_date
+          grouped_ch.country_code,
+          MIN(grouped_ch.created_at) OVER w as min_date,
+          MAX(grouped_ch.created_at) OVER w as max_date
         FROM (
-          SELECT *, (id - row_number() OVER (PARTITION BY country_code)) as grp
-          FROM checkins
-          ORDER BY created_at
-        ) as __ch
+          SELECT numbered_ch.*,
+            (numbered_ch.rnum - row_number() OVER (PARTITION BY numbered_ch.country_code ORDER BY numbered_ch.rnum)) as grp
+          FROM (
+            SELECT ordered_ch.*, (row_number() OVER()) as rnum
+            FROM (
+              SELECT *
+              FROM checkins
+              ORDER BY created_at
+            ) as ordered_ch
+          ) as numbered_ch
+        ) as grouped_ch
         INNER JOIN
-          devices ON __ch.device_id = devices.id
+          devices ON grouped_ch.device_id = devices.id
         WHERE
           devices.user_id = 5
-        WINDOW w AS (PARTITION BY __ch.country_code, __ch.grp)
-      ) as _ch
+        WINDOW w AS (PARTITION BY grouped_ch.country_code, grouped_ch.grp)
+      ) as visits
       GROUP BY
-        _ch.country_code, _ch.min_date, _ch.max_date
-      ORDER BY _ch.max_date DESC
+        visits.country_code, visits.min_date, visits.max_date
+      ORDER BY visits.max_date DESC
     EOQ
   end
 
   def last_visited_query
     <<-EOQ
       SELECT
-        ch.country_code,
-        MAX(ch.max_date) as max_date,
-        MAX(ch.min_date) as min_date
-      FROM (#{full_history_query}) ch
-      GROUP BY ch.country_code
-      ORDER BY ch.max_date DESC
+        last_visits.country_code,
+        MAX(last_visits.max_date) as max_date,
+        MAX(last_visits.min_date) as min_date
+      FROM (#{full_history_query}) last_visits
+      GROUP BY last_visits.country_code
+      ORDER BY max_date DESC
     EOQ
   end
 end
