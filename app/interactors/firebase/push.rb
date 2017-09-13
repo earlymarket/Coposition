@@ -8,7 +8,7 @@ module Firebase
       "Authorization" => "key=#{Rails.app_config.firebase_server_key}"
     }.freeze
 
-    delegate :notification, :topic, :result, to: :context
+    delegate :notification, :topic, :device, :result, to: :context
 
     def call
       context.result = send_notification
@@ -23,11 +23,17 @@ module Firebase
     end
 
     def payload
+      info_hash.to_json
+    end
+
+    def info_hash
       {
         to: "/topics/#{topic}",
         priority: "high",
         notification: notification
-      }.to_json
+      }.tap do |h|
+        h[:device] = device if device
+      end
     end
 
     def push_success?

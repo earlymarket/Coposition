@@ -35,6 +35,20 @@ class Users::DevicesController < ApplicationController
     @devices_info_presenter = ::Users::Devices::DevicesInfoPresenter.new(current_user, params)
   end
 
+  def remote_checkin
+    device = current_user.devices.find(params[:id])
+    return unless device
+
+    Firebase::Push.call(
+      device: device.id,
+      topic: device.user.notification_token,
+      notification: {
+        body: "Coposition device #{device.name} remote check-in",
+        title: "Remote check-in"
+      }
+    ) and redirect_to user_devices_path
+  end
+
   def create
     result = Users::Devices::CreateDevice.call(user: current_user,
                                                developer: Developer.default(coposition: true),

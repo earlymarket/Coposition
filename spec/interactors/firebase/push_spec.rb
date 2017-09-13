@@ -5,6 +5,7 @@ describe Firebase::Push do
     create :user,
       notification_token: "1496249902a1edd9a57c8b5554b745e38b20721f01"
   end
+
   let(:notification) do
     {
       body: "Coposition test message",
@@ -40,5 +41,28 @@ describe Firebase::Push do
 
   it "sends push notification" do
     described_class.call(topic: user.notification_token, notification: notification)
+  end
+
+  context "when device is defined" do
+    let(:device) { create :device, user: user }
+    let(:expected_body) do
+      {
+        to: "/topics/1496249902a1edd9a57c8b5554b745e38b20721f01",
+        priority: "high",
+        notification: {
+          body: "Coposition test message",
+          title: "Coposition check-in"
+        },
+        device: device.id
+      }.to_json
+    end
+
+    it "includes device id into push payload" do
+      described_class.call(
+        device: device.id,
+        topic: user.notification_token,
+        notification: notification
+      )
+    end
   end
 end
