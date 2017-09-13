@@ -1,6 +1,7 @@
 window.COPO = window.COPO || {};
 window.COPO.maps = {
   queueCalled: false,
+  windowFocused: true,
 
   initMap(customOptions) {
     if (document.getElementById('map')._leaflet) return;
@@ -11,10 +12,18 @@ window.COPO.maps = {
       minZoom: 1,
       worldCopyJump: true
     }
-
+    COPO.maps.windowFocus()
     var options = $.extend(defaultOptions, customOptions);
     window.map = L.mapbox.map('map', 'mapbox.light', options );
     $(document).one('turbolinks:before-render', COPO.maps.removeMap);
+  },
+
+  windowFocus() {
+    $(window).focus(() => {
+        COPO.maps.windowFocused = true;
+    }).blur(() => {
+        COPO.maps.windowFocused = false;
+    });
   },
 
   initMarkers(checkins, total) {
@@ -81,12 +90,16 @@ window.COPO.maps = {
         });
       } else {
         $('.myProgress').remove();
-        toastMessage()
+        COPO.maps.windowFocused ? toastMessages() : toastMessage()
         window.COPO.maps.fitBounds();
       };
     }
 
     function toastMessage() {
+      $(window).one('focus', toastMessages)
+    }
+
+    function toastMessages() {
       if (gon.first_load && total === undefined) {
         Materialize.toast('Up to last 100 cities visited shown', 3000)
       } else if (total === undefined) {

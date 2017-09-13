@@ -27,7 +27,6 @@ window.COPO.datePicker = {
     COPO.datePicker.checkPickers(from_picker, to_picker, 'max')
     COPO.datePicker.checkPickers(to_picker, to_picker, 'select')
     COPO.datePicker.checkPickers(from_picker, from_picker, 'select')
-    COPO.datePicker.openIfSet(from_picker);
   },
 
   setLimits: function(event, beingSet, setter, limit) {

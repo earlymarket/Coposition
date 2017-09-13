@@ -6,9 +6,27 @@ $(document).on('ready page:change', function() {
     belowOrigin: true
   });
 
+  // All modals should be initialized starting from 0.98
+  $('.modal').modal();
+
   // We're calling this later now in the dodgy hack
   // // materialize accordion init
-  $('.collapsible').collapsible();
+  $('.collapsible').collapsible({
+    onOpen: function(el) {
+      collapsible = el.find(".collapsible-header");
+
+      if (collapsible.data("onopen")) {
+        window[collapsible.data("onopen")]();
+      }
+    },
+    onClose: function(el) {
+      collapsible = el.find(".collapsible-header");
+
+      if (collapsible.data("onclose")) {
+        window[collapsible.data("onclose")]();
+      }
+    }
+  });
 
   // materialize parallax init
   $('.parallax').parallax();
