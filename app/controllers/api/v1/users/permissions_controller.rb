@@ -6,8 +6,9 @@ class Api::V1::Users::PermissionsController < Api::ApiController
   before_action :require_ownership
 
   def index
-    permissions = Permission.where(device_id: params[:device_id]).not_coposition_developers
-    render json: permissions
+    device = Device.find(params[:device_id])
+    permissions = params[:complete] ? device.complete_permissions : device.permissions
+    render json: permissions.not_coposition_developers
   end
 
   def update

@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   use_doorkeeper do
     controllers applications: "oauth/applications",
-      authorizations: "oauth/authorizations"
+                authorizations: "oauth/authorizations",
+                tokens: "oauth/tokens"
   end
 
   ActiveAdmin.routes(self)
@@ -13,6 +14,7 @@ Rails.application.routes.draw do
   get "/api", to: "welcome#api"
   get "/help", to: "welcome#help"
   get "/getting_started", to: "welcome#getting_started"
+  get "/terms", to: "welcome#terms"
   get "/devs", to: "welcome#devs"
   get "settings/unsubscribe"
   patch "settings/update"

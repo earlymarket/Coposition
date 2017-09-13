@@ -2,7 +2,10 @@
   /!
   .pure-u-1-12
   /!
-  .pure-u-5-12.copy-notice Copyright © 2017 Coposition
+  .pure-u-5-12.copy-notice 
+    | Copyright © 2017 Coposition
+    br/
+    = link_to "Terms and conditions", terms_path
   /!
   .pure-u-5-12
     - if Rails.env == "test" || params[:admin] || signed_in?

@@ -21,7 +21,7 @@ module Users
     private
 
     def per_page
-      @per_page ||= [@params[:per_page].to_i, 1000].min
+      @per_page ||= [@params[:per_page].to_i, 5000].min
     end
 
     def checkins
