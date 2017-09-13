@@ -5,7 +5,7 @@ section.dashboard
     | Hello #{current_user.username}
 section.dashboard.row
   .col.s12
-    #map-wrapper style=("position: relative;") 
+    #map-wrapper style=("position: relative;")
       p#map-status
       #map-overlay.valign-wrapper.z-depth-1.hide
         div
@@ -23,9 +23,14 @@ p
     |  That is an #{@dashboard_presenter.percent_change > 0 ? "increase" : "decrease"} of #{@dashboard_presenter.percent_change}% from last week.
   - if @dashboard_presenter.most_used_device.present?
     |  Your most used device is #{@dashboard_presenter.most_used_device.name}.
+
 - if @dashboard_presenter.last_countries
-  h5
-    = @dashboard_presenter.visited_countries_title
+  .row.valign-wrapper
+    h5.col.s8
+      = @dashboard_presenter.visited_countries_title
+    .col.s4.right-align
+      = link_to "View All", user_countries_path(current_user.url_id), class: "hyperlink"
+
   table
     thead
       tr
@@ -45,5 +50,5 @@ p
 section#dashboard-quicklinks
   p
     | You have #{link_to(pluralize(current_user.devices.count, "device"), user_devices_path, class: "hyperlink")}, #{link_to(pluralize(current_user.developers.not_coposition_developers.count, "connected app"), user_apps_path, class: "hyperlink")} and #{link_to(pluralize(current_user.friends.count, "friend"), user_friends_path, class: "hyperlink")}.
-    |  You have #{link_to(pluralize(current_user.developer_requests.count, "app"), user_apps_path, class: "hyperlink")} and 
-    | #{link_to(pluralize(current_user.friend_requests.count, "friend"), user_friends_path, class: "hyperlink")} awaiting your approval.
+    |  You have #{link_to(pluralize(current_user.developer_requests.count, "app"), user_apps_path, class: "hyperlink")} and
+    |  #{link_to(pluralize(current_user.friend_requests.count, "friend"), user_friends_path, class: "hyperlink")} awaiting your approval.
