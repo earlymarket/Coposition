@@ -40,6 +40,7 @@ window.COPO.maps = {
   loadAllCheckins(checkins, total) {
     if (total === undefined) {
       if (checkins.length) $('.cached-icon').addClass('cities-active');
+      toastMessage()
       return;
     }
     if (total >= gon.max) {
@@ -86,8 +87,10 @@ window.COPO.maps = {
     }
 
     function toastMessage() {
-      if (gon.first_load && total >= 5000) {
-        Materialize.toast('Last 5000 check-ins shown. Select a date range to load more.' , 3000)
+      if (gon.first_load && total === undefined) {
+        Materialize.toast('Up to last 100 cities visited shown', 3000)
+      } else if (total === undefined) {
+        Materialize.toast('Cities loaded', 3000)
       } else if (total >= gon.max) {
         Materialize.toast('There were too many check-ins to load, cities are shown', 3000);
       } else if (gon.all) {
@@ -305,25 +308,25 @@ window.COPO.maps = {
     L.control.fullscreen().addTo(window.map);
   },
 
-  locationsControlInit() {
-    const locationsControl = L.Control.extend({
+  citiesControlInit() {
+    const citiesControl = L.Control.extend({
       options: {
         position: 'topleft'
       },
       onAdd: (map) => {
         var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
         container.innerHTML = `
-        <a class="leaflet-control-locations leaflet-bar-locations" href="#" onclick="return false;" title="Show cities">
-          <i class="material-icons cached-icon">cached</i>
+        <a class="leaflet-control-cities leaflet-bar-cities" href="#" onclick="return false;" title="Show cities">
+          <i class="material-icons cached-icon">location_city</i>
         </a>
         `;
         container.onclick = function() {
-          COPO.maps.locationsControlClick();
+          COPO.maps.citiesControlClick();
         }
         return container;
       }
     });
-    map.addControl(new locationsControl());
+    map.addControl(new citiesControl());
   },
 
   layersControlInit() {
@@ -604,7 +607,7 @@ window.COPO.maps = {
     })
   },
 
-  locationsControlClick() {
+  citiesControlClick() {
     if ($('.cached-icon').hasClass('cities-active')) {
       Materialize.toast('Loading check-ins.' , 3000)
       $('.cached-icon').removeClass('cities-active');

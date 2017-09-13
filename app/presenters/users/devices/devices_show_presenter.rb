@@ -22,7 +22,7 @@ module Users::Devices
     def show_gon
       {
         checkins: raw_paginated_checkins,
-        cities: gon_show_cities,
+        cities: raw_cities,
         counts: gon_cities_counts,
         first_load: first_load,
         device: device.id,
@@ -79,7 +79,7 @@ module Users::Devices
     end
 
     def first_load_range
-      return { from: nil, to: nil } if (checkins = device.checkins.limit(FIRST_LOAD_MAX)).size.zero?
+      return { from: nil, to: nil } if (checkins = gon_show_checkins).size.zero?
 
       { from: checkins.last.created_at.beginning_of_day, to: checkins.first.created_at.end_of_day }
     end
@@ -88,7 +88,8 @@ module Users::Devices
       checkins = device.checkins
 
       @gon_show_checkins ||= if first_load
-        checkins.limit(FIRST_LOAD_MAX)
+        range = gon_show_cities.last.created_at.beginning_of_day..gon_show_cities.first.created_at.end_of_day
+        checkins.where(created_at: range)
       elsif date_range[:from]
         checkins.where(created_at: date_range[:from]..date_range[:to])
       else
@@ -97,9 +98,13 @@ module Users::Devices
     end
 
     def gon_show_cities
-      checkins = first_load ? gon_show_checkins.where(id: gon_show_checkins.select(:id)) : gon_show_checkins
-      city_checkins = Checkin.where(id: checkins.unscope(:order).select("DISTINCT ON(fogged_city) *").map(&:id))
-      city_checkins_sql = city_checkins.select("created_at", "fogged_lat AS lat", "fogged_lng AS lng",
+      checkins = first_load ? device.checkins : gon_show_checkins
+      checkins = Checkin.where(id: checkins.unscope(:order).select("DISTINCT ON(fogged_city) *").map(&:id))
+      first_load ? checkins.limit(100) : checkins
+    end
+
+    def raw_cities
+      city_checkins_sql = gon_show_cities.select("created_at", "fogged_lat AS lat", "fogged_lng AS lng",
         "fogged_city AS city", "fogged_country_code AS country_code", "null AS id").to_sql
       ActiveRecord::Base.connection.execute(city_checkins_sql)
     end
