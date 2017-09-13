@@ -20,17 +20,21 @@ class CountriesVisitPeriodQuery
     <<-EOQ
       SELECT
         _ch.country_code, _ch.min_date, _ch.max_date
-      FROM (SELECT
+      FROM (
+        SELECT
           __ch.country_code,
           MIN(__ch.created_at) OVER w as min_date,
           MAX(__ch.created_at) OVER w as max_date
-        FROM
-          (SELECT * FROM checkins ORDER BY created_at) as __ch
+        FROM (
+          SELECT *, (id - row_number() OVER (PARTITION BY country_code)) as grp
+          FROM checkins
+          ORDER BY created_at
+        ) as __ch
         INNER JOIN
           devices ON __ch.device_id = devices.id
         WHERE
-          devices.user_id = #{user.id}
-        WINDOW w AS (PARTITION BY __ch.country_code)
+          devices.user_id = 5
+        WINDOW w AS (PARTITION BY __ch.country_code, __ch.grp)
       ) as _ch
       GROUP BY
         _ch.country_code, _ch.min_date, _ch.max_date
