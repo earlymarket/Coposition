@@ -11,7 +11,7 @@ ul#filters.date-select.collapsible
   li
     #date-range-toggle.collapsible-header data-onOpen="dateRangeOpen" data-onClose="dateRangeClose"
       | Select a date range
-      i.collapse-mark.material-icons.right expand_more
+      i.material-icons.collapse-mark.right expand_more
     .collapsible-body
       = form_for @device_show_presenter.form_for, url: @device_show_presenter.form_path, class: "form-group", method: :get do |f|
         = f.label "From"
