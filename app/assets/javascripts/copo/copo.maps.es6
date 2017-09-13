@@ -196,7 +196,7 @@ window.COPO.maps = {
           dataType: "script"
         })
       }
-      map.panTo(this.getLatLng());
+      //map.panTo(this.getLatLng());
       COPO.maps.w3w.setCoordinates(e);
     });
   },
