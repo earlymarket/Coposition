@@ -46,7 +46,9 @@ class Users::DevicesController < ApplicationController
         body: "Coposition device #{device.name} remote check-in",
         title: "Remote check-in"
       }
-    ) and redirect_to user_devices_path
+    )
+    flash[:notice] = "Checked-in remotely"
+    redirect_to user_devices_path
   end
 
   def create
