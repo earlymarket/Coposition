@@ -46,6 +46,9 @@
     },
     "REDISTOGO_URL": {
       "required": true
+    },
+    "SENDGRID_API_KEY": {
+      "required": true
     }
   },
   "addons": [

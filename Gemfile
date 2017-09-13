@@ -49,6 +49,7 @@ gem "public_activity"
 gem "rollbar"
 gem "oj"
 gem 'smooch-api', '~> 1.8.0'
+gem 'sendgrid-ruby'
 
 group :production do
   gem "rack-timeout"
