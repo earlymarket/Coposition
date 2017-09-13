@@ -17,7 +17,7 @@ $(document).on('page:change', function () {
     function checkinSearch () {
       let userId = gon.current_user.userinfo.id
       let checkinId = $('#checkin_id').val()
-      window.location = `/users/${userId}/devices/search?checkin_id=${checkinId}`
+      window.location = `/users/${userId}/devices/nil/checkins/${checkinId}`
     }
 
     // Persistent map feature declarations

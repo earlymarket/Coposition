@@ -1,7 +1,6 @@
 class Users::DevicesController < ApplicationController
   before_action :authenticate_user!, :correct_url_user?, except: :shared
   before_action :published?, only: :shared
-  before_action :find_device_id, only: :show
   before_action :require_ownership, only: %i[show destroy update]
 
   def index
@@ -78,18 +77,6 @@ class Users::DevicesController < ApplicationController
       owner: current_user,
       params: { format: params[:format], count: @device_show_presenter.device.checkins.count }
     )
-  end
-
-  def find_device_id
-    return if params[:id] != "search"
-
-    checkin_id = params[:checkin_id]
-    if (checkin = Checkin.find_by(id: checkin_id))
-      params[:id] = checkin.device.id
-    else
-      flash[:notice] = "Could not find checkin with ID = " + checkin_id
-      redirect_to user_dashboard_path current_user
-    end
   end
 
   def require_ownership
