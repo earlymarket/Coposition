@@ -3,6 +3,7 @@ $(document).on('page:change', function () {
     const M  = window.COPO.maps;
     const U  = window.COPO.utility;
     const SL = window.COPO.slides;
+    U.initAppcues(gon.current_user.userinfo)
     U.gonFix();
     M.initMap();
     M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
