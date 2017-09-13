@@ -7,7 +7,6 @@ window.COPO.editCheckin = {
     });
 
     $('body').on('click', '.revert', function(e) {
-      $('.revert').remove()
       COPO.editCheckin.handleRevert($(e.currentTarget))
     });
   },
@@ -49,7 +48,7 @@ window.COPO.editCheckin = {
       let date = new Date(data).toUTCString() + " UTC+0000"
       data = { checkin: { created_at: date } }
     }
-    COPO.editCheckin.putUpdateCheckin(url, data);
+    COPO.editCheckin.putUpdateCheckin(url, data, true);
   },
 
   setEditableListeners($editable) {
@@ -121,7 +120,6 @@ window.COPO.editCheckin = {
     if (original !== $editable.text()) {
       var url = $editable.data('url');
       var data = { checkin: { created_at: $editable.text()} }
-      COPO.editCheckin.addRevertButton('date', url, $editable.data().date)
       COPO.editCheckin.putUpdateCheckin(url, data);
     } else {
       // reverse the edit
@@ -135,7 +133,6 @@ window.COPO.editCheckin = {
     if (original !== $editable.text() && coords.length === 2 && coords.every(COPO.utility.validateLatLng)) {
       var url = $editable.data('url');
       var data = { checkin: { lat: coords[0], lng: coords[1]} }
-      COPO.editCheckin.addRevertButton('coords', url, original)
       COPO.editCheckin.putUpdateCheckin(url, data);
     } else {
       // reverse the edit
@@ -150,40 +147,40 @@ window.COPO.editCheckin = {
         confirmText += latlng.lat.toFixed(6) + ", " + latlng.lng.toFixed(6) + ").";
     if (confirm(confirmText)) {
       var data = { checkin: {lat: latlng.lat, lng: latlng.lng} }
-      COPO.editCheckin.addRevertButton('coords', $editable.data('url'), $editable.text())
       COPO.editCheckin.putUpdateCheckin($editable.data('url'), data);
     }
     COPO.editCheckin.handleEditEnd($editable);
   },
 
-  addRevertButton(type, url, original) {
-    $('.revert').remove()
-    $('.buttons').append(COPO.utility.revertCheckinUpdate(type, url, original))
-  },
-
-  putUpdateCheckin(url, data) {
+  putUpdateCheckin(url, data, reverted) {
     $.ajax({
       dataType: 'json',
       url: url,
       type: 'PUT',
       data: data
     })
-    .done(COPO.editCheckin.updateCheckin)
+    .done((response) => COPO.editCheckin.updateCheckin(response, reverted))
     .fail(function (error) {
       console.log('Error updating checkin:', error);
     })
   },
 
-  updateCheckin(response) {
+  updateCheckin(response, reverted) {
     // tries to find the checkin in gon and update it with the response
     let checkin = _.find(gon.checkins, _.matchesProperty('id', response.checkin.id));
-    checkin.lat = response.checkin.lat;
-    checkin.lng = response.checkin.lng;
-    checkin.edited = response.checkin.edited;
     checkin.lastEdited = true;
-    checkin.address = response.checkin.address;
-    checkin.fogged_city = response.checkin.fogged_city;
-    if (checkin.created_at !== response.checkin.created_at) {
+    checkin.edited = response.checkin.edited;
+    checkin.revert = !reverted
+    if (checkin.lat !== response.checkin.lat) {
+      checkin.original = checkin.lat + ", " + checkin.lng
+      checkin.type = 'coords'
+      checkin.lat = response.checkin.lat;
+      checkin.lng = response.checkin.lng;
+      checkin.address = response.checkin.address;
+      checkin.fogged_city = response.checkin.fogged_city;
+    } else {
+      checkin.original = checkin.created_at
+      checkin.type = 'date'
       checkin.created_at = response.checkin.created_at;
       gon.checkins.sort(function(a, b) {
         return (new Date(b.created_at)) - (new Date(a.created_at));
