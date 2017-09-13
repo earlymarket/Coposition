@@ -1,5 +1,7 @@
 $(document).on('page:change', () => {
   if (window.COPO.utility.currentPage('devices', 'new')) {
+    const U = window.COPO.utility;
+    U.initAppcues(gon.current_user)
     const $CREATE_CHECKIN = $('#create_checkin');
     const $ADD_BUTTON = $('#add_button');
     const $PREVIEW = $('#preview');
