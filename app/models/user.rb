@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   acts_as_token_authenticatable
 
-  attr_accessor :private_profile
+  attr_accessor :private_profile, :pin_color
 
   friendly_id :username, use: %i(finders slugged)
 
@@ -19,16 +19,22 @@ class User < ApplicationRecord
 
   has_many :devices, dependent: :destroy
   has_many :checkins, through: :devices
+  has_many :locations, through: :devices
   has_many :requests
   has_many :approvals, dependent: :destroy
   has_many :subscriptions, as: :subscriber, dependent: :destroy
   has_many :developers,
-    -> { where "status = 'accepted'" },
+    -> { where "status in (?)", %w[accepted complete] },
     through: :approvals,
     source: :approvable,
     source_type: "Developer"
   has_many :complete_developers,
     -> { where "status = 'complete'" },
+    through: :approvals,
+    source: :approvable,
+    source_type: "Developer"
+  has_many :approved_developers,
+    -> { where "status = 'accepted'" },
     through: :approvals,
     source: :approvable,
     source_type: "Developer"
@@ -71,7 +77,12 @@ class User < ApplicationRecord
   ## Approvals
 
   def approve_coposition_mobile_app
-    Approval.add_developer(self, Developer.default(mobile: true))
+    mobile_dev = Developer.default(mobile: true)
+    mobile_dev.approvals.find_by(user_id: id).tap do |approval|
+      approval ||= Approval.add_developer(self, mobile_dev)
+      approval.complete!
+    end
+    Doorkeeper::AccessToken.find_or_create_for(mobile_dev.oauth_application, id, "public", nil, true)
   end
 
   def approved?(permissible)
@@ -86,16 +97,13 @@ class User < ApplicationRecord
     approvals.find_by(approvable_id: approvable.id, approvable_type: approvable.class.to_s) || NoApproval.new
   end
 
+  ## Permissions
+
   def destroy_permissions_for(approvable)
     devices.each do |device|
       permission = device.permission_for(approvable)
       permission&.destroy
     end
-  end
-
-  def not_coposition_developers
-    copo_keys = [Rails.application.secrets["coposition_api_key"], Rails.application.secrets["mobile_app_api_key"]]
-    developers.where.not(api_key: copo_keys)
   end
 
   ## Devices
@@ -122,6 +130,10 @@ class User < ApplicationRecord
     args[:device] ? args[:device].filtered_checkins(args) : safe_checkin_info_for(args)
   end
 
+  def filtered_locations(args)
+    args[:device] ? args[:device].filtered_locations(args) : locations_for(args)
+  end
+
   def safe_checkin_info_for(args)
     args[:multiple_devices] = true
     # sort_by slows this query down A LOT
@@ -134,7 +146,15 @@ class User < ApplicationRecord
     end
   end
 
-  ##############
+  def locations_for(args)
+    locations
+      .near_to(args[:near])
+      .most_frequent(args[:type])
+      .limit_returned_locations(args)
+      .unscope(:order)
+      .distinct
+      .paginate(page: args[:page], per_page: args[:per_page])
+  end
 
   def slack_message
     "A new user has registered, id: #{id}, name: #{username}, there are now #{User.count} users."

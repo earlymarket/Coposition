@@ -9,13 +9,13 @@ class ApplicationController < ActionController::Base
     redirect_to root_path, alert: exception.message
   end
 
-  def approvals_presenter_and_gon(type)
-    @approvals_presenter = Users::ApprovalsPresenter.new(current_user, type)
+  def approvals_presenter_and_gon(params)
+    @approvals_presenter = Users::ApprovalsPresenter.new(current_user, params)
     gon.push(@approvals_presenter.gon)
   end
 
   def correct_url_user?
-    return if User.find(params[:user_id]) == current_user
+    return if User.find(params[:user_id].downcase) == current_user
     redirect_to controller: params[:controller], action: params[:action], user_id: current_user.friendly_id
   end
 

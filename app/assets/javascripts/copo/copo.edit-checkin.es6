@@ -124,10 +124,11 @@ window.COPO.editCheckin = {
   },
 
   handleMapClick($editable, e) {
+    let latlng = COPO.maps.getBoundedLatlng(e)
     var confirmText = "Are you sure? Click ok to reposition check-in to new coordinates (";
-        confirmText += e.latlng.lat.toFixed(6) + ", " + e.latlng.lng.toFixed(6) + ").";
+        confirmText += latlng.lat.toFixed(6) + ", " + latlng.lng.toFixed(6) + ").";
     if (confirm(confirmText)) {
-      var data = { checkin: {lat: e.latlng.lat, lng: e.latlng.lng} }
+      var data = { checkin: {lat: latlng.lat, lng: latlng.lng} }
       COPO.editCheckin.putUpdateCheckin($editable.data('url'), data);
     }
     COPO.editCheckin.handleEditEnd($editable);

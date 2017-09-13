@@ -17,9 +17,14 @@ class Users::CheckinsController < ApplicationController
   end
 
   def create
-    @checkin = device.checkins.create(allowed_params)
-    NotifyAboutCheckin.call(device: device, checkin: @checkin)
-    flash[:notice] = "Checked in."
+    checkin = device.checkins.create(allowed_params)
+    if checkin.save
+      @checkin = ActiveRecord::Base.connection.execute(Checkin.where(id: checkin).to_sql).first
+      NotifyAboutCheckin.call(device: device, checkin: @checkin)
+      flash[:notice] = "Checked in. Refresh page to update cities."
+    else
+      flash[:alert] = "Invalid latitude/longitude."
+    end
   end
 
   def import
@@ -38,20 +43,20 @@ class Users::CheckinsController < ApplicationController
 
   def update
     result = Users::Checkins::UpdateCheckin.call(params: params)
-    @checkin = result.checkin
+    @checkin = result.checkin if result.checkin.save
     render status: 200, json: @checkin if params[:checkin]
   end
 
   def destroy
-    @checkin.delete
+    @checkin.destroy
     NotifyAboutDestroyCheckin.call(device: device, checkin: @checkin)
-    flash[:notice] = "Check-in deleted."
+    flash[:notice] = "Check-in deleted. Refresh page to update cities."
   end
 
   def destroy_all
     checkins = device.checkins
     checkins = checkins.where(created_at: date_range) if params[:from]
-    checkins.delete_all
+    checkins.destroy_all
     flash[:notice] = "History deleted."
     redirect_to user_device_path(current_user.url_id, device.id)
   end
@@ -67,7 +72,7 @@ class Users::CheckinsController < ApplicationController
   end
 
   def allowed_params
-    params.require(:checkin).permit(:lat, :lng, :device_id, :fogged)
+    params.require(:checkin).permit(:lat, :lng, :device_id, :fogged, :speed, :altitude)
   end
 
   def find_checkin

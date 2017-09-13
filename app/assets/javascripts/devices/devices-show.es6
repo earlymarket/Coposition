@@ -7,8 +7,10 @@ $(document).on('page:change', function() {
     var M = window.COPO.maps;
     U.gonFix();
     M.initMap();
-    M.initMarkers(gon.checkins, gon.total);
-    M.initControls();
+    initMarkers();
+    var controls = ['geocoder', 'locate', 'w3w', 'fullscreen', 'path']
+    page === 'user' ? controls.push('cities', 'layers') : controls.push('layers')
+    M.initControls(controls);
     COPO.datePicker.init();
 
     map.on('locationfound', onLocationFound);
@@ -42,6 +44,38 @@ $(document).on('page:change', function() {
 
     function onLocationFound(p) {
       currentCoords = p.latlng;
+    }
+
+    function initMarkers() {
+      M.initMarkers(gon.cities);
+      return;
+      
+      if (page === 'user' && gon.total > 50000) {
+        M.initMarkers(gon.cities);
+        return;
+      }
+      if (page === 'user' && gon.total > 20000) {
+        sweetAlert(
+          {
+            title: "Show cities?",
+            text: "This will take a long time to load, would you like to view cities instead?",
+            type: "info",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No"
+          }, 
+          function(isConfirm) {
+            if (isConfirm) {
+              M.initMarkersMapLoaded(gon.cities);
+            } else {
+              M.initMarkersMapLoaded(gon.checkins, gon.total);
+            }
+          }
+        );
+      } else {
+        M.initMarkers(gon.checkins, gon.total);
+      }
     }
   }
 });

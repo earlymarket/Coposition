@@ -2,7 +2,7 @@
   = render "users/shared/device_show"
   .bottom-panel.valign-wrapper
     .buttons
-      a.modal-trigger.btn.red.white-text href="#delete#{@device_show_presenter.device.id}" id="deleteButton#{@device_show_presenter.device.id}" 
+      a.modal-trigger.btn.red.white-text.delete href="#delete#{@device_show_presenter.device.id}" id="deleteButton#{@device_show_presenter.device.id}" 
         | Delete...
       a.modal-trigger.btn.blue.white-text href="#checkin#{@device_show_presenter.device.id}" id="checkinButton#{@device_show_presenter.device.id}"
         | Check-in
@@ -65,6 +65,23 @@
       | {{ &foggedAddress }}
       li
         | {{ &foggle }} {{ &deletebutton }}
+
+  script#cityPopupTmpl type="x-tmpl-mustache" 
+    h3.ta-center
+      | {{ address }}
+    ul
+      h3.lined
+        span.lined-pad First visited
+      li.ta-center
+        | {{ &inlineDate }}
+      h3.lined
+        span.lined-pad Number of check-ins
+      li.ta-center
+        | {{ id }}
+      h3.lined
+        span.lined-pad Coordinates
+      li.ta-center
+        | {{ lat }}, {{ lng }}
 
   script#createCheckinTmpl type="x-tmpl-mustache" 
     ul

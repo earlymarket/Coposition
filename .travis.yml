@@ -1,51 +1,42 @@
 sudo: required
 dist: trusty
-
 before_install:
-  - sudo add-apt-repository --yes ppa:beineri/opt-qt551-trusty
-  - sudo apt-get update -qq
-  - gem install bundler
-
+- sudo add-apt-repository --yes ppa:beineri/opt-qt551-trusty
+- sudo apt-get update -qq
+- gem install bundler
 install:
-  - bundle
-
+- bundle
 language: ruby
 cache: bundler
 notifications:
   slack:
     secure: A/rqZkIsuFGcnw1o0CSowzEC883yxcF6uYVg1FY6FC50hUXhvRFsTmHIq3MWyiEnhj/4/1hSoIWaNAkBpn410iWttyZdWl7z1IZnL2ElqaEuyStEEBWonRSdKwBaDQ2/zvtBD5P2mFs7WtmggemqSK6ctz2CnQEudhZQROAUDdwKGiqKNnyb7enyHBJDOfTMlecJpIRh3NTz34A9XKm67YZpUwqOn9tRi/c9NDt1vMlzOvSxUY1sfx3i6QVWts1RxoluH9gnQcXAAjplIui4qf41rL4GvLl9IpJA/05m0zTUGGNu64ydp5PBQ6rJIYId5picRCJG04eh3kJAeHcDLDLSQA/SqAKV5BnRMK1Wsv7S8VyYONL6sCRKf7WEuJcjGOWppEYcxtw4uFd2zejc0E56Wg/8WZjtj4lSLE1pkpF/K8/vtcVop66G4MiMkrrGzSSYgrKPTo9N6nIhyvEjSLyz2gcx5AE6RiMWVNGftsomhpFcT9fkcyRiyRg8gW6nLkEaKLaTjE4dxrrtYy56QEc4k/s33AQ2/RzpMATZineybR1I195q8G5jReihVKsggJMd0C2EAhns6sgEjTbteE2dzIMKeE6nBRCmZyrRfXiUo8L5x6UutzjIGUVwWjGS+t03DByn78z0XDCk6wA7+imoq6N29LqeU0pkiga2pd0=
-
 rvm:
 - 2.3.1
-
 before_script:
-  - bin/setup
-
+- bin/setup
 script:
-  - npm install -g bower
-  - bundle exec rake assets:clobber && bundle exec rake assets:precompile
-  - xvfb-run -a bin/ci
-
+- npm install -g bower
+- bundle exec rake assets:clobber && bundle exec rake assets:precompile
+- xvfb-run -a bin/ci
 deploy:
   provider: heroku
   app:
     dev: coposition-staging
   api_key:
-    secure: ecj5c8nZIz7F/06Sv9tgk+3ur7nOZ7ZvArraTX0eeDbeItV3m5Ec2YucLtnQW9ISrgsXuAXySwporJiBAs2Oj1/+MlFBCexXtn5DoAlgeCi0/ri3MKDv1rJlDa5hFD0ErnTcsEXs9OyAL+UHjlumQKvlbL2CwxgJyEe5u/84Fk0jk80DHgTtt2gStXTz52CSnUpmbPMMDmvggLswoac1NUy20MpTWywFE+EYhatzSgbMM/+aTmWGXyrTJ+NT48ib1v/9D+3QTutByo8UC1USKqe0YEWssG45STepJzX50ovNQsqoX0ftz0UQM/LezTesF580yyGAxG7fEj7PSJDnla3nkzHMoIbb8d+LCAjZZKDq/5bGu7G9WzMRfAAmXpN7GGA33gqKaDVxL94xe4GQBc4sGOMn4f4s37r1hwIsS8doyT4G/2J1oWTXhDbi71++DRbsNto1vtzTGiDg3hTN5msHruxaLqR/qz3zhEG82BAPGdG9vRowOyE0YKSgEIg05siF0hPGLghn7otu7j9mcgNMItXueljvYprpmCnuXV+983/56FwG5vOJ+524F9mOQSeECwQQ8gVRyyNGPuAANdn+u4T1E/J6Jv7J35cOXf5QOS/1IrTZ5jKAyG4IVIKB2ZDZbyvm0Nz4dqw09gqU77P//4XiiAuLvdi7t9NdhjM=
-  run: "rake db:migrate"
-
+    secure: b3zqr4Cr2I1MqWVDfYigZM8eTtRXwIN82v38/M822aN0+DW/PsLjWdHzI27MpRzSMx2JGe/kDeaOU4NpjoSq840cmqCQEPIefoaGLYULL0oTcGdMBBP9sL0MEBj6JFYxpdRSj7gJDmRzKBNErO1wLdKjQxuZiHh8W+IBqePZ+DLnEawXOidjQZIuXBxW31DKI5Qh7Dj4xgkRqrkq6GPkQMxzhQwgd4/oPxXnWZq4+Pbhi2bFEzxM7nGGfcaPgLVCC4qi1IaSyoY7YThpzC9gN5ntkkL5mXJggow7SGbuvEqwnzoZVfPdOf/DKXgEOQQInqbTV0j3viTliFMKWWxkXDF6b0iy0m0m87jqDlLwMw4Py3ugRh/Yiqkb66B9hfbS/dDpCKWsGxrnfjahkxvp+l1WAo0D+syPal/f8yxSuWQFVaPizVVP8/ZmtBhykT1sg65ZTuCZH+oTDcYjPOsTEC9VmuS84yyzOX7bE7k2n3LLkkttTEBj2FAEWfHeE/e7w55rKhSY0I/CwZHNP/zspH7crGIRdeRB8obmu9pfS7195syUCIGcunisOSKiJ4xVVcbe0QaJxIeUiPRFQcVyvA4+p5hkMmM6TUlyd+x/5NQdnFPvjBSZWV0ClsEI7D3Zg7KRQtVmYylm28WOYgeyxxkj/T+QW3kBnOlq4o5FjOQ=
+  run: rake db:migrate
 addons:
   apt:
     sources:
-      - ubuntu-sdk-team
+    - ubuntu-sdk-team
     packages:
-      - libqt4-dev
-      - libqtwebkit-dev
-      - xvfb
+    - libqt4-dev
+    - libqtwebkit-dev
+    - xvfb
   code_climate:
     repo_token:
       secure: bdK/4NHC+zT68KBsIESldomWL+fwyDVAiPsgPdZAUiCm2cbP4RTL+tEc9ZMYvM1n2Lw/sbVZ79xwC2+YVgj86J71ra9+grb5KJabeKDStnlI9Q9n+XDSkHMjwwHecl/noZzMmMHyVDL4ts5wXLAWdQ5LlPApIchBurHFciD8Z6EOvz5elqCjA5ap7V1WhffqE5gCM38iy217BE6CFtiQskpWaHjzVHmrM0OPJrtDg3mtxcTmI8+QiySTA+5ETQCbv40iuOenQixkCIMU1Fy8+0PwaC4ZcJGiCYI7o79A6NiSry+zbgZhDrIieUpLMhecIipby7jg46qjUfTQWNVlHl9UBBhw8pkjbH2n91AD7GF6jhyl7yin4s5TY1ml1SeQZg31jFW+o3rTfwPvsnZ+T4IN8Ue/WXKJRg1QsEYkaXQIoN4M0CtTUIGrQcbcjYnpnmKdySqI10H5/QFAEfP3OAUD3plzD/IlIl2bh6ry8E7RmVYdB1/jCGjqWAoJbmhEc1EuCqXg0mSGVW5ljHweMFKRTew/TT1u03dTuxzt3NH+CzpIL4KpjfKC69tavrH2AQYreIq2vXt/NJZqj4i1ZIF29kPFAAYwOkmfA15zezkC0dw3yB5OJPUWK3P0682W3/g4XDWAgyvYMyNTCUyfBB0+kptg+oT4q6M+CJjMpLM=
-
 env:
   global:
   - secure: wALNTSL1dmR32hcbg3eqP66+PojecOKnzRNCVdprR0N+noe3BPy4NqmKPgpM3UXQDcUtmRVB7bJCmJtd2zIBfsGL26LuILv3JemV7eeF5eiNGf6vvXsBHVLT2a8QoaEBJcJtKI1+R0BC3vp2cWTot2A46RXN70T+yM3pVfGKZAggY7XnIUYU60rr6XCIFqE20ibEWD06iMT/DE/euEOAw0CNJeipCp4/WxaJVp+N3qV+yy4LgPhTX9jM3wUm99MNrpFm6uutHlFZbv+ljV2tQcb4rrX79j6YkU9XJEV0MOBLvXxRE7lFfEVEJ708kgPv0xt7EQ7PcplrDkqe+ByUEro7HmfFEK9XTrHJiiMRzAV4F77Eo+rmqiC/HfsgSCR9PqmrulPtWG67hzxHoSxUzY2jU2KaVT3Hki/Dxxh90HCVBEr3XtTprztsHg9rsZcGzB/zgOzBcYBkQ3ldgjIun3VdRj0uXOVjHF4cbvJuz8oPVKHF5SUUD0iwNMKfQN15wiR9ErfOtPgPVbryuJ6f62VOj3MmzLv50R2srCFsnCqSLOtrjnVGbebqluZ442yWJ8n/kd2k2UyKrbIHFBwNdSA5J1Gbtl9je6Tr3HlHDAHA9RL/htVzCfNPTphiIr53UM9dZWijgcjWK/qqAdVUoB8DWCFjcOPpTzAXBCceMoQ=

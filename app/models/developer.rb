@@ -12,7 +12,7 @@ class Developer < ApplicationRecord
   has_many :subscriptions, as: :subscriber, dependent: :destroy
   has_many :approvals, as: :approvable, dependent: :destroy
   has_many :pending_requests, -> { where "status = 'developer-requested'" }, through: :approvals, source: :user
-  has_many :users, -> { where "status = 'accepted'" }, through: :approvals
+  has_many :users, -> { where "status in (?)", %w[accepted complete] }, through: :approvals
   has_many :configs
   has_many :configurable_devices, through: :configs, source: :device
 
@@ -57,6 +57,11 @@ class Developer < ApplicationRecord
     key = type[:coposition] ? "coposition_api_key" : "mobile_app_api_key"
     FactoryGirl.create(:developer, api_key: Rails.application.secrets[key]) if Rails.env.test? || Rails.env.benchmark?
     find_by(api_key: Rails.application.secrets[key])
+  end
+
+  def self.not_coposition_developers
+    copo_keys = [Rails.application.secrets["coposition_api_key"], Rails.application.secrets["mobile_app_api_key"]]
+    where.not(api_key: copo_keys)
   end
 
   def set_application_attributes

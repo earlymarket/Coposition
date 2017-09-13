@@ -57,7 +57,7 @@ module Users
       {
         permissions: approvals_permissions("Developer"),
         current_user_id: @user.id,
-        approved: @user.not_coposition_developers.public_info
+        approved: @user.developers.not_coposition_developers.public_info
       }
     end
 

@@ -2,7 +2,7 @@ class Api::V1::Users::RequestsController < Api::ApiController
   respond_to :json
 
   before_action :check_user_approved_approvable
-  before_action :doorkeeper_authorize!, unless: :req_from_coposition_app?
+  before_action -> { doorkeeper_authorize! :public }, unless: :req_from_coposition_app?
 
   def index
     requests = if params[:developer_id]

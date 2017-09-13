@@ -17,9 +17,7 @@ RSpec.describe Api::V1::Users::RequestsController, type: :controller do
   let(:user_params) { { user_id: user.id } }
   let(:dev_params) { { user_id: user.id, developer_id: developer.id } }
 
-  before do
-    request.headers["X-Api-Key"] = developer.api_key
-  end
+  before { api_request_headers(developer, user) }
 
   it "gets a list of requests" do
     21.times { get :index, params: user_params }
@@ -47,9 +45,9 @@ RSpec.describe Api::V1::Users::RequestsController, type: :controller do
   end
 
   it "gets the last request related to this user made by another developer" do
-    request.headers["X-Api-Key"] = second_dev.api_key
+    api_request_headers(second_dev, user)
     21.times { get :index, params: user_params }
-    request.headers["X-Api-Key"] = developer.api_key
+    api_request_headers(developer, user)
     get :last, params: dev_params.merge(developer_id: second_dev.id)
     expect(res_hash.first["action"]).to eq "index"
   end
