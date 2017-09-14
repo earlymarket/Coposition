@@ -48,7 +48,8 @@
   script#markerPopupTmpl type="x-tmpl-mustache" 
     h3 
       | {{ &idLink }}  
-      i.tooltipped data-tooltip=("Latitude/longitude have been changed from original values") {{ edited }}
+      i
+        | {{ edited }}
       | {{ &revertButton }}
     ul
       h3.lined

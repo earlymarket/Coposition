@@ -31,9 +31,10 @@ COPO.utility = {
   },
 
   idLink(checkin) {
-    return COPO.utility.ujsLink('get',
-      `<span class="tooltipped" data-tooltip="Click to generate link to this check-in">ID: ${checkin.id}</span>`,
-      window.location.pathname + '/checkins/' + checkin.id ).prop('outerHTML')
+    var path = window.location.pathname + '/checkins/' + checkin.id
+    var text = `ID: ${checkin.id}`
+    var output =  $('<a class="tooltipped" data-tooltip="Click to generate map for this check-in" href="' + path +'">' + text +'</a>')
+    return output.prop('outerHTML')
   },
 
   deleteCheckinLink(checkin) {
