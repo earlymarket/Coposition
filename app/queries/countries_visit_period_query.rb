@@ -40,7 +40,7 @@ class CountriesVisitPeriodQuery
         INNER JOIN
           devices ON grouped_ch.device_id = devices.id
         WHERE
-          devices.user_id = 5
+          devices.user_id = #{user.id}
         WINDOW w AS (PARTITION BY grouped_ch.country_code, grouped_ch.grp)
       ) as visits
       GROUP BY
