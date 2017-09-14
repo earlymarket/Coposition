@@ -106,7 +106,6 @@ window.COPO.maps = {
     }
   },
 
-
   removeMap() {
     map.remove();
   },
@@ -114,6 +113,9 @@ window.COPO.maps = {
   fitBounds() {
     if (COPO.maps.allMarkers.getLayers().length) {
       map.fitBounds(COPO.maps.allMarkers.getBounds().pad(0.5))
+      if (COPO.maps.allMarkers.getLayers().length === 1) {
+        COPO.maps.allMarkers.getLayers()[0].fire('click');
+      }
     }
   },
 

@@ -109,6 +109,7 @@ COPO.utility = {
 
   avatar(avatar, options) {
     options = $.extend(this.avatarDefaults, options)
+    options["transformation"][0] = "60x60cAvatar"
     if(avatar) {
       return $.cloudinary.image(avatar.public_id, options).prop('outerHTML')
     }

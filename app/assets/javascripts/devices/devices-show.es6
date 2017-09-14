@@ -47,6 +47,10 @@ $(document).on('page:change', function() {
     }
 
     function initMarkers() {
+      if (gon.checkin) {
+        M.initMarkers(gon.checkins, gon.total)
+        return;
+      }
       M.initMarkers(gon.cities);
       return;
       

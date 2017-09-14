@@ -39,6 +39,8 @@ class Users::CheckinsController < ApplicationController
 
   def show
     @checkin.reverse_geocode!
+    return if request.format.js?
+    redirect_to user_device_path(current_user, @checkin.device.id, checkin_id: @checkin.id)
   end
 
   def update

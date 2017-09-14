@@ -11,6 +11,7 @@ module ApplicationHelper
 
   def humanize_date(date)
     return unless date
+
     date.strftime("%A #{date.day.ordinalize} %B %Y")
   end
 
