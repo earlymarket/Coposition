@@ -30,6 +30,12 @@ COPO.utility = {
     return output
   },
 
+  idLink(checkin) {
+    return COPO.utility.ujsLink('get',
+      `<span class="tooltipped" data-tooltip="Click to generate link to this check-in">ID: ${checkin.id}</span>`,
+      window.location.pathname + '/checkins/' + checkin.id ).prop('outerHTML')
+  },
+
   deleteCheckinLink(checkin) {
     return COPO.utility.ujsLink('delete',
       '<i class="material-icons tooltipped right red-text" data-tooltip="Delete check-in">delete_forever</i>' ,
