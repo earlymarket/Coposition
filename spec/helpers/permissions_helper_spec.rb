@@ -28,7 +28,7 @@ RSpec.describe PermissionsHelper, type: :helper do
 
     it "returns authenticated with the company name if it's a complete developer" do
       Approval.add_developer(user, developer).update(status: "complete")
-      expect(helper.permissions_permissible_title(user, developer)).to match("authenticated")
+      expect(helper.permissions_permissible_title(user, developer)).to match("Authenticated")
     end
   end
 
