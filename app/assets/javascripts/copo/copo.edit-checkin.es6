@@ -55,7 +55,6 @@ window.COPO.editCheckin = {
 
   setEditableListeners($editable) {
     var original = $editable.text();
-
     // if user clicks the popup, stop editing
     $('.leaflet-popup').on('click', function (e) {
       if (e.target.className !== 'editable') {
@@ -173,7 +172,7 @@ window.COPO.editCheckin = {
     checkin.lastEdited = true;
     checkin.edited = response.checkin.edited;
     checkin.revert = !reverted
-    if (checkin.lat !== response.checkin.lat) {
+    if (checkin.lat !== response.checkin.lat || checkin.lng !== response.checkin.lng) {
       checkin.original = checkin.lat + ", " + checkin.lng
       checkin.type = 'coords'
       checkin.lat = response.checkin.lat;
