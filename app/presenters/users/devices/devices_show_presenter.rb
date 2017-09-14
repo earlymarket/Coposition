@@ -94,7 +94,7 @@ module Users::Devices
 
       @gon_show_checkins ||= if checkin
         checkins.where(id: checkin.id)
-      elsif first_load
+      elsif first_load && gon_show_cities.present?
         range = gon_show_cities.last.created_at.beginning_of_day..gon_show_cities.first.created_at.end_of_day
         checkins.where(created_at: range)
       elsif date_range[:from]
