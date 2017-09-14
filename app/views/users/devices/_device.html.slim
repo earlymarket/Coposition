@@ -50,7 +50,7 @@
             a.modal-trigger.btn-flat.device-button href="#upload#{device.id}" id="uploadButton#{device.id}"
               i.material-icons.right> file_upload
               | Upload check-ins
-      - if device.config &&  device.config.custom["assigned"].to_s == "true"
+      - if device.config && device.config.custom && device.config.custom["assigned"].to_s == "true"
         .row
           .col.s12
             .col.s6

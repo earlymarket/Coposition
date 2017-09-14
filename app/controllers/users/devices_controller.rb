@@ -47,7 +47,7 @@ class Users::DevicesController < ApplicationController
         title: "Remote check-in"
       }
     )
-    flash[:notice] = "Checked-in remotely"
+    flash[:notice] = "Remote check-in request sent"
     redirect_to user_devices_path
   end
 
