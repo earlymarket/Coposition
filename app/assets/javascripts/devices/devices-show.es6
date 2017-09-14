@@ -16,7 +16,7 @@ $(document).on('page:change', function() {
     map.on('locationfound', onLocationFound);
 
     if (page === 'user') {
-      $('.modal-trigger').leanModal();
+      $('.modal-trigger').modal();
       M.createCheckinPopup();
       M.rightClickListener();
       M.checkinNowListeners(getLocation);
@@ -47,6 +47,10 @@ $(document).on('page:change', function() {
     }
 
     function initMarkers() {
+      if (gon.checkin) {
+        M.initMarkers(gon.checkins, gon.total)
+        return;
+      }
       M.initMarkers(gon.cities);
       return;
       

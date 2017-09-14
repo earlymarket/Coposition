@@ -108,6 +108,7 @@ Rails.application.routes.draw do
     collection do
       get :me
     end
+    resources :countries, only: :index
   end
 
   # Devs
@@ -117,7 +118,7 @@ Rails.application.routes.draw do
   resources :release_notes
 
   resources :activities, only: :index
-  
+
   namespace :developers do
     get "/", to: "consoles#show"
     resource :console, only: [:show] do
