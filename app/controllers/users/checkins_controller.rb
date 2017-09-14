@@ -20,7 +20,7 @@ class Users::CheckinsController < ApplicationController
     checkin = device.checkins.create(allowed_params)
     if checkin.save
       @checkin = ActiveRecord::Base.connection.execute(Checkin.where(id: checkin).to_sql).first
-      NotifyAboutCheckin.call(device: device, checkin: @checkin)
+      NotifyAboutCheckin.call(device: device, checkin: checkin)
       flash[:notice] = "Checked in. Refresh page to update cities."
     else
       flash[:alert] = "Invalid latitude/longitude."

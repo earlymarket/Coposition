@@ -21,9 +21,10 @@ class NotifyAboutCheckin
   end
 
   def hashed_checkin
-    checkin["user_id"] = device.user_id
-    checkin["device"] = device.name
-    checkin
+    checkin.attributes.tap do |checkin_h|
+      checkin_h["user_id"] = device.user_id
+      checkin_h["device"] = device.name
+    end
   end
 
   def friend_online?(friend)
@@ -32,6 +33,6 @@ class NotifyAboutCheckin
 
   def broadcast_checkin?(friend)
     allowed_checkin = device.safe_checkin_info_for(permissible: friend, action: "last", type: "address")[0]
-    allowed_checkin && allowed_checkin["id"] == checkin["id"]
+    allowed_checkin && allowed_checkin["id"] == checkin.id
   end
 end
