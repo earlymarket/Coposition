@@ -5,7 +5,7 @@ window.COPO.editCheckin = {
       e.stopPropagation();
       COPO.editCheckin.handleEditStart($(e.currentTarget).find(".editable"));
     });
-
+    COPO.editCheckin.initDatePicker()
     $('body').on('click', '.revert', function(e) {
       COPO.editCheckin.handleRevert($(e.currentTarget))
     });
@@ -20,7 +20,7 @@ window.COPO.editCheckin = {
 
     if ($editable.hasClass("date")) {
       // if user edits date input set datepicker and open
-      COPO.editCheckin.setDatepicker($editable).pickadate("open");
+      COPO.editCheckin.setDatepicker($editable)//.pickadate("open");
     } else {
       // select all the text to make it easier to edit
       $editable.focus();
@@ -77,37 +77,65 @@ window.COPO.editCheckin = {
     });
   },
 
-  setDatepicker($editable) {
-    var original = $editable.text();
-    return $("body").pickadate({
-      selectMonths: true,
-      selectYears: 15,
-      closeOnSelect: true,
-      max: new Date(),
-      onSet: function(context) {
-        if ("select" in context) {
-          if (this.get("value")) {
-            let date = new Date($editable.data().date);
-            let newDate = new Date(this.get("value"));
-
-            date.setDate(newDate.getDate());
-            date.setMonth(newDate.getMonth());
-            date.setFullYear(newDate.getFullYear());
-            // open marker popup back again and set new date
-            $editable.text(
-              date.toUTCString() + " UTC+0000"
-            );
-
-            // remove datepicker with respect to next one
-            this.stop();
-          }
+  initDatePicker() {
+    var date = new Date();
+    date.setDate(date.getDate() - 5);
+    $("#dtBox").DateTimePicker({
+      mode: "datetime",
+      defaultDate: new Date(date),
+      beforeShow: function(oInputElement) {
+        var oDTP = this;
+        if ($(oInputElement).val() === "") {
+          oDTP.settings.defaultDate = new Date(date);
+          oDTP.oData.dCurrentDate = new Date(date);
         }
       },
-      onClose: function(context) {
-        COPO.editCheckin.handleEdited(original, $editable);
+      afterShow: function(oInputElement) {
+        debugger;
+      },
+      buttonClicked: (type, input) => {
+        if (type === 'SET') {
+          debugger;
+        }
       }
-    });
+    })
   },
+
+  setDatepicker($editable) {
+    var original = $editable.text();
+    var picker = $("#dtBox")
+  },
+  // setDatepicker($editable) {
+  //   var original = $editable.text();
+  //   return $("body").pickadate({
+  //     selectMonths: true,
+  //     selectYears: 15,
+  //     closeOnSelect: true,
+  //     max: new Date(),
+  //     onSet: function(context) {
+  //       if ("select" in context) {
+  //         if (this.get("value")) {
+  //           let date = new Date($editable.data().date);
+  //           let newDate = new Date(this.get("value"));
+
+  //           date.setDate(newDate.getDate());
+  //           date.setMonth(newDate.getMonth());
+  //           date.setFullYear(newDate.getFullYear());
+  //           // open marker popup back again and set new date
+  //           $editable.text(
+  //             date.toUTCString() + " UTC+0000"
+  //           );
+
+  //           // remove datepicker with respect to next one
+  //           this.stop();
+  //         }
+  //       }
+  //     },
+  //     onClose: function(context) {
+  //       COPO.editCheckin.handleEdited(original, $editable);
+  //     }
+  //   });
+  // },
 
   handleEdited(original, $editable) {
     if ($editable.hasClass("date")) {
