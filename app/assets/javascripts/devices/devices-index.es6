@@ -64,7 +64,7 @@ $(document).on('page:change', function() {
 
     window.initPage = function(){
       P.initTrigger('devices');
-      $('.modal-trigger').leanModal();
+      $('.modal-trigger').modal();
       $('.clip_button').off();
       U.initClipboard();
       $('.tooltipped').tooltip('remove');

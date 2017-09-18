@@ -1,7 +1,7 @@
 class Users::DevicesController < ApplicationController
   before_action :authenticate_user!, :correct_url_user?, except: :shared
   before_action :published?, only: :shared
-  before_action :require_ownership, only: %i(show destroy update)
+  before_action :require_ownership, only: %i[show destroy update]
 
   def index
     @devices_index_presenter = ::Users::Devices::DevicesIndexPresenter.new(current_user, params)

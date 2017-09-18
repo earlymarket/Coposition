@@ -1,6 +1,7 @@
 window.COPO = window.COPO || {};
 window.COPO.maps = {
   queueCalled: false,
+  windowFocused: true,
 
   initMap(customOptions) {
     if (document.getElementById('map')._leaflet) return;
@@ -11,36 +12,49 @@ window.COPO.maps = {
       minZoom: 1,
       worldCopyJump: true
     }
-
+    COPO.maps.windowFocus()
     var options = $.extend(defaultOptions, customOptions);
     window.map = L.mapbox.map('map', 'mapbox.light', options );
     $(document).one('turbolinks:before-render', COPO.maps.removeMap);
   },
 
+  windowFocus() {
+    $(window).focus(() => {
+        COPO.maps.windowFocused = true;
+    }).blur(() => {
+        COPO.maps.windowFocused = false;
+    });
+  },
+
   initMarkers(checkins, total) {
     map.once('ready', function() {
-      COPO.maps.generatePath(checkins);
-      COPO.maps.renderAllMarkers(checkins);
-      COPO.maps.bindMarkerListeners(checkins);
-      COPO.maps.loadAllCheckins(checkins, total);
-      if (COPO.maps.allMarkers.getLayers().length) {
-        map.fitBounds(COPO.maps.allMarkers.getBounds().pad(0.5));
-      } else {
-        map.once('locationfound', function(e) {
-          map.panTo(e.latlng);
-        })
-      }
+      COPO.maps.initMarkersMapLoaded(checkins, total)
     });
+  },
+
+  initMarkersMapLoaded(checkins, total) {
+    COPO.maps.generatePath(checkins);
+    COPO.maps.renderAllMarkers(checkins);
+    COPO.maps.bindMarkerListeners(checkins);
+    COPO.maps.loadAllCheckins(checkins, total);
+    if (COPO.maps.allMarkers.getLayers().length) {
+      map.fitBounds(COPO.maps.allMarkers.getBounds().pad(0.5));
+    } else {
+      map.once('locationfound', function(e) {
+        map.panTo(e.latlng);
+      })
+    }
   },
 
   loadAllCheckins(checkins, total) {
     if (total === undefined) {
-      if (checkins.length) $('.cached-icon').addClass('locations-active');
+      if (checkins.length) $('.cached-icon').addClass('cities-active');
+      toastMessage()
       return;
     }
     if (total >= gon.max) {
       COPO.maps.refreshMarkers(gon.cities);
-      $('.cached-icon').addClass('locations-active');
+      $('.cached-icon').addClass('cities-active');
       toastMessage()
       window.COPO.maps.fitBounds();
       return;
@@ -76,14 +90,20 @@ window.COPO.maps = {
         });
       } else {
         $('.myProgress').remove();
-        toastMessage()
+        COPO.maps.windowFocused ? toastMessages() : toastMessage()
         window.COPO.maps.fitBounds();
       };
     }
 
     function toastMessage() {
-      if (gon.first_load && total >= 5000) {
-        Materialize.toast('Last 5000 check-ins shown. Select a date range to load more.' , 3000)
+      $(window).one('focus', toastMessages)
+    }
+
+    function toastMessages() {
+      if (gon.first_load && total === undefined) {
+        Materialize.toast('Up to last 100 cities visited shown', 3000)
+      } else if (total === undefined) {
+        Materialize.toast('Cities loaded', 3000)
       } else if (total >= gon.max) {
         Materialize.toast('There were too many check-ins to load, cities are shown', 3000);
       } else if (gon.all) {
@@ -99,7 +119,6 @@ window.COPO.maps = {
     }
   },
 
-
   removeMap() {
     map.remove();
   },
@@ -107,6 +126,9 @@ window.COPO.maps = {
   fitBounds() {
     if (COPO.maps.allMarkers.getLayers().length) {
       map.fitBounds(COPO.maps.allMarkers.getBounds().pad(0.5))
+      if (COPO.maps.allMarkers.getLayers().length === 1) {
+        COPO.maps.allMarkers.getLayers()[0].fire('click');
+      }
     }
   },
 
@@ -192,7 +214,7 @@ window.COPO.maps = {
           dataType: "script"
         })
       }
-      map.panTo(this.getLatLng());
+      //map.panTo(this.getLatLng());
       COPO.maps.w3w.setCoordinates(e);
     });
   },
@@ -226,6 +248,8 @@ window.COPO.maps = {
         return `<a href="${window.location.pathname}/show_device?device_id=${checkin.device_id}" title="Device map">${checkin.device}</a>`
       }
     }
+    checkinTemp.idLink = COPO.utility.idLink(checkin)
+    checkinTemp.revertButton = checkin.revert ? COPO.utility.revertLink(checkin) : ''
     checkinTemp.edited = checkin.edited ? '(edited)' : ''
     checkinTemp.inlineCoords = COPO.utility.renderInlineCoords(checkin);
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
@@ -301,25 +325,25 @@ window.COPO.maps = {
     L.control.fullscreen().addTo(window.map);
   },
 
-  locationsControlInit() {
-    const locationsControl = L.Control.extend({
+  citiesControlInit() {
+    const citiesControl = L.Control.extend({
       options: {
         position: 'topleft'
       },
       onAdd: (map) => {
         var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
         container.innerHTML = `
-        <a class="leaflet-control-locations leaflet-bar-locations" href="#" onclick="return false;" title="Show locations">
-          <i class="material-icons cached-icon">cached</i>
+        <a class="leaflet-control-cities leaflet-bar-cities" href="#" onclick="return false;" title="Show cities">
+          <i class="material-icons cached-icon">location_city</i>
         </a>
         `;
         container.onclick = function() {
-          COPO.maps.locationsControlClick();
+          COPO.maps.citiesControlClick();
         }
         return container;
       }
     });
-    map.addControl(new locationsControl());
+    map.addControl(new citiesControl());
   },
 
   layersControlInit() {
@@ -600,14 +624,17 @@ window.COPO.maps = {
     })
   },
 
-  locationsControlClick() {
-    if ($('.cached-icon').hasClass('locations-active')) {
-      $('.cached-icon').removeClass('locations-active');
+  citiesControlClick() {
+    if ($('.cached-icon').hasClass('cities-active')) {
+      Materialize.toast('Loading check-ins.' , 3000)
+      $('.cached-icon').removeClass('cities-active');
       COPO.maps.refreshMarkers(gon.checkins);
       if (gon.checkins.length < gon.total) COPO.maps.loadAllCheckins(gon.checkins, gon.total);
+      COPO.maps.fitBounds();
     } else {
-      $('.cached-icon').addClass('locations-active');
+      $('.cached-icon').addClass('cities-active');
       COPO.maps.refreshMarkers(gon.cities);
+      COPO.maps.fitBounds();
     }
   }
 }
