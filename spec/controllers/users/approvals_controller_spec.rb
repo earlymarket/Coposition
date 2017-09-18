@@ -48,21 +48,17 @@ RSpec.describe Users::ApprovalsController, type: :controller do
 
   describe "POST #create" do
     context "when adding a friend" do
-      it "creates a pending approval, friend request and send an email" do
-        count = ActionMailer::Base.deliveries.count
+      it "creates a pending approval, friend request" do
         approval_count = Approval.where(approvable_type: "User").count
         post :create, params: friend_approval_create_params
-        expect(ActionMailer::Base.deliveries.count).to be(count + 1)
         expect(Approval.where(approvable_type: "User").count).to eq approval_count + 2
         expect(Approval.where(user: user, approvable: friend, status: "pending")).to exist
         expect(Approval.where(user: friend, approvable: user, status: "requested")).to exist
       end
 
       it "is case insensitive" do
-        count = ActionMailer::Base.deliveries.count
         approval_count = Approval.where(approvable_type: "User").count
         post :create, params: friend_approval_create_params_upcased
-        expect(ActionMailer::Base.deliveries.count).to be(count + 1)
         expect(Approval.where(approvable_type: "User").count).to eq approval_count + 2
         expect(Approval.where(user: user, approvable: friend, status: "pending")).to exist
         expect(Approval.where(user: friend, approvable: user, status: "requested")).to exist
@@ -93,14 +89,6 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         post :create, params: friend_approval_create_params
         expect(flash[:alert]).to match "exists"
         expect(Approval.count).to eq approval_count
-      end
-    end
-
-    context "when inviting a user" do
-      it "sends an email to the address provided" do
-        count = ActionMailer::Base.deliveries.count
-        post :create, params: invite_params
-        expect(ActionMailer::Base.deliveries.count).to be(count + 1)
       end
     end
   end
