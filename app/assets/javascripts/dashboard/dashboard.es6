@@ -55,7 +55,7 @@ $(document).on('page:change', function () {
           .map(friend => L.latLng(friend.lat, friend.lng))
         )
       },
-      status: `Your friend's check-ins <a href='./friends'>(more details)</a>`,
+      status: `Your friend's check-ins <a class='btn' href='./friends'>view friends</a>`,
       init (caller) {
         if (this.hasFriendsWithCheckins()) {
           caller.slides.push({

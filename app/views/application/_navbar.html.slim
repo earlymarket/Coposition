@@ -11,7 +11,7 @@ nav
         span.lg-items-right
           - if user_signed_in?
             = link_to "Log Out", destroy_user_session_path, method: :delete, class: "lg-items-right"
-            = link_to "Dashboard", user_dashboard_path(current_user.url_id), class: "lg-items-right"
+            = link_to "Dashboard", user_dashboard_path(current_user.url_id), class: "lg-items-left"
             = link_to "Devices", user_devices_path(current_user.url_id), class: "lg-items-right"
             = link_to navbar_indicator("Apps", current_user.developer_requests.count), user_apps_path(current_user.url_id), class: "lg-items-right"
             = link_to navbar_indicator("Friends", current_user.friend_requests.count), user_friends_path(current_user.url_id), class: "lg-items-right"

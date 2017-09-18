@@ -20,9 +20,10 @@ section.dashboard.row
 p
   | You checked in #{@dashboard_presenter.weeks_checkins_count || 0} times this week.
   - if @dashboard_presenter.percent_change.present?
-    |  That is an #{@dashboard_presenter.percent_change > 0 ? "increase" : "decrease"} of #{@dashboard_presenter.percent_change}% from last week.
+    |  That is an #{@dashboard_presenter.percent_change > 0 ? "increase" : "decrease"} of #{@dashboard_presenter.percent_change.abs}% from last week.
   - if @dashboard_presenter.most_used_device.present?
-    |  Your most used device is #{@dashboard_presenter.most_used_device.name}.
+    |  Your most used device is 
+    = link_to @dashboard_presenter.most_used_device.name, user_device_path(current_user, @dashboard_presenter.most_used_device), class: "hyperlink"
 .row
   = text_field_tag(:checkin_id, params["checkin_id"], placeholder: "Check-in id", class: 'col s3', required: true)
   = button_tag "Find check-in", class: "waves-effect waves-light btn", id: "find-checkin", type: "submit"

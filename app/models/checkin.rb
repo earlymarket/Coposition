@@ -169,7 +169,7 @@ class Checkin < ApplicationRecord
       recent_checkins_count = where(created_at: one_time_range_ago..Time.now).count.to_f
       older_checkins_count = where(created_at: 2.send(time_range).ago..one_time_range_ago).count.to_f
       return unless [recent_checkins_count, older_checkins_count].all?(&:positive?)
-      (((recent_checkins_count / older_checkins_count) - 1) * 100).round(2)
+      (((recent_checkins_count / older_checkins_count) - 1) * 100).round(0)
     end
 
     def to_csv
