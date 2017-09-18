@@ -65,4 +65,27 @@ describe Firebase::Push do
       )
     end
   end
+
+  context "when content_available is defined" do
+    let(:content_available) { true }
+    let(:expected_body) do
+      {
+        to: "/topics/1496249902a1edd9a57c8b5554b745e38b20721f01",
+        priority: "high",
+        notification: {
+          body: "Coposition test message",
+          title: "Coposition check-in"
+        },
+        "content-available" => "1"
+      }.to_json
+    end
+
+    it "includes content-available into push payload" do
+      described_class.call(
+        content_available: content_available,
+        topic: user.notification_token,
+        notification: notification
+      )
+    end
+  end
 end

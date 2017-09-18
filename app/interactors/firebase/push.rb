@@ -8,7 +8,8 @@ module Firebase
       "Authorization" => "key=#{Rails.app_config.firebase_server_key}"
     }.freeze
 
-    delegate :notification, :topic, :device, :result, to: :context
+    delegate :notification, :topic, :result,
+      :device, :content_available, to: :context
 
     def call
       context.result = send_notification
@@ -33,6 +34,7 @@ module Firebase
         notification: notification
       }.tap do |h|
         h[:device] = device if device
+        h["content-available"] = "1" if content_available
       end
     end
 

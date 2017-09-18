@@ -58,8 +58,8 @@ ActiveRecord::Schema.define(version: 20170913173043) do
   end
 
   create_table "attachinary_files", force: :cascade do |t|
-    t.string   "attachinariable_type"
     t.integer  "attachinariable_id"
+    t.string   "attachinariable_type"
     t.string   "scope"
     t.string   "public_id"
     t.string   "version"
@@ -95,9 +95,9 @@ ActiveRecord::Schema.define(version: 20170913173043) do
     t.string   "output_country_code"
     t.string   "fogged_country_code"
     t.boolean  "edited",              default: false
+    t.integer  "location_id"
     t.integer  "speed"
     t.integer  "altitude"
-    t.integer  "location_id"
     t.index ["device_id"], name: "index_checkins_on_device_id", using: :btree
   end
 
@@ -169,10 +169,10 @@ ActiveRecord::Schema.define(version: 20170913173043) do
     t.float    "lat"
     t.float    "lng"
     t.string   "address"
-    t.integer  "device_id"
-    t.integer  "checkins_count"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.integer  "checkins_count"
+    t.integer  "device_id"
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
