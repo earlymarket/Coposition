@@ -93,7 +93,7 @@ $(document).on('page:change', function () {
         if(gon.current_user.lastCheckin) {
           checkins = checkins.filter(checkin => checkin.id !== gon.current_user.lastCheckin.id);
         }
-        let clusters = M.arrayToCluster(checkins, M.makeMarker)
+        let clusters = M.checkinsToLayer(checkins, M.makeMarker)
         clusters.eachLayer((marker) => {
           marker.on('click', function (e) {
             M.panAndW3w.call(this, e)

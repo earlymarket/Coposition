@@ -458,7 +458,16 @@ window.COPO.maps = {
     let cluster = markerArr.map(marker => {
       return COPO.maps.makeMapPin(marker, marker.pinColor);
     }).filter(marker => marker);
-    return L.markerClusterGroup().addLayers(cluster)
+    return L.featureGroup(cluster)
+  },
+
+  checkinsToLayer: (markerArr, markerBuilderFn) => {
+    if (!markerBuilderFn) {
+      return console.error('Marker building function undefined')
+    }
+    let cluster = markerArr.map(marker => markerBuilderFn(marker))
+      .filter(marker => marker);
+    return L.featureGroup(cluster)
   },
 
   makeMapPin(user, color, markerOptions) {
