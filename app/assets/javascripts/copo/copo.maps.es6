@@ -212,9 +212,12 @@ window.COPO.maps = {
           dataType: "script"
         })
       }
-      //map.panTo(this.getLatLng());
       COPO.maps.w3w.setCoordinates(e);
     });
+    marker.on('popupopen', (popup) => {
+      $('.tooltipped').tooltip('remove')
+      $('.tooltipped').tooltip({delay: 50})
+    })
   },
 
   buildCheckinPopup(checkin, marker) {
@@ -331,7 +334,7 @@ window.COPO.maps = {
       onAdd: (map) => {
         var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
         container.innerHTML = `
-        <a class="leaflet-control-cities leaflet-bar-cities" href="#" onclick="return false;" title="Show cities">
+        <a class="leaflet-control-cities leaflet-bar-cities" href="#" onclick="return false;" title="City view">
           <i class="material-icons cached-icon">location_city</i>
         </a>
         `;
@@ -389,7 +392,7 @@ window.COPO.maps = {
       onAdd: (map) => {
         var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
         container.innerHTML = `
-        <a class="leaflet-control-path leaflet-bar-path" href="#" onclick="return false;" title="View path">
+        <a class="leaflet-control-path leaflet-bar-path" href="#" onclick="return false;" title="Path">
           <i class="material-icons path-icon">timeline</i>
         </a>
         `

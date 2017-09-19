@@ -69,7 +69,7 @@
         | {{ &foggle }} {{ &deletebutton }}
 
   script#cityPopupTmpl type="x-tmpl-mustache"
-    h3.ta-complete-center
+    h3.ta-complete-center.tooltipped data-tooltip=("City view is enabled")
       i.material-icons location_city 
       | {{ address }}
     ul
