@@ -7,7 +7,7 @@ namespace :scheduler do
 end
 
 def check_activity
-  # return unless Time.current.friday?
+  return unless Time.current.friday?
   User.all.each do |user|
     last = user.checkins.first.created_at if user.checkins.exists?
     next unless last && last < 1.week.ago
