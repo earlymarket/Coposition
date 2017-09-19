@@ -583,7 +583,7 @@ window.COPO.maps = {
   createCheckinPopup() {
     map.on('popupopen', function(e) {
       if ($('#current-location').length) {
-        $createCheckinLink = window.COPO.utility.createCheckinLink(e.popup.getLatLng());
+        $createCheckinLink = window.COPO.utility.createCheckinLink(COPO.maps.getBoundedLatlng(e));
         $('#current-location').replaceWith($createCheckinLink);
       }
     })
@@ -595,7 +595,7 @@ window.COPO.maps = {
       var coords = {
         lat: latlng.lat.toFixed(6),
         lng: latlng.lng.toFixed(6),
-        checkinLink: window.COPO.utility.createCheckinLink(e.latlng)
+        checkinLink: window.COPO.utility.createCheckinLink(latlng)
       };
       var template = $('#createCheckinTmpl').html();
       var content = Mustache.render(template, coords);
