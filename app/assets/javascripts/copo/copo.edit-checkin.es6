@@ -5,6 +5,10 @@ window.COPO.editCheckin = {
       e.stopPropagation();
       COPO.editCheckin.handleEditStart($(e.currentTarget).find(".editable"));
     });
+
+    $('body').on('click', '.revert', function(e) {
+      COPO.editCheckin.handleRevert($(e.currentTarget))
+    });
   },
 
   handleEditStart($editable) {
@@ -33,9 +37,24 @@ window.COPO.editCheckin = {
     COPO.editCheckin.setEditableListeners($editable);
   },
 
+  handleRevert($revert) {
+    $('.tooltipped').tooltip('remove');
+    $('.tooltipped').tooltip({delay: 50});
+    let data = $revert.data().original
+    let url = $revert.data().url
+    let type = $revert.data().type
+    if (type === 'coords') {
+      let coords = data.split(', ')
+      data = { checkin: {lat: coords[0], lng: coords[1]} }
+    } else {
+      let date = new Date(data).toUTCString() + " UTC+0000"
+      data = { checkin: { created_at: date } }
+    }
+    COPO.editCheckin.putUpdateCheckin(url, data, true);
+  },
+
   setEditableListeners($editable) {
     var original = $editable.text();
-
     // if user clicks the popup, stop editing
     $('.leaflet-popup').on('click', function (e) {
       if (e.target.className !== 'editable') {
@@ -115,9 +134,12 @@ window.COPO.editCheckin = {
     if (original !== $editable.text() && coords.length === 2 && coords.every(COPO.utility.validateLatLng)) {
       var url = $editable.data('url');
       var data = { checkin: { lat: coords[0], lng: coords[1]} }
-      COPO.editCheckin.putUpdateCheckin(url, data);
+      if (COPO.editCheckin.confirmUpdateCoords({ lat: coords[0], lng: coords[1] })) {
+        COPO.editCheckin.putUpdateCheckin(url, data);
+      } else {
+        $editable.text(original);
+      }
     } else {
-      // reverse the edit
       $editable.text(original);
     }
     COPO.editCheckin.handleEditEnd($editable);
@@ -127,36 +149,49 @@ window.COPO.editCheckin = {
     let latlng = COPO.maps.getBoundedLatlng(e)
     var confirmText = "Are you sure? Click ok to reposition check-in to new coordinates (";
         confirmText += latlng.lat.toFixed(6) + ", " + latlng.lng.toFixed(6) + ").";
-    if (confirm(confirmText)) {
+    if (COPO.editCheckin.confirmUpdateCoords(latlng)) {
       var data = { checkin: {lat: latlng.lat, lng: latlng.lng} }
       COPO.editCheckin.putUpdateCheckin($editable.data('url'), data);
     }
     COPO.editCheckin.handleEditEnd($editable);
   },
 
-  putUpdateCheckin(url, data) {
+  confirmUpdateCoords(coords) {
+    var confirmText = "Are you sure? Click ok to reposition check-in to new coordinates (";
+        confirmText += coords.lat.toFixed(6) + ", " + coords.lng.toFixed(6) + ").";
+    var confirmed = confirm(confirmText) ? true : false;
+    return confirmed;
+  },
+
+  putUpdateCheckin(url, data, reverted) {
     $.ajax({
       dataType: 'json',
       url: url,
       type: 'PUT',
       data: data
     })
-    .done(COPO.editCheckin.updateCheckin)
+    .done((response) => COPO.editCheckin.updateCheckin(response, reverted))
     .fail(function (error) {
       console.log('Error updating checkin:', error);
     })
   },
 
-  updateCheckin(response) {
+  updateCheckin(response, reverted) {
     // tries to find the checkin in gon and update it with the response
-    checkin = _.find(gon.checkins, _.matchesProperty('id', response.checkin.id));
-    checkin.lat = response.checkin.lat;
-    checkin.lng = response.checkin.lng;
-    checkin.edited = response.checkin.edited;
+    let checkin = _.find(gon.checkins, _.matchesProperty('id', response.checkin.id));
     checkin.lastEdited = true;
-    checkin.address = response.checkin.address;
-    checkin.fogged_city = response.checkin.fogged_city;
-    if (checkin.created_at !== response.checkin.created_at) {
+    checkin.edited = response.checkin.edited;
+    checkin.revert = !reverted
+    if (checkin.lat !== response.checkin.lat || checkin.lng !== response.checkin.lng) {
+      checkin.original = checkin.lat + ", " + checkin.lng
+      checkin.type = 'coords'
+      checkin.lat = response.checkin.lat;
+      checkin.lng = response.checkin.lng;
+      checkin.address = response.checkin.address;
+      checkin.fogged_city = response.checkin.fogged_city;
+    } else {
+      checkin.original = checkin.created_at
+      checkin.type = 'date'
       checkin.created_at = response.checkin.created_at;
       gon.checkins.sort(function(a, b) {
         return (new Date(b.created_at)) - (new Date(a.created_at));

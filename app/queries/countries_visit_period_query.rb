@@ -33,14 +33,14 @@ class CountriesVisitPeriodQuery
             FROM (
               SELECT *
               FROM checkins
+              INNER JOIN
+                devices ON checkins.device_id = devices.id
+              WHERE
+                devices.user_id = #{user.id}
               ORDER BY created_at
             ) as ordered_ch
           ) as numbered_ch
         ) as grouped_ch
-        INNER JOIN
-          devices ON grouped_ch.device_id = devices.id
-        WHERE
-          devices.user_id = 5
         WINDOW w AS (PARTITION BY grouped_ch.country_code, grouped_ch.grp)
       ) as visits
       GROUP BY
