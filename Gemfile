@@ -49,6 +49,7 @@ gem "public_activity"
 gem "rollbar"
 gem "oj"
 gem "smooch-api", "~> 1.8.0"
+gem "sendgrid-ruby"
 gem "countries"
 
 group :production do
