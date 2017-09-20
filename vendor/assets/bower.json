@@ -16,6 +16,6 @@
     "clipboard": "latest",
     "slick-carousel": "latest",
     "sweetalert": "1.1.3",
-    "flat-datetimepicker": "latest"
+    "datetimepicker-earlymarket": "0.2.1"
   }
 }

@@ -34,7 +34,7 @@
 //= require clipboard/dist/clipboard.min
 //= require slick-carousel/slick/slick.min
 //= require sweetalert/dist/sweetalert.min
-//= require flat-datetimepicker/dist/DateTimePicker.min
+//= require datetimepicker-earlymarket/dist/DateTimePicker
 
 // STILL more up to date version
 //= require nouislider.min

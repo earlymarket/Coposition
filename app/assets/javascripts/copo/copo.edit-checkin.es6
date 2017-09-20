@@ -20,7 +20,7 @@ window.COPO.editCheckin = {
 
     if ($editable.hasClass("date")) {
       // if user edits date input set datepicker and open
-      COPO.editCheckin.setDatepicker($editable)//.pickadate("open");
+      // COPO.editCheckin.setDatepicker($editable)//.pickadate("open");
     } else {
       // select all the text to make it easier to edit
       $editable.focus();
@@ -82,29 +82,37 @@ window.COPO.editCheckin = {
     date.setDate(date.getDate() - 5);
     $("#dtBox").DateTimePicker({
       mode: "datetime",
-      defaultDate: new Date(date),
+      dateTimeFormat: "dd-MM-yyyy HH:mm",
+      buttonsToDisplay: ["HeaderCloseButton", "SetButton"],
       beforeShow: function(oInputElement) {
         var oDTP = this;
         if ($(oInputElement).val() === "") {
-          oDTP.settings.defaultDate = new Date(date);
-          oDTP.oData.dCurrentDate = new Date(date);
+          oDTP.settings.defaultDate = date;
         }
       },
-      afterShow: function(oInputElement) {
-        debugger;
-      },
-      buttonClicked: (type, input) => {
+      buttonClicked: function(type, input) {
+        let $editable = $($(input).children()[0])
+        let oDTP = this;
         if (type === 'SET') {
-          debugger;
+          let original = $editable.text()
+          let newDate = new Date(oDTP.oData.dCurrentDate)
+          $editable.text(
+            newDate.toUTCString() + " UTC+0000"
+          )
+          COPO.editCheckin.handleEdited(original, $editable);
         }
+      },
+      afterHide: function(oInputElement) {
+        let $editable = $($(oInputElement).children()[0])
+        COPO.editCheckin.handleEditEnd($editable);
       }
     })
   },
 
-  setDatepicker($editable) {
-    var original = $editable.text();
-    var picker = $("#dtBox")
-  },
+  // setDatepicker($editable) {
+  //   var original = $editable.text();
+  //   var picker = $("#dtBox")
+  // },
   // setDatepicker($editable) {
   //   var original = $editable.text();
   //   return $("body").pickadate({
