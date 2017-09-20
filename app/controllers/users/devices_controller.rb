@@ -41,8 +41,8 @@ class Users::DevicesController < ApplicationController
 
     Firebase::Push.call(
       device: device.id,
-      topic: device.user.notification_token,
-      notification: {
+      topic: device.user.id,
+      data: {
         body: "Coposition device #{device.name} remote check-in",
         title: "Remote check-in"
       }
