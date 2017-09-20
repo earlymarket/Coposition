@@ -106,6 +106,8 @@ $lg-breakpoint: 600px;
     line-height: 0.8rem;
     .lg-items-left {
       float: left;
+      margin-right: $quicklinks-size;
+      margin-left: 0;
     }
 
     .lg-items-right {

@@ -20,27 +20,6 @@ $(document).on('page:change', function () {
       window.location = `/users/${userId}/devices/nil/checkins/${checkinId}`
     }
 
-    // Persistent map feature declarations
-    const SELF_MARKER = {
-      hasCheckin () {
-        return Boolean(gon.current_user.lastCheckin) === true
-      },
-      init (caller) {
-        if (this.hasCheckin()) {
-          M.makeMapPin(gon.current_user, 'blue', {clickable: false}).addTo(map);
-          caller.hasContent = true;
-        } else if (caller.hasContent) {
-          let whereAmI = `
-          <blockquote>
-            <h4>Where am I?</h4>
-            Use the locate control in the top left to temporarily find your current location. Or check-in on a device of your own!
-          </blockquote>`
-          $('#map-wrapper').after(whereAmI);
-        }
-      }
-    }
-    // end of persistent declarations
-
     // Slide type declarations
     const FRIENDS_SLIDE = {
       hasFriends () {
@@ -84,29 +63,31 @@ $(document).on('page:change', function () {
         }
       }
     }
-    const MONTHLY_SLIDE = {
+    const DEVICE_SLIDE = {
       hasCheckins () {
-        return gon.months_checkins.length > 0
+        return gon.device_checkins.length > 0
       },
       layers () {
-        let checkins = [...gon.months_checkins];
-        if(gon.current_user.lastCheckin) {
-          checkins = checkins.filter(checkin => checkin.id !== gon.current_user.lastCheckin.id);
-        }
-        let clusters = M.checkinsToLayer(checkins, M.makeMarker)
+        let checkins = [...gon.device_checkins];
+        let clusters = M.checkinsToLayer(checkins, M.makeCityMarker)
         clusters.eachLayer((marker) => {
           marker.on('click', function (e) {
-            M.panAndW3w.call(this, e)
+            let checkin = this.options.checkin;
+            if (!marker._popup) {
+              var template = COPO.maps.buildCheckinPopup(checkin, marker)
+              marker.bindPopup(L.Util.template(template, checkin));
+              marker.openPopup();
+            }
           });
         });
         return clusters;
       },
       bounds () {
         return L.latLngBounds(
-          gon.months_checkins.map(checkin => L.latLng(checkin.lat, checkin.lng))
+          gon.device_checkins.map(checkin => L.latLng(checkin.lat, checkin.lng))
         );
       },
-      status: `A random sample of your last month's checkins <a href='./devices'>(more details)</a>`,
+      status: `Your devices most recent check-ins <a class='btn' href='./devices'>view devices</a>`,
       init (caller) {
         if (this.hasCheckins()) {
           caller.slides.push({
@@ -123,8 +104,7 @@ $(document).on('page:change', function () {
       // slides are the states that are cycled through
       // slideTypes are the objects we initialize in DECK.init()
       slides: [],
-      slideTypes: [FRIENDS_SLIDE, MONTHLY_SLIDE],
-      persistent: [SELF_MARKER],
+      slideTypes: [FRIENDS_SLIDE, DEVICE_SLIDE],
       hasContent: false,
       pause () {
         this.paused = true;
@@ -171,7 +151,6 @@ $(document).on('page:change', function () {
       },
       init () {
         this.paused = false;
-        this.persistent.forEach(feature => feature.init(this));
         this.slideTypes.forEach(slide => slide.init(this));
         this.initTimerHandler();
         if (!this.hasContent) this.showNullState();

@@ -34,7 +34,7 @@ module Users
       {
         current_user: current_user_info,
         friends: friends,
-        months_checkins: months_checkins
+        device_checkins: device_checkins
       }
     end
 
@@ -55,6 +55,18 @@ module Users
 
     private
 
+    def user_devices
+      @user_devices ||= @user.devices
+    end
+
+    def device_checkins
+      checkins = user_devices.map do |device|
+        icon_path = ActionController::Base.helpers.asset_path(device.icon)
+        device.checkins.first.as_json.merge(device: device.name, icon: icon_path) if device.checkins.exists?
+      end
+      checkins.compact.sort_by { |checkin| checkin["created_at"] }.reverse
+    end
+
     def checkins
       @checkins ||= @user.checkins
     end
@@ -71,10 +83,6 @@ module Users
           pinColor: ApprovalsPresenter::PIN_COLORS.to_a[index % ApprovalsPresenter::PIN_COLORS.size][0]
         }
       end
-    end
-
-    def months_checkins
-      checkins.where(created_at: 1.month.ago..Time.current).limit(MONTH_CHECKINS_LIMIT).sample(MONTH_CHECKINS_SAMPLE)
     end
 
     def current_user_info

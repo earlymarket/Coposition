@@ -110,10 +110,10 @@ describe ::Users::DashboardsPresenter do
       expect(dashboard).to have_received(:friends)
     end
 
-    it "calls months_checkins" do
-      allow(dashboard).to receive(:months_checkins)
+    it "calls device_checkins" do
+      allow(dashboard).to receive(:device_checkins)
       dashboard.gon
-      expect(dashboard).to have_received(:months_checkins)
+      expect(dashboard).to have_received(:device_checkins)
     end
   end
 
@@ -169,10 +169,10 @@ describe ::Users::DashboardsPresenter do
     end
   end
 
-  describe "months_checkins" do
+  describe "device_checkins" do
     it "returns an array" do
       checkins
-      expect(dashboard.send(:months_checkins)).to be_kind_of Array
+      expect(dashboard.send(:device_checkins)).to be_kind_of Array
     end
   end
 

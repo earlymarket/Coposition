@@ -162,7 +162,9 @@ window.COPO.maps = {
   },
 
   renderAllMarkers(checkins) {
-    let markers = checkins.slice(1).map(checkin => COPO.maps.makeMarker(checkin));
+    let markers = checkins.slice(1).map(checkin => {
+      return checkin.icon ? COPO.maps.makeCityMarker(checkin) : COPO.maps.makeMarker(checkin)
+    });
     // allMarkers is used for calculating bounds
     COPO.maps.allMarkers = L.markerClusterGroup().addLayers(markers);
     COPO.maps.addLastCheckinMarker(checkins);
@@ -174,12 +176,16 @@ window.COPO.maps = {
 
   addLastCheckinMarker(checkins) {
     if (!checkins.length) return;
-    COPO.maps.last = COPO.maps.makeMarker(checkins[0], {
-      icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#47b8e0' }),
-      title: 'ID: ' + checkins[0].id + ' - Most recent',
-      alt: 'lastCheckin',
-      zIndexOffset: 1000
-    });
+    if (checkins[0].icon) {
+      COPO.maps.last = COPO.maps.makeCityMarker(checkins[0])
+    } else {
+      COPO.maps.last = COPO.maps.makeMarker(checkins[0], {
+        icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#47b8e0' }),
+        title: 'ID: ' + checkins[0].id + ' - Most recent',
+        alt: 'lastCheckin',
+        zIndexOffset: 1000
+      });
+    }
     COPO.maps.allMarkers.addLayer(COPO.maps.last);
     map.addLayer(COPO.maps.last);
   },
@@ -214,7 +220,6 @@ window.COPO.maps = {
           dataType: "script"
         })
       }
-      //map.panTo(this.getLatLng());
       COPO.maps.w3w.setCoordinates(e);
     });
   },
@@ -242,7 +247,7 @@ window.COPO.maps = {
       }
     }
     checkinTemp.devicebutton = function() {
-      if (window.COPO.utility.currentPage('devices', 'index')) {
+      if (window.COPO.utility.currentPage('devices', 'index') || window.COPO.utility.currentPage('dashboards', 'show')) {
         return `<a href="./devices/${checkin.device_id}" title="Device map">${checkin.device}</a>`
       } else {
         return `<a href="${window.location.pathname}/show_device?device_id=${checkin.device_id}" title="Device map">${checkin.device}</a>`
@@ -535,6 +540,17 @@ window.COPO.maps = {
     <div class="address">${ address }</div>
     Checked in: ${ date }`
     marker.bindPopup(content, { offset: [0, -38] } );
+  },
+
+  makeCityMarker(checkin) {
+    return COPO.maps.makeMarker(checkin, {
+      icon: L.icon({
+        iconUrl: checkin.icon,
+        iconSize:     [48, 48],
+        iconAnchor:   [24, 48],
+        popupAnchor:  [0, -48]
+      })
+    })
   },
 
   makeMarker(checkin, markerOptions) {
