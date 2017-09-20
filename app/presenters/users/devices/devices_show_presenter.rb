@@ -29,8 +29,7 @@ module Users::Devices
         device: device.id,
         current_user_id: user.id,
         total: gon_show_checkins.count,
-        max: MAX_CHECKINS_TO_LOAD,
-        all: all_checkins?
+        max: MAX_CHECKINS_TO_LOAD
       }
     end
 
@@ -63,10 +62,6 @@ module Users::Devices
 
     def checkin
       @checkin ||= params[:checkin_id] ? Checkin.find(params[:checkin_id]) : nil
-    end
-
-    def all_checkins?
-      gon_show_checkins.count == device.checkins.count
     end
 
     def gon_show_checkins_paginated
