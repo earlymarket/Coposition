@@ -78,20 +78,20 @@ window.COPO.editCheckin = {
   },
 
   initDatePicker() {
-    var date = new Date();
-    date.setDate(date.getDate() - 5);
     $("#dtBox").DateTimePicker({
       mode: "datetime",
       dateTimeFormat: "dd-MM-yyyy HH:mm",
       buttonsToDisplay: ["HeaderCloseButton", "SetButton"],
+      titleContentDateTime: "Set UTC Date & Time",
+      setButtonContent: "Set UTC Date & Time",
       beforeShow: function(oInputElement) {
-        var oDTP = this;
-        if ($(oInputElement).val() === "") {
-          oDTP.settings.defaultDate = date;
-        }
+        let oDTP = this;
+        let $editable = $($(oInputElement).children()[0])
+        let date = moment($editable.data().date).format("DD-MM-YYYY HH:mm");
+        oDTP.settings.defaultDate = date;
       },
-      buttonClicked: function(type, input) {
-        let $editable = $($(input).children()[0])
+      buttonClicked: function(type, oInputElement) {
+        let $editable = $($(oInputElement).children()[0])
         let oDTP = this;
         if (type === 'SET') {
           let original = $editable.text()
