@@ -162,9 +162,12 @@ window.COPO.editCheckin = {
     if (original !== $editable.text() && coords.length === 2 && coords.every(COPO.utility.validateLatLng)) {
       var url = $editable.data('url');
       var data = { checkin: { lat: coords[0], lng: coords[1]} }
-      COPO.editCheckin.putUpdateCheckin(url, data);
+      if (COPO.editCheckin.confirmUpdateCoords({ lat: coords[0], lng: coords[1] })) {
+        COPO.editCheckin.putUpdateCheckin(url, data);
+      } else {
+        $editable.text(original);
+      }
     } else {
-      // reverse the edit
       $editable.text(original);
     }
     COPO.editCheckin.handleEditEnd($editable);
@@ -174,11 +177,18 @@ window.COPO.editCheckin = {
     let latlng = COPO.maps.getBoundedLatlng(e)
     var confirmText = "Are you sure? Click ok to reposition check-in to new coordinates (";
         confirmText += latlng.lat.toFixed(6) + ", " + latlng.lng.toFixed(6) + ").";
-    if (confirm(confirmText)) {
+    if (COPO.editCheckin.confirmUpdateCoords(latlng)) {
       var data = { checkin: {lat: latlng.lat, lng: latlng.lng} }
       COPO.editCheckin.putUpdateCheckin($editable.data('url'), data);
     }
     COPO.editCheckin.handleEditEnd($editable);
+  },
+
+  confirmUpdateCoords(coords) {
+    var confirmText = "Are you sure? Click ok to reposition check-in to new coordinates (";
+        confirmText += coords.lat.toFixed(6) + ", " + coords.lng.toFixed(6) + ").";
+    var confirmed = confirm(confirmText) ? true : false;
+    return confirmed;
   },
 
   putUpdateCheckin(url, data, reverted) {
