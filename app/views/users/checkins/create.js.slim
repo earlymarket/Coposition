@@ -1,8 +1,10 @@
 = raw render_flash
-| gon.checkins.unshift(
-= raw @checkin.to_json
-| );
-| gon.checkins.sort(function(a, b) {
-  return (new Date(b.created_at)) - (new Date(a.created_at));
-| });
-| COPO.maps.refreshMarkers(gon.checkins);
+- if @checkin["id"]
+  | gon.checkins.unshift(
+  = raw @checkin.to_json
+  | );
+  | gon.checkins.sort(function(a, b) {
+    return (new Date(b.created_at)) - (new Date(a.created_at));
+  | });
+  | COPO.maps.refreshMarkers(gon.checkins);
+

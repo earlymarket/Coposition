@@ -23,6 +23,26 @@ RSpec.describe ApprovalsHelper, type: :helper do
     end
   end
 
+  describe "#approvals_add_text" do
+    it "return 'add new friend'" do
+      expect(helper.approvals_add_text("User")).to match "Add new friend"
+    end
+
+    it "returns 'connect new app'" do
+      expect(helper.approvals_add_text("Developer")).to match "Connect new app"
+    end
+  end
+
+  describe "#approvals_new_text" do
+    it "return 'enter the email'" do
+      expect(helper.approvals_new_text("User")).to match "Enter the email"
+    end
+
+    it "returns 'enter the app'" do
+      expect(helper.approvals_new_text("Developer")).to match "Enter the App"
+    end
+  end
+
   describe "#approvals_friends_device_link" do
     it "adds a link if approvable_type is User" do
       allow(helper).to receive(:current_user) { user }

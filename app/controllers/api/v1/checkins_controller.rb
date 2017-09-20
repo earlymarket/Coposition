@@ -40,7 +40,7 @@ class Api::V1::CheckinsController < Api::ApiController
       config = @dev.configs.find_by(device_id: @device.id)
       render json: { data: [checkin], config: config }
     else
-      render status: 400, json: { error: "You must provide a lat and lng" }
+      render status: 400, json: { error: "You must provide a valid lat and lng" }
     end
   end
 
@@ -65,7 +65,7 @@ class Api::V1::CheckinsController < Api::ApiController
   end
 
   def allowed_params
-    params.require(:checkin).permit(:lat, :lng, :created_at, :fogged)
+    params.require(:checkin).permit(:lat, :lng, :created_at, :fogged, :speed, :altitude)
   end
 
   def find_device

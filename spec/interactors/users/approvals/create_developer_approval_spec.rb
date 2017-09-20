@@ -21,7 +21,7 @@ RSpec.describe Users::Approvals::CreateDeveloperApproval, type: :interactor do
       end
 
       it "provides an alert message" do
-        expect(create_context.error).to eq "Approval/Request exists"
+        expect(create_context.error).to eq "App already connected"
       end
     end
 

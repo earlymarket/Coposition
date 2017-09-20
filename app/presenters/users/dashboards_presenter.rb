@@ -22,9 +22,11 @@ module Users
     end
 
     def last_countries
-      last_countries_sql = "created_at IN(SELECT MAX(created_at) FROM checkins INNER JOIN devices ON"\
-        " checkins.device_id = devices.id WHERE devices.user_id = #{@user.id} GROUP BY country_code)"
       checkins.where(last_countries_sql).first NUMBER_OF_COUNTRIES
+    end
+
+    def last_countries_no_limits
+      checkins.where(last_countries_sql)
     end
 
     def gon
@@ -36,8 +38,8 @@ module Users
       }
     end
 
-    def visited_countries_title
-      case count = last_countries.count
+    def visited_countries_title(countries = last_countries)
+      case count = countries.count
       when 1
         "Last country visited"
       when 0
@@ -62,10 +64,11 @@ module Users
     end
 
     def friends
-      @user.friends.map do |friend|
+      @user.friends.map.with_index do |friend, index|
         {
           userinfo: friend.public_info_hash,
-          lastCheckin: friend.safe_checkin_info_for(permissible: @user, action: "last")[0]
+          lastCheckin: friend.safe_checkin_info_for(permissible: @user, action: "last")[0],
+          pinColor: ApprovalsPresenter::PIN_COLORS.to_a[index % ApprovalsPresenter::PIN_COLORS.size][0]
         }
       end
     end
@@ -79,6 +82,11 @@ module Users
         userinfo: @user.public_info_hash,
         lastCheckin: checkins.first
       }
+    end
+
+    def last_countries_sql
+      "created_at IN(SELECT MAX(created_at) FROM checkins INNER JOIN devices ON" \
+      " checkins.device_id = devices.id WHERE devices.user_id = #{@user.id} GROUP BY country_code)"
     end
   end
 end

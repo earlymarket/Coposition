@@ -7,10 +7,11 @@ class GeojsonCheckin
 end
 
 class Checkin < ApplicationRecord
-  validates :lat, presence: :true
-  validates :lng, presence: :true
+  validates :lat, presence: :true, inclusion: { in: -90..90, message: "Latitude must be between -90 and 90" }
+  validates :lng, presence: :true, inclusion: { in: -180..180, message: "longitude must be between -180 and 180" }
 
   belongs_to :device
+  belongs_to :location, counter_cache: true
 
   delegate :user, to: :device
 
@@ -18,6 +19,8 @@ class Checkin < ApplicationRecord
   scope :since, ->(date) { where("created_at > ?", date) }
 
   before_update :set_edited, if: proc { lat_changed? || lng_changed? || created_at_changed? }
+
+  after_destroy :decrement_checkin_count
 
   reverse_geocoded_by :lat, :lng do |obj, results|
     if results.present?
@@ -34,10 +37,17 @@ class Checkin < ApplicationRecord
     if device
       reload
       assign_values
+      assign_location
       save
     else
       raise "Checkin is not assigned to a device."
     end
+  end
+
+  def decrement_checkin_count
+    return unless location
+    location.save
+    location.destroy if location.checkins_count <= 0
   end
 
   def assign_values
@@ -78,6 +88,13 @@ class Checkin < ApplicationRecord
       output_postal_code: postal_code,
       output_country_code: country_code
     )
+  end
+
+  def assign_location
+    existing_location = device.locations.near([lat, lng], 0.1, units: :km).first
+    location = existing_location || Location.create(lat: lat, lng: lng, device_id: device.id)
+
+    assign_attributes(location_id: location.id)
   end
 
   def reverse_geocode!
@@ -169,8 +186,10 @@ class Checkin < ApplicationRecord
     def to_gpx
       GPX::GPXFile.new.tap do |gpx|
         gpx.routes << GPX::Route.new.tap do |route|
-          all.pluck(:lat, :lng, :created_at).each do |record|
-            route.points << GPX::Point.new(elevation: 0, lat: record[0], lon: record[1], time: record[2])
+          all.pluck(:altitude, :lat, :lng, :created_at).each do |record|
+            route.points << GPX::Point.new(
+              elevation: record[0], lat: record[1], lon: record[2], time: record[3]
+            )
           end
         end
       end.to_s

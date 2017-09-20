@@ -7,14 +7,16 @@ $(document).on('page:change', function() {
     var M = window.COPO.maps;
     U.gonFix();
     M.initMap();
-    M.initMarkers(gon.checkins, gon.total);
-    M.initControls();
+    initMarkers();
+    var controls = ['geocoder', 'locate', 'w3w', 'fullscreen', 'path']
+    page === 'user' ? controls.push('cities', 'layers') : controls.push('layers')
+    M.initControls(controls);
     COPO.datePicker.init();
 
     map.on('locationfound', onLocationFound);
 
     if (page === 'user') {
-      $('.modal-trigger').leanModal();
+      $('.modal-trigger').modal();
       M.createCheckinPopup();
       M.rightClickListener();
       M.checkinNowListeners(getLocation);
@@ -42,6 +44,14 @@ $(document).on('page:change', function() {
 
     function onLocationFound(p) {
       currentCoords = p.latlng;
+    }
+
+    function initMarkers() {
+      if (gon.checkin || page === 'friend') {
+        M.initMarkers(gon.checkins, gon.total)
+      } else {
+        M.initMarkers(gon.cities, gon.total, true);
+      }
     }
   }
 });

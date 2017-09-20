@@ -10,6 +10,11 @@
     }
   }
 
+  .hyperlink {
+    text-decoration: underline;
+    color: $primary-color;
+  }
+
   #map-overlay {
     position: absolute;
     z-index: 1500;
@@ -38,6 +43,10 @@
         cursor: pointer;
       }
     }
+  }
+
+  #checkin_id {
+    margin-right: 2rem;
   }
 
   #map-status {

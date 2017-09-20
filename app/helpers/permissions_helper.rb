@@ -1,11 +1,16 @@
 module PermissionsHelper
   include ApprovalsHelper
-  def permissions_permissible_title(permissible)
+  def permissions_permissible_title(user, permissible)
     title = '<div class="valign-wrapper">'
     title += avatar_for(permissible)
-    title += '<p class="permissible-name">'
+    title += '<div><div><span class="permissible-name">'
     title += approvals_approvable_name(permissible)
-    title += '</p></div>'
+    title += "</span></div>"
+    if permissible.class == Developer
+      approval = user.approval_for(permissible).status == "complete" ? "(Authenticated)" : "(Connected, no data access)"
+      title += '<div><span class="auth">' + approval + "</span></div>"
+    end
+    title += "</div></div>"
     title.html_safe
   end
 

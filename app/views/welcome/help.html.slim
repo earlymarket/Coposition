@@ -8,11 +8,20 @@ h1 Help Centre
         i.material-icons pin_drop
         |  Checking in
       p
-        | You can start checking in either via the Coposition website, the Coposition app or an app that is using Coposition.
+        | You can start checking in either via the Coposition website, the Coposition app or an app that is using Coposition. 
         | You can create a checkin on the coposition website by selecting a device from your 
-        | #{current_user ? link_to('devices', user_devices_path(current_user.url_id)) : 'devices'}
+        | #{current_user ? link_to('devices', user_devices_path(current_user.url_id), class: 'link') : 'devices'}
         |  and then either right clicking on the map or clicking on the marker in the control panel to the left hand side of the map and then selecting the blue starred marker that appears on the map which indicates your current location.
-        | If you do not have any devices, you will be given the option to create a checkin when creating a new device, the checkin will indicate you current location.
+      p If you do not have any devices, you will be given the option to create a checkin when creating a new device, the checkin will indicate you current location.
+      #viewing.section.scrollspy
+        h5
+          i.material-icons location_city
+          |  City view
+        p
+          | When viewing the check-in history for a device online, Coposition displays City View by default. This aggregates (clusters) all check-ins within the same city or town to give an approximation of your location history. 
+        p 
+          | For your detailed history, you can toggle City View off by clicking the City View icon in the map options. City view still only displays locations within the selected date range.
+
     .divider
     #devices.section.scrollspy
       h4
@@ -24,7 +33,7 @@ h1 Help Centre
           |  Fogging
         p
           | Fogging allows you additional control over how much of your location data your data consumers (friends and apps) can see. Fogging a checkin or a device will mean that your data consumers will not be shown your exact location or coordinates, instead they will see a location usually localised to the nearest city/town or a randomised location within 50km of your actual location if there are no settlements nearby.
-          | Fogging is enabled by default when you create a device. Whilst on, you can choose to allow certain friends or apps to see precise data by enabling bypass fogging via permissions.
+        p Fogging is enabled by default when you create a device. Whilst on, you can choose to allow certain friends or apps to see precise data by enabling bypass fogging via permissions.
       #delay.section.scrollspy
         h5
           i.material-icons timer
@@ -69,12 +78,36 @@ h1 Help Centre
       #addingFriends.section.scrollspy
         h5
           i.material-icons add_circle
-          | Adding new friends/apps
+          |  Adding friends
         p
-          | To add a new friend, visit the friends page and click the orange plus at the top of the page. You can then enter an email address, either of an existing user or of a friend you would like to invite to use Coposition. This will send an email either notifying the user that they have received a friend request or that you have invited them to sign up with Coposition.
-          br/
-          br/
-          | To add a new app, visit the apps page and click the orange plus at the top of the page. You can then enter the name of the app and choose the correct app from the dropdown which appears.
+          | To add a friend, visit the friends page and click the orange plus at the top of the page. You can then enter an email address, either of an existing user or of a friend you would like to invite to use Coposition. This will send an email either notifying the user that they have received a friend request or that you have invited them to sign up with Coposition.
+        h5
+          i.material-icons add_circle
+          |  Adding apps
+        p
+          | To allow external applications to access your location data, you must authorise their access to your Coposition account.
+        p
+          | Connecting and authenticating an external application, to allow access to your location data, can be started from the external application or from the Coposition website. Starting the process through the Coposition website is recommended, in order to customise the application’s access to your devices and location data before authenticating the app and giving the app developers access to your data.
+        p To connect online: 
+        ul.browser-default
+          li  From your #{current_user ? link_to('Apps', user_apps_path(current_user.url_id), class: 'link') : 'Apps'} tab, click the <i>CONNECT NEW APP</i> button in the top right corner. 
+          li  Enter the app you would like to connect to. Potential matches will be displayed as you start typing.
+          li  Select the app you’d like to connect to, and click <i>ADD</i>. You will return to the #{current_user ? link_to('Apps', user_apps_path(current_user.url_id), class: 'link') : 'apps'} tab and will see this app listed in your apps <i>Requiring Authentication</i>. These apps cannot access your data, but you can edit their <i>PERMISSIONS</i> to limit their data access as you please once authentication is completed. You can also <i>DISCONNECT</i> from these apps. 
+        p To authorise online:
+        ul.browser-default
+          li  Apps listed as Requiring Authentication give you the option to <i>AUTHENTICATE</i>. Clicking this will take you to the external app where you will be able to authorise the external application to access your Coposition data.
+        p To connect and authorise from an external app:
+        ul.browser-default
+          li  Every external app will handle this slightly differently, but they will ask you to permit their access to your Coposition account. You will be taken to a Coposition page and asked to login to your Coposition account.
+          li  After entering your Coposition account email address and password you will then be asked to authorise or deny the application’s access to your data. If you deny access, you can always complete the process again.
+        p Once you have authenticated an external app, you can manage its access to device data (and turn off access completely) from the #{current_user ? link_to('Apps', user_apps_path(current_user.url_id), class: 'link') : 'apps'}  and #{current_user ? link_to('Devices', user_devices_path(current_user.url_id), class: 'link') : 'Devices'}  tabs online, and from the Permissions screen in the Coposition mobile app.
+        p You can turn off an external application’s access to your device data without revoking the authentication you have given that app. Think of it this way:
+        blockquote 
+          p <b>Connected:</b>
+          | The external app knows that you have a Coposition account. It cannot make a request for your location data.
+        blockquote 
+          p <b>Authenticated:</b>
+          | The external app has the ability to request your data. You can still manage your settings to ensure that your Coposition account says ‘no’ to this request!
       #permissions.section.scrollspy
         h5
           i.material-icons lock
@@ -100,13 +133,30 @@ h1 Help Centre
         | You can download your check-ins in a variety of formats in order to have a permanent local copy of your data. If you wish, you can also use this as a data backup, and reupload check-ins at a later date to overwrite any changes or deletions you may have made. Check-ins must be uploaded in CSV format.
       p
         | When uploading check-ins from a CSV file, it is possible that existing check-ins will be overwritten. This will only occur if you download your check-in history, and then re-upload this same history having edited the CSV file you downloaded.
+      h5 CSV
+      p
+        | Simple comma-separated values in rows. This is the best format for doing analysis (eg. filtering or mathematical) on the data. CSV is usually viewed with a spreadsheet programme.
+      p The CSV file downloaded will include the following headers:
+      blockquote
+        | id, lat, lng, created_at, updated_at, uuid, device_id, address, city, postal_code, country_code, fogged, fogged_lat, fogged_lng, fogged_city, output_lat, output_lng, output_address, output_city, output_postal_code, output_country_code, fogged_country_code, edited
+      p To view a CSV file, you can use #{link_to("Google Sheets", "http://google.com/sheets", class: "link")}.
+      h5 GeoJson
+      p
+        | GeoJSON is a format for encoding a variety of geographic data structures. It is a useful format for many mapping programmes. Learn more about #{link_to("GeoJson", "https://macwright.org/2015/03/23/geojson-second-bite.html", class: 'link')}.
+      p Coposition returns your check-ins as a #{link_to("FeatureCollection", "https://macwright.org/2015/03/23/geojson-second-bite.html#featurecollection", class: 'link')}, with each individual check-in an individual feature which includes the latitude, longitude and id of the check-in.
+      p To visualise, use #{link_to("Geojson Lint", "http://geojsonlint.com/", class: "link")}.
+      h5 GPX
+      p A standard XML format for GPS data. A useful format for GPS devices and online mapping.
+      p Coposition creates a GPX route where each of your check-ins is represented by a GPX point. These points include your elavation, latitude, longitude and time the check-in was created.
+      p You can learn more about the official GPX schema #{link_to("here", "http://www.topografix.com/gpx.asp", class: "link")}.
+      p To visualise, use #{link_to("GPS visualizer", "http://www.gpsvisualizer.com/", class: "link")}.
     .divider
     #w3w.section.scrollspy
       h4
         i.material-icons explore
         |  what3words
       p
-        | w3w or 'what3words' is a unique combination of 3 words that identifies a 3mx3m square, anywhere on the planet. Learn more about #{link_to("what3words", "http://what3words.com/about/")}.
+        | w3w or 'what3words' is a unique combination of 3 words that identifies a 3mx3m square, anywhere on the planet. Learn more about #{link_to("what3words", "http://what3words.com/about/", class: 'link')}.
     .divider
     #zapier.section.scrollspy
       h4
@@ -122,8 +172,13 @@ h1 Help Centre
         | Users can make use of a checkin or device trigger which fires whenever a new checkin or device is created.
         br/
         br/
-        | Get started at  #{link_to("zapier.com", "https://zapier.com/")}
+        | Get started at  #{link_to("zapier.com", "https://zapier.com/", class: 'link')}
     .divider
+    #privacy.section.scrollspy
+      h4
+        i.material-icons account_circle
+        |  Privacy Policy
+      p Coposition is dedicated to ensuring our users' data is protected. Our #{link_to("terms and conditions", terms_path, class: 'link')} outline the relationship between Coposition, users, and their data. Coposition meets and exceeds the minimum standards for the EU's GDPR.
     #more.section.scrollspy
       h4
         i.material-icons help
@@ -146,6 +201,8 @@ h1 Help Centre
         a href="#w3w" what3words
       li
         a href="#zapier" Zapier
+      li
+        a href="#privacy" Privacy Policy
       li
         a href="#more" More questions
 

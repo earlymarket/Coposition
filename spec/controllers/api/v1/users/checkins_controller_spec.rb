@@ -18,8 +18,8 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
   let(:address) { 'The Pilot Centre, Denham Aerodrome, Denham Aerodrome, Denham, Buckinghamshire UB9 5DF, UK' }
   let(:params) { { user_id: user.id, device_id: device.id } }
   let(:geocode_params) { params.merge(type: 'address') }
-  let(:lat_lng) { { lat: Faker::Address.latitude, lng: Faker::Address.longitude } }
-  let(:create_params) { { checkin: lat_lng } }
+  let(:checkin_attr) { { lat: Faker::Address.latitude, lng: Faker::Address.longitude, speed: 0, altitude: 0 } }
+  let(:create_params) { { checkin: checkin_attr } }
   let(:foggable_checkin_attributes) { %w(city postal_code) }
   let(:private_checkin_attributes) { %w(uuid fogged fogged_lat fogged_lng fogged_city) }
 
@@ -287,7 +287,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
       create_headers
       post :create, params: { checkin: { lat: Faker::Address.latitude } }
       expect(response.status).to eq(400)
-      expect(res_hash[:error]).to eq('You must provide a lat and lng')
+      expect(res_hash[:error]).to eq('You must provide a valid lat and lng')
     end
 
     it 'returns 400 if you POST a checkin with invalid uuid' do
@@ -302,7 +302,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
     it 'creates a batch of checkins when there is a pre-existing device' do
       count = user.checkins.count
       create_headers
-      post :batch_create, body: [lat_lng, lat_lng, lat_lng].to_json, format: :json
+      post :batch_create, body: [checkin_attr, checkin_attr, checkin_attr].to_json, format: :json
       expect(res_hash[:message]).to eq('Checkins created')
       expect(user.checkins.count).to be(count + 3)
       expect(user.checkins.first.device).to eq device
