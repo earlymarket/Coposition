@@ -42,6 +42,7 @@ class Users::DevicesController < ApplicationController
     Firebase::Push.call(
       device: device.id,
       topic: device.user.id,
+      content_available: true,
       data: {
         body: "Coposition device #{device.name} remote check-in",
         title: "Remote check-in"
