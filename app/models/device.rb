@@ -11,7 +11,7 @@ class Device < ApplicationRecord
   has_many :locations
   has_attachment :csv, accept: :raw
 
-  validates :name, uniqueness: { scope: :user_id }, if: :user_id
+  validates :name, uniqueness: { scope: :user_id }, if: :user_id, length: { in: 4..20 }
 
   before_create do |dev|
     dev.uuid = SecureRandom.uuid

@@ -61,7 +61,7 @@ module Users
 
     def device_checkins
       checkins = user_devices.map do |device|
-        device.checkins.first.as_json.merge(device: device.name, icon: circle_icon) if device.checkins.exists?
+        device.checkins.first.as_json.merge(device: device.name) if device.checkins.exists?
       end
       checkins.compact.sort_by { |checkin| checkin["created_at"] }.reverse
     end
@@ -92,7 +92,7 @@ module Users
     end
 
     def circle_icon
-      ActionController::Base.helpers.image_path("circle_border.png")
+      ActionController::Base.helpers.image_path("circle_border")
     end
 
     def last_countries_sql

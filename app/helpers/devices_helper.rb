@@ -4,11 +4,16 @@ module DevicesHelper
       last_checkin = device.checkins.first
       postcode = last_checkin.postal_code
       last_checkin.address = last_checkin.address.gsub(" " + postcode, "") if postcode
-      "Last reported in #{last_checkin.address} on #{humanize_date_and_time(last_checkin.created_at)}
-      <i data-device='#{device.id}' class='center-map material-icons'>my_location</i>".html_safe
+      "Last reported in #{last_checkin.address} on #{humanize_date_and_time(last_checkin.created_at)}".html_safe
     else
       "No Checkins found"
     end
+  end
+
+  def devices_locate_icon(device)
+    return unless device.checkins.exists?
+    "<i data-device='#{device.id}' class='center-map right tooltipped material-icons'
+    data-tooltip='Centre map on device'>my_location</i>".html_safe
   end
 
   def devices_shared_link(device)

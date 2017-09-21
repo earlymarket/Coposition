@@ -163,7 +163,7 @@ window.COPO.maps = {
 
   renderAllMarkers(checkins) {
     let markers = checkins.slice(1).map(checkin => {
-      return checkin.icon ? COPO.maps.makeDeviceMarker(checkin) : COPO.maps.makeMarker(checkin)
+      return checkin.device ? COPO.maps.makeDeviceMarker(checkin) : COPO.maps.makeMarker(checkin)
     });
     // allMarkers is used for calculating bounds
     COPO.maps.allMarkers = L.markerClusterGroup().addLayers(markers);
@@ -176,8 +176,8 @@ window.COPO.maps = {
 
   addLastCheckinMarker(checkins) {
     if (!checkins.length) return;
-    if (checkins[0].icon) {
-      COPO.maps.last = COPO.maps.makeDeviceMarker(checkins[0])
+    if (checkins[0].device) {
+      COPO.maps.last = COPO.maps.makeDeviceMarker(checkins[0], true)
     } else {
       COPO.maps.last = COPO.maps.makeMarker(checkins[0], {
         icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#47b8e0' }),
@@ -470,8 +470,8 @@ window.COPO.maps = {
     if (!markerBuilderFn) {
       return console.error('Marker building function undefined')
     }
-    let cluster = markerArr.map(marker => markerBuilderFn(marker))
-      .filter(marker => marker);
+    let cluster = markerArr.slice(1).map(marker => markerBuilderFn(marker))
+    cluster = cluster.concat(markerBuilderFn(markerArr[0], true)).filter(marker => marker);
     return L.featureGroup(cluster)
   },
 
@@ -542,14 +542,16 @@ window.COPO.maps = {
     marker.bindPopup(content, { offset: [0, -38] } );
   },
 
-  makeDeviceMarker(checkin) {
+  makeDeviceMarker(checkin, last) {
+    let path = last ? "<%= image_path("circle_border_blue.png") %>" : "<%= image_path("circle_border_orange.png") %>"
     return COPO.maps.makeMarker(checkin, {
       icon: L.icon({
-        iconUrl: checkin.icon,
-        iconSize:     [36, 36],
-        iconAnchor:   [18, 36],
-        popupAnchor:  [0, -36]
-      })
+        iconUrl: path,
+        iconSize:     [26, 26],
+        iconAnchor:   [13, 26],
+        popupAnchor:  [0, -26]
+      }),
+      zIndexOffset: last ? 1000 : 1
     })
   },
 
