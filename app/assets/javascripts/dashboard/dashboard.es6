@@ -34,7 +34,7 @@ $(document).on('page:change', function () {
           .map(friend => L.latLng(friend.lat, friend.lng))
         )
       },
-      status: `Your friend's check-ins <a class='btn' href='./friends'>view friends</a>`,
+      status: `Your friend's check-ins. <a class='btn-flat blue-text' href='./friends'>view friends</a>`,
       init (caller) {
         if (this.hasFriendsWithCheckins()) {
           caller.slides.push({
@@ -69,7 +69,7 @@ $(document).on('page:change', function () {
       },
       layers () {
         let checkins = [...gon.device_checkins];
-        let clusters = M.checkinsToLayer(checkins, M.makeCityMarker)
+        let clusters = M.checkinsToLayer(checkins, M.makeDeviceMarker)
         clusters.eachLayer((marker) => {
           marker.on('click', function (e) {
             let checkin = this.options.checkin;
@@ -87,7 +87,7 @@ $(document).on('page:change', function () {
           gon.device_checkins.map(checkin => L.latLng(checkin.lat, checkin.lng))
         );
       },
-      status: `Your devices most recent check-ins <a class='btn' href='./devices'>view devices</a>`,
+      status: `Your devices most recent check-ins. <a class='btn-flat blue-text' href='./devices'>view devices</a>`,
       init (caller) {
         if (this.hasCheckins()) {
           caller.slides.push({

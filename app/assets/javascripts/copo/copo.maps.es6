@@ -163,7 +163,7 @@ window.COPO.maps = {
 
   renderAllMarkers(checkins) {
     let markers = checkins.slice(1).map(checkin => {
-      return checkin.icon ? COPO.maps.makeCityMarker(checkin) : COPO.maps.makeMarker(checkin)
+      return checkin.icon ? COPO.maps.makeDeviceMarker(checkin) : COPO.maps.makeMarker(checkin)
     });
     // allMarkers is used for calculating bounds
     COPO.maps.allMarkers = L.markerClusterGroup().addLayers(markers);
@@ -177,7 +177,7 @@ window.COPO.maps = {
   addLastCheckinMarker(checkins) {
     if (!checkins.length) return;
     if (checkins[0].icon) {
-      COPO.maps.last = COPO.maps.makeCityMarker(checkins[0])
+      COPO.maps.last = COPO.maps.makeDeviceMarker(checkins[0])
     } else {
       COPO.maps.last = COPO.maps.makeMarker(checkins[0], {
         icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#47b8e0' }),
@@ -542,13 +542,13 @@ window.COPO.maps = {
     marker.bindPopup(content, { offset: [0, -38] } );
   },
 
-  makeCityMarker(checkin) {
+  makeDeviceMarker(checkin) {
     return COPO.maps.makeMarker(checkin, {
       icon: L.icon({
         iconUrl: checkin.icon,
-        iconSize:     [48, 48],
-        iconAnchor:   [24, 48],
-        popupAnchor:  [0, -48]
+        iconSize:     [36, 36],
+        iconAnchor:   [18, 36],
+        popupAnchor:  [0, -36]
       })
     })
   },

@@ -4,6 +4,7 @@ module Users
     NUMBER_OF_COUNTRIES = 10
     MONTH_CHECKINS_LIMIT = 200
     MONTH_CHECKINS_SAMPLE = 100
+    CIRCLE_ICON = ActionController::Base.helpers.asset_path("circle_border.png")
 
     def initialize(user)
       @user = user
@@ -61,8 +62,7 @@ module Users
 
     def device_checkins
       checkins = user_devices.map do |device|
-        icon_path = ActionController::Base.helpers.asset_path(device.icon + ".png")
-        device.checkins.first.as_json.merge(device: device.name, icon: icon_path) if device.checkins.exists?
+        device.checkins.first.as_json.merge(device: device.name, icon: CIRCLE_ICON) if device.checkins.exists?
       end
       checkins.compact.sort_by { |checkin| checkin["created_at"] }.reverse
     end
