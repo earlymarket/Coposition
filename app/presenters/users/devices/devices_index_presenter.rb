@@ -1,6 +1,5 @@
 module Users::Devices
   class DevicesIndexPresenter < ApplicationPresenter
-    CIRCLE_ICON = ActionController::Base.helpers.image_path("circle_border.png")
     attr_reader :user
     attr_reader :devices
 
@@ -33,9 +32,13 @@ module Users::Devices
       @user_devices ||= user.devices
     end
 
+    def circle_icon
+      ActionController::Base.helpers.image_path("circle_border.png")
+    end
+
     def gon_index_checkins
       checkins = user_devices.map do |device|
-        device.checkins.first.as_json.merge(device: device.name, icon: CIRCLE_ICON) if device.checkins.exists?
+        device.checkins.first.as_json.merge(device: device.name, icon: circle_icon) if device.checkins.exists?
       end
       checkins.compact.sort_by { |checkin| checkin["created_at"] }.reverse
     end
