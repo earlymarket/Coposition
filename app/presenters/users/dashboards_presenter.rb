@@ -4,7 +4,7 @@ module Users
     NUMBER_OF_COUNTRIES = 10
     MONTH_CHECKINS_LIMIT = 200
     MONTH_CHECKINS_SAMPLE = 100
-    CIRCLE_ICON = ActionController::Base.helpers.asset_path("circle_border.png")
+    CIRCLE_ICON = ActionController::Base.helpers.image_path("circle_border.png")
 
     def initialize(user)
       @user = user

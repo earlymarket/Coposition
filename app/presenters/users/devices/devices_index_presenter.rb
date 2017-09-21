@@ -1,6 +1,6 @@
 module Users::Devices
   class DevicesIndexPresenter < ApplicationPresenter
-    CIRCLE_ICON = ActionController::Base.helpers.asset_path("circle_border.png")
+    CIRCLE_ICON = ActionController::Base.helpers.image_path("circle_border.png")
     attr_reader :user
     attr_reader :devices
 
