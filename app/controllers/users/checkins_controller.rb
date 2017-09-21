@@ -4,7 +4,7 @@ class Users::CheckinsController < ApplicationController
   before_action :authenticate_user!
 
   before_action :require_checkin_ownership, only: %i(show update destroy)
-  before_action :require_device_ownership, only: %i(index new create destroy_all)
+  before_action :require_device_ownership, only: %i(new create destroy_all)
   before_action :find_checkin, only: %i(show update destroy)
 
   def new
@@ -12,8 +12,13 @@ class Users::CheckinsController < ApplicationController
   end
 
   def index
-    checkins_presenter = ::Users::CheckinsPresenter.new(current_user, params)
-    render json: checkins_presenter.json
+    if request.format.json?
+      checkins_presenter = ::Users::CheckinsPresenter.new(current_user, params)
+      render json: checkins_presenter.json
+    else
+      @checkins_index_presenter = ::Users::CheckinsIndexPresenter.new(current_user, params)
+      gon.push(@checkins_index_presenter.index_gon)
+    end
   end
 
   def create

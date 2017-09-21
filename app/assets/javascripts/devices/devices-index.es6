@@ -10,6 +10,14 @@ $(document).on('page:change', function() {
     COPO.delaySlider.initSliders(gon.devices);
     gon.checkins && gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');
 
+    $('#find-checkin').on('click', checkinSearch)
+
+    function checkinSearch () {
+      let userId = gon.current_user.userinfo.id
+      let checkinId = $('#checkin_id').val()
+      window.location = `/users/${userId}/devices/nil/checkins/${checkinId}`
+    }
+    
     $('body').on('click', '.edit-button', function (e) {
       e.preventDefault();
       $(this).toggleClass('hide', true);

@@ -68,6 +68,8 @@ window.COPO.maps = {
         }
       } else if (window.COPO.utility.currentPage('friends', 'show_device')) {
         return $.getJSON(`${window.location.pathname}${window.location.search}&page=${page}&per_page=5000`)
+      } else if ((window.COPO.utility.currentPage('friends', 'show_device')) {
+        
       } else {
         console.log('Page not recognised. No incremental loading.');
       }
