@@ -6,6 +6,7 @@ module Users::Devices
 
     attr_reader :user
     attr_reader :device
+    attr_reader :owner
     attr_reader :checkins
     attr_reader :filename
     attr_reader :date_range
@@ -13,8 +14,9 @@ module Users::Devices
     def initialize(user, params)
       @user = user
       @params = params
-      @device = Device.find(params[:id])
-      @date_range = first_load && device.checkins.any? ? first_load_range : checkins_date_range
+      @owner = device_page? ? Device.find(params[:id]) : user
+      @device = Device.find(params[:id]) if device_page?
+      @date_range = first_load && owner.checkins.any? ? first_load_range : checkins_date_range
 
       set_data_for_download if download_format.present?
     end
@@ -26,7 +28,7 @@ module Users::Devices
         cities: raw_cities,
         counts: gon_cities_counts,
         first_load: first_load,
-        device: device.id,
+        device: owner.id,
         current_user_id: user.id,
         total: gon_show_checkins.count,
         max: MAX_CHECKINS_TO_LOAD
@@ -38,11 +40,15 @@ module Users::Devices
     end
 
     def form_path
-      user_device_path(user.url_id, device)
+      device_page? ? user_device_path(user.url_id, device) : user_checkins_path(user.url_id)
     end
 
     def form_range_filter(text, from)
-      link_to text, user_device_path(user.url_id, device, from: from, to: Time.zone.today), method: :get
+      if device_page?
+        link_to text, user_device_path(user.url_id, device, from: from, to: Time.zone.today), method: :get
+      else
+        link_to text, user_checkins_path(user.url_id, from: from, to: Time.zone.today), method: :get
+      end
     end
 
     private
@@ -85,7 +91,7 @@ module Users::Devices
     end
 
     def gon_show_checkins
-      checkins = device.checkins
+      checkins = owner.checkins
 
       @gon_show_checkins ||= if checkin
         checkins.where(id: checkin.id)
@@ -100,7 +106,7 @@ module Users::Devices
     end
 
     def gon_show_cities
-      checkins = first_load ? device.checkins : gon_show_checkins
+      checkins = first_load ? owner.checkins : gon_show_checkins
       checkins = Checkin.where(id: checkins.unscope(:order).select("DISTINCT ON(fogged_city) checkins.id").map(&:id))
       first_load ? checkins.limit(100) : checkins
     end
@@ -113,6 +119,10 @@ module Users::Devices
 
     def gon_cities_counts
       gon_show_checkins.unscope(:order).group(:fogged_city).count
+    end
+
+    def device_page?
+      params[:id].present?
     end
   end
 end

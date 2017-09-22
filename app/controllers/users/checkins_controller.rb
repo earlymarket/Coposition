@@ -16,8 +16,8 @@ class Users::CheckinsController < ApplicationController
       checkins_presenter = ::Users::CheckinsPresenter.new(current_user, params)
       render json: checkins_presenter.json
     else
-      @checkins_index_presenter = ::Users::CheckinsIndexPresenter.new(current_user, params)
-      gon.push(@checkins_index_presenter.index_gon)
+      @checkins_index_presenter = ::Users::Devices::DevicesShowPresenter.new(current_user, params)
+      gon.push(@checkins_index_presenter.show_gon)
     end
   end
 
