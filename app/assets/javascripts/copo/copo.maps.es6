@@ -92,8 +92,8 @@ window.COPO.maps = {
           loadCheckins(page, display);
         });
       } else {
-        if (!display) return;
         $('.myProgress').remove();
+        if (!display) return;
         toastMessage()
       };
     }
@@ -256,6 +256,7 @@ window.COPO.maps = {
       }
     }
     checkinTemp.idLink = COPO.utility.idLink(checkin)
+    checkinTemp.deviceLink = COPO.utility.deviceLink(checkin)
     checkinTemp.revertButton = checkin.revert ? COPO.utility.revertLink(checkin) : ''
     checkinTemp.edited = checkin.edited ? '(edited)' : ''
     checkinTemp.inlineCoords = COPO.utility.renderInlineCoords(checkin);

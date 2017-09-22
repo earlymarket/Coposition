@@ -95,7 +95,7 @@ Rails.application.routes.draw do
       delete "/checkins/", to: "checkins#destroy_all"
       resources :permissions, only: [:update, :index]
     end
-    resources :checkins, only: [:index, :update, :destroy]
+    resources :checkins, only: [:show, :index, :update, :destroy]
     resources :approvals, only: [:new, :create, :update, :destroy]
     resource :create_dev_approvals, only: :create
     resources :friends, only: [:show] do

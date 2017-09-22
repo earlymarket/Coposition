@@ -73,7 +73,7 @@ module Users::Devices
     def gon_show_checkins_paginated
       gon_show_checkins
         .paginate(page: 1, per_page: 5000)
-        .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :edited)
+        .select(:id, :lat, :lng, :created_at, :address, :fogged, :fogged_city, :edited, :device_id)
     end
 
     def raw_paginated_checkins

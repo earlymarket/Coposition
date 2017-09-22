@@ -45,6 +45,13 @@ COPO.utility = {
     return output.prop('outerHTML')
   },
 
+  deviceLink(checkin) {
+    var path = window.location.pathname.slice(0, -8) + "/devices/" + checkin.device_id
+    var text = `Device: ${checkin.device_id}`
+    var output =  $(`<a class="device-link" href="${path}"><i class="tooltipped material-icons" data-tooltip="View check-in's device page">devices_other</i></a>`)
+    return output.prop('outerHTML')
+  },
+
   deleteCheckinLink(checkin) {
     return COPO.utility.ujsLink('delete',
       '<i class="material-icons tooltipped right red-text" data-tooltip="Delete check-in">delete_forever</i>' ,

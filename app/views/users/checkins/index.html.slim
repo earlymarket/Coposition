@@ -1,8 +1,6 @@
 - content_for :outside_container do
   #gonvariables
     = Gon::Base.render_data
-  #device-name.valign-wrapper
-    | All Devices
   .myProgress
     .myDeterminate style=("width: 0%") 
   ul#filters.date-select.collapsible
@@ -36,8 +34,8 @@
 
   /! templates
   script#markerPopupTmpl type="x-tmpl-mustache" 
-    h3 
-      | {{ &idLink }}  
+    h3.valign-wrapper 
+      | {{ &deviceLink }}   {{ &idLink }}  
       i
         | {{ edited }}
       | {{ &revertButton }}
