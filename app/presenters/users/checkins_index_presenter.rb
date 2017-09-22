@@ -82,7 +82,8 @@ module Users
     end
 
     def gon_show_cities
-      checkins = first_load ? Checkin.where(id: user.checkins.map(&:id)) : gon_show_checkins
+      checkins = first_load ? user.checkins : gon_show_checkins
+      checkins = Checkin.where(id: checkins.map(&:id))
       checkins = Checkin.where(id: checkins.unscope(:order).select("DISTINCT ON(fogged_city) *").map(&:id))
       first_load ? checkins.limit(100) : checkins
     end

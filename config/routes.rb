@@ -89,14 +89,13 @@ Rails.application.routes.draw do
     resource :dashboard, only: [:show]
     resources :devices, except: :edit do
       member { get :shared, :info }
-      resources :checkins, only: [:index, :show, :create, :new, :update] do
+      resources :checkins, only: [:index, :show, :create, :new, :update, :destroy] do
         collection { post :import }
       end
       delete "/checkins/", to: "checkins#destroy_all"
-      delete "/checkins/:id", to: "checkins#destroy"
       resources :permissions, only: [:update, :index]
     end
-    resources :checkins, only: :index
+    resources :checkins, only: [:index, :update, :destroy]
     resources :approvals, only: [:new, :create, :update, :destroy]
     resource :create_dev_approvals, only: :create
     resources :friends, only: [:show] do

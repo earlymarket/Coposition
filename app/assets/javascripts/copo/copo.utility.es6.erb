@@ -30,8 +30,16 @@ COPO.utility = {
     return output
   },
 
+  checkinPath(checkin) {
+    if (window.location.pathname.includes("checkins")){
+      return window.location.pathname + "/" + checkin.id
+    } else {
+      return window.location.pathname + '/checkins/' + checkin.id
+    }
+  },
+
   idLink(checkin) {
-    var path = window.location.pathname + '/checkins/' + checkin.id
+    var path = COPO.utility.checkinPath(checkin)
     var text = `ID: ${checkin.id}`
     var output =  $('<a class="tooltipped black-text" data-tooltip="Click to generate map for this check-in" href="' + path +'">' + text +'</a>')
     return output.prop('outerHTML')
@@ -40,14 +48,14 @@ COPO.utility = {
   deleteCheckinLink(checkin) {
     return COPO.utility.ujsLink('delete',
       '<i class="material-icons tooltipped right red-text" data-tooltip="Delete check-in">delete_forever</i>' ,
-      window.location.pathname + '/checkins/' + checkin.id )
+      COPO.utility.checkinPath(checkin) )
       .attr('class', 'right').attr('data-confirm', 'Are you sure?').prop('outerHTML')
   },
 
   fogCheckinLink(checkin, foggedClass, fogId) {
     return COPO.utility.ujsLink('put',
       '<i class="material-icons tooltipped" data-tooltip="Toggle fogging for this check-in">cloud</i>' ,
-      window.location.pathname + '/checkins/' + checkin.id )
+      COPO.utility.checkinPath(checkin) )
       .attr('id', fogId + checkin.id).attr('class', foggedClass).prop('outerHTML')
   },
 
@@ -59,7 +67,7 @@ COPO.utility = {
   },
 
   renderInlineCoords(checkin) {
-    const url = `${window.location.pathname}/checkins/${checkin.id}`;
+    const url = COPO.utility.checkinPath(checkin)
     return `<span class="editable-wrapper tooltipped clickable" data-tooltip="Click to edit coordinates">
               <span class="editable" data-url="${url}">${checkin.lat.toFixed(6)}, ${checkin.lng.toFixed(6)}</span>
               <i class="material-icons grey-text edit-coords">mode_edit</i>
@@ -67,7 +75,7 @@ COPO.utility = {
   },
 
   renderInlineDate(checkin, tempData) {
-    const url = `${window.location.pathname}/checkins/${checkin.id}`;
+    const url = COPO.utility.checkinPath(checkin)
     return `<span class="editable-wrapper tooltipped clickable" data-tooltip="Click to edit date and time">
               <span id="localTime" class="editable date" data-url="${url}" data-date="${checkin.created_at}">${tempData.created_at}</span>
               <i class="material-icons grey-text edit-coords">mode_edit</i>

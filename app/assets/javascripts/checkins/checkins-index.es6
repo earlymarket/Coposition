@@ -12,12 +12,8 @@ $(document).on('page:change', function() {
     M.initControls(controls);
     COPO.datePicker.init();
 
-    map.on('locationfound', onLocationFound);
-
-    if (page === 'user') {
-      $('.modal-trigger').modal();
-      window.COPO.editCheckin.init();
-    }
+    $('.modal-trigger').modal();
+    window.COPO.editCheckin.init();
 
     function initMarkers() {
       if (gon.checkin) {

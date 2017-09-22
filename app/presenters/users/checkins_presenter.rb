@@ -1,11 +1,12 @@
 module Users
   class CheckinsPresenter < ApplicationPresenter
     attr_reader :device
+    attr_reader :user
 
     def initialize(user, params)
       @user = user
       @params = params
-      @device = Device.find(params[:device_id])
+      @device = Device.find(params[:device_id]) if params[:device_id]
     end
 
     def json
@@ -26,7 +27,8 @@ module Users
 
     def checkins
       range = checkins_date_range
-      @checkins ||= range[:from] ? device.checkins.where(created_at: range[:from]..range[:to]) : device.checkins
+      owner = device ? device : user
+      @checkins ||= range[:from] ? owner.checkins.where(created_at: range[:from]..range[:to]) : owner.checkins
     end
   end
 end

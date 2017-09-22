@@ -68,8 +68,12 @@ window.COPO.maps = {
         }
       } else if (window.COPO.utility.currentPage('friends', 'show_device')) {
         return $.getJSON(`${window.location.pathname}${window.location.search}&page=${page}&per_page=5000`)
-      } else if ((window.COPO.utility.currentPage('friends', 'show_device')) {
-        
+      } else if (window.COPO.utility.currentPage('checkins', 'index')) {
+        if (window.location.search.length !== 0) {
+          return $.getJSON(`${window.location.pathname}${window.location.search}&page=${page}&per_page=5000`)
+        } else {
+          return $.getJSON(`${window.location.pathname}?page=${page}&per_page=5000`)
+        }
       } else {
         console.log('Page not recognised. No incremental loading.');
       }

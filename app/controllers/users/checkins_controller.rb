@@ -56,7 +56,7 @@ class Users::CheckinsController < ApplicationController
 
   def destroy
     @checkin.destroy
-    NotifyAboutDestroyCheckin.call(device: device, checkin: @checkin)
+    NotifyAboutDestroyCheckin.call(device: @checkin.device, checkin: @checkin)
     flash[:notice] = "Check-in deleted. Refresh page to update cities."
   end
 
