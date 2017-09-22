@@ -82,8 +82,8 @@ window.COPO.editCheckin = {
       mode: "datetime",
       dateTimeFormat: "dd-MM-yyyy HH:mm",
       buttonsToDisplay: ["HeaderCloseButton", "SetButton"],
-      titleContentDateTime: "Set UTC Date & Time",
-      setButtonContent: "Set UTC Date & Time",
+      titleContentDateTime: "Set the date & time in UTC. Once saved, time will display in local time.",
+      setButtonContent: "Save",
       beforeShow: function(oInputElement) {
         let oDTP = this;
         let $editable = $($(oInputElement).children()[0])
@@ -105,6 +105,17 @@ window.COPO.editCheckin = {
       afterHide: function(oInputElement) {
         let $editable = $($(oInputElement).children()[0])
         COPO.editCheckin.handleEditEnd($editable);
+      },
+      formatHumanDate: function(oDate, sMode, sFormat) {
+        let date = new Date(oDate.yyyy, oDate.MM - 1, oDate.dd, oDate.HH, oDate.mm, oDate.ss)
+        let offsetString = $('#localTime').text().split('UTC')[1].split(')')[0]
+        let operator = offsetString[0]
+        let offset = operator === "+" ? offsetString.split('+')[1].split(":") : offsetString.split('-')[1].split(":")
+        let offsetHours = parseInt(offset[0])
+        let offsetMinutes = parseInt(offset[1])
+        operator == "+" ? date.setHours(date.getHours() + offsetHours) : date.setHours(date.getHours() - offsetHours)
+        operator == "+" ? date.setMinutes(date.getMinutes() + offsetMinutes) : date.setMinutes(date.getMinutes() - offsetMinutes)
+        return "Local time: " + date.toString().split("GMT")[0] + "(UTC" + offsetString + ")"
       }
     })
   },
