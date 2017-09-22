@@ -40,11 +40,10 @@ class Users::DevicesController < ApplicationController
     return unless device
 
     Firebase::Push.call(
-      device: device.id,
       topic: device.user.id,
       content_available: true,
       data: {
-        body: "Coposition device #{device.name} remote check-in",
+        body: device.id.to_s,
         title: "Remote check-in"
       }
     )
