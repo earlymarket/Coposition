@@ -15,7 +15,7 @@ module Users::Devices
       @user = user
       @params = params
       @device = Device.find(params[:id])
-      @checkins_view = params[:checkins_view]
+      @checkins_view = params[:checkins_view] == "true"
       @date_range = first_load && device.checkins.any? ? first_load_range : checkins_date_range
 
       set_data_for_download if download_format.present?
