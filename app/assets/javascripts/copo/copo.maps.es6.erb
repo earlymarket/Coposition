@@ -179,8 +179,14 @@ window.COPO.maps = {
     if (checkins[0].device) {
       COPO.maps.last = COPO.maps.makeDeviceMarker(checkins[0], true)
     } else {
+      let path = "<%= image_path("circle_border_blue.png") %>"
       COPO.maps.last = COPO.maps.makeMarker(checkins[0], {
-        icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#47b8e0' }),
+        icon: L.icon({
+          iconUrl: path,
+          iconSize:     [26, 26],
+          iconAnchor:   [13, 26],
+          popupAnchor:  [0, -26]
+        }),
         title: 'ID: ' + checkins[0].id + ' - Most recent',
         alt: 'lastCheckin',
         zIndexOffset: 1000
@@ -556,8 +562,14 @@ window.COPO.maps = {
   },
 
   makeMarker(checkin, markerOptions) {
+    let path = "<%= image_path("circle_border_orange.png") %>"
     let defaults = {
-      icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#ff6900' }),
+      icon: L.icon({
+        iconUrl: path,
+        iconSize:     [26, 26],
+        iconAnchor:   [13, 26],
+        popupAnchor:  [0, -26]
+      }),
       title: 'ID: ' + checkin.id,
       alt: 'ID: ' + checkin.id,
       checkin: checkin
