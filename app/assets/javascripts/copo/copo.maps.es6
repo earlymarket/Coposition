@@ -99,7 +99,7 @@ window.COPO.maps = {
     function toastMessages() {
       let citiesDisplayed = ($('.cached-icon').hasClass('cities-active'))
       if (gon.first_load && citiesDisplayed) {
-        Materialize.toast('Up to last 100 cities visited shown', 3000)
+        Materialize.toast('Recent cities visited shown', 3000)
       } else if (citiesDisplayed) {
         Materialize.toast('Cities loaded', 3000)
       } else if (total >= gon.max) {
