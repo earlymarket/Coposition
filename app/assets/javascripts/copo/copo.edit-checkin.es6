@@ -109,15 +109,21 @@ window.COPO.editCheckin = {
       formatHumanDate: function(oDate, sMode, sFormat) {
         let date = new Date(oDate.yyyy, oDate.MM - 1, oDate.dd, oDate.HH, oDate.mm, oDate.ss)
         let offsetString = $('#localTime').text().split('UTC')[1].split(')')[0]
-        let operator = offsetString[0]
-        let offset = operator === "+" ? offsetString.split('+')[1].split(":") : offsetString.split('-')[1].split(":")
-        let offsetHours = parseInt(offset[0])
-        let offsetMinutes = parseInt(offset[1])
-        operator == "+" ? date.setHours(date.getHours() + offsetHours) : date.setHours(date.getHours() - offsetHours)
-        operator == "+" ? date.setMinutes(date.getMinutes() + offsetMinutes) : date.setMinutes(date.getMinutes() - offsetMinutes)
-        return "Local time: " + date.toString().split("GMT")[0] + "(UTC" + offsetString + ")"
+        let localDate = COPO.editCheckin.getLocalDate(date)
+        return "Local time: " + localDate.toString().split("GMT")[0] + "(UTC" + offsetString + ")"
       }
     })
+  },
+
+  getLocalDate(date) {
+    let offsetString = $('#localTime').text().split('UTC')[1].split(')')[0]
+    let operator = offsetString[0]
+    let offset = operator === "+" ? offsetString.split('+')[1].split(":") : offsetString.split('-')[1].split(":")
+    let offsetHours = parseInt(offset[0])
+    let offsetMinutes = parseInt(offset[1])
+    operator == "+" ? date.setHours(date.getHours() + offsetHours) : date.setHours(date.getHours() - offsetHours)
+    operator == "+" ? date.setMinutes(date.getMinutes() + offsetMinutes) : date.setMinutes(date.getMinutes() - offsetMinutes)
+    return date
   },
 
   // setDatepicker($editable) {
