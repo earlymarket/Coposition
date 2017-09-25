@@ -47,7 +47,7 @@ window.COPO.editCheckin = {
       let coords = data.split(', ')
       data = { checkin: {lat: coords[0], lng: coords[1]} }
     } else {
-      let date = new Date(data).toUTCString() + " UTC+0000"
+      let date = new Date(data).toString().split(" GMT")[0] + " UTC+0000"
       data = { checkin: { created_at: date } }
     }
     COPO.editCheckin.putUpdateCheckin(url, data, true);
@@ -95,9 +95,10 @@ window.COPO.editCheckin = {
         let oDTP = this;
         if (type === 'SET') {
           let original = $editable.text()
-          let newDate = new Date(oDTP.oData.dCurrentDate)
+          //let newDate = new Date(oDTP.oData.dCurrentDate)
+          let newDate = oDTP.oData.dCurrentDate.toString().split(" GMT")[0]
           $editable.text(
-            newDate.toUTCString() + " UTC+0000"
+            newDate + " UTC+0000"
           )
           COPO.editCheckin.handleEdited(original, $editable);
         }
@@ -245,7 +246,7 @@ window.COPO.editCheckin = {
     } else {
       checkin.original = checkin.created_at
       checkin.type = 'date'
-      checkin.created_at = response.checkin.created_at;
+      checkin.created_at = moment(response.checkin.created_at.replace("T", " ").replace(".000Z", ""))._i
       gon.checkins.sort(function(a, b) {
         return (new Date(b.created_at)) - (new Date(a.created_at));
       });

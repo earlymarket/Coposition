@@ -144,7 +144,6 @@ window.COPO.maps = {
   refreshMarkers(checkins) {
     map.removeEventListener('popupclose');
     map.removeEventListener('zoomstart');
-
     map.closePopup();
     if (COPO.maps.markers) {
       map.removeLayer(COPO.maps.markers);
@@ -160,21 +159,24 @@ window.COPO.maps = {
   },
 
   renderAllMarkers(checkins) {
-    let markers = checkins.slice(1).map(checkin => COPO.maps.makeMarker(checkin));
+    let lastCheckin = checkins.filter((checkin) => Date.parse(checkin.created_at) < Date.now())[0]
+    let markers = checkins.filter(checkin => checkin !== lastCheckin).map(checkin => {
+      return COPO.maps.makeMarker(checkin)
+    })
     // allMarkers is used for calculating bounds
     COPO.maps.allMarkers = L.markerClusterGroup().addLayers(markers);
-    COPO.maps.addLastCheckinMarker(checkins);
+    COPO.maps.addLastCheckinMarker(lastCheckin)
     // markers and last are distinct because we want the last checkin
     // to always be displayed unclustered
     COPO.maps.markers = L.markerClusterGroup().addLayers(markers, { chunkedLoading: true });
     map.addLayer(COPO.maps.markers);
   },
 
-  addLastCheckinMarker(checkins) {
-    if (!checkins.length) return;
-    COPO.maps.last = COPO.maps.makeMarker(checkins[0], {
+  addLastCheckinMarker(checkin) {
+    if (!checkin) return
+    COPO.maps.last = COPO.maps.makeMarker(checkin, {
       icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#47b8e0' }),
-      title: 'ID: ' + checkins[0].id + ' - Most recent',
+      title: 'ID: ' + checkin.id + ' - Most recent',
       alt: 'lastCheckin',
       zIndexOffset: 1000
     });
@@ -249,6 +251,7 @@ window.COPO.maps = {
         return `<a href="${window.location.pathname}/show_device?device_id=${checkin.device_id}" title="Device map">${checkin.device}</a>`
       }
     }
+    checkinTemp.future = Date.parse(checkin.created_at) > Date.now() ? '(future)' : ''
     checkinTemp.idLink = COPO.utility.idLink(checkin)
     checkinTemp.revertButton = checkin.revert ? COPO.utility.revertLink(checkin) : ''
     checkinTemp.edited = checkin.edited ? '(edited)' : ''
@@ -276,7 +279,9 @@ window.COPO.maps = {
 
   dateToLocal(checkin) {
     if (checkin.localDate) {
-      map.once('popupopen', function() { $('#localTime').html(checkin.localDate) });
+      map.once('popupopen', function() { 
+        $('#localTime').html(checkin.localDate) 
+      });
     } else {
       let created_at = Date.parse(checkin.created_at)/1000;
       let coords = [checkin.lat, checkin.lng];
@@ -530,8 +535,9 @@ window.COPO.maps = {
   },
 
   makeMarker(checkin, markerOptions) {
+    let colour = (Date.parse(checkin.created_at) < Date.now()) ? '#ff6900' : '#939393'
     let defaults = {
-      icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#ff6900' }),
+      icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : colour }),
       title: 'ID: ' + checkin.id,
       alt: 'ID: ' + checkin.id,
       checkin: checkin
