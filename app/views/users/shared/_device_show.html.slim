@@ -27,6 +27,7 @@ ul#filters.date-select.collapsible
         = f.submit "Apply", class: "form-control btn btn-default"
         = link_to "Clear", @device_show_presenter.form_path, { method: :get, class: "btn-flat right" }
         = hidden_field_tag(:device_id, @device_show_presenter.device.id)
+        = hidden_field_tag(:checkins_view, false)
 #map
 
 javascript:

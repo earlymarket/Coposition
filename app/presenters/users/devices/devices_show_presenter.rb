@@ -9,11 +9,13 @@ module Users::Devices
     attr_reader :checkins
     attr_reader :filename
     attr_reader :date_range
+    attr_reader :checkins_view
 
     def initialize(user, params)
       @user = user
       @params = params
       @device = Device.find(params[:id])
+      @checkins_view = params[:checkins_view]
       @date_range = first_load && device.checkins.any? ? first_load_range : checkins_date_range
 
       set_data_for_download if download_format.present?
@@ -29,7 +31,8 @@ module Users::Devices
         device: device.id,
         current_user_id: user.id,
         total: gon_show_checkins.count,
-        max: MAX_CHECKINS_TO_LOAD
+        max: MAX_CHECKINS_TO_LOAD,
+        checkins_view: checkins_view
       }
     end
 
