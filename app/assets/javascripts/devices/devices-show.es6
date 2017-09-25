@@ -47,7 +47,7 @@ $(document).on('page:change', function() {
     }
 
     function initMarkers() {
-      if (gon.checkin) {
+      if (gon.checkin || page ==='friend') {
         M.initMarkers(gon.checkins, gon.total)
         return;
       }
