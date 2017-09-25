@@ -4,7 +4,7 @@ class SendSendgridEmail
   delegate :to, :subject, :id, :substitutions, :content, to: :context
 
   def call
-    mail.from = SendGrid::Email.new(email: "coposition@support.com")
+    mail.from = SendGrid::Email.new(email: "support@coposition.com")
     mail.subject = subject
     mail.template_id = id
     mail.mail_settings = mail_settings
