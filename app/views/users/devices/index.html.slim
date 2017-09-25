@@ -15,11 +15,12 @@ section.devices-index.row
           p Here you will be shown the most recent checkin for each of your devices, but you don't have any at the moment!
           p To add a check-in, create a device by clicking the plus above or select an existing device.
       #map
-.center
-  a.btn href="#{user_checkins_path(current_user, first_load: true)}" View all check-ins
 #find-checkin-row
   = text_field_tag(:checkin_id, params["checkin_id"], placeholder: "Check-in id", required: true)
   = button_tag "Find check-in", class: "waves-effect waves-light btn", id: "find-checkin", type: "submit"
+- if @devices_index_presenter.devices.length > 1
+  .center
+    a.btn href="#{user_checkins_path(current_user, first_load: true)}" View all check-ins
 div
   - @devices_index_presenter.devices.each do |device|
     div id="device#{device.id}" 

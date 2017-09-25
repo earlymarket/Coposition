@@ -22,6 +22,17 @@
             = @checkins_index_presenter.form_range_filter("LAST YEAR", 1.year.ago)
           = f.submit "Apply", class: "form-control btn btn-default"
           = link_to "Clear", @checkins_index_presenter.form_path, { method: :get, class: "btn-flat right" }
+
+  ul.device-select.collapsible
+    li
+      .collapsible-header data-onOpen="devicesOpen" data-onClose="devicesClose"
+        | Filter by devices
+        i.material-icons.collapse-devices.right expand_more
+      .collapsible-body
+        = form_for @checkins_index_presenter.user, url: @checkins_index_presenter.form_path, class: "form-group", method: :get do |f|
+          = select_tag(:device_id, options_for_select(@checkins_index_presenter.devices.map { |device| [device.name, device.id] }), multiple: true)
+          = f.submit "Filter", class: "form-control btn btn-default"
+          = link_to "Clear", @checkins_index_presenter.form_path, { method: :get, class: "btn-flat right" }
   #map
 
   javascript:
@@ -30,6 +41,13 @@
     }
     dateRangeClose = function() {
       $(".collapse-mark").text("expand_more");
+    }
+
+    devicesOpen = function() {
+      $(".collapse-devices").text("expand_less");
+    }
+    devicesClose = function() {
+      $(".collapse-devices").text("expand_more");
     }
 
   /! templates

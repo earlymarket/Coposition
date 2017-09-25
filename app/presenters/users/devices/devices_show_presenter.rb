@@ -8,6 +8,7 @@ module Users::Devices
     attr_reader :device
     attr_reader :owner
     attr_reader :checkins
+    attr_reader :devices
     attr_reader :filename
     attr_reader :date_range
 
@@ -16,6 +17,7 @@ module Users::Devices
       @params = params
       @owner = device_page? ? Device.find(params[:id]) : user
       @device = Device.find(params[:id]) if device_page?
+      @devices = user.devices
       @date_range = first_load && owner.checkins.any? ? first_load_range : checkins_date_range
 
       set_data_for_download if download_format.present?
@@ -91,7 +93,7 @@ module Users::Devices
     end
 
     def gon_show_checkins
-      checkins = owner.checkins
+      checkins = params[:device_id] ? owner.checkins.where(device_id: params[:device_id]) : owner.checkins
 
       @gon_show_checkins ||= if checkin
         checkins.where(id: checkin.id)

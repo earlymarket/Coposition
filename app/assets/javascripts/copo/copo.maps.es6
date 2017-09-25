@@ -69,8 +69,14 @@ window.COPO.maps = {
       } else if (window.COPO.utility.currentPage('friends', 'show_device')) {
         return $.getJSON(`${window.location.pathname}${window.location.search}&page=${page}&per_page=5000`)
       } else if (window.COPO.utility.currentPage('checkins', 'index')) {
-        if (window.location.search.length !== 0) {
+        if (!window.location.search.includes("device_id") && window.location.search.includes("page")) {
           return $.getJSON(`${window.location.pathname}${window.location.search}&page=${page}&per_page=5000`)
+        } else if (window.location.search.includes("device_id")) {
+          let ids = []
+          window.location.search.split("5D=").forEach((el, i) => {
+            if(i > 0) { ids.push(el.split("&")[0]) }
+          })
+          return $.getJSON(`${window.location.pathname}?device_id=${ids}&page=${page}&per_page=5000`)
         } else {
           return $.getJSON(`${window.location.pathname}?page=${page}&per_page=5000`)
         }
