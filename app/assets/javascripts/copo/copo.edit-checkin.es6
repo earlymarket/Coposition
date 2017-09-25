@@ -133,9 +133,12 @@ window.COPO.editCheckin = {
 
   handleDateEdited(original, $editable) {
     if (original !== $editable.text()) {
-      var url = $editable.data('url');
-      var data = { checkin: { created_at: $editable.text()} }
-      COPO.editCheckin.putUpdateCheckin(url, data);
+      var confirmText = "Are you sure? This will place this check-in in the future.";
+      if (Date.parse($editable.text()) < Date.now() || confirm(confirmText)) {
+        var url = $editable.data('url');
+        var data = { checkin: { created_at: $editable.text()} }
+        COPO.editCheckin.putUpdateCheckin(url, data);
+      }
     } else {
       // reverse the edit
       $editable.text(original);
