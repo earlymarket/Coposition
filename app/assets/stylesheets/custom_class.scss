@@ -25,6 +25,12 @@
   text-align: center;
 }
 
+.ta-complete-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 // Effects classes
 .half-opacity {
   opacity: 0.5;
