@@ -18,10 +18,7 @@ window.COPO.editCheckin = {
     // make .editable, a contenteditable
     $editable.attr('contenteditable', true);
 
-    if ($editable.hasClass("date")) {
-      // if user edits date input set datepicker and open
-      // COPO.editCheckin.setDatepicker($editable)//.pickadate("open");
-    } else {
+    if (!$editable.hasClass("date")) {
       // select all the text to make it easier to edit
       $editable.focus();
       document.execCommand('selectAll', false, null);
@@ -95,7 +92,6 @@ window.COPO.editCheckin = {
         let oDTP = this;
         if (type === 'SET') {
           let original = $editable.text()
-          //let newDate = new Date(oDTP.oData.dCurrentDate)
           let newDate = oDTP.oData.dCurrentDate.toString().split(" GMT")[0]
           $editable.text(
             newDate + " UTC+0000"
@@ -126,42 +122,6 @@ window.COPO.editCheckin = {
     operator == "+" ? date.setMinutes(date.getMinutes() + offsetMinutes) : date.setMinutes(date.getMinutes() - offsetMinutes)
     return date
   },
-
-  // setDatepicker($editable) {
-  //   var original = $editable.text();
-  //   var picker = $("#dtBox")
-  // },
-  // setDatepicker($editable) {
-  //   var original = $editable.text();
-  //   return $("body").pickadate({
-  //     selectMonths: true,
-  //     selectYears: 15,
-  //     closeOnSelect: true,
-  //     max: new Date(),
-  //     onSet: function(context) {
-  //       if ("select" in context) {
-  //         if (this.get("value")) {
-  //           let date = new Date($editable.data().date);
-  //           let newDate = new Date(this.get("value"));
-
-  //           date.setDate(newDate.getDate());
-  //           date.setMonth(newDate.getMonth());
-  //           date.setFullYear(newDate.getFullYear());
-  //           // open marker popup back again and set new date
-  //           $editable.text(
-  //             date.toUTCString() + " UTC+0000"
-  //           );
-
-  //           // remove datepicker with respect to next one
-  //           this.stop();
-  //         }
-  //       }
-  //     },
-  //     onClose: function(context) {
-  //       COPO.editCheckin.handleEdited(original, $editable);
-  //     }
-  //   });
-  // },
 
   handleEdited(original, $editable) {
     if ($editable.hasClass("date")) {
