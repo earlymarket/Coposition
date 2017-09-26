@@ -49,6 +49,9 @@
     },
     "FIREBASE_SERVER_KEY": {
       "required": true
+    },
+    "SENDGRID_API_KEY": {
+      "required": true
     }
   },
   "addons": [

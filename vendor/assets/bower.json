@@ -8,7 +8,7 @@
     "leaflet.locatecontrol": "latest",
     "ion.rangeSlider": "latest",
     "lodash": "latest",
-    "materialize": "0.97.6",
+    "materialize": "0.98.2",
     "typeahead.js": "latest",
     "mustache.js": "latest",
     "jquery-Mustache": "latest",

@@ -111,6 +111,7 @@ Rails.application.routes.draw do
     collection do
       get :me
     end
+    resources :countries, only: :index
   end
 
   # Devs

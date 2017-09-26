@@ -47,8 +47,10 @@
   /! templates
   script#markerPopupTmpl type="x-tmpl-mustache" 
     h3 
-      | ID: {{ id }}  
-      i.tooltipped data-tooltip=("Latitude/longitude have been changed from original values") {{ edited }}
+      | {{ &idLink }}  
+      i
+        | {{ edited }}
+      | {{ &revertButton }}
     ul
       h3.lined
         span.lined-pad Date
@@ -66,8 +68,9 @@
       li
         | {{ &foggle }} {{ &deletebutton }}
 
-  script#cityPopupTmpl type="x-tmpl-mustache" 
-    h3.ta-center
+  script#cityPopupTmpl type="x-tmpl-mustache"
+    h3.ta-complete-center.tooltipped data-tooltip=("City view is enabled")
+      i.material-icons location_city 
       | {{ address }}
     ul
       h3.lined

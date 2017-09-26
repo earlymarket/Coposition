@@ -16,7 +16,7 @@ $(document).on('page:change', function() {
     map.on('locationfound', onLocationFound);
 
     if (page === 'user') {
-      $('.modal-trigger').leanModal();
+      $('.modal-trigger').modal();
       M.createCheckinPopup();
       M.rightClickListener();
       M.checkinNowListeners(getLocation);
@@ -47,34 +47,10 @@ $(document).on('page:change', function() {
     }
 
     function initMarkers() {
-      M.initMarkers(gon.cities);
-      return;
-      
-      if (page === 'user' && gon.total > 50000) {
-        M.initMarkers(gon.cities);
-        return;
-      }
-      if (page === 'user' && gon.total > 20000) {
-        sweetAlert(
-          {
-            title: "Show cities?",
-            text: "This will take a long time to load, would you like to view cities instead?",
-            type: "info",   
-            showCancelButton: true,   
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes",
-            cancelButtonText: "No"
-          }, 
-          function(isConfirm) {
-            if (isConfirm) {
-              M.initMarkersMapLoaded(gon.cities);
-            } else {
-              M.initMarkersMapLoaded(gon.checkins, gon.total);
-            }
-          }
-        );
+      if (gon.checkin || page === 'friend') {
+        M.initMarkers(gon.checkins, gon.total)
       } else {
-        M.initMarkers(gon.checkins, gon.total);
+        M.initMarkers(gon.cities, gon.total, true);
       }
     }
   }

@@ -1,6 +1,7 @@
 window.COPO = window.COPO || {};
 window.COPO.maps = {
   queueCalled: false,
+  windowFocused: true,
 
   initMap(customOptions) {
     if (document.getElementById('map')._leaflet) return;
@@ -11,23 +12,31 @@ window.COPO.maps = {
       minZoom: 1,
       worldCopyJump: true
     }
-
+    COPO.maps.windowFocus()
     var options = $.extend(defaultOptions, customOptions);
     window.map = L.mapbox.map('map', 'mapbox.light', options );
     $(document).one('turbolinks:before-render', COPO.maps.removeMap);
   },
 
-  initMarkers(checkins, total) {
-    map.once('ready', function() {
-      COPO.maps.initMarkersMapLoaded(checkins, total)
+  windowFocus() {
+    $(window).focus(() => {
+        COPO.maps.windowFocused = true;
+    }).blur(() => {
+        COPO.maps.windowFocused = false;
     });
   },
 
-  initMarkersMapLoaded(checkins, total) {
+  initMarkers(checkins, total, cities) {
+    map.once('ready', function() {
+      COPO.maps.initMarkersMapLoaded(checkins, total, cities)
+    });
+  },
+
+  initMarkersMapLoaded(checkins, total, cities) {
     COPO.maps.generatePath(checkins);
     COPO.maps.renderAllMarkers(checkins);
     COPO.maps.bindMarkerListeners(checkins);
-    COPO.maps.loadAllCheckins(checkins, total);
+    COPO.maps.loadAllCheckins(checkins, total, cities);
     if (COPO.maps.allMarkers.getLayers().length) {
       map.fitBounds(COPO.maps.allMarkers.getBounds().pad(0.5));
     } else {
@@ -37,22 +46,17 @@ window.COPO.maps = {
     }
   },
 
-  loadAllCheckins(checkins, total) {
-    if (total === undefined) {
+  loadAllCheckins(checkins, total, cities) {
+    if (cities === true) {
       if (checkins.length) $('.cached-icon').addClass('cities-active');
-      toastMessage()
-      return;
-    }
-    if (total >= gon.max) {
+      toastMessage();
+      (total > 20000) ? loadCheckins(1) : loadCheckins(2)
+    } else if (total >= gon.max) {
       COPO.maps.refreshMarkers(gon.cities);
       $('.cached-icon').addClass('cities-active');
       toastMessage()
-      window.COPO.maps.fitBounds();
-      return;
-    } else if (checkins.length === 0) {
-      loadCheckins(1);
     } else {
-      loadCheckins(2);
+      (total > 20000) ? loadCheckins(1) : loadCheckins(2)
     }
 
     function getCheckinData(page) {
@@ -70,30 +74,37 @@ window.COPO.maps = {
     };
 
     function loadCheckins(page) {
+      let display = !($('.cached-icon').hasClass('cities-active'))
       if (total > gon.checkins.length) {
-        updateProgress(gon.checkins.length, total);
+        if (display) updateProgress(gon.checkins.length, total);
         getCheckinData(page).then(function(data) {
+          display = !($('.cached-icon').hasClass('cities-active'))
           if (window.gon.total === undefined) return;
           gon.checkins = gon.checkins.concat(data.checkins);
-          COPO.maps.refreshMarkers(gon.checkins);
+          if (display) COPO.maps.refreshMarkers(gon.checkins);
           page++;
-          loadCheckins(page);
+          loadCheckins(page, display);
         });
       } else {
+        if (!display) return;
         $('.myProgress').remove();
         toastMessage()
-        window.COPO.maps.fitBounds();
       };
     }
 
     function toastMessage() {
-      if (gon.first_load && total === undefined) {
+      COPO.maps.windowFocused ?  toastMessages() : $(window).one('focus', toastMessages)
+    }
+
+    function toastMessages() {
+      let citiesDisplayed = ($('.cached-icon').hasClass('cities-active'))
+      if (gon.first_load && citiesDisplayed) {
         Materialize.toast('Up to last 100 cities visited shown', 3000)
-      } else if (total === undefined) {
+      } else if (citiesDisplayed) {
         Materialize.toast('Cities loaded', 3000)
       } else if (total >= gon.max) {
         Materialize.toast('There were too many check-ins to load, cities are shown', 3000);
-      } else if (gon.all) {
+      } else if (gon.total === gon.checkins.length) {
         Materialize.toast('All check-ins loaded', 3000)
       } else {
         Materialize.toast('Check-ins loaded', 3000)
@@ -106,7 +117,6 @@ window.COPO.maps = {
     }
   },
 
-
   removeMap() {
     map.remove();
   },
@@ -114,6 +124,9 @@ window.COPO.maps = {
   fitBounds() {
     if (COPO.maps.allMarkers.getLayers().length) {
       map.fitBounds(COPO.maps.allMarkers.getBounds().pad(0.5))
+      if (COPO.maps.allMarkers.getLayers().length === 1) {
+        COPO.maps.allMarkers.getLayers()[0].fire('click');
+      }
     }
   },
 
@@ -199,9 +212,12 @@ window.COPO.maps = {
           dataType: "script"
         })
       }
-      map.panTo(this.getLatLng());
       COPO.maps.w3w.setCoordinates(e);
     });
+    marker.on('popupopen', (popup) => {
+      $('.tooltipped').tooltip('remove')
+      $('.tooltipped').tooltip({delay: 50})
+    })
   },
 
   buildCheckinPopup(checkin, marker) {
@@ -233,6 +249,8 @@ window.COPO.maps = {
         return `<a href="${window.location.pathname}/show_device?device_id=${checkin.device_id}" title="Device map">${checkin.device}</a>`
       }
     }
+    checkinTemp.idLink = COPO.utility.idLink(checkin)
+    checkinTemp.revertButton = checkin.revert ? COPO.utility.revertLink(checkin) : ''
     checkinTemp.edited = checkin.edited ? '(edited)' : ''
     checkinTemp.inlineCoords = COPO.utility.renderInlineCoords(checkin);
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
@@ -316,7 +334,7 @@ window.COPO.maps = {
       onAdd: (map) => {
         var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
         container.innerHTML = `
-        <a class="leaflet-control-cities leaflet-bar-cities" href="#" onclick="return false;" title="Show cities">
+        <a class="leaflet-control-cities leaflet-bar-cities" href="#" onclick="return false;" title="City view">
           <i class="material-icons cached-icon">location_city</i>
         </a>
         `;
@@ -374,7 +392,7 @@ window.COPO.maps = {
       onAdd: (map) => {
         var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
         container.innerHTML = `
-        <a class="leaflet-control-path leaflet-bar-path" href="#" onclick="return false;" title="View path">
+        <a class="leaflet-control-path leaflet-bar-path" href="#" onclick="return false;" title="Path">
           <i class="material-icons path-icon">timeline</i>
         </a>
         `
@@ -566,7 +584,7 @@ window.COPO.maps = {
   createCheckinPopup() {
     map.on('popupopen', function(e) {
       if ($('#current-location').length) {
-        $createCheckinLink = window.COPO.utility.createCheckinLink(e.popup.getLatLng());
+        $createCheckinLink = window.COPO.utility.createCheckinLink(COPO.maps.getBoundedLatlng(e));
         $('#current-location').replaceWith($createCheckinLink);
       }
     })
@@ -578,7 +596,7 @@ window.COPO.maps = {
       var coords = {
         lat: latlng.lat.toFixed(6),
         lng: latlng.lng.toFixed(6),
-        checkinLink: window.COPO.utility.createCheckinLink(e.latlng)
+        checkinLink: window.COPO.utility.createCheckinLink(latlng)
       };
       var template = $('#createCheckinTmpl').html();
       var content = Mustache.render(template, coords);
@@ -609,15 +627,38 @@ window.COPO.maps = {
 
   citiesControlClick() {
     if ($('.cached-icon').hasClass('cities-active')) {
-      Materialize.toast('Loading check-ins.' , 3000)
-      $('.cached-icon').removeClass('cities-active');
-      COPO.maps.refreshMarkers(gon.checkins);
-      if (gon.checkins.length < gon.total) COPO.maps.loadAllCheckins(gon.checkins, gon.total);
-      COPO.maps.fitBounds();
+      if (gon.total === gon.checkins.length) {
+        $('.cached-icon').removeClass('cities-active');
+        COPO.maps.refreshMarkers(gon.checkins);
+      } else if (gon.total > 50000) {
+        Materialize.toast('Too many check-ins to load.', 3000)
+      } else if (gon.total > 20000) {
+        sweetAlert(
+          {
+            title: "Show cities?",
+            text: "This may take a long time to load, view cities?",
+            type: "info",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No"
+          }, 
+          function(isConfirm) {
+            if (!isConfirm) {
+              Materialize.toast('Loading check-ins.', 3000)
+              $('.cached-icon').removeClass('cities-active');
+              COPO.maps.refreshMarkers(gon.checkins);
+            }
+          }
+        );
+      } else {
+        Materialize.toast('Loading check-ins.', 3000)
+        $('.cached-icon').removeClass('cities-active');
+        COPO.maps.refreshMarkers(gon.checkins);
+      }
     } else {
       $('.cached-icon').addClass('cities-active');
       COPO.maps.refreshMarkers(gon.cities);
-      COPO.maps.fitBounds();
     }
   }
 }

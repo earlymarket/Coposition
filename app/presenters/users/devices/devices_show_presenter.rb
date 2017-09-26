@@ -21,6 +21,7 @@ module Users::Devices
 
     def show_gon
       {
+        checkin: checkin,
         checkins: raw_paginated_checkins,
         cities: raw_cities,
         counts: gon_cities_counts,
@@ -28,8 +29,7 @@ module Users::Devices
         device: device.id,
         current_user_id: user.id,
         total: gon_show_checkins.count,
-        max: MAX_CHECKINS_TO_LOAD,
-        all: all_checkins?
+        max: MAX_CHECKINS_TO_LOAD
       }
     end
 
@@ -60,8 +60,8 @@ module Users::Devices
       @first_load ||= params[:first_load]
     end
 
-    def all_checkins?
-      gon_show_checkins.count == device.checkins.count
+    def checkin
+      @checkin ||= params[:checkin_id] ? Checkin.find(params[:checkin_id]) : nil
     end
 
     def gon_show_checkins_paginated
@@ -87,7 +87,9 @@ module Users::Devices
     def gon_show_checkins
       checkins = device.checkins
 
-      @gon_show_checkins ||= if first_load
+      @gon_show_checkins ||= if checkin
+        checkins.where(id: checkin.id)
+      elsif first_load && gon_show_cities.present?
         range = gon_show_cities.last.created_at.beginning_of_day..gon_show_cities.first.created_at.end_of_day
         checkins.where(created_at: range)
       elsif date_range[:from]

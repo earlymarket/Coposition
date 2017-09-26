@@ -51,6 +51,9 @@ gem "oj"
 gem "smooch-api", "~> 1.8.0"
 gem "httparty"
 gem "dotenv-rails"
+gem "sendgrid-ruby"
+gem "countries"
+gem "nokogiri", ">= 1.8.1"
 
 group :production do
   gem "rack-timeout"

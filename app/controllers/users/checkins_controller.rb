@@ -20,7 +20,7 @@ class Users::CheckinsController < ApplicationController
     checkin = device.checkins.create(allowed_params)
     if checkin.save
       @checkin = ActiveRecord::Base.connection.execute(Checkin.where(id: checkin).to_sql).first
-      NotifyAboutCheckin.call(device: device, checkin: @checkin)
+      NotifyAboutCheckin.call(device: device, checkin: checkin)
       flash[:notice] = "Checked in. Refresh page to update cities."
     else
       flash[:alert] = "Invalid latitude/longitude."
@@ -39,6 +39,8 @@ class Users::CheckinsController < ApplicationController
 
   def show
     @checkin.reverse_geocode!
+    return if request.format.js?
+    redirect_to user_device_path(current_user, @checkin.device.id, checkin_id: @checkin.id)
   end
 
   def update
