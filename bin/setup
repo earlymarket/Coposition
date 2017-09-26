@@ -17,9 +17,9 @@ bundle check --path .bundle > /dev/null 2>&1 ||
   bundle install --path=.bundle $BUNDLER_ARGS
 
 # Set up configurable environment variables
-# if [ ! -f .env ]; then
-#   cp .env.example .env
-# fi
+if [ ! -f .env ]; then
+  cp .env.example .env
+fi
 
 # Set up configurable environment variables
 if [ ! -f config/database.yml ]; then
