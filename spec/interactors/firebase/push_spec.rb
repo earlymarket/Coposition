@@ -1,10 +1,7 @@
 require "rails_helper"
 
 describe Firebase::Push do
-  let(:user) do
-    create :user,
-      notification_token: "1496249902a1edd9a57c8b5554b745e38b20721f01"
-  end
+  let(:user) { create :user }
 
   let(:notification) do
     {
@@ -15,7 +12,7 @@ describe Firebase::Push do
 
   let(:expected_body) do
     {
-      to: "/topics/1496249902a1edd9a57c8b5554b745e38b20721f01",
+      to: "/topics/#{user.id}",
       priority: "high",
       notification: {
         body: "Coposition test message",
@@ -40,14 +37,14 @@ describe Firebase::Push do
   end
 
   it "sends push notification" do
-    described_class.call(topic: user.notification_token, notification: notification)
+    described_class.call(topic: user.id, notification: notification)
   end
 
   context "when device is defined" do
     let(:device) { create :device, user: user }
     let(:expected_body) do
       {
-        to: "/topics/1496249902a1edd9a57c8b5554b745e38b20721f01",
+        to: "/topics/#{user.id}",
         priority: "high",
         notification: {
           body: "Coposition test message",
@@ -60,7 +57,7 @@ describe Firebase::Push do
     it "includes device id into push payload" do
       described_class.call(
         device: device.id,
-        topic: user.notification_token,
+        topic: user.id,
         notification: notification
       )
     end
@@ -70,7 +67,7 @@ describe Firebase::Push do
     let(:content_available) { true }
     let(:expected_body) do
       {
-        to: "/topics/1496249902a1edd9a57c8b5554b745e38b20721f01",
+        to: "/topics/#{user.id}",
         priority: "high",
         notification: {
           body: "Coposition test message",
@@ -83,7 +80,7 @@ describe Firebase::Push do
     it "includes content-available into push payload" do
       described_class.call(
         content_available: content_available,
-        topic: user.notification_token,
+        topic: user.id,
         notification: notification
       )
     end
