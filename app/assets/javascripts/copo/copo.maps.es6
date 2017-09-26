@@ -10,7 +10,8 @@ window.COPO.maps = {
     var defaultOptions = {
       maxZoom: 18,
       minZoom: 1,
-      worldCopyJump: true
+      worldCopyJump: true,
+      tap: true
     }
     COPO.maps.windowFocus()
     var options = $.extend(defaultOptions, customOptions);

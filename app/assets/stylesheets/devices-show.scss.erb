@@ -9,6 +9,12 @@
     left: 90px;
     z-index: 9;
 
+    @media screen and (max-width: 500px){
+      width: 260px;
+      top: 80px;
+      left: 70px;
+    }
+
     i {
       margin: 0;
     }
@@ -158,6 +164,15 @@
     justify-content: center;
     background: white;
     font-size: 1.5rem;
+    @media screen and (max-width: 660px){
+      display: none;
+    }
+  }
+
+  .leaflet-right {
+    @media screen and (max-width: 660px){
+      display: none;
+    }
   }
 
   .leaflet-control-zoom {

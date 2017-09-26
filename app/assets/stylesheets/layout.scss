@@ -26,15 +26,18 @@ nav {
   .toast {
     width: 100%;
   }
-}
-
-@media only screen and (min-width : 601px) {
   #toast-container {
     min-width: 50%;
     bottom: 25%;
     top: 75%;
     right: 25%;
     left: 25%;
+  }
+}
+
+@media only screen and (max-width : 601px) {
+  .toast {
+    font-size: 1rem;
   }
 }
 
