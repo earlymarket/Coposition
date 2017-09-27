@@ -3,7 +3,6 @@ module Oauth
     def create
       response = authorize_response
       headers.merge! response.headers
-      response.body[:user] = User.find(token.resource_owner_id).public_info_hash
       self.response_body = response.body.to_json
       self.status        = response.status
     rescue Errors::DoorkeeperError => e
