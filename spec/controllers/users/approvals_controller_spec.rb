@@ -73,6 +73,14 @@ RSpec.describe Users::ApprovalsController, type: :controller do
       end
     end
 
+    context "when adding a friend not signed up with copo" do
+      it "creates an EmailRequest" do
+        request_count = EmailRequest.count
+        post :create, params: user_params.merge(approval: { approvable: "new@email.com", approvable_type: "User" })
+        expect(EmailRequest.count).to eq request_count + 1
+      end
+    end
+
     context "when an incorrect name is provided" do
       it "doesn't create or approve an approval if trying to add self" do
         approval_count = Approval.where(approvable_type: "User").count
