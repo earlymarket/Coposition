@@ -62,9 +62,10 @@ class User < ApplicationRecord
 
   before_create :generate_token, unless: :webhook_key?
 
-  after_create :approve_coposition_mobile_app
+  after_create :approve_coposition_mobile_app, :create_pending_requests
 
   has_attachment :avatar
+
   ## Pathing
 
   def url_id
@@ -84,6 +85,12 @@ class User < ApplicationRecord
       approval.complete!
     end
     Doorkeeper::AccessToken.find_or_create_for(mobile_dev.oauth_application, id, "public", nil, true)
+  end
+
+  def create_pending_requests
+    EmailRequest.where(email: email).find_each do |request|
+      Approval.add_friend(request.user, self)
+    end
   end
 
   def approved?(permissible)

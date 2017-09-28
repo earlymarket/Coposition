@@ -33,6 +33,7 @@ module Users::Approvals
     end
 
     def invite_friend_email
+      EmailRequest.create(user_id: current_user.id, email: approvable.downcase)
       UserMailer.invite_email(approvable).deliver_now
     end
 
