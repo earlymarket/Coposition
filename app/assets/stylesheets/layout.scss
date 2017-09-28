@@ -571,6 +571,11 @@ a {
   background-position: center;
 }
 
+.hyperlink {
+  text-decoration: underline;
+  color: $primary-color;
+}
+
 .valign-wrapper {
   display: flex;
   align-items: center;
