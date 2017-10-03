@@ -37,9 +37,9 @@
               .input-field.col.s12
                 = f.label :tagline, "Company tagline"
                 = f.text_field :tagline
-          = f.label :avatar, "Upload an avatar"
-          .input-field.col.s12
-            = f.attachinary_file_field :avatar
+            = f.label :avatar, "Upload an avatar"
+            .input-field.col.s12
+              = f.attachinary_file_field :avatar
           - if resource.respond_to? :username
             .row
               .input-field.col.s12
