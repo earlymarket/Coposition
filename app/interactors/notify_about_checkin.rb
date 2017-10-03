@@ -6,9 +6,18 @@ class NotifyAboutCheckin
   def call
     device.notify_subscribers("new_checkin", checkin)
     broadcast_checkin_for_friends
+    broadcast_checkin_for_user
   end
 
   private
+
+  def broadcast_checkin_for_user
+    return unless friend_online?(device.user)
+    ActionCable.server.broadcast "friends_#{device.user.id}",
+      action: "checkin",
+      privilege: "complete",
+      checkin: hashed_checkin
+  end
 
   def broadcast_checkin_for_friends
     device.user.friends.find_each do |friend|
