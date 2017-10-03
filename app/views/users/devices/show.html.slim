@@ -1,5 +1,6 @@
 - content_for :outside_container do
   = render "users/shared/device_show"
+  #dtBox
   .bottom-panel.valign-wrapper
     .buttons
       a.modal-trigger.btn.red.white-text.delete href="#delete#{@device_show_presenter.device.id}" id="deleteButton#{@device_show_presenter.device.id}" 
@@ -50,6 +51,7 @@
       | {{ &idLink }}  
       i
         | {{ edited }}
+      i.tooltipped data-tooltip=("Check-in date has been edited to the future") {{ future }}
       | {{ &revertButton }}
     ul
       h3.lined
