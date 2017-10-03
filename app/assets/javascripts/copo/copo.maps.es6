@@ -99,7 +99,7 @@ window.COPO.maps = {
     function toastMessages() {
       let citiesDisplayed = ($('.cached-icon').hasClass('cities-active'))
       if (gon.first_load && citiesDisplayed) {
-        Materialize.toast('Up to last 100 cities visited shown', 3000)
+        Materialize.toast('Recent cities visited shown', 3000)
       } else if (citiesDisplayed) {
         Materialize.toast('Cities loaded', 3000)
       } else if (total >= gon.max) {
@@ -634,6 +634,7 @@ window.COPO.maps = {
   citiesControlClick() {
     if ($('.cached-icon').hasClass('cities-active')) {
       if (gon.total === gon.checkins.length) {
+        $('#checkins_view').val(true)
         $('.cached-icon').removeClass('cities-active');
         COPO.maps.refreshMarkers(gon.checkins);
       } else if (gon.total > 50000) {
@@ -651,6 +652,7 @@ window.COPO.maps = {
           }, 
           function(isConfirm) {
             if (!isConfirm) {
+              $('#checkins_view').val(true)
               Materialize.toast('Loading check-ins.', 3000)
               $('.cached-icon').removeClass('cities-active');
               COPO.maps.refreshMarkers(gon.checkins);
@@ -658,11 +660,13 @@ window.COPO.maps = {
           }
         );
       } else {
+        $('#checkins_view').val(true)
         Materialize.toast('Loading check-ins.', 3000)
         $('.cached-icon').removeClass('cities-active');
         COPO.maps.refreshMarkers(gon.checkins);
       }
     } else {
+      $('#checkins_view').val(false)
       $('.cached-icon').addClass('cities-active');
       COPO.maps.refreshMarkers(gon.cities);
     }
