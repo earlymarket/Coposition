@@ -47,7 +47,7 @@ $(document).on('page:change', function() {
     }
 
     function initMarkers() {
-      if (gon.checkin || page === 'friend') {
+      if (gon.checkin || page === 'friend' || gon.checkins_view) {
         M.initMarkers(gon.checkins, gon.total)
       } else {
         M.initMarkers(gon.cities, gon.total, true);
