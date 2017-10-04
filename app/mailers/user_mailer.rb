@@ -8,7 +8,7 @@ class UserMailer < ApplicationMailer
 
   def invite_sent_email(user, address)
     SendSendgridEmail.call(
-      to: user.email, subject: "Coposition Invite Sent", id: "3bc81984-bec7-49af-8612-4107c028f5f5",
+      to: user.email, subject: "Coposition friend request sent", id: "3bc81984-bec7-49af-8612-4107c028f5f5",
       substitutions: [
         { key: "-address-", value: address },
         { key: "-unsubscribe-", value: unsubscribe_link(user) },
