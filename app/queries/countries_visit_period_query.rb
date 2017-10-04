@@ -23,8 +23,8 @@ class CountriesVisitPeriodQuery
       FROM (
         SELECT
           grouped_ch.country_code,
-          MIN(grouped_ch.updated_at) OVER w as min_date,
-          MAX(grouped_ch.updated_at) OVER w as max_date
+          MIN(grouped_ch.created_at) OVER w as min_date,
+          MAX(grouped_ch.created_at) OVER w as max_date
         FROM (
           SELECT numbered_ch.*,
             (numbered_ch.rnum - row_number() OVER (PARTITION BY numbered_ch.country_code ORDER BY numbered_ch.rnum)) as grp
@@ -36,8 +36,8 @@ class CountriesVisitPeriodQuery
               INNER JOIN
                 devices ON checkins.device_id = devices.id
               WHERE
-                devices.user_id = #{user.id} AND checkins.updated_at <= current_timestamp
-              ORDER BY updated_at
+                devices.user_id = #{user.id} AND checkins.created_at <= current_timestamp
+              ORDER BY created_at
             ) as ordered_ch
           ) as numbered_ch
         ) as grouped_ch
