@@ -5,6 +5,7 @@ module Users
     attr_reader :pending
     attr_reader :complete
     attr_reader :devices
+    attr_reader :requested
     attr_reader :page
 
     PIN_COLORS = {
@@ -29,7 +30,8 @@ module Users
       @page = apps_page? ? "Apps" : "Friends"
       @approved = add_color_info(users_approved)
       @complete = users_complete
-      @pending = add_color_info(users_requests)
+      @pending = add_color_info(users_pending)
+      @requested = users_requested
       @devices = user.devices
     end
 
@@ -85,8 +87,12 @@ module Users
       apps_page? ? @user.approved_developers.not_coposition_developers.public_info : @user.friends.public_info
     end
 
-    def users_requests
+    def users_pending
       apps_page? ? @user.developer_requests : @user.friend_requests
+    end
+
+    def users_requested
+      apps_page? ? nil : @user.pending_friends
     end
 
     def friends_checkins

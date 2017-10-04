@@ -7,9 +7,11 @@ class UserMailer < ApplicationMailer
   end
 
   def invite_sent_email(user, address)
+    return unless user.subscription
     SendSendgridEmail.call(
       to: user.email, subject: "Coposition friend request sent", id: "3bc81984-bec7-49af-8612-4107c028f5f5",
       substitutions: [
+        { key: "-user-", value: user.username.present? ? user.username : user.email },
         { key: "-address-", value: address },
         { key: "-unsubscribe-", value: unsubscribe_link(user) },
         { key: "-forgot-", value: "https://coposition.com/users/password/new" }
@@ -25,6 +27,19 @@ class UserMailer < ApplicationMailer
         { key: "-url-", value: "https://coposition.com/users/#{user.id}/#{from_developer ? 'apps' : 'friends'}" },
         { key: "-from-", value: from_developer ? approvable.company_name : approvable.email },
         { key: "-unsubscribe-", value: unsubscribe_link(user) }
+      ]
+    )
+  end
+
+  def request_accepted(user, friend)
+    return unless user.subscription
+    SendSendgridEmail.call(
+      to: user.email, subject: "Coposition new friend", id: "dafcb547-5aec-4671-88a3-776cd38948a4",
+      substitutions: [
+        { key: "-user-", value: user.username.present? ? user.username : user.email },
+        { key: "-friend-", value: friend.username.present? ? friend.username : friend.email },
+        { key: "-unsubscribe-", value: unsubscribe_link(user) },
+        { key: "-forgot-", value: "https://coposition.com/users/password/new" }
       ]
     )
   end
