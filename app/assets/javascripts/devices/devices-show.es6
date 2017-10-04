@@ -21,6 +21,9 @@ $(document).on('page:change', function() {
       M.rightClickListener();
       M.checkinNowListeners(getLocation);
       window.COPO.editCheckin.init();
+      if (!U.mobileCheck()) {
+        Materialize.toast('Right click map to check-in', 3000)
+      }
     }
 
     function postLocation(position) {
