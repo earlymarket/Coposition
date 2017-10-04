@@ -95,9 +95,9 @@ ActiveRecord::Schema.define(version: 20170928052539) do
     t.string   "output_country_code"
     t.string   "fogged_country_code"
     t.boolean  "edited",              default: false
+    t.integer  "location_id"
     t.integer  "speed"
     t.integer  "altitude"
-    t.integer  "location_id"
     t.index ["device_id"], name: "index_checkins_on_device_id", using: :btree
   end
 
