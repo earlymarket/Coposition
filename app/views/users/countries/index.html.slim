@@ -18,14 +18,17 @@ table
       td Country
       td Last Visited
   tbody
-    - countries.each do |country|
+    - visits_by_year.each do |visit|
       tr
-        td
-          = dashboard_flag(country["country_code"])
-        td
-          = dashboard_country_name(country["country_code"])
-        td
-          = humanize_date_str(country["min_date"])
-          |  -
-          '
-          = humanize_date_str(country["max_date"])
+        td = visit[0]
+      - visit[1].each do |country|
+        tr
+          td
+            = dashboard_flag(country["country_code"])
+          td
+            = dashboard_country_name(country["country_code"])
+          td
+            = humanize_date_str(country["min_date"])
+            |  -
+            '
+            = humanize_date_str(country["max_date"])
