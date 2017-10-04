@@ -13,9 +13,13 @@ $(document).on('page:change', function() {
     $('#find-checkin').on('click', checkinSearch)
 
     function checkinSearch () {
-      let userId = gon.current_user.userinfo.id
+      let userId = gon.current_user_id
       let checkinId = $('#checkin_id').val()
-      window.location = `/users/${userId}/devices/nil/checkins/${checkinId}`
+      if (checkinId.length) {
+        window.location = `/users/${userId}/devices/nil/checkins/${checkinId}`
+      } else {
+        Materialize.toast('Please enter a check-in ID', 3000, 'red');
+      }
     }
     
     $('body').on('click', '.edit-button', function (e) {

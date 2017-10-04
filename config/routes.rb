@@ -88,7 +88,10 @@ Rails.application.routes.draw do
   resources :users, only: [:show], module: :users do
     resource :dashboard, only: [:show]
     resources :devices, except: :edit do
-      member { get :shared, :info }
+      member do
+        get :shared, :info
+        post :remote_checkin
+      end
       resources :checkins, only: [:index, :show, :create, :new, :update, :destroy] do
         collection { post :import }
       end

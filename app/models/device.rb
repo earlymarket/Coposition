@@ -31,7 +31,7 @@ class Device < ApplicationRecord
   end
 
   def filtered_checkins(args)
-    sanitized = args[:copo_app] ? checkins : permitted_history_for(args[:permissible])
+    sanitized = args[:copo_app] ? past_checkins : permitted_history_for(args[:permissible])
     sanitized.since_time(args[:time_amount], args[:time_unit])
              .near_to(args[:near])
              .on_date(args[:date])
@@ -91,6 +91,10 @@ class Device < ApplicationRecord
 
   def before_delay_checkins
     delayed ? checkins.where("checkins.created_at < ?", delayed.minutes.ago) : checkins
+  end
+
+  def past_checkins
+    checkins.where("checkins.created_at < ?", Time.current)
   end
 
   def permission_for(permissible)

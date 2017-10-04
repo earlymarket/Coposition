@@ -16,7 +16,12 @@ module Users::Checkins
     private
 
     def create_activity
-      CreateActivity.call(entity: device, action: :import, owner: device.user, params: { count: CSV.read(path).length })
+      CreateActivity.call(
+        entity: device,
+        action: :import,
+        owner: device.user,
+        params: { count: CSV.read(path).length }
+      )
     end
 
     def file
@@ -34,7 +39,7 @@ module Users::Checkins
     def valid_file?
       return false unless file.content_type == "text/csv"
       CSV.foreach(path, headers: true) do |csv|
-        return csv.headers == Checkin.column_names
+        return csv.headers.sort == Checkin.column_names.sort
       end
     end
 

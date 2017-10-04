@@ -11,6 +11,7 @@ module Users::Devices
     attr_reader :devices
     attr_reader :filename
     attr_reader :date_range
+    attr_reader :checkins_view
 
     def initialize(user, params)
       @user = user
@@ -19,6 +20,7 @@ module Users::Devices
       @device = Device.find(params[:id]) if device_page?
       @devices = user.devices
       @date_range = first_load && owner.checkins.any? ? first_load_range : checkins_date_range
+      @checkins_view = params[:checkins_view] == "true"
 
       set_data_for_download if download_format.present?
     end
@@ -27,13 +29,14 @@ module Users::Devices
       {
         checkin: checkin,
         checkins: raw_paginated_checkins,
-        cities: raw_cities,
+        cities: gon_show_cities,
         counts: gon_cities_counts,
         first_load: first_load,
         device: owner.id,
         current_user_id: user.id,
         total: gon_show_checkins.count,
-        max: MAX_CHECKINS_TO_LOAD
+        max: MAX_CHECKINS_TO_LOAD,
+        checkins_view: checkins_view
       }
     end
 
@@ -89,15 +92,14 @@ module Users::Devices
     def first_load_range
       return { from: nil, to: nil } if (checkins = gon_show_checkins).size.zero?
 
-      { from: checkins.last.created_at.beginning_of_day, to: checkins.first.created_at.end_of_day }
+      { from: checkins.last.created_at.beginning_of_day, to: Time.zone.today }
     end
 
     def gon_show_checkins
       @gon_show_checkins ||= if checkin
         owner_checkins.where(id: checkin.id)
-      elsif first_load && gon_show_cities.present?
-        range = gon_show_cities.last.created_at.beginning_of_day..gon_show_cities.first.created_at.end_of_day
-        owner_checkins.where(created_at: range)
+      elsif first_load
+        owner_checkins.limit(FIRST_LOAD_MAX)
       elsif date_range[:from]
         owner_checkins.where(created_at: date_range[:from]..date_range[:to])
       else
@@ -117,19 +119,15 @@ module Users::Devices
     end
 
     def gon_show_cities
-      checkins = first_load ? owner.checkins : gon_show_checkins
-      checkins = Checkin.where(id: checkins.unscope(:order).select("DISTINCT ON(fogged_city) checkins.id").map(&:id))
-      first_load ? checkins.limit(100) : checkins
-    end
-
-    def raw_cities
-      city_checkins_sql = gon_show_cities.select("created_at", "fogged_lat AS lat", "fogged_lng AS lng",
+      checkins = first_load ? gon_show_checkins.where(id: gon_show_checkins.select(:id)) : gon_show_checkins
+      city_checkins = Checkin.where(id: checkins.unscope(:order).select("DISTINCT ON(fogged_city) checkins.id"))
+      city_checkins_sql = city_checkins.select("created_at", "fogged_lat AS lat", "fogged_lng AS lng",
         "fogged_city AS city", "fogged_country_code AS country_code", "null AS id").to_sql
       ActiveRecord::Base.connection.execute(city_checkins_sql)
     end
 
     def gon_cities_counts
-      gon_show_checkins.unscope(:order).group(:fogged_city).count
+      gon_show_checkins.where(id: gon_show_checkins.select(:id)).unscope(:order).group(:fogged_city).count
     end
 
     def device_page?

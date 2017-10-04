@@ -49,7 +49,7 @@ $(document).on('page:change', function() {
     }
 
     function initMarkers() {
-      if (gon.checkin || U.currentPage('friends', 'show_device')) {
+      if (gon.checkin || U.currentPage('friends', 'show_device') || gon.checkins_view) {
         M.initMarkers(gon.checkins, gon.total)
       } else {
         M.initMarkers(gon.cities, gon.total, true);
