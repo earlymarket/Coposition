@@ -33,8 +33,9 @@ class Approval < ApplicationRecord
     approval = Approval.link(user, friend, "User")
     if user.request_from?(friend)
       approval = Approval.accept(user, friend, "User")
-    else
-      UserMailer.add_user_email(user, friend, false).deliver_now unless approval.errors.messages.present?
+    elsif approval.errors.messages.blank?
+      UserMailer.add_user_email(user, friend, false).deliver_now
+      UserMailer.invite_sent_email(user, friend.email).deliver_now
     end
     approval
   end
