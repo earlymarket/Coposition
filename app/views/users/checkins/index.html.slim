@@ -30,7 +30,12 @@
         i.material-icons.collapse-devices.right expand_more
       .collapsible-body
         = form_for @checkins_index_presenter.user, url: @checkins_index_presenter.form_path, class: "form-group", method: :get do |f|
-          = select_tag(:device_id, options_for_select(@checkins_index_presenter.devices.map { |device| [device.name, device.id] }), multiple: true)
+          - @checkins_index_presenter.devices.each do |device|
+            - checked = params[:user][:device_ids].include? device.id.to_s if params[:user]
+            = f.check_box :device_ids, {multiple: true, checked: checked}, device.id, nil
+            = label_tag "user[device_ids][#{device.id}]", device.name
+            br
+          br
           = f.submit "Filter", class: "form-control btn btn-default"
           = link_to "Clear", @checkins_index_presenter.form_path, { method: :get, class: "btn-flat right" }
   #map
@@ -48,6 +53,9 @@
     }
     devicesClose = function() {
       $(".collapse-devices").text("expand_more");
+    }
+    if (window.location.search.includes("device_ids")) {
+      $('.device-select').collapsible('open', 0);
     }
 
   /! templates

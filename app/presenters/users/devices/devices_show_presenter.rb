@@ -93,15 +93,24 @@ module Users::Devices
     end
 
     def gon_show_checkins
-      checkins = params[:device_id] ? owner.checkins.where(device_id: params[:device_id]) : owner.checkins
-
       @gon_show_checkins ||= if checkin
-        checkins.where(id: checkin.id)
+        owner_checkins.where(id: checkin.id)
       elsif first_load && gon_show_cities.present?
         range = gon_show_cities.last.created_at.beginning_of_day..gon_show_cities.first.created_at.end_of_day
-        checkins.where(created_at: range)
+        owner_checkins.where(created_at: range)
       elsif date_range[:from]
-        checkins.where(created_at: date_range[:from]..date_range[:to])
+        owner_checkins.where(created_at: date_range[:from]..date_range[:to])
+      else
+        owner_checkins
+      end
+    end
+
+    def owner_checkins
+      checkins = owner.checkins
+      if params[:device_id]
+        checkins.where(device_id: params[:device_id])
+      elsif params[:user]
+        checkins.where(device_id: params[:user][:device_ids])
       else
         checkins
       end
