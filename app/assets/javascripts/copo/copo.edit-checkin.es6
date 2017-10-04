@@ -5,7 +5,7 @@ window.COPO.editCheckin = {
       e.stopPropagation();
       COPO.editCheckin.handleEditStart($(e.currentTarget).find(".editable"));
     });
-
+    COPO.editCheckin.initDatePicker()
     $('body').on('click', '.revert', function(e) {
       COPO.editCheckin.handleRevert($(e.currentTarget))
     });
@@ -18,10 +18,7 @@ window.COPO.editCheckin = {
     // make .editable, a contenteditable
     $editable.attr('contenteditable', true);
 
-    if ($editable.hasClass("date")) {
-      // if user edits date input set datepicker and open
-      COPO.editCheckin.setDatepicker($editable).pickadate("open");
-    } else {
+    if (!$editable.hasClass("date")) {
       // select all the text to make it easier to edit
       $editable.focus();
       document.execCommand('selectAll', false, null);
@@ -47,7 +44,7 @@ window.COPO.editCheckin = {
       let coords = data.split(', ')
       data = { checkin: {lat: coords[0], lng: coords[1]} }
     } else {
-      let date = new Date(data).toUTCString() + " UTC+0000"
+      let date = new Date(data).toString().split(" GMT")[0] + " UTC+0000"
       data = { checkin: { created_at: date } }
     }
     COPO.editCheckin.putUpdateCheckin(url, data, true);
@@ -77,36 +74,53 @@ window.COPO.editCheckin = {
     });
   },
 
-  setDatepicker($editable) {
-    var original = $editable.text();
-    return $("body").pickadate({
-      selectMonths: true,
-      selectYears: 15,
-      closeOnSelect: true,
-      max: new Date(),
-      onSet: function(context) {
-        if ("select" in context) {
-          if (this.get("value")) {
-            let date = new Date($editable.data().date);
-            let newDate = new Date(this.get("value"));
-
-            date.setDate(newDate.getDate());
-            date.setMonth(newDate.getMonth());
-            date.setFullYear(newDate.getFullYear());
-            // open marker popup back again and set new date
-            $editable.text(
-              date.toUTCString() + " UTC+0000"
-            );
-
-            // remove datepicker with respect to next one
-            this.stop();
-          }
+  initDatePicker() {
+    $("#dtBox").DateTimePicker({
+      mode: "datetime",
+      dateTimeFormat: "dd-MM-yyyy HH:mm",
+      buttonsToDisplay: ["HeaderCloseButton", "SetButton"],
+      titleContentDateTime: "Set the date & time in UTC. Once saved, time will display in local time.",
+      setButtonContent: "Save",
+      beforeShow: function(oInputElement) {
+        let oDTP = this;
+        let $editable = $($(oInputElement).children()[0])
+        let date = moment($editable.data().date).format("DD-MM-YYYY HH:mm");
+        oDTP.settings.defaultDate = date;
+      },
+      buttonClicked: function(type, oInputElement) {
+        let $editable = $($(oInputElement).children()[0])
+        let oDTP = this;
+        if (type === 'SET') {
+          let original = $editable.text()
+          let newDate = oDTP.oData.dCurrentDate.toString().split(" GMT")[0]
+          $editable.text(
+            newDate + " UTC+0000"
+          )
+          COPO.editCheckin.handleEdited(original, $editable);
         }
       },
-      onClose: function(context) {
-        COPO.editCheckin.handleEdited(original, $editable);
+      afterHide: function(oInputElement) {
+        let $editable = $($(oInputElement).children()[0])
+        COPO.editCheckin.handleEditEnd($editable);
+      },
+      formatHumanDate: function(oDate, sMode, sFormat) {
+        let date = new Date(oDate.yyyy, oDate.MM - 1, oDate.dd, oDate.HH, oDate.mm, oDate.ss)
+        let offsetString = $('#localTime').text().split('UTC')[1].split(')')[0]
+        let localDate = COPO.editCheckin.getLocalDate(date)
+        return "Local time: " + localDate.toString().split("GMT")[0] + "(UTC" + offsetString + ")"
       }
-    });
+    })
+  },
+
+  getLocalDate(date) {
+    let offsetString = $('#localTime').text().split('UTC')[1].split(')')[0]
+    let operator = offsetString[0]
+    let offset = operator === "+" ? offsetString.split('+')[1].split(":") : offsetString.split('-')[1].split(":")
+    let offsetHours = parseInt(offset[0])
+    let offsetMinutes = parseInt(offset[1])
+    operator == "+" ? date.setHours(date.getHours() + offsetHours) : date.setHours(date.getHours() - offsetHours)
+    operator == "+" ? date.setMinutes(date.getMinutes() + offsetMinutes) : date.setMinutes(date.getMinutes() - offsetMinutes)
+    return date
   },
 
   handleEdited(original, $editable) {
@@ -119,9 +133,12 @@ window.COPO.editCheckin = {
 
   handleDateEdited(original, $editable) {
     if (original !== $editable.text()) {
-      var url = $editable.data('url');
-      var data = { checkin: { created_at: $editable.text()} }
-      COPO.editCheckin.putUpdateCheckin(url, data);
+      var confirmText = "Are you sure? This will place this check-in in the future.";
+      if (Date.parse($editable.text()) < Date.now() || confirm(confirmText)) {
+        var url = $editable.data('url');
+        var data = { checkin: { created_at: $editable.text()} }
+        COPO.editCheckin.putUpdateCheckin(url, data);
+      }
     } else {
       // reverse the edit
       $editable.text(original);
@@ -134,9 +151,12 @@ window.COPO.editCheckin = {
     if (original !== $editable.text() && coords.length === 2 && coords.every(COPO.utility.validateLatLng)) {
       var url = $editable.data('url');
       var data = { checkin: { lat: coords[0], lng: coords[1]} }
-      COPO.editCheckin.putUpdateCheckin(url, data);
+      if (COPO.editCheckin.confirmUpdateCoords({ lat: coords[0], lng: coords[1] })) {
+        COPO.editCheckin.putUpdateCheckin(url, data);
+      } else {
+        $editable.text(original);
+      }
     } else {
-      // reverse the edit
       $editable.text(original);
     }
     COPO.editCheckin.handleEditEnd($editable);
@@ -146,11 +166,18 @@ window.COPO.editCheckin = {
     let latlng = COPO.maps.getBoundedLatlng(e)
     var confirmText = "Are you sure? Click ok to reposition check-in to new coordinates (";
         confirmText += latlng.lat.toFixed(6) + ", " + latlng.lng.toFixed(6) + ").";
-    if (confirm(confirmText)) {
+    if (COPO.editCheckin.confirmUpdateCoords(latlng)) {
       var data = { checkin: {lat: latlng.lat, lng: latlng.lng} }
       COPO.editCheckin.putUpdateCheckin($editable.data('url'), data);
     }
     COPO.editCheckin.handleEditEnd($editable);
+  },
+
+  confirmUpdateCoords(coords) {
+    var confirmText = "Are you sure? Click ok to reposition check-in to new coordinates (";
+        confirmText += coords.lat.toFixed(6) + ", " + coords.lng.toFixed(6) + ").";
+    var confirmed = confirm(confirmText) ? true : false;
+    return confirmed;
   },
 
   putUpdateCheckin(url, data, reverted) {
@@ -182,7 +209,7 @@ window.COPO.editCheckin = {
     } else {
       checkin.original = checkin.created_at
       checkin.type = 'date'
-      checkin.created_at = response.checkin.created_at;
+      checkin.created_at = moment(response.checkin.created_at.replace("T", " ").replace(".000Z", ""))._i
       gon.checkins.sort(function(a, b) {
         return (new Date(b.created_at)) - (new Date(a.created_at));
       });

@@ -160,6 +160,31 @@
     font-size: 1.5rem;
   }
 
+  .leaflet-control-zoom {
+    width: 2.5rem;
+    .leaflet-control-zoom-in, .leaflet-control-zoom-out {
+      background-size: 35px 270px;
+      padding-right: 2.5rem;
+    }
+  }
+
+  .leaflet-top.leaflet-left {
+    .leaflet-control:not(.leaflet-control-zoom):not(.leaflet-control-layers-expanded) {
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      a {
+        border-bottom: 0px;
+      }
+    }
+  }
+
+  .leaflet-touch, .leaflet-control-fullscreen a {
+    background-position: 0px 0px;
+  }
+
   .leaflet-popup-content-wrapper {
     background-color: rgba(255, 255, 255, .8);
   }
@@ -224,5 +249,4 @@
     color: #333;
     font: 11px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
   }
-
 }

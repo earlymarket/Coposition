@@ -265,6 +265,8 @@ GEM
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     http_parser.rb (0.6.0)
+    httparty (0.15.6)
+      multi_xml (>= 0.5.2)
     i18n (0.8.4)
     i18n_data (0.8.0)
     inline_svg (1.2.1)
@@ -317,18 +319,20 @@ GEM
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
-    mini_portile2 (2.2.0)
+    mini_portile2 (2.3.0)
     minitest (5.10.1)
     money (6.9.0)
       i18n (>= 0.6.4, < 0.9)
     multi_json (1.12.1)
     multi_test (0.1.2)
+    multi_xml (0.6.0)
+    mustermann (1.0.1)
     nenv (0.3.0)
     netrc (0.11.0)
     newrelic_rpm (4.2.0.334)
     nio4r (2.1.0)
-    nokogiri (1.8.0)
-      mini_portile2 (~> 2.2.0)
+    nokogiri (1.8.1)
+      mini_portile2 (~> 2.3.0)
     notiffany (0.1.1)
       nenv (~> 0.1)
       shellany (~> 0.0)
@@ -467,6 +471,7 @@ GEM
     ruby-prof (0.16.2)
     ruby-progressbar (1.8.1)
     ruby_dep (1.5.0)
+    ruby_http_client (3.2.0)
     safe_yaml (1.0.4)
     sass (3.4.24)
     sass-rails (5.0.6)
@@ -478,6 +483,9 @@ GEM
     sdoc (0.4.2)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    sendgrid-ruby (5.1.0)
+      ruby_http_client (~> 3.2)
+      sinatra (>= 1.4.7, < 3)
     sexp_processor (4.9.0)
     shellany (0.0.1)
     sidekiq (5.0.2)
@@ -494,6 +502,11 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.1)
+    sinatra (2.0.0)
+      mustermann (~> 1.0)
+      rack (~> 2.0)
+      rack-protection (= 2.0.0)
+      tilt (~> 2.0)
     sixarm_ruby_unaccent (1.2.0)
     slack-notifier (2.2.1)
     slim (3.0.8)
@@ -599,6 +612,7 @@ DEPENDENCIES
   gon (~> 6.1.0)
   gpx
   guard-livereload (~> 2.4)
+  httparty
   inherited_resources!
   inline_svg
   interactor
@@ -610,6 +624,7 @@ DEPENDENCIES
   meta_request
   minitest (~> 5.10, != 5.10.2)
   newrelic_rpm
+  nokogiri (>= 1.8.1)
   oj
   pg
   pry
@@ -635,6 +650,7 @@ DEPENDENCIES
   ruby-prof
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
+  sendgrid-ruby
   sidekiq
   simple_token_authentication
   simplecov
@@ -657,4 +673,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.15.1
+   1.16.0.pre.2

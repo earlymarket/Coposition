@@ -7,7 +7,7 @@ h1.title Your devices
       i.material-icons add
 section.devices-index.row
   .col.s12
-    #map-wrapper style=("position: relative;") 
+    #map-wrapper style=("position: relative;")
       p#map-status
       #map-overlay.valign-wrapper.z-depth-1.hide
         div
@@ -17,13 +17,13 @@ section.devices-index.row
       #map
 div
   - @devices_index_presenter.devices.each do |device|
-    div id="device#{device.id}" 
+    div id="device#{device.id}"
       = render device
-    = render partial: "device_modals", locals: { device: device }
+    = render "device_modals", device: device
 .center
   = will_paginate @devices_index_presenter.devices
   div
-    script#markerPopupTmpl type="x-tmpl-mustache" 
+    script#markerPopupTmpl type="x-tmpl-mustache"
       h3 Device: {{ &devicebutton }}
       ul
         li.address Address: {{ address }}

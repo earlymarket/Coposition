@@ -13,6 +13,15 @@ h1 Help Centre
         | #{current_user ? link_to('devices', user_devices_path(current_user.url_id), class: 'link') : 'devices'}
         |  and then either right clicking on the map or clicking on the marker in the control panel to the left hand side of the map and then selecting the blue starred marker that appears on the map which indicates your current location.
       p If you do not have any devices, you will be given the option to create a checkin when creating a new device, the checkin will indicate you current location.
+      #viewing.section.scrollspy
+        h5
+          i.material-icons location_city
+          |  City view
+        p
+          | When viewing the check-in history for a device online, Coposition displays City View by default. This aggregates (clusters) all check-ins within the same city or town to give an approximation of your location history. 
+        p 
+          | For your detailed history, you can toggle City View off by clicking the City View icon in the map options. City view still only displays locations within the selected date range.
+
     .divider
     #devices.section.scrollspy
       h4
