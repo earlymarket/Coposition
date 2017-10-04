@@ -86,7 +86,8 @@ module Users
 
     def last_countries_sql
       "created_at IN(SELECT MAX(created_at) FROM checkins INNER JOIN devices ON" \
-      " checkins.device_id = devices.id WHERE devices.user_id = #{@user.id} GROUP BY country_code)"
+      " checkins.device_id = devices.id WHERE devices.user_id = #{@user.id}" \
+      " AND checkins.created_at <= current_timestamp GROUP BY country_code)"
     end
   end
 end
