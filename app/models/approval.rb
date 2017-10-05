@@ -53,7 +53,10 @@ class Approval < ApplicationRecord
   end
 
   def self.accept(user, approvable, approvable_type)
-    accept_one_side(approvable, user, approvable_type) unless approvable_type == "Developer"
+    unless approvable_type == "Developer"
+      accept_one_side(approvable, user, approvable_type)
+      notify_request_sender(approvable, user)
+    end
     accept_one_side(user, approvable, approvable_type)
   end
 
@@ -71,5 +74,16 @@ class Approval < ApplicationRecord
   def complete!
     update(status: "complete", approval_date: Time.current)
     user.approve_devices(approvable)
+  end
+
+  def notify_request_sender(approvable, user)
+    Firebase::Push.call(
+      topic: approvable.id,
+      content_available: true,
+      notification: {
+        body: "#{user.email} has accepted your friend request",
+        title: "New Friend"
+      }
+    )
   end
 end
