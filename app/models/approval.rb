@@ -55,7 +55,7 @@ class Approval < ApplicationRecord
   def self.accept(user, approvable, approvable_type)
     unless approvable_type == "Developer"
       accept_one_side(approvable, user, approvable_type)
-      notify_request_sender
+      notify_request_sender(approvable, user)
     end
     accept_one_side(user, approvable, approvable_type)
   end
@@ -66,7 +66,7 @@ class Approval < ApplicationRecord
     approval
   end
 
-  def self.notify_request_sender
+  def self.notify_request_sender(approvable, user)
     Firebase::Push.call(
       topic: approvable.id,
       content_available: true,
