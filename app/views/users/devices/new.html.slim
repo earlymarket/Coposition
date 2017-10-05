@@ -25,6 +25,11 @@ h1
   #map.rectangle-map
     pre#coordinates.ui-coordinates
 
+#modal1.modal
+  .modal-content
+    h4 Error
+    p Device type is required
+
 javascript:
   $.validator.addMethod("valueNotEquals", function(value, element, arg){
     return arg !== value;
@@ -56,3 +61,12 @@ javascript:
     validClass: "valid"
   });
 
+  $("#new_device").submit(function(event) {
+    event.preventDefault();
+    if ($("#device_icon").val() == null) {
+      $("#modal1").modal({
+        complete: function() { $("#add_button").attr("disabled", false); }
+      });
+      $("#modal1").modal("open");
+    }
+  });
