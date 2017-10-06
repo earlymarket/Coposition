@@ -60,7 +60,7 @@ RSpec.feature "Checkins", type: :feature do
   end
 
   def and_i_click_delete_all
-    click_on "Delete all check-ins"
+    find("a.delete-all").trigger("click")
   end
 
   def then_i_should_have_no_checkins

@@ -34,7 +34,7 @@
             | Currently, you are filtering to only see check-ins from #{humanize_date(@device_show_presenter.date_range[:from])} to #{humanize_date(@device_show_presenter.date_range[:to])}.
           - else
             | Currently, you are seeing all check-ins for this device.
-        = link_to "Delete all check-ins", user_device_checkins_path(current_user.url_id, @device_show_presenter.device.id), { method: :delete, class: "btn red white-text", data: { confirm: "Delete all checkins for this device?" } }
+        = link_to "Delete all check-ins", user_device_checkins_path(current_user.url_id, @device_show_presenter.device.id), { method: :delete, class: "btn red white-text delete-all", data: { confirm: "Delete all checkins for this device?" } }
         - if @device_show_presenter.date_range[:from]
           br
           br

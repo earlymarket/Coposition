@@ -69,8 +69,9 @@ RSpec.describe Users::DevicesController, type: :controller do
     it "creates a GPX file if .gpx appended to url" do
       get :show, params: params.merge(format: :gpx, download: "gpx")
       expect(response.header["Content-Type"]).to include "application/gpx+xml"
-      expect(response.body).to include(device.checkins.to_gpx)
+      expect(response.body).to include("http://www.topografix.com/GPX/1/1/gpx.xsd")
     end
+
     it "creates a geojson file if .json appended to url" do
       get :show, params: params.merge(format: :geojson, download: "geojson")
       expect(response.header["Content-Type"]).to include "application/geojson"
