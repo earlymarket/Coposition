@@ -31,6 +31,18 @@ class UserMailer < ApplicationMailer
     )
   end
 
+  def pending_request_email(approvable, user)
+    return unless user.subscription
+    SendSendgridEmail.call(
+      to: user.email, subject: "Coposition approval request", id: "57af0f8b-2aa9-4621-86ce-139d527a57b8",
+      substitutions: [
+        { key: "-url-", value: "https://coposition.com/users/#{user.id}/#{from_developer ? 'apps' : 'friends'}" },
+        { key: "-from-", value: approvable.email },
+        { key: "-unsubscribe-", value: unsubscribe_link(user) }
+      ]
+    )
+  end
+
   def request_accepted(user, friend)
     return unless user.subscription
     SendSendgridEmail.call(
