@@ -12,6 +12,7 @@ class Device < ApplicationRecord
   has_attachment :csv, accept: :raw
 
   validates :name, uniqueness: { scope: :user_id }, if: :user_id
+  validates :icon, presence: true
 
   before_create do |dev|
     dev.uuid = SecureRandom.uuid

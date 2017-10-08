@@ -7,7 +7,7 @@ h1
   = f.text_field :name, class: "form-control input-lg fifth-width", placeholder: "My device"
   br/
   = label :icon, "Choose your device type*", class: "control-label"
-  = f.select :icon, options_for_select([["Click to see options", ""], ["Laptop", "laptop"], ["Mobile", "smartphone"], ["Desktop", "desktop_windows"], ["Tablet", "tablet"], ["Watch", "watch"], ["Other", "other"]], selected: "", disabled: ""), class: "required"
+  = f.select :icon, options_for_select([["Click to see options", nil], ["Laptop", "laptop"], ["Mobile", "smartphone"], ["Desktop", "desktop_windows"], ["Tablet", "tablet"], ["Watch", "watch"], ["Other", "other"]], selected: "", disabled: ""), class: "required"
   br/
   = label :uuid, class: "control-label" do \
     "Enter existing coposition UUID #{link_to('(What is this?)', '/help#sharing')}".html_safe \
@@ -25,12 +25,10 @@ h1
   #map.rectangle-map
     pre#coordinates.ui-coordinates
 
-#modal1.modal
-  .modal-content
-    h4 Error
-    p Device type is required
-
 javascript:
+  $.validator.setDefaults({
+    ignore: []
+  });
   $.validator.addMethod("valueNotEquals", function(value, element, arg){
     return arg !== value;
   }, "Please select a device type.");
@@ -41,11 +39,11 @@ javascript:
     onkeyup: false,
     rules: {
       "device[name]": {
-        required: true,
+        required: true
       },
       "device[icon]": {
         valueNotEquals: "",
-        required: true,
+        required: true
       }
     },
     errorElement: "div",
@@ -59,14 +57,4 @@ javascript:
     },
     errorClass: "invalid",
     validClass: "valid"
-  });
-
-  $("#new_device").submit(function(event) {
-    event.preventDefault();
-    if ($("#device_icon").val() == null) {
-      $("#modal1").modal({
-        complete: function() { $("#add_button").attr("disabled", false); }
-      });
-      $("#modal1").modal("open");
-    }
   });
