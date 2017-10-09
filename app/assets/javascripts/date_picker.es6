@@ -5,7 +5,6 @@ window.COPO.datePicker = {
     $('.datepick').pickadate({
       selectMonths: true,
       selectYears: 15,
-      max: new Date(),
       onSet: function(arg) {
         var from_picker = $('#input_from').pickadate().pickadate('picker')
         var to_picker = $('#input_to').pickadate().pickadate('picker')
