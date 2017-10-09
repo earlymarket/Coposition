@@ -29,9 +29,6 @@ javascript:
   $.validator.setDefaults({
     ignore: []
   });
-  $.validator.addMethod("valueNotEquals", function(value, element, arg){
-    return arg !== value;
-  }, "Please select a device type.");
 
   // configure your validation
 
@@ -42,7 +39,6 @@ javascript:
         required: true
       },
       "device[icon]": {
-        valueNotEquals: "",
         required: true
       }
     },
