@@ -4,6 +4,7 @@ module Users
     NUMBER_OF_COUNTRIES = 10
     MONTH_CHECKINS_LIMIT = 200
     MONTH_CHECKINS_SAMPLE = 100
+    FLIGHT_ALTITUDE = 8000
 
     def initialize(user)
       @user = user
@@ -87,7 +88,8 @@ module Users
     def last_countries_sql
       "created_at IN(SELECT MAX(created_at) FROM checkins INNER JOIN devices ON" \
       " checkins.device_id = devices.id WHERE devices.user_id = #{@user.id}" \
-      " AND checkins.created_at <= current_timestamp GROUP BY country_code)"
+      " AND checkins.created_at <= current_timestamp AND checkins.altitude <= #{FLIGHT_ALTITUDE}" \
+      " GROUP BY country_code)"
     end
   end
 end
