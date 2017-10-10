@@ -74,7 +74,7 @@ module Users
     def devices_index_checkins
       @devices
         .includes(:checkins)
-        .map { |device| device.checkins.first.as_json.merge(device: device.name) if device.checkins.present? }
+        .map { |device| device.past_checkins.first.as_json.merge(device: device.name) if device.past_checkins.present? }
         .compact
     end
 
