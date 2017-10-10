@@ -40,6 +40,8 @@ RSpec.feature "Checkins", type: :feature do
     click_on "Devices", match: :first
     click_on "add"
     fill_in "device_name", with: "My device"
+    find("div.select-wrapper input", text: "Click to see options").click
+    find("div.select-wrapper li", text: "laptop").click
     click_button "Add"
   end
 
