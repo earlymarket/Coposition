@@ -42,8 +42,8 @@ RSpec.feature "Permissions", type: :feature do
     click_on "Devices", match: :first
     click_on "add"
     fill_in "device_name", with: "My device"
-    find("div.select-wrapper input", text: "Click to see options").click
-    find("div.select-wrapper li", text: "laptop").click
+    find("div.select-wrapper input").click
+    find("div.select-wrapper li", text: "Laptop").click
     click_button "Add"
   end
 

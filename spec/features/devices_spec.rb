@@ -46,8 +46,8 @@ RSpec.feature "Devices", type: :feature do
   def when_i_create_a_new_device
     click_on "add"
     fill_in "device_name", with: "My device"
-    find("div.select-wrapper input", text: "Click to see options").click
-    find("div.select-wrapper li", text: "laptop").click
+    find("div.select-wrapper input").click
+    find("div.select-wrapper li", text: "Laptop").click
     click_button "Add"
   end
 
