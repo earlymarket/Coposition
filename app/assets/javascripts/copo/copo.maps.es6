@@ -655,8 +655,8 @@ window.COPO.maps = {
       } else if (gon.total > 20000) {
         sweetAlert(
           {
-            title: "Show cities?",
-            text: "This may take a long time to load, view cities?",
+            title: "View as checkins?",
+            text: "This may take a long time to load",
             type: "info",   
             showCancelButton: true,   
             confirmButtonColor: "#DD6B55",
@@ -664,7 +664,7 @@ window.COPO.maps = {
             cancelButtonText: "No"
           }, 
           function(isConfirm) {
-            if (!isConfirm) {
+            if (isConfirm) {
               $('#checkins_view').val(true)
               Materialize.toast('Loading check-ins.', 3000)
               $('.cached-icon').removeClass('cities-active');
