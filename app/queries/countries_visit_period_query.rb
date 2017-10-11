@@ -1,5 +1,6 @@
 class CountriesVisitPeriodQuery
   attr_reader :user, :options
+  FLIGHT_ALTITUDE = 8_000
 
   def initialize(user:, **options)
     @user = user
@@ -36,7 +37,7 @@ class CountriesVisitPeriodQuery
               INNER JOIN
                 devices ON checkins.device_id = devices.id
               WHERE
-                devices.user_id = #{user.id}
+                devices.user_id = #{user.id} AND checkins.created_at <= current_timestamp AND checkins.altitude <= #{FLIGHT_ALTITUDE}
               ORDER BY created_at
             ) as ordered_ch
           ) as numbered_ch

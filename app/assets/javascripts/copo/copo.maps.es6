@@ -116,7 +116,7 @@ window.COPO.maps = {
         Materialize.toast('Cities loaded', 3000)
       } else if (total >= gon.max) {
         Materialize.toast('There were too many check-ins to load, cities are shown', 3000);
-      } else if (gon.total === gon.checkins.length) {
+      } else if (gon.checkins && gon.total === gon.checkins.length) {
         Materialize.toast('All check-ins loaded', 3000)
       } else {
         Materialize.toast('Check-ins loaded', 3000)

@@ -4,7 +4,8 @@ class Developer < ApplicationRecord
   has_attachment :avatar
 
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
-
+  validates :email, confirmation: true
+  
   has_one :oauth_application, class_name: "Doorkeeper::Application", as: :owner, dependent: :destroy
   has_many :requests, dependent: :destroy
   has_many :permissions, as: :permissible, dependent: :destroy

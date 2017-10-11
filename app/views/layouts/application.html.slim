@@ -41,6 +41,7 @@ html
     - else
       = render partial: "navbar"
     main
+      = javascript_tag '$.fn.velocity = function() { return this; };' if Rails.env.test?
       = javascript_tag(raw render_flash)
       .outside-container
         = yield :outside_container
