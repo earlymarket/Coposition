@@ -10,11 +10,13 @@ section.dashboard.row
       #map-overlay.valign-wrapper.z-depth-1.hide
         div
           h5 style=("text-align: center;")  Nothing here yet
-          p Here you will be shown your check-ins this month and your friend's last check-ins on a map. But you don't have any at the moment!
+          p This is where you will see details on your recent check-ins and the location of your friends who are also using Coposition.
           p
-            | To add a check-in, go to the #{link_to("devices", user_devices_path)} page and select/create a device.
+            | To start managing your location data, go to the #{link_to("devices", user_devices_path, class: "hyperlink")} page to create a device or download the Coposition mobile app.
           p
-            | To add a friend, go to your #{link_to("friends", user_friends_path)} page and send them an invite.
+            | To add a friend who you wish to securely share your location with, go to your  #{link_to("friends", user_friends_path, class: "hyperlink")} page and send them an invite.
+          p
+            | For further information on how to use your Coposition account, please see our #{link_to("help centre", help_path, class: "hyperlink")}.
       #map
 .divider
 p
@@ -23,9 +25,6 @@ p
     |  That is an #{@dashboard_presenter.percent_change > 0 ? "increase" : "decrease"} of #{@dashboard_presenter.percent_change}% from last week.
   - if @dashboard_presenter.most_used_device.present?
     |  Your most used device is #{@dashboard_presenter.most_used_device.name}.
-.row
-  = text_field_tag(:checkin_id, params["checkin_id"], placeholder: "Check-in id", class: 'col s3', required: true)
-  = button_tag "Find check-in", class: "waves-effect waves-light btn", id: "find-checkin", type: "submit"
 
 - if @dashboard_presenter.last_countries
   .row.valign-wrapper

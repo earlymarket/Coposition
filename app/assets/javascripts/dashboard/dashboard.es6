@@ -12,14 +12,6 @@ $(document).on('page:change', function () {
       if (e.which === 13) checkinSearch()
     })
 
-    $('#find-checkin').on('click', checkinSearch)
-
-    function checkinSearch () {
-      let userId = gon.current_user.userinfo.id
-      let checkinId = $('#checkin_id').val()
-      window.location = `/users/${userId}/devices/nil/checkins/${checkinId}`
-    }
-
     // Persistent map feature declarations
     const SELF_MARKER = {
       hasCheckin () {
