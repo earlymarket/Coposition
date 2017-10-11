@@ -7,6 +7,7 @@ module Users
     attr_reader :devices
     attr_reader :requested
     attr_reader :page
+    attr_reader :checkins
 
     PIN_COLORS = {
       orange:       "#F39434",
@@ -33,6 +34,7 @@ module Users
       @pending = add_color_info(users_pending)
       @requested = users_requested
       @devices = user.devices
+      @checkins = friends_checkins unless apps_page?
     end
 
     def gon
@@ -42,7 +44,7 @@ module Users
           permissions: permissions,
           current_user_id: @user.id
         }
-      gon[:friends] = friends_checkins unless apps_page?
+      gon[:friends] = checkins unless apps_page?
       gon
     end
 
