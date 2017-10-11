@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170812142320) do
+ActiveRecord::Schema.define(version: 20170928052539) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,8 +58,8 @@ ActiveRecord::Schema.define(version: 20170812142320) do
   end
 
   create_table "attachinary_files", force: :cascade do |t|
-    t.string   "attachinariable_type"
     t.integer  "attachinariable_id"
+    t.string   "attachinariable_type"
     t.string   "scope"
     t.string   "public_id"
     t.string   "version"
@@ -152,6 +152,13 @@ ActiveRecord::Schema.define(version: 20170812142320) do
     t.index ["uuid"], name: "index_devices_on_uuid", using: :btree
   end
 
+  create_table "email_requests", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string   "slug",                      null: false
     t.integer  "sluggable_id",              null: false
@@ -169,10 +176,10 @@ ActiveRecord::Schema.define(version: 20170812142320) do
     t.float    "lat"
     t.float    "lng"
     t.string   "address"
-    t.integer  "device_id"
-    t.integer  "checkins_count"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.integer  "checkins_count"
+    t.integer  "device_id"
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
