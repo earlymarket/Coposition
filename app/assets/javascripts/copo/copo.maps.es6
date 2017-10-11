@@ -68,6 +68,18 @@ window.COPO.maps = {
         }
       } else if (window.COPO.utility.currentPage('friends', 'show_device')) {
         return $.getJSON(`${window.location.pathname}${window.location.search}&page=${page}&per_page=5000`)
+      } else if (window.COPO.utility.currentPage('checkins', 'index')) {
+        if (!window.location.search.includes("device_id") && window.location.search.includes("page")) {
+          return $.getJSON(`${window.location.pathname}${window.location.search}&page=${page}&per_page=5000`)
+        } else if (window.location.search.includes("device_id")) {
+          let ids = []
+          window.location.search.split("5D=").forEach((el, i) => {
+            if(i > 0) { ids.push(el.split("&")[0]) }
+          })
+          return $.getJSON(`${window.location.pathname}?device_id=${ids}&page=${page}&per_page=5000`)
+        } else {
+          return $.getJSON(`${window.location.pathname}?page=${page}&per_page=5000`)
+        }
       } else {
         console.log('Page not recognised. No incremental loading.');
       }
@@ -86,8 +98,8 @@ window.COPO.maps = {
           loadCheckins(page, display);
         });
       } else {
-        if (!display) return;
         $('.myProgress').remove();
+        if (!display) return;
         toastMessage()
       };
     }
@@ -253,6 +265,7 @@ window.COPO.maps = {
     }
     checkinTemp.future = Date.parse(checkin.created_at) > Date.now() ? '(future)' : ''
     checkinTemp.idLink = COPO.utility.idLink(checkin)
+    checkinTemp.deviceLink = COPO.utility.deviceLink(checkin)
     checkinTemp.revertButton = checkin.revert ? COPO.utility.revertLink(checkin) : ''
     checkinTemp.edited = checkin.edited ? '(edited)' : ''
     checkinTemp.inlineCoords = COPO.utility.renderInlineCoords(checkin);

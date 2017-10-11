@@ -32,7 +32,7 @@
       .collapsible-body
         = form_for @checkins_index_presenter.user, url: @checkins_index_presenter.form_path, class: "form-group", method: :get do |f|
           - @checkins_index_presenter.devices.each do |device|
-            - checked = params[:user][:device_ids].include? device.id.to_s if params[:user]
+            - checked = params[:user] ? params[:user][:device_ids].include?(device.id.to_s) : true
             = f.check_box :device_ids, {multiple: true, checked: checked}, device.id, nil
             = label_tag "user[device_ids][#{device.id}]", device.name
             br
