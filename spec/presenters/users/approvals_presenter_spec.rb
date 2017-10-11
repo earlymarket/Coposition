@@ -68,9 +68,9 @@ describe ::Users::ApprovalsPresenter do
     end
 
     it "calls friends_checkins" do
-      allow(approvals).to receive(:friends_checkins)
+      allow(approvals).to receive(:checkins)
       approvals.gon
-      expect(approvals).to have_received(:friends_checkins)
+      expect(approvals).to have_received(:checkins)
     end
   end
 
