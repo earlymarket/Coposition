@@ -19,7 +19,7 @@ end
 
 def check_approvals
   return unless Time.current.friday?
-  Approvals.where("status = ? AND created_at BETWEEN ? AND ?", "requested", 2.weeks.ago, 1.week.ago).each do |approval|
+  Approval.where("status = ? AND created_at BETWEEN ? AND ?", "requested", 2.weeks.ago, 1.week.ago).each do |approval|
     UserMailer.pending_request_email(approval.approvable, approval.user)
   end
 end
