@@ -19,7 +19,7 @@
             h5.ib
               = approvals_friends_device_link(approvable_type, approvable) do
                 = approvals_approvable_name(approvable)
-              = approvals_friends_locator(approvable_type, approvable)
+              = approvals_friends_locator(approvable_type, approvable,  @approvals_presenter.checkins)
             - if approvable.try(:tagline)
               .tagline
                 = approvable.tagline
