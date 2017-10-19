@@ -67,7 +67,7 @@ window.COPO.editCheckin = {
     });
 
     // if user clicks another marker, remove all the listeners
-    COPO.maps.allMarkers.eachLayer(function(marker) {
+    COPO.maps.markers.eachLayer(function(marker) {
       marker.on('click', function(e) {
         COPO.editCheckin.handleEditEnd($editable);
       });

@@ -37,8 +37,8 @@ window.COPO.maps = {
     COPO.maps.renderAllMarkers(checkins);
     COPO.maps.bindMarkerListeners(checkins);
     COPO.maps.loadAllCheckins(checkins, total, cities);
-    if (COPO.maps.allMarkers.getLayers().length) {
-      map.fitBounds(COPO.maps.allMarkers.getBounds().pad(0.5));
+    if (COPO.maps.markers.getLayers().length) {
+      map.fitBounds(COPO.maps.markers.getBounds().pad(0.5));
     } else {
       map.once('locationfound', function(e) {
         map.panTo(e.latlng);
@@ -122,10 +122,10 @@ window.COPO.maps = {
   },
 
   fitBounds() {
-    if (COPO.maps.allMarkers.getLayers().length) {
-      map.fitBounds(COPO.maps.allMarkers.getBounds().pad(0.5))
-      if (COPO.maps.allMarkers.getLayers().length === 1) {
-        COPO.maps.allMarkers.getLayers()[0].fire('click');
+    if (COPO.maps.markers.getLayers().length) {
+      map.fitBounds(COPO.maps.markers.getBounds().pad(0.5))
+      if (COPO.maps.markers.getLayers().length === 1) {
+        COPO.maps.markers.getLayers()[0].fire('click');
       }
     }
   },
@@ -165,7 +165,7 @@ window.COPO.maps = {
     })
     markers.push(COPO.maps.createLastCheckinMarker(lastCheckin))
     // allMarkers is used for calculating bounds
-    COPO.maps.allMarkers = L.markerClusterGroup().addLayers(markers);
+    // COPO.maps.markers = L.markerClusterGroup().addLayers(markers);
     // markers and last are distinct because we want the last checkin
     // to always be displayed unclustered
     COPO.maps.markers = L.markerClusterGroup({
@@ -203,13 +203,13 @@ window.COPO.maps = {
   },
 
   bindMarkerListeners(checkins) {
-    COPO.maps.allMarkers.eachLayer(function(marker) {
+    COPO.maps.markers.eachLayer(function(marker) {
       COPO.maps.markerClickListener(checkins, marker);
     })
   },
 
   clickLastEditedMarker() {
-    COPO.maps.allMarkers.eachLayer(function(marker) {
+    COPO.maps.markers.eachLayer(function(marker) {
       if (marker.options.checkin.lastEdited) {
         marker.fire('click');
         marker.options.checkin.lastEdited = false;
