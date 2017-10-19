@@ -105,7 +105,7 @@ module Users::Devices
       checkins = first_load ? gon_show_checkins.where(id: gon_show_checkins.select(:id)) : gon_show_checkins
       city_checkins = Checkin.where(id: checkins.unscope(:order).select("DISTINCT ON(fogged_city) *").map(&:id))
       city_checkins_sql = city_checkins.select("created_at", "fogged_lat AS lat", "fogged_lng AS lng",
-        "fogged_city AS city", "fogged_country_code AS country_code", "null AS id").to_sql
+        "fogged_city AS city", "fogged_country_code AS country_code", "id").to_sql
       ActiveRecord::Base.connection.execute(city_checkins_sql)
     end
 

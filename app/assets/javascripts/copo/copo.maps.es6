@@ -259,6 +259,7 @@ window.COPO.maps = {
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
     checkinTemp.inlineDate = COPO.utility.renderInlineDate(checkin, checkinTemp);
+    checkinTemp.noEditDate = `<li id=lt${checkin.id}>Created on: ${checkinTemp.created_at}</span>`
     var template = $('#markerPopupTmpl').html();
     return Mustache.render(template, checkinTemp);
   },
@@ -272,7 +273,7 @@ window.COPO.maps = {
       address: checkin.city,
       marker: marker._leaflet_id
     };
-    checkinTemp.inlineDate = `<span id="localTime">${checkinTemp.created_at}</span>`
+    checkinTemp.inlineDate = `<span id="lt${checkin.id}">${checkinTemp.created_at}</span>`
     var template = $('#cityPopupTmpl').html();
     return Mustache.render(template, checkinTemp);
   },
@@ -280,7 +281,7 @@ window.COPO.maps = {
   dateToLocal(checkin) {
     if (checkin.localDate) {
       map.once('popupopen', function() { 
-        $('#localTime').html(checkin.localDate) 
+        $(`#lt${checkin.id}`).html(checkin.localDate) 
       });
     } else {
       let created_at = Date.parse(checkin.created_at)/1000;
@@ -292,7 +293,7 @@ window.COPO.maps = {
           let offsetStr = COPO.maps.formatOffset(parseInt(data.rawOffset) + data.dstOffset);
           let localDate = `${date} (UTC${offsetStr})`;
           checkin.localDate = localDate;
-          $('#localTime').html(localDate);
+          $(`#lt${checkin.id}`).html(localDate);
         }
       });
     }
