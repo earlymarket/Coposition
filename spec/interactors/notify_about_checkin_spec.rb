@@ -27,4 +27,9 @@ describe NotifyAboutCheckin do
 
     expect(device).to have_received(:notify_subscribers).with("new_checkin", checkin)
   end
+
+  it "broadcasts checkin message for friends" do
+    notify_about_checkin
+    expect(ActionCable.server).to have_received(:broadcast)
+  end
 end
