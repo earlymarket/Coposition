@@ -12,7 +12,7 @@ class NotifyAboutCheckin
   private
 
   def broadcast_checkin_for_user
-    return unless friend_online?(device.user)
+    return unless !Rails.env.test? && friend_online?(device.user)
     ActionCable.server.broadcast "friends_#{device.user.id}",
       action: "checkin",
       privilege: "complete",
@@ -37,7 +37,6 @@ class NotifyAboutCheckin
   end
 
   def friend_online?(friend)
-    return false if Rails.env.test?
     ConnectedList.all.include?(friend.id.to_s)
   end
 
