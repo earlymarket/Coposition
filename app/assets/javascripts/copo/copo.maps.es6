@@ -179,15 +179,8 @@ window.COPO.maps = {
   clusterIconCreate(cluster) {
     var childMarkers = cluster.getAllChildMarkers();
     var childCount = cluster.getChildCount();
-    var last = false;
-    for(var i = 0; i < childMarkers.length; i++) {
-      if (childMarkers[i].options.alt == "lastCheckin") {
-        last = true;
-        break;
-      }
-    }
     var c = ' marker-cluster-';
-    if (last) {
+    if (childMarkers.some((e) => e.options.alt == 'lastCheckin')) {
       c += 'last';
     } else if (childCount < 10) {
       c += 'small';
