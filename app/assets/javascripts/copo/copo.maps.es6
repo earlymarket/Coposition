@@ -163,7 +163,7 @@ window.COPO.maps = {
     let markers = checkins.filter(checkin => checkin !== lastCheckin).map(checkin => {
       return COPO.maps.makeMarker(checkin)
     })
-    markers.push(COPO.maps.createLastCheckinMarker(lastCheckin))
+    if (lastCheckin) markers.push(COPO.maps.createLastCheckinMarker(lastCheckin))
     // allMarkers is used for calculating bounds
     // COPO.maps.markers = L.markerClusterGroup().addLayers(markers);
     // markers and last are distinct because we want the last checkin
@@ -193,7 +193,6 @@ window.COPO.maps = {
   },
 
   createLastCheckinMarker(checkin) {
-    if (!checkin) return
     return COPO.maps.makeMarker(checkin, {
       icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#47b8e0' }),
       title: 'ID: ' + checkin.id + ' - Most recent',
