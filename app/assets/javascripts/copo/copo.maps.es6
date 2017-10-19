@@ -163,25 +163,50 @@ window.COPO.maps = {
     let markers = checkins.filter(checkin => checkin !== lastCheckin).map(checkin => {
       return COPO.maps.makeMarker(checkin)
     })
+    markers.push(COPO.maps.createLastCheckinMarker(lastCheckin))
     // allMarkers is used for calculating bounds
     COPO.maps.allMarkers = L.markerClusterGroup().addLayers(markers);
-    COPO.maps.addLastCheckinMarker(lastCheckin)
     // markers and last are distinct because we want the last checkin
     // to always be displayed unclustered
-    COPO.maps.markers = L.markerClusterGroup().addLayers(markers, { chunkedLoading: true });
+    COPO.maps.markers = L.markerClusterGroup({
+      iconCreateFunction: function (cluster) {
+        return COPO.maps.clusterIconCreate(cluster)
+      },
+    }).addLayers(markers, { chunkedLoading: true });
     map.addLayer(COPO.maps.markers);
   },
 
-  addLastCheckinMarker(checkin) {
+  clusterIconCreate(cluster) {
+    var childMarkers = cluster.getAllChildMarkers();
+    var childCount = cluster.getChildCount();
+    var last = false;
+    for(var i = 0; i < childMarkers.length; i++) {
+      if (childMarkers[i].options.alt == "lastCheckin") {
+        last = true;
+        break;
+      }
+    }
+    var c = ' marker-cluster-';
+    if (last) {
+      c += 'last';
+    } else if (childCount < 10) {
+      c += 'small';
+    } else if (childCount < 100) {
+      c += 'medium';
+    } else {
+      c += 'large';
+    }
+    return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
+  },
+
+  createLastCheckinMarker(checkin) {
     if (!checkin) return
-    COPO.maps.last = COPO.maps.makeMarker(checkin, {
+    return COPO.maps.makeMarker(checkin, {
       icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#47b8e0' }),
       title: 'ID: ' + checkin.id + ' - Most recent',
       alt: 'lastCheckin',
       zIndexOffset: 1000
     });
-    COPO.maps.allMarkers.addLayer(COPO.maps.last);
-    map.addLayer(COPO.maps.last);
   },
 
   bindMarkerListeners(checkins) {
