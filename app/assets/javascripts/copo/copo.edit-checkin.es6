@@ -67,7 +67,7 @@ window.COPO.editCheckin = {
     });
 
     // if user clicks another marker, remove all the listeners
-    COPO.maps.allMarkers.eachLayer(function(marker) {
+    COPO.maps.markers.eachLayer(function(marker) {
       marker.on('click', function(e) {
         COPO.editCheckin.handleEditEnd($editable);
       });
@@ -77,14 +77,14 @@ window.COPO.editCheckin = {
   initDatePicker() {
     $("#dtBox").DateTimePicker({
       mode: "datetime",
-      dateTimeFormat: "dd-MM-yyyy HH:mm",
+      dateTimeFormat: "dd-MM-yyyy HH:mm:ss",
       buttonsToDisplay: ["HeaderCloseButton", "SetButton"],
       titleContentDateTime: "Set the date & time in UTC. Once saved, time will display in local time.",
       setButtonContent: "Save",
       beforeShow: function(oInputElement) {
         let oDTP = this;
         let $editable = $($(oInputElement).children()[0])
-        let date = moment($editable.data().date).format("DD-MM-YYYY HH:mm");
+        let date = moment($editable.data().date).format("DD-MM-YYYY HH:mm:ss");
         oDTP.settings.defaultDate = date;
       },
       buttonClicked: function(type, oInputElement) {
@@ -105,7 +105,7 @@ window.COPO.editCheckin = {
       },
       formatHumanDate: function(oDate, sMode, sFormat) {
         let date = new Date(oDate.yyyy, oDate.MM - 1, oDate.dd, oDate.HH, oDate.mm, oDate.ss)
-        let offsetString = $('#localTime').text().split('UTC')[1].split(')')[0]
+        let offsetString = $('.date').text().split('UTC')[1].split(')')[0]
         let localDate = COPO.editCheckin.getLocalDate(date)
         return "Local time: " + localDate.toString().split("GMT")[0] + "(UTC" + offsetString + ")"
       }
@@ -113,7 +113,7 @@ window.COPO.editCheckin = {
   },
 
   getLocalDate(date) {
-    let offsetString = $('#localTime').text().split('UTC')[1].split(')')[0]
+    let offsetString = $('.date').text().split('UTC')[1].split(')')[0]
     let operator = offsetString[0]
     let offset = operator === "+" ? offsetString.split('+')[1].split(":") : offsetString.split('-')[1].split(":")
     let offsetHours = parseInt(offset[0])
