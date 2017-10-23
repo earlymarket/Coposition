@@ -84,7 +84,7 @@ COPO.utility = {
   renderInlineDate(checkin, tempData) {
     const url = COPO.utility.checkinPath(checkin)
     return `<span class="editable-wrapper tooltipped clickable" data-field="datetime" data-tooltip="Click to edit date and time">
-              <span id="localTime" class="editable date" data-url="${url}" data-date="${checkin.created_at}">${tempData.created_at}</span>
+              <span id="lt${checkin.id}" class="editable date" data-url="${url}" data-date="${checkin.created_at}">${tempData.created_at}</span>
               <i class="material-icons grey-text edit-coords">mode_edit</i>
             </span>`;
   },
