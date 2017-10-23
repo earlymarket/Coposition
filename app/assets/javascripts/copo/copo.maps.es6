@@ -37,8 +37,8 @@ window.COPO.maps = {
     COPO.maps.renderAllMarkers(checkins);
     COPO.maps.bindMarkerListeners(checkins);
     COPO.maps.loadAllCheckins(checkins, total, cities);
-    if (COPO.maps.allMarkers.getLayers().length) {
-      map.fitBounds(COPO.maps.allMarkers.getBounds().pad(0.5));
+    if (COPO.maps.markers.getLayers().length) {
+      map.fitBounds(COPO.maps.markers.getBounds().pad(0.5));
     } else {
       map.once('locationfound', function(e) {
         map.panTo(e.latlng);
@@ -134,10 +134,10 @@ window.COPO.maps = {
   },
 
   fitBounds() {
-    if (COPO.maps.allMarkers.getLayers().length) {
-      map.fitBounds(COPO.maps.allMarkers.getBounds().pad(0.5))
-      if (COPO.maps.allMarkers.getLayers().length === 1) {
-        COPO.maps.allMarkers.getLayers()[0].fire('click');
+    if (COPO.maps.markers.getLayers().length) {
+      map.fitBounds(COPO.maps.markers.getBounds().pad(0.5))
+      if (COPO.maps.markers.getLayers().length === 1) {
+        COPO.maps.markers.getLayers()[0].fire('click');
       }
     }
   },
@@ -175,35 +175,52 @@ window.COPO.maps = {
     let markers = checkins.filter(checkin => checkin !== lastCheckin).map(checkin => {
       return COPO.maps.makeMarker(checkin)
     })
+    if (lastCheckin) markers.push(COPO.maps.createLastCheckinMarker(lastCheckin))
     // allMarkers is used for calculating bounds
-    COPO.maps.allMarkers = L.markerClusterGroup().addLayers(markers);
-    COPO.maps.addLastCheckinMarker(lastCheckin)
+    // COPO.maps.markers = L.markerClusterGroup().addLayers(markers);
     // markers and last are distinct because we want the last checkin
     // to always be displayed unclustered
-    COPO.maps.markers = L.markerClusterGroup().addLayers(markers, { chunkedLoading: true });
+    COPO.maps.markers = L.markerClusterGroup({
+      iconCreateFunction: function (cluster) {
+        return COPO.maps.clusterIconCreate(cluster)
+      },
+    }).addLayers(markers, { chunkedLoading: true });
     map.addLayer(COPO.maps.markers);
   },
 
-  addLastCheckinMarker(checkin) {
-    if (!checkin) return
-    COPO.maps.last = COPO.maps.makeMarker(checkin, {
+  clusterIconCreate(cluster) {
+    var childMarkers = cluster.getAllChildMarkers();
+    var childCount = cluster.getChildCount();
+    var c = ' marker-cluster-';
+    if (childMarkers.some((e) => e.options.alt == 'lastCheckin')) {
+      c += 'last';
+    } else if (childCount < 10) {
+      c += 'small';
+    } else if (childCount < 100) {
+      c += 'medium';
+    } else {
+      c += 'large';
+    }
+    return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
+  },
+
+  createLastCheckinMarker(checkin) {
+    return COPO.maps.makeMarker(checkin, {
       icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#47b8e0' }),
       title: 'ID: ' + checkin.id + ' - Most recent',
       alt: 'lastCheckin',
       zIndexOffset: 1000
     });
-    COPO.maps.allMarkers.addLayer(COPO.maps.last);
-    map.addLayer(COPO.maps.last);
   },
 
   bindMarkerListeners(checkins) {
-    COPO.maps.allMarkers.eachLayer(function(marker) {
+    COPO.maps.markers.eachLayer(function(marker) {
       COPO.maps.markerClickListener(checkins, marker);
     })
   },
 
   clickLastEditedMarker() {
-    COPO.maps.allMarkers.eachLayer(function(marker) {
+    COPO.maps.markers.eachLayer(function(marker) {
       if (marker.options.checkin.lastEdited) {
         marker.fire('click');
         marker.options.checkin.lastEdited = false;
