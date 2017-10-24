@@ -12,7 +12,7 @@
     "typeahead.js": "latest",
     "mustache.js": "latest",
     "jquery-Mustache": "latest",
-    "leaflet.markercluster": "^1.1.0",
+    "leaflet.markercluster": "latest",
     "clipboard": "latest",
     "slick-carousel": "latest",
     "sweetalert": "1.1.3",
