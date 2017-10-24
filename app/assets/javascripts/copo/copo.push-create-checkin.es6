@@ -64,7 +64,7 @@ window.COPO.pushCreateCheckin = {
     if (data.checkin.user_id != gon.current_user_id) return
     Materialize.toast('Remote check-in received', 3000)
     gon.checkins.unshift(data.checkin);
-    if ($('#checkins_view').val()) {
+    if ($('.checkins_view').val()) {
       COPO.maps.refreshMarkers(gon.checkins);
     }
   }

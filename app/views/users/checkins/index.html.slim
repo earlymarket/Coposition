@@ -12,6 +12,7 @@
       .collapsible-body
         = form_for @checkins_index_presenter.user, url: @checkins_index_presenter.form_path, class: "form-group", method: :get do |f|
           = hidden_field_tag "user[device_ids]", params[:user] && params[:user][:device_ids]
+          = hidden_field_tag :checkins_view, false, class: "checkins_view"
           = f.label "From"
           = text_field_tag :from, humanize_date(@checkins_index_presenter.date_range[:from]), class: "datepick", id: "input_from", required: true
           = f.label "to"
@@ -34,6 +35,7 @@
         = form_for @checkins_index_presenter.user, url: @checkins_index_presenter.form_path, class: "form-group", method: :get do |f|
           = hidden_field_tag "from", params[:from]
           = hidden_field_tag "to", params[:to]
+          = hidden_field_tag :checkins_view, false, class: "checkins_view"
           - @checkins_index_presenter.devices.each do |device|
             - checked = params[:user] ? params[:user][:device_ids].include?(device.id.to_s) : true
             = f.check_box :device_ids, {multiple: true, checked: checked}, device.id, nil
