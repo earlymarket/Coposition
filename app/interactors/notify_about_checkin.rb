@@ -1,12 +1,12 @@
 class NotifyAboutCheckin
   include Interactor
 
-  delegate :device, :checkin, to: :context
+  delegate :device, :checkin, :remote, to: :context
 
   def call
     device.notify_subscribers("new_checkin", checkin)
     broadcast_checkin_for_friends
-    broadcast_checkin_for_user
+    broadcast_checkin_for_user if remote
   end
 
   private
