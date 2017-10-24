@@ -5,6 +5,5 @@ FactoryGirl.define do
     speed 0
     altitude 0
     association :device
-    association :location
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170928052539) do
+ActiveRecord::Schema.define(version: 20171024094204) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,8 +58,8 @@ ActiveRecord::Schema.define(version: 20170928052539) do
   end
 
   create_table "attachinary_files", force: :cascade do |t|
-    t.integer  "attachinariable_id"
     t.string   "attachinariable_type"
+    t.integer  "attachinariable_id"
     t.string   "scope"
     t.string   "public_id"
     t.string   "version"
@@ -97,7 +97,6 @@ ActiveRecord::Schema.define(version: 20170928052539) do
     t.boolean  "edited",              default: false
     t.integer  "speed"
     t.integer  "altitude"
-    t.integer  "location_id"
     t.index ["device_id"], name: "index_checkins_on_device_id", using: :btree
   end
 
@@ -169,17 +168,6 @@ ActiveRecord::Schema.define(version: 20170928052539) do
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", using: :btree
     t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
-  end
-
-  create_table "locations", force: :cascade do |t|
-    t.string   "name"
-    t.float    "lat"
-    t.float    "lng"
-    t.string   "address"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-    t.integer  "checkins_count"
-    t.integer  "device_id"
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
