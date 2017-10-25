@@ -50,6 +50,7 @@ $(document).on('page:change', function() {
 
     function initMarkers() {
       if (gon.checkin || U.currentPage('friends', 'show_device') || gon.checkins_view) {
+        $('.checkins_view').val(true)
         M.initMarkers(gon.checkins, gon.total)
       } else {
         M.initMarkers(gon.cities, gon.total, true);

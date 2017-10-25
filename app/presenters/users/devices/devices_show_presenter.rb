@@ -56,7 +56,8 @@ module Users::Devices
             device,
             from: from,
             to: Time.zone.today,
-            user: { device_ids: params[:user] && params[:user][:device_ids] }
+            user: { device_ids: params[:user] && params[:user][:device_ids] },
+            checkins_view: params[:checkins_view]
           ),
           method: :get
       else
@@ -65,7 +66,8 @@ module Users::Devices
             user.url_id,
             from: from,
             to: Time.zone.today,
-            user: { device_ids: params[:user] && params[:user][:device_ids] }
+            user: { device_ids: params[:user] && params[:user][:device_ids] },
+            checkins_view: params[:checkins_view]
           ),
           method: :get
       end
