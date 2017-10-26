@@ -55,7 +55,7 @@ en:
         title: 'An error has occurred'
       new:
         title: 'Authorisation required'
-        prompt: 'Authorise %{client_name} to use your account?'
+        prompt: 'Hello, %{resource_owner}! Authorise %{client_name} to use your account?'
         able_to: 'This application will be able to'
       show:
         title: 'Authorisation code'
