@@ -10,7 +10,10 @@
             = f.email_field :email, autofocus: true
         .row
           .input-field.col.s12
-            = f.label :username, class: "active"
+            - if resource.username.present?
+              = f.label :username, class: "active"
+            - else
+              = f.label :username, "Add a unique username so your friends can identify you", class: "active"
             = f.text_field :username, autofocus: true
         .row
           .input-field.col.s12
