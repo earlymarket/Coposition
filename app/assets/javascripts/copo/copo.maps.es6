@@ -99,8 +99,11 @@ window.COPO.maps = {
         });
       } else {
         $('.myProgress').remove();
-        if (!display) return;
-        toastMessage()
+        if (display) {
+          toastMessage()
+        } else {
+          return;
+        }
       };
     }
 
