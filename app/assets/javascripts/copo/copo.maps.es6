@@ -38,7 +38,7 @@ window.COPO.maps = {
     COPO.maps.bindMarkerListeners(checkins);
     COPO.maps.loadAllCheckins(checkins, total, cities);
     if (COPO.maps.markers.getLayers().length) {
-      map.fitBounds(COPO.maps.markers.getBounds().pad(0.5));
+      map.fitBounds(COPO.maps.markers.getBounds());
     } else {
       map.once('locationfound', function(e) {
         map.panTo(e.latlng);
