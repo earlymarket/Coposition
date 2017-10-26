@@ -671,9 +671,9 @@ window.COPO.maps = {
         $('#checkins_view').val(true)
         $('.cached-icon').removeClass('cities-active');
         COPO.maps.refreshMarkers(gon.checkins);
-      } else if (gon.total > 50000) {
+      } else if (gon.total - gon.checkins.length > 50000) {
         Materialize.toast('Too many check-ins to load.', 3000)
-      } else if (gon.total > 20000) {
+      } else if (gon.total - gon.checkins.length > 20000) {
         sweetAlert(
           {
             title: "View as checkins?",
