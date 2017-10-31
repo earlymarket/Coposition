@@ -5,21 +5,26 @@ nav
     .pure-u-1-12
     /!
     .pure-u-10-12.quicklinks-items
-      = link_to "users", root_path, class: "lg-items-left current"
-      = link_to "devs", devs_path, class: "lg-items-left"
+      - if user_signed_in?
+        = link_to user_dashboard_path, class: "v-align" do
+          = image_tag "copo-logo.png", width: 30, class: "sm-hide"
+          span.logo-text Coposition
+      - else
+        .lg-items-left
+          = link_to "users", root_path, class: "lg-items-left current"
+          = link_to "devs", devs_path, class: "lg-items-left"
       - if Rails.env == "test" || params[:admin] || signed_in?
         span.lg-items-right
           - if user_signed_in?
-            = link_to "Log Out", destroy_user_session_path, method: :delete, class: "lg-items-right"
-            = link_to "Dashboard", user_dashboard_path(current_user.url_id), class: "lg-items-right"
             = link_to "Devices", user_devices_path(current_user.url_id), class: "lg-items-right"
             = link_to navbar_indicator("Apps", current_user.developer_requests.count), user_apps_path(current_user.url_id), class: "lg-items-right"
             = link_to navbar_indicator("Friends", current_user.friend_requests.count), user_friends_path(current_user.url_id), class: "lg-items-right"
             = link_to "Account", edit_user_registration_path, class: "lg-items-right"
+            = link_to "Help", help_path, class: "lg-items-right"
+            = link_to "Log Out", destroy_user_session_path, method: :delete, class: "lg-items-right"
           - else
+            = link_to "Help", help_path, class: "lg-items-right"
             = link_to "Log In", new_user_session_path, class: "lg-items-right"
-          = link_to "Help", help_path, class: "lg-items-right"
-          = link_to "API", "https://earlymarket.github.io/copo-docs/", class: "lg-items-right"
     .pure-u-1-12
   #top-menu.pure-g
     .pure-u-1-12

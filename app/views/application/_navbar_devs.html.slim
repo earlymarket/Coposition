@@ -5,18 +5,24 @@ nav
     .pure-u-1-12
     /!
     .pure-u-10-12.quicklinks-items
-      = link_to "users", root_path, class: "lg-items-left"
-      = link_to "devs", devs_path, class: "lg-items-left current"
+      - if developer_signed_in?
+        = link_to developers_path, class: "v-align" do
+          = image_tag "copo-logo.png", width: 30, class: "sm-hide"
+          span.logo-text Coposition
+      - else
+        .lg-items-left
+          = link_to "users", root_path, class: "lg-items-left"
+          = link_to "devs", devs_path, class: "lg-items-left current"
       - if Rails.env == "test" || params[:admin] || signed_in?
         span.lg-items-right
           - if developer_signed_in?
-            = link_to "Log Out", destroy_developer_session_path, method: :delete, class: "lg-items-right"
-            = link_to "Console", developers_path, class: "lg-items-right"
             = link_to "Users", developers_approvals_path, class: "lg-items-right"
+            = link_to "Getting Started", getting_started_path, class: "lg-items-right"
+            = link_to "API", "https://earlymarket.github.io/copo-docs/", class: "lg-items-right"
+            = link_to "Log Out", destroy_developer_session_path, method: :delete, class: "lg-items-right"
           - else
+            = link_to "API", "https://earlymarket.github.io/copo-docs/", class: "lg-items-right"
             = link_to "Log In", new_developer_session_path, class: "lg-items-right"
-          = link_to "Getting Started", getting_started_path, class: "lg-items-right"
-          = link_to "API", "https://earlymarket.github.io/copo-docs/", class: "lg-items-right"
     .pure-u-1-12
   #top-menu.pure-g
     .pure-u-1-12
