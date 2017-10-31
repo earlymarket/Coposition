@@ -1,7 +1,7 @@
 $(document).on('page:change', function() {
   if (window.COPO.utility.currentPage('friends', 'show')) {
-  	const U = window.COPO.utility;
-  	const M = window.COPO.maps;
+    const U = window.COPO.utility;
+    const M = window.COPO.maps;
     U.gonFix();
     M.initMap();
     M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
