@@ -112,3 +112,4 @@ Doorkeeper.configure do
 end
 
 Doorkeeper::OAuth::TokenResponse.send :prepend, CustomTokenResponse
+Doorkeeper::AccessToken.send :include, AccessTokenRevokation
