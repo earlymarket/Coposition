@@ -18,7 +18,9 @@ section.friends-device-index.row
       h5.valign-wrapper
         i.material-icons.medium>= device.icon
         |  #{device.name}
-      = friends_device_last_checkin(device.safe_checkin_info_for(permissible: current_user, action: "last")[0])
+        - if device.safe_checkin_info_for(permissible: current_user, action: "last")[0].present?
+          i.center-map.material-icons data-device='#{device.id}' my_location
+    = friends_device_last_checkin(device.safe_checkin_info_for(permissible: current_user, action: "last")[0])
 .center
   = will_paginate @friend_show_presenter.devices
   div
