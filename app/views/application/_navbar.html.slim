@@ -6,7 +6,7 @@ nav
     /!
     .pure-u-10-12.quicklinks-items
       - if user_signed_in?
-        = link_to user_dashboard_path, class: "v-align" do
+        = link_to user_dashboard_path(current_user.url_id), class: "v-align" do
           = image_tag "copo-logo.png", width: 30, class: "sm-hide"
           span.logo-text Coposition
       - else
@@ -16,11 +16,11 @@ nav
       - if Rails.env == "test" || params[:admin] || signed_in?
         span.lg-items-right
           - if user_signed_in?
-            = link_to "Devices", user_devices_path(current_user.url_id), class: "lg-items-right"
-            = link_to navbar_indicator("Apps", current_user.developer_requests.count), user_apps_path(current_user.url_id), class: "lg-items-right"
-            = link_to navbar_indicator("Friends", current_user.friend_requests.count), user_friends_path(current_user.url_id), class: "lg-items-right"
-            = link_to "Account", edit_user_registration_path, class: "lg-items-right"
-            = link_to "Help", help_path, class: "lg-items-right"
+            = link_to "Devices", user_devices_path(current_user.url_id), class: "lg-items-right", id: "devices-nav"
+            = link_to navbar_indicator("Apps", current_user.developer_requests.count), user_apps_path(current_user.url_id), class: "lg-items-right", id: "apps-nav"
+            = link_to navbar_indicator("Friends", current_user.friend_requests.count), user_friends_path(current_user.url_id), class: "lg-items-right", id: "friends-nav"
+            = link_to "Account", edit_user_registration_path, class: "lg-items-right", id: "account-nav"
+            = link_to "Help", help_path, class: "lg-items-right", id: "help-nav"
             = link_to "Log Out", destroy_user_session_path, method: :delete, class: "lg-items-right"
           - else
             = link_to "Help", help_path, class: "lg-items-right"

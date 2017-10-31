@@ -6,6 +6,7 @@ $(document).on('page:change', function() {
     M.initMap();
     M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
     U.gonFix();
+    U.setActivePage('devices')
     COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions)
     COPO.delaySlider.initSliders(gon.devices);
     gon.checkins && gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');

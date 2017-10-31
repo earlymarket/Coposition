@@ -16,8 +16,8 @@ nav
       - if Rails.env == "test" || params[:admin] || signed_in?
         span.lg-items-right
           - if developer_signed_in?
-            = link_to "Users", developers_approvals_path, class: "lg-items-right"
-            = link_to "Getting Started", getting_started_path, class: "lg-items-right"
+            = link_to "Users", developers_approvals_path, class: "lg-items-right", id: "users-nav"
+            = link_to "Getting Started", getting_started_path, class: "lg-items-right", id: "started-nav"
             = link_to "API", "https://earlymarket.github.io/copo-docs/", class: "lg-items-right"
             = link_to "Log Out", destroy_developer_session_path, method: :delete, class: "lg-items-right"
           - else

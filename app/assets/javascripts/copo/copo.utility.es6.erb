@@ -207,4 +207,8 @@ COPO.utility = {
       callback(matches);
     };
   },
+
+  setActivePage(page) {
+    $("#" + page + "-nav").addClass("current")
+  }
 };

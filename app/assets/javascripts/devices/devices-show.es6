@@ -15,7 +15,10 @@ $(document).on('page:change', function() {
     map.on('locationfound', onLocationFound);
 
     if (!U.currentPage('friends', 'show_device')) {
+      U.setActivePage('devices')
       window.COPO.editCheckin.init();
+    } else {
+      U.setActivePage('friends')
     }
 
     if (U.currentPage('devices', 'show')) {
