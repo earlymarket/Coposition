@@ -56,7 +56,6 @@ Rails.application.routes.draw do
         collection do
           get :auth
         end
-        resources :locations, only: :index, module: :users
         resources :approvals, only: [:create, :index, :update, :destroy], module: :users do
           collection do
             get :status
@@ -88,14 +87,17 @@ Rails.application.routes.draw do
   resources :users, only: [:show], module: :users do
     resource :dashboard, only: [:show]
     resources :devices, except: :edit do
-      member { get :shared, :info }
-      resources :checkins, only: [:index, :show, :create, :new, :update] do
+      member do
+        get :shared, :info
+        post :remote_checkin
+      end
+      resources :checkins, only: [:index, :show, :create, :new, :update, :destroy] do
         collection { post :import }
       end
       delete "/checkins/", to: "checkins#destroy_all"
-      delete "/checkins/:id", to: "checkins#destroy"
       resources :permissions, only: [:update, :index]
     end
+    resources :checkins, only: [:show, :index, :update, :destroy]
     resources :approvals, only: [:new, :create, :update, :destroy]
     resource :create_dev_approvals, only: :create
     resources :friends, only: [:show] do

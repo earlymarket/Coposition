@@ -23,7 +23,10 @@ RSpec.describe Users::CheckinsController, type: :controller do
   end
 
   describe "GET #index" do
-    before { get :index, params: index_params }
+    before do
+      request.accept = "application/json"
+      get :index, params: index_params
+    end
 
     it "render json hash" do
       expect(res_hash).to be_truthy

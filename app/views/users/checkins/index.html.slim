@@ -1,0 +1,102 @@
+- content_for :outside_container do
+  #dtBox
+  #gonvariables
+    = Gon::Base.render_data
+  .myProgress
+    .myDeterminate style=("width: 0%") 
+  ul#filters.date-select.collapsible
+    li
+      #date-range-toggle.collapsible-header data-onOpen="dateRangeOpen" data-onClose="dateRangeClose"
+        | Select a date range
+        i.material-icons.collapse-mark.right expand_more
+      .collapsible-body
+        = form_for @checkins_index_presenter.user, url: @checkins_index_presenter.form_path, class: "form-group", method: :get do |f|
+          = f.label "From"
+          = text_field_tag :from, humanize_date(@checkins_index_presenter.date_range[:from]), class: "datepick", id: "input_from", required: true
+          = f.label "to"
+          = text_field_tag :to, humanize_date(@checkins_index_presenter.date_range[:to]), class: "datepick", id: "input_to", required: true
+          = f.label "Or"
+          .date-filter-presets
+            = @checkins_index_presenter.form_range_filter("LAST 24H", 1.day.ago)
+            = @checkins_index_presenter.form_range_filter("LAST WEEK", 1.week.ago)
+            = @checkins_index_presenter.form_range_filter("LAST MONTH", 1.month.ago)
+            = @checkins_index_presenter.form_range_filter("LAST YEAR", 1.year.ago)
+          = f.submit "Apply", class: "form-control btn btn-default"
+          = link_to "Clear", @checkins_index_presenter.form_path, { method: :get, class: "btn-flat right" }
+
+  ul.device-select.collapsible
+    li
+      .collapsible-header data-onOpen="devicesOpen" data-onClose="devicesClose"
+        | Filter by devices
+        i.material-icons.collapse-devices.right expand_more
+      .collapsible-body
+        = form_for @checkins_index_presenter.user, url: @checkins_index_presenter.form_path, class: "form-group", method: :get do |f|
+          - @checkins_index_presenter.devices.each do |device|
+            - checked = params[:user] ? params[:user][:device_ids].include?(device.id.to_s) : true
+            = f.check_box :device_ids, {multiple: true, checked: checked}, device.id, nil
+            = label_tag "user[device_ids][#{device.id}]", device.name
+            br
+          br
+          = f.submit "Filter", class: "form-control btn btn-default"
+          = link_to "Clear", @checkins_index_presenter.form_path, { method: :get, class: "btn-flat right" }
+  #map
+
+  javascript:
+    dateRangeOpen = function() {
+      $(".collapse-mark").text("expand_less");
+    }
+    dateRangeClose = function() {
+      $(".collapse-mark").text("expand_more");
+    }
+
+    devicesOpen = function() {
+      $(".collapse-devices").text("expand_less");
+    }
+    devicesClose = function() {
+      $(".collapse-devices").text("expand_more");
+    }
+    if (window.location.search.includes("device_ids")) {
+      $('.device-select').collapsible('open', 0);
+    }
+
+  /! templates
+  script#markerPopupTmpl type="x-tmpl-mustache" 
+    h3.valign-wrapper 
+      | {{ &deviceLink }}   {{ &idLink }}  
+      i
+        | {{ edited }}
+      | {{ &revertButton }}
+    ul
+      h3.lined
+        span.lined-pad Date
+      li.ta-center
+        | {{ &inlineDate }}
+      h3.lined
+        span.lined-pad Coordinates
+      li.ta-center
+        | {{ &inlineCoords }}
+      h3.lined
+        span.lined-pad Address
+      li.address
+        | {{ address }}
+      | {{ &foggedAddress }}
+      li
+        | {{ &foggle }} {{ &deletebutton }}
+
+  script#cityPopupTmpl type="x-tmpl-mustache"
+    h3.ta-complete-center.tooltipped data-tooltip=("City view is enabled")
+      i.material-icons location_city 
+      | {{ address }}
+    ul
+      h3.lined
+        span.lined-pad First visited
+      li.ta-center
+        | {{ &inlineDate }}
+      h3.lined
+        span.lined-pad Number of check-ins
+      li.ta-center
+        | {{ id }}
+      h3.lined
+        span.lined-pad Coordinates
+      li.ta-center
+        | {{ lat }}, {{ lng }}

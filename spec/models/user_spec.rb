@@ -60,6 +60,12 @@ RSpec.describe User, type: :model do
       new_user.save
       expect(new_user).to have_received(:approve_coposition_mobile_app)
     end
+
+    it "creates new friend requests after create if a user has tried to add them" do
+      allow(new_user).to receive(:create_pending_requests)
+      new_user.save
+      expect(new_user).to have_received(:create_pending_requests)
+    end
   end
 
   describe "public instance methods" do

@@ -10,6 +10,18 @@ $(document).on('page:change', function() {
     COPO.delaySlider.initSliders(gon.devices);
     gon.checkins && gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');
 
+    $('#find-checkin').on('click', checkinSearch)
+
+    function checkinSearch () {
+      let userId = gon.current_user_id
+      let checkinId = $('#checkin_id').val()
+      if (checkinId.length) {
+        window.location = `/users/${userId}/devices/nil/checkins/${checkinId}`
+      } else {
+        Materialize.toast('Please enter a check-in ID', 3000, 'red');
+      }
+    }
+    
     $('body').on('click', '.edit-button', function (e) {
       e.preventDefault();
       $(this).toggleClass('hide', true);

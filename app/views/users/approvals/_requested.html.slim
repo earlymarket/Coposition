@@ -1,0 +1,13 @@
+#requested
+  h5 Sent friend requests
+  .collection
+    - requested.each do |approvable|
+      - approval = current_user.approval_for(approvable)
+      .collection-item.row.valign-wrapper id="app_#{approval.id}" 
+        .col.s8.valign-wrapper
+          = avatar_for(approvable)
+          .valign
+            h5.ib
+              = approvals_approvable_name(approvable)
+        .col.s4.valign.right-align
+          = button_to "Delete request", user_approval_path(current_user.url_id, approval.id), method: :delete, remote: true, class: "waves-effect waves-orange btn-flat"

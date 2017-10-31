@@ -37,8 +37,8 @@ window.COPO.maps = {
     COPO.maps.renderAllMarkers(checkins);
     COPO.maps.bindMarkerListeners(checkins);
     COPO.maps.loadAllCheckins(checkins, total, cities);
-    if (COPO.maps.allMarkers.getLayers().length) {
-      map.fitBounds(COPO.maps.allMarkers.getBounds().pad(0.5));
+    if (COPO.maps.markers.getLayers().length) {
+      map.fitBounds(COPO.maps.markers.getBounds().pad(0.5));
     } else {
       map.once('locationfound', function(e) {
         map.panTo(e.latlng);
@@ -68,6 +68,18 @@ window.COPO.maps = {
         }
       } else if (window.COPO.utility.currentPage('friends', 'show_device')) {
         return $.getJSON(`${window.location.pathname}${window.location.search}&page=${page}&per_page=5000`)
+      } else if (window.COPO.utility.currentPage('checkins', 'index')) {
+        if (!window.location.search.includes("device_id") && window.location.search.includes("page")) {
+          return $.getJSON(`${window.location.pathname}${window.location.search}&page=${page}&per_page=5000`)
+        } else if (window.location.search.includes("device_id")) {
+          let ids = []
+          window.location.search.split("5D=").forEach((el, i) => {
+            if(i > 0) { ids.push(el.split("&")[0]) }
+          })
+          return $.getJSON(`${window.location.pathname}?device_id=${ids}&page=${page}&per_page=5000`)
+        } else {
+          return $.getJSON(`${window.location.pathname}?page=${page}&per_page=5000`)
+        }
       } else {
         console.log('Page not recognised. No incremental loading.');
       }
@@ -86,8 +98,8 @@ window.COPO.maps = {
           loadCheckins(page, display);
         });
       } else {
-        if (!display) return;
         $('.myProgress').remove();
+        if (!display) return;
         toastMessage()
       };
     }
@@ -99,12 +111,12 @@ window.COPO.maps = {
     function toastMessages() {
       let citiesDisplayed = ($('.cached-icon').hasClass('cities-active'))
       if (gon.first_load && citiesDisplayed) {
-        Materialize.toast('Up to last 100 cities visited shown', 3000)
+        Materialize.toast('Recent cities visited shown', 3000)
       } else if (citiesDisplayed) {
         Materialize.toast('Cities loaded', 3000)
       } else if (total >= gon.max) {
         Materialize.toast('There were too many check-ins to load, cities are shown', 3000);
-      } else if (gon.total === gon.checkins.length) {
+      } else if (gon.checkins && gon.total === gon.checkins.length) {
         Materialize.toast('All check-ins loaded', 3000)
       } else {
         Materialize.toast('Check-ins loaded', 3000)
@@ -122,10 +134,10 @@ window.COPO.maps = {
   },
 
   fitBounds() {
-    if (COPO.maps.allMarkers.getLayers().length) {
-      map.fitBounds(COPO.maps.allMarkers.getBounds().pad(0.5))
-      if (COPO.maps.allMarkers.getLayers().length === 1) {
-        COPO.maps.allMarkers.getLayers()[0].fire('click');
+    if (COPO.maps.markers.getLayers().length) {
+      map.fitBounds(COPO.maps.markers.getBounds().pad(0.5))
+      if (COPO.maps.markers.getLayers().length === 1) {
+        COPO.maps.markers.getLayers()[0].fire('click');
       }
     }
   },
@@ -144,7 +156,6 @@ window.COPO.maps = {
   refreshMarkers(checkins) {
     map.removeEventListener('popupclose');
     map.removeEventListener('zoomstart');
-
     map.closePopup();
     if (COPO.maps.markers) {
       map.removeLayer(COPO.maps.markers);
@@ -160,36 +171,56 @@ window.COPO.maps = {
   },
 
   renderAllMarkers(checkins) {
-    let markers = checkins.slice(1).map(checkin => COPO.maps.makeMarker(checkin));
+    let lastCheckin = checkins.filter((checkin) => Date.parse(checkin.created_at) < Date.now())[0]
+    let markers = checkins.filter(checkin => checkin !== lastCheckin).map(checkin => {
+      return COPO.maps.makeMarker(checkin)
+    })
+    if (lastCheckin) markers.push(COPO.maps.createLastCheckinMarker(lastCheckin))
     // allMarkers is used for calculating bounds
-    COPO.maps.allMarkers = L.markerClusterGroup().addLayers(markers);
-    COPO.maps.addLastCheckinMarker(checkins);
+    // COPO.maps.markers = L.markerClusterGroup().addLayers(markers);
     // markers and last are distinct because we want the last checkin
     // to always be displayed unclustered
-    COPO.maps.markers = L.markerClusterGroup().addLayers(markers, { chunkedLoading: true });
+    COPO.maps.markers = L.markerClusterGroup({
+      iconCreateFunction: function (cluster) {
+        return COPO.maps.clusterIconCreate(cluster)
+      },
+    }).addLayers(markers, { chunkedLoading: true });
     map.addLayer(COPO.maps.markers);
   },
 
-  addLastCheckinMarker(checkins) {
-    if (!checkins.length) return;
-    COPO.maps.last = COPO.maps.makeMarker(checkins[0], {
+  clusterIconCreate(cluster) {
+    var childMarkers = cluster.getAllChildMarkers();
+    var childCount = cluster.getChildCount();
+    var c = ' marker-cluster-';
+    if (childMarkers.some((e) => e.options.alt == 'lastCheckin')) {
+      c += 'last';
+    } else if (childCount < 10) {
+      c += 'small';
+    } else if (childCount < 100) {
+      c += 'medium';
+    } else {
+      c += 'large';
+    }
+    return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
+  },
+
+  createLastCheckinMarker(checkin) {
+    return COPO.maps.makeMarker(checkin, {
       icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#47b8e0' }),
-      title: 'ID: ' + checkins[0].id + ' - Most recent',
+      title: 'ID: ' + checkin.id + ' - Most recent',
       alt: 'lastCheckin',
       zIndexOffset: 1000
     });
-    COPO.maps.allMarkers.addLayer(COPO.maps.last);
-    map.addLayer(COPO.maps.last);
   },
 
   bindMarkerListeners(checkins) {
-    COPO.maps.allMarkers.eachLayer(function(marker) {
+    COPO.maps.markers.eachLayer(function(marker) {
       COPO.maps.markerClickListener(checkins, marker);
     })
   },
 
   clickLastEditedMarker() {
-    COPO.maps.allMarkers.eachLayer(function(marker) {
+    COPO.maps.markers.eachLayer(function(marker) {
       if (marker.options.checkin.lastEdited) {
         marker.fire('click');
         marker.options.checkin.lastEdited = false;
@@ -249,13 +280,16 @@ window.COPO.maps = {
         return `<a href="${window.location.pathname}/show_device?device_id=${checkin.device_id}" title="Device map">${checkin.device}</a>`
       }
     }
+    checkinTemp.future = Date.parse(checkin.created_at) > Date.now() ? '(future)' : ''
     checkinTemp.idLink = COPO.utility.idLink(checkin)
+    checkinTemp.deviceLink = COPO.utility.deviceLink(checkin)
     checkinTemp.revertButton = checkin.revert ? COPO.utility.revertLink(checkin) : ''
     checkinTemp.edited = checkin.edited ? '(edited)' : ''
     checkinTemp.inlineCoords = COPO.utility.renderInlineCoords(checkin);
     checkinTemp.foggle = COPO.utility.fogCheckinLink(checkin, foggedClass, 'fog');
     checkinTemp.deletebutton = COPO.utility.deleteCheckinLink(checkin);
     checkinTemp.inlineDate = COPO.utility.renderInlineDate(checkin, checkinTemp);
+    checkinTemp.noEditDate = `<li id=lt${checkin.id}>Created on: ${checkinTemp.created_at}</span>`
     var template = $('#markerPopupTmpl').html();
     return Mustache.render(template, checkinTemp);
   },
@@ -269,14 +303,16 @@ window.COPO.maps = {
       address: checkin.city,
       marker: marker._leaflet_id
     };
-    checkinTemp.inlineDate = `<span id="localTime">${checkinTemp.created_at}</span>`
+    checkinTemp.inlineDate = `<span id="lt${checkin.id}">${checkinTemp.created_at}</span>`
     var template = $('#cityPopupTmpl').html();
     return Mustache.render(template, checkinTemp);
   },
 
   dateToLocal(checkin) {
     if (checkin.localDate) {
-      map.once('popupopen', function() { $('#localTime').html(checkin.localDate) });
+      map.once('popupopen', function() { 
+        $(`#lt${checkin.id}`).html(checkin.localDate) 
+      });
     } else {
       let created_at = Date.parse(checkin.created_at)/1000;
       let coords = [checkin.lat, checkin.lng];
@@ -287,7 +323,7 @@ window.COPO.maps = {
           let offsetStr = COPO.maps.formatOffset(parseInt(data.rawOffset) + data.dstOffset);
           let localDate = `${date} (UTC${offsetStr})`;
           checkin.localDate = localDate;
-          $('#localTime').html(localDate);
+          $(`#lt${checkin.id}`).html(localDate);
         }
       });
     }
@@ -530,8 +566,9 @@ window.COPO.maps = {
   },
 
   makeMarker(checkin, markerOptions) {
+    let colour = (Date.parse(checkin.created_at) < Date.now()) ? '#ff6900' : '#939393'
     let defaults = {
-      icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#ff6900' }),
+      icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : colour }),
       title: 'ID: ' + checkin.id,
       alt: 'ID: ' + checkin.id,
       checkin: checkin
@@ -628,6 +665,7 @@ window.COPO.maps = {
   citiesControlClick() {
     if ($('.cached-icon').hasClass('cities-active')) {
       if (gon.total === gon.checkins.length) {
+        $('#checkins_view').val(true)
         $('.cached-icon').removeClass('cities-active');
         COPO.maps.refreshMarkers(gon.checkins);
       } else if (gon.total > 50000) {
@@ -635,8 +673,8 @@ window.COPO.maps = {
       } else if (gon.total > 20000) {
         sweetAlert(
           {
-            title: "Show cities?",
-            text: "This may take a long time to load, view cities?",
+            title: "View as checkins?",
+            text: "This may take a long time to load",
             type: "info",   
             showCancelButton: true,   
             confirmButtonColor: "#DD6B55",
@@ -644,7 +682,8 @@ window.COPO.maps = {
             cancelButtonText: "No"
           }, 
           function(isConfirm) {
-            if (!isConfirm) {
+            if (isConfirm) {
+              $('#checkins_view').val(true)
               Materialize.toast('Loading check-ins.', 3000)
               $('.cached-icon').removeClass('cities-active');
               COPO.maps.refreshMarkers(gon.checkins);
@@ -652,11 +691,13 @@ window.COPO.maps = {
           }
         );
       } else {
+        $('#checkins_view').val(true)
         Materialize.toast('Loading check-ins.', 3000)
         $('.cached-icon').removeClass('cities-active');
         COPO.maps.refreshMarkers(gon.checkins);
       }
     } else {
+      $('#checkins_view').val(false)
       $('.cached-icon').addClass('cities-active');
       COPO.maps.refreshMarkers(gon.cities);
     }

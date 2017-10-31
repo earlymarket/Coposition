@@ -3,7 +3,8 @@
   script#markerPopupTmpl type="x-tmpl-mustache" 
     h3 ID: {{ id }}
     ul
-      li#localTime Created on: {{ created_at }}
+      li 
+        | {{ &noEditDate }}
       h3.lined
         span.lined-pad Coordinates
       li.ta-center

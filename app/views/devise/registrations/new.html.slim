@@ -14,6 +14,10 @@
               = f.email_field :email, value: params[:email], id: "#{resource.class.to_s.downcase}_email", autofocus: true
           .row
             .input-field.col.s12
+              = f.label :email_confirmation, "Please re-enter your email*"
+              = f.email_field :email_confirmation, id: "#{resource.class.to_s.downcase}_email_confirmation"
+          .row
+            .input-field.col.s12
               - password_label = "Your password*"
               - if @minimum_password_length
                 - password_label.chop!
@@ -33,7 +37,9 @@
               .input-field.col.s12
                 = f.label :tagline, "Company tagline"
                 = f.text_field :tagline
-          = f.attachinary_file_field :avatar
+            = f.label :avatar, "Upload an avatar"
+            .input-field.col.s12
+              = f.attachinary_file_field :avatar
           - if resource.respond_to? :username
             .row
               .input-field.col.s12
@@ -63,6 +69,10 @@ javascript:
       rules: {
         "#{resource_name}[email]": {
           required: true,
+        },
+        "#{resource_name}[email_confirmation]": {
+          required: true,
+          equalTo: "##{raw resource.class.to_s.downcase}_email"
         },
         "#{resource_name}[password]": {
           required: true,

@@ -44,5 +44,7 @@ module Coposition
     # config.active_record.raise_in_transactional_callbacks = true
 
     config.eager_load_paths << Rails.root.join('lib')
+
+    config.firebase_server_key = ENV.fetch("FIREBASE_SERVER_KEY")
   end
 end

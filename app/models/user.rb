@@ -16,10 +16,10 @@ class User < ApplicationRecord
   validates :username, uniqueness: true, allow_blank: true,
                        format: { with: /\A[-a-zA-Z_]+\z/, message: "only allows letters, underscores and dashes" },
                        length: { in: 4..20 }
+  validates :email, confirmation: true
 
   has_many :devices, dependent: :destroy
   has_many :checkins, through: :devices
-  has_many :locations, through: :devices
   has_many :requests
   has_many :approvals, dependent: :destroy
   has_many :subscriptions, as: :subscriber, dependent: :destroy
@@ -61,9 +61,10 @@ class User < ApplicationRecord
 
   before_create :generate_token, unless: :webhook_key?
 
-  after_create :approve_coposition_mobile_app
+  after_create :approve_coposition_mobile_app, :create_pending_requests
 
   has_attachment :avatar
+
   ## Pathing
 
   def url_id
@@ -83,6 +84,12 @@ class User < ApplicationRecord
       approval.complete!
     end
     Doorkeeper::AccessToken.find_or_create_for(mobile_dev.oauth_application, id, "public", nil, true)
+  end
+
+  def create_pending_requests
+    EmailRequest.where(email: email).find_each do |request|
+      Approval.add_friend(request.user, self)
+    end
   end
 
   def approved?(permissible)
@@ -130,10 +137,6 @@ class User < ApplicationRecord
     args[:device] ? args[:device].filtered_checkins(args) : safe_checkin_info_for(args)
   end
 
-  def filtered_locations(args)
-    args[:device] ? args[:device].filtered_locations(args) : locations_for(args)
-  end
-
   def safe_checkin_info_for(args)
     args[:multiple_devices] = true
     # sort_by slows this query down A LOT
@@ -144,16 +147,6 @@ class User < ApplicationRecord
     elsif args[:action] == "last"
       safe_checkins.slice(0, 1)
     end
-  end
-
-  def locations_for(args)
-    locations
-      .near_to(args[:near])
-      .most_frequent(args[:type])
-      .limit_returned_locations(args)
-      .unscope(:order)
-      .distinct
-      .paginate(page: args[:page], per_page: args[:per_page])
   end
 
   def slack_message
