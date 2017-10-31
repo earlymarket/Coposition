@@ -595,8 +595,15 @@ window.COPO.maps = {
 
   generatePath(checkins) {
     if (!checkins.length) return;
-    const latLngs = checkins.map((checkin) => [checkin.lat, checkin.lng]);
-    COPO.maps.checkinPath = L.polyline(latLngs, {color: 'red'});
+    const latLngs = checkins.map((checkin) => new L.LatLng(checkin.lat, checkin.lng));
+    COPO.maps.checkinPath = new L.Geodesic([latLngs], {
+      weight: 7, 
+      opacity: 0.5,
+      color: 'blue',
+      steps: 50
+    })
+    //COPO.maps.checkinPath.setLatLngs([latLngs])
+    //COPO.maps.checkinPath = L.polyline(latLngs, {color: 'red'});
   },
 
   refreshPath(checkins) {
