@@ -45,6 +45,8 @@
 //= require leaflet.locatecontrol/dist/L.Control.Locate.min
 //= require leaflet-fullscreen/dist/Leaflet.fullscreen.min
 //= require control.w3w
+//= require Leaflet.Geodesic.js
+
 
 // I've put require_tree back in. Any js where the load order isn't important doesn't need to be specified.
 //= require_tree .
