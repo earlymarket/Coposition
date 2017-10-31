@@ -57,7 +57,7 @@ class UserMailer < ApplicationMailer
   end
 
   def no_activity_email(user)
-    return unless user.subscriptions
+    return unless user.subscription
     SendSendgridEmail.call(
       to: user.email, subject: "Coposition activity", id: "b4437ee3-651a-4252-921b-c2a8ace722ac",
       substitutions: [
