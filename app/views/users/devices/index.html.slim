@@ -16,9 +16,10 @@ section.devices-index.row
           p To create a check-in, first #{link_to("create a device", new_user_device_path, class: "hyperlink")} or select an existing device below. You can manage the settings and permissions for your devices below.
           p For further information on how to use your Coposition account, please see our #{link_to("help centre", help_path, class: "hyperlink")}.
       #map
-#find-checkin-row
-  = text_field_tag(:checkin_id, params["checkin_id"], placeholder: "Check-in id", required: true)
-  = button_tag "Find check-in", class: "waves-effect waves-light btn", id: "find-checkin", type: "submit"
+- if current_user.checkins.exists?
+  #find-checkin-row
+    = text_field_tag(:checkin_id, params["checkin_id"], placeholder: "Check-in id", required: true)
+    = button_tag "Find check-in", class: "waves-effect waves-light btn", id: "find-checkin", type: "submit"
 - if @devices_index_presenter.devices.length > 1
   .center
     a.btn href="#{user_checkins_path(current_user, first_load: true)}" View all check-ins
