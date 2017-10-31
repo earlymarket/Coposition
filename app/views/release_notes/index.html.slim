@@ -12,9 +12,12 @@ h1 Release notes
   = link_to release_notes_path(application: "api") do
     span.tag.api
       | api
-  = link_to release_notes_path(application: "mobile") do
-    span.tag.mobile
-      | mobile
+  = link_to release_notes_path(application: "ios") do
+    span.tag.ios
+      | iOS
+  = link_to release_notes_path(application: "android") do
+    span.tag.android
+      | android
   = link_to release_notes_path do
     span.clear
       i.material-icons
