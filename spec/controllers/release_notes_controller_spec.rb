@@ -70,10 +70,10 @@ RSpec.describe Users::ReleaseNotesController, type: :controller do
   end
 
   describe "PUT #update" do
-    let(:put_update) { put :update, params: { id: release_note.id, release_note: { application: "mobile" } } }
+    let(:put_update) { put :update, params: { id: release_note.id, release_note: { application: "android" } } }
 
     it "update release note with provided params" do
-      expect { put_update }.to change { ReleaseNote.find(release_note.id).application }.to "mobile"
+      expect { put_update }.to change { ReleaseNote.find(release_note.id).application }.to "android"
     end
 
     it "redirects if user is not admin" do
