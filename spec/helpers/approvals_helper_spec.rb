@@ -7,8 +7,20 @@ RSpec.describe ApprovalsHelper, type: :helper do
     Approval.add_friend(user, FactoryGirl.create(:user))
     user
   end
+  let(:friend) { FactoryGirl.create(:user) }
   let(:user_approvals_input) { helper.approvals_input("User") }
   let(:developer_approvals_input) { helper.approvals_input("Developer") }
+  let(:checkins) do
+    Approval.add_friend(user, friend)
+    Approval.add_friend(friend, user)
+    friends = user.friends.includes(:devices)
+    friends.map do |f|
+      {
+        userinfo: f.public_info_hash,
+        lastCheckin: f.safe_checkin_info_for(permissible: user, action: "last")[0]
+      }
+    end
+  end
 
   describe "#approvals_approvable_name" do
     it "converts a friend's email if their username is empty" do
@@ -58,15 +70,26 @@ RSpec.describe ApprovalsHelper, type: :helper do
 
   describe "#approvals_friends_locater" do
     it "returns nothing if approvable type isn't User" do
-      expect(helper.approvals_friends_locator("Developer", user)).to eq nil
+      expect(helper.approvals_friends_locator("Developer", friend, checkins)).to eq nil
     end
 
-    it "returns a string if approvable type User" do
-      expect(helper.approvals_friends_locator("User", user)).to be_kind_of String
+    it "returns nothing if friend has no checkins" do
+      expect(helper.approvals_friends_locator("User", friend, checkins)).to eq nil
     end
 
-    it "returns a string containing my_location" do
-      expect(helper.approvals_friends_locator("User", user)).to match "my_location"
+    context "with friend checkins" do
+      before do
+        device = create :device, user_id: friend.id
+        create :checkin, device_id: device.id
+      end
+      
+      it "returns a string if approvable type User" do
+        expect(helper.approvals_friends_locator("User", friend, checkins)).to be_kind_of String
+      end
+
+      it "returns a string containing my_location" do
+        expect(helper.approvals_friends_locator("User", friend, checkins)).to match "my_location"
+      end
     end
   end
 end

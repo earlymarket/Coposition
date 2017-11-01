@@ -4,7 +4,7 @@ $(document).on("page:change", function() {
     if (application) {
       $("." + application[1] + ", .clear").addClass("active");  
     } else {
-      $(".web, .api, .mobile").addClass("active");
+      $(".web, .api, .ios, .android").addClass("active");
       $(".clear").removeClass("active");
     }
   }

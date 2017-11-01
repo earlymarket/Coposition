@@ -8,10 +8,10 @@ class Device < ApplicationRecord
   has_many :permissions, dependent: :destroy
   has_many :developers, through: :permissions, source: :permissible, source_type: "Developer"
   has_many :permitted_users, through: :permissions, source: :permissible, source_type: "User"
-  has_many :locations
   has_attachment :csv, accept: :raw
 
   validates :name, uniqueness: { scope: :user_id }, if: :user_id, length: { in: 4..20 }
+  validates :icon, presence: true
 
   before_create do |dev|
     dev.uuid = SecureRandom.uuid
@@ -20,14 +20,6 @@ class Device < ApplicationRecord
   def safe_checkin_info_for(args)
     sanitized = filtered_checkins(args)
     sanitize_checkins(sanitized, args)
-  end
-
-  def filtered_locations(args)
-    locations.near_to(args[:near])
-             .most_frequent(args[:type])
-             .limit_returned_locations(args)
-             .unscope(:order)
-             .distinct
   end
 
   def filtered_checkins(args)
@@ -54,7 +46,7 @@ class Device < ApplicationRecord
     elsif fogged
       sanitized.select("id", "created_at", "updated_at", "device_id", "fogged_lat AS lat", "fogged_lng AS lng",
         "fogged_city AS address", "fogged_city AS city", "fogged_country_code AS postal_code",
-        "fogged_country_code AS country_code", "null AS speed", "null AS altitude")
+        "fogged_country_code AS country_code", "null::text AS speed", "null::text AS altitude")
     else
       sanitized.select("id", "created_at", "updated_at", "device_id", "output_lat AS lat", "output_lng AS lng",
         "output_address AS address", "output_city AS city", "output_postal_code AS postal_code",
@@ -83,14 +75,14 @@ class Device < ApplicationRecord
 
   def delayed_checkins_for(permissible)
     if can_bypass_delay?(permissible)
-      checkins
+      past_checkins
     else
       before_delay_checkins
     end
   end
 
   def before_delay_checkins
-    delayed ? checkins.where("checkins.created_at < ?", delayed.minutes.ago) : checkins
+    delayed ? checkins.where("checkins.created_at < ?", delayed.minutes.ago) : past_checkins
   end
 
   def past_checkins
@@ -145,11 +137,11 @@ class Device < ApplicationRecord
   end
 
   def self.last_checkins
-    all.map { |device| device.checkins.first if device.checkins.exists? }.compact.sort_by(&:created_at).reverse
+    all.map { |device| device.past_checkins.first if device.past_checkins.exists? }.compact.sort_by(&:created_at).reverse
   end
 
   def self.geocode_last_checkins
-    all.each { |device| device.checkins.first.reverse_geocode! if device.checkins.exists? }
+    all.each { |device| device.past_checkins.first.reverse_geocode! if device.past_checkins.exists? }
   end
 
   def self.ordered_by_checkins

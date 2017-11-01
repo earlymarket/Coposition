@@ -141,4 +141,14 @@
   #map-status {
     // font-size: 1.4rem;
   }
+
+  #find-checkin-row {
+    display: flex;
+    margin: 3% 10% 0 10%;
+    justify-content: space-around;
+  }
+
+  #checkin_id {
+    width: 60%;
+  }
 }

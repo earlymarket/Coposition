@@ -6,6 +6,11 @@ $(document).on('ready page:change', function() {
     belowOrigin: true
   });
 
+  var isTouchDevice = navigator.maxTouchPoints
+  if (L.Browser.chrome && L.Browser.touch && isTouchDevice) {
+      L.Browser.pointer = false;
+  }
+
   // All modals should be initialized starting from 0.98
   $('.modal').modal();
 

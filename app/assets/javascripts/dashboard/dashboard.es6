@@ -20,6 +20,27 @@ $(document).on('page:change', function () {
       window.location = `/users/${userId}/devices/nil/checkins/${checkinId}`
     }
 
+    // Persistent map feature declarations
+    const SELF_MARKER = {
+      hasCheckin () {
+        return Boolean(gon.current_user.lastCheckin) === true
+      },
+      init (caller) {
+        if (this.hasCheckin()) {
+          M.makeMapPin(gon.current_user, 'blue', {clickable: false}).addTo(map);
+          caller.hasContent = true;
+        } else if (caller.hasContent) {
+          let whereAmI = `
+          <blockquote>
+            <h4>Where am I?</h4>
+            Use the locate control in the top left to temporarily find your current location. Or check-in on a device of your own!
+          </blockquote>`
+          $('#map-wrapper').after(whereAmI);
+        }
+      }
+    }
+    // end of persistent declarations
+
     // Slide type declarations
     const FRIENDS_SLIDE = {
       hasFriends () {

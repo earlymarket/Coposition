@@ -5,6 +5,8 @@
         i.material-icons.right.tooltipped data-tooltip=("Authenticating apps") help
         | Requiring Authentication
     p You have not authenticated these apps. These apps do not have access to your Coposition data. You can set their permissions before you authenticate them.
+  - else
+    h5 Friends
   - approved.each do |approvable|
     - approval = current_user.approval_for(approvable)
     .card-panel
@@ -17,7 +19,7 @@
             h5.ib
               = approvals_friends_device_link(approvable_type, approvable) do
                 = approvals_approvable_name(approvable)
-              = approvals_friends_locator(approvable_type, approvable)
+              = approvals_friends_locator(approvable_type, approvable,  @approvals_presenter.checkins)
             - if approvable.try(:tagline)
               .tagline
                 = approvable.tagline
