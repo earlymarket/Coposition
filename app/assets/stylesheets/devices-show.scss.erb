@@ -10,6 +10,12 @@
     left: 90px;
     z-index: 9;
 
+    @media screen and (max-width: 500px){
+      width: 260px;
+      top: 80px;
+      left: 70px;
+    }
+
     i {
       margin: 0;
     }
@@ -159,6 +165,15 @@
     justify-content: center;
     background: white;
     font-size: 1.5rem;
+    @media screen and (max-width: 660px){
+      display: none;
+    }
+  }
+
+  .leaflet-right {
+    @media screen and (max-width: 660px){
+      display: none;
+    }
   }
 
   .leaflet-control-zoom {
@@ -221,14 +236,6 @@
       font-family: "Fira Mono", monospace;
     }
   }
-
-  .marker-cluster-last {
-    background-color: rgba(121, 192, 247, 0.6);
-  }
-  .marker-cluster-last div {
-    background-color: rgba(33, 150, 243, 0.6);
-  }
-
 }
 
 .c-devices.a-show,

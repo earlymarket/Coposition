@@ -4,7 +4,7 @@
 
 <main role="main">
   <p class="h4">
-    <%= raw t('.prompt', client_name: content_tag(:a, class: 'text-info', href: @pre_auth.client.redirect_uri) { @pre_auth.client.name }) %>
+    <%= raw t('.prompt', resource_owner: content_tag(:strong, class: 'text-info') { resource_owner_name }, client_name: content_tag(:a, class: 'text-info', href: @pre_auth.client.redirect_uri) { @pre_auth.client.name }) %>
   </p>
 
   <% if @pre_auth.scopes.count > 0 %>

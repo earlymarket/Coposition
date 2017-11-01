@@ -8,10 +8,9 @@ class Device < ApplicationRecord
   has_many :permissions, dependent: :destroy
   has_many :developers, through: :permissions, source: :permissible, source_type: "Developer"
   has_many :permitted_users, through: :permissions, source: :permissible, source_type: "User"
-  has_many :locations
   has_attachment :csv, accept: :raw
 
-  validates :name, uniqueness: { scope: :user_id }, if: :user_id
+  validates :name, uniqueness: { scope: :user_id }, if: :user_id, length: { in: 4..20 }
   validates :icon, presence: true
 
   before_create do |dev|
@@ -21,14 +20,6 @@ class Device < ApplicationRecord
   def safe_checkin_info_for(args)
     sanitized = filtered_checkins(args)
     sanitize_checkins(sanitized, args)
-  end
-
-  def filtered_locations(args)
-    locations.near_to(args[:near])
-             .most_frequent(args[:type])
-             .limit_returned_locations(args)
-             .unscope(:order)
-             .distinct
   end
 
   def filtered_checkins(args)
