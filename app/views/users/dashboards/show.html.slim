@@ -22,9 +22,13 @@ section.dashboard.row
 p
   | You checked in #{@dashboard_presenter.weeks_checkins_count || 0} times this week.
   - if @dashboard_presenter.percent_change.present?
-    |  That is an #{@dashboard_presenter.percent_change > 0 ? "increase" : "decrease"} of #{@dashboard_presenter.percent_change}% from last week.
+    |  That is an #{@dashboard_presenter.percent_change > 0 ? "increase" : "decrease"} of #{@dashboard_presenter.percent_change.abs}% from last week.
   - if @dashboard_presenter.most_used_device.present?
-    |  Your most used device is #{@dashboard_presenter.most_used_device.name}.
+    |  Your most used device is 
+    = link_to @dashboard_presenter.most_used_device.name, user_device_path(current_user, @dashboard_presenter.most_used_device), class: "hyperlink"
+.row
+  = text_field_tag(:checkin_id, params["checkin_id"], placeholder: "Check-in id", class: 'col s3', required: true)
+  = button_tag "Find check-in", class: "waves-effect waves-light btn", id: "find-checkin", type: "submit"
 
 - if @dashboard_presenter.last_countries
   .row.valign-wrapper
@@ -54,3 +58,8 @@ section#dashboard-quicklinks
     | You have #{link_to(pluralize(current_user.devices.count, "device"), user_devices_path, class: "hyperlink")}, #{link_to(pluralize(current_user.developers.not_coposition_developers.count, "connected app"), user_apps_path, class: "hyperlink")} and #{link_to(pluralize(current_user.friends.count, "friend"), user_friends_path, class: "hyperlink")}.
     |  You have #{link_to(pluralize(current_user.developer_requests.count, "app"), user_apps_path, class: "hyperlink")} and
     |  #{link_to(pluralize(current_user.friend_requests.count, "friend"), user_friends_path, class: "hyperlink")} awaiting your approval.
+  div
+    script#markerPopupTmpl type="x-tmpl-mustache" 
+      h3 Device: {{ &devicebutton }}
+      ul
+        li.address Address: {{ address }}
