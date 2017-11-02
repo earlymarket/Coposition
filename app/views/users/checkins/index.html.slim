@@ -3,7 +3,7 @@
   #gonvariables
     = Gon::Base.render_data
   .myProgress
-    .myDeterminate style=("width: 0%") 
+    .myDeterminate style=("width: 0%")
   ul#filters.date-select.collapsible
     li
       #date-range-toggle.collapsible-header data-onOpen="dateRangeOpen" data-onClose="dateRangeClose"
@@ -11,7 +11,7 @@
         i.material-icons.collapse-mark.right expand_more
       .collapsible-body
         = form_for @checkins_index_presenter.user, url: @checkins_index_presenter.form_path, class: "form-group", method: :get do |f|
-          = hidden_field_tag "user[device_ids]", params[:user] && params[:user][:device_ids]
+          = hidden_field_tag "user[device_ids]", params[:user] && params[:user][:device_ids] || @checkins_index_presenter.devices.pluck(:id)
           = hidden_field_tag :checkins_view, false, class: "checkins_view"
           = f.label "From"
           = text_field_tag :from, humanize_date(@checkins_index_presenter.date_range[:from]), class: "datepick", id: "input_from", required: true
@@ -65,9 +65,9 @@
     }
 
   /! templates
-  script#markerPopupTmpl type="x-tmpl-mustache" 
-    h3.valign-wrapper 
-      | {{ &deviceLink }}   {{ &idLink }}  
+  script#markerPopupTmpl type="x-tmpl-mustache"
+    h3.valign-wrapper
+      | {{ &deviceLink }}   {{ &idLink }}
       i
         | {{ edited }}
       | {{ &revertButton }}
@@ -90,7 +90,7 @@
 
   script#cityPopupTmpl type="x-tmpl-mustache"
     h3.ta-complete-center.tooltipped data-tooltip=("City view is enabled")
-      i.material-icons location_city 
+      i.material-icons location_city
       | {{ address }}
     ul
       h3.lined
