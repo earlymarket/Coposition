@@ -4,7 +4,7 @@ h1 Edit release note
   = f.text_field(:version)
   br/
   = label(:application, "Application")
-  = f.select(:application, options_for_select([['Web', 'web'], ['API', 'api'], ['Mobile', 'mobile']], selected: @release_note.application))
+  = f.select(:application, options_for_select([['Web', 'web'], ['API', 'api'], ['iOS', 'ios'], ['Android', 'android']], selected: @release_note.application))
   br/
   = label :content, "Changes"
   = f.text_area(:content, class: "materialize-textarea")

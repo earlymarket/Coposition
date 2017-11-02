@@ -13,12 +13,16 @@ section.friends-device-index.row
           p Your friend has not shared any devices or checkins yet!
       #map
 - @friend_show_presenter.devices.each do |device|
-  .card-panel.row
-    = link_to show_device_user_friend_path(current_user.url_id, @friend_show_presenter.friend, device_id: device.id, first_load: true), class: "col s12" do
-      h5.valign-wrapper
-        i.material-icons.medium>= device.icon
-        |  #{device.name}
-      = friends_device_last_checkin(device.safe_checkin_info_for(permissible: current_user, action: "last")[0])
+  .card-panel
+    .device-row
+      = link_to show_device_user_friend_path(current_user.url_id, @friend_show_presenter.friend, device_id: device.id, first_load: true) do
+        h5.valign-wrapper
+          i.material-icons.medium>= device.icon
+          |  #{device.name}
+      - if device.safe_checkin_info_for(permissible: current_user, action: "last")[0].present?
+        div
+          i.center-map.material-icons data-device='#{device.id}' my_location
+    = friends_device_last_checkin(device.safe_checkin_info_for(permissible: current_user, action: "last")[0])
 .center
   = will_paginate @friend_show_presenter.devices
   div

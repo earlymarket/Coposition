@@ -26,15 +26,18 @@ nav {
   .toast {
     width: 100%;
   }
-}
-
-@media only screen and (min-width : 601px) {
   #toast-container {
     min-width: 50%;
     bottom: 25%;
     top: 75%;
     right: 25%;
     left: 25%;
+  }
+}
+
+@media only screen and (max-width : 601px) {
+  .toast {
+    font-size: 1rem;
   }
 }
 
@@ -106,6 +109,8 @@ $lg-breakpoint: 600px;
     line-height: 0.8rem;
     .lg-items-left {
       float: left;
+      margin-right: $quicklinks-size;
+      margin-left: 0;
     }
 
     .lg-items-right {
