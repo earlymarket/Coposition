@@ -82,7 +82,7 @@ $lg-breakpoint: 600px;
 #quicklinks {
 
   // font-size and padding
-  $quicklinks-size: 0.7rem;
+  $quicklinks-size: 0.9rem;
 
   display: flex;
   background: black;
@@ -115,8 +115,11 @@ $lg-breakpoint: 600px;
   @media (min-width: $lg-breakpoint) {
     line-height: 0.8rem;
     .lg-items-left {
+      height: 50px;
       float: left;
       margin-right: 0.5rem;
+      display: flex;
+      align-items: center;
     }
 
     .lg-items-right {
