@@ -46,6 +46,9 @@
 
   #map-status {
     // font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .dashboard {

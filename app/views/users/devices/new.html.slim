@@ -7,7 +7,7 @@ h1
   = f.text_field :name, class: "form-control input-lg fifth-width", placeholder: "My device"
   br/
   = label :icon, "Choose your device type*", class: "control-label"
-  = f.select :icon, options_for_select([["Click to see options", nil], ["Laptop", "laptop"], ["Mobile", "smartphone"], ["Desktop", "desktop_windows"], ["Tablet", "tablet"], ["Watch", "watch"], ["Other", "other"]], selected: "", disabled: ""), class: "required"
+  = f.select :icon, options_for_select([["Click to see options", nil], ["Laptop", "laptop"], ["Mobile", "smartphone"], ["Desktop", "desktop_windows"], ["Tablet", "tablet"], ["Watch", "watch"], ["Other", "devices_other"]], selected: "", disabled: ""), class: "required"
   br/
   = label :uuid, class: "control-label" do \
     "Enter existing coposition UUID #{link_to('(What is this?)', '/help#sharing')}".html_safe \

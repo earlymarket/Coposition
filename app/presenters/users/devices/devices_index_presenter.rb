@@ -32,6 +32,10 @@ module Users::Devices
       @user_devices ||= user.devices
     end
 
+    def circle_icon
+      ActionController::Base.helpers.image_path("circle_border.png")
+    end
+
     def gon_index_checkins
       checkins = user_devices.map do |device|
         device.past_checkins.first.as_json.merge(device: device.name) if device.past_checkins.exists?
