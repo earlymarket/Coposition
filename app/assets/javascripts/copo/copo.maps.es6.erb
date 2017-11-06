@@ -38,7 +38,7 @@ window.COPO.maps = {
     COPO.maps.bindMarkerListeners(checkins);
     COPO.maps.loadAllCheckins(checkins, total, cities);
     if (COPO.maps.markers.getLayers().length) {
-      map.fitBounds(COPO.maps.markers.getBounds().pad(0.5));
+      map.fitBounds(COPO.maps.markers.getBounds());
     } else {
       map.once('locationfound', function(e) {
         map.panTo(e.latlng);
@@ -99,8 +99,11 @@ window.COPO.maps = {
         });
       } else {
         $('.myProgress').remove();
-        if (!display) return;
-        toastMessage()
+        if (display) {
+          toastMessage()
+        } else {
+          return;
+        }
       };
     }
 
@@ -710,9 +713,9 @@ window.COPO.maps = {
         $('#checkins_view').val(true)
         $('.cached-icon').removeClass('cities-active');
         COPO.maps.refreshMarkers(gon.checkins);
-      } else if (gon.total > 50000) {
+      } else if (gon.total - gon.checkins.length > 50000) {
         Materialize.toast('Too many check-ins to load.', 3000)
-      } else if (gon.total > 20000) {
+      } else if (gon.total - gon.checkins.length > 20000) {
         sweetAlert(
           {
             title: "View as checkins?",

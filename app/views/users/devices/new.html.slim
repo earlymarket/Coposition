@@ -1,13 +1,13 @@
 h1
   | Device Creation
   a.tooltipped data-tooltip=("Device creation help") href="/help#devices" target="_blank" 
-    i.material-icons help
+    i.material-icons.help-icon help
 = form_for @device, url: { action: "create" }, html: { class: "form-group" } do |f|
   = label :name, "Enter a name for the device*", class: "control-label"
   = f.text_field :name, class: "form-control input-lg fifth-width", placeholder: "My device"
   br/
   = label :icon, "Choose your device type*", class: "control-label"
-  = f.select :icon, options_for_select([["Click to see options", nil], ["Laptop", "laptop"], ["Mobile", "smartphone"], ["Desktop", "desktop_windows"], ["Tablet", "tablet"], ["Watch", "watch"], ["Other", "other"]], selected: "", disabled: ""), class: "required"
+  = f.select :icon, options_for_select([["Click to see options", nil], ["Laptop", "laptop"], ["Mobile", "smartphone"], ["Desktop", "desktop_windows"], ["Tablet", "tablet"], ["Watch", "watch"], ["Other", "devices_other"]], selected: "", disabled: ""), class: "required"
   br/
   = label :uuid, class: "control-label" do \
     "Enter existing coposition UUID #{link_to('(What is this?)', '/help#sharing')}".html_safe \

@@ -55,7 +55,7 @@
               = f.button "Sign up", class: "waves-effect waves-light btn"
           .row
             .col.s12
-              | Already registered as a #{"#{resource.class.to_s.downcase}"}? #{link_to "Log in!", new_session_path(resource_name)}
+              | Already registered as a #{"#{resource.class.to_s.downcase}"}? #{link_to "Log in!", new_session_path(resource_name), class: "link"}
 
 = render "application/background"
 
