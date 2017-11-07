@@ -38,6 +38,10 @@ ul.collection
           = note.content.html_safe
         - if current_user && current_user.admin?
           .card-action
+            = link_to notify_release_note_path(note.id), method: :post, class: 'btn btn-success' do
+              i.material-icons.right
+                | send
+              | Notify Users
             = link_to edit_release_note_path(note.id), class: 'btn' do
               i.material-icons.right
                 | mode_edit
