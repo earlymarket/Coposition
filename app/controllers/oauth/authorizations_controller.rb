@@ -33,7 +33,7 @@ module Oauth
     end
 
     def resource_owner_name
-      current_resource_owner.username.exists? ? current_resource_owner.username : current_resource_owner.email
+      current_resource_owner.username.present? ? current_resource_owner.username : current_resource_owner.email
     end
     helper_method :resource_owner_name
   end
