@@ -13,7 +13,7 @@ def check_activity
     last = user.checkins.first.created_at if user.checkins.exists?
     next unless last && last < 1.week.ago
     UserMailer.no_activity_email(user).deliver_now
-    smooch_message(user)
+    firebase_notification(user)
   end
 end
 
@@ -33,8 +33,12 @@ def destroy_activities
   end
 end
 
-def smooch_message(user)
-  convo_api = SmoochApi::ConversationApi.new
-  message = SmoochApi::MessagePost.new(role: "appMaker", type: "text", text: "You have not checked in in the last 7 days")
-  ::Users::SendSmoochMessage.call(user: user, message: message, api: convo_api)
+def firebase_notification(user)
+  Firebase::Push.call(
+    topic: user.id,
+    notification: {
+      body: "You have not checked in in the last 7 days",
+      title: "Coposition inactivity"
+    }
+  )
 end

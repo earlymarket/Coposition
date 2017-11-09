@@ -118,7 +118,9 @@ Rails.application.routes.draw do
   resources :developers, only: [:edit, :update]
 
   # Release notes
-  resources :release_notes
+  resources :release_notes do
+    member { post :notify }
+  end
 
   resources :activities, only: :index
 
