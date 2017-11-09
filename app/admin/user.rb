@@ -1,20 +1,29 @@
 ActiveAdmin.register User do
   permit_params :email, :username, :password, :password_confirmation, :admin
 
-  member_action :smooch_message, method: :post do
-    convo_api = SmoochApi::ConversationApi.new
-    message = SmoochApi::MessagePost.new(role: "appMaker", type: "text", text: params[:message])
-    ::Users::SendSmoochMessage.call(user: resource, message: message, api: convo_api)
+  member_action :firebase_notification, method: :post do
+    Firebase::Push.call(
+      topic: resource.id,
+      notification: {
+        body: params[:message],
+        title: params[:title]
+      }
+    )
     redirect_to resource_path, notice: "Message was sent"
   end
 
-  batch_action :smooch_message, method: :post, form: {
+  batch_action :firebase_notification, method: :post, form: {
+    title: :text,
     message:  :textarea
   } do |ids, inputs|
-    convo_api = SmoochApi::ConversationApi.new
-    message = SmoochApi::MessagePost.new(role: "appMaker", type: "text", text: inputs[:message])
     batch_action_collection.find(ids).each do |user|
-      ::Users::SendSmoochMessage.call(user: user, message: message, api: convo_api)
+      Firebase::Push.call(
+        topic: user.id,
+        notification: {
+          body: inputs[:message],
+          title: inputs[:title]
+        }
+      )
     end
     redirect_to collection_path, alert: "Messages sent"
   end
@@ -57,9 +66,9 @@ ActiveAdmin.register User do
   show do
     default_main_content
 
-    panel "Smooch" do
-      para "Send some smooch message for this user."
-      render "smooch_form"
+    panel "Firebase" do
+      para "Send some firebase notification to this user."
+      render "firebase_form"
     end
   end
 end
