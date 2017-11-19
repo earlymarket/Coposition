@@ -89,7 +89,7 @@ $lg-breakpoint: 600px;
   color: white;
   text-transform: uppercase;
   font-size: $quicklinks-size;
-  padding: 0;
+  padding: 0.2rem 0 0.2rem 0;
 
   .quicklinks-items {
     display: flex;
