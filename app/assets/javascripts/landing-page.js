@@ -23,7 +23,7 @@ $(document).on('ready page:change', function() {
   } else {
     var resize = function(){
       if(window.innerWidth<660){
-        $("main").css('padding-top', '73px');
+        $("main").css('padding-top', '76px');
       } else {
         $("main").css('padding-top', '60px');
       }

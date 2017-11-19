@@ -26,6 +26,10 @@ $(document).on('page:change', function() {
       M.createCheckinPopup();
       M.rightClickListener();
       M.checkinNowListeners(getLocation);
+      window.COPO.editCheckin.init();
+      if (!U.mobileCheck()) {
+        Materialize.toast('Right click map to check-in', 3000)
+      }
     }
 
     function postLocation(position) {
@@ -53,6 +57,7 @@ $(document).on('page:change', function() {
 
     function initMarkers() {
       if (gon.checkin || U.currentPage('friends', 'show_device') || gon.checkins_view) {
+        $('.checkins_view').val(true)
         M.initMarkers(gon.checkins, gon.total)
       } else {
         M.initMarkers(gon.cities, gon.total, true);

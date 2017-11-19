@@ -50,9 +50,30 @@ module Users::Devices
 
     def form_range_filter(text, from)
       if device_page?
-        link_to text, user_device_path(user.url_id, device, from: from, to: Time.zone.today), method: :get
+        link_to text,
+          user_device_path(
+            user.url_id,
+            device,
+            from: from,
+            to: Time.zone.today,
+            user: {
+              device_ids: params[:user] && params[:user][:device_ids] || devices.pluck(:id)
+            },
+            checkins_view: params[:checkins_view]
+          ),
+          method: :get
       else
-        link_to text, user_checkins_path(user.url_id, from: from, to: Time.zone.today), method: :get
+        link_to text,
+          user_checkins_path(
+            user.url_id,
+            from: from,
+            to: Time.zone.today,
+            user: {
+              device_ids: params[:user] && params[:user][:device_ids] || devices.pluck(:id)
+            },
+            checkins_view: params[:checkins_view]
+          ),
+          method: :get
       end
     end
 

@@ -73,7 +73,7 @@ describe Firebase::Push do
           body: "Coposition test message",
           title: "Coposition check-in"
         },
-        "content-available" => "1"
+        content_available: true
       }.to_json
     end
 

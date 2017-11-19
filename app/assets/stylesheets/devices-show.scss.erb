@@ -6,12 +6,14 @@
     position: absolute;
     padding: 10px;
     width: 300px;
-    top: 160px;
+    top: 124px;
     left: 90px;
     z-index: 9;
 
-    @media (min-width: $lg-breakpoint) {
-     top: 115px;
+    @media screen and (max-width: 660px){
+      width: 260px;
+      top: 70px;
+      left: 70px;
     }
 
     i {
@@ -72,9 +74,9 @@
     width:100%;
     position:absolute !important;
     top: 54px;
-    margin-top: 70px;
-    @media (min-width: $lg-breakpoint) {
-      margin-top: 55px;
+    margin-top: 64px;
+    @media screen and (max-width: 660px){
+      margin-top: 0px;
     }
   }
 
@@ -132,7 +134,7 @@
       margin-left: 5%;
       margin-right: 5%;
     }
-    @media screen and (max-width: 500px){
+    @media screen and (max-width: 660px){
       .modal-trigger {
         padding: 0 1rem;
         font-size: 10px;
@@ -166,6 +168,15 @@
     justify-content: center;
     background: white;
     font-size: 1.5rem;
+    @media screen and (max-width: 660px){
+      display: none;
+    }
+  }
+
+  .leaflet-right {
+    @media screen and (max-width: 660px){
+      display: none;
+    }
   }
 
   .leaflet-control-zoom {

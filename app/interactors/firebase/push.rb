@@ -34,7 +34,7 @@ module Firebase
       }.tap do |h|
         h[:data] = data if data
         h[:notification] = notification if notification
-        h["content-available"] = "1" if content_available
+        h[:content_available] = true if content_available
       end
     end
 
