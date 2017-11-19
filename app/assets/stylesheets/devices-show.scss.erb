@@ -6,9 +6,13 @@
     position: absolute;
     padding: 10px;
     width: 300px;
-    top: 115px;
+    top: 160px;
     left: 90px;
     z-index: 9;
+
+    @media (min-width: $lg-breakpoint) {
+     top: 115px;
+    }
 
     i {
       margin: 0;
@@ -68,7 +72,10 @@
     width:100%;
     position:absolute !important;
     top: 54px;
-    margin-top: 55px;
+    margin-top: 70px;
+    @media (min-width: $lg-breakpoint) {
+      margin-top: 55px;
+    }
   }
 
   .myProgress {

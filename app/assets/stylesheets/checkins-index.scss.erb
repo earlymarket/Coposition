@@ -2,8 +2,11 @@
   #map {
     bottom: 0;
     top: 0;
-    margin-top: 60px;
+    margin-top: 73px;
     z-index: 2;
+    @media (min-width: $lg-breakpoint) {
+      margin-top: 60px;
+    }
   }
 
   .device-link {
@@ -11,8 +14,11 @@
   }
 
   .date-select {
-    top: 60px;
+    top: 73px;
     z-index: 10;
+    @media (min-width: $lg-breakpoint) {
+     top: 60px;
+    }
   }
 
   .device-select {
@@ -20,10 +26,12 @@
     position: absolute;
     padding: 10px;
     width: 300px;
-    top: 128px;
+    top: 140px;
     left: 90px;
     z-index: 9;
-
+    @media (min-width: $lg-breakpoint) {
+     top: 128px;
+    }
     i {
       margin: 0;
     }
