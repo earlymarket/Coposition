@@ -4,7 +4,10 @@ module DevicesHelper
       last_checkin = device.past_checkins.first
       postcode = last_checkin.postal_code
       last_checkin.address = last_checkin.address.gsub(" " + postcode, "") if postcode
-      "Last reported in #{last_checkin.address} on #{humanize_date_and_time(last_checkin.created_at)}".html_safe
+      "Last check-in
+      #{link_to last_checkin.id,
+        user_device_checkin_path(current_user.url_id, last_checkin.device_id, last_checkin.id), id: 'last-checkin'},
+      #{last_checkin.address} on #{humanize_date_and_time(last_checkin.created_at)}".html_safe
     else
       "No Checkins found"
     end

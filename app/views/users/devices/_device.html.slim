@@ -8,6 +8,7 @@
           = device.name
         i.material-icons.grey-text.right.edit-button mode_edit
       = devices_locate_icon(device)
+      = link_to "View check-ins", user_device_path(current_user.url_id, device, first_load: true), class: "btn view-checkins"
     .card-action
       .row
         .col.s12

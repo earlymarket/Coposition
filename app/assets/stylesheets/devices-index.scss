@@ -27,6 +27,15 @@
     width: 60%;
   }
 
+  #last-checkin {
+    margin-right: 0;
+  }
+
+  .view-checkins {
+    position: absolute;
+    right: 2rem;
+  }
+
   .device-button-small {
     @extend .device-button;
     width: 40%;
