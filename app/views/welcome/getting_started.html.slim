@@ -1,18 +1,20 @@
 h1 Getting Started
 .row
   .col.s12.m9.l10
-    #approval.section.scrollspy
-      h4 Asking for approval
+    #authenticate.section.scrollspy
+      h4 Authenticating your app
       p
-        | To begin with, you'll want to ask for approval from a user. You can do this from your developer console or by using the API. From the console, click 'New user' and enter the email of the user you would like to add. Alternatively, you can use the API.
+        | To allow you to access a user's data, they will need to authenticate your application through OAuth. You can allow users to do this either using our ruby gem or by manually linking users to the unique OAuth page for your application. Once a user has authenticated your app, you will receive their user ID and an access token which you can use to access their data through our API. Instructions on how to allow users to authenticate your app can be found below.
       h5 API documentation reference
       blockquote
-        = link_to("Asking for approval", "https://earlymarket.github.io/copo-docs/#asking-for-approval")
+        = link_to("Coposition OAuth ruby gem", "https://github.com/earlymarket/omniauth-coposition-oauth2")
+        br
+        = link_to("Authentication", "https://earlymarket.github.io/copo-docs/#authentication")
     .divider
     #checkins.section.scrollspy
       h4 Getting checkins
       p
-        | Once you have approval from a user, you can use the API to request their checkins. You'll need the User ID and optionally the ID of a specific device belonging to the user. You can find a list of your approved users and a list of devices belonging to each user using the API. You can then choose to request the most recent checkin or up to 1000 checkins, either belonging to the user, or for a specific device belonging to the user.
+        | Once you have approval from a user, you can use the API to request their checkins. You'll need their User ID, an access token for this user and optionally the ID of a specific device belonging to the user. You can find a list of your approved users and a list of devices belonging to each user using the API. You can then choose to request the most recent checkin or up to 1000 checkins, either belonging to the user, or for a specific device belonging to the user.
       h5 API documentation reference
       blockquote
         = link_to "List of users", "https://earlymarket.github.io/copo-docs/#getting-app-users"
@@ -24,8 +26,7 @@ h1 Getting Started
     #create.section.scrollspy
       h4 Creating checkins
       p
-        | To allow a user to create checkins via your app, you will need to ask for the UUID of an existing device, or request a UUID and provide this to the user. The latter is recommended if you anticipate that you will want to add extra device settings that may not already be included for devices. You will need to ask the user to then log in and claim the device on Coposition.
-        | Once you have a UUID, a latitude and longitude are all that is needed to create a checkin.
+        | To allow a user to create checkins via your app, you will need to ask for the UUID of an existing device, or request a UUID and provide this to the user. The latter is recommended if you anticipate that you will want to add extra device settings that may not already be included for devices. You will need to ask the user to then log in and claim the device on Coposition. Once you have a UUID, a latitude and longitude are all that is needed to create a checkin.
       h5 API documentation reference
       blockquote
         = link_to "Requesting a UUID", "https://earlymarket.github.io/copo-docs/#uuid"
@@ -42,7 +43,7 @@ h1 Getting Started
   .col.hide-on-small-only.m3.l2
     ul.section.table-of-contents
       li
-        a href="#approval" Asking for approval
+        a href="#authenticate" Authenticating your app
       li
         a href="#checkins" Getting checkins
       li
