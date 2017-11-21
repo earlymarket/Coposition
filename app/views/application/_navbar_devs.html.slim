@@ -15,7 +15,7 @@ nav
             = link_to "Users", developers_approvals_path, class: "lg-items-right"
           - else
             = link_to "Log In", new_developer_session_path, class: "lg-items-right"
-          = link_to "Getting Started", getting_started_path, class: "lg-items-right"
+          = link_to "Developer Setup", devs_setup_path, class: "lg-items-right"
           = link_to "API", "https://earlymarket.github.io/copo-docs/", class: "lg-items-right"
     .pure-u-1-12
   #top-menu.pure-g
@@ -46,7 +46,7 @@ nav
               li
                 = link_to "Log In", new_developer_session_path, class: "dropdown-item"
             li
-              = link_to "Getting Started", getting_started_path, class: "dropdown-item"
+              = link_to "Developer Setup", devs_setup_path, class: "dropdown-item"
             li
               = link_to "API", "https://earlymarket.github.io/copo-docs/", class: "dropdown-item"
     /!
