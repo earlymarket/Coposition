@@ -23,7 +23,7 @@ nav
             = link_to "Help", help_path, class: "lg-items-right", id: "help-nav"
             = link_to "Log Out", destroy_user_session_path, method: :delete, class: "lg-items-right"
           - else
-            = link_to "Help", help_path, class: "lg-items-right"
+            = link_to "Help", help_path, class: "lg-items-right", id: "help-nav"
             = link_to "Log In", new_user_session_path, class: "lg-items-right"
     .pure-u-1-12
   #top-menu.pure-g
@@ -45,15 +45,15 @@ nav
           - if Rails.env == "test" || params[:admin] || signed_in?
             - if user_signed_in?
               li
-                = link_to "Devices", user_devices_path(current_user.url_id), class: "dropdown-item"
+                = link_to "Devices", user_devices_path(current_user.url_id), class: "dropdown-item", id: "devices-nav"
               li
-                = link_to navbar_indicator("Apps", current_user.developer_requests.count), user_apps_path(current_user.url_id), class: "dropdown-item"
+                = link_to navbar_indicator("Apps", current_user.developer_requests.count), user_apps_path(current_user.url_id), class: "dropdown-item", id: "apps-nav"
               li
-                = link_to navbar_indicator("Friends", current_user.friend_requests.count), user_friends_path(current_user.url_id), class: "dropdown-item"
+                = link_to navbar_indicator("Friends", current_user.friend_requests.count), user_friends_path(current_user.url_id), class: "dropdown-item", id: "friends-nav"
               li
-                = link_to "Account", edit_user_registration_path, class: "dropdown-item"
+                = link_to "Account", edit_user_registration_path, class: "dropdown-item", id: "account-nav"
               li
-                = link_to "Help", help_path, class: "dropdown-item"
+                = link_to "Help", help_path, class: "dropdown-item", id: "help-nav"
               li
                 = link_to "Log Out", destroy_user_session_path, method: :delete, class: "dropdown-item"
             - else
@@ -62,7 +62,7 @@ nav
               li
                 = link_to "Devs", devs_path, class: "dropdown-item"
               li
-                = link_to "Help", help_path, class: "dropdown-item"
+                = link_to "Help", help_path, class: "dropdown-item", id: "help-nav"
               li
                 = link_to "Log In", new_user_session_path, class: "dropdown-item"
           - else

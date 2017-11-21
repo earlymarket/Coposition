@@ -43,9 +43,9 @@ nav
           - if Rails.env == "test" || params[:admin] || signed_in?
             - if developer_signed_in?
               li
-                = link_to "Users", developers_approvals_path, class: "dropdown-item"
+                = link_to "Users", developers_approvals_path, class: "dropdown-item", id: "users-nav"
               li
-                = link_to "Getting Started", getting_started_path, class: "dropdown-item"
+                = link_to "Getting Started", getting_started_path, class: "dropdown-item", id: "started-nav"
               li
                 = link_to "API", "https://earlymarket.github.io/copo-docs/", class: "dropdown-item"
               li
@@ -56,7 +56,7 @@ nav
               li
                 = link_to "Devs", devs_path, class: "dropdown-item current"
               li
-                = link_to "Getting Started", getting_started_path, class: "dropdown-item"
+                = link_to "Getting Started", getting_started_path, class: "dropdown-item", id: "started-nav"
               li
                 = link_to "API", "https://earlymarket.github.io/copo-docs/", class: "dropdown-item"
               li
