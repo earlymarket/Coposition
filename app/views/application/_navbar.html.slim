@@ -7,7 +7,7 @@ nav
     .pure-u-10-12.quicklinks-items
       = link_to "users", root_path, class: "lg-items-left current"
       = link_to "devs", devs_path, class: "lg-items-left"
-      - if Rails.env == "test" || params[:admin] || signed_in?
+      - if Rails.env == "test" || params[:admin] || signed_in? || request.fullpath.include?('sign_in')
         span.lg-items-right
           - if user_signed_in?
             = link_to "Log Out", destroy_user_session_path, method: :delete, class: "lg-items-right"
@@ -37,7 +37,7 @@ nav
             = link_to "Users", root_path, class: "dropdown-item current"
           li
             = link_to "Developers", devs_path, class: "dropdown-item"
-          - if Rails.env == "test" || params[:admin] || signed_in?
+          - if Rails.env == "test" || params[:admin] || signed_in? || request.fullpath.include?('sign_in')
             - if user_signed_in?
               li
                 = link_to "Log Out", destroy_user_session_path, method: :delete, class: "dropdown-item"
