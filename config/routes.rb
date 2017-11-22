@@ -104,6 +104,7 @@ Rails.application.routes.draw do
     resources :friends, only: [:show] do
       member do
         get "show_device"
+        post "request_checkin"
       end
     end
     get "/apps", to: "approvals#index", defaults: { approvable_type: "Developer" }
