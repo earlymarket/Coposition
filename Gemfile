@@ -48,7 +48,8 @@ gem "slim"
 gem "public_activity"
 gem "rollbar"
 gem "oj"
-gem "smooch-api", "~> 1.8.0"
+gem "httparty"
+gem "dotenv-rails"
 gem "sendgrid-ruby"
 gem "countries"
 gem "nokogiri", ">= 1.8.1"
@@ -95,7 +96,6 @@ group :development, :test do
   gem "rubocop-rspec", require: false
   gem "coffeelint"
   gem "rails_best_practices", require: false
-  gem "dotenv-rails"
   gem "slim_lint", require: false
 end
 

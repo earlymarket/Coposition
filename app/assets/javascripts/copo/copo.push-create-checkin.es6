@@ -2,15 +2,19 @@ window.COPO = window.COPO || {};
 window.COPO.pushCreateCheckin = {
   push(data) {
     if (window.COPO.utility.currentPage('friends', 'show_device')) {
-      window.COPO.pushCreateCheckin.deviceShow(data);
+      window.COPO.pushCreateCheckin.friendDeviceShow(data);
     } else if (window.COPO.utility.currentPage('friends', 'show')) {
       window.COPO.pushCreateCheckin.friendShow(data);
     } else if (window.COPO.utility.currentPage('approvals', 'friends')) {
       window.COPO.pushCreateCheckin.friendsIndex(data);
+    } else if (window.COPO.utility.currentPage('devices', 'index')) {
+      window.COPO.pushCreateCheckin.devicesIndex(data);
+    } else if (window.COPO.utility.currentPage('devices', 'show')) {
+      window.COPO.pushCreateCheckin.devicesShow(data);
     }
   },
 
-  deviceShow(data) {
+  friendDeviceShow(data) {
     if (data.privilege === 'complete') {
       gon.checkins.unshift(data.checkin);
     } else {
@@ -50,4 +54,18 @@ window.COPO.pushCreateCheckin = {
       COPO.maps.refreshFriendMarkers(gon.friends);
     }
   },
+
+  devicesIndex(data) {
+    if (data.checkin.user_id != gon.current_user_id) return
+    Materialize.toast('Remote check-in received', 3000)
+  },
+
+  devicesShow(data) {
+    if (data.checkin.user_id != gon.current_user_id) return
+    Materialize.toast('Remote check-in received', 3000)
+    gon.checkins.unshift(data.checkin);
+    if ($('.checkins_view').val()) {
+      COPO.maps.refreshMarkers(gon.checkins);
+    }
+  }
 }

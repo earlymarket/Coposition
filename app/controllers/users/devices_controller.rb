@@ -13,7 +13,7 @@ class Users::DevicesController < ApplicationController
     gon.push(@device_show_presenter.show_gon)
 
     respond_to do |format|
-      format.html { flash[:notice] = "Right click on the map to check-in" }
+      format.html
       format.any(:csv, :gpx, :geojson) do
         create_activity
         send_data @device_show_presenter.checkins, filename: @device_show_presenter.filename
@@ -33,6 +33,22 @@ class Users::DevicesController < ApplicationController
 
   def info
     @devices_info_presenter = ::Users::Devices::DevicesInfoPresenter.new(current_user, params)
+  end
+
+  def remote_checkin
+    device = current_user.devices.find(params[:id])
+    return unless device
+
+    Firebase::Push.call(
+      topic: device.user.id,
+      content_available: true,
+      data: {
+        body: device.id.to_s,
+        title: "Remote check-in"
+      }
+    )
+    flash[:notice] = "Remote check-in request sent"
+    redirect_to user_devices_path
   end
 
   def create

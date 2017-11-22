@@ -1,14 +1,23 @@
 class NotifyAboutCheckin
   include Interactor
 
-  delegate :device, :checkin, to: :context
+  delegate :device, :checkin, :remote, to: :context
 
   def call
     device.notify_subscribers("new_checkin", checkin)
     broadcast_checkin_for_friends
+    broadcast_checkin_for_user if remote
   end
 
   private
+
+  def broadcast_checkin_for_user
+    return unless !Rails.env.test? && friend_online?(device.user)
+    ActionCable.server.broadcast "friends_#{device.user.id}",
+      action: "checkin",
+      privilege: "complete",
+      checkin: hashed_checkin
+  end
 
   def broadcast_checkin_for_friends
     device.user.friends.find_each do |friend|

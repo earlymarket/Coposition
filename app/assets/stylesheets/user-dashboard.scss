@@ -10,11 +10,6 @@
     }
   }
 
-  .hyperlink {
-    text-decoration: underline;
-    color: $primary-color;
-  }
-
   #map-overlay {
     position: absolute;
     z-index: 1500;
@@ -51,6 +46,9 @@
 
   #map-status {
     // font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .dashboard {

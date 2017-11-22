@@ -12,9 +12,9 @@ describe ::Users::DashboardsPresenter do
   let(:friend) { create(:user) }
   let(:device) { create(:device, user_id: user.id) }
   let(:checkins) do
-    create(:checkin, device_id: device.id)
-    create(:checkin, device_id: device.id).reverse_geocode!
-    create(:checkin, device_id: device.id)
+    create(:checkin, device_id: device.id, created_at: 1.day.ago)
+    create(:checkin, device_id: device.id, created_at: 1.day.ago).reverse_geocode!
+    create(:checkin, device_id: device.id, created_at: 1.day.ago)
   end
 
   describe "Interface" do
@@ -110,10 +110,10 @@ describe ::Users::DashboardsPresenter do
       expect(dashboard).to have_received(:friends)
     end
 
-    it "calls months_checkins" do
-      allow(dashboard).to receive(:months_checkins)
+    it "calls device_checkins" do
+      allow(dashboard).to receive(:device_checkins)
       dashboard.gon
-      expect(dashboard).to have_received(:months_checkins)
+      expect(dashboard).to have_received(:device_checkins)
     end
   end
 
@@ -126,15 +126,15 @@ describe ::Users::DashboardsPresenter do
 
     context "1 country" do
       it "returns 'Last country visited'" do
-        create(:checkin, device_id: device.id)
+        create(:checkin, device_id: device.id, created_at: 1.day.ago)
         expect(dashboard.visited_countries_title).to eq "Last country visited"
       end
     end
     
     context "n countries" do
       it "returns a string containing n" do
-        create(:checkin, device_id: device.id).update(country_code: "GB")
-        create(:checkin, device_id: device.id).update(country_code: "US")
+        create(:checkin, device_id: device.id, created_at: 1.day.ago).update(country_code: "GB")
+        create(:checkin, device_id: device.id, created_at: 1.day.ago).update(country_code: "US")
         expect(dashboard.visited_countries_title).to match dashboard.last_countries.length.to_s
       end
     end
@@ -169,10 +169,10 @@ describe ::Users::DashboardsPresenter do
     end
   end
 
-  describe "months_checkins" do
+  describe "device_checkins" do
     it "returns an array" do
       checkins
-      expect(dashboard.send(:months_checkins)).to be_kind_of Array
+      expect(dashboard.send(:device_checkins)).to be_kind_of Array
     end
   end
 

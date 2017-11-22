@@ -1,0 +1,9 @@
+<%= form_tag firebase_notification_admin_user_path(resource) do %>
+  <%= label_tag :title %>
+  <%= text_field_tag :title %>
+  <br/>
+  <%= label_tag :message %>
+  <%= text_field_tag :message %>
+  <br/>
+  <%= submit_tag "Send" %>
+<% end %>

@@ -1,5 +1,6 @@
 - content_for :outside_container do
   = render "users/shared/device_show"
+  #dtBox
   .bottom-panel.valign-wrapper
     .buttons
       a.modal-trigger.btn.red.white-text.delete href="#delete#{@device_show_presenter.device.id}" id="deleteButton#{@device_show_presenter.device.id}" 
@@ -19,6 +20,11 @@
         br
         br
         a#checkinFoggedNow.btn.blue.white-text data-turbolinks="false" href="#" Checkin now (fogged)
+        - if @device_show_presenter.device.config && @device_show_presenter.device.config.custom && @device_show_presenter.device.config.custom["assigned"].to_s == "true"
+          br
+          br
+          = link_to remote_checkin_user_device_path(current_user.url_id, @device_show_presenter.device.id), { method: :post, id: "remoteCheckin#{@device_show_presenter.device.id}", remote: true, class: "btn blue white-text" } do
+            | Remote check-in
 
   .modal.delete-modal id="delete#{@device_show_presenter.device.id}"
     .modal-content
@@ -33,7 +39,7 @@
             | Currently, you are filtering to only see check-ins from #{humanize_date(@device_show_presenter.date_range[:from])} to #{humanize_date(@device_show_presenter.date_range[:to])}.
           - else
             | Currently, you are seeing all check-ins for this device.
-        = link_to "Delete all check-ins", user_device_checkins_path(current_user.url_id, @device_show_presenter.device.id), { method: :delete, class: "btn red white-text", data: { confirm: "Delete all checkins for this device?" } }
+        = link_to "Delete all check-ins", user_device_checkins_path(current_user.url_id, @device_show_presenter.device.id), { method: :delete, class: "btn red white-text delete-all", data: { confirm: "Delete all checkins for this device?" } }
         - if @device_show_presenter.date_range[:from]
           br
           br
@@ -50,6 +56,7 @@
       | {{ &idLink }}  
       i
         | {{ edited }}
+      i.tooltipped data-tooltip=("Check-in date has been edited to the future") {{ future }}
       | {{ &revertButton }}
     ul
       h3.lined

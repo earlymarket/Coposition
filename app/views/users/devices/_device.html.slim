@@ -7,6 +7,8 @@
         span.editable
           = device.name
         i.material-icons.grey-text.right.edit-button mode_edit
+      = devices_locate_icon(device)
+      = link_to "View check-ins", user_device_path(current_user.url_id, device, first_load: true), class: "btn view-checkins"
     .card-action
       .row
         .col.s12
@@ -19,7 +21,7 @@
               = attribute_icon device.fogged, "cloud"
               |  Fogging
           .col.s3
-            a.modal-trigger.valign-wrapper.device-toggle.delayedButton data-tooltip=("Delay Settings") href="#delay#{device.id}" id="delayButton#{device.id}" 
+            a.modal-trigger.valign-wrapper.device-toggle.delayedButton data-tooltip=("Delay Settings") href="#delay#{device.id}" id="delayButton#{device.id}"
               = attribute_icon device.delayed, "timer"
               |  Delay
       .row
@@ -39,10 +41,10 @@
       .row
         .col.s12
           .col.s6
-            a.modal-trigger.btn-flat.device-button href="#download#{device.id}" id="downloadButton#{device.id}" 
+            a.modal-trigger.btn-flat.device-button href="#download#{device.id}" id="downloadButton#{device.id}"
               i.material-icons.right file_download
               | Download check-ins
-          .col.s6.valign-wrapper id="sharedLink#{device.id}" 
+          .col.s6.valign-wrapper id="sharedLink#{device.id}"
             = devices_shared_link(device) if device.published
       .row
         .col.s12
@@ -50,6 +52,13 @@
             a.modal-trigger.btn-flat.device-button href="#upload#{device.id}" id="uploadButton#{device.id}"
               i.material-icons.right> file_upload
               | Upload check-ins
+      - if device.config && device.config.custom && device.config.custom["assigned"].to_s == "true"
+        .row
+          .col.s12
+            .col.s6
+              = link_to remote_checkin_user_device_path(current_user.url_id, device.id), { method: :post, id: "remoteCheckin#{device.id}", remote: true, class: "btn-flat device-button" } do
+                i.material-icons.right beenhere
+                | Remote check-in
     .card-action
       p
         = devices_last_checkin(device)

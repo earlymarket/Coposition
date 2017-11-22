@@ -5,7 +5,7 @@ module Oauth
       headers.merge! response.headers
       self.response_body = response.body.to_json
       self.status        = response.status
-    rescue Errors::DoorkeeperError => e
+    rescue Doorkeeper::Errors::DoorkeeperError => e
       handle_token_exception e
     end
 

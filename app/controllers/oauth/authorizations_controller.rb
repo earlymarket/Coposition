@@ -31,5 +31,10 @@ module Oauth
     def strategy
       @strategy ||= server.authorization_request pre_auth.response_type
     end
+
+    def resource_owner_name
+      current_resource_owner.username.present? ? current_resource_owner.username : current_resource_owner.email
+    end
+    helper_method :resource_owner_name
   end
 end

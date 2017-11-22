@@ -208,8 +208,6 @@ GEM
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0.6.0)
     erubis (2.7.0)
-    ethon (0.10.1)
-      ffi (>= 1.3.0)
     eventmachine (1.2.3)
     execjs (2.7.0)
     factory_girl (4.8.0)
@@ -265,6 +263,8 @@ GEM
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     http_parser.rb (0.6.0)
+    httparty (0.15.6)
+      multi_xml (>= 0.5.2)
     i18n (0.8.4)
     i18n_data (0.8.0)
     inline_svg (1.2.1)
@@ -323,6 +323,7 @@ GEM
       i18n (>= 0.6.4, < 0.9)
     multi_json (1.12.1)
     multi_test (0.1.2)
+    multi_xml (0.6.0)
     mustermann (1.0.1)
     nenv (0.3.0)
     netrc (0.11.0)
@@ -519,9 +520,6 @@ GEM
       slim (~> 3.0)
       sysexits (~> 1.1)
     slop (3.6.0)
-    smooch-api (1.8.0)
-      json (~> 1.8, >= 1.8.3)
-      typhoeus (~> 1.0, >= 1.0.1)
     spring (2.0.2)
       activesupport (>= 4.2)
     sprockets (3.7.1)
@@ -544,8 +542,6 @@ GEM
     turbolinks (5.0.1)
       turbolinks-source (~> 5)
     turbolinks-source (5.0.3)
-    typhoeus (1.1.2)
-      ethon (>= 0.9.0)
     tzinfo (1.2.3)
       thread_safe (~> 0.1)
     uglifier (3.2.0)
@@ -609,6 +605,7 @@ DEPENDENCIES
   gon (~> 6.1.0)
   gpx
   guard-livereload (~> 2.4)
+  httparty
   inherited_resources!
   inline_svg
   interactor
@@ -654,7 +651,6 @@ DEPENDENCIES
   slim
   slim-rails
   slim_lint
-  smooch-api (~> 1.8.0)
   spring
   sprockets (>= 3.0.0)
   sprockets-es6

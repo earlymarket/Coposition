@@ -20,6 +20,17 @@ class ReleaseNotesController < ApplicationController
     release_note
   end
 
+  def notify
+    Firebase::Push.call(
+      topic: release_note.application,
+      notification: {
+        body: "Version: #{release_note.version} released",
+        title: "New version available"
+      }
+    )
+    redirect_to release_notes_path, notice: "Release notification sent"
+  end
+
   def update
     release_note.update(allowed_params)
     redirect_to release_notes_path, notice: "Note edited"

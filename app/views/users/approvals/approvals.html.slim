@@ -17,6 +17,8 @@ section.friends-index.row.hide
           p Your friends have not shared any devices or checkins yet!
       #map
 br/
+- if @approvals_presenter.requested.present?
+  = render partial: "requested", locals: { requested: @approvals_presenter.requested } 
 - if !@approvals_presenter.approved.present? && !@approvals_presenter.complete.present? && @approvals_presenter.approvable_type === "Developer"
   p.center You are not currently connected to any applications. Add applications to start controlling their access to your data.
 = render partial: "approved", locals: { approved: @approvals_presenter.approved, devices: @approvals_presenter.devices, approvable_type: @approvals_presenter.approvable_type }
@@ -24,3 +26,4 @@ br/
   = render partial: "complete", locals: { complete: @approvals_presenter.complete } 
 - if @approvals_presenter.pending.present?
   = render "pending", pending: @approvals_presenter.pending
+br/

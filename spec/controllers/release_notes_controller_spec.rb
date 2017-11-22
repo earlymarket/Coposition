@@ -69,11 +69,27 @@ RSpec.describe Users::ReleaseNotesController, type: :controller do
     end
   end
 
+  describe "POST #notify" do
+    let(:post_notify) { post :notify, params: { id: release_note.id } }
+
+    it "calls firebase push" do
+      allow(Firebase::Push).to receive(:call)
+      post_notify
+      expect(Firebase::Push).to have_received(:call)
+    end
+
+    it "redirects if user is not admin" do
+      user.update(admin: false)
+      post_notify
+      expect(response).to redirect_to(root_path)
+    end
+  end
+
   describe "PUT #update" do
-    let(:put_update) { put :update, params: { id: release_note.id, release_note: { application: "mobile" } } }
+    let(:put_update) { put :update, params: { id: release_note.id, release_note: { application: "android" } } }
 
     it "update release note with provided params" do
-      expect { put_update }.to change { ReleaseNote.find(release_note.id).application }.to "mobile"
+      expect { put_update }.to change { ReleaseNote.find(release_note.id).application }.to "android"
     end
 
     it "redirects if user is not admin" do

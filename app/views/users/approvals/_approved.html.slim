@@ -5,6 +5,8 @@
         i.material-icons.right.tooltipped data-tooltip=("Authenticating apps") help
         | Requiring Authentication
     p You have not authenticated these apps. These apps do not have access to your Coposition data. You can set their permissions before you authenticate them.
+  - elsif @approvals_presenter.approved.present?
+    h5 Friends
   - approved.each do |approvable|
     - approval = current_user.approval_for(approvable)
     .card-panel
@@ -17,7 +19,7 @@
             h5.ib
               = approvals_friends_device_link(approvable_type, approvable) do
                 = approvals_approvable_name(approvable)
-              = approvals_friends_locator(approvable_type, approvable)
+              = approvals_friends_locator(approvable_type, approvable,  @approvals_presenter.checkins)
             - if approvable.try(:tagline)
               .tagline
                 = approvable.tagline
@@ -41,6 +43,7 @@
           - if approvable_type == "Developer"
             = link_to "Authenticate", approvable.redirect_url, class: "btn-flat right", target: :_blank
           - else
+            = button_to "Request check-in", request_checkin_user_friend_path(current_user.url_id, approvable.id), method: :post, remote: true, class: "btn-flat right"
             = button_to "Revoke Approval", user_approval_path(current_user.url_id, approval), method: :delete, remote: true, class: "btn-flat right", data: { confirm: "Are you sure? They will no longer have access to any of your data." }
         .col.s4
           - if approvable_type == "Developer"

@@ -30,7 +30,20 @@
     margin: 0.25rem 0 0 0;
   }
 
+  .device-row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+  }
+
   #map-status {
     // font-size: 1.4rem;
+  }
+
+  .center-map {
+    margin-left: 0.6rem;
+    color: $primary-color-darker;
+    cursor: pointer;
   }
 }

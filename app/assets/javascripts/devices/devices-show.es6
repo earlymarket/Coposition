@@ -1,7 +1,6 @@
 $(document).on('page:change', function() {
   var U = window.COPO.utility;
-  if (U.currentPage('friends', 'show_device') || U.currentPage('devices', 'show')) {
-    var page = U.currentPage('devices', 'show') ? 'user' : 'friend'
+  if (U.currentPage('friends', 'show_device') || U.currentPage('devices', 'show') || U.currentPage('checkins', 'index')) {
     var fogged = false;
     var currentCoords;
     var M = window.COPO.maps;
@@ -9,18 +8,25 @@ $(document).on('page:change', function() {
     M.initMap();
     initMarkers();
     var controls = ['geocoder', 'locate', 'w3w', 'fullscreen', 'path']
-    page === 'user' ? controls.push('cities', 'layers') : controls.push('layers')
+    U.currentPage('friends', 'show_device') ? controls.push('layers') : controls.push('cities', 'layers')
     M.initControls(controls);
     COPO.datePicker.init();
 
     map.on('locationfound', onLocationFound);
 
-    if (page === 'user') {
+    if (!U.currentPage('friends', 'show_device')) {
+      window.COPO.editCheckin.init();
+    }
+
+    if (U.currentPage('devices', 'show')) {
       $('.modal-trigger').modal();
       M.createCheckinPopup();
       M.rightClickListener();
       M.checkinNowListeners(getLocation);
       window.COPO.editCheckin.init();
+      if (!U.mobileCheck()) {
+        Materialize.toast('Right click map to check-in', 3000)
+      }
     }
 
     function postLocation(position) {
@@ -47,7 +53,8 @@ $(document).on('page:change', function() {
     }
 
     function initMarkers() {
-      if (gon.checkin || page === 'friend') {
+      if (gon.checkin || U.currentPage('friends', 'show_device') || gon.checkins_view) {
+        $('.checkins_view').val(true)
         M.initMarkers(gon.checkins, gon.total)
       } else {
         M.initMarkers(gon.cities, gon.total, true);
