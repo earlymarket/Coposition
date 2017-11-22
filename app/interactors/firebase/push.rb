@@ -39,7 +39,7 @@ module Firebase
     end
 
     def push_success?
-      JSON.parse(result.body).key?("message_id")
+      result.code == 200 && JSON.parse(result.body).key?("message_id")
     end
   end
 end
