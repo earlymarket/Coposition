@@ -295,7 +295,7 @@ window.COPO.maps = {
     }
     checkinTemp.future = Date.parse(checkin.created_at) > Date.now() ? '(future)' : ''
     checkinTemp.idLink = COPO.utility.idLink(checkin)
-    checkinTemp.deviceLink = COPO.utility.deviceLink(checkin)
+    checkinTemp.deviceLink = COPO.utility.deviceLink(checkin, gon.devices)
     checkinTemp.revertButton = checkin.revert ? COPO.utility.revertLink(checkin) : ''
     checkinTemp.edited = checkin.edited ? '(edited)' : ''
     checkinTemp.inlineCoords = COPO.utility.renderInlineCoords(checkin);
