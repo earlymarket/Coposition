@@ -21,7 +21,7 @@ section.devices-index.row
     = text_field_tag(:checkin_id, params["checkin_id"], placeholder: "Check-in id", required: true)
     = button_tag "Find check-in", class: "waves-effect waves-light btn", id: "find-checkin", type: "submit"
 - if @devices_index_presenter.devices.length > 1
-  .center
+  .view-all
     a.btn href="#{user_checkins_path(current_user, first_load: true)}" View all check-ins
 div
   - @devices_index_presenter.devices.each do |device|

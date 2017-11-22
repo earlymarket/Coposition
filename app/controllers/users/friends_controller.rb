@@ -16,6 +16,11 @@ class Users::FriendsController < ApplicationController
     end
   end
 
+  def request_checkin
+    RequestCheckin.call(current_user: current_user, id: params[:id])
+    redirect_to user_friends_path, notice: "Check-in request sent"
+  end
+
   private
 
   def friends?
