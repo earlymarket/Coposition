@@ -36,6 +36,10 @@
     right: 2rem;
   }
 
+  .view-all {
+    text-align: right;
+  }
+
   .device-button-small {
     @extend .device-button;
     width: 40%;
