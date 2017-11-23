@@ -23,7 +23,7 @@
             - if approvable.try(:tagline)
               .tagline
                 = approvable.tagline
-            div
+            div.connected-since
               | Connected since #{humanize_date(approval.approval_date) unless approval.nil?}
         .col.s4
           - if current_user.devices.exists?

@@ -34,6 +34,15 @@
     overflow: hidden;
     text-overflow: ellipsis;
     min-height: 1.5rem;
+    @media screen and (max-width: 660px){
+      display: none;
+    }
+  }
+
+  .connected-since {
+    @media screen and (max-width: 660px){
+      display: none;
+    }
   }
 
   .card-panel {
