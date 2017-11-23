@@ -13,7 +13,7 @@ Rails.application.routes.draw do
 
   get "/api", to: "welcome#api"
   get "/help", to: "welcome#help"
-  get "/getting_started", to: "welcome#getting_started"
+  get "/devs/setup", to: "welcome#setup"
   get "/terms", to: "welcome#terms"
   get "/devs", to: "welcome#devs"
   get "settings/unsubscribe"
@@ -104,6 +104,7 @@ Rails.application.routes.draw do
     resources :friends, only: [:show] do
       member do
         get "show_device"
+        post "request_checkin"
       end
     end
     get "/apps", to: "approvals#index", defaults: { approvable_type: "Developer" }

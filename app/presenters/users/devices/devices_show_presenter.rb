@@ -33,6 +33,7 @@ module Users::Devices
         counts: gon_cities_counts,
         first_load: first_load,
         device: owner.id,
+        devices: devices,
         current_user_id: user.id,
         total: gon_show_checkins.count,
         max: MAX_CHECKINS_TO_LOAD,

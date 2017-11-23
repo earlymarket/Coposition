@@ -43,6 +43,7 @@
           - if approvable_type == "Developer"
             = link_to "Authenticate", approvable.redirect_url, class: "btn-flat right", target: :_blank
           - else
+            = button_to "Request check-in", request_checkin_user_friend_path(current_user.url_id, approvable.id), method: :post, remote: true, class: "btn-flat right"
             = button_to "Revoke Approval", user_approval_path(current_user.url_id, approval), method: :delete, remote: true, class: "btn-flat right", data: { confirm: "Are you sure? They will no longer have access to any of your data." }
         .col.s4
           - if approvable_type == "Developer"
