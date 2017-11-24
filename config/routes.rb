@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get "/getting_started", to: "welcome#getting_started"
   get "/terms", to: "welcome#terms"
   get "/devs", to: "welcome#devs"
+  get "/add_friend", to: "users/approvals#add"
   get "settings/unsubscribe"
   patch "settings/update"
 
