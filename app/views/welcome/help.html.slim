@@ -65,12 +65,12 @@ h1 Help Centre
           i.material-icons add
           |  Creating a Device
         p You can create a device through the Coposition online dashboard or via the Coposition mobile app
-        h5 
+        h6 
           i.material-icons computer
           |  Online
         p
           | To create a new device online, go to your devices tab and click the yellow CREATE DEVICE button. You can then give this device a name and select the type of tracker you will connect this device to. These can be updated later. The Coposition UUID is used to sync this new device to 3rd party apps or hardware - more info here.
-        h5 
+        h6 
           i.material-icons smartphone
           |  Mobile
         p 
@@ -81,14 +81,14 @@ h1 Help Centre
           |  Device Settings
         p Device settings can be managed from the settings menu in the mobile app or from your devices screen online.
       #fogging.section.scrollspy
-        h5
+        h6
           i.material-icons cloud
           |  Fogging
         p
           | Fogging allows you additional control over how much of your location data your data consumers (friends and apps) can see. Fogging a check-in or a device will mean that your data consumers will not be shown your exact location or coordinates, instead they will see a location usually localised to the nearest city/town or a randomised location within 50km of your actual location if there are no settlements nearby.
         p Fogging is enabled by default when you create a device. Whilst on, you can choose to allow certain friends or apps to see precise data by enabling bypass fogging via permissions.
       #delay.section.scrollspy
-        h5
+        h6
           i.material-icons timer
           |  Delay
         p
@@ -98,13 +98,13 @@ h1 Help Centre
         p
           | Delay is not set when you first create a device. Once you have set a delay you can choose to allow certain friends or apps to see your data immediately by enabling bypass delay via permissions.
       #cloaking.section.scrollspy
-        h5
+        h6
           i.material-icons visibility_off
           |  Cloaking
         p
           | Cloaking a device hides it and all of its check-ins from all of your friends and apps. It also disables the device's shared page if the device is shared.
       #sharing.section.scrollspy
-        h5
+        h6
           i.material-icons public
           |  Sharing
         p
@@ -173,15 +173,15 @@ h1 Help Centre
           | To allow external applications to access your location data, you must authorise their access to your Coposition account.
         p
           | Connecting and authenticating an external application, to allow access to your location data, can be started from the external application or from the Coposition website. Starting the process through the Coposition website is recommended, in order to customise the application’s access to your devices and location data before authenticating the app and giving the app developers access to your data.
-        p To connect online: 
+        h6 To connect online: 
         ul.browser-default
           li  From your #{current_user ? link_to('Apps', user_apps_path(current_user.url_id), class: 'link') : 'Apps'} tab, click the <i>CONNECT NEW APP</i> button in the top right corner. 
           li  Enter the app you would like to connect to. Potential matches will be displayed as you start typing.
           li  Select the app you’d like to connect to, and click <i>ADD</i>. You will return to the #{current_user ? link_to('Apps', user_apps_path(current_user.url_id), class: 'link') : 'apps'} tab and will see this app listed in your apps <i>Requiring Authentication</i>. These apps cannot access your data, but you can edit their <i>PERMISSIONS</i> to limit their data access as you please once authentication is completed. You can also <i>DISCONNECT</i> from these apps. 
-        p To authorise online:
+        h6 To authorise online:
         ul.browser-default
           li  Apps listed as Requiring Authentication give you the option to <i>AUTHENTICATE</i>. Clicking this will take you to the external app where you will be able to authorise the external application to access your Coposition data.
-        p To connect and authorise from an external app:
+        h6 To connect and authorise from an external app:
         ul.browser-default
           li  Every external app will handle this slightly differently, but they will ask you to permit their access to your Coposition account. You will be taken to a Coposition page and asked to login to your Coposition account.
           li  After entering your Coposition account email address and password you will then be asked to authorise or deny the application’s access to your data. If you deny access, you can always complete the process again.
@@ -200,16 +200,14 @@ h1 Help Centre
           |  Permissions
         p
           | Permissions allow you additional controls over how much of your data a specific consumer (friend or app) can see for a specific device.
-          br/
-          br/
-          | Disable access stops a consumer from seeing any location data for a device.
-          br/
-          br/
-          | Bypass fogging/delay allows a consumer to see precise location data for a device regardless or whether it is fogged and/or delayed.
+        h6 Disable access
+        p Stops a consumer from seeing any location data for a device.
+        h6 Bypass fogging/delay
+        p Allows a consumer to see precise location data for a device regardless or whether it is fogged and/or delayed.
         blockquote
           | E.g. you might decide that you want a particular friend to be able to see your exact location for a fogged device. You can achieve this by enabling 'bypass fogging' for that friend on that device. This will allow them alone to see the device's data location as if it were not fogged.
-        p
-          | Last checkin only/Full history allows you control over whether the consumer can see just the most recent checkin for a device or all of it's checkins. Fogging and delay still apply.
+        h6 Last check-in only/Full history
+        p Allows you control over whether the consumer can see just the most recent checkin for a device or all of it's checkins. Fogging and delay still apply.
     .divider
     
     #viewing.section.scrollspy
@@ -245,6 +243,7 @@ h1 Help Centre
     #viewingW3w.section.scrollspy
       h6 what3words
       p w3w or 'what3words' is a unique combination of 3 words that identifies a 3mx3m square, anywhere on the planet. Learn more about #{link_to("what3words", "http://what3words.com/about/", class: 'link')}. 
+    .divider
 
     #download.section.scrollspy
       h4
@@ -289,11 +288,14 @@ h1 Help Centre
         br/
         | Get started at  #{link_to("zapier.com", "https://zapier.com/", class: 'link')}
     .divider
+
     #privacy.section.scrollspy
       h4
         i.material-icons account_circle
         |  Privacy Policy
       p Coposition is dedicated to ensuring our users' data is protected. Our #{link_to("terms and conditions", terms_path, class: 'link')} outline the relationship between Coposition, users, and their data. Coposition meets and exceeds the minimum standards for the EU's GDPR.
+    .divider
+    
     #more.section.scrollspy
       h4
         i.material-icons help
@@ -312,8 +314,6 @@ h1 Help Centre
         a href="#checkin" Check-ins
       li
         a href="#friends" Friends and Apps
-      li
-        a href="#permissions" Permissions
       li
         a href="#viewing"  Viewing your check-ins
       li
