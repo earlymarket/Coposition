@@ -213,4 +213,8 @@ COPO.utility = {
       callback(matches);
     };
   },
+
+  setActivePage(page) {
+    $("a#" + page + "-nav").addClass("current")
+  }
 };
