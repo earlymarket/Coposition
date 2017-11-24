@@ -67,11 +67,15 @@
   /! templates
   script#markerPopupTmpl type="x-tmpl-mustache"
     h3.valign-wrapper
-      | {{ &deviceLink }}   {{ &idLink }}
+      | {{ &idLink }}
       i
         | {{ edited }}
       | {{ &revertButton }}
     ul
+      h3.lined
+        span.lined-pad Device
+      li.ta-center
+        | {{ &deviceLink }}
       h3.lined
         span.lined-pad Date
       li.ta-center
