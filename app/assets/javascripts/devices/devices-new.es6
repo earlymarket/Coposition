@@ -1,5 +1,6 @@
 $(document).on('page:change', () => {
   if (window.COPO.utility.currentPage('devices', 'new')) {
+    COPO.utility.setActivePage('devices')
     const $CREATE_CHECKIN = $('#create_checkin');
     const $ADD_BUTTON = $('#add_button');
     const $PREVIEW = $('#preview');

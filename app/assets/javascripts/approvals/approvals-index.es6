@@ -8,6 +8,7 @@ $(document).on('page:change', function() {
     COPO.permissions.initSwitches(PAGE, gon.current_user_id, gon.permissions);
 
     if (gon.friends && gon.friends.some(friend => friend.lastCheckin)) {
+      COPO.utility.setActivePage('friends')
       $('.friends-index').removeClass('hide');
       gon.friends.forEach((friend) => {
         if (!friend.lastCheckin) {
@@ -28,6 +29,8 @@ $(document).on('page:change', function() {
       $('.friends-index').removeClass('hide');
       M.initMap();
       $('#map-overlay').removeClass('hide');
+    } else {
+      COPO.utility.setActivePage('apps')
     }
 
     $(document).one('turbolinks:before-render', function() {
