@@ -13,7 +13,7 @@ nav
         .lg-items-left
           = link_to "users", root_path, class: "lg-items-left"
           = link_to "devs", devs_path, class: "lg-items-left current"
-      - if Rails.env == "test" || params[:admin] || signed_in?
+      - if Rails.env == "test" || params[:admin] || signed_in? || request.fullpath.include?('sign')
         span.lg-items-right
           - if developer_signed_in?
             = link_to "Users", developers_approvals_path, class: "lg-items-right", id: "users-nav"
@@ -40,7 +40,7 @@ nav
           i.material-icons menu
         input#mobile-menu checked="checked" type="checkbox"
         ul.dropdown
-          - if Rails.env == "test" || params[:admin] || signed_in?
+          - if Rails.env == "test" || params[:admin] || signed_in? || request.fullpath.include?('sign')
             - if developer_signed_in?
               li
                 = link_to "Users", developers_approvals_path, class: "dropdown-item", id: "users-nav"

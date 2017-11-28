@@ -3,39 +3,92 @@
 h1 Help Centre
 .row
   .col.s12.m9.l10
-    #checkin.section.scrollspy
+    #creating.section.scrollspy
       h4
-        i.material-icons pin_drop
-        |  Checking in
+        i.material-icons account_circle
+        |  Creating an account
       p
-        | You can start checking in either via the Coposition website, the Coposition app or an app that is using Coposition. 
-        | You can create a checkin on the coposition website by selecting a device from your 
-        | #{current_user ? link_to('devices', user_devices_path(current_user.url_id), class: 'link') : 'devices'}
-        |  and then either right clicking on the map or clicking on the marker in the control panel to the left hand side of the map and then selecting the blue starred marker that appears on the map which indicates your current location.
-      p If you do not have any devices, you will be given the option to create a checkin when creating a new device, the checkin will indicate you current location.
-      #viewing.section.scrollspy
+        | Creating a Coposition account allows you to store, control access to, and manage your location data through the Coposition platform. You can manage all of your Coposition-connected devices through one account, using the Coposition app across your trackers as well as the Coposition online dashboard. Using the Coposition platform is free for private/non-commercial users, as are the Coposition mobile apps.
+      p 
+      #creatingOnline.section.scrollspy
         h5
-          i.material-icons location_city
-          |  City view
+          i.material-icons computer
+          |  Online
         p
-          | When viewing the check-in history for a device online, Coposition displays City View by default. This aggregates (clusters) all check-ins within the same city or town to give an approximation of your location history. 
-        p 
-          | For your detailed history, you can toggle City View off by clicking the City View icon in the map options. City view still only displays locations within the selected date range.
-
+          | To create a Coposition account online, click sign up on the Coposition homepage or go to https://coposition.com/users/sign_up. Enter your details, and include a username if you’d like to share your location privately with friends through the Coposition platform. 
+      #creatingApp.section.scrollspy
+        h5
+          i.material-icons smartphone
+          |  Via the app
+        P
+          | Open the Coposition mobile app on your tracker (phone, tablet, etc.). On the welcome screen, select 'Create one' below the email and password fields. Enter your details then press 'Sign Up' and you will be logged into the Coposition app.
     .divider
+
+    #downloading.section.scrollspy
+      h4
+        i.material-icons file_download
+        |  Downloading the apps
+      p
+        | The Coposition mobile apps are free to download from the App Store and Play Store. When you first open the apps, you will be asked for various permissions. In the interest of privacy and security, we’d like to be transparent about exactly why Coposition needs these permissions:
+      #downloadingAndroid.section.scrollspy
+        h5
+          i.material-icons android
+          |  Android
+        p Access approximate and precise location (GPS and network based)
+        blockquote To create your location data
+        p Modify or delete the contents of your SD card
+        blockquote To store your location data while waiting to upload to the Coposition servers and to remember your settings
+        p Read the contents of your SD card
+        blockquote To access your location data when stored locally, and remember your settings
+      #downloadingIos.section.scrollspy
+        h5
+          i.material-icons phone_iphone
+          |  iOS
+        p Motion & Fitness Activity
+        blockquote To improve location accuracy and battery efficiency
+        p Location while using the app
+        blockquote To create your location data
+        p Send you notifications
+        blockquote To notify you of Coposition friend requests, new app versions, when your mobile settings do not allow Coposition to perform properly and to enable some Coposition features
+        p Background Location
+        blockquote To create your location data in the background, when auto check-in is ON. 
+    .divider
+
     #devices.section.scrollspy
       h4
         i.material-icons devices
         |  Devices
-      #fogging.section.scrollspy
+      p 
+        | Before you can create a check-in, you must first have created a device for this check-in to be assigned to. Every check-in is assigned to a device, whether that device is assigned to a tracker (phone, tablet, etc.) or not. There is no limit to the number of devices you can have, and you can choose which Coposition device is assigned to each of your trackers. You can customise the permissions for each device you own, giving you control over how your data consumers (Coposition enabled apps and your Coposition friends) can access your location. 
+      #creatingDevice.section.scrollspy
         h5
+          i.material-icons add
+          |  Creating a Device
+        p You can create a device through the Coposition online dashboard or via the Coposition mobile app
+        h6 
+          i.material-icons computer
+          |  Online
+        p
+          | To create a new device online, go to your devices tab and click the yellow CREATE DEVICE button. You can then give this device a name and select the type of tracker you will connect this device to. These can be updated later. The Coposition UUID is used to sync this new device to 3rd party apps or hardware - more info here.
+        h6 
+          i.material-icons smartphone
+          |  Mobile
+        p 
+          | When you first sign in to the Coposition mobile app, or when you first sign into the mobile app on a tracker that you have not signed in on before, a new device will be created for you in Coposition. You can rename this device by tapping on the name in the top of the menu, accessible from the top left of the home screen.
+      #deviceSettings.section.scrollspy
+        h5
+          i.material-icons settings
+          |  Device Settings
+        p Device settings can be managed from the settings menu in the mobile app or from your devices screen online.
+      #fogging.section.scrollspy
+        h6
           i.material-icons cloud
           |  Fogging
         p
-          | Fogging allows you additional control over how much of your location data your data consumers (friends and apps) can see. Fogging a checkin or a device will mean that your data consumers will not be shown your exact location or coordinates, instead they will see a location usually localised to the nearest city/town or a randomised location within 50km of your actual location if there are no settlements nearby.
+          | Fogging allows you additional control over how much of your location data your data consumers (friends and apps) can see. Fogging a check-in or a device will mean that your data consumers will not be shown your exact location or coordinates, instead they will see a location usually localised to the nearest city/town or a randomised location within 50km of your actual location if there are no settlements nearby.
         p Fogging is enabled by default when you create a device. Whilst on, you can choose to allow certain friends or apps to see precise data by enabling bypass fogging via permissions.
       #delay.section.scrollspy
-        h5
+        h6
           i.material-icons timer
           |  Delay
         p
@@ -45,13 +98,13 @@ h1 Help Centre
         p
           | Delay is not set when you first create a device. Once you have set a delay you can choose to allow certain friends or apps to see your data immediately by enabling bypass delay via permissions.
       #cloaking.section.scrollspy
-        h5
+        h6
           i.material-icons visibility_off
           |  Cloaking
         p
           | Cloaking a device hides it and all of its check-ins from all of your friends and apps. It also disables the device's shared page if the device is shared.
       #sharing.section.scrollspy
-        h5
+        h6
           i.material-icons public
           |  Sharing
         p
@@ -61,7 +114,7 @@ h1 Help Centre
           i.material-icons perm_device_information
           |  Device UUID
         p
-          | Device UUID is a unique identifier for existing Coposition devices and is primarily used in the developer API. Some apps may request a device UUID to sync this device to their app or some hardware (eg. a tracking device) may come pre-packaged with a Coposition UUID that you can use to sync the hardware to your coposition account.
+          | Device UUID is a unique identifier for existing Coposition devices and is primarily used in the developer API. Some apps may request a device UUID to sync this device to their app or some hardware (eg. a dedicated tracker) may come pre-packaged with a Coposition UUID that you can use to sync the hardware to your Coposition account.
       #configuration.section.scrollspy
         h5
           i.material-icons settings
@@ -71,16 +124,48 @@ h1 Help Centre
         blockquote
           | E.g. a tracking device might have additional settings such as how often the tracker sends checkins, which you could update via the associated tracking app.
     .divider
+
+    #checkin.section.scrollspy
+      h4
+        i.material-icons pin_drop
+        |  Check-ins
+      p
+        | A check-in is an individual unit of location data, and includes information like time, date, coordinates, altitude (where available), and device settings. Once you have created a device, you can start creating check-ins via the Coposition website and the Coposition app.
+      #mobileCheckin.section.scrollspy
+        h5
+          i.material-icons smartphone
+          |  Mobile
+        p The mobile app is the easiest and most common way to create check-ins.
+        h6 Manual
+        p You can click the Check-in icon on the home screen to create a check-in where you are currently located. 
+        h6 Auto
+        p Select Settings from the menu in-app. There you can turn auto check-in on and customise how often these check-ins are created by selecting a check-in interval. You can also select to ignore similar locations, to avoid creating excessive location data. You can also choose a battery saving mode. 
+      #onlineCheckin.section.scrollspy
+        h5
+          i.material-icons computer
+          |  Online
+        p There are three ways to create check-ins online.
+        h6 Remote
+        p From your devices tab, select ‘remote check-in’ for the desired device. This will attempt to communicate with the tracker which this Coposition device is assigned to, and if the tracker has a data connection and has location enabled it will create a check-in.
+        h6 Custom
+        p From your devices tab, select a device by clicking its name. Right click on the map where you would like a check-in created, and select ‘create check-in here’. You can then edit the location, date, and time of the check-in as well as fog or delete it. 
+        h6 Current
+        p From your devices tab, select a device by clicking its name. Click the blue check-in button and select from the options presented. Check-in now will set the location as that of the browser you are on, whereas remote check-in will use the current location of the selected device’s tracker.
+    .divider
+    
     #friends.section.scrollspy
       h4
         i.material-icons recent_actors
         |  Friends and Apps
+      p
+        | By adding friends and apps in Coposition, you can start to control how these data consumers access your location data. Add friends to securely share your location with them, and connect and authorise apps to start controlling how they access your location data. 
       #addingFriends.section.scrollspy
         h5
           i.material-icons add_circle
           |  Adding friends
         p
           | To add a friend, visit the friends page and click the orange plus at the top of the page. You can then enter an email address, either of an existing user or of a friend you would like to invite to use Coposition. This will send an email either notifying the user that they have received a friend request or that you have invited them to sign up with Coposition.
+      #addingApps.section.scrollspy
         h5
           i.material-icons add_circle
           |  Adding apps
@@ -88,15 +173,15 @@ h1 Help Centre
           | To allow external applications to access your location data, you must authorise their access to your Coposition account.
         p
           | Connecting and authenticating an external application, to allow access to your location data, can be started from the external application or from the Coposition website. Starting the process through the Coposition website is recommended, in order to customise the application’s access to your devices and location data before authenticating the app and giving the app developers access to your data.
-        p To connect online: 
+        h6 To connect online: 
         ul.browser-default
           li  From your #{current_user ? link_to('Apps', user_apps_path(current_user.url_id), class: 'link') : 'Apps'} tab, click the <i>CONNECT NEW APP</i> button in the top right corner. 
           li  Enter the app you would like to connect to. Potential matches will be displayed as you start typing.
           li  Select the app you’d like to connect to, and click <i>ADD</i>. You will return to the #{current_user ? link_to('Apps', user_apps_path(current_user.url_id), class: 'link') : 'apps'} tab and will see this app listed in your apps <i>Requiring Authentication</i>. These apps cannot access your data, but you can edit their <i>PERMISSIONS</i> to limit their data access as you please once authentication is completed. You can also <i>DISCONNECT</i> from these apps. 
-        p To authorise online:
+        h6 To authorise online:
         ul.browser-default
           li  Apps listed as Requiring Authentication give you the option to <i>AUTHENTICATE</i>. Clicking this will take you to the external app where you will be able to authorise the external application to access your Coposition data.
-        p To connect and authorise from an external app:
+        h6 To connect and authorise from an external app:
         ul.browser-default
           li  Every external app will handle this slightly differently, but they will ask you to permit their access to your Coposition account. You will be taken to a Coposition page and asked to login to your Coposition account.
           li  After entering your Coposition account email address and password you will then be asked to authorise or deny the application’s access to your data. If you deny access, you can always complete the process again.
@@ -108,56 +193,85 @@ h1 Help Centre
         blockquote 
           p <b>Authenticated:</b>
           | The external app has the ability to request your data. You can still manage your settings to ensure that your Coposition account says ‘no’ to this request!
+      
       #permissions.section.scrollspy
         h5
           i.material-icons lock
           |  Permissions
         p
           | Permissions allow you additional controls over how much of your data a specific consumer (friend or app) can see for a specific device.
-          br/
-          br/
-          | Disable access stops a consumer from seeing any location data for a device.
-          br/
-          br/
-          | Bypass fogging/delay allows a consumer to see precise location data for a device regardless or whether it is fogged and/or delayed.
+        h6 Disable access
+        p Stops a consumer from seeing any location data for a device.
+        h6 Bypass fogging/delay
+        p Allows a consumer to see precise location data for a device regardless or whether it is fogged and/or delayed.
         blockquote
           | E.g. you might decide that you want a particular friend to be able to see your exact location for a fogged device. You can achieve this by enabling 'bypass fogging' for that friend on that device. This will allow them alone to see the device's data location as if it were not fogged.
-        p
-          | Last checkin only/Full history allows you control over whether the consumer can see just the most recent checkin for a device or all of it's checkins. Fogging and delay still apply.
+        h6 Last check-in only/Full history
+        p Allows you control over whether the consumer can see just the most recent checkin for a device or all of it's checkins. Fogging and delay still apply.
     .divider
+    
+    #viewing.section.scrollspy
+      h4
+        i.material-icons visibility
+        |  Viewing your check-ins
+      p By creating your location data using the Coposition mobile app, you have full access to, and control over, your location history. You can view your location history through the mobile app and via your dashboard.
+    #viewingMobile.section.scrollspy
+      h5
+        i.material-icons smartphone
+        |  Mobile app
+      p Select check-in history from the menu in-app. Depending on how active you’ve been, you’ll either see:
+      ul
+        li All check-ins from past 24 hours, up to most recent 50 check-ins
+        li Most recent 10 check-ins, if 10 or fewer in past 24 hours
+      p You can toggle whether these check-ins are displayed as a path or as individual points, with the line moving from dark blue to grey with age if path is selected.  You can view any specific check-in online by selecting it and then either copying the link or selecting to open in your browser.
+    #viewingOnline.section.scrollspy
+      h5
+        i.material-icons computer
+        |  Online
+      p
+        | When it comes to viewing check-ins and managing them, your online dashboard has much greater functionality. To view your check-ins, go to your Devices tab. There you’ll be able to view check-ins associated with an individual device of yours by clicking on the device name, or viewing all data for all devices of yours by clicking View All Check-ins. Using the toggles on the left of the map, you can toggle the path on/off and select a map style, like on the mobile app. When viewing any dataset online you will also have additional processing options.
+    #viewingCity.section.scrollspy
+      h6 City view
+      p When viewing the check-in history for a device online, Coposition displays City View by default. This aggregates (clusters) all check-ins within the same city or town to give an approximation of your location history. 
+      p For your detailed history, you can toggle City View off by clicking the City View icon in the map options. City view still only displays locations within the selected date range.
+    #viewingDate.section.scrollspy
+      h6 Date range
+      p By default, you will see the last 5000 check-ins that you have created regardless of how many cities these check-ins have been created within. By selecting a date range you can customise the number of check-ins used when displaying your map.
+    #viewingSearch.section.scrollspy
+      h6 Searching for a check-in
+      p To search for a specific check-in, you can view your device(s) online and search for a location in the top right corner of the map. If you know the ID of a check-in, you can enter this on your Devices page to see data about that check-in. 
+    #viewingW3w.section.scrollspy
+      h6 what3words
+      p w3w or 'what3words' is a unique combination of 3 words that identifies a 3mx3m square, anywhere on the planet. Learn more about #{link_to("what3words", "http://what3words.com/about/", class: 'link')}. 
+    .divider
+
     #download.section.scrollspy
       h4
         i.material-icons file_download
-        |  Download/Upload
+        |  Back-up, restore, and view in other programs
       p
         | You can download your check-ins in a variety of formats in order to have a permanent local copy of your data. If you wish, you can also use this as a data backup, and reupload check-ins at a later date to overwrite any changes or deletions you may have made. Check-ins must be uploaded in CSV format.
       p
         | When uploading check-ins from a CSV file, it is possible that existing check-ins will be overwritten. This will only occur if you download your check-in history, and then re-upload this same history having edited the CSV file you downloaded.
-      h5 CSV
+      h6 CSV
       p
         | Simple comma-separated values in rows. This is the best format for doing analysis (eg. filtering or mathematical) on the data. CSV is usually viewed with a spreadsheet programme.
       p The CSV file downloaded will include the following headers:
       blockquote
-        | id, lat, lng, created_at, updated_at, uuid, device_id, address, city, postal_code, country_code, fogged, fogged_lat, fogged_lng, fogged_city, output_lat, output_lng, output_address, output_city, output_postal_code, output_country_code, fogged_country_code, edited
+        | id, lat, lng, created_at, updated_at, uuid, device_id, address, city, postal_code, country_code, fogged, fogged_lat, fogged_lng, fogged_city, output_lat, output_lng, output_address, output_city, output_postal_code, output_country_code, fogged_country_code, edited, speed, altitude
       p To view a CSV file, you can use #{link_to("Google Sheets", "http://google.com/sheets", class: "link")}.
-      h5 GeoJson
+      h6 GeoJson
       p
         | GeoJSON is a format for encoding a variety of geographic data structures. It is a useful format for many mapping programmes. Learn more about #{link_to("GeoJson", "https://macwright.org/2015/03/23/geojson-second-bite.html", class: 'link')}.
       p Coposition returns your check-ins as a #{link_to("FeatureCollection", "https://macwright.org/2015/03/23/geojson-second-bite.html#featurecollection", class: 'link')}, with each individual check-in an individual feature which includes the latitude, longitude and id of the check-in.
       p To visualise, use #{link_to("Geojson Lint", "http://geojsonlint.com/", class: "link")}.
-      h5 GPX
+      h6 GPX
       p A standard XML format for GPS data. A useful format for GPS devices and online mapping.
       p Coposition creates a GPX track where each of your check-ins is represented by a GPX point. These points include your elavation, latitude, longitude and time the check-in was created.
       p You can learn more about the official GPX schema #{link_to("here", "http://www.topografix.com/gpx.asp", class: "link")}.
       p To visualise, use #{link_to("GPS visualizer", "http://www.gpsvisualizer.com/", class: "link")}.
     .divider
-    #w3w.section.scrollspy
-      h4
-        i.material-icons explore
-        |  what3words
-      p
-        | w3w or 'what3words' is a unique combination of 3 words that identifies a 3mx3m square, anywhere on the planet. Learn more about #{link_to("what3words", "http://what3words.com/about/", class: 'link')}.
-    .divider
+
     #zapier.section.scrollspy
       h4
         i.material-icons flash_on
@@ -174,11 +288,14 @@ h1 Help Centre
         br/
         | Get started at  #{link_to("zapier.com", "https://zapier.com/", class: 'link')}
     .divider
+
     #privacy.section.scrollspy
       h4
         i.material-icons account_circle
         |  Privacy Policy
       p Coposition is dedicated to ensuring our users' data is protected. Our #{link_to("terms and conditions", terms_path, class: 'link')} outline the relationship between Coposition, users, and their data. Coposition meets and exceeds the minimum standards for the EU's GDPR.
+    .divider
+    
     #more.section.scrollspy
       h4
         i.material-icons help
@@ -188,17 +305,19 @@ h1 Help Centre
   .col.hide-on-small-only.m3.l2
     ul.section.table-of-contents
       li
-        a href="#checkin" Checking in
+        a href="#creating" Creating an account
+      li
+        a href="#downloading" Downloading the apps
       li
         a href="#devices" Devices
       li
+        a href="#checkin" Check-ins
+      li
         a href="#friends" Friends and Apps
       li
-        a href="#permissions" - Permissions
+        a href="#viewing"  Viewing your check-ins
       li
-        a href="#download" Download/Upload
-      li
-        a href="#w3w" what3words
+        a href="#download" Back-up, Restore, and View in other Programs
       li
         a href="#zapier" Zapier
       li
