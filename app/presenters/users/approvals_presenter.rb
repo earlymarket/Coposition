@@ -27,6 +27,7 @@ module Users
     def initialize(user, params)
       @user = user
       @approvable_type = params[:approvable_type]
+      @email = params[:email]
       @order = params[:order_by]
       @page = apps_page? ? "Apps" : "Friends"
       @approved = add_color_info(users_approved)
@@ -51,6 +52,8 @@ module Users
     def input_options
       if apps_page?
         { placeholder: "App name", class: "validate devs_typeahead", required: true }
+      elsif @email
+        { value: @email, class: "validate", required: true }
       else
         { placeholder: "email@email.com", class: "validate", required: true }
       end
