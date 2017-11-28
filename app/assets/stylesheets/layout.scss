@@ -85,18 +85,28 @@ $lg-breakpoint: 600px;
 #quicklinks {
 
   // font-size and padding
-  $quicklinks-size: 0.7rem;
+  $quicklinks-size: 0.9rem;
 
   display: flex;
   background: black;
   color: white;
   text-transform: uppercase;
   font-size: $quicklinks-size;
-  padding: 0;
+  padding: 0.2rem 0;
 
-  .quicklinks-items > * {
+  .quicklinks-items {
+    display: flex;
+    justify-content: space-between;
     margin-right: $quicklinks-size;
     line-height: 1.5rem;
+  }
+
+  .v-align {
+    display: flex;
+    align-items: center;
+    .logo-text {
+      margin-left: 0.5rem;
+    }
   }
 
   .current {
@@ -108,15 +118,19 @@ $lg-breakpoint: 600px;
   @media (min-width: $lg-breakpoint) {
     line-height: 0.8rem;
     .lg-items-left {
+      height: 50px;
       float: left;
-      margin-right: $quicklinks-size;
-      margin-left: 0;
+      margin-right: 0.5rem;
+      display: flex;
+      align-items: center;
     }
 
     .lg-items-right {
       float: right;
       margin-left: $quicklinks-size;
       margin-right: 0;
+      display: flex;
+      align-items: center;
     }
   }
 
