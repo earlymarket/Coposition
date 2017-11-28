@@ -1,11 +1,19 @@
 class Users::ApprovalsController < ApplicationController
-  before_action :authenticate_user!
-  before_action :correct_url_user?
+  before_action :authenticate_user!, except: :add
+  before_action :correct_url_user?, except: :add
 
   def new
     @approvals_presenter = Users::ApprovalsPresenter.new(current_user, params)
     @approval = Approval.new
     gon.push(devs: (Developer.all - current_user.developers).pluck(:company_name))
+  end
+
+  def add
+    if current_user
+      redirect_to(new_user_approval_path(current_user, approvable_type: "User", email: params["email"]))
+    else
+      redirect_to(new_user_session_url(return_to: request.fullpath))
+    end
   end
 
   def create
