@@ -27,6 +27,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     app
   end
   let(:user_params) { { user_id: user.id } }
+  let(:add_params) { { email: friend.email } }
   let(:friend_approval_create_params) do
     user_params.merge(approval: { approvable: friend.email, approvable_type: "User" })
   end
@@ -98,6 +99,19 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         expect(flash[:alert]).to match "exists"
         expect(Approval.count).to eq approval_count
       end
+    end
+  end
+
+  describe "GET #add" do
+    it "redirects signed in user to add page" do
+      user
+      get :add, params: add_params
+      expect(response).to redirect_to(new_user_approval_path(user, approvable_type: "User", email: friend.email))
+    end
+
+    it "redirects signed out user to sign in page" do
+      get :add, params: add_params
+      expect(response).to redirect_to(new_user_session_url(return_to: request.fullpath))
     end
   end
 
