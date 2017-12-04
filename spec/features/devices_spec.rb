@@ -11,7 +11,7 @@ RSpec.feature "Devices", type: :feature do
     when_i_create_a_new_device_select
     then_i_should_see_the_device_map
     when_i_click_delete
-    then_i_should_see_no_devices
+    then_i_should_see_device_is_being_deleted
   end
 
   scenario "User creates device and edits settings", js: true do
@@ -78,8 +78,7 @@ RSpec.feature "Devices", type: :feature do
     click_link "Delete device"
   end
 
-  def then_i_should_see_no_devices
-    expect(page).to have_text("Your devices")
-    expect(page).not_to have_text("Device info")
+  def then_i_should_see_device_is_being_deleted
+    expect(page).to have_text(:all, "Device and checkins deletion started")
   end
 end

@@ -1,4 +1,4 @@
-class DeleteCheckinsWorker
+class DeleteDeviceWorker
   include Sidekiq::Worker
 
   def perform(device_id)
