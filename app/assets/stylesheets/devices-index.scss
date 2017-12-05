@@ -28,9 +28,18 @@
     background-color: $primary-color;
     color: #ffffff !important;
     width: 60%;
+  }
+
+  .device-button-hide-text {
+    @extend .device-button;
     @media screen and (max-width: 660px){
       font-size: 0;
     }
+  }
+
+  .device-button-small {
+    @extend .device-button;
+    width: 40%;
   }
 
   #last-checkin {
@@ -44,11 +53,6 @@
 
   .view-all {
     text-align: right;
-  }
-
-  .device-button-small {
-    @extend .device-button;
-    width: 40%;
   }
 
   .device-toggle {
@@ -173,5 +177,17 @@
 
   #checkin_id {
     width: 60%;
+  }
+
+  .all-permissions {
+    @media screen and (max-width: 660px){
+      font-size: 1rem;
+    }
+  }
+
+  .permission-title {
+    @media screen and (max-width: 660px){
+      flex-direction: column;
+    }
   }
 }

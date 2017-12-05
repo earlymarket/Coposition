@@ -37,7 +37,7 @@ nav
           - if Rails.env == "test" || params[:admin] || signed_in?
             - if developer_signed_in?
               li
-                = link_to "Log Out", destroy_developer_session_path, method: :delete, class: "dropdown-item right"
+                = link_to "Log Out", destroy_developer_session_path, method: :delete, class: "dropdown-item"
               li
                 = link_to "Console", developers_path, class: "dropdown-item"
               li
