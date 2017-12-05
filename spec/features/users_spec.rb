@@ -70,7 +70,7 @@ RSpec.feature "Users", type: :feature do
   end
 
   def then_i_should_see_a_new_username
-    click_on "Dashboard", match: :first
+    click_on "Coposition", match: :first
     expect(page).to have_text "Hello changed"
   end
 

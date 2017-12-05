@@ -87,7 +87,9 @@ h5{
 }
 
 h6{
-
+  @extend .dark-text, .brand;
+  font-weight: 700;
+  font-size: 1.2rem;
 }
 
 p {

@@ -1,32 +1,35 @@
 class UserMailer < ApplicationMailer
-  def invite_email(address)
+  def invite_email(user, friend_email)
     SendSendgridEmail.call(
-      to: address, subject: "Coposition Invite", id: "b97d0595-a77e-46ae-838b-ceb1c6785fee",
-      substitutions: [{ key: "-address-", value: address }]
+      to: friend_email, subject: "Coposition Invite", id: "b97d0595-a77e-46ae-838b-ceb1c6785fee",
+      substitutions: [
+        { key: "-address-", value: friend_email },
+        { key: "-from-", value: user.email }
+      ]
     )
   end
 
-  def invite_sent_email(user, address)
+  def invite_sent_email(user, friend_email)
     return unless user.subscription
     SendSendgridEmail.call(
       to: user.email, subject: "Coposition friend request sent", id: "3bc81984-bec7-49af-8612-4107c028f5f5",
       substitutions: [
         { key: "-user-", value: user.username.present? ? user.username : user.email },
-        { key: "-address-", value: address },
+        { key: "-address-", value: friend_email },
         { key: "-unsubscribe-", value: unsubscribe_link(user) },
         { key: "-forgot-", value: "https://coposition.com/users/password/new" }
       ]
     )
   end
 
-  def add_user_email(approvable, user, from_developer)
-    return unless user.subscription
+  def add_user_email(user, friend, from_developer)
+    return unless friend.subscription
     SendSendgridEmail.call(
-      to: user.email, subject: "Coposition approval request", id: "64b3b8c9-12ae-49bc-9983-2ac3e507ac0d",
+      to: friend.email, subject: "Coposition approval request", id: "64b3b8c9-12ae-49bc-9983-2ac3e507ac0d",
       substitutions: [
-        { key: "-url-", value: "https://coposition.com/users/#{user.id}/#{from_developer ? 'apps' : 'friends'}" },
-        { key: "-from-", value: from_developer ? approvable.company_name : approvable.email },
-        { key: "-unsubscribe-", value: unsubscribe_link(user) }
+        { key: "-url-", value: "https://coposition.com/users/#{friend.id}/#{from_developer ? 'apps' : 'friends'}" },
+        { key: "-from-", value: from_developer ? user.company_name : user.email },
+        { key: "-unsubscribe-", value: unsubscribe_link(friend) }
       ]
     )
   end

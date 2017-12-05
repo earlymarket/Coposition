@@ -56,7 +56,7 @@ RSpec.feature "Approvals", type: :feature do
   end
 
   def when_i_add_a_developer
-    click_on "users", match: :first
+    visit "/"
     click_on "Apps", match: :first
     click_on "add"
     fill_in "approval_approvable", with: "fake company"

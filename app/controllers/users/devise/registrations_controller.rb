@@ -72,6 +72,7 @@ class Users::Devise::RegistrationsController < Devise::RegistrationsController
 
   # The path used after sign up.
   def after_sign_up_path_for(_resource)
+    return session[:return_to] if session[:return_to]
     user_dashboard_path(current_user)
   end
 

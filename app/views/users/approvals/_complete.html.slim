@@ -25,8 +25,11 @@
               | Permissions
             .modal id="perm#{approvable.id}" 
               .modal-content
-                h4.modal-content
-                  | Permissions controls for #{approvals_approvable_name(approvable)}
+                div
+                  h4.inline-text
+                    | Permissions controls for #{approvals_approvable_name(approvable)}
+                  a.right.tooltipped data-tooltip=("Permissions help") href="/help#permissions" target="_blank" 
+                    i.material-icons help
                 ul.permissions.collection data-id=(approvable.id)
                   li.collection-item.row.valign-wrapper.master-permissions
                     .valign.col.s6

@@ -6,13 +6,13 @@
     position: absolute;
     padding: 10px;
     width: 300px;
-    top: 115px;
+    top: 124px;
     left: 90px;
     z-index: 9;
 
-    @media screen and (max-width: 500px){
+    @media screen and (max-width: 660px){
       width: 260px;
-      top: 80px;
+      top: 70px;
       left: 70px;
     }
 
@@ -73,8 +73,11 @@
   #map {
     width:100%;
     position:absolute !important;
-    top: 21px;
-    margin-top: 55px;
+    top: 54px;
+    margin-top: 64px;
+    @media screen and (max-width: 660px){
+      margin-top: 0px;
+    }
   }
 
   .myProgress {
@@ -131,7 +134,7 @@
       margin-left: 5%;
       margin-right: 5%;
     }
-    @media screen and (max-width: 500px){
+    @media screen and (max-width: 660px){
       .modal-trigger {
         padding: 0 1rem;
         font-size: 10px;

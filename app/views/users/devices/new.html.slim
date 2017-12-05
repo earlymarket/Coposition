@@ -1,6 +1,6 @@
 h1
   | Device Creation
-  a.tooltipped data-tooltip=("Device creation help") href="/help#devices" target="_blank" 
+  a.tooltipped data-tooltip=("Device creation help") href="/help#creatingDevice" target="_blank" 
     i.material-icons.help-icon help
 = form_for @device, url: { action: "create" }, html: { class: "form-group" } do |f|
   = label :name, "Enter a name for the device*", class: "control-label"
