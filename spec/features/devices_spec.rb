@@ -7,13 +7,6 @@ RSpec.feature "Devices", type: :feature do
     and_i_am_on_the_devices_page
   end
 
-  scenario "User creates then deletes device" do
-    when_i_create_a_new_device_select
-    then_i_should_see_the_device_map
-    when_i_click_delete
-    then_i_should_see_device_is_being_deleted
-  end
-
   scenario "User creates device and edits settings", js: true do
     when_i_create_a_new_device
     and_i_am_on_the_devices_page
@@ -43,23 +36,12 @@ RSpec.feature "Devices", type: :feature do
     expect(page).to have_text("Your devices")
   end
 
-  def when_i_create_a_new_device_select
-    click_on "add"
-    fill_in "device_name", with: "My device"
-    select("Laptop", from: "device_icon")
-    click_button "Add"
-  end
-
   def when_i_create_a_new_device
     click_on "add"
     fill_in "device_name", with: "My device"
     find("div.select-wrapper input").click
     find("div.select-wrapper li", text: "Laptop").click
     click_button "Add"
-  end
-
-  def then_i_should_see_the_device_map
-    expect(page).to have_text("Checkin now")
   end
 
   def when_i_click_the_icon(icon)
@@ -72,13 +54,5 @@ RSpec.feature "Devices", type: :feature do
 
   def and_i_click_the_slider
     find(".noUi-origin").click
-  end
-
-  def when_i_click_delete
-    click_link "Delete device"
-  end
-
-  def then_i_should_see_device_is_being_deleted
-    expect(page).to have_text(:all, "Device and checkins deletion started")
   end
 end

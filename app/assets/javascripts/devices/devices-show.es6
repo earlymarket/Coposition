@@ -35,7 +35,14 @@ $(document).on('page:change', function() {
     $("#deleteDevice").on("click", () => {
       swal({
         title: "Enter device name to delete this device and check-ins",
-        content: "input",
+        content: {
+         element: "input",
+         attributes: {
+           placeholder: "Enter your device name",
+           id: "deviceName",
+           type: "text",
+         },
+       },
         buttons: {
           cancel: {
             text: "Cancel",
