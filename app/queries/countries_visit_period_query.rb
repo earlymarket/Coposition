@@ -37,7 +37,7 @@ class CountriesVisitPeriodQuery
               INNER JOIN
                 devices ON checkins.device_id = devices.id
               WHERE
-                devices.user_id = #{user.id} AND checkins.created_at <= current_timestamp AND checkins.altitude <= #{FLIGHT_ALTITUDE}
+                devices.user_id = #{user.id} AND checkins.created_at <= current_timestamp AND (checkins.altitude <= #{FLIGHT_ALTITUDE} OR checkins.altitude IS NULL)
               ORDER BY created_at
             ) as ordered_ch
           ) as numbered_ch
