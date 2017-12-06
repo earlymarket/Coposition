@@ -32,6 +32,35 @@ $(document).on('page:change', function() {
       }
     }
 
+    $("#deleteDevice").on("click", () => {
+      swal({
+        title: "Enter device name to delete this device and check-ins",
+        content: "input",
+        buttons: {
+          cancel: {
+            text: "Cancel",
+            visible: true,
+          },
+          confirm: {
+            text: "Confirm",
+            closeModal: false
+          }
+        }
+      })
+      .then(deviceName => {
+        if (!deviceName) return
+        let match = gon.devices.find((device) => device.name === deviceName)
+        if (match) {
+          $.ajax({
+            url: '/users/' + gon.current_user_id + '/devices/' + gon.device,
+            type: 'DELETE',
+          }).then(swal.closeModal);
+        } else {
+          swal("Incorrect device name", "The device name you entered did not match", "error");
+        }
+      })
+    })
+
     function postLocation(position) {
       $.ajax({
         url: '/users/' + gon.current_user_id + '/devices/' + gon.device + '/checkins/',
