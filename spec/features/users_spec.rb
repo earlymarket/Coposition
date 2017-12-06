@@ -64,7 +64,7 @@ RSpec.feature "Users", type: :feature do
   end
 
   def and_i_edit_my_username
-    fill_in "user_username", with: "changed"
+    fill_in "user_username", class: "", with: "changed"
     fill_in "user_current_password", with: user.password
     click_on "Update"
   end

@@ -4,8 +4,7 @@
     .card.col.s12.m10.offset-m1
       .card-content
         legend.card-title Edit account
-        .hide
-          = f.text_field :username
+        = f.text_field :username, class: "hide"
         .row
           .input-field.col.s12
             = f.label :email, class: "active"
