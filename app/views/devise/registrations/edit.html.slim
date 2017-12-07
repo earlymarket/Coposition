@@ -11,7 +11,11 @@
         .row
           .input-field.col.s12
             = f.label :username, class: "active"
-            = f.text_field :username, autocomplete: :off
+            = f.text_field :username
+        .hidden
+          .input-field.col.s12
+            = f.label :username
+            = f.text_field :username, class: "inactive"
         .row
           .input-field.col.s12
             = f.label :webhook_key, class: "active"
@@ -59,3 +63,6 @@
 
 javascript:
   COPO.utility.setActivePage('account')
+  $('#edit_user').on('submit', () => {
+    $('.inactive').attr('disabled', 'disabled');
+  })
