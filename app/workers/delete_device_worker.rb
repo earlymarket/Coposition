@@ -2,8 +2,6 @@ class DeleteDeviceWorker
   include Sidekiq::Worker
 
   def perform(device_id)
-    device = Device.find(device_id)
-    device.checkins.destroy_all
-    device.destroy
+    Checkin.where(device_id: device_id).destroy_all
   end
 end

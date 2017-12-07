@@ -64,8 +64,9 @@ class Users::DevicesController < ApplicationController
   end
 
   def destroy
+    Device.find(params[:id]).destroy
     DeleteDeviceWorker.perform_async(params[:id])
-    flash[:notice] = "Device and checkins deletion started"
+    flash[:notice] = "Device deleted"
     redirect_to user_devices_path
   end
 
