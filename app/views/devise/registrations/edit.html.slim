@@ -6,15 +6,15 @@
         legend.card-title Edit account
         .row
           .input-field.col.s12
-            = f.label :username
-            = f.text_field :username
-        .row
-          .input-field.col.s12
             = f.label :email, class: "active"
             = f.email_field :email, autofocus: true
         .row
           .input-field.col.s12
             = f.label :username, class: "active"
+            = f.text_field :username
+        .hidden
+          .input-field.col.s12
+            = f.label :username
             = f.text_field :username
         .row
           .input-field.col.s12
