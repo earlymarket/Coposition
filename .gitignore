@@ -26,8 +26,8 @@ public/system/*
 # Assets
 public/assets
 
-# Bower
-vendor/assets/bower_components
+# Node Modules
+/node_modules
 
 # Ignore local Procfile
 Procfile.local
