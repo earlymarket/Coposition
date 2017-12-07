@@ -1,0 +1,13 @@
+.c-registrations.a-new {
+  a.link {
+    color: $primary-color;
+    text-decoration: underline;
+  }
+}
+
+.c-registrations.a-edit {
+  .hidden {
+    position: absolute;
+    top: -500px;
+  }
+}
