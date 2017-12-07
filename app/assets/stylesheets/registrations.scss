@@ -8,6 +8,6 @@
 .c-registrations.a-edit {
   .hidden {
     position: absolute;
-    top: -500px;
+    z-index: -1000;
   }
 }
