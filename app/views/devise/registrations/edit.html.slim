@@ -62,7 +62,7 @@
         = f.button "Cancel my account", class: "btn red white-text", data: { confirm: "Are you sure?" }
 
 javascript:
-  COPO.utility.setActivePage('account')
-  $('#edit_user').on('submit', () => {
+  COPO.utility.setActivePage('account');
+  $('#edit_user').on('submit', function() {
     $('.inactive').attr('disabled', 'disabled');
-  })
+  });
