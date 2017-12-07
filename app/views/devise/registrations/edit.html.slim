@@ -4,10 +4,6 @@
     .card.col.s12.m10.offset-m1
       .card-content
         legend.card-title Edit account
-        .hidden
-          .input-field.col.s12
-            = f.label :username, class: "active"
-            = f.text_field :username
         .row
           .input-field.col.s12
             = f.label :email, class: "active"
@@ -16,6 +12,10 @@
           .input-field.col.s12
             = f.label :username, class: "active"
             = f.text_field :username
+        .hidden
+          .input-field.col.s12
+            = f.label :admin, class: "active"
+            = f.text_field :admin
         .row
           .input-field.col.s12
             = f.label :webhook_key, class: "active"
