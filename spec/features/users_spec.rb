@@ -17,7 +17,7 @@ RSpec.feature "Users", type: :feature do
     then_i_should_see_sign_up
   end
 
-  scenario "User signs in, edits account and signs out" do
+  scenario "User signs in, edits account and signs out", js: true do
     given_i_fill_in_log_in_details
     and_i_click_log_in
     then_i_should_see_welcome_page
@@ -64,7 +64,7 @@ RSpec.feature "Users", type: :feature do
   end
 
   def and_i_edit_my_username
-    fill_in "user_username", class: "", with: "changed"
+    fill_in "user_username", match: :first, with: "changed"
     fill_in "user_current_password", with: user.password
     click_on "Update"
   end
@@ -79,6 +79,6 @@ RSpec.feature "Users", type: :feature do
   end
 
   def then_i_should_be_logged_out
-    expect(page).to have_text "Log In"
+    expect(page).to have_text "LOG IN"
   end
 end
