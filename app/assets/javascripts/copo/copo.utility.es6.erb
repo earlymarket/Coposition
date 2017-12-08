@@ -52,6 +52,7 @@ COPO.utility = {
   },
 
   deviceLink(checkin, devices) {
+    if (!devices) return null;
     var path = window.location.pathname.slice(0, -8) + "/devices/" + checkin.device_id
     var name = _.find(devices, _.matchesProperty('id', checkin.device_id)).name
     var output =  $(`<a class="device-link tooltipped" href="${path}" data-tooltip="View check-ins for this device"><i class="material-icons">devices_other</i>${name}</a>`)

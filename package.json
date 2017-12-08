@@ -2,7 +2,8 @@
   "name": "copsition",
   "version": "1.0.0",
   "dependencies": {
-    "bower": "1.8.0"
+    "bower": "1.8.0",
+    "sweetalert": "^2.0.8"
   },
   "engine": {
     "node": "7.1.0",
