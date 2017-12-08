@@ -92,4 +92,8 @@
   #map-status {
     // font-size: 1.4rem;
   }
+
+  .leaflet-touch, .leaflet-control-fullscreen a {
+    background-position: 0px 0px;
+  }
 }

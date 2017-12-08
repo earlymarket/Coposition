@@ -40,6 +40,7 @@
 //= require nouislider.min
 
 // -- Mapbox stuff --
+//= require leaflet/dist/leaflet
 //= require mapbox.js/src/mapbox
 //= require leaflet.markercluster/dist/leaflet.markercluster.js
 //= require leaflet.locatecontrol/dist/L.Control.Locate.min

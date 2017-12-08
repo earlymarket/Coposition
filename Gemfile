@@ -52,6 +52,7 @@ gem "dotenv-rails"
 gem "sendgrid-ruby"
 gem "countries"
 gem "nokogiri", ">= 1.8.1"
+gem "browserify-rails"
 
 group :production do
   gem "rack-timeout"
