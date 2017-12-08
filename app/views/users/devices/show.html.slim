@@ -49,7 +49,7 @@
       .center-align
         p.center-align
           | You will no longer be able to create check-ins with this device.
-        = link_to "Delete device", user_device_path(current_user.url_id, @device_show_presenter.device), { method: :delete, class: "btn red white-text", data: { confirm: "Are you sure?" } }
+        = link_to "Delete device", "#", { id: "deleteDevice", class: "btn red white-text", remote: true }
   /! templates
   script#markerPopupTmpl type="x-tmpl-mustache" 
     h3 

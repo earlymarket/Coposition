@@ -26,6 +26,9 @@ public/system/*
 # Assets
 public/assets
 
+# Node Modules
+node_modules
+
 # Bower
 vendor/assets/bower_components
 
