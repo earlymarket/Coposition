@@ -91,6 +91,7 @@ class User < ApplicationRecord
   def create_pending_requests
     EmailRequest.where(email: email).find_each do |request|
       Approval.add_friend(request.user, self)
+      request.destroy
     end
   end
 
