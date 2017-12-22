@@ -11,7 +11,11 @@
         .row
           .input-field.col.s12
             = f.label :username, class: "active"
-            = f.text_field :username, autofocus: true
+            = f.text_field :username
+        .hidden
+          .input-field.col.s12
+            = f.label :username
+            = f.text_field :username, class: "inactive"
         .row
           .input-field.col.s12
             = f.label :webhook_key, class: "active"
@@ -58,4 +62,7 @@
         = f.button "Cancel my account", class: "btn red white-text", data: { confirm: "Are you sure?" }
 
 javascript:
-  COPO.utility.setActivePage('account')
+  COPO.utility.setActivePage('account');
+  $('#edit_user').on('submit', function() {
+    $('.inactive').attr('disabled', 'disabled');
+  });

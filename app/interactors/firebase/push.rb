@@ -20,6 +20,7 @@ module Firebase
     private
 
     def send_notification
+      return if Rails.env.test?
       HTTParty.post(FIRE_URL, headers: HEADERS, body: payload)
     end
 
@@ -39,6 +40,7 @@ module Firebase
     end
 
     def push_success?
+      return true if Rails.env.test?
       result.code == 200 && JSON.parse(result.body).key?("message_id")
     end
   end
