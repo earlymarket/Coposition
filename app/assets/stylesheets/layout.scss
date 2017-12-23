@@ -453,6 +453,9 @@ $lg-breakpoint: 600px;
 
     .enabled-title {
       font-size: 2rem;
+      @media (max-width: $lg-breakpoint) {
+        text-align: center;
+      }
     }
 
     .enabled-pitch, .enabled-description {

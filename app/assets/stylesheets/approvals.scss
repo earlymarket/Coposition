@@ -23,9 +23,6 @@
   }
 
   .avatar {
-    @media screen and (max-width: 660px){
-      width: 100% !important
-    }
     a {
       display: inline-block;
     }
@@ -53,6 +50,9 @@
     margin: 0.25rem 0 0 0;
     .row {
       margin: 0;
+      @media screen and (max-width: 660px){
+        text-align: center;
+      }
     }
   }
 
@@ -73,7 +73,11 @@
     height: 100%;
     opacity: 0.85;
     padding: 1rem;
-
+    p {
+      @media (max-width: $lg-breakpoint) {
+        font-size: 0.8rem;
+      }
+    }
     div {
       width: 100%;
     }
@@ -109,7 +113,19 @@
     margin: 0;
     @media screen and (max-width: 660px){
       flex-direction: column;
+      align-items: center;
       display: flex;
+    }
+  }
+
+  .col.s4 {
+    @media screen and (max-width: 660px){
+      width: 60% !important;
+      margin-left: 0 !important;
+      text-align: center;
+      .right {
+        float: none !important;
+      }
     }
   }
 
@@ -117,12 +133,6 @@
     margin: 0;
     flex-direction: row;
     display: flex;
-  }
-
-  .permissions-column {
-    @media screen and (max-width: 660px){
-      width: 100% !important
-    }
   }
 
   .all-permissions {
