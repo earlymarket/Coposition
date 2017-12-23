@@ -40,4 +40,8 @@
       white-space: nowrap;
     }
   }
+
+  .leaflet-touch, .leaflet-control-fullscreen a {
+    background-position: 0px 0px;
+  }
 }
