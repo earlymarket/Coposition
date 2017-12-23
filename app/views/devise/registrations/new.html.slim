@@ -3,6 +3,7 @@
     = form_for resource, as: resource_name, url: registration_path(resource_name) do |f|
       /! #{devise_error_messages!}
       - flash[:notice] = resource.errors.full_messages.join(". ").concat(".") unless resource.errors.empty?
+      = flash[:recaptcha_error]
       fieldset.card
         .card-content
           legend.card-title
@@ -50,6 +51,8 @@
               .input-field.col.s12
                 = f.label :redirect_url,"Redirect url*", class: "active"
                 = f.text_field :redirect_url, placeholder: "Your Site URL"
+          = recaptcha_tags
+          br
           .row
             .col.s12
               = f.button "Sign up", class: "waves-effect waves-light btn"
