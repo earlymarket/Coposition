@@ -61,6 +61,8 @@ class User < ApplicationRecord
 
   before_create :generate_token, unless: :webhook_key?
 
+  before_destroy :destroy_approvals, :destroy_checkins
+
   after_create :approve_coposition_mobile_app, :create_pending_requests
 
   has_attachment :avatar
@@ -89,6 +91,7 @@ class User < ApplicationRecord
   def create_pending_requests
     EmailRequest.where(email: email).find_each do |request|
       Approval.add_friend(request.user, self)
+      request.destroy
     end
   end
 
@@ -102,6 +105,10 @@ class User < ApplicationRecord
 
   def approval_for(approvable)
     approvals.find_by(approvable_id: approvable.id, approvable_type: approvable.class.to_s) || NoApproval.new
+  end
+
+  def destroy_approvals
+    Approval.where(approvable_id: id, approvable_type: "User").destroy_all
   end
 
   ## Permissions
@@ -147,6 +154,10 @@ class User < ApplicationRecord
     elsif args[:action] == "last"
       safe_checkins.slice(0, 1)
     end
+  end
+
+  def destroy_checkins
+    devices.each { |device| DeleteDeviceWorker.perform_async(device.id) }
   end
 
   def slack_message

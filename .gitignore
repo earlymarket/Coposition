@@ -27,7 +27,7 @@ public/system/*
 public/assets
 
 # Node Modules
-/node_modules
+node_modules
 
 # Ignore local Procfile
 Procfile.local

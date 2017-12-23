@@ -4,3 +4,10 @@
     text-decoration: underline;
   }
 }
+
+.c-registrations.a-edit {
+  .hidden {
+    position: absolute;
+    z-index: -1000;
+  }
+}

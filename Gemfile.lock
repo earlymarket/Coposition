@@ -427,6 +427,8 @@ GEM
     rb-inotify (0.9.8)
       ffi (>= 0.5.0)
     rdoc (4.3.0)
+    recaptcha (4.6.2)
+      json
     redis (3.3.3)
     rename (1.0.6)
       activesupport
@@ -636,6 +638,7 @@ DEPENDENCIES
   rails-perftest
   rails_12factor
   rails_best_practices
+  recaptcha
   redis
   rename
   responders (~> 2.0)

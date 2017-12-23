@@ -5,6 +5,7 @@
       - flash[:notice] = resource.errors.full_messages.join(". ").concat(".") unless resource.errors.empty?
       fieldset.card
         .card-content
+          = flash[:recaptcha_error]
           legend.card-title
             = resource.class
             |  sign up
@@ -50,6 +51,8 @@
               .input-field.col.s12
                 = f.label :redirect_url,"Redirect url*", class: "active"
                 = f.text_field :redirect_url, placeholder: "Your Site URL"
+          = recaptcha_tags
+          br
           .row
             .col.s12
               = f.button "Sign up", class: "waves-effect waves-light btn"
