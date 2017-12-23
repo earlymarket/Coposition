@@ -10,7 +10,7 @@ Rails.application.config.assets.version = '1.01'
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 # Rails.application.config.assets.precompile += %w( search.js )
 
-Rails.application.config.assets.precompile
+Rails.application.config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
 
 Rails.application.config.assets.configure do |env|
   env.context_class.class_eval do
