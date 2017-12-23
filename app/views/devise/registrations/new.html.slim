@@ -3,9 +3,9 @@
     = form_for resource, as: resource_name, url: registration_path(resource_name) do |f|
       /! #{devise_error_messages!}
       - flash[:notice] = resource.errors.full_messages.join(". ").concat(".") unless resource.errors.empty?
-      = flash[:recaptcha_error]
       fieldset.card
         .card-content
+          = flash[:recaptcha_error]
           legend.card-title
             = resource.class
             |  sign up
