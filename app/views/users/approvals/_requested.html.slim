@@ -10,7 +10,7 @@
             h5.ib
               = approvals_approvable_name(approvable)
         .col.s4
-          - if current_user.devices.exists?
+          - if current_user.devices.exists? && !approval.nil?
             a.permissions-trigger.btn-flat.right.permissions-button data-id=(approvable.id) href="#perm#{approvable.id}"
               i.material-icons.right lock
               | Permissions
@@ -27,4 +27,7 @@
                       h5 Update all permissions
                     = render partial: "users/permissions/controls", object: approvable, as: "control_object"
         .col.s4
-          = button_to "Delete request", user_approval_path(current_user.url_id, approval.id), method: :delete, remote: true, class: "waves-effect waves-orange btn-flat right"
+          - if approval.nil?
+            = button_to "Delete request", user_email_request_path(current_user.url_id, approvable.id), method: :delete, remote: true, class: "waves-effect waves-orange btn-flat right"
+          - else
+            = button_to "Delete request", user_approval_path(current_user.url_id, approval.id), method: :delete, remote: true, class: "waves-effect waves-orange btn-flat right"

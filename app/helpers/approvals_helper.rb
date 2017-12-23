@@ -1,6 +1,13 @@
 module ApprovalsHelper
   def approvals_approvable_name(approvable)
-    approvable.class == User ? approvable.display_name : approvable.company_name
+    case approvable.class.name
+    when "User"
+      approvable.display_name
+    when "Developer"
+      approvable.company_name
+    when "EmailRequest"
+      approvable.email
+    end
   end
 
   def approvals_add_text(type)

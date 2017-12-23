@@ -101,6 +101,7 @@ Rails.application.routes.draw do
     end
     resources :checkins, only: [:show, :index, :update, :destroy]
     resources :approvals, only: [:new, :create, :update, :destroy]
+    resources :email_requests, only: :destroy
     resource :create_dev_approvals, only: :create
     resources :friends, only: [:show] do
       member do

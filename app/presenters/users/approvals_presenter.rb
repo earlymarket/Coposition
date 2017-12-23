@@ -6,7 +6,6 @@ module Users
     attr_reader :complete
     attr_reader :devices
     attr_reader :requested
-    attr_reader :sent_requests
     attr_reader :page
     attr_reader :checkins
 
@@ -35,7 +34,6 @@ module Users
       @complete = users_complete
       @pending = add_color_info(users_pending)
       @requested = users_requested
-      @sent_requests = users_sent_requests
       @devices = user.devices
       @checkins = friends_checkins unless apps_page?
     end
@@ -99,11 +97,9 @@ module Users
     end
 
     def users_requested
-      apps_page? ? nil : @user.pending_friends
-    end
-
-    def users_sent_requests
-      apps_page? ? nil : @user.email_requests
+      return nil if apps_page?
+      pending = @user.pending_friends
+      pending ? @user.pending_friends + @user.email_requests : @user.email_requests
     end
 
     def friends_checkins
