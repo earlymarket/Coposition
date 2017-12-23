@@ -40,6 +40,10 @@
     }
   }
 
+  .leaflet-touch, .leaflet-control-fullscreen a {
+    background-position: 0px 0px;
+  }
+
   #checkin_id {
     margin-right: 2rem;
   }
