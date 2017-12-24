@@ -2,6 +2,12 @@ ActiveAdmin.register Device do
   remove_filter :checkins
   permit_params :name, :user_id
 
+  controller do
+    def scoped_collection
+      end_of_association_chain.active_devices
+    end
+  end
+
   config.per_page = [10, 50, 100]
 
   index do

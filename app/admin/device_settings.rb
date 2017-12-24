@@ -11,6 +11,10 @@ ActiveAdmin.register_page "Device Settings" do
   end
 
   controller do
+    def scoped_collection
+      end_of_association_chain.active_devices
+    end
+
     def index
       params[:booleans] = [
         { name: "Fogged", values: fogged_stats },
@@ -29,19 +33,19 @@ ActiveAdmin.register_page "Device Settings" do
     private
 
     def fogged_stats
-      return { on: "n/a", off: "n/a" } if Device.count.zero?
+      return { on: "n/a", off: "n/a" } if Device.active_devices.count.zero?
 
       {
-        on: '%.2f %' % (num = Device.where(fogged: true).count.to_f * 100 / Device.count),
+        on: '%.2f %' % (num = Device.active_devices.where(fogged: true).count.to_f * 100 / Device.active_devices.count),
         off: '%.2f %' % (100 - num)
       }
     end
 
     def cloaked_stats
-      return { on: "n/a", off: "n/a" } if Device.count.zero?
+      return { on: "n/a", off: "n/a" } if Device.active_devices.count.zero?
 
       {
-        on: '%.2f %' % (num = Device.where(cloaked: true).count.to_f * 100 / Device.count),
+        on: '%.2f %' % (num = Device.active_devices.where(cloaked: true).count.to_f * 100 / Device.active_devices.count),
         off: '%.2f %' % (100 - num)
       }
     end
@@ -125,17 +129,17 @@ ActiveAdmin.register_page "Device Settings" do
     end
 
     def delay_stats
-      return ["n/a"] * DELAY.size if Device.count.zero?
+      return ["n/a"] * DELAY.size if Device.active_devices.count.zero?
 
       DELAY.map do |delay|
         '%.2f %' % (
-          Device.where(delayed: delay).count.to_f * 100 / Device.count
+          Device.active_devices.where(delayed: delay).count.to_f * 100 / Device.active_devices.count
         )
       end
     end
 
     def copo_mobile_devices
-      @copo_mobile_devices ||= Device.includes(:config)
+      @copo_mobile_devices ||= Device.active_devices.includes(:config)
         .select { |dev| dev.config && dev.config.custom && !dev.config.custom["active"].nil? }
 
       block_given? ? @copo_mobile_devices.select { |dev| yield dev } : @copo_mobile_devices

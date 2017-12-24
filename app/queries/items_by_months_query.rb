@@ -4,6 +4,7 @@ class ItemsByMonthsQuery
     from checkins as c
     join devices as d on d.id = c.device_id
     join users as u on u.id = d.user_id
+    where (u.is_active = true)
     group by EXTRACT(MONTH from c.created_at), u.id)
   ACTIVE_USERS
 

@@ -77,6 +77,18 @@ class User < ApplicationRecord
     slug.blank? || username_changed?
   end
 
+  def self.active_users
+    User.where(is_active: true)
+  end
+
+  def active_for_authentication?
+    super and self.is_active?
+  end
+
+  def inactive_message
+    "Your account has been disabled"
+  end
+
   ## Approvals
 
   def approve_coposition_mobile_app

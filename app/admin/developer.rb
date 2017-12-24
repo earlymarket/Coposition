@@ -11,10 +11,10 @@ ActiveAdmin.register Developer do
       dev.configs.count
     end
     column :approved_user_count do |dev|
-      dev.users.count
+      dev.users.active_users.count
     end
     column :permissioned_device_count do |dev|
-      dev.devices.count
+      dev.devices.active_devices.count
     end
     column :date_connected do |dev|
       dev.created_at
