@@ -59,29 +59,32 @@ class UserMailer < ApplicationMailer
     )
   end
 
-  def no_activity_email(user)
-    return unless user.subscription
+  def no_activity_email(device)
+    return unless device.user.subscription
     SendSendgridEmail.call(
-      to: user.email, subject: "Coposition activity", id: "b4437ee3-651a-4252-921b-c2a8ace722ac",
+      to: device.user.email, subject: "Coposition activity", id: "b4437ee3-651a-4252-921b-c2a8ace722ac",
       substitutions: [
-        { key: "-unsubscribe-", value: unsubscribe_link(user) },
+        { key: "-unsubscribe-", value: unsubscribe_link(device.user) },
         { key: "-forgot-", value: "https://coposition.com/users/password/new" },
         { key: "-url-", value: "https://coposition.com/users/#{user.id}/devices" },
-        { key: "-email-", value: user.email }
+        { key: "-email-", value: device.user.email }
       ],
-      content: no_activity_content(user)
+      content: "<p>Your device #{device.name} has been inactive for 7 days. You can find further information on creating check-ins on our Help Page.</p>"
     )
   end
 
   private
 
-  def no_activity_content(user)
-    return "" if (inactive = user.devices.inactive).blank?
-    content = "<p>You have not checked in on the following devices in over 3 months:</p>"
+  def no_activity_content(device)
+    inactive = device.user.devices.inactive(1.day.ago)
+    content = "<p>Your device #{device.name} has been inactive for 7 days. You can find further information on creating check-ins on our Help Page.</p>"
+    content += "<p>You also haven't heard from these devices in a while:"
     content += "<ul>"
     inactive.each do |device|
       content += "<li><a href='https://coposition.com/users/#{user.id}/devices/' + device.id.to_s}>"
-      content += device.name + "</a></li>"
+      content += device.name + "</a>"
+      content += " - Auto check-in #{device.config.custom ? device.config.custom[""]}"
+      content += "</li>"
     end
     content += "</ul>"
     content
