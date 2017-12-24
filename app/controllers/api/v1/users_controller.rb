@@ -10,7 +10,7 @@ class Api::V1::UsersController < Api::ApiController
   end
 
   def index
-    @users = @dev.users.public_info
+    @users = @dev.users.active_users.public_info
     respond_with @users
   end
 
