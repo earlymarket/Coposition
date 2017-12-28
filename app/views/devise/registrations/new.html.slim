@@ -67,6 +67,10 @@ javascript:
       return this.optional( element ) || /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/.test( value );
     }
 
+    if ($('body').attr('data-environment') == 'test') {
+      $('button.btn').removeClass("disabled")
+    }
+
     var submitRecaptchaForm = function (e) {
       $('button.btn').removeClass("disabled")
     };
