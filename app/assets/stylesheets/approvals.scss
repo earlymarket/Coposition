@@ -59,6 +59,9 @@
   .permissions-button {
     background-color: $primary-color;
     color: #ffffff;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   .btn-flat i {
