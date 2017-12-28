@@ -52,6 +52,12 @@
     },
     "SENDGRID_API_KEY": {
       "required": true
+    },
+    "RECAPTCHA_SITE_KEY": {
+      "required": true
+    },
+    "RECAPTCHA_SECRET_KEY": {
+      "required": true
     }
   },
   "addons": [

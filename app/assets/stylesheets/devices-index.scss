@@ -27,13 +27,25 @@
   .device-button {
     background-color: $primary-color;
     color: #ffffff !important;
-    width: 60%;
+    width: 85%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   .device-button-hide-text {
     @extend .device-button;
     @media screen and (max-width: 660px){
+      .right {
+        float: none !important;
+        font-size: 1.8rem;
+        margin-left: 0px;
+      }
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 0;
+      width: 60%;
     }
   }
 
@@ -189,5 +201,9 @@
     @media screen and (max-width: 660px){
       flex-direction: column;
     }
+  }
+
+  .leaflet-touch, .leaflet-control-fullscreen a {
+    background-position: 0px 0px;
   }
 }
