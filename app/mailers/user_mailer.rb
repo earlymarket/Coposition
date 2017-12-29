@@ -80,12 +80,13 @@ class UserMailer < ApplicationMailer
     content = "<p>Your device #{device.name} has been inactive for at least 7 days. You can find further information on creating check-ins on our Help Page.</p>"
     content += "<p>You also haven't heard from these devices in a while:"
     content += "<ul>"
-    inactive.each do |device|
-      last = device.checkins.last
-      content += "<li><a href='https://coposition.com/users/#{device.user.id}/devices/' + device.id.to_s}>"
-      content += device.name + "</a>"
-      content += " - Auto check-in #{device.config.custom && device.config.custom["active"] ? 'on' : 'off'}"
-      content += " - #{device.config.custom && device.config.custom["assigned"] ? 'Assigned' : 'Unassigned' }"
+    inactive.each do |dev|
+      next if dev == device
+      last = dev.checkins.last
+      content += "<li><a href='https://coposition.com/users/#{dev.user.id}/devs/' + dev.id.to_s}>"
+      content += dev.name + "</a>"
+      content += " - Auto check-in #{dev.config.custom && dev.config.custom["active"] ? 'on' : 'off'}"
+      content += " - #{dev.config.custom && dev.config.custom["assigned"] ? 'Assigned' : 'Unassigned' }"
       content += " - Last checked in #{humanize_date(last.created_at)} near #{last.fogged_city}"
       content += "</li>"
     end
