@@ -96,4 +96,8 @@ class UserMailer < ApplicationMailer
   def unsubscribe_link(user)
     settings_unsubscribe_url(id: Rails.application.message_verifier(:unsubscribe).generate(user.id))
   end
+
+  def humanize_date(date)
+    date.strftime("%A #{date.day.ordinalize} %B %Y")
+  end
 end
