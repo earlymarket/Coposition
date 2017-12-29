@@ -67,9 +67,9 @@ class UserMailer < ApplicationMailer
         { key: "-unsubscribe-", value: unsubscribe_link(device.user) },
         { key: "-forgot-", value: "https://coposition.com/users/password/new" },
         { key: "-url-", value: "https://coposition.com/users/#{device.user.id}/devices" },
-        { key: "-email-", value: device.user.email }
-      ],
-      content: no_activity_content(device)
+        { key: "-email-", value: device.user.email },
+        { key: "-content-", value: no_activity_content(device)}
+      ]
     )
   end
 
