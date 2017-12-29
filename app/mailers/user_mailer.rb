@@ -85,8 +85,8 @@ class UserMailer < ApplicationMailer
       content += "<li><a href='https://coposition.com/users/#{device.user.id}/devices/' + device.id.to_s}>"
       content += device.name + "</a>"
       content += " - Auto check-in #{device.config.custom && device.config.custom["active"] ? 'on' : 'off'}"
-      content += " - Auto check-in #{device.config.custom && device.config.custom["assigned"] ? 'Assigned' : 'Unassigned' }"
-      content += " - Last checked in #{humanize_date(last.created_at)} near #{last.city}"
+      content += " - #{device.config.custom && device.config.custom["assigned"] ? 'Assigned' : 'Unassigned' }"
+      content += " - Last checked in #{humanize_date(last.created_at)} near #{last.fogged_city}"
       content += "</li>"
     end
     content += "</ul>"
