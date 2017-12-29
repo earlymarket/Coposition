@@ -81,17 +81,16 @@ class UserMailer < ApplicationMailer
     content += "<p>You also haven't heard from these devices in a while:"
     content += "<ul>"
     inactive.each do |device|
+      last = device.checkins.last
       content += "<li><a href='https://coposition.com/users/#{device.user.id}/devices/' + device.id.to_s}>"
       content += device.name + "</a>"
-      content += " - Auto check-in #{device.config.custom && device.config.custom["active"] ? boolean_to_state(device.config.custom["active"]) : 'off'}"
+      content += " - Auto check-in #{device.config.custom && device.config.custom["active"] ? 'on' : 'off'}"
+      content += " - Auto check-in #{device.config.custom && device.config.custom["assigned"] ? 'Assigned' : 'Unassigned' }"
+      content += " - Last checked in #{humanize_date(last.created_at)} near #{last.city}"
       content += "</li>"
     end
     content += "</ul>"
     content
-  end
-
-  def boolean_to_state(boolean)
-    boolean ? "on" : "off"
   end
 
   def unsubscribe_link(user)
