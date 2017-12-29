@@ -69,7 +69,7 @@ class UserMailer < ApplicationMailer
         { key: "-url-", value: "https://coposition.com/users/#{user.id}/devices" },
         { key: "-email-", value: device.user.email }
       ],
-      content: "<p>Your device #{device.name} has been inactive for 7 days. You can find further information on creating check-ins on our Help Page.</p>"
+      content: no_activity_content(device)
     )
   end
 
@@ -77,17 +77,21 @@ class UserMailer < ApplicationMailer
 
   def no_activity_content(device)
     inactive = device.user.devices.inactive(1.day.ago)
-    content = "<p>Your device #{device.name} has been inactive for 7 days. You can find further information on creating check-ins on our Help Page.</p>"
+    content = "<p>Your device #{device.name} has been inactive for at least 7 days. You can find further information on creating check-ins on our Help Page.</p>"
     content += "<p>You also haven't heard from these devices in a while:"
     content += "<ul>"
     inactive.each do |device|
-      content += "<li><a href='https://coposition.com/users/#{user.id}/devices/' + device.id.to_s}>"
+      content += "<li><a href='https://coposition.com/users/#{device.user.id}/devices/' + device.id.to_s}>"
       content += device.name + "</a>"
-      content += " - Auto check-in #{device.config.custom ? device.config.custom[""]}"
+      content += " - Auto check-in #{device.config.custom && device.config.custom["active"] ? boolean_to_state(device.config.custom["active"]) : 'off'}"
       content += "</li>"
     end
     content += "</ul>"
     content
+  end
+
+  def boolean_to_state(boolean)
+    boolean ? "on" : "off"
   end
 
   def unsubscribe_link(user)
