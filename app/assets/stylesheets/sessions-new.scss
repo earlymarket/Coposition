@@ -3,4 +3,10 @@
     color: $primary-color;
     text-decoration: underline;
   }
+
+  [type="checkbox"] + label {
+    @media (max-width: $lg-breakpoint) {
+      padding-left: 25px;
+    }
+  }
 }

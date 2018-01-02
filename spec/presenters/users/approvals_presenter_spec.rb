@@ -184,7 +184,7 @@ describe ::Users::ApprovalsPresenter do
 
   describe "users_requested" do
     it "returns an ActiveRecord Associations CollectionProxy" do
-      expect(approvals.send(:users_requested)).to be_kind_of ActiveRecord::Associations::CollectionProxy
+      expect(approvals.send(:users_requested)).to be_kind_of Array
     end
 
     context "users" do
