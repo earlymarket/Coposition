@@ -126,3 +126,9 @@ footer{
   }
 }
 
+.input-field label {
+  @media screen and (max-width: 660px){
+    top: 0.5rem;
+    font-size: 0.8rem;
+  }
+}

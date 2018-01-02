@@ -51,11 +51,11 @@
               .input-field.col.s12
                 = f.label :redirect_url,"Redirect url*", class: "active"
                 = f.text_field :redirect_url, placeholder: "Your Site URL"
-          = recaptcha_tags
+          = recaptcha_tags callback: 'submitRecaptchaForm'
           br
           .row
             .col.s12
-              = f.button "Sign up", class: "waves-effect waves-light btn"
+              = f.button "Sign up", class: "waves-effect waves-light btn disabled"
           .row
             .col.s12
               | Already registered as a #{"#{resource.class.to_s.downcase}"}? #{link_to "Log in!", new_session_path(resource_name), class: "link"}
@@ -66,6 +66,14 @@ javascript:
   $.validator.methods.email = function(value, element) {
       return this.optional( element ) || /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/.test( value );
     }
+
+    if ($('body').attr('data-environment') == 'test') {
+      $('button.btn').removeClass("disabled")
+    }
+
+    var submitRecaptchaForm = function (e) {
+      $('button.btn').removeClass("disabled")
+    };
   
     $("#new_#{resource_name}").validate({
       onkeyup: false,
