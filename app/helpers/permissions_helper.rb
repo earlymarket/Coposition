@@ -1,7 +1,7 @@
 module PermissionsHelper
   include ApprovalsHelper
   def permissions_permissible_title(user, permissible)
-    title = '<div class="valign-wrapper">'
+    title = '<div class="valign-wrapper permission-title">'
     title += avatar_for(permissible)
     title += '<div><div><span class="permissible-name">'
     title += approvals_approvable_name(permissible)
