@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe SettingsController, type: :controller do
   let(:user) { create :user }
   let(:unsub_id) { Rails.application.message_verifier(:unsubscribe).generate(user.id) }
-  let(:unsubscribe) { put :update, params: { id: user.id, user: { subscription: false } } }
+  let(:unsubscribe) { put :update, params: { id: user.id, user: { subscription: "inactivity" } } }
 
   describe "GET #unsubscribe" do
     it "returns http success" do
@@ -13,7 +13,7 @@ RSpec.describe SettingsController, type: :controller do
   end
 
   describe "PUT #update" do
-    context "with subscription set to false" do
+    context "with subscription set to all" do
       it "returns http redirect" do
         unsubscribe
         expect(response).to have_http_status(:redirect)
@@ -21,11 +21,11 @@ RSpec.describe SettingsController, type: :controller do
 
       it "returns a flash message" do
         unsubscribe
-        expect(flash[:notice]).to eq "Subscription Cancelled"
+        expect(flash[:notice]).to eq "Subscription settings updated"
       end
 
-      it "returns changes subscription to false" do
-        expect { unsubscribe }.to change { User.find(user.id).subscription }.to false
+      it "changes subscription to inactivity" do
+        expect { unsubscribe }.to change { User.find(user.id).subscription }.to "inactivity"
       end
     end
   end
