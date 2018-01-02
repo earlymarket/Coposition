@@ -9,12 +9,12 @@ ActiveAdmin.register_page "Monthly check-ins" do
 
   controller do
     def index
-      params[:collection] = ItemsByMonthsQuery.new(table: "checkins").all
+      params[:collection] = ItemsByMonthsQuery.new(checkins: true).all
     end
   end
 
   page_action :csv, method: :get do
-    collection = ItemsByMonthsQuery.new(table: "checkins").all
+    collection = ItemsByMonthsQuery.new(checkins: true).all
 
     csv = CSV.generate(encoding: "UTF-8") do |csv|
       # add headers
