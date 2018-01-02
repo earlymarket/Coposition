@@ -1,7 +1,7 @@
 h4 Subscription settings
 p Choose to subscribe to all emails, all emails except for device inactivity emails, or to receive no emails from Coposition.
 = form_for(@user, url: settings_update_path(id: @user.id)) do |f|
-  = f.select :subscription, options_for_select([["All", "all"], ["All except device inactivity emails", "inactivty"], ["None", "none"]], selected: @user.subscription)
+  = f.select :subscription, options_for_select([["All", "all"], ["All except device inactivity emails", "inactivity"], ["None", "none"]], selected: @user.subscription)
   = f.label :subscription, "Subscribe to Coposition emails?"
 
   = f.submit 'Submit', class: "btn btn-success"

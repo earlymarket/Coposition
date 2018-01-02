@@ -45,7 +45,7 @@ class SendSendgridEmail
 
   def mail_settings
     settings = SendGrid::MailSettings.new
-    settings.sandbox_mode =  SendGrid::SandBoxMode.new(enable: Rails.env.test?)
+    settings.sandbox_mode = SendGrid::SandBoxMode.new(enable: Rails.env.test?)
     settings
   end
 end
