@@ -26,7 +26,7 @@
             = f.label :zapier_enabled, "Zapier enabled?"
         .row
           .input-field.col.s12
-            = f.check_box :subscription
+            = f.select :subscription, options_for_select([["All", "all"], ["All except device inactivity emails", "inactivty"], ["None", "none"]], selected: resource.subscription)
             = f.label :subscription, "Subscribe to Coposition emails?"
         br/
         .row
