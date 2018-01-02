@@ -33,6 +33,11 @@ RSpec.describe ApprovalsHelper, type: :helper do
       dev = create(:developer)
       expect(helper.approvals_approvable_name(dev)).to be dev.company_name
     end
+
+    it "returns an email if passed an email request" do
+      req = create(:email_request)
+      expect(helper.approvals_approvable_name(req)).to be req.email
+    end
   end
 
   describe "#approvals_add_text" do
