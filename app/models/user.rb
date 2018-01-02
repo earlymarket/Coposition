@@ -23,6 +23,7 @@ class User < ApplicationRecord
   has_many :requests
   has_many :approvals, dependent: :destroy
   has_many :subscriptions, as: :subscriber, dependent: :destroy
+  has_many :email_requests, dependent: :destroy
   has_many :developers,
     -> { where "status in (?)", %w[accepted complete] },
     through: :approvals,

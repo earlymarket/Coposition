@@ -97,7 +97,8 @@ module Users
     end
 
     def users_requested
-      apps_page? ? nil : @user.pending_friends
+      return nil if apps_page?
+      @user.pending_friends ? @user.pending_friends + @user.email_requests : @user.email_requests
     end
 
     def friends_checkins

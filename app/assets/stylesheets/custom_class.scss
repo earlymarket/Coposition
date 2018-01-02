@@ -51,6 +51,12 @@
   }
 }
 
+.btn-flat {
+  @media screen and (max-width: 660px){
+    line-height: 26px;
+  }
+}
+
 .marker-cluster-last {
   background-color: rgba(121, 192, 247, 0.6);
 }
