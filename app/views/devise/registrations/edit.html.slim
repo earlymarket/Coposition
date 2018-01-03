@@ -47,6 +47,21 @@
             = f.password_field :current_password, autocomplete: "off", required: true
         = f.button "Update", class: "btn waves-effect waves-light"
 
+  = form_for resource.email_subscription, as: 'email_subscription', url: user_email_subscription_path(user_id: resource.id, id: resource.email_subscription.id), html: { method: :put } do |f|
+    .card.col.s12.m10.offset-m1
+      .card-content
+        legend.card-title Email subscription settings
+        .row
+          .input-field.col.s12
+            = f.check_box :device_inactivity
+            = f.label :device_inactivity, "Subscribe to device inactivity emails?"
+        .row
+          .input-field.col.s12
+            = f.check_box :friend_invite_sent
+            = f.label :friend_invite_sent, "Subscribe to emails sent when you invite a friend to join Coposition"
+        br
+        = f.submit 'Update', class: "btn btn-success"
+
   = form_for resource, as: resource_name, url: registration_path(resource_name), html: { method: :delete } do |f|
     .card.col.s12.m10.offset-m1
       .card-content
