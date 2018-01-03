@@ -17,8 +17,6 @@ Rails.application.routes.draw do
   get "/terms", to: "welcome#terms"
   get "/devs", to: "welcome#devs"
   get "/add_friend", to: "users/approvals#add"
-  get "settings/unsubscribe"
-  patch "settings/update"
 
   # Devise
 
@@ -101,6 +99,11 @@ Rails.application.routes.draw do
     end
     resources :checkins, only: [:show, :index, :update, :destroy]
     resources :approvals, only: [:new, :create, :update, :destroy]
+    resources :email_subscriptions, only: :update do
+      collection do
+        get "unsubscribe"
+      end
+    end
     resource :create_dev_approvals, only: :create
     resources :friends, only: [:show] do
       member do

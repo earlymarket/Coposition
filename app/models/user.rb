@@ -18,6 +18,7 @@ class User < ApplicationRecord
                        length: { in: 4..20 }
   validates :email, confirmation: true
 
+  has_one :email_subscription, dependent: :destroy
   has_many :devices, dependent: :destroy
   has_many :checkins, through: :devices
   has_many :requests
@@ -63,7 +64,7 @@ class User < ApplicationRecord
 
   before_destroy :destroy_approvals, :destroy_checkins
 
-  after_create :approve_coposition_mobile_app, :create_pending_requests
+  after_create :approve_coposition_mobile_app, :create_pending_requests, :create_email_subscription
 
   has_attachment :avatar
 
@@ -118,6 +119,12 @@ class User < ApplicationRecord
       permission = device.permission_for(approvable)
       permission&.destroy
     end
+  end
+
+  ## Email Subscriptions
+
+  def create_email_subscription
+    EmailSubscription.create(user: self)
   end
 
   ## Devices

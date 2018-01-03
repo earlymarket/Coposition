@@ -1,13 +1,14 @@
 require "rails_helper"
 
-RSpec.describe SettingsController, type: :controller do
+RSpec.describe Users::EmailSubscriptionsController, type: :controller do
   let(:user) { create :user }
+  let(:email_subscription) { create :email_subscription, user: user }
   let(:unsub_id) { Rails.application.message_verifier(:unsubscribe).generate(user.id) }
-  let(:unsubscribe) { put :update, params: { id: user.id, user: { subscription: "inactivity" } } }
+  let(:unsubscribe) { put :update, params: { user_id: user.id, id: email_subscription.id, email_subscription: { device_inactivity: false } } }
 
   describe "GET #unsubscribe" do
     it "returns http success" do
-      get :unsubscribe, params: { id: unsub_id }
+      get :unsubscribe, params: { user_id: user.id, id: unsub_id }
       expect(response).to have_http_status(:success)
     end
   end
@@ -25,7 +26,7 @@ RSpec.describe SettingsController, type: :controller do
       end
 
       it "changes subscription to inactivity" do
-        expect { unsubscribe }.to change { User.find(user.id).subscription }.to "inactivity"
+        expect { unsubscribe }.to change { EmailSubscription.find(email_subscription.id).device_inactivity }.to false
       end
     end
   end
