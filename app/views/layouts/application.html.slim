@@ -36,7 +36,7 @@ html
     - if controller_name == "welcome" && Rails.env != "test"
       script async="async" data-sumo-site-id="392e8ae3834cda33e6d3d929716838cd302cea46e1d8def5b6701a560770bebc" src="//load.sumome.com/"
     = render partial: "hotjar"
-  body class=("c-#{controller_name} a-#{action_name}")
+  body class=("c-#{controller_name} a-#{action_name}") data-environment=Rails.env
     - if action_name == "devs" || params[:controller].match("developer") || action_name == "setup"
       = render partial: "navbar_devs"
     - else

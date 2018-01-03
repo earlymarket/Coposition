@@ -104,6 +104,7 @@ Rails.application.routes.draw do
         get "unsubscribe"
       end
     end
+    resources :email_requests, only: :destroy
     resource :create_dev_approvals, only: :create
     resources :friends, only: [:show] do
       member do

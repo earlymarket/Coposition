@@ -30,7 +30,7 @@ RSpec.describe User, type: :model do
 
   describe "Associations" do
     %w(devices checkins requests approvals subscriptions developers approved_developers
-       complete_developers friends permissions permitted_devices).each do |asoc|
+       complete_developers friends permissions permitted_devices email_requests).each do |asoc|
       it "has many #{asoc}" do
         assc = described_class.reflect_on_association(asoc.to_sym)
         expect(assc.macro).to eq :has_many

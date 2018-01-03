@@ -15,6 +15,9 @@
   .card-title {
     display: flex;
     align-content: center;
+    @media screen and (max-width: 660px){
+      flex-direction: column;
+    }
   }
 
   .btn-flat i {
@@ -24,7 +27,31 @@
   .device-button {
     background-color: $primary-color;
     color: #ffffff !important;
-    width: 60%;
+    width: 85%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .device-button-hide-text {
+    @extend .device-button;
+    @media screen and (max-width: 660px){
+      .right {
+        float: none !important;
+        font-size: 1.8rem;
+        margin-left: 0px;
+      }
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0;
+      width: 60%;
+    }
+  }
+
+  .device-button-small {
+    @extend .device-button;
+    width: 40%;
   }
 
   #last-checkin {
@@ -40,16 +67,15 @@
     text-align: right;
   }
 
-  .device-button-small {
-    @extend .device-button;
-    width: 40%;
-  }
-
   .device-toggle {
     line-height: 36px;
     text-transform: none !important;
     margin-right: 0px !important;
     color: #000000 !important;
+
+    @media screen and (max-width: 660px){
+      font-size: 0;
+    }
   }
 
   .editable {
@@ -134,7 +160,11 @@
     height: 100%;
     opacity: 0.85;
     padding: 1rem;
-
+    p {
+      @media (max-width: $lg-breakpoint) {
+        font-size: 0.8rem;
+      }
+    }
     div {
       width: 100%;
     }
@@ -159,6 +189,18 @@
 
   #checkin_id {
     width: 60%;
+  }
+
+  .all-permissions {
+    @media screen and (max-width: 660px){
+      font-size: 1rem;
+    }
+  }
+
+  .permission-title {
+    @media screen and (max-width: 660px){
+      flex-direction: column;
+    }
   }
 
   .leaflet-touch, .leaflet-control-fullscreen a {

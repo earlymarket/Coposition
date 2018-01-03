@@ -20,7 +20,7 @@
     ul.permissions.collection data-id=(device.id)
       li.collection-item.row.valign-wrapper.master-permissions
         .valign.col.s6
-          h5 Update all permissions
+          h5.all-permissions Update all permissions
         = render partial: "users/permissions/controls", object: device, as: "control_object"
 
 .modal.download-modal id="download#{device.id}" 
