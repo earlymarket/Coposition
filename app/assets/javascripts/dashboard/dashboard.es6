@@ -6,7 +6,6 @@ $(document).on('page:change', function () {
     U.gonFix();
     M.initMap();
     M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
-    COPO.smooch.initSmooch(gon.current_user.userinfo);
 
     $('#checkin_id').keypress((e) => {
       if (e.which === 13) checkinSearch()
