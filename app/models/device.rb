@@ -155,9 +155,9 @@ class Device < ApplicationRecord
     ordered_devices.uniq
   end
 
-  def self.inactive
+  def self.inactive(time_length)
     last_checkins_ids = Device.last_checkins.map(&:id)
-    old_last_checkins = Checkin.where("id IN (?) AND created_at < ?", last_checkins_ids, 3.months.ago)
+    old_last_checkins = Checkin.where("id IN (?) AND created_at < ?", last_checkins_ids, time_length)
     device_ids = old_last_checkins.map(&:device_id)
     Device.where(id: device_ids)
   end
