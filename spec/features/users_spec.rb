@@ -66,7 +66,7 @@ RSpec.feature "Users", type: :feature do
   def and_i_edit_my_username
     fill_in "user_username", match: :first, with: "changed"
     fill_in "user_current_password", with: user.password
-    click_on "Update"
+    click_on "Update", match: :first
   end
 
   def then_i_should_see_a_new_username

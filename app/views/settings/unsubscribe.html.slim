@@ -1,7 +1,0 @@
-h4 Unsubscribe from Coposition Emails
-p By unsubscribing, you will no longer receive emails from Coposition.
-= form_for(@user, url: settings_update_path(id: @user.id)) do |f|
-  = f.hidden_field(:subscription, value: false)
-  = f.submit 'Unsubscribe', class: "btn btn-success"
-  |  
-  = link_to 'Cancel', root_url, class: "btn btn-warning"

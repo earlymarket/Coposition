@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171024094204) do
+ActiveRecord::Schema.define(version: 20180103194318) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -158,6 +158,15 @@ ActiveRecord::Schema.define(version: 20171024094204) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "email_subscriptions", force: :cascade do |t|
+    t.integer "user_id"
+    t.boolean "device_inactivity",  default: true
+    t.boolean "friend_invite_sent", default: true
+    t.boolean "round_up",           default: true
+    t.boolean "newsletter",         default: true
+    t.index ["user_id"], name: "index_email_subscriptions_on_user_id", using: :btree
+  end
+
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string   "slug",                      null: false
     t.integer  "sluggable_id",              null: false
@@ -266,7 +275,6 @@ ActiveRecord::Schema.define(version: 20171024094204) do
     t.string   "webhook_key"
     t.boolean  "admin",                  default: false, null: false
     t.boolean  "zapier_enabled",         default: false
-    t.boolean  "subscription",           default: true
     t.index ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
