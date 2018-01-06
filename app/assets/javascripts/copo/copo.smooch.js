@@ -1,10 +1,11 @@
 window.COPO = window.COPO || {};
 window.COPO.smooch = {
   initSmooch: function() {
-    if(Smooch.appToken && $('#sk-holder').length === 0) {
+    if (typeof(Smooch) == "undefined") return
+    if (Smooch.appToken && $('#sk-holder').length === 0) {
       Smooch.render()
     } else {
-      var params = {appToken: "48zalrms2pp1raaolssv7dry8"};
+      var params = { appToken: "48zalrms2pp1raaolssv7dry8" };
       var user = COPO.smooch.checkForUserInformation();
 
       if (user && user.id && user.email && user.username) {
