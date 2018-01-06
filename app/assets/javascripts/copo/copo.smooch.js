@@ -18,13 +18,13 @@ window.COPO.smooch = {
   },
 
   checkForUserInformation: function() {
-    if (typeof(gon) == "undefined") return nil
+    if (typeof(gon) == "undefined") return null
     if (gon.current_user && gon.current_user.userinfo) {
       return gon.current_user.userinfo
     } else if (gon.userinfo) {
       return gon.userinfo
     } else {
-      return nil
+      return null
     }
   }
 }
