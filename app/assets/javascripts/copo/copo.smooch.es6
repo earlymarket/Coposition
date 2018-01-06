@@ -4,7 +4,7 @@ window.COPO.smooch = {
     if (typeof(Smooch) == "undefined") return
     if (Smooch.appToken && $('#sk-holder').length === 0) {
       Smooch.render()
-    } else if ($('#sk-holder').length === 0)) {
+    } else if ($('#sk-holder').length === 0) {
       var params = { appToken: "48zalrms2pp1raaolssv7dry8" };
       var user = COPO.smooch.checkForUserInformation()
 
