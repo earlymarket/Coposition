@@ -6,7 +6,7 @@ window.COPO.smooch = {
       Smooch.render()
     } else {
       var params = { appToken: "48zalrms2pp1raaolssv7dry8" };
-      var user = COPO.smooch.checkForUserInformation();
+      var user = null
 
       if (user && user.id && user.email && user.username) {
         params.userId    = user.id.toString();
