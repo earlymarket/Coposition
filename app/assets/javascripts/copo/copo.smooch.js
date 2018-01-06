@@ -5,7 +5,7 @@ window.COPO.smooch = {
       Smooch.render()
     } else {
       var params = {appToken: "48zalrms2pp1raaolssv7dry8"};
-      var user = COPO.smooch.checkForUserInformation()
+      var user = COPO.smooch.checkForUserInformation();
 
       if (user) {
         params.userId    = user.id.toString();
@@ -18,11 +18,13 @@ window.COPO.smooch = {
   },
 
   checkForUserInformation: function() {
-    if (typeof(gon) == "undefined") return
+    if (typeof(gon) == "undefined") return nil
     if (gon.current_user && gon.current_user.userinfo) {
       return gon.current_user.userinfo
     } else if (gon.userinfo) {
       return gon.userinfo
+    } else {
+      return nil
     }
   }
 }
