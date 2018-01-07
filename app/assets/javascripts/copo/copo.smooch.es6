@@ -5,16 +5,16 @@ window.COPO.smooch = {
     if (Smooch.appToken) {
       Smooch.render();
     } else {
-      // var params = { appToken: "48zalrms2pp1raaolssv7dry8" };
-      // var user = COPO.smooch.checkForUserInformation();
+      var params = { appToken: "48zalrms2pp1raaolssv7dry8" };
+      var user = COPO.smooch.checkForUserInformation();
 
-      // if (user && user.id && user.email && user.username) {
-      //   params.userId    = user.id.toString();
-      //   params.email     = user.email;
-      //   params.givenName = user.username;
-      // }
+      if (user && user.id && user.email && user.username) {
+        params.userId    = user.id.toString();
+        params.email     = user.email;
+        params.givenName = user.username;
+      }
 
-      Smooch.init({ appToken: "48zalrms2pp1raaolssv7dry8" });
+      Smooch.init(params);
     }
   },
 

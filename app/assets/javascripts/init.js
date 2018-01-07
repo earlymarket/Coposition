@@ -68,5 +68,7 @@ $(document).on('ready page:change', function() {
 
   $('.scrollspy').scrollSpy();
 
-  COPO.smooch.initSmooch();
+  if ($('body').attr('data-environment') != 'test') {
+    COPO.smooch.initSmooch();
+  }
 });
