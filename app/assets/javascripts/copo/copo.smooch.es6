@@ -1,10 +1,10 @@
 window.COPO = window.COPO || {};
 window.COPO.smooch = {
   initSmooch: function() {
-    if (typeof(Smooch) == "undefined") return
-    if (Smooch.appToken && $('#sk-holder').length === 0) {
+    if ($('#sk-holder').length > 0 || typeof(Smooch) == "undefined") return
+    if (Smooch.appToken) {
       Smooch.render();
-    } else if ($('#sk-holder').length === 0) {
+    } else {
       // var params = { appToken: "48zalrms2pp1raaolssv7dry8" };
       // var user = COPO.smooch.checkForUserInformation();
 
