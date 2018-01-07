@@ -14,7 +14,7 @@ window.COPO.smooch = {
       //   params.givenName = user.username;
       // }
 
-      // Smooch.init(params);
+      Smooch.init({ appToken: "48zalrms2pp1raaolssv7dry8" });
     }
   },
 
