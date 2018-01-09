@@ -3,6 +3,13 @@
     color: $primary-color;
     text-decoration: underline;
   }
+
+  .promo {
+    bottom: -20px;
+    @media screen and (max-width: 660px){
+      bottom: -100px;
+    }
+  }
 }
 
 .c-registrations.a-edit {
