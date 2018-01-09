@@ -70,4 +70,7 @@ $(document).on('ready page:change', function() {
 
   $('.scrollspy').scrollSpy();
 
+  if ($('body').attr('data-environment') != 'test') {
+    COPO.smooch.initSmooch();
+  }
 });
