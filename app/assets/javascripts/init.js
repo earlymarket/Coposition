@@ -11,8 +11,6 @@ $(document).on('ready page:change', function() {
       L.Browser.pointer = false;
   }
 
-  COPO.smooch.initSmooch();
-
   // All modals should be initialized starting from 0.98
   $('.modal').modal();
 
