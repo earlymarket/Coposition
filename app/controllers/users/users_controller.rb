@@ -4,7 +4,10 @@ class Users::UsersController < ApplicationController
   end
 
   def me
-    render status: 200,
-      json: User.find(doorkeeper_token.resource_owner_id).public_info_hash
+    if doorkeeper_token.present? && doorkeeper_token.accessible?
+      render status: 200, json: User.find(doorkeeper_token.resource_owner_id).public_info_hash
+    else
+      render status: 401, json: { error: "Invalid access token" }
+    end
   end
 end

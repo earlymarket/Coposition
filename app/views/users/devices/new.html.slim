@@ -1,22 +1,56 @@
-h1 Device Creation
+h1
+  | Device Creation
+  a.tooltipped data-tooltip=("Device creation help") href="/help#creatingDevice" target="_blank" 
+    i.material-icons.help-icon help
 = form_for @device, url: { action: "create" }, html: { class: "form-group" } do |f|
-  = label :name, "Enter a name for the device", class: "control-label"
-  = f.text_field :name, class: "form-control input-lg fifth-width", placeholder: "Laptop"
+  = label :name, "Enter a name for the device*", class: "control-label"
+  = f.text_field :name, class: "form-control input-lg fifth-width", placeholder: "My device"
+  br/
+  = label :icon, "Choose your device type*", class: "control-label"
+  = f.select :icon, options_for_select([["Click to see options", nil], ["Laptop", "laptop"], ["Mobile", "smartphone"], ["Desktop", "desktop_windows"], ["Tablet", "tablet"], ["Watch", "watch"], ["Other", "devices_other"]], selected: "", disabled: ""), class: "required"
   br/
   = label :uuid, class: "control-label" do \
     "Enter existing coposition UUID #{link_to('(What is this?)', '/help#sharing')}".html_safe \
     end
   = f.text_field :uuid, class: "form-control input-lg fifth-width", placeholder: "(Optional) 15 digits, no spaces"
-  br/
-  = label :icon, "Choose your device type", class: "control-label"
-  = f.select :icon, options_for_select([["Laptop", "laptop"], ["Mobile", "smartphone"], ["Desktop", "desktop_windows"], ["Tablet", "tablet"], ["Watch", "watch"], ["Other", "other"]])
   = check_box_tag :create_checkin, id: "create_checkin"
   = f.label "create_checkin", for: "create_checkin", id: "create_checkin"
   br/
   br/
   = f.submit "Add", class: "form-control btn btn-default", id: "add_button"
+  = link_to "Cancel", user_devices_path(current_user), class: "form-control btn btn-default red white-text", id: "cancel_button"
   = hidden_field_tag "location", nil
 
 #preview.hide.animated.zoomIn
   #map.rectangle-map
     pre#coordinates.ui-coordinates
+
+javascript:
+  $.validator.setDefaults({
+    ignore: []
+  });
+
+  // configure your validation
+
+  $("#new_device").validate({
+    onkeyup: false,
+    rules: {
+      "device[name]": {
+        required: true
+      },
+      "device[icon]": {
+        required: true
+      }
+    },
+    errorElement: "div",
+    errorPlacement: function(error, element) {
+      var placement = $(element).data("error");
+      if (placement) {
+        $(placement).append(error)
+      } else {
+        error.insertAfter(element);
+      }
+    },
+    errorClass: "invalid",
+    validClass: "valid"
+  });

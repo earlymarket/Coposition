@@ -14,11 +14,10 @@ module Users::Friends
     end
 
     def gon
-      checkins = device_checkins
       {
-        checkins: checkins.paginate(page: 1, per_page: 1000),
+        checkins: ActiveRecord::Base.connection.execute(device_checkins_paginated.to_sql).to_a,
         first_load: first_load,
-        total: checkins.size
+        total: device_checkins.size
       }
     end
 
@@ -52,14 +51,19 @@ module Users::Friends
 
     private
 
+    def device_checkins_paginated
+      device_checkins
+        .paginate(page: 1, per_page: 5000)
+    end
+
     def device_checkins
-      checkins = device.permitted_history_for(@user)
+      @checkins ||= device.permitted_history_for(@user)
       if first_load
-        checkins = checkins.limit(5000)
+        @checkins = @checkins.limit(5000)
       elsif date_range[:from]
-        checkins = checkins.where(created_at: date_range[:from]..date_range[:to])
+        @checkins = @checkins.where(created_at: date_range[:from]..date_range[:to])
       end
-      device.replace_checkin_attributes(checkins, @user)
+      device.replace_checkin_attributes(@checkins, @user)
     end
   end
 end

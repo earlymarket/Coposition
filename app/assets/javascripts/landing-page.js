@@ -23,9 +23,9 @@ $(document).on('ready page:change', function() {
   } else {
     var resize = function(){
       if(window.innerWidth<660){
-        $("main").css('padding-top', '80px');
+        $("main").css('padding-top', '76px');
       } else {
-        $("main").css('padding-top', '21px');
+        $("main").css('padding-top', '60px');
       }
     }
     resize();

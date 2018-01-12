@@ -6,7 +6,8 @@ class Developer < ApplicationRecord
   has_attachment :avatar
 
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
-
+  validates :email, confirmation: true
+  
   has_one :oauth_application, class_name: "Doorkeeper::Application", as: :owner, dependent: :destroy
   has_many :requests, dependent: :destroy
   has_many :permissions, as: :permissible, dependent: :destroy
@@ -14,7 +15,7 @@ class Developer < ApplicationRecord
   has_many :subscriptions, as: :subscriber, dependent: :destroy
   has_many :approvals, as: :approvable, dependent: :destroy
   has_many :pending_requests, -> { where "status = 'developer-requested'" }, through: :approvals, source: :user
-  has_many :users, -> { where "status = 'accepted'" }, through: :approvals
+  has_many :users, -> { where "status in (?)", %w[accepted complete] }, through: :approvals
   has_many :configs
   has_many :configurable_devices, through: :configs, source: :device
 
@@ -59,6 +60,11 @@ class Developer < ApplicationRecord
 
   def configures_device?(device)
     configs.where(device: device).present?
+  end
+
+  def self.not_coposition_developers
+    copo_keys = [Rails.application.secrets["coposition_api_key"], Rails.application.secrets["mobile_app_api_key"]]
+    where.not(api_key: copo_keys)
   end
 
   def set_application_attributes

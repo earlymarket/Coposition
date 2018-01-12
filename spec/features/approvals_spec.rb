@@ -7,11 +7,6 @@ RSpec.feature "Approvals", type: :feature do
     given_i_am_signed_in
   end
 
-  scenario "User adds friend" do
-    when_i_add_a_friend
-    then_i_should_have_a_pending_friend_request
-  end
-
   scenario "User adds developer then revokes", js: true do
     given_a_developer_is_signed_up
     when_i_add_a_developer
@@ -29,6 +24,7 @@ RSpec.feature "Approvals", type: :feature do
   def given_i_am_signed_in
     visit "/users/sign_up"
     fill_in "user_email", with: "tommo@email.com"
+    fill_in "user_email_confirmation", with: "tommo@email.com"
     fill_in "user_password", with: "password"
     fill_in "user_password_confirmation", with: "password"
     fill_in "user_username", with: "tommo"
@@ -38,10 +34,11 @@ RSpec.feature "Approvals", type: :feature do
   def given_a_developer_is_signed_up
     visit "/developers/sign_up"
     fill_in "developer_email", with: "jimbo@email.com"
+    fill_in "developer_email_confirmation", with: "jimbo@email.com"
     fill_in "developer_password", with: "password"
     fill_in "developer_password_confirmation", with: "password"
     fill_in "developer_company_name", with: "fake company"
-    fill_in "developer_redirect_url", with: "http://example.com"
+    fill_in "developer_redirect_url", with: "https://example.com"
     click_on "Sign up"
   end
 
@@ -59,7 +56,7 @@ RSpec.feature "Approvals", type: :feature do
   end
 
   def when_i_add_a_developer
-    click_on "users", match: :first
+    visit "/"
     click_on "Apps", match: :first
     click_on "add"
     fill_in "approval_approvable", with: "fake company"
@@ -67,12 +64,8 @@ RSpec.feature "Approvals", type: :feature do
     click_button "Add"
   end
 
-  def then_i_should_have_a_pending_friend_request
-    expect(page).to have_text "You have sent 1 friend request"
-  end
-
   def then_i_should_have_one_approved_app
-    expect(page).to have_text "Approved since", count: 1
+    expect(page).to have_text "Connected since", count: 1
   end
 
   def then_i_should_see_request_sent
@@ -80,10 +73,10 @@ RSpec.feature "Approvals", type: :feature do
   end
 
   def when_i_revoke_the_approval
-    click_on "Revoke Approval", match: :first
+    click_on "Disconnect", match: :first
   end
 
   def then_i_should_have_no_approved_apps
-    expect(page).not_to have_text "Approved since"
+    expect(page).not_to have_text "Connected since"
   end
 end

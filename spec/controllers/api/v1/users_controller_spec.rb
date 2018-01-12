@@ -70,7 +70,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         get :show, params: { id: 1000, format: :json }
 
         expect(response.status).to eq 404
-        expect(res_hash[:error]).to eq "Couldn't find User with 'id'=1000"
+        expect(res_hash[:error]).to match "Couldn't find User with 'id'=1000"
       end
     end
   end

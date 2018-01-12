@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   acts_as_token_authenticatable
 
-  attr_accessor :private_profile
+  attr_accessor :private_profile, :pin_color
 
   friendly_id :username, use: %i(finders slugged)
 
@@ -16,14 +16,17 @@ class User < ApplicationRecord
   validates :username, uniqueness: true, allow_blank: true,
                        format: { with: /\A[-a-zA-Z_]+\z/, message: "only allows letters, underscores and dashes" },
                        length: { in: 4..20 }
+  validates :email, confirmation: true
 
+  has_one :email_subscription, dependent: :destroy
   has_many :devices, dependent: :destroy
   has_many :checkins, through: :devices
   has_many :requests
   has_many :approvals, dependent: :destroy
   has_many :subscriptions, as: :subscriber, dependent: :destroy
+  has_many :email_requests, dependent: :destroy
   has_many :developers,
-    -> { where "status = 'accepted'" },
+    -> { where "status in (?)", %w[accepted complete] },
     through: :approvals,
     source: :approvable,
     source_type: "Developer"
@@ -32,16 +35,25 @@ class User < ApplicationRecord
     through: :approvals,
     source: :approvable,
     source_type: "Developer"
+  has_many :approved_developers,
+    -> { where "status = 'accepted'" },
+    through: :approvals,
+    source: :approvable,
+    source_type: "Developer"
   has_many :developer_approvals, -> { where(status: "accepted", approvable_type: "Developer") }, class_name: "Approval"
-  has_many :friends, -> { where "status = 'accepted'" }, through: :approvals, source: :approvable, source_type: "User"
+  has_many :friends,
+    -> { where "status = 'accepted' AND users.is_active = true" },
+    through: :approvals,
+    source: :approvable,
+    source_type: "User"
   has_many :friend_approvals, -> { where(status: "accepted", approvable_type: "User") }, class_name: "Approval"
   has_many :pending_friends,
-    -> { where "status = 'pending'" },
+    -> { where "status = 'pending' AND users.is_active = true" },
     through: :approvals,
     source: :approvable,
     source_type: "User"
   has_many :friend_requests,
-    -> { where "status = 'requested'" },
+    -> { where "status = 'requested' AND users.is_active = true" },
     through: :approvals,
     source: :approvable,
     source_type: "User"
@@ -55,9 +67,14 @@ class User < ApplicationRecord
 
   before_create :generate_token, unless: :webhook_key?
 
-  after_create :approve_coposition_mobile_app
+  before_destroy :destroy_approvals, :destroy_checkins
+
+  after_create :approve_coposition_mobile_app, :create_pending_requests, :create_email_subscription
 
   has_attachment :avatar
+
+  scope :active, -> { where(is_active: true)}
+
   ## Pathing
 
   def url_id
@@ -68,10 +85,34 @@ class User < ApplicationRecord
     slug.blank? || username_changed?
   end
 
+  def self.active_users
+    User.where(is_active: true)
+  end
+
+  def active_for_authentication?
+    super and self.is_active?
+  end
+
+  def inactive_message
+    "Your account has been disabled"
+  end
+
   ## Approvals
 
   def approve_coposition_mobile_app
-    Approval.add_developer(self, Developer.default(mobile: true))
+    mobile_dev = Developer.default(mobile: true)
+    mobile_dev.approvals.find_by(user_id: id).tap do |approval|
+      approval ||= Approval.add_developer(self, mobile_dev)
+      approval.complete!
+    end
+    Doorkeeper::AccessToken.find_or_create_for(mobile_dev.oauth_application, id, "public", nil, true)
+  end
+
+  def create_pending_requests
+    EmailRequest.where(email: email).find_each do |request|
+      Approval.add_friend(request.user, self)
+      request.destroy
+    end
   end
 
   def approved?(permissible)
@@ -86,6 +127,12 @@ class User < ApplicationRecord
     approvals.find_by(approvable_id: approvable.id, approvable_type: approvable.class.to_s) || NoApproval.new
   end
 
+  def destroy_approvals
+    Approval.where(approvable_id: id, approvable_type: "User").destroy_all
+  end
+
+  ## Permissions
+
   def destroy_permissions_for(approvable)
     devices.each do |device|
       permission = device.permission_for(approvable)
@@ -98,6 +145,11 @@ class User < ApplicationRecord
     developers
       .where.not(api_key: copo_keys)
       .includes(:requests)
+  end
+  ## Email Subscriptions
+
+  def create_email_subscription
+    EmailSubscription.create(user: self)
   end
 
   ## Devices
@@ -136,7 +188,9 @@ class User < ApplicationRecord
     end
   end
 
-  ##############
+  def destroy_checkins
+    devices.each { |device| DeleteDeviceWorker.perform_async(device.id) }
+  end
 
   def slack_message
     "A new user has registered, id: #{id}, name: #{username}, there are now #{User.count} users."

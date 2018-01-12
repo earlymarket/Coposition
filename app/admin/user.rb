@@ -1,5 +1,32 @@
 ActiveAdmin.register User do
-  permit_params :email, :username, :password, :password_confirmation, :admin
+  permit_params :email, :username, :password, :password_confirmation, :admin, :is_active
+
+  member_action :firebase_notification, method: :post do
+    Firebase::Push.call(
+      topic: resource.id,
+      notification: {
+        body: params[:message],
+        title: params[:title]
+      }
+    )
+    redirect_to resource_path, notice: "Message was sent"
+  end
+
+  batch_action :firebase_notification, method: :post, form: {
+    title: :text,
+    message:  :textarea
+  } do |ids, inputs|
+    batch_action_collection.find(ids).each do |user|
+      Firebase::Push.call(
+        topic: user.id,
+        notification: {
+          body: inputs[:message],
+          title: inputs[:title]
+        }
+      )
+    end
+    redirect_to collection_path, alert: "Messages sent"
+  end
 
   index do
     selectable_column
@@ -18,6 +45,7 @@ ActiveAdmin.register User do
     end
     column :zapier_enabled
     column :admin
+    column :is_active
 
     actions
   end
@@ -32,7 +60,24 @@ ActiveAdmin.register User do
       f.input :password
       f.input :password_confirmation
       f.input :admin
+      f.input :is_active
     end
     f.actions
+  end
+
+  controller do
+    def update_resource(object, attributes)
+      update_method = attributes.first[:password].present? ? :update_attributes : :update_without_password
+      object.send(update_method, *attributes)
+    end
+  end
+
+  show do
+    default_main_content
+
+    panel "Firebase" do
+      para "Send some firebase notification to this user."
+      render "firebase_form"
+    end
   end
 end

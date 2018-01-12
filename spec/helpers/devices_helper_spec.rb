@@ -5,6 +5,10 @@ RSpec.describe DevicesHelper, type: :helper do
   let(:device) { create(:device, user_id: user.id) }
   let(:other) { Device.update(device.id, published: true) }
 
+  before do
+    allow(helper).to receive(:current_user) { user }
+  end
+
   describe "#devices_last_checkin" do
     it "returns 'No Checkins found' if a checkin doesn't exist" do
       expect(helper.devices_last_checkin(device)).to match("No Checkins found")
@@ -47,10 +51,6 @@ RSpec.describe DevicesHelper, type: :helper do
   end
 
   describe "devices_choose_icon" do
-    before do
-      allow(helper).to receive(:current_user) { user }
-    end
-
     it "returns a string" do
       expect(helper.devices_choose_icon(device, "laptop")).to be_kind_of String
     end

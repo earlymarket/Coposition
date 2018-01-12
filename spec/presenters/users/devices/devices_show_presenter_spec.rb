@@ -56,7 +56,7 @@ describe ::Users::Devices::DevicesShowPresenter do
 
     it "returns date of first and last check-in being shown on first load" do
       show_presenter = described_class.new(user, id: device.id, first_load: true)
-      expect(show_presenter.date_range).to eq from: Checkin.last.created_at.beginning_of_day, to: Checkin.first.created_at.end_of_day
+      expect(show_presenter.date_range).to eq from: Checkin.last.created_at.beginning_of_day, to: Time.zone.today
     end
 
     it "returns date selected if params provided" do
@@ -78,7 +78,7 @@ describe ::Users::Devices::DevicesShowPresenter do
     it "calls gon_show_checkins" do
       allow(show_presenter).to receive(:gon_show_checkins).and_return device.checkins
       show_presenter.show_gon
-      expect(show_presenter).to have_received(:gon_show_checkins).exactly(3).times
+      expect(show_presenter).to have_received(:gon_show_checkins).at_least(1).times
     end
   end
 

@@ -49,16 +49,16 @@ en:
 
     authorizations:
       buttons:
-        authorize: 'Authorize'
+        authorize: 'Authorise'
         deny: 'Deny'
       error:
         title: 'An error has occurred'
       new:
-        title: 'Authorization required'
-        prompt: 'Authorize %{client_name} to use your account?'
+        title: 'Authorisation required'
+        prompt: 'Hello, %{resource_owner}! Authorise %{client_name} to use your account?'
         able_to: 'This application will be able to'
       show:
-        title: 'Authorization code'
+        title: 'Authorisation code'
 
     authorized_applications:
       confirmations:

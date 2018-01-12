@@ -1,7 +1,7 @@
 class Users::DevicesController < ApplicationController
   before_action :authenticate_user!, :correct_url_user?, except: :shared
   before_action :published?, only: :shared
-  before_action :require_ownership, only: %i(show destroy update)
+  before_action :require_ownership, only: %i[show destroy update]
 
   def index
     @devices_index_presenter = ::Users::Devices::DevicesIndexPresenter.new(current_user, params)
@@ -13,7 +13,7 @@ class Users::DevicesController < ApplicationController
     gon.push(@device_show_presenter.show_gon)
 
     respond_to do |format|
-      format.html { flash[:notice] = "Right click on the map to check-in" }
+      format.html
       format.any(:csv, :gpx, :geojson) do
         create_activity
         send_data @device_show_presenter.checkins, filename: @device_show_presenter.filename
@@ -35,6 +35,22 @@ class Users::DevicesController < ApplicationController
     @devices_info_presenter = ::Users::Devices::DevicesInfoPresenter.new(current_user, params)
   end
 
+  def remote_checkin
+    device = current_user.devices.find(params[:id])
+    return unless device
+
+    Firebase::Push.call(
+      topic: device.user.id,
+      content_available: true,
+      data: {
+        body: device.id.to_s,
+        title: "Remote check-in"
+      }
+    )
+    flash[:notice] = "Remote check-in request sent"
+    redirect_to user_devices_path
+  end
+
   def create
     result = Users::Devices::CreateDevice.call(user: current_user,
                                                developer: Developer.default(coposition: true),
@@ -48,8 +64,8 @@ class Users::DevicesController < ApplicationController
   end
 
   def destroy
-    Checkin.where(device: params[:id]).delete_all
     Device.find(params[:id]).destroy
+    DeleteDeviceWorker.perform_async(params[:id])
     flash[:notice] = "Device deleted"
     redirect_to user_devices_path
   end

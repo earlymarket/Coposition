@@ -57,7 +57,11 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   end
 
   def approvable
-    req_from_coposition_app? ? model_find(approvable_type).find(allowed_params[:approvable]) : @dev
+    if req_from_coposition_app?
+      model_find(approvable_type).find_by(email: allowed_params[:approvable]) || model_find(approvable_type).find(allowed_params[:approvable])
+    else
+      @dev
+    end
   end
 
   def model_find(type)

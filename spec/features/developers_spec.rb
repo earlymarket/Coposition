@@ -12,6 +12,7 @@ RSpec.feature "Developers", type: :feature do
   scenario "Developer signs up with taken email" do
     given_i_fill_in_sign_up_details
     fill_in "developer_email", with: developer.email
+    fill_in "developer_email_confirmation", with: developer.email
     and_i_click_sign_up
     then_i_should_see_sign_up
   end
@@ -28,7 +29,8 @@ RSpec.feature "Developers", type: :feature do
 
   def given_i_fill_in_sign_up_details
     visit "/developers/sign_up"
-    fill_in "developer_email", with: Faker::Internet.email
+    fill_in "developer_email", with: "jimbo@email.com"
+    fill_in "developer_email_confirmation", with: "jimbo@email.com"
     fill_in "developer_password", with: "password"
     fill_in "developer_password_confirmation", with: "password"
     fill_in "developer_company_name", with: Faker::Internet.user_name(4..20, %w(_ -))

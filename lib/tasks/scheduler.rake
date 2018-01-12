@@ -3,14 +3,24 @@ namespace :scheduler do
   task check_activity: :environment do
     check_activity
     destroy_activities
+    check_approvals
   end
 end
 
 def check_activity
   return unless Time.current.friday?
-  User.all.each do |user|
-    last = user.checkins.first.created_at if user.checkins.exists?
-    UserMailer.no_activity_email(user).deliver_now if last && last < 1.week.ago
+  Device.all.each do |device|
+    last = device.checkins.first.created_at if device.checkins.exists?
+    next unless last && last < 1.week.ago
+    UserMailer.no_activity_email(device).deliver_now
+    firebase_notification(device.user, device.name)
+  end
+end
+
+def check_approvals
+  return unless Time.current.friday?
+  Approval.where("status = ? AND created_at BETWEEN ? AND ?", "requested", 2.weeks.ago, 1.week.ago).each do |approval|
+    UserMailer.pending_request_email(approval.approvable, approval.user)
   end
 end
 
@@ -19,6 +29,16 @@ def destroy_activities
   User.all.each do |user|
     activities = PublicActivity::Activity.where(key: "device.update", owner_id: user.id)
     recent = activities.order("created_at DESC").limit(10)
-    activities.destroy_all("created_at < ?", recent.last.created_at) if recent.exists?
+    activities.where("created_at < ?", recent.last.created_at).destroy_all if recent.exists?
   end
+end
+
+def firebase_notification(user, device_name)
+  Firebase::Push.call(
+    topic: user.id,
+    notification: {
+      body: "You have not checked in in the last 7 days on #{device_name}",
+      title: "Coposition inactivity"
+    }
+  )
 end

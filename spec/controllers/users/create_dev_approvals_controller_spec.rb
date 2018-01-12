@@ -36,7 +36,7 @@ RSpec.describe Users::CreateDevApprovalsController, type: :controller do
         approval.update(status: 'accepted', approvable_id: developer.id, approvable_type: 'Developer')
         approval_count = Approval.count
         post :create, params: approval_create_params
-        expect(flash[:alert]).to match 'exists'
+        expect(flash[:alert]).to match 'already connected'
         expect(Approval.count).to eq approval_count
       end
     end

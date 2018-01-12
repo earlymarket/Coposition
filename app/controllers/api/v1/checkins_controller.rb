@@ -4,7 +4,7 @@ class Api::V1::CheckinsController < Api::ApiController
   skip_before_action :find_user, only: [:create, :batch_create]
   before_action :device_exists?, only: [:create, :batch_create]
   before_action :check_user_approved_approvable, :find_device, except: [:create, :batch_create]
-  before_action :doorkeeper_authorize!, unless: :req_from_coposition_app?, except: [:create, :batch_create]
+  before_action -> { doorkeeper_authorize! :public }, unless: :req_from_coposition_app?, except: [:create, :batch_create]
 
   MAX_PER_PAGE = 1000
 
@@ -36,11 +36,11 @@ class Api::V1::CheckinsController < Api::ApiController
   def create
     checkin = @device.checkins.create(allowed_params)
     if checkin.save
-      NotifyAboutCheckin.call(device: @device, checkin: checkin)
+      NotifyAboutCheckin.call(device: @device, checkin: checkin, remote: true)
       config = @dev.configs.find_by(device_id: @device.id)
       render json: { data: [checkin], config: config }
     else
-      render status: 400, json: { error: "You must provide a lat and lng" }
+      render status: 400, json: { error: "You must provide a valid lat and lng" }
     end
   end
 
@@ -60,16 +60,16 @@ class Api::V1::CheckinsController < Api::ApiController
   end
 
   def device_exists?
-    return unless (@device = Device.find_by(uuid: request.headers["X-UUID"])).nil?
+    return unless (@device = Device.active_devices.find_by(uuid: request.headers["X-UUID"])).nil?
     render status: 400, json: { error: "You must provide a valid uuid" }
   end
 
   def allowed_params
-    params.require(:checkin).permit(:lat, :lng, :created_at, :fogged)
+    params.require(:checkin).permit(:lat, :lng, :created_at, :fogged, :speed, :altitude)
   end
 
   def find_device
-    @device = Device.find(params[:device_id]) if params[:device_id]
+    @device = Device.active_devices.find(params[:device_id]) if params[:device_id]
   end
 
   def filter_arguments

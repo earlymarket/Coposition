@@ -11,13 +11,49 @@
 | ");
 
 | $('#approved').html("
-= j (render partial: 'approved', locals: { approved: @approvals_presenter.approved, devices: @approvals_presenter.devices, approvable_type: @approvals_presenter.approvable_type })
+= j (render partial: 'users/approvals/approved', locals: { approved: @approvals_presenter.approved, devices: @approvals_presenter.devices, approvable_type: @approvals_presenter.approvable_type })
 | ");
 
-- if @approvals_presenter.pending.present?
-  | $('#pending').html("
-  = j (render partial: 'pending', locals: { pending: @approvals_presenter.pending })
+- if @approvals_presenter.requested.present?
+  | if ($('#requested').length) {
+  | $('#requested').html("
+  = j (render partial: "users/approvals/requested", locals: { requested: @approvals_presenter.requested })
   | ");
+  | }
+- else
+  | if ($('#requested').length) { $('#requested').remove(); }
+
+- if !@approvals_presenter.approved.present? && !@approvals_presenter.complete.present? && @approvals_presenter.approvable_type === "Developer"
+  | $('.container').append("
+  | <p class='center'> You are not currently connected to any applications. Add applications to start controlling their access to your data.</p>
+  | ");
+
+- if !@approvals_presenter.approved.present?
+  | $('#approved').remove();
+
+- if @approvals_presenter.complete.present?
+  | if ($('#complete').length) {
+  | $('#complete').html("
+  = j (render partial: 'users/approvals/complete', locals: { complete: @approvals_presenter.complete })
+  | ");
+  | } else {
+  | $('.container').append("
+  = j (render partial: 'users/approvals/complete', locals: { complete: @approvals_presenter.complete })
+  | ");
+  | }
+- else
+  | if ($('#complete').length) { $('#complete').remove(); }
+
+- if @approvals_presenter.pending.present?
+  | if ($('#pending').length) {
+  | $('#pending').html("
+  = j (render partial: 'users/approvals/pending', locals: { pending: @approvals_presenter.pending })
+  | ");
+  | } else {
+  | $('.container').append("
+  = j (render partial: 'users/approvals/pending', locals: { pending: @approvals_presenter.pending })
+  | ");
+  | }
 - else
   | $('#pending').remove();
 

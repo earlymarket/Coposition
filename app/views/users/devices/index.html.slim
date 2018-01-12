@@ -1,29 +1,37 @@
 #gonvariables
   = Gon::Base.render_data
 h1.title Your devices
-.row
-  .center
-    = link_to new_user_device_path, class: "btn-floating btn-large waves-effect waves-light primary-color" do
-      i.material-icons add
+.right-align
+  = link_to new_user_device_path, class: "btn btn-large waves-effect waves-light primary-color" do
+    i.material-icons.right add
+    | Create Device
 section.devices-index.row
   .col.s12
-    #map-wrapper style=("position: relative;") 
+    #map-wrapper style=("position: relative;")
       p#map-status
       #map-overlay.valign-wrapper.z-depth-1.hide
         div
-          h5 style=("text-align: center;")  Nothing here yet
-          p Here you will be shown the most recent checkin for each of your devices, but you don't have any at the moment!
-          p To add a check-in, create a device by clicking the plus above or select an existing device.
+          h5 style=("text-align: center;")  No check-ins yet
+          p This is where you will see the most recent check-in for each of your Coposition devices. A check-in is a unit of location data, which you can choose to share with your apps or friends using Coposition.
+          p To create a check-in, first #{link_to("create a device", new_user_device_path, class: "hyperlink")} or select an existing device below. You can manage the settings and permissions for your devices below.
+          p For further information on how to use your Coposition account, please see our #{link_to("help centre", help_path, class: "hyperlink")}.
       #map
+- if current_user.checkins.exists?
+  #find-checkin-row
+    = text_field_tag(:checkin_id, params["checkin_id"], placeholder: "Check-in id", required: true)
+    = button_tag "Find", class: "waves-effect waves-light btn", id: "find-checkin", type: "submit"
+- if @devices_index_presenter.devices.length > 1
+  .view-all
+    a.btn href="#{user_checkins_path(current_user, first_load: true)}" View all check-ins
 div
   - @devices_index_presenter.devices.each do |device|
-    div id="device#{device.id}" 
+    div id="device#{device.id}"
       = render device
-    = render partial: "device_modals", locals: { device: device }
+    = render "device_modals", device: device
 .center
   = will_paginate @devices_index_presenter.devices
   div
-    script#markerPopupTmpl type="x-tmpl-mustache" 
+    script#markerPopupTmpl type="x-tmpl-mustache"
       h3 Device: {{ &devicebutton }}
       ul
         li.address Address: {{ address }}

@@ -6,9 +6,9 @@ module Users::Approvals
     delegate :current_user, :approvable, to: :context
 
     def call
+      context.path = user_friends_path(user_id: current_user.id)
       if approval && approval.save
         context.message = { notice: "Friend request sent" }
-        context.path = user_friends_path(user_id: current_user.id)
         create_activity
       else
         describe_error_case
@@ -29,12 +29,13 @@ module Users::Approvals
       else
         invite_friend_email
         context.message = { notice: "User not signed up with Coposition, invite email sent!" }
-        context.path = root_path
       end
     end
 
     def invite_friend_email
-      UserMailer.invite_email(approvable).deliver_now
+      EmailRequest.create(user_id: current_user.id, email: approvable.downcase)
+      UserMailer.invite_email(current_user, approvable).deliver_now
+      UserMailer.invite_sent_email(current_user, approvable).deliver_now
     end
 
     def user

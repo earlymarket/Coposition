@@ -14,13 +14,13 @@ class ImportWorker
   end
 
   def checkin_create_or_update_from_row!(row, device_id)
-    checkin = Checkin.unscope(:order).find_by(id: row["id"]) || Checkin.new
+    checkin = Checkin.unscope(:order).find_by(id: row["id"], device_id: device_id) || Checkin.new
     checkin.attributes = attributes_from_row(row)
     checkin.device_id = device_id
     checkin.save!
   end
 
   def attributes_from_row(row)
-    row.to_hash.slice("lat", "lng", "created_at", "fogged")
+    row.to_hash.slice("lat", "lng", "speed", "altitude", "created_at", "fogged")
   end
 end

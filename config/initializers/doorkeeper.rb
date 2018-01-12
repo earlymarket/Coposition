@@ -7,11 +7,7 @@ Doorkeeper.configure do
     # fail "Please configure doorkeeper resource_owner_authenticator block located in #{__FILE__}"
     # Put your resource owner authentication logic here.
     # Example implementation:
-    if session["warden.user.user.key"] && session["warden.user.user.key"][0]
-      User.find(session["warden.user.user.key"][0][0]) || redirect_to(new_user_session_url(return_to: request.fullpath))
-    else
-      redirect_to(new_user_session_url(return_to: request.fullpath))
-    end
+    current_user || redirect_to(new_user_session_url(return_to: request.fullpath))
   end
 
   # If you want to restrict access to the web interface for adding oauth authorized applications, you need to declare the block below.
@@ -26,7 +22,7 @@ Doorkeeper.configure do
 
   # Access token expiration time (default 2 hours).
   # If you want to disable expiration, set this to nil.
-  # access_token_expires_in 2.hours
+  access_token_expires_in nil
 
   # Assign a custom TTL for implicit grants.
   # custom_access_token_expires_in do |oauth_client|
@@ -114,3 +110,6 @@ Doorkeeper.configure do
   # WWW-Authenticate Realm (default "Doorkeeper").
   # realm "Doorkeeper"
 end
+
+Doorkeeper::OAuth::TokenResponse.send :prepend, CustomTokenResponse
+Doorkeeper::AccessToken.send :include, AccessTokenRevokation

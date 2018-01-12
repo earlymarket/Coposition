@@ -9,7 +9,9 @@ RSpec.describe Users::CheckinsController, type: :controller do
   let(:checkin) { create :checkin, device: device }
   let(:params) { { user_id: user.username, device_id: device.id, id: checkin.id } }
   let(:other_user_params) { params.merge(user_id: new_user.id) }
-  let(:create_params) { params.merge(checkin: { lat: checkin.lat, lng: checkin.lng }) }
+  let(:create_params) do
+    params.merge(checkin: { lat: checkin.lat, lng: checkin.lng, speed: checkin.speed, altitude: checkin.altitude })
+  end
   let(:index_params) { params.merge(page: 1, per_page: 1000) }
   let(:update_lat_params) { params.merge(checkin: { lat: 10 }) }
 
@@ -21,7 +23,10 @@ RSpec.describe Users::CheckinsController, type: :controller do
   end
 
   describe "GET #index" do
-    before { get :index, params: index_params }
+    before do
+      request.accept = "application/json"
+      get :index, params: index_params
+    end
 
     it "render json hash" do
       expect(res_hash).to be_truthy
@@ -57,28 +62,45 @@ RSpec.describe Users::CheckinsController, type: :controller do
 
     it "assigns new checkin to @checkin" do
       post :create, params: create_params
-      expect(assigns(:checkin)).to eq device.checkins.first
+      expect(assigns(:checkin)["id"]).to eq device.checkins.first.id
+    end
+
+    it "returns an alert if inavlid lat/lng given" do
+      checkin.lat = 200
+      post :create, params: create_params
+      expect(flash[:alert]).to match("Invalid")
     end
   end
 
   describe "GET #show" do
-    before { request.accept = "text/javascript" }
+    context "with javascript datatype" do
+      before { request.accept = "text/javascript" }
 
-    it "assigns :id.checkin to @checkin if user owns device which owns checkin" do
+      it "assigns :id.checkin to @checkin if user owns device which owns checkin" do
+        get :show, params: params
+        expect(assigns(:checkin)).to eq(Checkin.find(checkin.id))
+      end
+
+      it "doesn't assign :id.checkin if user does not own device which owns checkin" do
+        user
+        get :show, params: params.merge(user_id: new_user.username)
+        expect(assigns(:checkin)).to eq nil
+      end
+
+      it "redirects to root_path if user does not own device" do
+        user
+        get :show, params: params.merge(user_id: new_user.username)
+        expect(response).to redirect_to(root_path)
+      end
+
+      it "geocodes the checkin" do
+        expect { get :show, params: params }.to change { Checkin.find(checkin.id).updated_at }
+      end
+    end
+
+    it "redirects to devices show path" do
       get :show, params: params
-      expect(assigns(:checkin)).to eq(Checkin.find(checkin.id))
-    end
-
-    it "doesn't assign :id.checkin if user does not own device which owns checkin" do
-      user
-      get :show, params: params.merge(user_id: new_user.username)
-      expect(assigns(:checkin)).to eq nil
-    end
-
-    it "redirects to root_path if user does not own device" do
-      user
-      get :show, params: params.merge(user_id: new_user.username)
-      expect(response).to redirect_to(root_path)
+      expect(response).to redirect_to(user_device_path(user.url_id, checkin.device.id, checkin_id: checkin.id))
     end
   end
 

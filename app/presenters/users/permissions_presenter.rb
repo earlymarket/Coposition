@@ -57,7 +57,7 @@ module Users
       {
         permissions: approvals_permissions("Developer"),
         current_user_id: @user.id,
-        approved: @user.not_coposition_developers.public_info
+        approved: @user.developers.not_coposition_developers.public_info
       }
     end
 
@@ -74,7 +74,7 @@ module Users
     def devices_index_checkins
       @devices
         .includes(:checkins)
-        .map { |device| device.checkins.first.as_json.merge(device: device.name) if device.checkins.present? }
+        .map { |device| device.past_checkins.first.as_json.merge(device: device.name) if device.past_checkins.present? }
         .compact
     end
 

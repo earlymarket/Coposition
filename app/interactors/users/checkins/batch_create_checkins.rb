@@ -25,14 +25,14 @@ module Users::Checkins
     end
 
     def checkin_create(hash)
-      checkin = Checkin.new(hash.slice("lat", "lng", "created_at", "fogged"))
+      checkin = Checkin.new(hash.slice("lat", "lng", "speed", "altitude", "created_at", "fogged"))
       raise ActiveRecord::Rollback && context.fail! unless valid_hash(checkin)
       checkin.assign_values
       checkin
     end
 
     def valid_hash(checkin)
-      checkin.lat? && checkin.lng?
+      checkin.lat? && checkin.lng? && checkin.lat.abs <= 90 && checkin.lng.abs <= 180
     end
   end
 end

@@ -20,7 +20,7 @@
     ul.permissions.collection data-id=(device.id)
       li.collection-item.row.valign-wrapper.master-permissions
         .valign.col.s6
-          h5 Update all permissions
+          h5.all-permissions Update all permissions
         = render partial: "users/permissions/controls", object: device, as: "control_object"
 
 .modal.download-modal id="download#{device.id}" 
@@ -37,7 +37,7 @@
       a.btn.device-button-small href="#{user_device_path(current_user.url_id, device)}.csv?download=csv&from=#{params[:from]}&to=#{params[:to]}" csv
       br
       br
-      a.btn.device-button-small href="#{user_device_path(current_user.url_id, device)}.gpx?download=gpx&from=#{params[:from]}&to=#{params[:to]}" gpx (route)
+      a.btn.device-button-small href="#{user_device_path(current_user.url_id, device)}.gpx?download=gpx&from=#{params[:from]}&to=#{params[:to]}" gpx (track)
       br
       br
       a.btn.device-button-small href="#{user_device_path(current_user.url_id, device)}.geojson?download=geojson&from=#{params[:from]}&to=#{params[:to]}" geojson

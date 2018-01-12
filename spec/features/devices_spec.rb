@@ -7,13 +7,6 @@ RSpec.feature "Devices", type: :feature do
     and_i_am_on_the_devices_page
   end
 
-  scenario "User creates then deletes device" do
-    when_i_create_a_new_device
-    then_i_should_see_the_device_map
-    when_i_click_delete
-    then_i_should_see_no_devices
-  end
-
   scenario "User creates device and edits settings", js: true do
     when_i_create_a_new_device
     and_i_am_on_the_devices_page
@@ -30,7 +23,8 @@ RSpec.feature "Devices", type: :feature do
 
   def given_i_am_signed_in
     visit "/users/sign_up"
-    fill_in "user_email", with: Faker::Internet.email
+    fill_in "user_email", with: "tomm@email.com"
+    fill_in "user_email_confirmation", with: "tomm@email.com"
     fill_in "user_password", with: "password"
     fill_in "user_password_confirmation", with: "password"
     fill_in "user_username", with: Faker::Internet.user_name(4..20, %w(_ -))
@@ -45,11 +39,9 @@ RSpec.feature "Devices", type: :feature do
   def when_i_create_a_new_device
     click_on "add"
     fill_in "device_name", with: "My device"
+    find("div.select-wrapper input").click
+    find("div.select-wrapper li", text: "Laptop").click
     click_button "Add"
-  end
-
-  def then_i_should_see_the_device_map
-    expect(page).to have_text("Checkin now")
   end
 
   def when_i_click_the_icon(icon)
@@ -62,14 +54,5 @@ RSpec.feature "Devices", type: :feature do
 
   def and_i_click_the_slider
     find(".noUi-origin").click
-  end
-
-  def when_i_click_delete
-    click_link "Delete device"
-  end
-
-  def then_i_should_see_no_devices
-    expect(page).to have_text("Your devices")
-    expect(page).not_to have_text("Device info")
   end
 end

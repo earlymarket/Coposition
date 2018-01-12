@@ -27,6 +27,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     app
   end
   let(:user_params) { { user_id: user.id } }
+  let(:add_params) { { email: friend.email } }
   let(:friend_approval_create_params) do
     user_params.merge(approval: { approvable: friend.email, approvable_type: "User" })
   end
@@ -34,6 +35,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     user_params.merge(approval: { approvable: friend.email.upcase, approvable_type: "User" })
   end
   let(:approve_reject_params) { user_params.merge(id: approval.id) }
+  let(:approve_revoke_params) { approve_reject_params.merge(revoke: true) }
   let(:invite_params) do
     user_params.merge(invite: "", approval: { approvable: "new@email.com", approvable_type: "User" })
   end
@@ -47,21 +49,17 @@ RSpec.describe Users::ApprovalsController, type: :controller do
 
   describe "POST #create" do
     context "when adding a friend" do
-      it "creates a pending approval, friend request and send an email" do
-        count = ActionMailer::Base.deliveries.count
+      it "creates a pending approval, friend request" do
         approval_count = Approval.where(approvable_type: "User").count
         post :create, params: friend_approval_create_params
-        expect(ActionMailer::Base.deliveries.count).to be(count + 1)
         expect(Approval.where(approvable_type: "User").count).to eq approval_count + 2
         expect(Approval.where(user: user, approvable: friend, status: "pending")).to exist
         expect(Approval.where(user: friend, approvable: user, status: "requested")).to exist
       end
 
       it "is case insensitive" do
-        count = ActionMailer::Base.deliveries.count
         approval_count = Approval.where(approvable_type: "User").count
         post :create, params: friend_approval_create_params_upcased
-        expect(ActionMailer::Base.deliveries.count).to be(count + 1)
         expect(Approval.where(approvable_type: "User").count).to eq approval_count + 2
         expect(Approval.where(user: user, approvable: friend, status: "pending")).to exist
         expect(Approval.where(user: friend, approvable: user, status: "requested")).to exist
@@ -73,6 +71,14 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         post :create, params: friend_approval_create_params
         expect(Approval.where(user: user, approvable: friend, status: "accepted")).to exist
         expect(Approval.where(user: friend, approvable: user, status: "accepted")).to exist
+      end
+    end
+
+    context "when adding a friend not signed up with copo" do
+      it "creates an EmailRequest" do
+        request_count = EmailRequest.count
+        post :create, params: user_params.merge(approval: { approvable: "new@email.com", approvable_type: "User" })
+        expect(EmailRequest.count).to eq request_count + 1
       end
     end
 
@@ -94,13 +100,18 @@ RSpec.describe Users::ApprovalsController, type: :controller do
         expect(Approval.count).to eq approval_count
       end
     end
+  end
 
-    context "when inviting a user" do
-      it "sends an email to the address provided" do
-        count = ActionMailer::Base.deliveries.count
-        post :create, params: invite_params
-        expect(ActionMailer::Base.deliveries.count).to be(count + 1)
-      end
+  describe "GET #add" do
+    it "redirects signed in user to add page" do
+      user
+      get :add, params: add_params
+      expect(response).to redirect_to(new_user_approval_path(user, approvable_type: "User", email: friend.email))
+    end
+
+    it "redirects signed out user to sign in page" do
+      get :add, params: add_params
+      expect(response).to redirect_to(new_user_session_url(return_to: request.fullpath))
     end
   end
 
@@ -108,7 +119,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     it "assigns current users apps, devices, pending with Developer type" do
       approval.update(status: "accepted", approvable_id: developer.id, approvable_type: "Developer")
       get :index, params: user_params.merge(approvable_type: "Developer")
-      expect(assigns(:approvals_presenter).approved).to eq user.not_coposition_developers
+      expect(assigns(:approvals_presenter).approved).to eq user.approved_developers.not_coposition_developers
       expect(assigns(:approvals_presenter).devices).to eq user.devices
       expect(assigns(:approvals_presenter).pending).to eq user.developer_requests
     end
@@ -129,7 +140,7 @@ RSpec.describe Users::ApprovalsController, type: :controller do
       approval.update(status: "developer-requested", approvable_id: developer.id, approvable_type: "Developer")
       request.accept = "text/javascript"
       put :update, params: approve_reject_params
-      expect(Approval.last.status).to eq "accepted"
+      expect(Approval.find_by(approvable_id: developer.id).status).to eq "accepted"
     end
   end
 
@@ -159,6 +170,14 @@ RSpec.describe Users::ApprovalsController, type: :controller do
       request.accept = "text/javascript"
       delete :destroy, params: approve_reject_params
       expect(Permission.count).to eq permission_count - 2
+    end
+
+    it "updates an existing approval to accepted" do
+      approval.update(status: "complete", approvable_id: developer.id, approvable_type: "Developer")
+      request.accept = "text/javascript"
+      expect {
+        delete :destroy, params: approve_revoke_params
+      }.to change { Approval.find(approval.id).status }.to "accepted"
     end
   end
 end

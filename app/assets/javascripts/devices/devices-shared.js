@@ -2,6 +2,7 @@ $(document).on('page:change', function() {
   if (window.COPO.utility.currentPage('devices', 'shared')) {
     COPO.maps.initMap()
     COPO.maps.initControls();
+    COPO.utility.setActivePage('devices')
     var checkin = gon.checkin;
     var avatar, template, rendered;
 
@@ -53,6 +54,5 @@ $(document).on('page:change', function() {
       }
       COPO.maps.w3w.setCoordinates(coords);
     }
-
   }
 });

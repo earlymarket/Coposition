@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170617165411) do
+ActiveRecord::Schema.define(version: 20180103194318) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,8 +58,8 @@ ActiveRecord::Schema.define(version: 20170617165411) do
   end
 
   create_table "attachinary_files", force: :cascade do |t|
-    t.integer  "attachinariable_id"
     t.string   "attachinariable_type"
+    t.integer  "attachinariable_id"
     t.string   "scope"
     t.string   "public_id"
     t.string   "version"
@@ -95,6 +95,8 @@ ActiveRecord::Schema.define(version: 20170617165411) do
     t.string   "output_country_code"
     t.string   "fogged_country_code"
     t.boolean  "edited",              default: false
+    t.integer  "speed"
+    t.integer  "altitude"
     t.index ["device_id"], name: "index_checkins_on_device_id", using: :btree
   end
 
@@ -141,12 +143,28 @@ ActiveRecord::Schema.define(version: 20170617165411) do
     t.integer "user_id"
     t.string  "name"
     t.boolean "fogged",    default: true
-    t.integer "delayed"
+    t.integer "delayed",   default: 0
     t.string  "alias"
     t.boolean "published", default: false
     t.boolean "cloaked",   default: false
     t.string  "icon",      default: "devices_other"
     t.index ["uuid"], name: "index_devices_on_uuid", using: :btree
+  end
+
+  create_table "email_requests", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "email_subscriptions", force: :cascade do |t|
+    t.integer "user_id"
+    t.boolean "device_inactivity",  default: true
+    t.boolean "friend_invite_sent", default: true
+    t.boolean "round_up",           default: true
+    t.boolean "newsletter",         default: true
+    t.index ["user_id"], name: "index_email_subscriptions_on_user_id", using: :btree
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -257,7 +275,7 @@ ActiveRecord::Schema.define(version: 20170617165411) do
     t.string   "webhook_key"
     t.boolean  "admin",                  default: false, null: false
     t.boolean  "zapier_enabled",         default: false
-    t.boolean  "subscription",           default: true
+    t.boolean  "is_active",              default: true
     t.index ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree

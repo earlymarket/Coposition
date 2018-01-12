@@ -13,6 +13,9 @@ App.friend = App.cable.subscriptions.create("FriendChannel", {
       case "destroy":
         window.COPO.pushDestroyCheckin.push(data);
         break;
+      case "request_checkin":
+        Materialize.toast(data.message, 3000)
+        break;
     }
   }
 });

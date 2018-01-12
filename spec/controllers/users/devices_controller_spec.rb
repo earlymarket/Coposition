@@ -5,8 +5,8 @@ RSpec.describe Users::DevicesController, type: :controller do
 
   let(:empty_device) { create :device, user: nil }
   let(:device) { create :device, delayed: 10, user: nil }
-  let(:checkin) { create(:checkin, lat: 10.5, lng: 10.5, device: device) }
-  let(:older_checkin) { create(:checkin, created_at: 1.hour.ago, device: device) }
+  let(:checkin) { create(:checkin, lat: 10.5, lng: 10.5, device: user.devices.last) }
+  let(:older_checkin) { create(:checkin, created_at: 1.hour.ago, device: user.devices.last) }
   let(:developer) do
     dev = create :developer
     dev.configs.create(device: device)
@@ -69,8 +69,9 @@ RSpec.describe Users::DevicesController, type: :controller do
     it "creates a GPX file if .gpx appended to url" do
       get :show, params: params.merge(format: :gpx, download: "gpx")
       expect(response.header["Content-Type"]).to include "application/gpx+xml"
-      expect(response.body).to include(device.checkins.to_gpx)
+      expect(response.body).to include("http://www.topografix.com/GPX/1/1/gpx.xsd")
     end
+
     it "creates a geojson file if .json appended to url" do
       get :show, params: params.merge(format: :geojson, download: "geojson")
       expect(response.header["Content-Type"]).to include "application/geojson"
@@ -223,7 +224,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       put :update, params: params.merge(delayed: 0)
 
       device.reload
-      expect(device.delayed).to be nil
+      expect(device.delayed).to be 0
     end
 
     it "updates device name" do
@@ -258,20 +259,18 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
 
   describe "DELETE #destroy" do
-    it "deletes the device" do
+    it "calls DeleteDeviceWorker" do
       user
-      count = Device.count
+      allow(DeleteDeviceWorker).to receive(:perform_async).with(device.id.to_s)
       delete :destroy, params: params
-
-      expect(Device.count).to be count - 1
+      expect(DeleteDeviceWorker).to have_received(:perform_async)
     end
 
-    it "does not delete if user does not own device" do
+    it "does not call DeleteDeviceWorker if user does not own device" do
       user
-      count = Device.count
+      allow(DeleteDeviceWorker).to receive(:perform_async).with(device.id.to_s)
       delete :destroy, params: params.merge(user_id: new_user.username)
-      expect(response).to redirect_to(root_path)
-      expect(Device.count).to be count
+      expect(DeleteDeviceWorker).not_to have_received :perform_async
     end
   end
 end

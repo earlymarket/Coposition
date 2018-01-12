@@ -12,18 +12,23 @@ RSpec.describe PermissionsHelper, type: :helper do
 
   describe "#permissions_permissible_title" do
     it "accepts either a user or a developer" do
-      expect { helper.permissions_permissible_title(user) }.not_to raise_error
-      expect { helper.permissions_permissible_title(developer) }.not_to raise_error
+      expect { helper.permissions_permissible_title(user, user) }.not_to raise_error
+      expect { helper.permissions_permissible_title(user, developer) }.not_to raise_error
     end
 
     it "returns html with the user's shortened email or name if it's a user" do
-      expect(helper.permissions_permissible_title(user)).to match(user.username)
-      expect(helper.permissions_permissible_title(user).class).to eq(safebuffer)
+      expect(helper.permissions_permissible_title(user, user)).to match(user.username)
+      expect(helper.permissions_permissible_title(user, user).class).to eq(safebuffer)
     end
 
     it "returns html with the company name if it's a developer" do
-      expect(helper.permissions_permissible_title(developer).class).to eq(safebuffer)
-      expect(helper.permissions_permissible_title(developer)).to match(developer.company_name)
+      expect(helper.permissions_permissible_title(user, developer).class).to eq(safebuffer)
+      expect(helper.permissions_permissible_title(user, developer)).to match(developer.company_name)
+    end
+
+    it "returns authenticated with the company name if it's a complete developer" do
+      Approval.add_developer(user, developer).update(status: "complete")
+      expect(helper.permissions_permissible_title(user, developer)).to match("Authenticated")
     end
   end
 

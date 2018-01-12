@@ -5,7 +5,6 @@ window.COPO.datePicker = {
     $('.datepick').pickadate({
       selectMonths: true,
       selectYears: 15,
-      max: new Date(),
       onSet: function(arg) {
         var from_picker = $('#input_from').pickadate().pickadate('picker')
         var to_picker = $('#input_to').pickadate().pickadate('picker')
@@ -27,7 +26,6 @@ window.COPO.datePicker = {
     COPO.datePicker.checkPickers(from_picker, to_picker, 'max')
     COPO.datePicker.checkPickers(to_picker, to_picker, 'select')
     COPO.datePicker.checkPickers(from_picker, from_picker, 'select')
-    COPO.datePicker.openIfSet(from_picker);
   },
 
   setLimits: function(event, beingSet, setter, limit) {

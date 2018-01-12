@@ -22,6 +22,7 @@ Bundler.require(*Rails.groups)
 module Coposition
   class Application < Rails::Application
     # config.assets.paths << Rails.root.join('vendor', 'assets', 'bower_components')
+    config.assets.paths << Rails.root.join("node_modules")
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'
@@ -44,5 +45,7 @@ module Coposition
     # config.active_record.raise_in_transactional_callbacks = true
 
     config.eager_load_paths << Rails.root.join('lib')
+
+    config.firebase_server_key = ENV.fetch("FIREBASE_SERVER_KEY")
   end
 end

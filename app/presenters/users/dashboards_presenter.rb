@@ -4,6 +4,7 @@ module Users
     NUMBER_OF_COUNTRIES = 10
     MONTH_CHECKINS_LIMIT = 200
     MONTH_CHECKINS_SAMPLE = 100
+    FLIGHT_ALTITUDE = 8000
 
     def initialize(user)
       @user = user
@@ -22,9 +23,11 @@ module Users
     end
 
     def last_countries
-      last_countries_sql = "created_at IN(SELECT MAX(created_at) FROM checkins INNER JOIN devices ON"\
-        " checkins.device_id = devices.id WHERE devices.user_id = #{@user.id} GROUP BY country_code)"
-      checkins.where(last_countries_sql).first NUMBER_OF_COUNTRIES
+      checkins.select("DISTINCT ON (checkins.created_at) checkins.*").where(last_countries_sql).first NUMBER_OF_COUNTRIES
+    end
+
+    def last_countries_no_limits
+      checkins.where(last_countries_sql)
     end
 
     def gon
@@ -32,12 +35,12 @@ module Users
       {
         current_user: current_user_info,
         friends: friends,
-        months_checkins: months_checkins
+        device_checkins: device_checkins
       }
     end
 
-    def visited_countries_title
-      case count = last_countries.count
+    def visited_countries_title(countries = last_countries)
+      case count = countries.count
       when 1
         "Last country visited"
       when 0
@@ -53,6 +56,17 @@ module Users
 
     private
 
+    def user_devices
+      @user_devices ||= @user.devices
+    end
+
+    def device_checkins
+      checkins = user_devices.map do |device|
+        device.checkins.first.as_json.merge(device: device.name) if device.checkins.exists?
+      end
+      checkins.compact.sort_by { |checkin| checkin["created_at"] }.reverse
+    end
+
     def checkins
       @checkins ||= @user.checkins
     end
@@ -62,16 +76,13 @@ module Users
     end
 
     def friends
-      @user.friends.map do |friend|
+      @user.friends.map.with_index do |friend, index|
         {
           userinfo: friend.public_info_hash,
-          lastCheckin: friend.safe_checkin_info_for(permissible: @user, action: "last")[0]
+          lastCheckin: friend.safe_checkin_info_for(permissible: @user, action: "last")[0],
+          pinColor: ApprovalsPresenter::PIN_COLORS.to_a[index % ApprovalsPresenter::PIN_COLORS.size][0]
         }
       end
-    end
-
-    def months_checkins
-      checkins.where(created_at: 1.month.ago..Time.current).limit(MONTH_CHECKINS_LIMIT).sample(MONTH_CHECKINS_SAMPLE)
     end
 
     def current_user_info
@@ -79,6 +90,18 @@ module Users
         userinfo: @user.public_info_hash,
         lastCheckin: checkins.first
       }
+    end
+
+    def circle_icon
+      ActionController::Base.helpers.image_path("circle_border")
+    end
+
+    def last_countries_sql
+      "created_at IN(SELECT MAX(created_at) FROM checkins INNER JOIN devices ON" \
+      " checkins.device_id = devices.id WHERE devices.user_id = #{@user.id}" \
+      " AND checkins.created_at <= current_timestamp" \
+      " AND (checkins.altitude <= #{FLIGHT_ALTITUDE} OR checkins.altitude IS NULL)" \
+      " GROUP BY country_code)"
     end
   end
 end
