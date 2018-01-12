@@ -13,8 +13,6 @@ class Device < ApplicationRecord
   validates :name, uniqueness: { scope: :user_id }, if: :user_id, length: { in: 4..20 }
   validates :icon, presence: true
 
-  # scope :active_devices, -> { joins(:user).where(user: { is_active: true }) }
-
   scope :active_devices, -> { joins(:user).where(users: { is_active: true }) }
 
   before_create do |dev|
