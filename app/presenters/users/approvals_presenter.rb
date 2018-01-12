@@ -5,7 +5,9 @@ module Users
     attr_reader :pending
     attr_reader :complete
     attr_reader :devices
+    attr_reader :requested
     attr_reader :page
+    attr_reader :checkins
 
     PIN_COLORS = {
       orange:       "#F39434",
@@ -25,12 +27,15 @@ module Users
     def initialize(user, params)
       @user = user
       @approvable_type = params[:approvable_type]
+      @email = params[:email]
       @order = params[:order_by]
       @page = apps_page? ? "Apps" : "Friends"
       @approved = add_color_info(users_approved)
       @complete = users_complete
-      @pending = add_color_info(users_requests)
+      @pending = add_color_info(users_pending)
+      @requested = users_requested
       @devices = user.devices
+      @checkins = friends_checkins unless apps_page?
     end
 
     def gon
@@ -40,13 +45,15 @@ module Users
           permissions: permissions,
           current_user_id: @user.id
         }
-      gon[:friends] = friends_checkins unless apps_page?
+      gon[:friends] = checkins unless apps_page?
       gon
     end
 
     def input_options
       if apps_page?
         { placeholder: "App name", class: "validate devs_typeahead", required: true }
+      elsif @email
+        { value: @email, class: "validate", required: true }
       else
         { placeholder: "email@email.com", class: "validate", required: true }
       end
@@ -85,8 +92,13 @@ module Users
       apps_page? ? @user.approved_developers.not_coposition_developers.public_info : @user.friends.public_info
     end
 
-    def users_requests
+    def users_pending
       apps_page? ? @user.developer_requests : @user.friend_requests
+    end
+
+    def users_requested
+      return nil if apps_page?
+      @user.pending_friends ? @user.pending_friends + @user.email_requests : @user.email_requests
     end
 
     def friends_checkins

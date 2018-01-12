@@ -25,6 +25,12 @@
   text-align: center;
 }
 
+.ta-complete-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 // Effects classes
 .half-opacity {
   opacity: 0.5;
@@ -43,6 +49,19 @@
   i{
     color: $dark-text-color;
   }
+}
+
+.btn-flat {
+  @media screen and (max-width: 660px){
+    line-height: 26px;
+  }
+}
+
+.marker-cluster-last {
+  background-color: rgba(121, 192, 247, 0.6);
+}
+.marker-cluster-last div {
+  background-color: rgba(33, 150, 243, 0.6);
 }
 
 .lined {
@@ -64,12 +83,16 @@
   padding: 0 0.5rem;
 }
 
+.inline-text {
+  display: inline;
+}
+
 .promo{
     position: absolute;
     left: 0;
     top: 0;
+    bottom: -100px;
     width: 100vw;
-    height: 100vh;
     overflow: hidden;
     z-index: -10;
     .filter{

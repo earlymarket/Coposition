@@ -24,6 +24,7 @@ RSpec.feature "Approvals", type: :feature do
   def given_i_am_signed_in
     visit "/users/sign_up"
     fill_in "user_email", with: "tommo@email.com"
+    fill_in "user_email_confirmation", with: "tommo@email.com"
     fill_in "user_password", with: "password"
     fill_in "user_password_confirmation", with: "password"
     fill_in "user_username", with: "tommo"
@@ -33,6 +34,7 @@ RSpec.feature "Approvals", type: :feature do
   def given_a_developer_is_signed_up
     visit "/developers/sign_up"
     fill_in "developer_email", with: "jimbo@email.com"
+    fill_in "developer_email_confirmation", with: "jimbo@email.com"
     fill_in "developer_password", with: "password"
     fill_in "developer_password_confirmation", with: "password"
     fill_in "developer_company_name", with: "fake company"
@@ -54,7 +56,7 @@ RSpec.feature "Approvals", type: :feature do
   end
 
   def when_i_add_a_developer
-    click_on "users", match: :first
+    visit "/"
     click_on "Apps", match: :first
     click_on "add"
     fill_in "approval_approvable", with: "fake company"

@@ -69,8 +69,9 @@ RSpec.describe Users::DevicesController, type: :controller do
     it "creates a GPX file if .gpx appended to url" do
       get :show, params: params.merge(format: :gpx, download: "gpx")
       expect(response.header["Content-Type"]).to include "application/gpx+xml"
-      expect(response.body).to include(device.checkins.to_gpx)
+      expect(response.body).to include("http://www.topografix.com/GPX/1/1/gpx.xsd")
     end
+
     it "creates a geojson file if .json appended to url" do
       get :show, params: params.merge(format: :geojson, download: "geojson")
       expect(response.header["Content-Type"]).to include "application/geojson"
@@ -258,20 +259,18 @@ RSpec.describe Users::DevicesController, type: :controller do
   end
 
   describe "DELETE #destroy" do
-    it "deletes the device" do
+    it "calls DeleteDeviceWorker" do
       user
-      count = Device.count
+      allow(DeleteDeviceWorker).to receive(:perform_async).with(device.id.to_s)
       delete :destroy, params: params
-
-      expect(Device.count).to be count - 1
+      expect(DeleteDeviceWorker).to have_received(:perform_async)
     end
 
-    it "does not delete if user does not own device" do
+    it "does not call DeleteDeviceWorker if user does not own device" do
       user
-      count = Device.count
+      allow(DeleteDeviceWorker).to receive(:perform_async).with(device.id.to_s)
       delete :destroy, params: params.merge(user_id: new_user.username)
-      expect(response).to redirect_to(root_path)
-      expect(Device.count).to be count
+      expect(DeleteDeviceWorker).not_to have_received :perform_async
     end
   end
 end

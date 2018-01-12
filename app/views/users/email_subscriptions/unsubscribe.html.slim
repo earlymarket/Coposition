@@ -1,0 +1,15 @@
+h4 Subscription settings
+p Toggle which emails you would like to receive from Coposition.
+= form_for(@email_subscription, url: user_email_subscription_path(id: @email_subscription.id)) do |f|
+  .row
+    .input-field.col.s12
+      = f.check_box :device_inactivity
+      = f.label :device_inactivity, "Subscribe to device inactivity emails?"
+  .row
+    .input-field.col.s12
+      = f.check_box :friend_invite_sent
+      = f.label :friend_invite_sent, "Subscribe to emails sent when you invite a friend to join Coposition"
+  br
+  = f.submit 'Submit', class: "btn btn-success"
+  |  
+  = link_to 'Cancel', root_url, class: "btn btn-warning"

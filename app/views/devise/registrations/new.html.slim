@@ -5,6 +5,7 @@
       - flash[:notice] = resource.errors.full_messages.join(". ").concat(".") unless resource.errors.empty?
       fieldset.card
         .card-content
+          = flash[:recaptcha_error]
           legend.card-title
             = resource.class
             |  sign up
@@ -12,6 +13,10 @@
             .input-field.col.s12
               = f.label :email, "Your email*"
               = f.email_field :email, value: params[:email], id: "#{resource.class.to_s.downcase}_email", autofocus: true
+          .row
+            .input-field.col.s12
+              = f.label :email_confirmation, "Please re-enter your email*"
+              = f.email_field :email_confirmation, id: "#{resource.class.to_s.downcase}_email_confirmation"
           .row
             .input-field.col.s12
               - password_label = "Your password*"
@@ -33,7 +38,9 @@
               .input-field.col.s12
                 = f.label :tagline, "Company tagline"
                 = f.text_field :tagline
-          = f.attachinary_file_field :avatar
+            = f.label :avatar, "Upload an avatar"
+            .input-field.col.s12
+              = f.attachinary_file_field :avatar
           - if resource.respond_to? :username
             .row
               .input-field.col.s12
@@ -44,12 +51,14 @@
               .input-field.col.s12
                 = f.label :redirect_url,"Redirect url*", class: "active"
                 = f.text_field :redirect_url, placeholder: "Your Site URL"
+          = recaptcha_tags callback: 'submitRecaptchaForm'
+          br
           .row
             .col.s12
-              = f.button "Sign up", class: "waves-effect waves-light btn"
+              = f.button "Sign up", class: "waves-effect waves-light btn disabled"
           .row
             .col.s12
-              | Already registered as a #{"#{resource.class.to_s.downcase}"}? #{link_to "Log in!", new_session_path(resource_name)}
+              | Already registered as a #{"#{resource.class.to_s.downcase}"}? #{link_to "Log in!", new_session_path(resource_name), class: "link"}
 
 = render "application/background"
 
@@ -57,12 +66,24 @@ javascript:
   $.validator.methods.email = function(value, element) {
       return this.optional( element ) || /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/.test( value );
     }
+
+    if ($('body').attr('data-environment') == 'test') {
+      $('button.btn').removeClass("disabled")
+    }
+
+    var submitRecaptchaForm = function (e) {
+      $('button.btn').removeClass("disabled")
+    };
   
     $("#new_#{resource_name}").validate({
       onkeyup: false,
       rules: {
         "#{resource_name}[email]": {
           required: true,
+        },
+        "#{resource_name}[email_confirmation]": {
+          required: true,
+          equalTo: "##{raw resource.class.to_s.downcase}_email"
         },
         "#{resource_name}[password]": {
           required: true,

@@ -24,22 +24,24 @@
 
 // -- Misc vendor libs --
 
-//= require lodash/dist/lodash
-//= require moment/moment
-//= require jquery-Mustache/jquery.mustache
-//= require mustache.js/mustache.min
-//= require materialize/dist/js/materialize.min
+//= require lodash/lodash.min
+//= require moment/min/moment.min
+//= require jquery-mustache-earlymarket/jquery.mustache
+//= require mustache/mustache.min
+//= require materialize-css/dist/js/materialize.min
 //= require typeahead.js/dist/typeahead.bundle.min
-//= require ion.rangeSlider/js/ion.rangeSlider.min
+//= require ion-rangeslider/js/ion.rangeSlider.min
 //= require clipboard/dist/clipboard.min
 //= require slick-carousel/slick/slick.min
 //= require sweetalert/dist/sweetalert.min
+//= require datetimepicker-earlymarket/dist/DateTimePicker
 
 // STILL more up to date version
 //= require nouislider.min
 
 // -- Mapbox stuff --
-//= require mapbox.js/mapbox
+//= require leaflet/dist/leaflet
+//= require mapbox.js/src/mapbox
 //= require leaflet.markercluster/dist/leaflet.markercluster.js
 //= require leaflet.locatecontrol/dist/L.Control.Locate.min
 //= require leaflet-fullscreen/dist/Leaflet.fullscreen.min

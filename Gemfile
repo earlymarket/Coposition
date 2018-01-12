@@ -36,7 +36,6 @@ gem "cloudinary", "~> 1.7.0"
 gem "attachinary", git: "https://github.com/earlymarket/attachinary"
 gem "sprockets", ">= 3.0.0"
 gem "sprockets-es6"
-gem "bower-rails", "~> 0.10.0"
 gem "gpx"
 gem "activeadmin"
 gem "inherited_resources", git: "https://github.com/activeadmin/inherited_resources"
@@ -48,7 +47,13 @@ gem "slim"
 gem "public_activity"
 gem "rollbar"
 gem "oj"
-gem 'smooch-api', '~> 1.8.0'
+gem "httparty"
+gem "dotenv-rails"
+gem "sendgrid-ruby"
+gem "countries"
+gem "nokogiri", ">= 1.8.1"
+gem "browserify-rails"
+gem "recaptcha", require: "recaptcha/rails"
 
 group :production do
   gem "rack-timeout"
@@ -92,7 +97,6 @@ group :development, :test do
   gem "rubocop-rspec", require: false
   gem "coffeelint"
   gem "rails_best_practices", require: false
-  gem "dotenv-rails"
   gem "slim_lint", require: false
 end
 

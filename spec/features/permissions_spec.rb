@@ -24,6 +24,7 @@ RSpec.feature "Permissions", type: :feature do
   def given_i_am_signed_in
     visit "/users/sign_up"
     fill_in "user_email", with: "tommo@email.com"
+    fill_in "user_email_confirmation", with: "tommo@email.com"
     fill_in "user_password", with: "password"
     fill_in "user_password_confirmation", with: "password"
     fill_in "user_username", with: "tommo"
@@ -41,12 +42,15 @@ RSpec.feature "Permissions", type: :feature do
     click_on "Devices", match: :first
     click_on "add"
     fill_in "device_name", with: "My device"
+    find("div.select-wrapper input").click
+    find("div.select-wrapper li", text: "Laptop").click
     click_button "Add"
   end
 
   def and_there_is_another_user
     visit "/users/sign_up"
     fill_in "user_email", with: "jimbo@email.com"
+    fill_in "user_email_confirmation", with: "jimbo@email.com"
     fill_in "user_password", with: "password"
     fill_in "user_password_confirmation", with: "password"
     fill_in "user_username", with: "jimbo"

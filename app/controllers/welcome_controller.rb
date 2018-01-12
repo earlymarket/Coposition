@@ -14,7 +14,7 @@ class WelcomeController < ApplicationController
     gon.userinfo = current_user.public_info_hash if current_user
   end
 
-  def getting_started
+  def setup
   end
 
   def terms

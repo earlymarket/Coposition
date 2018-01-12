@@ -9,11 +9,11 @@ class Api::ApiController < ActionController::API
 
   def find_user
     @user = if doorkeeper_token.present?
-      User.find(doorkeeper_token.resource_owner_id)
+      User.active_users.find(doorkeeper_token.resource_owner_id)
     elsif params[:controller] == "api/v1/users"
-      User.find(params[:id])
+      User.active_users.find(params[:id])
     else
-      User.find(params[:user_id])
+      User.active_users.find(params[:user_id])
     end
   end
 

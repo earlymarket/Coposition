@@ -39,8 +39,14 @@ describe ::Users::ApprovalsPresenter do
   end
 
   describe "pending" do
-    it "returns users_requests" do
-      expect(approvals.pending).to eq approvals.send(:users_requests)
+    it "returns users_pending" do
+      expect(approvals.pending).to eq approvals.send(:users_pending)
+    end
+  end
+
+  describe "requested" do
+    it "returns users_requested" do
+      expect(approvals.requested).to eq approvals.send(:users_requested)
     end
   end
 
@@ -62,9 +68,9 @@ describe ::Users::ApprovalsPresenter do
     end
 
     it "calls friends_checkins" do
-      allow(approvals).to receive(:friends_checkins)
+      allow(approvals).to receive(:checkins)
       approvals.gon
-      expect(approvals).to have_received(:friends_checkins)
+      expect(approvals).to have_received(:checkins)
     end
   end
 
@@ -152,15 +158,15 @@ describe ::Users::ApprovalsPresenter do
     end
   end
 
-  describe "users_requests" do
+  describe "users_pending" do
     it "returns an ActiveRecord Associations CollectionProxy" do
-      expect(approvals.send(:users_requests)).to be_kind_of ActiveRecord::Associations::CollectionProxy
+      expect(approvals.send(:users_pending)).to be_kind_of ActiveRecord::Associations::CollectionProxy
     end
 
     context "users" do
       it "calls user.friend_requests" do
         allow(user).to receive(:friend_requests)
-        approvals.send(:users_requests)
+        approvals.send(:users_pending)
         expect(user).to have_received(:friend_requests).twice
       end
     end
@@ -170,8 +176,22 @@ describe ::Users::ApprovalsPresenter do
 
       it "calls user.developer_requests" do
         allow(user).to receive(:developer_requests)
-        approvals.send(:users_requests)
+        approvals.send(:users_pending)
         expect(user).to have_received(:developer_requests).twice
+      end
+    end
+  end
+
+  describe "users_requested" do
+    it "returns an ActiveRecord Associations CollectionProxy" do
+      expect(approvals.send(:users_requested)).to be_kind_of Array
+    end
+
+    context "users" do
+      it "calls user.pending_friends" do
+        allow(user).to receive(:pending_friends)
+        approvals.send(:users_requested)
+        expect(user).to have_received(:pending_friends).twice
       end
     end
   end

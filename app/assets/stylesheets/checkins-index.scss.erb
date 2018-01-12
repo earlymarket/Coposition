@@ -1,0 +1,43 @@
+.c-checkins.a-index {
+  #map {
+    bottom: 0;
+    top: 0;
+    margin-top: 73px;
+    z-index: 2;
+    @media (min-width: $lg-breakpoint) {
+      margin-top: 60px;
+    }
+  }
+
+  .device-link {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+  }
+
+  .date-select {
+    top: 73px;
+    z-index: 10;
+    @media (min-width: $lg-breakpoint) {
+     top: 60px;
+    }
+  }
+
+  .device-select {
+    background: #fff;
+    position: absolute;
+    padding: 10px;
+    width: 300px;
+    top: 140px;
+    left: 90px;
+    z-index: 9;
+    @media screen and (max-width: 660px){
+      width: 260px;
+      top: 140px;
+      left: 70px;
+    }
+    i {
+      margin: 0;
+    }
+  }
+}

@@ -17,7 +17,7 @@ ActiveAdmin.register_page "Device Distribution" do
     end
 
     def full_distribution
-      build_collection(full_device_distribution, User.count)
+      build_collection(full_device_distribution, User.active_users.count)
     end
 
     def active_distribution
@@ -58,6 +58,7 @@ ActiveAdmin.register_page "Device Distribution" do
           select users.id, count(devices) dev_count
           from users
           left join devices on devices.user_id = users.id
+          where (users.is_active = true)
           group by users.id
         DEV_DISTR
       )

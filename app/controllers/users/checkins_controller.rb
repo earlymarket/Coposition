@@ -4,7 +4,7 @@ class Users::CheckinsController < ApplicationController
   before_action :authenticate_user!
 
   before_action :require_checkin_ownership, only: %i(show update destroy)
-  before_action :require_device_ownership, only: %i(index new create destroy_all)
+  before_action :require_device_ownership, only: %i(new create destroy_all)
   before_action :find_checkin, only: %i(show update destroy)
 
   def new
@@ -12,15 +12,20 @@ class Users::CheckinsController < ApplicationController
   end
 
   def index
-    checkins_presenter = ::Users::CheckinsPresenter.new(current_user, params)
-    render json: checkins_presenter.json
+    if request.format.json?
+      checkins_presenter = ::Users::CheckinsPresenter.new(current_user, params)
+      render json: checkins_presenter.json
+    else
+      @checkins_index_presenter = ::Users::Devices::DevicesShowPresenter.new(current_user, params)
+      gon.push(@checkins_index_presenter.show_gon)
+    end
   end
 
   def create
     checkin = device.checkins.create(allowed_params)
     if checkin.save
       @checkin = ActiveRecord::Base.connection.execute(Checkin.where(id: checkin).to_sql).first
-      NotifyAboutCheckin.call(device: device, checkin: @checkin)
+      NotifyAboutCheckin.call(device: device, checkin: checkin)
       flash[:notice] = "Checked in. Refresh page to update cities."
     else
       flash[:alert] = "Invalid latitude/longitude."
@@ -39,6 +44,8 @@ class Users::CheckinsController < ApplicationController
 
   def show
     @checkin.reverse_geocode!
+    return if request.format.js?
+    redirect_to user_device_path(current_user, @checkin.device.id, checkin_id: @checkin.id)
   end
 
   def update
@@ -49,7 +56,7 @@ class Users::CheckinsController < ApplicationController
 
   def destroy
     @checkin.destroy
-    NotifyAboutDestroyCheckin.call(device: device, checkin: @checkin)
+    NotifyAboutDestroyCheckin.call(device: @checkin.device, checkin: @checkin)
     flash[:notice] = "Check-in deleted. Refresh page to update cities."
   end
 

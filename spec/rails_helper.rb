@@ -10,7 +10,6 @@ require "public_activity/testing"
 # Add additional requires below this line. Rails is not loaded until this point!
 require "rake"
 Rails.application.load_tasks
-Rake::Task["bower:install"].invoke
 
 require "devise"
 
@@ -114,4 +113,5 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.extend ControllerMacros, type: :controller
+  config.include Helpers
 end

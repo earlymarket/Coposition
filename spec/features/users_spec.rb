@@ -6,17 +6,18 @@ RSpec.feature "Users", type: :feature do
   scenario "User signs up" do
     given_i_fill_in_sign_up_details
     and_i_click_sign_up
-    then_i_should_see_device_creation
+    then_i_should_see_welcome_page
   end
 
   scenario "User signs up with taken email" do
     given_i_fill_in_sign_up_details
     fill_in "user_email", with: user.email
+    fill_in "user_email_confirmation", with: user.email
     and_i_click_sign_up
     then_i_should_see_sign_up
   end
 
-  scenario "User signs in, edits account and signs out" do
+  scenario "User signs in, edits account and signs out", js: true do
     given_i_fill_in_log_in_details
     and_i_click_log_in
     then_i_should_see_welcome_page
@@ -29,7 +30,8 @@ RSpec.feature "Users", type: :feature do
 
   def given_i_fill_in_sign_up_details
     visit "/users/sign_up"
-    fill_in "user_email", with: "example@email.com"
+    fill_in "user_email", with: "tommo@email.com"
+    fill_in "user_email_confirmation", with: "tommo@email.com"
     fill_in "user_password", with: "password"
     fill_in "user_password_confirmation", with: "password"
     fill_in "user_username", with: "example"
@@ -49,12 +51,8 @@ RSpec.feature "Users", type: :feature do
     click_button "Sign up"
   end
 
-  def then_i_should_see_device_creation
-    expect(page).to have_text "Device Creation"
-  end
-
   def then_i_should_see_welcome_page
-    expect(page).to have_text "Hello #{user.username}"
+    expect(page).to have_text "Hello "
   end
 
   def then_i_should_see_sign_up
@@ -66,13 +64,13 @@ RSpec.feature "Users", type: :feature do
   end
 
   def and_i_edit_my_username
-    fill_in "user_username", with: "changed"
+    fill_in "user_username", match: :first, with: "changed"
     fill_in "user_current_password", with: user.password
-    click_on "Update"
+    click_on "Update", match: :first
   end
 
   def then_i_should_see_a_new_username
-    click_on "Dashboard", match: :first
+    click_on "Coposition", match: :first
     expect(page).to have_text "Hello changed"
   end
 
@@ -81,6 +79,6 @@ RSpec.feature "Users", type: :feature do
   end
 
   def then_i_should_be_logged_out
-    expect(page).to have_text "Log In"
+    expect(page).to have_text "LOG IN"
   end
 end

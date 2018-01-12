@@ -16,13 +16,15 @@ class User < ApplicationRecord
   validates :username, uniqueness: true, allow_blank: true,
                        format: { with: /\A[-a-zA-Z_]+\z/, message: "only allows letters, underscores and dashes" },
                        length: { in: 4..20 }
+  validates :email, confirmation: true
 
+  has_one :email_subscription, dependent: :destroy
   has_many :devices, dependent: :destroy
   has_many :checkins, through: :devices
-  has_many :locations, through: :devices
   has_many :requests
   has_many :approvals, dependent: :destroy
   has_many :subscriptions, as: :subscriber, dependent: :destroy
+  has_many :email_requests, dependent: :destroy
   has_many :developers,
     -> { where "status in (?)", %w[accepted complete] },
     through: :approvals,
@@ -39,15 +41,19 @@ class User < ApplicationRecord
     source: :approvable,
     source_type: "Developer"
   has_many :developer_approvals, -> { where(status: "accepted", approvable_type: "Developer") }, class_name: "Approval"
-  has_many :friends, -> { where "status = 'accepted'" }, through: :approvals, source: :approvable, source_type: "User"
+  has_many :friends,
+    -> { where "status = 'accepted' AND users.is_active = true" },
+    through: :approvals,
+    source: :approvable,
+    source_type: "User"
   has_many :friend_approvals, -> { where(status: "accepted", approvable_type: "User") }, class_name: "Approval"
   has_many :pending_friends,
-    -> { where "status = 'pending'" },
+    -> { where "status = 'pending' AND users.is_active = true" },
     through: :approvals,
     source: :approvable,
     source_type: "User"
   has_many :friend_requests,
-    -> { where "status = 'requested'" },
+    -> { where "status = 'requested' AND users.is_active = true" },
     through: :approvals,
     source: :approvable,
     source_type: "User"
@@ -61,9 +67,14 @@ class User < ApplicationRecord
 
   before_create :generate_token, unless: :webhook_key?
 
-  after_create :approve_coposition_mobile_app
+  before_destroy :destroy_approvals, :destroy_checkins
+
+  after_create :approve_coposition_mobile_app, :create_pending_requests, :create_email_subscription
 
   has_attachment :avatar
+
+  scope :active, -> { where(is_active: true)}
+
   ## Pathing
 
   def url_id
@@ -72,6 +83,18 @@ class User < ApplicationRecord
 
   def should_generate_new_friendly_id?
     slug.blank? || username_changed?
+  end
+
+  def self.active_users
+    User.where(is_active: true)
+  end
+
+  def active_for_authentication?
+    super and self.is_active?
+  end
+
+  def inactive_message
+    "Your account has been disabled"
   end
 
   ## Approvals
@@ -83,6 +106,13 @@ class User < ApplicationRecord
       approval.complete!
     end
     Doorkeeper::AccessToken.find_or_create_for(mobile_dev.oauth_application, id, "public", nil, true)
+  end
+
+  def create_pending_requests
+    EmailRequest.where(email: email).find_each do |request|
+      Approval.add_friend(request.user, self)
+      request.destroy
+    end
   end
 
   def approved?(permissible)
@@ -97,6 +127,10 @@ class User < ApplicationRecord
     approvals.find_by(approvable_id: approvable.id, approvable_type: approvable.class.to_s) || NoApproval.new
   end
 
+  def destroy_approvals
+    Approval.where(approvable_id: id, approvable_type: "User").destroy_all
+  end
+
   ## Permissions
 
   def destroy_permissions_for(approvable)
@@ -104,6 +138,12 @@ class User < ApplicationRecord
       permission = device.permission_for(approvable)
       permission&.destroy
     end
+  end
+
+  ## Email Subscriptions
+
+  def create_email_subscription
+    EmailSubscription.create(user: self)
   end
 
   ## Devices
@@ -130,10 +170,6 @@ class User < ApplicationRecord
     args[:device] ? args[:device].filtered_checkins(args) : safe_checkin_info_for(args)
   end
 
-  def filtered_locations(args)
-    args[:device] ? args[:device].filtered_locations(args) : locations_for(args)
-  end
-
   def safe_checkin_info_for(args)
     args[:multiple_devices] = true
     # sort_by slows this query down A LOT
@@ -146,14 +182,8 @@ class User < ApplicationRecord
     end
   end
 
-  def locations_for(args)
-    locations
-      .near_to(args[:near])
-      .most_frequent(args[:type])
-      .limit_returned_locations(args)
-      .unscope(:order)
-      .distinct
-      .paginate(page: args[:page], per_page: args[:per_page])
+  def destroy_checkins
+    devices.each { |device| DeleteDeviceWorker.perform_async(device.id) }
   end
 
   def slack_message

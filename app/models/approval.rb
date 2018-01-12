@@ -33,8 +33,11 @@ class Approval < ApplicationRecord
     approval = Approval.link(user, friend, "User")
     if user.request_from?(friend)
       approval = Approval.accept(user, friend, "User")
-    else
-      UserMailer.add_user_email(user, friend, false).deliver_now unless approval.errors.messages.present?
+    elsif approval.errors.messages.blank?
+      user.approve_devices(friend)
+      friend.approve_devices(user)
+      UserMailer.add_user_email(user, friend, false).deliver_now
+      UserMailer.invite_sent_email(user, friend.email).deliver_now
     end
     approval
   end
@@ -52,7 +55,10 @@ class Approval < ApplicationRecord
   end
 
   def self.accept(user, approvable, approvable_type)
-    accept_one_side(approvable, user, approvable_type) unless approvable_type == "Developer"
+    unless approvable_type == "Developer"
+      accept_one_side(approvable, user, approvable_type)
+      notify_request_sender(approvable, user)
+    end
     accept_one_side(user, approvable, approvable_type)
   end
 
@@ -60,6 +66,17 @@ class Approval < ApplicationRecord
     approval = find_by(user_id: user.id, approvable_id: approvable.id, approvable_type: approvable_type)
     approval.approve!
     approval
+  end
+
+  def self.notify_request_sender(approvable, user)
+    Firebase::Push.call(
+      topic: approvable.id,
+      content_available: true,
+      notification: {
+        body: "#{user.email} has accepted your friend request",
+        title: "New Friend"
+      }
+    )
   end
 
   def approve!

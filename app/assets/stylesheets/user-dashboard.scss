@@ -10,24 +10,24 @@
     }
   }
 
-  .hyperlink {
-    text-decoration: underline;
-    color: $primary-color;
-  }
-
   #map-overlay {
     position: absolute;
-    z-index: 1500;
+    z-index: 99;
     width: 100%;
     background: white;
     height: 100%;
     opacity: 0.85;
     padding: 1rem;
-
+    p {
+      @media (max-width: $lg-breakpoint) {
+        font-size: 0.8rem;
+      }
+    }
     div {
       width: 100%;
     }
   }
+  
   #map {
     width:100%;
     height: 300px;
@@ -45,8 +45,19 @@
     }
   }
 
+  .leaflet-touch, .leaflet-control-fullscreen a {
+    background-position: 0px 0px;
+  }
+
+  #checkin_id {
+    margin-right: 2rem;
+  }
+
   #map-status {
     // font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .dashboard {

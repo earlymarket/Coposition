@@ -7,8 +7,8 @@
   - complete.each do |approvable|
     - approval = current_user.approval_for(approvable)
     .card-panel
-      .row
-        .col.s8.row.valign-wrapper
+      .row.app-card-row
+        .col.s8.row.app-name-row.valign-wrapper
           .ib.valign.col.s3.avatar
             = avatar_for(approvable)
           .ib.col.s9
@@ -18,19 +18,22 @@
               = approvable.tagline
             div
               | Connected since #{humanize_date(approval.approval_date) unless approval.nil?}
-        .col.s4
+        .col.s4.permissions-column
           - if current_user.devices.exists?
             a.permissions-trigger.btn-flat.right.permissions-button data-id=(approvable.id) href="#perm#{approvable.id}"
               i.material-icons.right lock
               | Permissions
             .modal id="perm#{approvable.id}" 
               .modal-content
-                h4.modal-content
-                  | Permissions controls for #{approvals_approvable_name(approvable)}
+                div
+                  h4.inline-text
+                    | Permissions controls for #{approvals_approvable_name(approvable)}
+                  a.right.tooltipped data-tooltip=("Permissions help") href="/help#permissions" target="_blank" 
+                    i.material-icons help
                 ul.permissions.collection data-id=(approvable.id)
                   li.collection-item.row.valign-wrapper.master-permissions
                     .valign.col.s6
-                      h5 Update all permissions
+                      h5.all-permissions Update all permissions
                     = render partial: "users/permissions/controls", object: approvable, as: "control_object"
         .col.s4
           = button_to "Revoke App", user_approval_path(current_user.url_id, approval, revoke: true), method: :delete, remote: true, class: "btn-flat right", data: { confirm: "Are you sure? If you continue, you will have to authenticate this app again before it can access your data. You can temporarily disable this application's access with the permissions controls. Click OK to revoke this app." }

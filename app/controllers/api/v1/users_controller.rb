@@ -3,7 +3,6 @@ class Api::V1::UsersController < Api::ApiController
 
   skip_before_action :authenticate, only: :auth
   before_action :find_user, :check_user_approved_approvable, only: :show
-  before_action -> { doorkeeper_authorize! :public }, unless: :req_from_coposition_app?, only: :show
 
   def show
     @user.private_profile = req_from_coposition_app?
@@ -11,7 +10,7 @@ class Api::V1::UsersController < Api::ApiController
   end
 
   def index
-    @users = @dev.users.public_info
+    @users = @dev.users.active_users.public_info
     respond_with @users
   end
 

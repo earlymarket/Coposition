@@ -23,7 +23,10 @@ RSpec.describe Users::CheckinsController, type: :controller do
   end
 
   describe "GET #index" do
-    before { get :index, params: index_params }
+    before do
+      request.accept = "application/json"
+      get :index, params: index_params
+    end
 
     it "render json hash" do
       expect(res_hash).to be_truthy
@@ -70,23 +73,34 @@ RSpec.describe Users::CheckinsController, type: :controller do
   end
 
   describe "GET #show" do
-    before { request.accept = "text/javascript" }
+    context "with javascript datatype" do
+      before { request.accept = "text/javascript" }
 
-    it "assigns :id.checkin to @checkin if user owns device which owns checkin" do
+      it "assigns :id.checkin to @checkin if user owns device which owns checkin" do
+        get :show, params: params
+        expect(assigns(:checkin)).to eq(Checkin.find(checkin.id))
+      end
+
+      it "doesn't assign :id.checkin if user does not own device which owns checkin" do
+        user
+        get :show, params: params.merge(user_id: new_user.username)
+        expect(assigns(:checkin)).to eq nil
+      end
+
+      it "redirects to root_path if user does not own device" do
+        user
+        get :show, params: params.merge(user_id: new_user.username)
+        expect(response).to redirect_to(root_path)
+      end
+
+      it "geocodes the checkin" do
+        expect { get :show, params: params }.to change { Checkin.find(checkin.id).updated_at }
+      end
+    end
+
+    it "redirects to devices show path" do
       get :show, params: params
-      expect(assigns(:checkin)).to eq(Checkin.find(checkin.id))
-    end
-
-    it "doesn't assign :id.checkin if user does not own device which owns checkin" do
-      user
-      get :show, params: params.merge(user_id: new_user.username)
-      expect(assigns(:checkin)).to eq nil
-    end
-
-    it "redirects to root_path if user does not own device" do
-      user
-      get :show, params: params.merge(user_id: new_user.username)
-      expect(response).to redirect_to(root_path)
+      expect(response).to redirect_to(user_device_path(user.url_id, checkin.device.id, checkin_id: checkin.id))
     end
   end
 

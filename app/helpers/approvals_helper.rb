@@ -1,6 +1,13 @@
 module ApprovalsHelper
   def approvals_approvable_name(approvable)
-    approvable.class == User ? approvable.display_name : approvable.company_name
+    case approvable.class.name
+    when "User"
+      approvable.display_name
+    when "Developer"
+      approvable.company_name
+    when "EmailRequest"
+      approvable.email
+    end
   end
 
   def approvals_add_text(type)
@@ -26,8 +33,9 @@ module ApprovalsHelper
     raw str
   end
 
-  def approvals_friends_locator(approvable_type, approvable)
+  def approvals_friends_locator(approvable_type, approvable, checkins)
     return unless approvable_type == "User"
+    return if checkins.find { |f| f[:userinfo]["id"] == approvable.id }[:lastCheckin].blank?
     "<i data-friend='#{approvable.id}' class='center-map material-icons'>my_location</i>".html_safe
   end
 end

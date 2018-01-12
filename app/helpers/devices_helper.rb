@@ -1,14 +1,22 @@
 module DevicesHelper
   def devices_last_checkin(device)
-    if device.checkins.exists?
-      last_checkin = device.checkins.first
+    if device.past_checkins.exists?
+      last_checkin = device.past_checkins.first
       postcode = last_checkin.postal_code
       last_checkin.address = last_checkin.address.gsub(" " + postcode, "") if postcode
-      "Last reported in #{last_checkin.address} on #{humanize_date_and_time(last_checkin.created_at)}
-      <i data-device='#{device.id}' class='center-map material-icons'>my_location</i>".html_safe
+      "Last check-in
+      #{link_to last_checkin.id,
+        user_device_checkin_path(current_user.url_id, last_checkin.device_id, last_checkin.id), id: 'last-checkin'},
+      #{last_checkin.address} on #{humanize_date_and_time(last_checkin.created_at)}".html_safe
     else
       "No Checkins found"
     end
+  end
+
+  def devices_locate_icon(device)
+    return unless device.checkins.exists?
+    "<i data-device='#{device.id}' class='center-map right tooltipped material-icons'
+    data-tooltip='Centre map on device'>my_location</i>".html_safe
   end
 
   def devices_shared_link(device)

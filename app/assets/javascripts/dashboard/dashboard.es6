@@ -7,7 +7,18 @@ $(document).on('page:change', function () {
     U.gonFix();
     M.initMap();
     M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
-    COPO.smooch.initSmooch(gon.current_user.userinfo);
+
+    $('#checkin_id').keypress((e) => {
+      if (e.which === 13) checkinSearch()
+    })
+
+    $('#find-checkin').on('click', checkinSearch)
+
+    function checkinSearch () {
+      let userId = gon.current_user.userinfo.id
+      let checkinId = $('#checkin_id').val()
+      window.location = `/users/${userId}/devices/nil/checkins/${checkinId}`
+    }
 
     // Persistent map feature declarations
     const SELF_MARKER = {
@@ -44,7 +55,7 @@ $(document).on('page:change', function () {
           .map(friend => L.latLng(friend.lat, friend.lng))
         )
       },
-      status: `Your friend's check-ins <a href='./friends'>(more details)</a>`,
+      status: `Your friend's check-ins. <a class='btn-flat blue-text' href='./friends'>view friends</a>`,
       init (caller) {
         if (this.hasFriendsWithCheckins()) {
           caller.slides.push({
@@ -73,29 +84,31 @@ $(document).on('page:change', function () {
         }
       }
     }
-    const MONTHLY_SLIDE = {
+    const DEVICE_SLIDE = {
       hasCheckins () {
-        return gon.months_checkins.length > 0
+        return gon.device_checkins.length > 0
       },
       layers () {
-        let checkins = [...gon.months_checkins];
-        if(gon.current_user.lastCheckin) {
-          checkins = checkins.filter(checkin => checkin.id !== gon.current_user.lastCheckin.id);
-        }
-        let clusters = M.arrayToCluster(checkins, M.makeMarker)
+        let checkins = [...gon.device_checkins];
+        let clusters = M.checkinsToLayer(checkins, M.makeDeviceMarker)
         clusters.eachLayer((marker) => {
           marker.on('click', function (e) {
-            M.panAndW3w.call(this, e)
+            let checkin = this.options.checkin;
+            if (!marker._popup) {
+              var template = COPO.maps.buildCheckinPopup(checkin, marker)
+              marker.bindPopup(L.Util.template(template, checkin));
+              marker.openPopup();
+            }
           });
         });
         return clusters;
       },
       bounds () {
         return L.latLngBounds(
-          gon.months_checkins.map(checkin => L.latLng(checkin.lat, checkin.lng))
+          gon.device_checkins.map(checkin => L.latLng(checkin.lat, checkin.lng))
         );
       },
-      status: `A random sample of your last month's checkins <a href='./devices'>(more details)</a>`,
+      status: `Your devices most recent check-ins. <a class='btn-flat blue-text' href='./devices'>view devices</a>`,
       init (caller) {
         if (this.hasCheckins()) {
           caller.slides.push({
@@ -112,8 +125,7 @@ $(document).on('page:change', function () {
       // slides are the states that are cycled through
       // slideTypes are the objects we initialize in DECK.init()
       slides: [],
-      slideTypes: [FRIENDS_SLIDE, MONTHLY_SLIDE],
-      persistent: [SELF_MARKER],
+      slideTypes: [FRIENDS_SLIDE, DEVICE_SLIDE],
       hasContent: false,
       pause () {
         this.paused = true;
@@ -160,7 +172,6 @@ $(document).on('page:change', function () {
       },
       init () {
         this.paused = false;
-        this.persistent.forEach(feature => feature.init(this));
         this.slideTypes.forEach(slide => slide.init(this));
         this.initTimerHandler();
         if (!this.hasContent) this.showNullState();

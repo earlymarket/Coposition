@@ -30,7 +30,7 @@ RSpec.describe User, type: :model do
 
   describe "Associations" do
     %w(devices checkins requests approvals subscriptions developers approved_developers
-       complete_developers friends permissions permitted_devices).each do |asoc|
+       complete_developers friends permissions permitted_devices email_requests).each do |asoc|
       it "has many #{asoc}" do
         assc = described_class.reflect_on_association(asoc.to_sym)
         expect(assc.macro).to eq :has_many
@@ -59,6 +59,12 @@ RSpec.describe User, type: :model do
       allow(new_user).to receive(:approve_coposition_mobile_app)
       new_user.save
       expect(new_user).to have_received(:approve_coposition_mobile_app)
+    end
+
+    it "creates new friend requests after create if a user has tried to add them" do
+      allow(new_user).to receive(:create_pending_requests)
+      new_user.save
+      expect(new_user).to have_received(:create_pending_requests)
     end
   end
 
