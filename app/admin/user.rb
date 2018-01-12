@@ -1,5 +1,5 @@
 ActiveAdmin.register User do
-  permit_params :email, :username, :password, :password_confirmation, :admin
+  permit_params :email, :username, :password, :password_confirmation, :admin, :is_active
 
   member_action :firebase_notification, method: :post do
     Firebase::Push.call(
@@ -45,6 +45,7 @@ ActiveAdmin.register User do
     end
     column :zapier_enabled
     column :admin
+    column :is_active
 
     actions
   end
@@ -59,8 +60,16 @@ ActiveAdmin.register User do
       f.input :password
       f.input :password_confirmation
       f.input :admin
+      f.input :is_active
     end
     f.actions
+  end
+
+  controller do
+    def update_resource(object, attributes)
+      update_method = attributes.first[:password].present? ? :update_attributes : :update_without_password
+      object.send(update_method, *attributes)
+    end
   end
 
   show do

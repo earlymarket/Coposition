@@ -41,15 +41,19 @@ class User < ApplicationRecord
     source: :approvable,
     source_type: "Developer"
   has_many :developer_approvals, -> { where(status: "accepted", approvable_type: "Developer") }, class_name: "Approval"
-  has_many :friends, -> { where "status = 'accepted'" }, through: :approvals, source: :approvable, source_type: "User"
+  has_many :friends,
+    -> { where "status = 'accepted' AND users.is_active = true" },
+    through: :approvals,
+    source: :approvable,
+    source_type: "User"
   has_many :friend_approvals, -> { where(status: "accepted", approvable_type: "User") }, class_name: "Approval"
   has_many :pending_friends,
-    -> { where "status = 'pending'" },
+    -> { where "status = 'pending' AND users.is_active = true" },
     through: :approvals,
     source: :approvable,
     source_type: "User"
   has_many :friend_requests,
-    -> { where "status = 'requested'" },
+    -> { where "status = 'requested' AND users.is_active = true" },
     through: :approvals,
     source: :approvable,
     source_type: "User"
@@ -69,6 +73,8 @@ class User < ApplicationRecord
 
   has_attachment :avatar
 
+  scope :active, -> { where(is_active: true)}
+
   ## Pathing
 
   def url_id
@@ -77,6 +83,18 @@ class User < ApplicationRecord
 
   def should_generate_new_friendly_id?
     slug.blank? || username_changed?
+  end
+
+  def self.active_users
+    User.where(is_active: true)
+  end
+
+  def active_for_authentication?
+    super and self.is_active?
+  end
+
+  def inactive_message
+    "Your account has been disabled"
   end
 
   ## Approvals
