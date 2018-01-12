@@ -1,9 +1,14 @@
 // Normalize footer behaviour
 // Sticky footer
+html {
+  background-color: #141414;
+}
+
 body {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+  background-color: white;
 }
 
 main {
