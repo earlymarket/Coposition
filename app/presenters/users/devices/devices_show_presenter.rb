@@ -82,7 +82,7 @@ module Users::Devices
 
     def set_data_for_download
       @filename = "device-#{device.id}-checkins-#{DateTime.current}." + download_format
-      @checkins = gon_show_checkins.send("to_" + download_format)
+      @checkins = gon_show_checkins.unscope(:order).order(created_at: :asc).send("to_" + download_format)
     end
 
     def download_format
