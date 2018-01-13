@@ -5,9 +5,9 @@ describe ::Users::Devices::DevicesShowPresenter do
   let(:user) { create(:user) }
   let(:device) { create(:device, user_id: user.id) }
   let(:checkins) do
-    create(:checkin, device_id: device.id)
-    create(:checkin, device_id: device.id).reverse_geocode!
-    create(:checkin, device_id: device.id)
+    create(:checkin, device_id: device.id, created_at: 1.hour.ago)
+    create(:checkin, device_id: device.id, created_at: 2.hours.ago).reverse_geocode!
+    create(:checkin, device_id: device.id, created_at: 3.hours.ago)
   end
 
   describe "Interface" do
@@ -36,7 +36,7 @@ describe ::Users::Devices::DevicesShowPresenter do
     it "returns checkins converted to param provided" do
       checkins
       show_presenter = described_class.new(user, id: device.id, download: "gpx")
-      expect(show_presenter.checkins).to eq device.checkins.to_gpx
+      expect(show_presenter.checkins).to eq device.checkins.unscope(:order).order(created_at: :asc).to_gpx
     end
   end
 
