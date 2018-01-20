@@ -2,9 +2,7 @@ window.COPO = window.COPO || {};
 window.COPO.smooch = {
   initSmooch: function() {
     if ($('#sk-holder').length > 0 || typeof(Smooch) == "undefined") return
-    if (Smooch.appToken) {
-      Smooch.render();
-    } else {
+    if (!Smooch.appToken) {
       var params = { appToken: "48zalrms2pp1raaolssv7dry8" };
       var user = COPO.smooch.checkForUserInformation();
 
@@ -13,7 +11,6 @@ window.COPO.smooch = {
         params.email     = user.email;
         params.givenName = user.username;
       }
-
       Smooch.init(params);
     }
   },

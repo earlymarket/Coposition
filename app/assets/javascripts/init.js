@@ -72,3 +72,11 @@ $(document).on('ready page:change', function() {
     COPO.smooch.initSmooch();
   }
 });
+
+$(document).on('page:before-unload', function () {
+  Smooch._container && $(Smooch._container).detach();
+});
+
+$(document).on('page:update', function () {
+  Smooch._container && $('body').append(Smooch._container);
+});
