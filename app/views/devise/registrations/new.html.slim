@@ -68,7 +68,7 @@ javascript:
       return this.optional( element ) || /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/.test( value );
     }
 
-    if (['test', 'staging'].indexOf($('body').attr('data-environment')) > -1)
+    if (['test', 'staging'].indexOf($('body').attr('data-environment')) > -1) {
       $('button.btn').removeClass("disabled")
     }
 
