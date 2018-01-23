@@ -30,13 +30,23 @@ javascript:
     ignore: []
   });
 
+  $.validator.addMethod(
+    "regex",
+    function(value, element, regexp) {
+        var re = new RegExp(regexp);
+        return this.optional(element) || re.test(value);
+    },
+    "Device name must be between 4-20 characters, only contain alphanumeric characters and underscores."
+  );
+
   // configure your validation
 
   $("#new_device").validate({
     onkeyup: false,
     rules: {
       "device[name]": {
-        required: true
+        required: true,
+        regex: /^(\w{4,20})$/
       },
       "device[icon]": {
         required: true

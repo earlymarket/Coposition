@@ -6,7 +6,7 @@ RSpec.describe Api::V1::CheckinsController, type: :controller do
   let(:developer) { create :developer }
   let(:user) { create :user }
   let!(:device) { create :device, user_id: user.id, delayed: 10 }
-  let!(:second_device) { create :device, user_id: user.id, delayed: 10, name: "Second device" }
+  let!(:second_device) { create :device, user_id: user.id, delayed: 10, name: "Second_device" }
   let!(:checkin) { create :checkin, device_id: device.id }
   let!(:historic_checkin) { create :checkin, device_id: device.id, created_at: Time.now - 1.day }
   let!(:second_checkin) { create :checkin, device_id: second_device.id, created_at: Time.now - 1.minute }

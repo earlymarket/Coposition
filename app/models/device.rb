@@ -10,7 +10,8 @@ class Device < ApplicationRecord
   has_many :permitted_users, through: :permissions, source: :permissible, source_type: "User"
   has_attachment :csv, accept: :raw
 
-  validates :name, uniqueness: { scope: :user_id }, if: :user_id, length: { in: 4..20 }
+  validates :name, uniqueness: { scope: :user_id }, if: :user_id, length: { in: 4..20 },
+                   format: { with: /\A(\w{4,20})\z/, message: "only allows alphanumeric and underscores" }
   validates :icon, presence: true
 
   scope :active_devices, -> { joins(:user).where(users: { is_active: true }) }
