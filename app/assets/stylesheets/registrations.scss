@@ -1,7 +1,16 @@
 .c-registrations.a-new {
+  background-color: transparent;
+
   a.link {
     color: $primary-color;
     text-decoration: underline;
+  }
+
+  .promo {
+    bottom: -20px;
+    @media screen and (max-width: 660px){
+      bottom: -100px;
+    }
   }
 }
 

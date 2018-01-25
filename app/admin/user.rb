@@ -60,7 +60,7 @@ ActiveAdmin.register User do
       f.input :password
       f.input :password_confirmation
       f.input :admin
-      f.input :is_active
+      f.input :is_active, as: :boolean
     end
     f.actions
   end
