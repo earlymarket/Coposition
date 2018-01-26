@@ -37,6 +37,7 @@ module Users::Devices
     end
 
     def construct_device
+      allowed_params[:name]&.tr!(" ", "_")
       @device.update(allowed_params.merge(user: user))
       create_device_permissions
       create_device_config
