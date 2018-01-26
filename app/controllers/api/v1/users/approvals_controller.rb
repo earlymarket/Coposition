@@ -1,15 +1,15 @@
 class Api::V1::Users::ApprovalsController < Api::ApiController
   respond_to :json
 
-  acts_as_token_authentication_handler_for User, except: :create
+  acts_as_token_authentication_handler_for User
 
   def create
-    resource_exists?(approvable_type, approvable)
-    approval = Approval.link(@user, approvable, approvable_type)
-    accept_if_friend_request_or_adding_developer if req_from_coposition_app?
-    CreateActivity.call(entity: approval, action: :create, owner: @user, params: params.to_h) if approval.id
-    @dev.notify_if_subscribed("new_approval", approval_zapier_data(approval))
-    render json: approval
+    result = CreateApproval.call(user: @user, approvable: allowed_params[:approvable], type: approvable_type)
+    if result.success
+      render json: result.approval
+    else
+      render status: 404, json: { error: result.error }
+    end
   end
 
   def update
@@ -53,23 +53,6 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
   end
 
   def approvable_type
-    req_from_coposition_app? ? allowed_params[:approvable_type] : "Developer"
-  end
-
-  def approvable
-    if req_from_coposition_app?
-      model_find(approvable_type).find_by(email: allowed_params[:approvable]) || model_find(approvable_type).find(allowed_params[:approvable])
-    else
-      @dev
-    end
-  end
-
-  def model_find(type)
-    [User, Developer].find { |model| model.name == type.titleize }
-  end
-
-  def accept_if_friend_request_or_adding_developer
-    return unless @user.request_from?(approvable) || approvable_type == "Developer"
-    Approval.accept(@user, approvable, approvable_type)
+    allowed_params[:approvable_type]
   end
 end

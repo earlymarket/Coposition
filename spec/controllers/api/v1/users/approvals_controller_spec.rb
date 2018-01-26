@@ -7,13 +7,15 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
   let(:developer) { create :developer }
   let(:second_user) { create :user }
   let(:apprvl) { create(:approval, user: user, approvable_id: developer.id, approvable_type: "Developer") }
-
   let(:params) { { user_id: user.id, format: :json } }
   let(:dev_approval_create_params) do
-    params.merge(approval: { approvable: developer.id, approvable_type: "Developer" })
+    params.merge(approval: { approvable: developer.company_name, approvable_type: "Developer" })
   end
   let(:friend_approval_create_params) do
-    params.merge(approval: { approvable: second_user.id, approvable_type: "User" })
+    params.merge(approval: { approvable: second_user.email, approvable_type: "User" })
+  end
+  let(:friend_approval_invite_params) do
+    params.merge(approval: { approvable: "example@email.com", approvable_type: "User" })
   end
   let(:approval_destroy_params) { params.merge(id: apprvl.id) }
   let(:approval_update_params) { approval_destroy_params.merge(approval: { status: "accepted" }) }
@@ -22,46 +24,6 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
     request.headers["X-Api-Key"] = developer.api_key
     request.headers["X-User-Token"] = user.authentication_token
     request.headers["X-User-Email"] = user.email
-  end
-
-  describe "a developer" do
-    it "is able to submit an approval request" do
-      post :create, params: dev_approval_create_params
-      expect(Approval.where(user: user, approvable: developer, status: "developer-requested")).to exist
-      expect(user.pending_approvals.count).to be 1
-    end
-
-    it "is not able to submit another request to same user" do
-      dev_approval_create_params
-      Approval.link(user, developer, "Developer")
-      approval_count = Approval.count
-      post :create, params: dev_approval_create_params
-      expect(Approval.count).to eq approval_count
-      expect(user.pending_approvals.count).to be 1
-    end
-
-    it "is not able to submit an approval request for another user" do
-      friend_approval_create_params
-      Approval.link(user, developer, "Developer")
-      approval_count = Approval.count
-      post :create, params: friend_approval_create_params
-      expect(Approval.count).to be approval_count
-      expect(Approval.where(approvable: second_user)).not_to exist
-    end
-
-    it "is told if the approval is still pending" do
-      # No approval
-      get :status, params: params
-      expect(res_hash[:approval_status]).to eq "No Approval"
-
-      Approval.link(user, developer, "Developer")
-      get :status, params: params
-      expect(res_hash[:approval_status]).to eq "developer-requested"
-
-      Approval.accept(user, developer, "Developer")
-      get :status, params: params
-      expect(res_hash[:approval_status]).to eq "accepted"
-    end
   end
 
   describe "a user" do
@@ -83,12 +45,19 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
         expect(Approval.where(user: second_user, approvable: user, status: "requested")).to exist
       end
 
+      it "is able to invite a user to join coposition" do
+        post :create, params: friend_approval_invite_params
+        expect(EmailRequest.where(user_id: user.id, email: "example@email.com")).to exist
+        expect(res_hash[:error]).to match("User not signed up with Coposition, invite email sent!")
+      end
+
       it "is not able to submit another request to same user" do
         Approval.link(user, second_user, "User")
         approval_count = Approval.count
         post :create, params: friend_approval_create_params
         expect(Approval.count).to eq approval_count
         expect(Approval.where(approvable_type: "User", status: "accepted")).not_to exist
+        expect(res_hash[:error]).to match("Friend request already sent")
       end
 
       it "approves a developer request" do
@@ -97,6 +66,11 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
         expect(Approval.where(user: user, approvable: developer, status: "developer-requested")).to exist
         post :create, params: dev_approval_create_params
         expect(Approval.where(user: user, approvable: developer, status: "accepted")).to exist
+      end
+
+      it "is not able to create an approval for a non-existant developer" do
+        post :create, params: params.merge(approval: { approvable: "Fake company", approvable_type: "Developer" })
+        expect(res_hash[:error]).to match("Developer not found")
       end
 
       it "approves a friend request" do
