@@ -52,13 +52,12 @@ $(document).on('page:change', function() {
       var newName = $target.text().replace(/ /g, '_')
       if (original !== newName) {
         var url = $target.parents('a').attr('href');
-        var request = $.ajax({
+        $.ajax({
           dataType: 'json',
           url: url,
           type: 'PUT',
           data: { device: { name: newName } }
-        });
-        request
+        })
         .done(function (response) {
         })
         .fail(function (error) {
@@ -66,7 +65,7 @@ $(document).on('page:change', function() {
           Materialize.toast('Name: ' + JSON.parse(error.responseText).name, 3000, 'red');
         })
       }
-      $target.text($target.text());
+      $target.text(newName);
       $target.next().toggleClass('hide', false);
       U.deselect();
       $target.off();
