@@ -48,6 +48,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
       it "is able to invite a user to join coposition" do
         post :create, params: friend_approval_invite_params
         expect(EmailRequest.where(user_id: user.id, email: "example@email.com")).to exist
+        expect(res_hash[:error]).to match("User not signed up with Coposition, invite email sent!")
       end
 
       it "is not able to submit another request to same user" do
@@ -56,6 +57,7 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
         post :create, params: friend_approval_create_params
         expect(Approval.count).to eq approval_count
         expect(Approval.where(approvable_type: "User", status: "accepted")).not_to exist
+        expect(res_hash[:error]).to match("Friend request already sent")
       end
 
       it "approves a developer request" do
@@ -64,6 +66,11 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
         expect(Approval.where(user: user, approvable: developer, status: "developer-requested")).to exist
         post :create, params: dev_approval_create_params
         expect(Approval.where(user: user, approvable: developer, status: "accepted")).to exist
+      end
+
+      it "is not able to create an approval for a non-existant developer" do
+        post :create, params: params.merge(approval: { approvable: "Fake company", approvable_type: "Developer" })
+        expect(res_hash[:error]).to match("Developer not found")
       end
 
       it "approves a friend request" do

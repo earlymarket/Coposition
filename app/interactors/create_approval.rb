@@ -15,13 +15,14 @@ class CreateApproval
 
   def create_user_approval
     result = Users::Approvals::CreateUserApproval.call(current_user: user, approvable: approvable)
-    context.fail! unless result.success?
+    error = result.message[:alert] || result.message[:notice]
+    context.fail!(error: error) unless result.success?
     context.approval = result.approval
   end
 
   def create_user_developer_approval
     result = Users::Approvals::CreateDeveloperApproval.call(current_user: user, approvable: approvable)
-    context.fail! unless result.success?
+    context.fail!(error: result.error) unless result.success?
     context.approval = result.approval
   end
 

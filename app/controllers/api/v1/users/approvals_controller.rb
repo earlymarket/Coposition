@@ -8,7 +8,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
     if result.success
       render json: result.approval
     else
-      render status: 404, json: { error: "Error creating approval" }
+      render status: 404, json: { error: result.error }
     end
   end
 
