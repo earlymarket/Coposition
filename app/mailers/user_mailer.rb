@@ -58,14 +58,15 @@ class UserMailer < ApplicationMailer
 
   def no_activity_email(device)
     return unless device.user.email_subscription.device_inactivity
+    user = device.user
     SendSendgridEmail.call(
       to: device.user.email, subject: "Coposition activity", id: "b4437ee3-651a-4252-921b-c2a8ace722ac",
       substitutions: [
-        { key: "-unsubscribe-", value: unsubscribe_link(device.user) },
+        { key: "-unsubscribe-", value: unsubscribe_link(user) },
         { key: "-forgot-", value: "https://coposition.com/users/password/new" },
-        { key: "-url-", value: "https://coposition.com/users/#{device.user.id}/devices" },
-        { key: "-email-", value: device.user.email },
-        { key: "-content-", value: no_activity_content(device)}
+        { key: "-url-", value: "https://coposition.com/users/#{user.id}/devices" },
+        { key: "-email-", value: user.username.present? ? user.username : user.email },
+        { key: "-content-", value: no_activity_content(device) }
       ]
     )
   end
