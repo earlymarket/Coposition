@@ -80,7 +80,7 @@ class UserMailer < ApplicationMailer
     content += "<ul>"
     inactive.each do |dev|
       next if dev == device
-      last = dev.checkins.last
+      last = dev.checkins.first
       content += "<li><a href='https://coposition.com/users/#{dev.user.id}/devs/' + dev.id.to_s}>"
       content += dev.name + "</a>"
       content += " - Auto check-in #{dev.config.custom && dev.config.custom["active"] ? 'on' : 'off'}"
