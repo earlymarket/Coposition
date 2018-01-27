@@ -51,7 +51,8 @@
               .input-field.col.s12
                 = f.label :redirect_url,"Redirect url*", class: "active"
                 = f.text_field :redirect_url, placeholder: "Your Site URL"
-          = recaptcha_tags callback: 'submitRecaptchaForm'
+          - unless Rails.env.staging?
+            = recaptcha_tags callback: 'submitRecaptchaForm'
           br
           .row
             .col.s12
@@ -67,7 +68,7 @@ javascript:
       return this.optional( element ) || /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/.test( value );
     }
 
-    if ($('body').attr('data-environment') == 'test') {
+    if (['test', 'staging'].indexOf($('body').attr('data-environment')) > -1) {
       $('button.btn').removeClass("disabled")
     }
 
