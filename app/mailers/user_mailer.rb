@@ -56,36 +56,31 @@ class UserMailer < ApplicationMailer
     )
   end
 
-  def no_activity_email(device)
-    return unless device.user.email_subscription.device_inactivity
-    user = device.user
+  def no_activity_email(user, inactive)
+    return unless user.email_subscription.device_inactivity
     SendSendgridEmail.call(
-      to: device.user.email, subject: "Coposition activity", id: "b4437ee3-651a-4252-921b-c2a8ace722ac",
+      to: user.email, subject: "Coposition activity", id: "b4437ee3-651a-4252-921b-c2a8ace722ac",
       substitutions: [
         { key: "-unsubscribe-", value: unsubscribe_link(user) },
         { key: "-forgot-", value: "https://coposition.com/users/password/new" },
         { key: "-url-", value: "https://coposition.com/users/#{user.id}/devices" },
         { key: "-email-", value: user.username.present? ? user.username : user.email },
-        { key: "-content-", value: no_activity_content(device) }
+        { key: "-content-", value: no_activity_content(inactive) }
       ]
     )
   end
 
   private
 
-  def no_activity_content(device)
-    inactive = device.user.devices.inactive(1.day.ago)
-    content = "<p>Your device #{device.name} has been inactive for at least 7 days. You can find further information on creating check-ins on our Help Page.</p>"
-    return content unless inactive.length > 1
-    content += "<p>You also haven't heard from these devices in a while:"
+  def no_activity_content(inactive)
+    content += "<p>You haven't heard from these devices in a while:"
     content += "<ul>"
     inactive.each do |dev|
-      next if dev == device
       last = dev.checkins.first
       content += "<li><a href='https://coposition.com/users/#{dev.user.id}/devs/' + dev.id.to_s}>"
       content += dev.name + "</a>"
-      content += " - Auto check-in #{dev.config.custom && dev.config.custom["active"] ? 'on' : 'off'}"
-      content += " - #{dev.config.custom && dev.config.custom["assigned"] ? 'Assigned' : 'Unassigned' }"
+      content += " - Auto check-in #{dev.config.custom && dev.config.custom['active'] ? 'on' : 'off'}"
+      content += " - #{dev.config.custom && dev.config.custom['assigned'] ? 'Assigned' : 'Unassigned' }"
       content += " - Last checked in #{humanize_date(last.created_at)} near #{last.fogged_city}"
       content += "</li>"
     end
