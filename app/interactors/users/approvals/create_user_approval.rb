@@ -11,6 +11,7 @@ module Users::Approvals
         context.approval = approval
         context.message = { notice: "Friend request sent" }
         create_activity
+        send_notification
       else
         describe_error_case
         context.fail!
@@ -21,6 +22,17 @@ module Users::Approvals
 
     def create_activity
       CreateActivity.call(entity: approval, action: :create, owner: current_user, params: { approvable: approvable })
+    end
+
+    def send_notification
+      Firebase::Push.call(
+        topic: user.id,
+        content_available: true,
+        notification: {
+          body: "#{current_user.email} has sent you a friend request",
+          title: "New friend request"
+        }
+      )
     end
 
     def describe_error_case
