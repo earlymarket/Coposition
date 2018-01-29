@@ -36,7 +36,7 @@ javascript:
         var re = new RegExp(regexp);
         return this.optional(element) || re.test(value);
     },
-    "Device name must be between 4-20 characters, only contain alphanumeric characters and underscores."
+    "Device name must be between 4-20 characters, can only contain alphanumeric characters and underscores and must start with an alphabetic character."
   );
 
   // configure your validation
@@ -46,7 +46,7 @@ javascript:
     rules: {
       "device[name]": {
         required: true,
-        regex: /^[\w\s]{4,20}$/
+        regex: /^([A-Za-z][A-Za-z0-9]*(?:_+[A-Za-z0-9])*){4,20}$/
       },
       "device[icon]": {
         required: true
