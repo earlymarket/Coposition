@@ -1,18 +1,20 @@
 $(document).on('page:change', () => {
   if (window.COPO.utility.currentPage('devices', 'new')) {
-    COPO.utility.setActivePage('devices')
+    const U = window.COPO.utility;
+    U.initAppcues(gon.current_user)
+    U.setActivePage('devices')
     const $CREATE_CHECKIN = $('#create_checkin');
     const $ADD_BUTTON = $('#add_button');
     const $PREVIEW = $('#preview');
     if ($CREATE_CHECKIN.prop('checked')) {
-      navigator.geolocation.getCurrentPosition(showPosition, COPO.utility.geoLocationError);
+      navigator.geolocation.getCurrentPosition(showPosition, U.geoLocationError);
     }
 
     $CREATE_CHECKIN.change(() => {
       if ($CREATE_CHECKIN.prop('checked')) {
         $ADD_BUTTON.addClass('disabled').prop('disabled', true);
         $PREVIEW.css('display', 'block');
-        navigator.geolocation.getCurrentPosition(showPosition, COPO.utility.geoLocationError);
+        navigator.geolocation.getCurrentPosition(showPosition, U.geoLocationError);
       } else {
         $PREVIEW.fadeOut("fast", () => $PREVIEW.addClass("hide"));
         $ADD_BUTTON.removeClass('disabled').prop('disabled', false);

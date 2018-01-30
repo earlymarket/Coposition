@@ -24,6 +24,7 @@ class Users::DevicesController < ApplicationController
   def new
     @device = Device.new
     @device.uuid = params[:uuid] if params[:uuid]
+    gon.push(current_user: current_user)
   end
 
   def shared

@@ -215,6 +215,14 @@ COPO.utility = {
     };
   },
 
+  initAppcues(user) {
+    Appcues.identify(user.id, {
+      name: user.username,
+      email: user.email,
+      created_at: user.created_at,
+    });
+  },
+  
   setActivePage(page) {
     $("a#" + page + "-nav").addClass("current")
   }
