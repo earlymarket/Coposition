@@ -3,7 +3,7 @@ class Users::Devise::RegistrationsController < Devise::RegistrationsController
   respond_to :json
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
-  prepend_before_action :check_captcha, only: [:create]
+  prepend_before_action :check_captcha, only: [:create], unless: :req_from_coposition_app?
 
   # GET /resource/sign_up
   # def new
