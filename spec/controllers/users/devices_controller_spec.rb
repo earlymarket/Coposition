@@ -40,6 +40,19 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
   end
 
+  describe "GET #devices" do
+    it "redirects to index if user logged in" do
+      user
+      get :devices
+      expect(response).to redirect_to(user_devices_path(user))
+    end
+
+    it "rediects to login if no user logged in" do
+      get :devices
+      expect(response).to redirect_to(new_user_session_path(return_to: "/devices"))
+    end
+  end
+
   describe "GET #show" do
     it "assigns :id.device to @device if user owns device" do
       get :show, params: params
