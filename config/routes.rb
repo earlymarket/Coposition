@@ -17,6 +17,9 @@ Rails.application.routes.draw do
   get "/terms", to: "welcome#terms"
   get "/devs", to: "welcome#devs"
   get "/add_friend", to: "users/approvals#add"
+  get "/apps", to: "users/approvals#apps"
+  get "/friends", to: "users/approvals#friends"
+  get "/devices", to: "users/devices#devices"
 
   # Devise
 
@@ -24,6 +27,9 @@ Rails.application.routes.draw do
     registrations: "users/devise/registrations",
     sessions: "users/devise/sessions"
   }
+  devise_scope :user do
+    get "/account", to: "users/devise/registrations#edit"
+  end
   devise_for :developers, controllers: {
     registrations: "developers/devise/registrations",
     sessions: "developers/devise/sessions"
