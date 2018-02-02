@@ -24,4 +24,9 @@ class ApplicationController < ActionController::Base
 
     redirect_to root_path, alert: "Unauthorized Access" unless current_user.admin?
   end
+
+  def url_redirect
+    return if current_user
+    redirect_to(new_user_session_url(return_to: request.fullpath))
+  end
 end

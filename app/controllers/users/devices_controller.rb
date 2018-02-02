@@ -1,11 +1,16 @@
 class Users::DevicesController < ApplicationController
-  before_action :authenticate_user!, :correct_url_user?, except: :shared
+  before_action :authenticate_user!, :correct_url_user?, except: %i[shared devices]
   before_action :published?, only: :shared
   before_action :require_ownership, only: %i[show destroy update]
+  before_action :url_redirect, only: :devices
 
   def index
     @devices_index_presenter = ::Users::Devices::DevicesIndexPresenter.new(current_user, params)
     gon.push(@devices_index_presenter.index_gon)
+  end
+
+  def devices
+    redirect_to(user_devices_path(current_user))
   end
 
   def show

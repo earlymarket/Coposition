@@ -135,6 +135,32 @@ RSpec.describe Users::ApprovalsController, type: :controller do
     end
   end
 
+  describe "GET #apps" do
+    it "redirects to index if user logged in" do
+      user
+      get :apps
+      expect(response).to redirect_to(user_apps_path(user))
+    end
+
+    it "rediects to login if no user logged in" do
+      get :apps
+      expect(response).to redirect_to(new_user_session_path(return_to: "/apps"))
+    end
+  end
+
+  describe "GET #friends" do
+    it "redirects to index if user logged in" do
+      user
+      get :friends
+      expect(response).to redirect_to(user_friends_path(user))
+    end
+
+    it "rediects to login if no user logged in" do
+      get :friends
+      expect(response).to redirect_to(new_user_session_path(return_to: "/friends"))
+    end
+  end
+
   describe "PUT #update" do
     it "approves a developer approval request" do
       approval.update(status: "developer-requested", approvable_id: developer.id, approvable_type: "Developer")
