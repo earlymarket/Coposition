@@ -100,6 +100,7 @@ module Users
       "created_at IN(SELECT MAX(created_at) FROM checkins INNER JOIN devices ON" \
       " checkins.device_id = devices.id WHERE devices.user_id = #{@user.id}" \
       " AND checkins.created_at <= current_timestamp" \
+      " AND (checkins.altitude != 0 OR checkins.altitude IS NULL)" \
       " AND (checkins.altitude <= #{FLIGHT_ALTITUDE} OR checkins.altitude IS NULL)" \
       " GROUP BY country_code)"
     end
