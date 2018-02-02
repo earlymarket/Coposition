@@ -49,30 +49,27 @@ $(document).on('page:change', function() {
     }
 
     function handleEdited (original, $target) {
-      var newName = $target.text()
-      if(original !== newName) {
-        // console.log('Name optimistically set to: ' + $target.text());
+      var newName = $target.text().replace(/ /g, '_')
+      if (original !== newName) {
         var url = $target.parents('a').attr('href');
-        var request = $.ajax({
+        $.ajax({
           dataType: 'json',
           url: url,
           type: 'PUT',
           data: { device: { name: newName } }
-        });
-        request
+        })
         .done(function (response) {
-          // console.log('Server processed the request');
         })
         .fail(function (error) {
           $target.text(original);
           Materialize.toast('Name: ' + JSON.parse(error.responseText).name, 3000, 'red');
         })
       }
-      $target.text($target.text());
-      $target.attr('contenteditable', false);
+      $target.text(newName);
       $target.next().toggleClass('hide', false);
       U.deselect();
       $target.off();
+      $target.attr('contenteditable', false);
     }
 
     window.initPage = function(){
