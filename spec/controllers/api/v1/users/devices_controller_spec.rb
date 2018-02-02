@@ -26,7 +26,7 @@ RSpec.describe Api::V1::Users::DevicesController, type: :controller do
   end
   let(:params) { { user_id: user.id, format: :json } }
   let(:device_params) { params.merge(id: device.id) }
-  let(:create_params) { params.merge(device: { name: "new" }) }
+  let(:create_params) { params.merge(device: { name: "new_device" }) }
   let(:private_device_info) { %w(uuid fogged delayed) }
 
   before do

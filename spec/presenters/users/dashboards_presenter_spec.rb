@@ -12,9 +12,9 @@ describe ::Users::DashboardsPresenter do
   let(:friend) { create(:user) }
   let(:device) { create(:device, user_id: user.id) }
   let(:checkins) do
-    create(:checkin, device_id: device.id, created_at: 1.day.ago)
-    create(:checkin, device_id: device.id, created_at: 1.day.ago).reverse_geocode!
-    create(:checkin, device_id: device.id, created_at: 1.day.ago)
+    create(:checkin, device_id: device.id, created_at: 1.day.ago, altitude: 10)
+    create(:checkin, device_id: device.id, created_at: 1.day.ago, altitude: 10).reverse_geocode!
+    create(:checkin, device_id: device.id, created_at: 1.day.ago, altitude: 10)
   end
 
   describe "Interface" do
@@ -126,15 +126,15 @@ describe ::Users::DashboardsPresenter do
 
     context "1 country" do
       it "returns 'Last country visited'" do
-        create(:checkin, device_id: device.id, created_at: 1.day.ago)
+        create(:checkin, device_id: device.id, created_at: 1.day.ago, altitude: 10)
         expect(dashboard.visited_countries_title).to eq "Last country visited"
       end
     end
     
     context "n countries" do
       it "returns a string containing n" do
-        create(:checkin, device_id: device.id, created_at: 1.day.ago).update(country_code: "GB")
-        create(:checkin, device_id: device.id, created_at: 1.day.ago).update(country_code: "US")
+        create(:checkin, device_id: device.id, created_at: 1.day.ago, altitude: 10).update(country_code: "GB")
+        create(:checkin, device_id: device.id, created_at: 1.day.ago, altitude: 10).update(country_code: "US")
         expect(dashboard.visited_countries_title).to match dashboard.last_countries.length.to_s
       end
     end

@@ -9,11 +9,13 @@ end
 
 def check_activity
   return unless Time.current.friday?
-  Device.all.each do |device|
-    last = device.checkins.first.created_at if device.checkins.exists?
-    next unless last && last < 1.week.ago
-    UserMailer.no_activity_email(device).deliver_now
-    firebase_notification(device.user, device.name)
+  User.all.each do |user|
+    inactive = user.devices.map do |device|
+      next unless device.checkins.exists? && device.checkins.first.created_at < 1.week.ago
+      firebase_notification(user, device)
+      device
+    end
+    UserMailer.no_activity_email(user, inactive).deliver_now if inactive.length.positive?
   end
 end
 
@@ -33,11 +35,11 @@ def destroy_activities
   end
 end
 
-def firebase_notification(user, device_name)
+def firebase_notification(user, device)
   Firebase::Push.call(
     topic: user.id,
     notification: {
-      body: "You have not checked in in the last 7 days on #{device_name}",
+      body: "You have not checked in in the last 7 days on #{device.name}",
       title: "Coposition inactivity"
     }
   )

@@ -38,6 +38,7 @@ class Api::V1::Users::DevicesController < Api::ApiController
   def update
     device = @user.devices.where(id: params[:id]).first
     return unless device_exists? device
+    device_params[:name]&.tr!(" ", "_")
     device.update(device_params)
     if device.save
       CreateActivity.call(entity: device, action: :update, owner: @user, params: device_params.to_h)

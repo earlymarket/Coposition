@@ -1,6 +1,6 @@
 class Users::ApprovalsController < ApplicationController
-  before_action :authenticate_user!, except: :add
-  before_action :correct_url_user?, except: :add
+  before_action :authenticate_user!, :correct_url_user?, except: %i[add apps friends]
+  before_action :url_redirect, only: %i[add apps friends]
 
   def new
     @approvals_presenter = Users::ApprovalsPresenter.new(current_user, params)
@@ -9,11 +9,7 @@ class Users::ApprovalsController < ApplicationController
   end
 
   def add
-    if current_user
-      redirect_to(new_user_approval_path(current_user, approvable_type: "User", email: params["email"]))
-    else
-      redirect_to(new_user_session_url(return_to: request.fullpath))
-    end
+    redirect_to(new_user_approval_path(current_user, approvable_type: "User", email: params["email"]))
   end
 
   def create
@@ -28,6 +24,14 @@ class Users::ApprovalsController < ApplicationController
   def index
     approvals_presenter_and_gon(params)
     render "approvals"
+  end
+
+  def apps
+    redirect_to(user_apps_path(current_user))
+  end
+
+  def friends
+    redirect_to(user_friends_path(current_user))
   end
 
   def update

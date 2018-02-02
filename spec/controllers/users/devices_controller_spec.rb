@@ -40,6 +40,19 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
   end
 
+  describe "GET #devices" do
+    it "redirects to index if user logged in" do
+      user
+      get :devices
+      expect(response).to redirect_to(user_devices_path(user))
+    end
+
+    it "rediects to login if no user logged in" do
+      get :devices
+      expect(response).to redirect_to(new_user_session_path(return_to: "/devices"))
+    end
+  end
+
   describe "GET #show" do
     it "assigns :id.device to @device if user owns device" do
       get :show, params: params
@@ -127,23 +140,23 @@ RSpec.describe Users::DevicesController, type: :controller do
     it "creates a new device and config" do
       device_count = user.devices.count
       config_count = Config.count
-      post :create, params: user_param.merge(device: { name: "New Device" })
+      post :create, params: user_param.merge(device: { name: "New_Device" })
       expect(response.code).to eq "302"
       expect(Config.count).to be config_count + 1
       expect(user.devices.count).to be device_count + 1
-      expect(user.devices.all.last.name).to eq "New Device"
+      expect(user.devices.all.last.name).to eq "New_Device"
     end
 
     it "creates a device with a given UUID" do
       count = user.devices.count
-      post :create, params: user_param.merge(device: { name: "New Device", uuid: empty_device.uuid })
+      post :create, params: user_param.merge(device: { name: "New_Device", uuid: empty_device.uuid })
       expect(response.code).to eq "302"
       expect(user.devices.count).to be count + 1
       expect(user.devices.all.last).to eq empty_device
     end
 
     it "creates a device with a given icon" do
-      post :create, params: user_param.merge(device: { name: "New Device", icon: "tablet" })
+      post :create, params: user_param.merge(device: { name: "New_Device", icon: "tablet" })
       expect(user.devices.all.last.icon).to eq "tablet"
     end
 
@@ -152,7 +165,7 @@ RSpec.describe Users::DevicesController, type: :controller do
       checkins_count = Checkin.count
       post :create, params: user_param.merge(
         location: "-0.513069, 51.588330",
-        device: { name: "New Device" },
+        device: { name: "New_Device" },
         create_checkin: true
       )
       expect(user.devices.count).to be devices_count + 1
