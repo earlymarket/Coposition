@@ -78,6 +78,7 @@ Rails.application.routes.draw do
           end
         end
         resources :devices, only: [:index, :create, :show, :update], module: :users do
+          member { get :download }
           resources :permissions, only: [:update, :index]
           put "/permissions", to: "permissions#update_all"
         end

@@ -35,6 +35,17 @@ class Api::V1::Users::DevicesController < Api::ApiController
     render json: { data: device, config: configuration(device) }
   end
 
+  def download
+    device = Device.find(params[:id])
+    filename = "device-#{device.id}-checkins-#{DateTime.current}.gpx"
+    checkins = device.checkins
+                     .where(created_at: 1.day.ago..DateTime.current)
+                     .unscope(:order)
+                     .order(created_at: :asc)
+                     .send("to_gpx")
+    send_data checkins, filename: filename
+  end
+
   def update
     device = @user.devices.where(id: params[:id]).first
     return unless device_exists? device
