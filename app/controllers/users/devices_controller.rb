@@ -1,5 +1,5 @@
 class Users::DevicesController < ApplicationController
-  before_action :authenticate_user!, :correct_url_user?, except: %i[shared devices]
+  before_action :authenticate_user!, :correct_url_user?, except: %i[shared devices download]
   before_action :published?, only: :shared
   before_action :require_ownership, only: %i[show destroy update]
   before_action :url_redirect, only: :devices
@@ -24,6 +24,12 @@ class Users::DevicesController < ApplicationController
         send_data @device_show_presenter.checkins, filename: @device_show_presenter.filename
       end
     end
+  end
+
+  def download
+    user = User.find(params[:user_id])
+    @device_show_presenter = ::Users::Devices::DevicesShowPresenter.new(user, params)
+    send_data @device_show_presenter.checkins, filename: @device_show_presenter.filename
   end
 
   def new
