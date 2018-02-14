@@ -1,11 +1,11 @@
 class Api::V1::Users::DevicesController < Api::ApiController
   respond_to :json
 
-  acts_as_token_authentication_handler_for User, only: [:update, :create, :download]
+  acts_as_token_authentication_handler_for User, only: [:update, :create]
 
   before_action :check_user_approved_approvable, only: [:index, :show]
   before_action -> { doorkeeper_authorize! :public }, unless: :req_from_coposition_app?, only: [:index, :show]
-  before_action :check_user, only: [:update, :create, :download]
+  before_action :check_user, only: [:update, :create]
 
   def index
     devices = if req_from_coposition_app?
