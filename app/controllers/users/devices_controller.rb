@@ -1,8 +1,8 @@
 class Users::DevicesController < ApplicationController
-  before_action :authenticate_user!, :correct_url_user?, except: %i[shared devices]
+  before_action :authenticate_user!, :correct_url_user?, except: %i[shared devices download]
   before_action :published?, only: :shared
   before_action :require_ownership, only: %i[show destroy update]
-  before_action :url_redirect, only: :devices
+  before_action :url_redirect, only: [:devices, :download]
 
   def index
     @devices_index_presenter = ::Users::Devices::DevicesIndexPresenter.new(current_user, params)
@@ -24,6 +24,11 @@ class Users::DevicesController < ApplicationController
         send_data @device_show_presenter.checkins, filename: @device_show_presenter.filename
       end
     end
+  end
+
+  def download
+    device = Device.find(params[:id])
+    redirect_to "#{user_device_path(current_user, device)}.gpx?download=gpx&from=#{params[:from]}&to=#{params[:to]}"
   end
 
   def new
