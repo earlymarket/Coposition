@@ -21,10 +21,16 @@ RSpec.describe Users::DevicesController, type: :controller do
     end
     user
   end
+  let(:logged_out_user) do
+    user = create :user
+    user.devices << device
+    user
+  end
   let(:new_user) { create_user }
   let(:approval) { create_approval(user, new_user) }
   let(:user_param) { { user_id: user.username } }
   let(:params) { user_param.merge(id: device.id) }
+  let(:not_logged_in_params) { { user_id: logged_out_user.id, id: device.id } }
   let(:date_params) { params.merge(from: Date.yesterday, to: Date.yesterday) }
 
   it "has a current_user" do
@@ -89,6 +95,19 @@ RSpec.describe Users::DevicesController, type: :controller do
       get :show, params: params.merge(format: :geojson, download: "geojson")
       expect(response.header["Content-Type"]).to include "application/geojson"
       expect(response.body).to include(device.checkins.to_geojson.to_s)
+    end
+  end
+
+  describe "GET #download" do
+    it "redirects to show if user logged in" do
+      user
+      get :download, params: params
+      expect(response).to redirect_to("#{user_device_path(user, device)}.gpx?download=gpx&from=&to=")
+    end
+
+    it "rediects to login if no user logged in" do
+      get :download, params: not_logged_in_params
+      expect(response).to redirect_to(new_user_session_path(return_to: "#{user_device_path(logged_out_user.id, device)}/download"))
     end
   end
 

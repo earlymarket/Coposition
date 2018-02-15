@@ -94,6 +94,7 @@ Rails.application.routes.draw do
     resource :dashboard, only: [:show]
     resources :devices, except: :edit do
       member do
+        get :download
         get :shared, :info
         post :remote_checkin
       end
