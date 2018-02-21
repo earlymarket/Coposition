@@ -14,7 +14,7 @@ def check_activity
       next unless device.checkins.exists? && device.checkins.first.created_at < 1.week.ago
       firebase_notification(user, device)
       device
-    end
+    end.compact
     UserMailer.no_activity_email(user, inactive).deliver_now if inactive.length.positive?
   end
 end
