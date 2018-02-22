@@ -43,6 +43,7 @@ ActiveAdmin.register User do
     column :friend_count do |user|
       user.friends.count
     end
+    column :current_sign_in_at
     column :zapier_enabled
     column :admin
     column :is_active
