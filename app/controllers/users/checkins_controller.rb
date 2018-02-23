@@ -1,7 +1,7 @@
 class Users::CheckinsController < ApplicationController
   protect_from_forgery except: :show
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :update_user_last_web_visit_at
 
   before_action :require_checkin_ownership, only: %i(show update destroy)
   before_action :require_device_ownership, only: %i(new create destroy_all)

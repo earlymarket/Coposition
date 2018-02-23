@@ -1,5 +1,5 @@
 class Users::CreateDevApprovalsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :update_user_last_web_visit_at
 
   def create
     result = Users::Approvals::CreateDeveloperApproval.call(

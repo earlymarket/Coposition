@@ -43,7 +43,8 @@ ActiveAdmin.register User do
     column :friend_count do |user|
       user.friends.count
     end
-    column :current_sign_in_at
+    column :last_web_visit_at
+    column :last_mobile_visit_at
     column :zapier_enabled
     column :admin
     column :is_active
@@ -53,6 +54,8 @@ ActiveAdmin.register User do
 
   filter :email
   filter :username
+  filter :last_web_visit_at
+  filter :last_mobile_visit_at
 
   form do |f|
     f.inputs "User Details" do
