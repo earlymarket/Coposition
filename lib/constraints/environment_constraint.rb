@@ -1,11 +1,11 @@
 module Constraints
   class EnvironmentConstraint
-    attr_reader :subdomain
+    attr_reader :constraints
     attr_reader :path
 
     def initialize
       is_staging = Rails.env.staging?
-      @subdomain = is_staging ? "" : "api"
+      @constraints = is_staging ? nil : { subdomain: "api" }
       @path = is_staging ? "api" : ""
     end
   end

@@ -42,7 +42,7 @@ Rails.application.routes.draw do
 
   env_constraint = Constraints::EnvironmentConstraint.new
 
-  namespace :api, path: env_constraint.path, constraints: { subdomain: env_constraint.subdomain }, defaults: { format: "json" } do
+  namespace :api, path: env_constraint.path, constraints: env_constraint.constraints, defaults: { format: "json" } do
     scope module: :v1, constraints: Constraints::ApiConstraint.new(version: 1, default: true) do
       resources :subscriptions, only: [:create, :destroy]
       resources :release_notes, only: :index
