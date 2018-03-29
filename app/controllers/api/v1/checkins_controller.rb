@@ -17,7 +17,7 @@ class Api::V1::CheckinsController < Api::ApiController
     checkins = @device ? @device.sanitize_checkins(paginated_checkins, filter_arguments) : paginated_checkins
     paginated_response_headers(paginated_checkins)
 
-    respond_with checkins
+    respond_with checkins, root: "checkins"
   end
 
   def last
@@ -30,7 +30,7 @@ class Api::V1::CheckinsController < Api::ApiController
       near: params[:near],
       action: action_name
     )
-    render json: checkin
+    render json: checkin, root: "checkins"
   end
 
   def create
