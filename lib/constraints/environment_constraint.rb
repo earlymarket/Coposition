@@ -4,9 +4,9 @@ module Constraints
     attr_reader :path
 
     def initialize
-      staging? = Rails.env.staging?
-      @subdomain = staging? ? "" : "api"
-      @path = staging? ? "api" : ""
+      is_staging = Rails.env.staging?
+      @subdomain = is_staging ? "" : "api"
+      @path = is_staging ? "api" : ""
     end
   end
 end
