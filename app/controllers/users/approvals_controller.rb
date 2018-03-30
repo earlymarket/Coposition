@@ -1,5 +1,5 @@
 class Users::ApprovalsController < ApplicationController
-  before_action :authenticate_user!, :correct_url_user?, except: %i[add apps friends]
+  before_action :authenticate_user!, :correct_url_user?, :update_user_last_web_visit_at, except: %i[add apps friends]
   before_action :url_redirect, only: %i[add apps friends]
 
   def new
