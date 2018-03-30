@@ -1,5 +1,5 @@
 class Users::CountriesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :update_user_last_web_visit_at
   helper_method :visits_by_year
 
   def index
