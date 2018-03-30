@@ -73,7 +73,7 @@ class User < ApplicationRecord
 
   has_attachment :avatar
 
-  scope :active, -> { where(is_active: true)}
+  scope :active, -> { where(is_active: true) }
 
   ## Pathing
 
@@ -95,6 +95,16 @@ class User < ApplicationRecord
 
   def inactive_message
     "Your account has been disabled"
+  end
+
+  def update_last_web_visit_at
+    return if last_web_visit_at == Date.current
+    update(last_web_visit_at: Date.current)
+  end
+
+  def update_last_mobile_visit_at
+    return if last_mobile_visit_at == Date.current
+    update(last_mobile_visit_at: Date.current)
   end
 
   ## Approvals
