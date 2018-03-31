@@ -78,11 +78,10 @@ class Users::Devise::RegistrationsController < Devise::RegistrationsController
   end
 
   def check_captcha
-    unless verify_recaptcha
-      self.resource = resource_class.new sign_up_params
-      resource.validate
-      respond_with_navigational(resource) { render :new }
-    end
+    return true if Rails.env.staging? || verify_recaptcha
+    self.resource = resource_class.new sign_up_params
+    resource.validate
+    respond_with_navigational(resource) { render :new }
   end
 
   # The path used after sign up for inactive accounts.
