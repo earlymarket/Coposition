@@ -78,7 +78,6 @@ class Users::Devise::RegistrationsController < Devise::RegistrationsController
   end
 
   def check_captcha
-    puts Rails.env
     return if Rails.env.staging? || verify_recaptcha
     self.resource = resource_class.new sign_up_params
     resource.validate
