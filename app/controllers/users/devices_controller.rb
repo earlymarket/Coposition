@@ -1,5 +1,5 @@
 class Users::DevicesController < ApplicationController
-  before_action :authenticate_user!, :correct_url_user?, except: %i[shared devices download]
+  before_action :authenticate_user!, :correct_url_user?, :update_user_last_web_visit_at, except: %i[shared devices download]
   before_action :published?, only: :shared
   before_action :require_ownership, only: %i[show destroy update]
   before_action :url_redirect, only: [:devices, :download]

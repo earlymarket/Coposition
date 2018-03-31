@@ -1,6 +1,6 @@
 class Users::PermissionsController < ApplicationController
   protect_from_forgery except: :index
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :update_user_last_web_visit_at
   before_action :require_ownership, only: :update
 
   def index
