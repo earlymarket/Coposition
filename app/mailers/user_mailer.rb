@@ -77,10 +77,9 @@ class UserMailer < ApplicationMailer
     content += "<ul>"
     inactive.each do |dev|
       last = dev.checkins.first
-      content += "<li><a href='https://coposition.com/users/#{dev.user.id}/devs/#{dev.id}'>"
+      content += "<li><a href='https://coposition.com/users/#{dev.user.id}/devices/#{dev.id}?first_load=true'>"
       content += "#{dev.name}</a>"
       content += " - Auto check-in #{dev.config.custom && dev.config.custom['active'] ? 'on' : 'off'}"
-      content += " - #{dev.config.custom && dev.config.custom['assigned'] ? 'Assigned' : 'Unassigned'}"
       content += " - Last checked in #{humanize_date(last.created_at)} near #{last.fogged_city}"
       content += "</li>"
     end
