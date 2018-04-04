@@ -2,7 +2,7 @@ class Api::V1::UsersController < Api::ApiController
   respond_to :json
 
   skip_before_action :authenticate, only: :auth
-  before_action :find_user, :check_user_approved_approvable, only: :show
+  before_action :find_user, :check_user_approved_approvable, :update_last_mobile_visit_at, only: :show
 
   def show
     @user.private_profile = req_from_coposition_app?

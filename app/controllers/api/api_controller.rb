@@ -3,7 +3,7 @@ class Api::ApiController < ActionController::API
   rescue_from ::ActiveRecord::RecordNotFound, with: :render_404_and_error
   rescue_from ::ActionController::ParameterMissing, with: :render_400_and_error
 
-  before_action :find_user, :authenticate
+  before_action :find_user, :authenticate, :update_last_mobile_visit_at
 
   private
 
@@ -74,5 +74,9 @@ class Api::ApiController < ActionController::API
 
   def render_400_and_error(exception)
     render status: 400, json: { error: exception.message }
+  end
+
+  def update_last_mobile_visit_at
+    @user.update_last_mobile_visit_at if req_from_coposition_app?
   end
 end
