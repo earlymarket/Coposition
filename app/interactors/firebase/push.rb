@@ -28,6 +28,10 @@ module Firebase
       info_hash.to_json
     end
 
+    def topic
+      Rails.env.staging? ? "staging#{topic}" : topic
+    end
+
     def info_hash
       {
         to: "/topics/#{topic}",
