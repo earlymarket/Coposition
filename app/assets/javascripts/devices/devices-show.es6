@@ -32,38 +32,51 @@ $(document).on('page:change', function() {
       }
     }
 
-    $("#deleteDevice").on("click", () => {
+    $('#deleteDevice').on('click', () => {
       swal({
-        title: "Enter device name to delete this device and check-ins",
+        title: 'Enter device name to delete this device and check-ins',
+        icon: 'warning',
+        dangerMode: true,
         content: {
-         element: "input",
-         attributes: {
-           placeholder: "Enter your device name",
-           id: "deviceName",
-           type: "text",
-         },
-       },
+          element: 'input',
+          attributes: {
+            placeholder: 'Enter your device name',
+            id: 'deviceName',
+            type: 'text'
+          }
+        },
         buttons: {
           cancel: {
-            text: "Cancel",
-            visible: true,
+            text: 'Cancel',
+            visible: true
           },
           confirm: {
-            text: "Confirm",
+            text: 'Delete',
+            closeModal: false
+          },
+          download: {
+            text: 'Delete and download check-ins',
             closeModal: false
           }
         }
       })
-      .then(deviceName => {
+      .then((value) => {
+        let deviceName = $('input#deviceName')[0].value
         if (!deviceName) return
         let match = gon.devices.find((device) => device.name === deviceName)
         if (match) {
-          $.ajax({
-            url: '/users/' + gon.current_user_id + '/devices/' + gon.device,
-            type: 'DELETE',
-          }).then(swal.closeModal);
+          let route = `/users/${gon.current_user_id}/devices/${gon.device}`
+          switch (value) {
+            case 'confirm':
+              $.ajax({url: route, type: 'DELETE'}).then(swal.closeModal)
+              break
+            case 'download':
+              window.location.href = `${route}.csv?download=csv`
+              $.ajax({url: route, type: 'DELETE'}).then(swal.closeModal)
+              break
+          }
         } else {
-          swal("Incorrect device name", "The device name you entered did not match", "error");
+          swal('Incorrect device name', 'The device name you entered did not match', 'error');
         }
       })
     })
