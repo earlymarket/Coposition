@@ -7,7 +7,7 @@ class Users::ApprovalsController < ApplicationController
     @approval = Approval.new
     gon.push(
       devs: (Developer.all - current_user.developers).pluck(:company_name),
-      users: User.all.pluck(:email)
+      users: User.pluck(:email).map { |email| Digest::MD5.hexdigest(email) }
     )
   end
 

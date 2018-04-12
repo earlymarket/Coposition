@@ -16,7 +16,7 @@ $(document).on('page:change', function() {
     $("form#new_approval").submit(function (e) {
       if (window.location.search.includes("Developer") || submitted) return
       let friendEmail = $("#approval_approvable")[0].value
-      let match = gon.users.find((email) => email === friendEmail)
+      let match = gon.users.find((email) => email === $.md5(friendEmail))
       if (match) return
       e.preventDefault()
       swal({
