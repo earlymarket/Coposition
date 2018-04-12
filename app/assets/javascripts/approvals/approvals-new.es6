@@ -21,7 +21,7 @@ $(document).on('page:change', function() {
       e.preventDefault()
       swal({
         title: "Are you sure?",
-        text: "This email isn't associated with a Coposition user. Do you wish to send an invite to to join Coposition? They will be able to accept your friend request after registering.",
+        text: "This email isn't associated with a Coposition user. Do you wish to send an invite to join Coposition? They will be able to accept your friend request after registering.",
         buttons: {
           cancel: {
             text: "Cancel",
