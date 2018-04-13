@@ -32,7 +32,7 @@ $(document).on('page:change', function() {
       }
     }
 
-    $('#deleteDevice').on('click', () => {
+    $('#deleteDevice').on('click', (e) => {
       swal({
         title: 'Enter device name to delete this device and check-ins',
         icon: 'warning',
@@ -65,14 +65,14 @@ $(document).on('page:change', function() {
         if (!deviceName) return
         let match = gon.devices.find((device) => device.name === deviceName)
         if (match) {
-          let route = `/users/${gon.current_user_id}/devices/${gon.device}`
+          let route = `/users/${gon.current_user_id}/devices/`
           switch (value) {
             case 'confirm':
-              $.ajax({url: route, type: 'DELETE'}).then(swal.closeModal)
+              $.ajax({url: `route${gon.device}`, type: 'DELETE'}).then(swal.closeModal)
               break
             case 'download':
-              window.location.href = `${route}.csv?download=csv`
-              $.ajax({url: route, type: 'DELETE'}).then(swal.closeModal)
+              window.open(`${route}${gon.device}.csv?download=csv&delete=true`)
+              setTimeout(() => { window.location.href = route }, 500)
               break
           }
         } else {

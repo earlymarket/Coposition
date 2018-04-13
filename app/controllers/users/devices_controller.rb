@@ -16,12 +16,10 @@ class Users::DevicesController < ApplicationController
   def show
     @device_show_presenter = ::Users::Devices::DevicesShowPresenter.new(current_user, params)
     gon.push(@device_show_presenter.show_gon)
-
     respond_to do |format|
       format.html
       format.any(:csv, :gpx, :geojson) do
-        create_activity
-        send_data @device_show_presenter.checkins, filename: @device_show_presenter.filename
+        download_checkins
       end
     end
   end
@@ -57,8 +55,7 @@ class Users::DevicesController < ApplicationController
         title: "Remote check-in"
       }
     )
-    flash[:notice] = "Remote check-in request sent"
-    redirect_to user_devices_path
+    redirect_to user_devices_path, notice: "Remote check-in request sent"
   end
 
   def create
@@ -76,8 +73,7 @@ class Users::DevicesController < ApplicationController
   def destroy
     Device.find(params[:id]).destroy
     DeleteDeviceWorker.perform_async(params[:id])
-    flash[:notice] = "Device deleted"
-    redirect_to user_devices_path
+    redirect_to user_devices_path, notice: "Device deleted"
   end
 
   def update
@@ -95,6 +91,14 @@ class Users::DevicesController < ApplicationController
   end
 
   private
+
+  def download_checkins
+    create_activity
+    send_data @device_show_presenter.checkins, filename: @device_show_presenter.filename
+    return unless params[:delete]
+    @device_show_presenter.device.destroy
+    DeleteDeviceWorker.perform_async(@device_show_presenter.device.id)
+  end
 
   def create_activity
     CreateActivity.call(
