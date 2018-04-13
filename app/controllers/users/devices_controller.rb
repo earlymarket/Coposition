@@ -20,6 +20,7 @@ class Users::DevicesController < ApplicationController
       format.html
       format.any(:csv, :gpx, :geojson) do
         download_checkins
+        delete_device if params[:delete]
       end
     end
   end
@@ -71,8 +72,7 @@ class Users::DevicesController < ApplicationController
   end
 
   def destroy
-    Device.find(params[:id]).destroy
-    DeleteDeviceWorker.perform_async(params[:id])
+    delete_device
     redirect_to user_devices_path, notice: "Device deleted"
   end
 
@@ -95,9 +95,11 @@ class Users::DevicesController < ApplicationController
   def download_checkins
     create_activity
     send_data @device_show_presenter.checkins, filename: @device_show_presenter.filename
-    return unless params[:delete]
-    @device_show_presenter.device.destroy
-    DeleteDeviceWorker.perform_async(@device_show_presenter.device.id)
+  end
+
+  def delete_device
+    Device.find(params[:id]).destroy
+    DeleteDeviceWorker.perform_async(params[:id])
   end
 
   def create_activity

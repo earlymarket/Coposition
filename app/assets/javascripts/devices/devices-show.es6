@@ -67,8 +67,8 @@ $(document).on('page:change', function() {
         if (match) {
           let route = `/users/${gon.current_user_id}/devices/`
           switch (value) {
-            case 'confirm':
-              $.ajax({url: `route${gon.device}`, type: 'DELETE'}).then(swal.closeModal)
+            case 'delete':
+              $.ajax({url: `${route}${gon.device}`, type: 'DELETE'}).then(swal.closeModal)
               break
             case 'download':
               window.open(`${route}${gon.device}.csv?download=csv&delete=true`)
