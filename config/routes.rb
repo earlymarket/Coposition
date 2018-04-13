@@ -70,6 +70,7 @@ Rails.application.routes.draw do
             post :email
           end
         end
+        resources :email_requests, only: [:index, :destroy], module: :users
         resources :checkins, only: [:index] do
           collection do
             get :last
