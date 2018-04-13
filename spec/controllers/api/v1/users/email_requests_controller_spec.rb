@@ -16,14 +16,14 @@ RSpec.describe Api::V1::Users::EmailRequestsController, type: :controller do
   end
 
   describe "get #index" do
+    before { email_request }
+
     it "gets a list of a users email requests" do
-      email_request
       get :index, params: params
       expect(res_hash[0]["id"]).to eq EmailRequest.where(user: user)[0].id
     end
 
     it "gets a list of a users email requests" do
-      email_request
       get :index, params: params
       expect(res_hash.length).to eq EmailRequest.where(user: user).count
     end
