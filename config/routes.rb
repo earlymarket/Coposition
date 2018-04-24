@@ -67,8 +67,10 @@ Rails.application.routes.draw do
         resources :approvals, only: [:create, :index, :update, :destroy], module: :users do
           collection do
             get :status
+            post :email
           end
         end
+        resources :email_requests, only: [:index, :destroy], module: :users
         resources :checkins, only: [:index] do
           collection do
             get :last

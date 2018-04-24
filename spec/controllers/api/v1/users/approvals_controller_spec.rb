@@ -161,4 +161,20 @@ RSpec.describe Api::V1::Users::ApprovalsController, type: :controller do
       expect(res_hash.first["approvable_type"]).to eq "User"
     end
   end
+
+  describe "post #email" do
+    it "sends an invite email if the email does not belong to a coposition user" do
+      mail = UserMailer.invite_email(user, "example@email.com")
+      allow(UserMailer).to receive(:invite_email).and_return(mail)
+      post :email, params: friend_approval_invite_params
+      expect(UserMailer).to have_received(:invite_email)
+    end
+
+    it "sends a friend request email if the email belongs to a coposition user" do
+      mail = UserMailer.add_user_email(user, second_user, false)
+      allow(UserMailer).to receive(:add_user_email).and_return(mail)
+      post :email, params: friend_approval_create_params
+      expect(UserMailer).to have_received(:add_user_email)
+    end
+  end
 end
