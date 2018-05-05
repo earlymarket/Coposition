@@ -2,7 +2,7 @@ module CheckinsSpecHelpers
   def call_checkin_action(method, number, checkin)
     get method.to_sym, params: params, format: "json"
     if number.zero?
-      expect(res_hash[:checkins]).to be_nil
+      expect(res_hash[:checkins].length).to be 0
     else
       check_response_hash(number, checkin)
     end

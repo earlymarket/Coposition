@@ -40,7 +40,9 @@ Rails.application.routes.draw do
 
   # API
 
-  namespace :api, path: "", constraints: { subdomain: "api" }, defaults: { format: "json" } do
+  env_constraint = Constraints::EnvironmentConstraint.new
+
+  namespace :api, path: env_constraint.path, constraints: env_constraint.constraints, defaults: { format: "json" } do
     scope module: :v1, constraints: Constraints::ApiConstraint.new(version: 1, default: true) do
       resources :subscriptions, only: [:create, :destroy]
       resources :release_notes, only: :index
@@ -65,8 +67,10 @@ Rails.application.routes.draw do
         resources :approvals, only: [:create, :index, :update, :destroy], module: :users do
           collection do
             get :status
+            post :email
           end
         end
+        resources :email_requests, only: [:index, :destroy], module: :users
         resources :checkins, only: [:index] do
           collection do
             get :last

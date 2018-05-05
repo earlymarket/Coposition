@@ -626,7 +626,7 @@ DEPENDENCIES
   newrelic_rpm
   nokogiri (>= 1.8.1)
   oj
-  pg
+  pg (~> 0.21.0)
   pry
   pry-byebug
   pry-rails
