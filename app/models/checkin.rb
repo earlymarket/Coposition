@@ -31,13 +31,16 @@ class Checkin < ApplicationRecord
   end
 
   after_create do
-    if device
-      reload
-      assign_values
-      save
-    else
-      raise "Checkin is not assigned to a device."
-    end
+    raise "Checkin is not assigned to a device." unless device
+    check_count if Rails.env.staging?
+    reload
+    assign_values
+    save
+  end
+
+  def check_count
+    return unless Checkin.count > 5000
+    Checkin.destroy(Checkin.last(1000).pluck(:id))
   end
 
   def assign_values
