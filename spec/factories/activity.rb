@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBoy.define do
   factory :activity, class: PublicActivity::Activity do |f|
     f.trackable_type "Device"
     f.trackable_id 1

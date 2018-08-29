@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBoy.define do
   factory :permission do
     privilege 0
     association :device

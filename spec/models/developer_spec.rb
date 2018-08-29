@@ -21,7 +21,7 @@ RSpec.describe Developer, type: :model do
   end
 
   describe "callbacks" do
-    let(:new_developer) { FactoryGirl.build(:developer) }
+    let(:new_developer) { FactoryBoy.build(:developer) }
     context "before_create" do
       it "generates an api key" do
         expect { new_developer.save }.to change { new_developer.api_key }

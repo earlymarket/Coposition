@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBoy.define do
   factory :approval do
     status 'pending'
     association :user

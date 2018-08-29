@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBoy.define do
   factory :developer do
     company_name { Faker::Company.name }
     email { Faker::Internet.email }
