@@ -1,12 +1,12 @@
 # Setup user/dev for example site
 developer = FactoryGirl.build :developer
 developer.company_name = 'Mobile Coposition'
-developer.api_key = Rails.application.secrets['mobile_app_api_key']
+developer.api_key = Rails.application.secrets[:mobile_app_api_key]
 developer.save!
 
 developer = FactoryGirl.build :developer
 developer.company_name = 'Coposition'
-developer.api_key = Rails.application.secrets['coposition_api_key']
+developer.api_key = Rails.application.secrets[:coposition_api_key]
 developer.save!
 
 user = FactoryGirl.build :user
