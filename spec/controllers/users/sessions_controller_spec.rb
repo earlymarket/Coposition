@@ -5,6 +5,7 @@ RSpec.describe Users::Devise::SessionsController, type: :controller do
 
   let(:user) { create(:user) }
   let(:params) { { user: { email: user.email, password: user.password }, format: :json } }
+  let(:invalid_params) { { user: { email: user.email }, format: :json } }
 
   describe "api authentication" do
     before do
@@ -43,7 +44,7 @@ RSpec.describe Users::Devise::SessionsController, type: :controller do
     end
 
     it "fails with no password" do
-      post :create, params: params.delete("password")
+      post :create, params: invalid_params
       expect(res_hash[:error]).to eq "The request MUST contain the user email and password."
     end
   end
