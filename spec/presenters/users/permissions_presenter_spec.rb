@@ -5,7 +5,7 @@ describe ::Users::PermissionsPresenter do
     described_class.new(user, { id: permission.id, device_id: device.id, from: "devices" }, "index" )
   end
   let(:user) do
-    us = FactoryBoy.create(:user)
+    us = FactoryBot.create(:user)
     Approval.add_friend(us, friend)
     Approval.add_friend(friend, us)
     Approval.add_developer(us, developer)

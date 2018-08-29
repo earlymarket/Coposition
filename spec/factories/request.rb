@@ -1,4 +1,4 @@
-FactoryBoy.define do
+FactoryBot.define do
   factory :request do
     developer { create :developer }
   end

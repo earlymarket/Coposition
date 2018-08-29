@@ -3,7 +3,7 @@ require "rails_helper"
 describe ::Users::Friends::FriendsShowDevicePresenter do
   subject(:show_device_presenter) { described_class.new(user, id: friend.id, device_id: device.id) }
   let(:user) do
-    us = FactoryBoy.create(:user)
+    us = FactoryBot.create(:user)
     Approval.add_friend(us, friend)
     Approval.add_friend(friend, us)
     us

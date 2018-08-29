@@ -2,12 +2,12 @@ require "rails_helper"
 
 RSpec.describe ApprovalsHelper, type: :helper do
   let(:user) do
-    user = FactoryBoy.create(:user)
-    Approval.add_friend(user, FactoryBoy.create(:user))
-    Approval.add_friend(user, FactoryBoy.create(:user))
+    user = FactoryBot.create(:user)
+    Approval.add_friend(user, FactoryBot.create(:user))
+    Approval.add_friend(user, FactoryBot.create(:user))
     user
   end
-  let(:friend) { FactoryBoy.create(:user) }
+  let(:friend) { FactoryBot.create(:user) }
   let(:user_approvals_input) { helper.approvals_input("User") }
   let(:developer_approvals_input) { helper.approvals_input("Developer") }
   let(:checkins) do
