@@ -29,6 +29,7 @@ fi
 # Setup specific TravisCI options if this is CI
 if [ "$CI" ]; then
   cp config/database.yml.travis config/database.yml
+  psql -c 'create database travis_ci_test;' -U postgres
   export DISPLAY=:99.0
   sh -e /etc/init.d/xvfb start
 fi
