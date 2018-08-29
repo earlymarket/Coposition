@@ -4,7 +4,6 @@ set -e
 
 # Setup specific Bundler options if this is CI
 if [ "$CI" ]; then
-  puts "THIS IS CI"
   BUNDLER_ARGS="--without staging production"
 fi
 
