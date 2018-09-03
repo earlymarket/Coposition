@@ -31,8 +31,8 @@ addons:
     sources:
     - ubuntu-sdk-team
     packages:
-    - libqt4-dev
-    - libqtwebkit-dev
+    - libqt5webkit5-dev
+    - qtdeclarative5-dev
     - xvfb
   code_climate:
     repo_token:
