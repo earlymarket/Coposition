@@ -28,7 +28,7 @@ RSpec.feature "Approvals", type: :feature do
     fill_in "user_password", with: "password"
     fill_in "user_password_confirmation", with: "password"
     fill_in "user_username", with: "tommo"
-    click_on "Sign up"
+    find(:css, "button.btn.waves-effect.waves-light").trigger("click")
   end
 
   def given_a_developer_is_signed_up
@@ -39,7 +39,7 @@ RSpec.feature "Approvals", type: :feature do
     fill_in "developer_password_confirmation", with: "password"
     fill_in "developer_company_name", with: "fake company"
     fill_in "developer_redirect_url", with: "https://example.com"
-    click_on "Sign up"
+    find(:css, "button.btn.waves-effect.waves-light").trigger("click")
   end
 
   def when_i_add_a_friend
