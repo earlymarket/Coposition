@@ -37,6 +37,7 @@ ActiveRecord::Migration.maintain_test_schema!
 
 Sidekiq::Testing.fake!
 
+Capybara.server = :puma, { Silent: true }
 Capybara.default_max_wait_time = 10
 Capybara.javascript_driver = :webkit
 
