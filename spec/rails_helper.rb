@@ -1,3 +1,4 @@
+include ActionDispatch::TestProcess
 # This file is copied to spec/ when you run "rails generate rspec:install"
 ENV["RAILS_ENV"] ||= "test"
 require File.expand_path("../../config/environment", __FILE__)
@@ -12,8 +13,6 @@ require "rake"
 Rails.application.load_tasks
 
 require "devise"
-
-include ActionDispatch::TestProcess
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -37,7 +36,7 @@ ActiveRecord::Migration.maintain_test_schema!
 
 Sidekiq::Testing.fake!
 
-Capybara.server = :puma, { Silent: true }
+# Capybara.server = :puma, { Silent: true }
 Capybara.default_max_wait_time = 10
 Capybara.javascript_driver = :webkit
 
@@ -45,7 +44,7 @@ Capybara::Webkit.configure do |config|
   config.allow_unknown_urls
   config.ignore_ssl_errors
   config.debug = false
-  config.raise_javascript_errors = true
+  # config.raise_javascript_errors = true
 end
 
 RSpec.configure do |config|
