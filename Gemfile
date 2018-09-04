@@ -112,7 +112,7 @@ group :test do
 end
 
 group :benchmark do
-  gem "rails-perftest"
+  gem "rails-perftest", git: "https://github.com/rails/rails-perftest", branch: 'master'
   gem "ruby-prof"
   gem "minitest", "~> 5.10", "!= 5.10.2"
 end
