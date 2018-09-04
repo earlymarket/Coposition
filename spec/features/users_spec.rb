@@ -79,6 +79,6 @@ RSpec.feature "Users", type: :feature do
   end
 
   def then_i_should_be_logged_out
-    expect(page).to have_text "LOG IN"
+    expect(page).to have_text "Log In"
   end
 end

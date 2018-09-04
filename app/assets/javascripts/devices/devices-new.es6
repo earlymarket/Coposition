@@ -1,7 +1,5 @@
 $(document).on('page:change', () => {
   if (window.COPO.utility.currentPage('devices', 'new')) {
-    $('#device_icon').formSelect();
-
     $.validator.setDefaults({
       ignore: []
     });
