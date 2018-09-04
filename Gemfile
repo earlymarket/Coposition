@@ -102,7 +102,7 @@ end
 
 group :test do
   gem "codeclimate-test-reporter", "0.6.0", require: nil
-  gem 'capybara-webkit', github: 'thoughtbot/capybara-webkit', branch: 'master'
+  gem 'capybara-webkit', git: 'https://github.com/thoughtbot/capybara-webkit', branch: 'master'
   gem "cucumber-rails", require: false
   gem "launchy"
   gem "database_cleaner"

@@ -1,13 +1,4 @@
 GIT
-  remote: git://github.com/thoughtbot/capybara-webkit.git
-  revision: 41c43062677c1628e09f9dc00dc24528ba161ed7
-  branch: master
-  specs:
-    capybara-webkit (1.15.0)
-      capybara (>= 2.3, < 4.0)
-      json
-
-GIT
   remote: https://github.com/activeadmin/inherited_resources
   revision: 44276af84e669d46905f1902c4721b72b4344779
   specs:
@@ -45,6 +36,15 @@ GIT
   specs:
     will_paginate-materialize (0.2.0)
       will_paginate (~> 3.1.0)
+
+GIT
+  remote: https://github.com/thoughtbot/capybara-webkit
+  revision: 41c43062677c1628e09f9dc00dc24528ba161ed7
+  branch: master
+  specs:
+    capybara-webkit (1.15.0)
+      capybara (>= 2.3, < 4.0)
+      json
 
 GEM
   remote: https://rubygems.org/
