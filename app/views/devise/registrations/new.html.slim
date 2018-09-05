@@ -68,7 +68,7 @@ javascript:
     $('button.btn').removeClass("disabled")
   };
 
-  $(document).on('ready page:load', function() {
+  $(document).on('ready page:change', function() {
     $.validator.methods.email = function(value, element) {
       return this.optional( element ) || /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/.test( value );
     }

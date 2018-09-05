@@ -1,4 +1,4 @@
-$(document).on('page:load', function() {
+$(document).on('ready page:change', function() {
   // Materialize initialization
   // materialize dropdown menu init
   $(".dropdown-button").dropdown({

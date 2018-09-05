@@ -1,4 +1,4 @@
-$(document).on('ready page:load', function() {
+$(document).on('ready page:change', function() {
   if (window.COPO.utility.currentPage('welcome', 'index') || window.COPO.utility.currentPage('welcome', 'devs')) {
     $("#top-menu").css("display", "block");
 
