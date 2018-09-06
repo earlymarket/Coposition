@@ -46,6 +46,15 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
     respond_with approval_status: @user.approval_for(@dev).status
   end
 
+  def email
+    approvable = allowed_params[:approvable]
+    if (friend = User.find_by(email: approvable))
+      UserMailer.add_user_email(@user, friend, false).deliver_now
+    else
+      UserMailer.invite_email(@user, approvable).deliver_now
+    end
+  end
+
   private
 
   def allowed_params

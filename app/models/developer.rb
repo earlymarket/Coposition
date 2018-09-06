@@ -55,13 +55,13 @@ class Developer < ApplicationRecord
   end
 
   def self.default(type)
-    key = type[:coposition] ? "coposition_api_key" : "mobile_app_api_key"
-    FactoryGirl.create(:developer, api_key: Rails.application.secrets[key]) if Rails.env.test? || Rails.env.benchmark?
+    key = type[:coposition] ? :coposition_api_key : :mobile_app_api_key
+    FactoryBot.create(:developer, api_key: Rails.application.secrets[key]) if Rails.env.test? || Rails.env.benchmark?
     find_by(api_key: Rails.application.secrets[key])
   end
 
   def self.not_coposition_developers
-    copo_keys = [Rails.application.secrets["coposition_api_key"], Rails.application.secrets["mobile_app_api_key"]]
+    copo_keys = [Rails.application.secrets[:coposition_api_key], Rails.application.secrets[:mobile_app_api_key]]
     where.not(api_key: copo_keys)
   end
 

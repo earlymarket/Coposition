@@ -35,4 +35,8 @@ class ApplicationController < ActionController::Base
     return if current_user
     redirect_to(new_user_session_url(return_to: request.fullpath))
   end
+
+  def update_user_last_web_visit_at
+    current_user.update_last_web_visit_at
+  end
 end

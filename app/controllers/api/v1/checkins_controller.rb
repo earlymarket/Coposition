@@ -1,7 +1,7 @@
 class Api::V1::CheckinsController < Api::ApiController
   respond_to :json
 
-  skip_before_action :find_user, only: [:create, :batch_create]
+  skip_before_action :find_user, :update_last_mobile_visit_at, only: [:create, :batch_create]
   before_action :device_exists?, only: [:create, :batch_create]
   before_action :check_user_approved_approvable, :find_device, except: [:create, :batch_create]
   before_action -> { doorkeeper_authorize! :public }, unless: :req_from_coposition_app?, except: [:create, :batch_create]
@@ -17,7 +17,7 @@ class Api::V1::CheckinsController < Api::ApiController
     checkins = @device ? @device.sanitize_checkins(paginated_checkins, filter_arguments) : paginated_checkins
     paginated_response_headers(paginated_checkins)
 
-    respond_with checkins
+    respond_with checkins, root: "checkins"
   end
 
   def last
@@ -30,7 +30,7 @@ class Api::V1::CheckinsController < Api::ApiController
       near: params[:near],
       action: action_name
     )
-    render json: checkin
+    render json: checkin, root: "checkins"
   end
 
   def create

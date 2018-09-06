@@ -11,12 +11,18 @@ def check_activity
   return unless Time.current.friday?
   User.all.each do |user|
     inactive = user.devices.map do |device|
-      next unless device.checkins.exists? && device.checkins.first.created_at < 1.week.ago
+      next unless valid_device(device)
       firebase_notification(user, device)
       device
-    end
+    end.compact
     UserMailer.no_activity_email(user, inactive).deliver_now if inactive.length.positive?
   end
+end
+
+def valid_device(device)
+  checkins = device.checkins
+  custom = device.config.custom
+  checkins.exists? && checkins.first.created_at < 1.week.ago && custom && custom["assigned"]
 end
 
 def check_approvals
