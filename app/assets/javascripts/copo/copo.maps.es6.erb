@@ -259,7 +259,7 @@ window.COPO.maps = {
       COPO.maps.w3w.setCoordinates(e);
     });
     marker.on('popupopen', (popup) => {
-      $('.tooltipped').tooltip('remove')
+      $('.tooltipped').tooltip('destroy')
       $('.tooltipped').tooltip({delay: 50})
     })
   },

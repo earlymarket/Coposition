@@ -16,7 +16,8 @@ module Users::Approvals
     private
 
     def create_activity
-      CreateActivity.call(entity: approval, action: :update, owner: current_user, params: params.to_h)
+      params = params.to_unsafe_h if params.respond_to?(:to_unsafe_h)
+      CreateActivity.call(entity: approval, action: :update, owner: current_user, params: params)
     end
 
     def approval

@@ -31,6 +31,10 @@ module Users::Approvals
         notification: {
           body: "#{current_user.email} has sent you a friend request",
           title: "New friend request"
+        },
+        data: {
+          body: "#{current_user.email} has sent you a friend request",
+          title: "New friend request"
         }
       )
     end

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :config do
     custom { { "key" => "value" } }
   end

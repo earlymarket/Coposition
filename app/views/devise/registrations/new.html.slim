@@ -64,17 +64,18 @@
 = render "application/background"
 
 javascript:
-  $.validator.methods.email = function(value, element) {
+  var submitRecaptchaForm = function (e) {
+    $('button.btn').removeClass("disabled")
+  };
+
+  $(document).on('ready page:change', function() {
+    $.validator.methods.email = function(value, element) {
       return this.optional( element ) || /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/.test( value );
     }
 
     if (['test', 'staging'].indexOf($('body').attr('data-environment')) > -1) {
       $('button.btn').removeClass("disabled")
     }
-
-    var submitRecaptchaForm = function (e) {
-      $('button.btn').removeClass("disabled")
-    };
   
     $("#new_#{resource_name}").validate({
       onkeyup: false,
@@ -119,5 +120,6 @@ javascript:
       errorClass: "invalid",
       validClass: "valid"
     });
+  })
 
 = render "devise/shared/links"

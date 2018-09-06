@@ -12,7 +12,6 @@ require "rake"
 Rails.application.load_tasks
 
 require "devise"
-
 include ActionDispatch::TestProcess
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -39,6 +38,7 @@ Sidekiq::Testing.fake!
 
 Capybara.default_max_wait_time = 10
 Capybara.javascript_driver = :webkit
+Capybara.ignore_hidden_elements = false
 
 Capybara::Webkit.configure do |config|
   config.allow_unknown_urls
@@ -110,7 +110,7 @@ RSpec.configure do |config|
     end
   end
 
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.extend ControllerMacros, type: :controller
   config.include Helpers

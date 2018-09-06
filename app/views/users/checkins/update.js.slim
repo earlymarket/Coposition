@@ -28,5 +28,5 @@
 
   // refresh the state of all markers
   | if (!COPO.maps.queueCalled) { COPO.maps.queueRefresh(gon.checkins) }
-  | $('.tooltipped').tooltip('remove');
+  | $('.tooltipped').tooltip('destroy');
   | $('.tooltipped').tooltip({delay: 50});
