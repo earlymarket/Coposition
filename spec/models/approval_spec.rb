@@ -8,7 +8,7 @@ RSpec.describe Approval, type: :model do
 
   describe "#status" do
     context "when status is in the list of allowed" do
-      let(:approval) { FactoryGirl.build(:approval, user: user) }
+      let(:approval) { FactoryBot.build(:approval, user: user) }
 
       it "is valid approval" do
         expect(approval).to be_valid
@@ -16,7 +16,7 @@ RSpec.describe Approval, type: :model do
     end
 
     context "when status is not in the list of allowed" do
-      let(:approval) { FactoryGirl.build(:approval, user: user, status: "random") }
+      let(:approval) { FactoryBot.build(:approval, user: user, status: "random") }
 
       it "is not valid approval" do
         expect(approval).not_to be_valid

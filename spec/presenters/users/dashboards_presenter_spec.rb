@@ -4,7 +4,7 @@ describe ::Users::DashboardsPresenter do
   subject(:dashboard) { described_class.new(user) }
 
   let(:user) do
-    us = FactoryGirl.create(:user)
+    us = FactoryBot.create(:user)
     Approval.add_friend(us, friend)
     Approval.add_friend(friend, us)
     us

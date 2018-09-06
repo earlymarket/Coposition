@@ -21,7 +21,7 @@ gem "friendly_id", "~> 5.2.0"
 gem "responders", "~> 2.0"
 gem "rename"
 gem "rack-cors", require: "rack/cors"
-gem "factory_girl_rails"
+gem "factory_bot_rails"
 gem "faker"
 gem "geocoder"
 gem "colorize"
@@ -75,7 +75,7 @@ group :development do
   # Call "byebug" anywhere in the code to stop execution and get a debugger console
   gem "byebug"
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem "web-console", "~> 2.0"
+  gem "web-console", "~> 3.0"
   gem "foreman"
   gem "rack-mini-profiler", require: false
   gem "flamegraph"
@@ -102,7 +102,7 @@ end
 
 group :test do
   gem "codeclimate-test-reporter", "0.6.0", require: nil
-  gem "capybara-webkit", "~> 1.14.0"
+  gem 'capybara-webkit', git: 'https://github.com/thoughtbot/capybara-webkit', branch: 'master'
   gem "cucumber-rails", require: false
   gem "launchy"
   gem "database_cleaner"
@@ -112,7 +112,7 @@ group :test do
 end
 
 group :benchmark do
-  gem "rails-perftest"
+  gem "rails-perftest", git: "https://github.com/rails/rails-perftest", branch: 'master'
   gem "ruby-prof"
   gem "minitest", "~> 5.10", "!= 5.10.2"
 end

@@ -1,5 +1,44 @@
 $(document).on('page:change', () => {
   if (window.COPO.utility.currentPage('devices', 'new')) {
+    $.validator.setDefaults({
+      ignore: []
+    });
+
+    $.validator.addMethod(
+      "regex",
+      function(value, element, regexp) {
+          var re = new RegExp(regexp);
+          return this.optional(element) || re.test(value);
+      },
+      "Device name must be between 4-20 characters, can only contain alphanumeric characters and underscores and must start with an alphabetic character."
+    );
+
+    // configure your validation
+
+    $("#new_device").validate({
+      onkeyup: false,
+      rules: {
+        "device[name]": {
+          required: true,
+          regex: /^([A-Za-z][A-Za-z0-9]*(?:_+[A-Za-z0-9])*){4,20}$/
+        },
+        "device[icon]": {
+          required: true
+        }
+      },
+      errorElement: "div",
+      errorPlacement: function(error, element) {
+        var placement = $(element).data("error");
+        if (placement) {
+          $(placement).append(error)
+        } else {
+          error.insertAfter(element);
+        }
+      },
+      errorClass: "invalid",
+      validClass: "valid"
+    });
+
     COPO.utility.setActivePage('devices')
     const $CREATE_CHECKIN = $('#create_checkin');
     const $ADD_BUTTON = $('#add_button');

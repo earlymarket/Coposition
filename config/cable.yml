@@ -4,7 +4,8 @@ redis: &redis
 
 development: *redis
 
-test: *redis
+test: 
+  adapter: async
 
 benchmark: *redis
 

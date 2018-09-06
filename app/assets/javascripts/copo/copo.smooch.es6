@@ -1,9 +1,10 @@
+var Smooch = require('smooch');
 window.COPO = window.COPO || {};
 window.COPO.smooch = {
   initSmooch: function() {
     if ($('#sk-holder').length > 0 || typeof(Smooch) == "undefined") return
-    if (!Smooch.appToken) {
-      var params = { appToken: "48zalrms2pp1raaolssv7dry8" };
+    if (!Smooch.appId) {
+      var params = { appId: "5730bb0aac38494200fa8385" };
       var user = COPO.smooch.checkForUserInformation();
 
       if (user && user.id && user.email && user.username) {
@@ -26,3 +27,11 @@ window.COPO.smooch = {
     }
   }
 }
+
+$(document).on('page:before-unload', function () {
+  Smooch._container && $(Smooch._container).detach();
+});
+
+$(document).on('page:update', function () {
+  Smooch._container && $('body').append(Smooch._container);
+});

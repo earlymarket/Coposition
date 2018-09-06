@@ -73,10 +73,3 @@ $(document).on('ready page:change', function() {
   }
 });
 
-$(document).on('page:before-unload', function () {
-  Smooch._container && $(Smooch._container).detach();
-});
-
-$(document).on('page:update', function () {
-  Smooch._container && $('body').append(Smooch._container);
-});

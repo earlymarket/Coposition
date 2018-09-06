@@ -35,6 +35,7 @@
 //= require slick-carousel/slick/slick.min
 //= require sweetalert/dist/sweetalert.min
 //= require datetimepicker-earlymarket/dist/DateTimePicker
+//= require smooch/lib/index
 
 // STILL more up to date version
 //= require nouislider.min
