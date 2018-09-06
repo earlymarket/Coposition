@@ -3,7 +3,13 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   rescue_from ::ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from ActionView::MissingTemplate, with: :template_not_found
   include ApiApplicationMixin
+
+  def template_not_found
+    Rails.logger.warn "Redirect to 404, Error: ActionView::MissingTemplate"
+    redirect_to root_path
+  end
 
   def record_not_found(exception)
     redirect_to root_path, alert: exception.message

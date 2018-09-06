@@ -80,7 +80,7 @@ RSpec.describe Api::V1::Users::PermissionsController, type: :controller do
         device_id: device.id,
         user_id: user.id,
         permission: {
-          privilege: 1
+          privilege: "last_only"
         }
       }
       expect(res_hash.count).to eq 2

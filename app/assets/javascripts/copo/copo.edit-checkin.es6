@@ -35,7 +35,7 @@ window.COPO.editCheckin = {
   },
 
   handleRevert($revert) {
-    $('.tooltipped').tooltip('remove');
+    $('.tooltipped').tooltip('destroy');
     $('.tooltipped').tooltip({delay: 50});
     let data = $revert.data().original
     let url = $revert.data().url

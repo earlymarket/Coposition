@@ -28,7 +28,7 @@ RSpec.feature "Permissions", type: :feature do
     fill_in "user_password", with: "password"
     fill_in "user_password_confirmation", with: "password"
     fill_in "user_username", with: "tommo"
-    click_on "Sign up"
+    find(:css, "button.btn.waves-effect.waves-light").trigger("click")
   end
 
   def and_i_sign_in
@@ -54,7 +54,7 @@ RSpec.feature "Permissions", type: :feature do
     fill_in "user_password", with: "password"
     fill_in "user_password_confirmation", with: "password"
     fill_in "user_username", with: "jimbo"
-    click_on "Sign up"
+    find(:css, "button.btn.waves-effect.waves-light").trigger("click")
   end
 
   def and_they_log_out

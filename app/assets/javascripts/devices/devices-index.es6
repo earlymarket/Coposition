@@ -77,7 +77,7 @@ $(document).on('page:change', function() {
       $('.modal-trigger').modal();
       $('.clip_button').off();
       U.initClipboard();
-      $('.tooltipped').tooltip('remove');
+      $('.tooltipped').tooltip('destroy');
       $('.tooltipped').tooltip({delay: 50});
       $('.linkbox').off('touchstart click');
 

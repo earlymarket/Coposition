@@ -1,8 +1,10 @@
 sudo: required
 dist: trusty
 before_install:
-- sudo add-apt-repository --yes ppa:beineri/opt-qt551-trusty
+- sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
 - sudo apt-get update -qq
+- sudo apt-get install qtbase5-dev qtdeclarative5-dev libqt5webkit5-dev libsqlite3-dev
+- sudo apt-get install qt5-default qttools5-dev-tools
 - gem install bundler
 install:
 - bundle
@@ -24,15 +26,15 @@ deploy:
   app:
     dev: coposition-staging
   api_key:
-    secure: b3zqr4Cr2I1MqWVDfYigZM8eTtRXwIN82v38/M822aN0+DW/PsLjWdHzI27MpRzSMx2JGe/kDeaOU4NpjoSq840cmqCQEPIefoaGLYULL0oTcGdMBBP9sL0MEBj6JFYxpdRSj7gJDmRzKBNErO1wLdKjQxuZiHh8W+IBqePZ+DLnEawXOidjQZIuXBxW31DKI5Qh7Dj4xgkRqrkq6GPkQMxzhQwgd4/oPxXnWZq4+Pbhi2bFEzxM7nGGfcaPgLVCC4qi1IaSyoY7YThpzC9gN5ntkkL5mXJggow7SGbuvEqwnzoZVfPdOf/DKXgEOQQInqbTV0j3viTliFMKWWxkXDF6b0iy0m0m87jqDlLwMw4Py3ugRh/Yiqkb66B9hfbS/dDpCKWsGxrnfjahkxvp+l1WAo0D+syPal/f8yxSuWQFVaPizVVP8/ZmtBhykT1sg65ZTuCZH+oTDcYjPOsTEC9VmuS84yyzOX7bE7k2n3LLkkttTEBj2FAEWfHeE/e7w55rKhSY0I/CwZHNP/zspH7crGIRdeRB8obmu9pfS7195syUCIGcunisOSKiJ4xVVcbe0QaJxIeUiPRFQcVyvA4+p5hkMmM6TUlyd+x/5NQdnFPvjBSZWV0ClsEI7D3Zg7KRQtVmYylm28WOYgeyxxkj/T+QW3kBnOlq4o5FjOQ=
+    secure: NRIcBpnayVciPdicNhnfiS67I/ojxcVruJGZZy5+2xek+TU172Pl3JDXvVU17h3Qchuly9K1aPJN/ujfIBAkkmseulIPyQ4d7AWUj0g+Vs3xZWL1dESvqPvmlERqfm/YfM3UdK5nJWJ+rT8RJaGnJdGCOpmLywHbfk4cIY+0YBOzkJAozg9vvF9rjaX45PvBf6ZS8EcYk+QkAnFZJkCQyyR4sCss6Vb7qhEH3BqxZoKOl58jq2SQmMCMj1PKH5+vajJrbJysPabfnSHJBompSP7VZDVk3CG5GvQFTrJgeARv1q0QEvzIFWX5AyNtNfCUBMfHc72Ox9DLU8MdaOeQXbUQ+kIzZFkH8k0IJKFSaqenuxt6h6/7PUgQfD8bWiJoXVHJGlz40zrWqDiA8kePCal4Gy69rphyEluNwUljKJGbim0m9ppwFeduS3HMSjiKL+m/G2mbTqL0v5X9RthMRLsjTvWdCZmfsKQ6bGAo8yexQYLvlml5nifCD4aDKgdTZFyc51N4yv1YC0MT/AXZDaxyljpmnGTSibQXfoNdDWAPT+SIEfdbp8tEPl5AmYE0OVDcWbBGaI4Iot6nBaatyGO7UJmgaLVqiilrToNZZ7R3UKW1uAHokIOJs45sBH5sl4hX6kFUNY/mZROxlXlj2CZl58BtuEu9tgQqjnOy4zU=
   run: rake db:migrate
 addons:
   apt:
     sources:
     - ubuntu-sdk-team
     packages:
-    - libqt4-dev
-    - libqtwebkit-dev
+    - libqt5webkit5-dev
+    - qtdeclarative5-dev
     - xvfb
   code_climate:
     repo_token:

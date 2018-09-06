@@ -5,7 +5,8 @@ html
     title Coposition
     = csrf_meta_tags
     = action_cable_meta_tag
-    script src="https://cdn.smooch.io/smooch.min.js" 
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     link href="https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css" rel="stylesheet"
     link href="https://api.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.mapbox.css" rel="stylesheet"
     /[if lt IE 9]
@@ -27,8 +28,6 @@ html
 
     meta content="./copo-logo.png" property="og:logo"
     meta content="no-cache" name="turbolinks-cache-control"
-    = javascript_include_tag 'application', 'data-turbolinks-track' => true
-    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = cloudinary_js_config
     /! favicon stuff
     meta content="#ffffff" name="theme-color"
