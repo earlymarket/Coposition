@@ -3,13 +3,13 @@ require "rails_helper"
 RSpec.feature "Developers", type: :feature do
   let(:developer) { create :developer }
 
-  scenario "Developer signs up" do
+  scenario "Developer signs up", js: true do
     given_i_fill_in_sign_up_details
     and_i_click_sign_up
     then_i_should_see_developer_console
   end
 
-  scenario "Developer signs up with taken email" do
+  scenario "Developer signs up with taken email", js: true do
     given_i_fill_in_sign_up_details
     fill_in "developer_email", with: developer.email
     fill_in "developer_email_confirmation", with: developer.email
@@ -17,7 +17,7 @@ RSpec.feature "Developers", type: :feature do
     then_i_should_see_sign_up
   end
 
-  scenario "Developer signs in, edits account then signs out" do
+  scenario "Developer signs in, edits account then signs out", js: true do
     given_i_fill_in_log_in_details
     and_i_click_log_in
     then_i_should_see_developer_console
