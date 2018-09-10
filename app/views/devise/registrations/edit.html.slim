@@ -73,9 +73,3 @@
             = f.label :password, "Current Password"
             = f.password_field :password, autocomplete: "off", required: true
         = f.button "Cancel my account", class: "btn red white-text", data: { confirm: "Are you sure?" }
-
-javascript:
-  COPO.utility.setActivePage('account');
-  $('#edit_user').on('submit', function() {
-    $('.inactive').attr('disabled', 'disabled');
-  });

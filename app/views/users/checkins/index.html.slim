@@ -46,24 +46,6 @@
           = link_to "Clear", @checkins_index_presenter.form_path, { method: :get, class: "btn-flat right" }
   #map
 
-  javascript:
-    dateRangeOpen = function() {
-      $(".collapse-mark").text("expand_less");
-    }
-    dateRangeClose = function() {
-      $(".collapse-mark").text("expand_more");
-    }
-
-    devicesOpen = function() {
-      $(".collapse-devices").text("expand_less");
-    }
-    devicesClose = function() {
-      $(".collapse-devices").text("expand_more");
-    }
-    if (window.location.search.includes("device_ids")) {
-      $('.device-select').collapsible('open', 0);
-    }
-
   /! templates
   script#markerPopupTmpl type="x-tmpl-mustache"
     h3.valign-wrapper

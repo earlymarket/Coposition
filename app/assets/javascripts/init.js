@@ -16,22 +16,7 @@ $(document).on('ready page:change', function() {
 
   // We're calling this later now in the dodgy hack
   // // materialize accordion init
-  $('.collapsible').collapsible({
-    onOpen: function(el) {
-      collapsible = el.find(".collapsible-header");
-
-      if (collapsible.data("onopen")) {
-        window[collapsible.data("onopen")]();
-      }
-    },
-    onClose: function(el) {
-      collapsible = el.find(".collapsible-header");
-
-      if (collapsible.data("onclose")) {
-        window[collapsible.data("onclose")]();
-      }
-    }
-  });
+  $('.collapsible').collapsible();
 
   // materialize parallax init
   $('.parallax').parallax();

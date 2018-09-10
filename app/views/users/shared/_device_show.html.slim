@@ -29,11 +29,3 @@ ul#filters.date-select.collapsible
         = hidden_field_tag(:device_id, @device_show_presenter.device.id)
         = hidden_field_tag :checkins_view, false,  class: "checkins_view"
 #map
-
-javascript:
-  dateRangeOpen = function() {
-    $(".collapse-mark").text("expand_less");
-  }
-  dateRangeClose = function() {
-    $(".collapse-mark").text("expand_more");
-  }

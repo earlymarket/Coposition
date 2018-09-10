@@ -32,6 +32,13 @@ $(document).on('page:change', function() {
       }
     }
 
+    function dateRangeOpen() {
+      $(".collapse-mark").text("expand_less");
+    }
+    function dateRangeClose() {
+      $(".collapse-mark").text("expand_more");
+    }
+
     $("#deleteDevice").on("click", () => {
       swal({
         title: "Enter device name to delete this device and check-ins",

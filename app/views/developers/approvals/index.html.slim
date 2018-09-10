@@ -14,5 +14,3 @@ p
         h6.collection-heading= user.email
       .col.s4
         = button_to "Remove User", developers_approval_path(current_developer.approvals.find_by(user_id: user.id)), remote: true, method: :delete, class: "btn-flat right", data: { confirm: "Are you sure? You will no longer have access to any of their data" }
-javascript:
-  COPO.utility.setActivePage('users')

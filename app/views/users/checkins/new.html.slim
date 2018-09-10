@@ -10,15 +10,4 @@
   = f.button "Check-in", type: "submit", class: "btn waves-effect waves-light"
 .row
   .col.s12.m6.l6.container
-    img#mapholder.round-map.animated.rotateIn
-
-javascript:
-  navigator.geolocation.getCurrentPosition(function(position) {
-    $("#checkin_lat").val(position.coords.latitude.toFixed(6))
-    $("#checkin_lng").val(position.coords.longitude.toFixed(6))
-
-    var latlon = position.coords.latitude + "," + position.coords.longitude;
-    var img_url = "http://maps.googleapis.com/maps/api/staticmap?center=" + latlon + "&zoom=16&size=500x500";
-    $("#mapholder").attr("src", img_url);
-    $("#location").attr("value", latlon);
-  });
+    img#mapholder.round-map.animated.rotateIn  
