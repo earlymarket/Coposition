@@ -13,7 +13,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable,
     authentication_keys: { username: false, email: true }
 
-  validates :username, uniqueness: true, allow_blank: true,
+  validates :username, uniqueness: true, case_sensitive: false, allow_blank: true,
                        format: { with: /\A[-a-zA-Z_]+\z/, message: "only allows letters, underscores and dashes" },
                        length: { in: 4..20 }
   validates :email, confirmation: true
