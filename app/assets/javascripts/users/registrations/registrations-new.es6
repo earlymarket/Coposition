@@ -32,7 +32,7 @@ $(document).on('page:change', function () {
         },
         [elements.email_confirmation]: {
           required: true,
-          equalTo: '" + resource_name + "_email'
+          equalTo: `${resource_name}_email`
         },
         [elements.password]: {
           required: true,
@@ -40,7 +40,7 @@ $(document).on('page:change', function () {
         },
         [elements.password_confirmation]: {
           required: true,
-          equalTo: '" + resource_name + "_password'
+          equalTo: `${resource_name}_password`
         },
         [elements.company_name]: {
           required: window.location.pathname.includes("developer"),
