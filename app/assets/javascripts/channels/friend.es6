@@ -1,10 +1,4 @@
 App.friend = App.cable.subscriptions.create("FriendChannel", {
-  // connected: function() {
-  // },
-
-  // disconnected: function() {
-  // },
-
   received(data) {
     switch (data.action) {
       case "checkin":
