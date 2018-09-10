@@ -1,6 +1,6 @@
 $(document).on('page:change', function() {
   if (window.COPO.utility.currentPage('checkins', 'index')) {
-  	function dateRangeOpen() {
+    function dateRangeOpen() {
       $(".collapse-mark").text("expand_less");
     }
     function dateRangeClose() {
