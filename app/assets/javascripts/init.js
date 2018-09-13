@@ -1,4 +1,5 @@
 $(document).on('ready page:change', function() {
+  $(document).unbind('scroll');
   // Materialize initialization
   // materialize dropdown menu init
   $(".dropdown-button").dropdown({
@@ -16,7 +17,7 @@ $(document).on('ready page:change', function() {
 
   // We're calling this later now in the dodgy hack
   // // materialize accordion init
-  $('.collapsible').collapsible();
+  //$('.collapsible').collapsible();
 
   // materialize parallax init
   $('.parallax').parallax();

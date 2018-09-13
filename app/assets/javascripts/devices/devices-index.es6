@@ -72,7 +72,7 @@ $(document).on('page:change', function() {
       $target.attr('contenteditable', false);
     }
 
-    window.initPage = function(){
+    window.initDeviceIndexPage = function(){
       P.initTrigger('devices');
       $('.modal-trigger').modal();
       $('.clip_button').off();
@@ -116,7 +116,7 @@ $(document).on('page:change', function() {
         }
       })
     }
-    initPage();
+    initDeviceIndexPage();
 
     $(document).one('turbolinks:before-render', function(){
       COPO.permissions.switchesOff();

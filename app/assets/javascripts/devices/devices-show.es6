@@ -32,12 +32,10 @@ $(document).on('page:change', function() {
       }
     }
 
-    function dateRangeOpen() {
-      $(".collapse-mark").text("expand_less");
-    }
-    function dateRangeClose() {
-      $(".collapse-mark").text("expand_more");
-    }
+    $('.date-select').collapsible({
+        onOpen: U.dateRangeOpen,
+        onClose: U.dateRangeClose
+    });
 
     $("#deleteDevice").on("click", () => {
       swal({

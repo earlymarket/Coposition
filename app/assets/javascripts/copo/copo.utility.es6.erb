@@ -217,5 +217,25 @@ COPO.utility = {
 
   setActivePage(page) {
     $("a#" + page + "-nav").addClass("current")
+  },
+
+  initTypeahead(selector, source) {
+    $(`.search .${selector}_typeahead`).typeahead({
+      hint: true,
+      highlight: true,
+      minLength: 1
+    },
+    {
+      name: selector,
+      source: COPO.utility.substringMatcher(source)
+    });
+  },
+
+  dateRangeOpen() {
+    $(".collapse-mark").text("expand_less");
+  },
+
+  dateRangeClose() {
+    $(".collapse-mark").text("expand_more");
   }
 };

@@ -1,10 +1,9 @@
 $(document).on('page:change', function() {
-  if (window.COPO.utility.currentPage('friends', 'show_device')) {
-  	function dateRangeOpen() {
-  	  $(".collapse-mark").text("expand_less");
-  	}
-  	function dateRangeClose() {
-  	  $(".collapse-mark").text("expand_more");
-  	}
+  var U = window.COPO.utility
+  if (U.currentPage('friends', 'show_device')) {
+    $('.date-select').collapsible({
+      onOpen: U.dateRangeOpen,
+      onClose: U.dateRangeClose
+    });
   }
 })

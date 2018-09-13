@@ -2,6 +2,14 @@ $(document).on('ready page:change', function() {
   if (window.COPO.utility.currentPage('welcome', 'index') || window.COPO.utility.currentPage('welcome', 'devs')) {
     $("#top-menu").css("display", "block");
 
+    $(document).scroll(function(e) {
+      if($(window).scrollTop() > 10){
+        $("nav").removeClass('transparent-nav');
+      } else {
+        $("nav").addClass('transparent-nav');
+      }
+    })
+
     $(".cell-wrapper").not('.slick-initialized').slick({
       autoplay: true,
       arrows: false,
