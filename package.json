@@ -6,7 +6,7 @@
     "browserify-incremental": "^3.1.1",
     "clipboard": "^1.7.1",
     "datetimepicker-earlymarket": "^0.2.2",
-    "ion-rangeslider": "^2.2.0",
+    "ion-rangeslider": "^2.3.0",
     "jquery-mustache-earlymarket": "^1.0.0",
     "leaflet-fullscreen": "^1.0.2",
     "leaflet.locatecontrol": "^0.62.0",
