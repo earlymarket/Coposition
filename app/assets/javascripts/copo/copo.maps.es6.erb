@@ -131,10 +131,6 @@ window.COPO.maps = {
     }
   },
 
-  removeMap() {
-    map.remove();
-  },
-
   fitBounds() {
     if (COPO.maps.markers.getLayers().length) {
       map.fitBounds(COPO.maps.markers.getBounds().pad(0.5))
