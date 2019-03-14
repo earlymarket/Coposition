@@ -12,7 +12,7 @@
     "leaflet.locatecontrol": "^0.62.0",
     "leaflet.markercluster": "^1.2.0",
     "lodash": "^4.17.4",
-    "mapbox.js": "^3.1.0",
+    "mapbox.js": "^3.2.0",
     "materialize-css": "^0.98.2",
     "moment": "^2.19.3",
     "mustache.js": "^1.0.0",
