@@ -64,8 +64,9 @@ $(document).on('page:change', () => {
 
       const LOCATION = { lat: position.coords.latitude, lng: position.coords.longitude }
       updateLocation(LOCATION);
-
-      if (typeof map.options == "undefined") {
+      var container = L.DomUtil.get('map');
+      if(container != null) {
+        container._leaflet_id = null;
         COPO.maps.initMap({
           tileLayer: {
             continuousWorld: false,
