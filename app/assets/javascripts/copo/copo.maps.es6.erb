@@ -15,7 +15,6 @@ window.COPO.maps = {
     COPO.maps.windowFocus()
     var options = $.extend(defaultOptions, customOptions);
     window.map = L.mapbox.map('map', 'mapbox.light', options );
-    $(document).one('turbolinks:before-render', COPO.maps.removeMap);
   },
 
   windowFocus() {
@@ -130,10 +129,6 @@ window.COPO.maps = {
       let percentageLoaded = (checkins/total * 100) + '%';
       $('.myDeterminate').css('width', percentageLoaded);
     }
-  },
-
-  removeMap() {
-    map.remove();
   },
 
   fitBounds() {
