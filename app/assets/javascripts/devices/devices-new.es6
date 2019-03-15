@@ -55,10 +55,6 @@ $(document).on('page:change', () => {
       } else {
         $PREVIEW.fadeOut("fast", () => $PREVIEW.addClass("hide"));
         $ADD_BUTTON.removeClass('disabled').prop('disabled', false);
-        if (typeof map !== "undefined") {
-          $(document).off('turbolinks:before-render', COPO.maps.removeMap);
-          COPO.maps.removeMap();
-        }
       }
     });
 
@@ -69,21 +65,23 @@ $(document).on('page:change', () => {
       const LOCATION = { lat: position.coords.latitude, lng: position.coords.longitude }
       updateLocation(LOCATION);
 
-      COPO.maps.initMap({
-        tileLayer: {
-          continuousWorld: false,
-          noWrap: true
+      if (typeof map.options == "undefined") {
+        COPO.maps.initMap({
+          tileLayer: {
+            continuousWorld: false,
+            noWrap: true
+          }
+        });
+        COPO.maps.initControls(['geocoder', 'w3w', 'layers']);
+        const MARKER_OPTIONS = {
+          icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#ff6900' }),
+          draggable: true
         }
-      });
-      COPO.maps.initControls(['geocoder', 'w3w', 'layers']);
-      const MARKER_OPTIONS = {
-        icon: L.mapbox.marker.icon({ 'marker-symbol' : 'marker', 'marker-color' : '#ff6900' }),
-        draggable: true
+        const MARKER = L.marker([LOCATION.lat, LOCATION.lng], MARKER_OPTIONS);
+        MARKER.addTo(map);
+        map.once('ready', () => map.setView(MARKER.getLatLng(), 16));
+        MARKER.on('dragend', e => updateLocation(e.target.getLatLng()));
       }
-      const MARKER = L.marker([LOCATION.lat, LOCATION.lng], MARKER_OPTIONS);
-      MARKER.addTo(map);
-      map.once('ready', () => map.setView(MARKER.getLatLng(), 16));
-      MARKER.on('dragend', e => updateLocation(e.target.getLatLng()));
 
       function updateLocation(loc) {
         $('#coordinates').html(`Lat: ${loc.lat.toFixed(6)}<br />Lng: ${loc.lng.toFixed(6)}<br />`);
