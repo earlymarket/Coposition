@@ -40,7 +40,7 @@ $(document).on('ready page:change', function() {
   Waves.displayEffect();
 
   // materialize selectbox init
-  $('select').material_select();
+  $('select').formSelect();
 
   // materialize scrollfire
   var options = [
@@ -52,7 +52,7 @@ $(document).on('ready page:change', function() {
      offset: 100,
      callback: 'Materialize.fadeInImage("#api .image-container")'}
   ];
-  Materialize.scrollFire(options);
+  //Materialize.scrollFire(options);
 
   // allow materialize toast to be dismissed on click instead of just the default swipe
   $(document).on('click', '#toast-container .toast', function() {
