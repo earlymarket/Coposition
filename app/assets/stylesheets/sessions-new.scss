@@ -1,0 +1,14 @@
+.c-sessions.a-new {
+  background-color: transparent;
+
+  a.link {
+    color: $primary-color;
+    text-decoration: underline;
+  }
+
+  [type="checkbox"] + label {
+    @media (max-width: $lg-breakpoint) {
+      padding-left: 25px;
+    }
+  }
+}

@@ -1,0 +1,14 @@
+h2 Forgot your password?
+= form_for resource, as: resource_name, url: password_path(resource_name), html: { method: :post } do |f|
+  = devise_error_messages!
+  .row
+    .input-field.col.s12
+      p Submit your email address to receive password reset instructions.
+  .row
+    .input-field.col.s12
+      = f.label :email
+      br/
+      = f.email_field :email, autofocus: true
+  .actions
+    = f.button "Submit", type: "submit", class: "btn waves-effect waves-light"
+= render "devise/shared/links"

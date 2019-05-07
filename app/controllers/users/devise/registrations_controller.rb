@@ -3,6 +3,7 @@ class Users::Devise::RegistrationsController < Devise::RegistrationsController
   respond_to :json
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
+  prepend_before_action :check_captcha, only: [:create], unless: :req_from_coposition_app?
 
   # GET /resource/sign_up
   # def new
@@ -72,7 +73,15 @@ class Users::Devise::RegistrationsController < Devise::RegistrationsController
 
   # The path used after sign up.
   def after_sign_up_path_for(_resource)
-    new_user_device_path(current_user)
+    return session[:return_to] if session[:return_to]
+    user_dashboard_path(current_user)
+  end
+
+  def check_captcha
+    return if Rails.env.staging? || verify_recaptcha
+    self.resource = resource_class.new sign_up_params
+    resource.validate
+    respond_with_navigational(resource) { render :new }
   end
 
   # The path used after sign up for inactive accounts.

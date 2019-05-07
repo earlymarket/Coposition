@@ -1,0 +1,11 @@
+h1 Hi there!
+p
+  = @from
+  |  has sent you an approval request on Coposition!
+  br/
+p
+  | To respond, just follow this link: 
+  = link_to "approvals", @url
+p Coposition Support
+p 
+  = link_to "Unsubscribe", settings_unsubscribe_url(id: @unsubscribe)

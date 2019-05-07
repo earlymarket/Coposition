@@ -1,0 +1,44 @@
+.c-release_notes.a-index {
+  .title {
+    display: flex;
+    flex-direction: row;
+  }
+  .bottom {
+    align-self: flex-end;
+    margin: 1.14rem 0 0.912rem 0.5rem;
+  }
+  .collection-item {
+    padding-bottom: 20px;
+  }
+  .tag {
+    border-radius: 5px;
+    color: white;
+    padding: 2px;
+    min-width: 3rem;
+    text-align: center;
+    display: inline-block;
+    opacity: 0.3;
+  }
+  .web {
+    background-color: #00d646;
+  }
+  .api {
+    background-color: #252525;
+  }
+  .ios {
+    background-color: #008cd2;
+  }
+  .android {
+    background-color: #646464;
+  }
+  .clear {
+    position: absolute;
+    color: red;
+    display: none;
+  }
+
+  .active {
+    opacity: 1;
+    display: inline-block;
+  }
+}

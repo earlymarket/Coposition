@@ -17,9 +17,9 @@ bundle check --path .bundle > /dev/null 2>&1 ||
   bundle install --path=.bundle $BUNDLER_ARGS
 
 # Set up configurable environment variables
-# if [ ! -f .env ]; then
-#   cp .env.example .env
-# fi
+if [ ! -f .env ]; then
+  cp .env.example .env
+fi
 
 # Set up configurable environment variables
 if [ ! -f config/database.yml ]; then
@@ -29,12 +29,16 @@ fi
 # Setup specific TravisCI options if this is CI
 if [ "$CI" ]; then
   cp config/database.yml.travis config/database.yml
+  psql -c 'create database travis_ci_test;' -U postgres
+  psql -c 'create database travis_ci_benchmark;' -U postgres
   export DISPLAY=:99.0
   sh -e /etc/init.d/xvfb start
 fi
 
 # Set up database and add any development seed data
 bin/rails db:setup
+
+bin/rails db:setup RAILS_ENV=benchmark
 
 # Removing old logs and tempfiles
 bin/rails log:clear tmp:clear

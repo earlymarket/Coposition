@@ -1,0 +1,64 @@
+.card
+  .card-content
+    .card-title
+      a.modal-trigger.icon-trigger href="#icon#{device.id}" data-id=(device.id)
+        i.material-icons.medium id="currentIcon#{device.id}" = device.icon
+      a href="#{user_device_path(current_user.url_id, device, first_load: true)}" id="#{device.name}"
+        span.editable
+          = device.name
+        i.material-icons.grey-text.right.edit-button mode_edit
+      = devices_locate_icon(device)
+      = link_to "View check-ins", user_device_path(current_user.url_id, device, first_load: true), class: "btn view-checkins"
+    .card-action
+      .row
+        .col.s12
+          .col.s6
+            = link_to info_user_device_path(current_user.url_id, device.id), class: "btn-flat device-button-hide-text flow-text" do
+              i.material-icons.right> perm_device_info
+              | Device info
+          .col.s3
+            = link_to user_device_path(current_user.url_id, device.id, device: { fogged: !device.fogged }), { method: :put, id: "fogButton#{device.id}", remote: true, class: "device-toggle fogButton valign-wrapper", data: { confirm: "Are you sure? Turning fogging off will allow you friends/apps to see your precise location", fogged: device.fogged? } } do
+              = attribute_icon device.fogged, "cloud"
+              |  Fogging
+          .col.s3
+            a.modal-trigger.valign-wrapper.device-toggle.delayedButton data-tooltip=("Delay Settings") href="#delay#{device.id}" id="delayButton#{device.id}"
+              = attribute_icon device.delayed, "timer"
+              |  Delay
+      .row
+        .col.s12
+          .col.s6
+            a.modal-trigger.permissions-trigger.btn-flat.device-button-hide-text href="#perm#{device.id}" data-id=(device.id)
+              i.material-icons.right lock
+              | Permissions
+          .col.s3
+            = link_to user_device_path(current_user.url_id, device.id, device: { cloaked: !device.cloaked }), { method: :put, id: "cloakedButton#{device.id}", remote: true, class: "device-toggle valign-wrapper cloakedButton", data: { confirm: "Are you sure? Cloaking a device will hide it and all of it's check-ins from all of your apps and friends", cloaked: device.cloaked? } } do
+              = attribute_icon(device.cloaked, "visibility_off")
+              |  Cloaking
+          .col.s3
+            = link_to user_device_path(current_user.url_id, device.id, device: { published: !device.published }), { method: :put, id: "publishedButton#{device.id}", remote: true, class: "device-toggle valign-wrapper sharedButton", data: { published: device.published? } } do
+              = attribute_icon(device.published, "public")
+              |  Sharing
+      .row
+        .col.s12
+          .col.s6
+            a.modal-trigger.btn-flat.device-button-hide-text href="#download#{device.id}" id="downloadButton#{device.id}"
+              i.material-icons.right file_download
+              | Download check-ins
+          .col.s6.valign-wrapper id="sharedLink#{device.id}"
+            = devices_shared_link(device) if device.published
+      .row
+        .col.s12
+          .col.s6
+            a.modal-trigger.btn-flat.device-button-hide-text href="#upload#{device.id}" id="uploadButton#{device.id}"
+              i.material-icons.right> file_upload
+              | Upload check-ins
+      - if device.config && device.config.custom && device.config.custom["assigned"].to_s == "true"
+        .row
+          .col.s12
+            .col.s6
+              = link_to remote_checkin_user_device_path(current_user.url_id, device.id), { method: :post, id: "remoteCheckin#{device.id}", remote: true, class: "btn-flat device-button-hide-text flow-text" } do
+                i.material-icons.right beenhere
+                | Remote check-in
+    .card-action
+      p
+        = devices_last_checkin(device)

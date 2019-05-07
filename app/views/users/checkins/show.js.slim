@@ -1,0 +1,21 @@
+// updates the particular checkin in gon
+| var checkin = _.find(gon.checkins, _.matchesProperty('id',
+= @checkin.id
+| ));
+| checkin.address = '
+= j @checkin.address
+| ';
+// updates the popup
+| var $geocodedAddress = '<li class="address">' + COPO.utility.commaToNewline('
+= j @checkin.address
+| ') + '</li>';
+| $('.address').replaceWith($geocodedAddress);
+
+| var $foggedAddress = '<div class="foggedAddress"><h3 class="lined"><span class="lined-pad">Fogged Address</span></h3>';
+| $foggedAddress += '<li>
+= j @checkin.fogged_city
+| </li></div>';
+| $('.foggedAddress').replaceWith($foggedAddress);
+
+| $('.tooltipped').tooltip('destroy');
+| $('.tooltipped').tooltip({delay: 50});

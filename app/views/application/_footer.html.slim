@@ -1,0 +1,22 @@
+#bottom-bar.pure-g
+  /!
+  .pure-u-1-12
+  /!
+  .pure-u-5-12.copy-notice 
+    | Copyright © 2017 Coposition
+    br/
+    = link_to "Terms and conditions", terms_path
+  /!
+  .pure-u-5-12
+    - if Rails.env == "test" || params[:admin] || signed_in?
+      = link_to "Release notes", release_notes_path, class: "copy-notice"
+      |  
+    a href="https://github.com/earlymarket/Coposition" 
+      i.fa.fa-github-square.fa-2x aria-hidden="true"
+    |  
+    a href="https://twitter.com/coposition" 
+      i.fa.fa-twitter-square.fa-2x aria-hidden="true" 
+
+  /!
+  .pure-u-1-12
+  /!

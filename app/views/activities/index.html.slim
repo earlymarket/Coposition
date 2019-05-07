@@ -1,0 +1,40 @@
+#gonvariables
+  = Gon::Base.render_data
+h1
+  | Activities
+= link_to("Clear", activities_path)
+= form_tag(activities_path, method: "get") do
+  .input-field.search
+    = text_field_tag(:owner_id, params["owner_id"], class: "validate users_typeahead", placeholder: "User email", required: false)
+  = check_box_tag(:Device, true, params["Device"] == "true")
+  = label_tag "Device", "Device activity"
+  br
+  = check_box_tag(:Approval, true, params["Approval"] == "true")
+  = label_tag "Approval", "Approval activity"
+  br
+  = check_box_tag(:Permission, true, params["Permission"] == "true")
+  = label_tag "Permission", "Permission activity"
+  br
+  = check_box_tag(:Config, true, params["Config"] == "true")
+  = label_tag "Config", "Config activity"
+  br
+  = hidden_field_tag :search, true
+  = button_tag "Filter", class: "waves-effect waves-light btn", type: "submit"
+ul.collection
+  - @activities_presenter.activities.each do |activity|
+    li.collection-item
+      h6
+        - if activity.owner.class.name == "User"
+          = link_to(activity.owner.username , activities_path(owner_type: "User", owner_id: activity.owner.id, filter: true))
+          |  
+        - else
+          = link_to(activity.owner.company_name , activities_path(owner_type: "Developer", owner_id: activity.owner.id, filter: true))
+        label
+          = humanize_date_and_time(activity.created_at)
+          |  
+        label
+          = link_to(activity.key , activities_path(key: activity.key, filter: true))
+      = render_activity activity
+.center
+  = will_paginate @activities_presenter.activities
+  div

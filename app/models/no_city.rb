@@ -12,10 +12,10 @@ class NoCity
   end
 
   def name
-    'No nearby cities'
+    "No nearby cities"
   end
 
   def country_code
-    'No Country'
+    "No Country"
   end
 end

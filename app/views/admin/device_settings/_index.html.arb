@@ -1,0 +1,109 @@
+h2 "Flags"
+
+table do
+  thead do
+    tr do
+      BOOLEAN_HEADERS.each &method(:th)
+    end
+  end
+
+  tbody do
+    params[:booleans].each do |item|
+      tr do
+        th item[:name]
+        th item[:values][:on]
+        th item[:values][:off]
+      end
+    end
+  end
+end
+
+h2 "Interval"
+
+table do
+  thead do
+    tr do
+      INTERVAL_TYPES.each &method(:th)
+    end
+  end
+
+  tbody do
+    tr do
+      params[:interval_type].each do |value|
+        th value
+      end
+    end
+  end
+end
+
+h2 "Time interval"
+
+table do
+  thead do
+    tr do
+      TIME_INTERVALS.each &method(:th)
+    end
+  end
+
+  tbody do
+    tr do
+      params[:time_interval].each do |value|
+        th value
+      end
+    end
+  end
+end
+
+h2 "Distance interval"
+
+table do
+  thead do
+    tr do
+      DISTANCE_INTERVALS.each &method(:th)
+    end
+  end
+
+  tbody do
+    tr do
+      params[:distance_interval].each do |value|
+        th value
+      end
+    end
+  end
+end
+
+h2 "Battery saver"
+
+table do
+  thead do
+    tr do
+      BATTERY_SAVING.each &method(:th)
+    end
+  end
+
+  tbody do
+    tr do
+      params[:battery_saver].each do |value|
+        th value
+      end
+    end
+  end
+end
+
+h2 "Delay"
+
+table do
+  thead do
+    tr do
+      DELAY.map{ |delay| delay || 'Empty' }.each &method(:th)
+    end
+  end
+
+  tbody do
+    tr do
+      params[:delay].each do |value|
+        th value
+      end
+    end
+  end
+end

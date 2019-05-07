@@ -1,30 +1,31 @@
 class Users::FriendsController < ApplicationController
-  before_action :friends?
-  before_action :correct_url_user?
+  before_action :friends?, :update_user_last_web_visit_at, :correct_url_user?
 
   def show
-    @presenter = ::Users::FriendsPresenter.new(current_user, params, 'show')
-    @friend = @presenter.friend
-    @devices = @presenter.devices
-    gon.push(@presenter.index_gon)
+    @friend_show_presenter = ::Users::Friends::FriendsShowPresenter.new(current_user, params)
+    gon.push(@friend_show_presenter.gon)
   end
 
   def show_device
-    @presenter = ::Users::FriendsPresenter.new(current_user, params, 'show_device')
+    @device_show_presenter = ::Users::Friends::FriendsShowDevicePresenter.new(current_user, params)
     if params[:per_page] && params[:page]
-      render json: @presenter.show_checkins(params).as_json
+      render json: @device_show_presenter.checkins.as_json
     else
-      gon.push(@presenter.show_device_gon)
+      gon.push(@device_show_presenter.gon)
     end
+  end
+
+  def request_checkin
+    RequestCheckin.call(current_user: current_user, id: params[:id])
+    redirect_to user_friends_path, notice: "Check-in request sent"
   end
 
   private
 
   def friends?
     friend = User.find(params[:id])
-    unless friend.approved?(current_user)
-      flash[:notice] = 'You are not friends with that user'
-      redirect_to user_friends_path(current_user)
-    end
+    return if friend.approved?(current_user)
+    flash[:notice] = "You are not friends with that user"
+    redirect_to user_friends_path(current_user)
   end
 end

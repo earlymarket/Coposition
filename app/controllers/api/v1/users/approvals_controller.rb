@@ -1,48 +1,58 @@
 class Api::V1::Users::ApprovalsController < Api::ApiController
   respond_to :json
 
-  acts_as_token_authentication_handler_for User, except: :create
-
-  before_action :check_user, only: :update
+  acts_as_token_authentication_handler_for User
 
   def create
-    resource_exists?(approvable_type, approvable)
-    Approval.link(@user, approvable, approvable_type)
-    accept_if_friend_request_or_adding_developer if req_from_coposition_app?
-    approval = @user.approval_for(approvable)
-    @dev.notify_if_subscribed('new_approval', approval_zapier_data(approval))
-    render json: approval
+    result = CreateApproval.call(user: @user, approvable: allowed_params[:approvable], type: approvable_type)
+    if result.success
+      render json: result.approval
+    else
+      render status: 404, json: { error: result.error }
+    end
   end
 
   def update
-    approval = Approval.find_by(id: params[:id], user: @user)
-    return unless approval_exists? approval
-    approvable = approval.approvable
-    type = approval.approvable_type
-    Approval.accept(@user, approvable, type)
-    render json: approval.reload
-    approvable.notify_if_subscribed('new_approval', approval_zapier_data(approval)) if type == 'Developer'
+    result = ::Users::Approvals::UpdateApproval.call(current_user: @user, params: params)
+    if result.success?
+      if result.approvable_type == "Developer"
+        result.approvable.notify_if_subscribed("new_approval", approval_zapier_data(result.approval))
+      end
+      render json: result.approval.reload
+    else
+      render status: 404, json: { error: "Approval does not exist" }
+    end
   end
 
   def destroy
-    approval = Approval.find_by(id: params[:id], user: @user)
-    return unless approval_exists? approval
-    @user.destroy_permissions_for(approval.approvable)
-    approval.destroy
-    render status: 200, json: { message: 'Approval Destroyed' }
+    result = ::Users::Approvals::DestroyApproval.call(current_user: @user, params: params)
+    if result.success?
+      render status: 200, json: { message: "Approval Destroyed" }
+    else
+      render status: 404, json: { error: "Approval does not exist" }
+    end
   end
 
   def index
     approvals = if params[:type]
-                  params[:type] == 'friends' ? @user.friend_approvals : @user.developer_approvals
-                else
-                  @user.approvals
-                end
+      params[:type] == "friends" ? @user.friend_approvals : @user.developer_approvals
+    else
+      @user.approvals
+    end
     render json: approvals
   end
 
   def status
     respond_with approval_status: @user.approval_for(@dev).status
+  end
+
+  def email
+    approvable = allowed_params[:approvable]
+    if (friend = User.find_by(email: approvable))
+      UserMailer.add_user_email(@user, friend, false).deliver_now
+    else
+      UserMailer.invite_email(@user, approvable).deliver_now
+    end
   end
 
   private
@@ -51,25 +61,7 @@ class Api::V1::Users::ApprovalsController < Api::ApiController
     params.require(:approval).permit(:user, :approvable, :approvable_type, :status)
   end
 
-  def check_user
-    render status: 403, json: { error: 'Incorrect User' } unless current_user?(params[:user_id])
-  end
-
   def approvable_type
-    req_from_coposition_app? ? allowed_params[:approvable_type] : 'Developer'
-  end
-
-  def approvable
-    req_from_coposition_app? ? model_find(approvable_type).find(allowed_params[:approvable]) : @dev
-  end
-
-  def model_find(type)
-    [User, Developer].find { |model| model.name == type.titleize }
-  end
-
-  def accept_if_friend_request_or_adding_developer
-    if @user.request_from?(approvable) || approvable_type == 'Developer'
-      Approval.accept(@user, approvable, approvable_type)
-    end
+    allowed_params[:approvable_type]
   end
 end

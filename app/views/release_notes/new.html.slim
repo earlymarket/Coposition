@@ -1,0 +1,15 @@
+h1 New release note
+= form_for @release_note, url: { action: "create" } do |f|
+  = label(:version, "Version number")
+  = f.text_field(:version, placeholder: "v1.0.0")
+  br/
+  = label(:application, "Application")
+  = f.select(:application, options_for_select([['Web', 'web'], ['API', 'api'], ['iOS', 'ios'], ['Android', 'android']]))
+  br/
+  = label :content, "Changes"
+  = f.text_area(:content, class: "materialize-textarea", placeholder: "- Some <b>bold text</b>.<br/>\n- New line with some  <i>italic text</i>.<br/>\n- A third line.")
+  = label :created_at, "Date"
+  = f.date_field(:created_at, class: "release-datepicker")
+  br/
+  br/
+  = f.submit("Add", class: "btn btn-default", id: "add_button")

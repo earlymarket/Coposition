@@ -24,36 +24,28 @@
 
 // -- Misc vendor libs --
 
-//= require lodash/dist/lodash
-//= require moment/moment
-//= require jquery-Mustache/jquery.mustache
-//= require mustache.js/mustache.min
-//= require materialize/dist/js/materialize.min
+//= require lodash/lodash.min
+//= require moment/min/moment.min
+//= require jquery-mustache-earlymarket/jquery.mustache
+//= require mustache/mustache.min
+//= require materialize-css/dist/js/materialize.min
 //= require typeahead.js/dist/typeahead.bundle.min
-//= require ion.rangeSlider/js/ion.rangeSlider.min
 //= require clipboard/dist/clipboard.min
+//= require slick-carousel/slick/slick.min
+//= require sweetalert/dist/sweetalert.min
+//= require datetimepicker-earlymarket/dist/DateTimePicker
+//= require smooch/lib/index
 
 // STILL more up to date version
 //= require nouislider.min
 
 // -- Mapbox stuff --
-//= require mapbox.js/mapbox
+//= require leaflet/dist/leaflet
+//= require mapbox.js/src/mapbox
 //= require leaflet.markercluster/dist/leaflet.markercluster.js
-//= require leaflet.markercluster
 //= require leaflet.locatecontrol/dist/L.Control.Locate.min
 //= require leaflet-fullscreen/dist/Leaflet.fullscreen.min
 //= require control.w3w
-
-// -- Run every page
-
-//= require utility
-//= require navbar
-//= require init
-//= require cleanup
-//= require maps
-//= require permissions
-//= require delay-slider
-//= require slides
 
 // I've put require_tree back in. Any js where the load order isn't important doesn't need to be specified.
 //= require_tree .

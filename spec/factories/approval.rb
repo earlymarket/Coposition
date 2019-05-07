@@ -1,5 +1,7 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :approval do
-    status 'pending'
+    status { 'pending' }
+    association :user
+    association :approvable, factory: :user
   end
 end

@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe ApplicationHelper, type: :helper do
   include CityMacros
 
-  let(:user) { FactoryGirl.create(:user) }
-  let(:developer) { FactoryGirl.create(:developer) }
-  let(:checkin) { FactoryGirl.create(:checkin) }
+  let(:user) { create(:user) }
+  let(:developer) { create(:developer) }
+  let(:checkin) { create(:checkin) }
 
   describe '#humanize_date and #humanize_date_and_time' do
     it 'should accept a date' do
@@ -63,17 +63,6 @@ RSpec.describe ApplicationHelper, type: :helper do
       expect(errors.count).to eq(rendered_count)
       expect(rendered.length).to be >  errors.inject(:+).length
       expect(flash.instance_values['discard'].instance_values['hash'].keys.include?('errors')).to be true
-    end
-  end
-
-  describe '#name_or_email_name' do
-    it 'should return the start of the users email if no username' do
-      user.update(username: '')
-      expect(user.email).to include helper.name_or_email_name(user)
-    end
-
-    it 'should return the username user has a username' do
-      expect(helper.name_or_email_name(user)).to match user.username
     end
   end
 end

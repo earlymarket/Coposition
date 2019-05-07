@@ -1,0 +1,18 @@
+h1 Users
+.center
+  = link_to new_developers_approval_path, class: "btn-floating btn-large waves-effect waves-light primary-color" do
+    i.material-icons add
+p
+  - if @pending.present?
+    | You have #{pluralize(@pending.length, 'request')} pending approval.
+  - else
+    | You've got no approvals pending.
+.collection
+  - @users.each do |user|
+    .collection-item.row id="user#{user.id}" 
+      .col.s8
+        h6.collection-heading= user.email
+      .col.s4
+        = button_to "Remove User", developers_approval_path(current_developer.approvals.find_by(user_id: user.id)), remote: true, method: :delete, class: "btn-flat right", data: { confirm: "Are you sure? You will no longer have access to any of their data" }
+javascript:
+  COPO.utility.setActivePage('users')

@@ -1,0 +1,50 @@
+doctype html
+html
+  head
+    meta content=("text/html; charset=UTF-8") http-equiv="Content-Type"
+    title Coposition
+    = csrf_meta_tags
+    = action_cable_meta_tag
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
+    link href="https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css" rel="stylesheet"
+    link href="https://api.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.mapbox.css" rel="stylesheet"
+    /[if lt IE 9]
+      link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.ie.css' rel='stylesheet'
+    link href="https://api.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/css/font-awesome.min.css" rel="stylesheet"
+    link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" rel="stylesheet"
+    link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+    link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Muli:300|Material+Icons" rel="stylesheet"
+    link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,300|Roboto+Condensed:400,300|Fira+Mono|Material+Icons" rel="stylesheet" type="text/css"
+    link rel="apple-touch-icon" href="/apple-touch-icon-iphone-60x60.png"
+    link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-ipad-76x76.png"
+    link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-iphone-retina-120x120.png"
+    link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-ipad-retina-152x152.png"
+    link href="./manifest.json" rel="manifest"
+    link color="#5bbad5" href="./safari-pinned-tab.svg" rel="mask-icon"
+    meta content="telephone=no" name="format-detection"
+    meta content="no" name="msapplication-tap-highlight"
+    meta content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" name="viewport"
+
+    meta content="./copo-logo.png" property="og:logo"
+    meta content="no-cache" name="turbolinks-cache-control"
+    = cloudinary_js_config
+    /! favicon stuff
+    meta content="#ffffff" name="theme-color"
+    /! end favicon stuff
+    - if controller_name == "welcome" && Rails.env != "test"
+      script async="async" data-sumo-site-id="392e8ae3834cda33e6d3d929716838cd302cea46e1d8def5b6701a560770bebc" src="//load.sumome.com/"
+    = render partial: "hotjar"
+  body class=("c-#{controller_name} a-#{action_name}") data-environment=Rails.env
+    - if action_name == "devs" || params[:controller].match("developer") || action_name == "setup"
+      = render partial: "navbar_devs"
+    - else
+      = render partial: "navbar"
+    main
+      = javascript_tag '$.fn.velocity = function() { return this; };' if Rails.env.test?
+      = javascript_tag(raw render_flash)
+      .outside-container
+        = yield :outside_container
+      .container
+        = yield
+    = render partial: "footer"

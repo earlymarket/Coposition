@@ -4,6 +4,6 @@ class NoApproval
   end
 
   def status
-    'No Approval'
+    "No Approval"
   end
 end

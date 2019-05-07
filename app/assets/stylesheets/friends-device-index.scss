@@ -7,11 +7,20 @@
     height: 100%;
     opacity: 0.85;
     padding: 1rem;
-
+    p {
+      @media (max-width: $lg-breakpoint) {
+        font-size: 0.8rem;
+      }
+    }
     div {
       width: 100%;
     }
   }
+  
+  .title {
+    font-size: 3rem;
+  }
+
   #map {
     width:100%;
     height: 300px;
@@ -25,7 +34,24 @@
     margin: 0.25rem 0 0 0;
   }
 
+  .device-row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+  }
+
   #map-status {
     // font-size: 1.4rem;
+  }
+
+  .center-map {
+    margin-left: 0.6rem;
+    color: $primary-color-darker;
+    cursor: pointer;
+  }
+
+  .leaflet-touch, .leaflet-control-fullscreen a {
+    background-position: 0px 0px;
   }
 }

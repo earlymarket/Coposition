@@ -1,4 +1,4 @@
-$brand: "Roboto Condensed", "Helvetica", sans-serif;
+$brand: "Montserrat", "Helvetica", sans-serif;
 $body-text: "Fira Sans", "Helvetica", sans-serif;
 
 .monospace{
@@ -10,8 +10,6 @@ $body-text: "Fira Sans", "Helvetica", sans-serif;
   font-family: $brand;
   font-weight: 300;
 }
-
-
 
 html {
   font-family: $body-text;
@@ -89,7 +87,9 @@ h5{
 }
 
 h6{
-
+  @extend .dark-text, .brand;
+  font-weight: 700;
+  font-size: 1.2rem;
 }
 
 p {
@@ -126,3 +126,9 @@ footer{
   }
 }
 
+.input-field label {
+  @media screen and (max-width: 660px){
+    top: 0.5rem;
+    font-size: 0.8rem;
+  }
+}

@@ -1,70 +1,64 @@
 class Users::ApprovalsController < ApplicationController
-  before_action :authenticate_user!
-  before_action :correct_url_user?
+  before_action :authenticate_user!, :correct_url_user?, :update_user_last_web_visit_at, except: %i[add apps friends]
+  before_action :url_redirect, only: %i[add apps friends]
 
   def new
+    @approvals_presenter = Users::ApprovalsPresenter.new(current_user, params)
     @approval = Approval.new
-    @approval.approvable_type = params[:approvable_type]
-    @developers = Developer.all.pluck(:company_name)
-    @users = User.all.pluck(:username)
+    gon.push(devs: (Developer.all - current_user.developers).pluck(:company_name))
+  end
+
+  def add
+    redirect_to(new_user_approval_path(current_user, approvable_type: "User", email: params["email"]))
   end
 
   def create
-    user = User.find_by(email: allowed_params[:approvable].downcase)
-    approval = Approval.add_friend(current_user, user) if user
-    if approval_created?(user, approval)
-      approvals_presenter_and_gon('User')
-      redirect_to(user_friends_path, notice: 'Friend request sent')
-    end
+    result = Users::Approvals::CreateUserApproval.call(
+      current_user: current_user,
+      approvable: approval_params[:approvable]
+    )
+    approvals_presenter_and_gon(approvable_type: "User") if result.success?
+    redirect_to(result.path, result.message)
+  end
+
+  def index
+    approvals_presenter_and_gon(params)
+    render "approvals"
   end
 
   def apps
-    approvals_presenter_and_gon('Developer')
-    render 'approvals'
+    redirect_to(user_apps_path(current_user))
   end
 
   def friends
-    approvals_presenter_and_gon('User')
-    render 'approvals'
+    redirect_to(user_friends_path(current_user))
   end
 
-  def approve
-    approval = Approval.find_by(id: params[:id], user: current_user)
-    approvable_type = approval.approvable_type
-    approvable = approval.approvable
-    Approval.accept(current_user, approvable, approvable_type)
-    approvals_presenter_and_gon(approvable_type)
-    approvable.notify_if_subscribed('new_approval', approval_zapier_data(approval)) if approvable_type == 'Developer'
-  end
-
-  def reject
-    approval = Approval.find_by(id: params[:id], user: current_user)
-    approvable_type = approval.approvable_type
-    approvable = approval.approvable
-    current_user.destroy_permissions_for(approvable)
-    if approvable_type == 'User'
-      approvable.destroy_permissions_for(current_user)
-      Approval.where(user: approvable, approvable: current_user, approvable_type: 'User').destroy_all
+  def update
+    result = Users::Approvals::UpdateApproval.call(
+      current_user: current_user,
+      params: params
+    )
+    if result.approvable_type == "Developer"
+      result.approvable.notify_if_subscribed("new_approval", approval_zapier_data(result.approval))
     end
-    approval.destroy
-    approvals_presenter_and_gon(approvable_type)
-    render 'approve'
+    approvals_presenter_and_gon(approvable_type: result.approvable_type)
+  end
+
+  def destroy
+    result = Users::Approvals::DestroyApproval.call(
+      current_user: current_user,
+      params: params
+    )
+    approvals_presenter_and_gon(approvable_type: result.approvable_type)
+    render "update"
   end
 
   private
 
-  def allowed_params
-    params.require(:approval).permit(:approvable, :approvable_type)
-  end
-
-  def approval_created?(user, approval)
-    return true if user && approval.save
-    if user.present?
-      redirect_to new_user_approval_path(approvable_type: 'User'), alert: "Error: #{approval.errors[:base].first}"
-    else
-      UserMailer.invite_email(allowed_params[:approvable]).deliver_now
-      redirect_to user_dashboard_path, notice: 'User not signed up with Coposition, invite email sent!'
-    end
-    false
+  def approval_params
+    params
+      .require(:approval)
+      .permit(:approvable, :approvable_type)
   end
 end

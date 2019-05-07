@@ -1,0 +1,32 @@
+= raw render_flash
+
+| $('#device
+= @device.id
+| ').html("
+= j render @device
+| ");
+
+| var icons = $('#icons
+= @device.id
+| ');
+| icons.html('
+- %w(smartphone watch laptop tablet desktop_windows devices_other).each do |icon|
+  = j devices_choose_icon(@device, icon)
+| ');
+
+| var deviceStatus = $('#
+= @device.id
+| -status');
+| deviceStatus.html("
+= @device.name
+|  permissions 
+= attribute_icon(@device.fogged, 'cloud')
+|  
+= attribute_icon(@device.delayed, 'timer') 
+|  
+= attribute_icon(@device.cloaked, 'visibility_off')
+|  
+= attribute_icon(@device.published, 'public')
+| ");
+
+| initPage();

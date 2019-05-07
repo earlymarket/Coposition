@@ -1,15 +1,23 @@
+class GeojsonCheckin
+  def initialize(record)
+    @type = "Feature"
+    @geometry = { "type": "Point", "coordinates": [record[1], record[0]] }
+    @properties = { "id": record[2] }
+  end
+end
+
 class Checkin < ApplicationRecord
-  validates :lat, presence: :true
-  validates :lng, presence: :true
+  validates :lat, presence: :true, inclusion: { in: -90..90, message: "Latitude must be between -90 and 90" }
+  validates :lng, presence: :true, inclusion: { in: -180..180, message: "longitude must be between -180 and 180" }
+
   belongs_to :device
 
   delegate :user, to: :device
 
   default_scope { order(created_at: :desc) }
-  scope :since, ->(date) { where('created_at > ?', date) }
-  scope :before, ->(date) { where('created_at < ?', date) }
+  scope :since, ->(date) { where("created_at > ?", date) }
 
-  before_update :set_edited, if: proc { lat_changed? || lng_changed? }
+  before_update :set_edited, if: proc { lat_changed? || lng_changed? || created_at_changed? }
 
   reverse_geocoded_by :lat, :lng do |obj, results|
     if results.present?
@@ -18,18 +26,21 @@ class Checkin < ApplicationRecord
         obj.send("output_#{m}=", results.first.send(m)) if (column_names.include? m.to_s) && !obj.fogged
       end
     else
-      obj.update(address: 'Not yet geocoded')
+      obj.update(address: "Not yet geocoded")
     end
   end
 
   after_create do
-    if device
-      reload
-      assign_values
-      save
-    else
-      raise 'Checkin is not assigned to a device.' unless Rails.env.test?
-    end
+    raise "Checkin is not assigned to a device." unless device
+    check_count if Rails.env.staging?
+    reload
+    assign_values
+    save
+  end
+
+  def check_count
+    return unless Checkin.count > 5000
+    Checkin.destroy(Checkin.last(1000).pluck(:id))
   end
 
   def assign_values
@@ -66,7 +77,7 @@ class Checkin < ApplicationRecord
       output_lat: lat,
       output_lng: lng,
       output_address: address,
-      output_city: city,
+      output_city: city || fogged_city,
       output_postal_code: postal_code,
       output_country_code: country_code
     )
@@ -82,13 +93,7 @@ class Checkin < ApplicationRecord
   end
 
   def reverse_geocoded?
-    address != 'Not yet geocoded'
-  end
-
-  def switch_fog
-    update(fogged: !fogged)
-    update_output
-    save
+    address != "Not yet geocoded"
   end
 
   def set_edited
@@ -107,9 +112,9 @@ class Checkin < ApplicationRecord
 
   class << self
     def limit_returned_checkins(args)
-      if args[:action] == 'index' && args[:multiple_devices]
+      if args[:action] == "index" && args[:multiple_devices]
         all
-      elsif args[:action] == 'index' && !args[:multiple_devices]
+      elsif args[:action] == "index" && !args[:multiple_devices]
         paginate(page: args[:page], per_page: args[:per_page])
       else
         limit(1)
@@ -118,7 +123,7 @@ class Checkin < ApplicationRecord
 
     def near_to(near)
       return all unless near
-      near_array = near.split(',')
+      near_array = near.split(",")
       lat = near_array[0].to_f
       lng = near_array[1].to_f
       where(lat: (lat - 0.5)..(lat + 0.5), lng: (lng - 0.5)..(lng + 0.5))
@@ -137,7 +142,7 @@ class Checkin < ApplicationRecord
 
     def unique_places_only(unique_places)
       return all unless unique_places
-      where('created_at IN(SELECT MAX(created_at) FROM checkins GROUP BY fogged_city)')
+      where("created_at IN(SELECT MAX(created_at) FROM checkins GROUP BY fogged_city)")
     end
 
     def hash_group_and_count_by(attribute)
@@ -149,8 +154,8 @@ class Checkin < ApplicationRecord
       one_time_range_ago = 1.send(time_range).ago
       recent_checkins_count = where(created_at: one_time_range_ago..Time.now).count.to_f
       older_checkins_count = where(created_at: 2.send(time_range).ago..one_time_range_ago).count.to_f
-      return unless [recent_checkins_count, older_checkins_count].all? & :positive?
-      (((recent_checkins_count / older_checkins_count) - 1) * 100).round(2)
+      return unless [recent_checkins_count, older_checkins_count].all?(&:positive?)
+      (((recent_checkins_count / older_checkins_count) - 1) * 100).round(0)
     end
 
     def to_csv
@@ -166,20 +171,28 @@ class Checkin < ApplicationRecord
 
     def to_gpx
       GPX::GPXFile.new.tap do |gpx|
-        gpx.routes << GPX::Route.new.tap do |route|
-          all.pluck(:lat, :lng, :created_at).each do |record|
-            route.points << GPX::Point.new(elevation: 0, lat: record[0], lon: record[1], time: record[2])
-          end
+        gpx.tracks << GPX::Track.new.tap do |track|
+          track.append_segment(GPX::Segment.new.tap do |segment|
+            all.pluck(:altitude, :lat, :lng, :created_at).each do |record|
+              segment.append_point(GPX::TrackPoint.new(
+                elevation: record[0], lat: record[1], lon: record[2], time: record[3]
+              ))
+            end
+          end)
         end
       end.to_s
     end
 
     def to_geojson
-      [].tap do |geojson_checkins|
-        all.pluck(:lat, :lng, :id).each do |record|
-          geojson_checkins << GeojsonCheckin.new(record)
-        end
-      end.as_json
+      {
+        "type": "FeatureCollection",
+        "features":
+          [].tap do |geojson_checkins|
+            all.pluck(:lat, :lng, :id).each do |record|
+              geojson_checkins << GeojsonCheckin.new(record)
+            end
+          end
+      }.to_json
     end
   end
 end

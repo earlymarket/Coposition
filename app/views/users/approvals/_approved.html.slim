@@ -1,0 +1,53 @@
+#approved
+  - if @approvals_presenter.approved.present? && approvable_type == "Developer"
+    h5 
+      a href="/help#addingApps" target="_blank" 
+        i.material-icons.right.tooltipped data-tooltip=("Authenticating apps") help
+        | Requiring Authentication
+    p You have not authenticated these apps. These apps do not have access to your Coposition data. You can set their permissions before you authenticate them.
+  - elsif @approvals_presenter.approved.present?
+    h5 Friends
+  - approved.each do |approvable|
+    - approval = current_user.approval_for(approvable)
+    .card-panel
+      .app-card-row.row
+        .col.s8.row.app-name-row.valign-wrapper
+          .ib.col.s3.avatar
+            = approvals_friends_device_link(approvable_type, approvable) do
+              = avatar_for(approvable)
+          .ib.col.s9
+            h5.ib
+              = approvals_friends_device_link(approvable_type, approvable) do
+                = approvals_approvable_name(approvable)
+              = approvals_friends_locator(approvable_type, approvable,  @approvals_presenter.checkins)
+            - if approvable.try(:tagline)
+              .tagline
+                = approvable.tagline
+            div.connected-since
+              | Connected since #{humanize_date(approval.approval_date) unless approval.nil?}
+        .col.s4.permissions-column
+          - if current_user.devices.exists?
+            a.permissions-trigger.btn-flat.right.permissions-button data-id=(approvable.id) href="#perm#{approvable.id}"
+              i.material-icons.right lock
+              | Permissions
+            .modal id="perm#{approvable.id}" 
+              .modal-content
+                div
+                  h4.inline-text
+                    | Permissions controls for #{approvals_approvable_name(approvable)}
+                  a.right.tooltipped data-tooltip=("Permissions help") href="/help#permissions" target="_blank" 
+                    i.material-icons help
+                ul.permissions.collection data-id=(approvable.id)
+                  li.collection-item.row.valign-wrapper.master-permissions
+                    .valign.col.s6
+                      h5.all-permissions Update all permissions
+                    = render partial: "users/permissions/controls", object: approvable, as: "control_object"
+        .col.s4
+          - if approvable_type == "Developer"
+            = link_to "Authenticate", approvable.redirect_url, class: "btn-flat right", target: :_blank
+          - else
+            = button_to "Request check-in", request_checkin_user_friend_path(current_user.url_id, approvable.id), method: :post, remote: true, class: "btn-flat right"
+            = button_to "Revoke Approval", user_approval_path(current_user.url_id, approval), method: :delete, remote: true, class: "btn-flat right", data: { confirm: "Are you sure? They will no longer have access to any of your data." }
+        .col.s4
+          - if approvable_type == "Developer"
+            = button_to "Disconnect", user_approval_path(current_user.url_id, approval), method: :delete, remote: true, class: "btn-flat right", data: { confirm: "Are you sure you wish to disconnect this app? You can add this app again by clicking CONNECT NEW APP. " }

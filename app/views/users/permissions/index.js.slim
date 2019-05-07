@@ -1,0 +1,44 @@
+- if @permissions_presenter.device.present?
+  | var page = 'devices';
+  | var $list = $('#perm
+  = @permissions_presenter.device.id
+  | ').find('ul');
+- else
+  | var page = ($(".c-approvals.a-apps").length === 1 ? 'apps' : 'friends');
+  | var $list = $('#perm
+  = @permissions_presenter.permissible.id
+  | ').find('ul');
+| $('.progress').remove();
+- if @permissions_presenter.permissions.present?
+  | var permissions = "";
+  | var content = "";
+  | var title = "";
+  - @permissions_presenter.permissions.each_with_index do |permission, i|
+    | content = "";
+    | title = "";
+    - if @permissions_presenter.device.present?
+      | title = '
+      = permissions_permissible_title(current_user, permission.permissible)
+      | ';
+    - else
+      | title = '
+      = permissions_device_title(permission.device)
+      | ';
+    | content += "<li class='collection-item row valign-wrapper'><div class='valign col s6'>";
+    | content += title;
+    | content += "</div>";
+    | content += "
+    = j render partial: 'users/permissions/controls', object: permission, as: 'control_object'
+    | ";
+    | content += "</li>";
+    - if @permissions_presenter.permissions[i+1] && permission.permissible_type != @permissions_presenter.permissions[i+1].permissible_type
+      | content += "<div class='permission-divider'></div>";
+    | permissions += content;
+  | if ($list.children().length === 1) {
+    $list.append(permissions);
+    COPO.permissions.switchesOff();
+    COPO.permissions.initSwitches(page, gon.current_user_id, gon.permissions);
+    $('.tipped').tooltip({delay: 50});
+  | }
+- else
+  | $list.html("<p class='center-align'>Add some apps or friends to start editing your permissions</p>");

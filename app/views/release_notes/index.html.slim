@@ -1,0 +1,55 @@
+h1 Release notes
+- if current_user && current_user.admin?
+  .row
+    .center
+      = link_to(new_release_note_path, class: "btn-floating btn-large waves-effect waves-light primary-color") do
+        i.material-icons
+          | add
+.row.center
+  = link_to release_notes_path(application: "web") do
+    span.tag.web
+      | web
+  = link_to release_notes_path(application: "api") do
+    span.tag.api
+      | api
+  = link_to release_notes_path(application: "ios") do
+    span.tag.ios
+      | iOS
+  = link_to release_notes_path(application: "android") do
+    span.tag.android
+      | android
+  = link_to release_notes_path do
+    span.clear
+      i.material-icons
+        | clear
+ul.collection
+  - @release_notes.each do |note|
+    li.collection-item
+      div
+        .title
+          h4
+            = note.version
+          label.bottom
+            = humanize_date(note.created_at)
+          = link_to release_notes_path(application: note.application) do
+            span class=("#{note.application} badge tag")
+              = note.application
+        div
+          = note.content.html_safe
+        - if current_user && current_user.admin?
+          .card-action
+            = link_to notify_release_note_path(note.id), method: :post, class: 'btn btn-success' do
+              i.material-icons.right
+                | send
+              | Notify Users
+            = link_to edit_release_note_path(note.id), class: 'btn' do
+              i.material-icons.right
+                | mode_edit
+              | Edit 
+            = link_to release_note_path(note.id), method: :delete, class: 'btn red white-text' do
+              i.material-icons.white-text.right
+                | delete_forever
+              | Delete 
+.center-align
+  = will_paginate @release_notes
+  div

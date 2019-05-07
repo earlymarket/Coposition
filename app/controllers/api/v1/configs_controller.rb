@@ -1,7 +1,7 @@
 class Api::V1::ConfigsController < Api::ApiController
   respond_to :json
 
-  skip_before_action :find_user
+  skip_before_action :find_user, :update_last_mobile_visit_at
 
   def index
     render json: @dev.configs
@@ -13,6 +13,10 @@ class Api::V1::ConfigsController < Api::ApiController
 
   def update
     configuration.update(custom: custom_params)
+    CreateActivity.call(entity: configuration,
+                        action: :update,
+                        owner: configuration.device.user,
+                        params: custom_params.to_h)
     render json: configuration
   end
 

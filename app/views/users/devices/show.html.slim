@@ -1,0 +1,103 @@
+- content_for :outside_container do
+  = render "users/shared/device_show"
+  #dtBox
+  .bottom-panel.valign-wrapper
+    .buttons
+      a.modal-trigger.btn.red.white-text.delete href="#delete#{@device_show_presenter.device.id}" id="deleteButton#{@device_show_presenter.device.id}" 
+        | Delete...
+      a.modal-trigger.btn.blue.white-text href="#checkin#{@device_show_presenter.device.id}" id="checkinButton#{@device_show_presenter.device.id}"
+        | Check-in
+      a.modal-trigger.btn.green.white-text.downloadButton data-tooltip=("Download range") href="#download#{@device_show_presenter.device.id}" id="downloadButton#{@device_show_presenter.device.id}"
+        | Download
+
+  .modal.checkin-modal id="checkin#{@device_show_presenter.device.id}"
+    .modal-content
+      h4.center-align Checkin
+      .center-align
+        p.center-align
+          | You're going to check-in now
+        a#checkinNow.btn.blue.white-text data-turbolinks="false" href="#" Checkin now
+        br
+        br
+        a#checkinFoggedNow.btn.blue.white-text data-turbolinks="false" href="#" Checkin now (fogged)
+        - if @device_show_presenter.device.config && @device_show_presenter.device.config.custom && @device_show_presenter.device.config.custom["assigned"].to_s == "true"
+          br
+          br
+          = link_to remote_checkin_user_device_path(current_user.url_id, @device_show_presenter.device.id), { method: :post, id: "remoteCheckin#{@device_show_presenter.device.id}", remote: true, class: "btn blue white-text" } do
+            | Remote check-in
+
+  .modal.delete-modal id="delete#{@device_show_presenter.device.id}"
+    .modal-content
+      h4.center-align Delete checkins
+      .center-align
+        p.center-align
+          | Warning, this is a permanent change that can only be undone by uploading a back-up of your location history. We strongly recommend downloading a back-up of your device's data before deleting any check-in(s).
+        a.btn href="#{user_device_path(current_user.url_id, @device_show_presenter.device)}.csv?download=csv" 
+          | Download back-up
+        p.center-align
+          - if @device_show_presenter.date_range[:from]
+            | Currently, you are filtering to only see check-ins from #{humanize_date(@device_show_presenter.date_range[:from])} to #{humanize_date(@device_show_presenter.date_range[:to])}.
+          - else
+            | Currently, you are seeing all check-ins for this device.
+        = link_to "Delete all check-ins", user_device_checkins_path(current_user.url_id, @device_show_presenter.device.id), { method: :delete, class: "btn red white-text delete-all", data: { confirm: "Delete all checkins for this device?" } }
+        - if @device_show_presenter.date_range[:from]
+          br
+          br
+          = link_to "Delete visible check-ins", user_device_checkins_path(current_user.url_id, @device_show_presenter.device.id, from: @device_show_presenter.date_range[:from], to: @device_show_presenter.date_range[:to]), { method: :delete, class: "btn red white-text", data: { confirm: "Delete checkins from #{humanize_date(@device_show_presenter.date_range[:from])} to #{humanize_date(@device_show_presenter.date_range[:to])}?" } }
+      br
+      h4.center-align Delete device
+      .center-align
+        p.center-align
+          | You will no longer be able to create check-ins with this device.
+        = link_to "Delete device", "#", { id: "deleteDevice", class: "btn red white-text", remote: true }
+  /! templates
+  script#markerPopupTmpl type="x-tmpl-mustache" 
+    h3 
+      | {{ &idLink }}  
+      i
+        | {{ edited }}
+      i.tooltipped data-tooltip=("Check-in date has been edited to the future") {{ future }}
+      | {{ &revertButton }}
+    ul
+      h3.lined
+        span.lined-pad Date
+      li.ta-center
+        | {{ &inlineDate }}
+      h3.lined
+        span.lined-pad Coordinates
+      li.ta-center
+        | {{ &inlineCoords }}
+      h3.lined
+        span.lined-pad Address
+      li.address
+        | {{ address }}
+      | {{ &foggedAddress }}
+      li
+        | {{ &foggle }} {{ &deletebutton }}
+
+  script#cityPopupTmpl type="x-tmpl-mustache"
+    h3.ta-complete-center.tooltipped data-tooltip=("City view is enabled")
+      i.material-icons location_city 
+      | {{ address }}
+    ul
+      h3.lined
+        span.lined-pad First visited
+      li.ta-center
+        | {{ &inlineDate }}
+      h3.lined
+        span.lined-pad Number of check-ins
+      li.ta-center
+        | {{ id }}
+      h3.lined
+        span.lined-pad Coordinates
+      li.ta-center
+        | {{ lat }}, {{ lng }}
+
+  script#createCheckinTmpl type="x-tmpl-mustache" 
+    ul
+      li Latitude: {{ lat }}
+      li Longitude: {{ lng }}
+      li 
+        | {{ &checkinLink }}
+
+= render "device_modals", device: @device_show_presenter.device

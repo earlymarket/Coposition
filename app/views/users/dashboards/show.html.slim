@@ -1,0 +1,65 @@
+#gonvariables
+  = Gon::Base.render_data
+section.dashboard
+  h4
+    | Hello #{current_user.username}
+section.dashboard.row
+  .col.s12
+    #map-wrapper style=("position: relative;")
+      p#map-status
+      #map-overlay.valign-wrapper.z-depth-1.hide
+        div
+          h5 style=("text-align: center;")  Nothing here yet
+          p This is where you will see details on your recent check-ins and the location of your friends who are also using Coposition.
+          p
+            | To start managing your location data, go to the #{link_to("devices", user_devices_path, class: "hyperlink")} page to create a device or download the Coposition mobile app.
+          p
+            | To add a friend who you wish to securely share your location with, go to your  #{link_to("friends", user_friends_path, class: "hyperlink")} page and send them an invite.
+          p
+            | For further information on how to use your Coposition account, please see our #{link_to("help centre", help_path, class: "hyperlink")}.
+      #map
+.divider
+p
+  | You checked in #{@dashboard_presenter.weeks_checkins_count || 0} times this week.
+  - if @dashboard_presenter.percent_change.present?
+    |  That is an #{@dashboard_presenter.percent_change > 0 ? "increase" : "decrease"} of #{@dashboard_presenter.percent_change.abs}% from last week.
+  - if @dashboard_presenter.most_used_device.present?
+    |  Your most used device is 
+    = link_to @dashboard_presenter.most_used_device.name, user_device_path(current_user, @dashboard_presenter.most_used_device), class: "hyperlink"
+.row
+  = text_field_tag(:checkin_id, params["checkin_id"], placeholder: "Check-in id", class: 'col s3', required: true)
+  = button_tag "Find check-in", class: "waves-effect waves-light btn", id: "find-checkin", type: "submit"
+
+- if @dashboard_presenter.last_countries
+  .row.valign-wrapper
+    h5.col.s8
+      = @dashboard_presenter.visited_countries_title
+    .col.s4.right-align
+      = link_to "View All", user_countries_path(current_user.url_id), class: "hyperlink"
+
+  table
+    thead
+      tr
+        td
+        td Country
+        td Last Visited
+    tbody
+      - @dashboard_presenter.last_countries.each do |country|
+        tr
+          td
+            = dashboard_flag(country[:country_code])
+          td
+            = dashboard_country_name(country[:country_code])
+          td
+            = humanize_date(country[:created_at])
+  .divider
+section#dashboard-quicklinks
+  p
+    | You have #{link_to(pluralize(current_user.devices.count, "device"), user_devices_path, class: "hyperlink")}, #{link_to(pluralize(current_user.developers.not_coposition_developers.count, "connected app"), user_apps_path, class: "hyperlink")} and #{link_to(pluralize(current_user.friends.count, "friend"), user_friends_path, class: "hyperlink")}.
+    |  You have #{link_to(pluralize(current_user.developer_requests.count, "app"), user_apps_path, class: "hyperlink")} and
+    |  #{link_to(pluralize(current_user.friend_requests.count, "friend"), user_friends_path, class: "hyperlink")} awaiting your approval.
+  div
+    script#markerPopupTmpl type="x-tmpl-mustache" 
+      h3 Device: {{ &devicebutton }}
+      ul
+        li.address Address: {{ address }}

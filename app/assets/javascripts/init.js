@@ -6,9 +6,32 @@ $(document).on('ready page:change', function() {
     belowOrigin: true
   });
 
+  var isTouchDevice = navigator.maxTouchPoints
+  if (L.Browser.chrome && L.Browser.touch && isTouchDevice) {
+      L.Browser.pointer = false;
+  }
+
+  // All modals should be initialized starting from 0.98
+  $('.modal').modal();
+
   // We're calling this later now in the dodgy hack
   // // materialize accordion init
-  // $('.collapsible').collapsible();
+  $('.collapsible').collapsible({
+    onOpen: function(el) {
+      collapsible = el.find(".collapsible-header");
+
+      if (collapsible.data("onopen")) {
+        window[collapsible.data("onopen")]();
+      }
+    },
+    onClose: function(el) {
+      collapsible = el.find(".collapsible-header");
+
+      if (collapsible.data("onclose")) {
+        window[collapsible.data("onclose")]();
+      }
+    }
+  });
 
   // materialize parallax init
   $('.parallax').parallax();
@@ -40,66 +63,13 @@ $(document).on('ready page:change', function() {
   $('ul.tabs').tabs();
 
   // Attachinary init
-  $('.attachinary-input').attachinary()
+  $('.attachinary-input').attachinary();
   // Event listeners
-  setup();
-
-  // dodgy hack to fix the multiple sidenav problem
-  // works by deleting and recreating the nav dom node
-  // inspired by this attrocity:
-  // https://github.com/Dogfalo/materialize/issues/1894
-  (function () {
-    var oldMenu = $('.button-collapse').remove()
-    $('nav').prepend(oldMenu)
-    $(".button-collapse").sideNav();
-    $('.collapsible').collapsible();
-  }());
 
   $('.scrollspy').scrollSpy();
 
+  if ($('body').attr('data-environment') != 'test') {
+    COPO.smooch.initSmooch();
+  }
 });
 
-
-function setup() {
-  addEventListeners();
-  responsiveVideo();
-}
-
-function addEventListeners() {
-  addClickListeners();
-  addWindowResizeListeners();
-}
-
-function addClickListeners() {
-  $(".landing-section .start-btn").click(function(e) {
-    var offset = $(".landing-section.splash").height();
-    $("body").animate({ scrollTop: offset });
-  });
-}
-
-function addWindowResizeListeners() {
-  $(window).resize(function(e) {
-    responsiveVideo();
-  });
-}
-
-function responsiveVideo() {
-  var ratio = 1920/1080;
-  var $h = $(".promo").height();
-  var $w = $(".promo").width();
-  var rRatio = $w/$h;
-
-  if(rRatio < ratio) {
-    // Aspect ratio is lower than 16:9
-    $(".promo video").css({
-      width: 'auto',
-      height: '100%'
-    });
-  }else{
-    // Aspect ratio is higher than 16:9
-    $(".promo video").css({
-      width: '100%',
-      height: 'auto'
-    });
-  }
-}

@@ -1,32 +1,51 @@
 Rails.application.routes.draw do
+  use_doorkeeper do
+    controllers applications: "oauth/applications",
+                authorizations: "oauth/authorizations",
+                tokens: "oauth/tokens"
+  end
+
   ActiveAdmin.routes(self)
-  root to: 'welcome#index'
+  mount ActionCable.server => "/cable"
+  root to: "welcome#index"
 
   # Specified routes
 
-  get '/api', to: 'welcome#api'
-  get '/help', to: 'welcome#help'
-  get '/getting_started', to: 'welcome#getting_started'
+  get "/api", to: "welcome#api"
+  get "/help", to: "welcome#help"
+  get "/devs/setup", to: "welcome#setup"
+  get "/terms", to: "welcome#terms"
+  get "/devs", to: "welcome#devs"
+  get "/add_friend", to: "users/approvals#add"
+  get "/apps", to: "users/approvals#apps"
+  get "/friends", to: "users/approvals#friends"
+  get "/devices", to: "users/devices#devices"
 
   # Devise
 
   devise_for :users, controllers: {
-    registrations: 'users/devise/registrations',
-    sessions: 'users/devise/sessions'
+    registrations: "users/devise/registrations",
+    sessions: "users/devise/sessions"
   }
+  devise_scope :user do
+    get "/account", to: "users/devise/registrations#edit"
+  end
   devise_for :developers, controllers: {
-    registrations: 'developers/devise/registrations',
-    sessions: 'developers/devise/sessions'
+    registrations: "developers/devise/registrations",
+    sessions: "developers/devise/sessions"
   }
 
   # Attachinary
-  mount Attachinary::Engine => '/attachinary'
+  mount Attachinary::Engine => "/attachinary"
 
   # API
 
-  namespace :api, path: '', constraints: { subdomain: 'api' }, defaults: { format: 'json' } do
-    scope module: :v1, constraints: ApiConstraint.new(version: 1, default: true) do
+  env_constraint = Constraints::EnvironmentConstraint.new
+
+  namespace :api, path: env_constraint.path, constraints: env_constraint.constraints, defaults: { format: "json" } do
+    scope module: :v1, constraints: Constraints::ApiConstraint.new(version: 1, default: true) do
       resources :subscriptions, only: [:create, :destroy]
+      resources :release_notes, only: :index
       resources :configs, only: [:index, :show, :update]
       resource :uuid, only: [:show]
       resources :checkins, only: [:create] do
@@ -48,8 +67,10 @@ Rails.application.routes.draw do
         resources :approvals, only: [:create, :index, :update, :destroy], module: :users do
           collection do
             get :status
+            post :email
           end
         end
+        resources :email_requests, only: [:index, :destroy], module: :users
         resources :checkins, only: [:index] do
           collection do
             get :last
@@ -62,50 +83,68 @@ Rails.application.routes.draw do
         end
         resources :devices, only: [:index, :create, :show, :update], module: :users do
           resources :permissions, only: [:update, :index]
-          put '/permissions', to: 'permissions#update_all'
+          put "/permissions", to: "permissions#update_all"
         end
       end
       namespace :mobile_app do
         resources :sessions, only: [:create, :destroy]
       end
     end
-    match '*path', to: -> (_env) { [404, {}, ['{"error": "route_not_found"}']] }, via: :all
+    match "*path", to: -> (_env) { [404, {}, ["{'error': 'route_not_found'}"]] }, via: :all
   end
 
   # Users
-
   resources :users, only: [:show], module: :users do
     resource :dashboard, only: [:show]
     resources :devices, except: :edit do
-      member { get :shared, :info }
-      resources :checkins, only: [:index, :show, :create, :new, :update]
-      delete '/checkins/', to: 'checkins#destroy_all'
-      delete '/checkins/:id', to: 'checkins#destroy'
+      member do
+        get :download
+        get :shared, :info
+        post :remote_checkin
+      end
+      resources :checkins, only: [:index, :show, :create, :new, :update, :destroy] do
+        collection { post :import }
+      end
+      delete "/checkins/", to: "checkins#destroy_all"
       resources :permissions, only: [:update, :index]
     end
-    resources :approvals, only: [:new, :create] do
-      member do
-        post 'approve'
-        post 'reject'
+    resources :checkins, only: [:show, :index, :update, :destroy]
+    resources :approvals, only: [:new, :create, :update, :destroy]
+    resources :email_subscriptions, only: :update do
+      collection do
+        get "unsubscribe"
       end
     end
+    resources :email_requests, only: :destroy
     resource :create_dev_approvals, only: :create
     resources :friends, only: [:show] do
       member do
-        get 'show_device'
+        get "show_device"
+        post "request_checkin"
       end
     end
-    get '/apps', to: 'approvals#apps'
-    get '/friends', to: 'approvals#friends'
+    get "/apps", to: "approvals#index", defaults: { approvable_type: "Developer" }
+    get "/friends", to: "approvals#index", defaults: { approvable_type: "User" }
+    collection do
+      get :me
+    end
+    resources :countries, only: :index
   end
 
   # Devs
   resources :developers, only: [:edit, :update]
 
+  # Release notes
+  resources :release_notes do
+    member { post :notify }
+  end
+
+  resources :activities, only: :index
+
   namespace :developers do
-    get '/', to: 'consoles#show'
+    get "/", to: "consoles#show"
     resource :console, only: [:show] do
-      collection { post 'key' }
+      collection { post "key" }
     end
     resources :approvals, only: [:index, :new, :create, :destroy]
     # For cool API usage stats in the future

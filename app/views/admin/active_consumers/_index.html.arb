@@ -1,0 +1,17 @@
+table do
+  thead do
+    tr do
+      ACTIVE_USER_HEADERS.each &method(:th)
+    end
+  end
+
+  tbody do
+    params[:collection].each do |item|
+      tr do
+        th item['month']
+        th item['total']
+        th '%.2f %' % item['growth'].to_i
+      end
+    end
+  end
+end

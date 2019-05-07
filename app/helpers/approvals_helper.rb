@@ -1,50 +1,41 @@
 module ApprovalsHelper
-  def approvals_input(type)
-    if type == 'Developer'
-      { placeholder: 'App name', class: 'validate devs_typeahead', required: true }
-    elsif type == 'User'
-      { placeholder: 'email@email.com', class: 'validate', required: true }
+  def approvals_approvable_name(approvable)
+    case approvable.class.name
+    when "User"
+      approvable.display_name
+    when "Developer"
+      approvable.company_name
+    when "EmailRequest"
+      approvable.email
     end
   end
 
-  def approvals_approvable_name(approvable)
-    if approvable.respond_to? :username
-      approvable.username.present? ? approvable.username : approvable.email.split('@').first
+  def approvals_add_text(type)
+    type == "User" ? "Add new friend" : "Connect new app"
+  end
+
+  def approvals_new_text(type)
+    if type == "User"
+      "<p>Enter the email of the friend you would like to add</p>".html_safe
     else
-      approvable.company_name
+      "<p>Enter the App you would like to connect to.</p>
+      <p>Your data will not be accessible until you complete the authentication process.</p>".html_safe
     end
   end
 
   def approvals_friends_device_link(approvable_type, approvable, &block)
-    return capture(&block) unless approvable_type == 'User'
+    return capture(&block) unless approvable_type == "User"
     str = '<a href="'
     str << Rails.application.routes.url_helpers.user_friend_path(current_user.url_id, approvable)
     str << '" class="black-text">'
     str << capture(&block)
-    str << '</a>'
+    str << "</a>"
     raw str
   end
 
-  def approvals_friends_locator(approvable_type, approvable)
-    return unless approvable_type == 'User'
+  def approvals_friends_locator(approvable_type, approvable, checkins)
+    return unless approvable_type == "User"
+    return if checkins.find { |f| f[:userinfo]["id"] == approvable.id }[:lastCheckin].blank?
     "<i data-friend='#{approvable.id}' class='center-map material-icons'>my_location</i>".html_safe
-  end
-
-  def approvals_pending_friends(user)
-    string = ''
-    user.pending_friends.each_with_index do |friend, index|
-      string += friend.email
-      string += ', ' if index < user.pending_friends.length - 2
-      string += ' and ' if index == user.pending_friends.length - 2
-    end
-    string
-  end
-
-  def create_approval_url(type)
-    if type == 'Developer'
-      Rails.application.routes.url_helpers.user_create_dev_approvals_path(current_user.url_id)
-    elsif type == 'User'
-      Rails.application.routes.url_helpers.user_approvals_path(current_user.url_id)
-    end
   end
 end

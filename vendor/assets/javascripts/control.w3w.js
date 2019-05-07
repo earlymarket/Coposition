@@ -46,7 +46,7 @@ L.Control.w3w = L.Control.extend({
 			    var data;
 			    if (xhr.readyState == 4) {
 			      status = xhr.status;
-			      if (status == 200) {
+			      if (status == 200 && xhr.response.words) {
 			        successHandler && successHandler(xhr.response);
 			      } else {
 			        errorHandler && errorHandler(status);

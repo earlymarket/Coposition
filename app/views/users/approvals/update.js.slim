@@ -1,0 +1,89 @@
+| $('#gonvariables').html("
+= j Gon::Base.render_data
+| ");
+
+| if (COPO.utility.urlParam("redirect")) {
+  window.location.replace(COPO.utility.urlParam("redirect"));
+| }
+
+| $('nav').replaceWith("
+= j (render partial: 'navbar')
+| ");
+
+| $('#approved').html("
+= j (render partial: 'users/approvals/approved', locals: { approved: @approvals_presenter.approved, devices: @approvals_presenter.devices, approvable_type: @approvals_presenter.approvable_type })
+| ");
+
+- if @approvals_presenter.requested.present?
+  | if ($('#requested').length) {
+  | $('#requested').html("
+  = j (render partial: "users/approvals/requested", locals: { requested: @approvals_presenter.requested })
+  | ");
+  | }
+- else
+  | if ($('#requested').length) { $('#requested').remove(); }
+
+- if !@approvals_presenter.approved.present? && !@approvals_presenter.complete.present? && @approvals_presenter.approvable_type === "Developer"
+  | $('.container').append("
+  | <p class='center'> You are not currently connected to any applications. Add applications to start controlling their access to your data.</p>
+  | ");
+
+- if !@approvals_presenter.approved.present?
+  | $('#approved').remove();
+
+- if @approvals_presenter.complete.present?
+  | if ($('#complete').length) {
+  | $('#complete').html("
+  = j (render partial: 'users/approvals/complete', locals: { complete: @approvals_presenter.complete })
+  | ");
+  | } else {
+  | $('.container').append("
+  = j (render partial: 'users/approvals/complete', locals: { complete: @approvals_presenter.complete })
+  | ");
+  | }
+- else
+  | if ($('#complete').length) { $('#complete').remove(); }
+
+- if @approvals_presenter.pending.present?
+  | if ($('#pending').length) {
+  | $('#pending').html("
+  = j (render partial: 'users/approvals/pending', locals: { pending: @approvals_presenter.pending })
+  | ");
+  | } else {
+  | $('.container').append("
+  = j (render partial: 'users/approvals/pending', locals: { pending: @approvals_presenter.pending })
+  | ");
+  | }
+- else
+  | $('#pending').remove();
+
+| $(document).unbind('scroll');
+
+| var page = "friends" in gon ? 'friends' : 'apps';
+| COPO.permissionsTrigger.initTrigger(page);
+| COPO.permissions.initSwitches(page, gon.current_user_id, gon.permissions);
+
+| if (gon.friends && gon.friends.some(function(friend){ return friend.lastCheckin })) {
+  $('#map-overlay').addClass('hide');
+  COPO.maps.refreshFriendMarkers(gon.friends);
+  gon.friends.forEach(function(friend) {
+    if (!friend.lastCheckin) {
+      $('i[data-friend="' + friend.userinfo.id + '"]').remove();
+    }
+  });
+| } else if (gon.friends){
+  if (COPO.maps.friendMarkers) { map.removeLayer(COPO.maps.friendMarkers) }
+  $('#map-overlay').removeClass('hide');
+| }
+
+| $('.center-map').on('click', function() {
+  var friend_id = this.dataset.friend;
+  var friend = gon.friends.find(function(friend){ 
+    return friend.userinfo.id.toString() === friend_id
+  });
+  var checkin = friend.lastCheckin;
+  COPO.utility.scrollTo('#quicklinks', 200);
+  setTimeout(function(){
+ 	  COPO.maps.centerMapOn(checkin.lat, checkin.lng)
+ 	}, 200);
+| });

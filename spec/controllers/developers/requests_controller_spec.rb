@@ -1,27 +1,26 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Developers::RequestsController, type: :controller do
   include ControllerMacros
 
   let(:developer) { create_developer }
-  let(:request) do
-    req = FactoryGirl.create :request
-    developer.requests << req
-    req
+  
+  before do
+    request = create :request
+    developer.requests << request
+    request
   end
 
-  describe 'PUT #pay' do
-    it 'should change developers requests paid from false to true' do
-      request
+  describe "PUT #pay" do
+    it "changes developers requests paid from false to true" do
       put :pay
       developer.requests.each { |request| expect(request[:paid]).to be true }
       expect(response).to redirect_to(developers_console_path)
     end
   end
 
-  describe 'get #index' do
-    it 'should paginate and assign developers requests to requests' do
-      request
+  describe "get #index" do
+    it "paginates and assigns developers requests to requests" do
       get :index
       expect(assigns(:requests)).to eq developer.requests
     end

@@ -1,0 +1,32 @@
+#gonvariables
+  = Gon::Base.render_data
+h1.title
+  = @friend_show_presenter.friend.display_name
+  | 's devices
+section.friends-device-index.row
+  .col.s12
+    #map-wrapper style=("position: relative;") 
+      p#map-status
+      #map-overlay.valign-wrapper.z-depth-1.hide
+        div
+          h5 style=("text-align: center;")  Nothing here yet
+          p Your friend has not shared any devices or checkins yet!
+      #map
+- @friend_show_presenter.devices.each do |device|
+  .card-panel
+    .device-row
+      = link_to show_device_user_friend_path(current_user.url_id, @friend_show_presenter.friend, device_id: device.id, first_load: true) do
+        h5.valign-wrapper
+          i.material-icons.medium>= device.icon
+          |  #{device.name}
+      - if device.safe_checkin_info_for(permissible: current_user, action: "last")[0].present?
+        div
+          i.center-map.material-icons data-device='#{device.id}' my_location
+    = friends_device_last_checkin(device.safe_checkin_info_for(permissible: current_user, action: "last")[0])
+.center
+  = will_paginate @friend_show_presenter.devices
+  div
+    script#markerPopupTmpl type="x-tmpl-mustache" 
+      h3 Device: {{ &devicebutton }}
+      ul
+        li.address Address: {{ address }}

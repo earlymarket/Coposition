@@ -1,0 +1,19 @@
+h1 
+  | Hi 
+  = @email
+  | ,
+p
+  | We have not received any check-ins from any of your devices this week, visit 
+  = link_to "this link", @url
+  |  to choose a device and check-in or download our mobile app.
+- if @inactive_devices.present?
+  p You have not checked in on the following devices in over 3 months:
+  ul
+    - @inactive_devices.each do |device|
+      li
+        = link_to device.name, @url + "/#{device.id}"
+p Coposition Support
+p
+  = link_to "Unsubscribe", settings_unsubscribe_url(id: @unsubscribe)
+p
+  = link_to "Forgot your password?", @forgot_password

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Api::V1::DevelopersController, type: :controller do
   include ControllerMacros
 
-  let(:dev) { FactoryGirl.create :developer }
+  let(:dev) { create :developer }
 
   before do
     request.headers['X-Api-Key'] = dev.api_key

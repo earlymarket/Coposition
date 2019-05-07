@@ -6,18 +6,23 @@ class Api::V1::Users::PermissionsController < Api::ApiController
   before_action :require_ownership
 
   def index
-    permissions = Permission.where(device_id: params[:device_id]).not_coposition_developers
-    render json: permissions
+    device = Device.find(params[:device_id])
+    permissions = params[:complete] ? device.complete_permissions : device.permissions
+    render json: permissions.not_coposition_developers
   end
 
   def update
     permission = Permission.find(params[:id])
     permission.update(allowed_params)
+    CreateActivity.call(entity: permission, action: :update, owner: current_user, params: allowed_params.to_h)
     render json: permission
   end
 
   def update_all
     permissions = Permission.where(device_id: params[:device_id]).not_coposition_developers
+    permissions.each do |permission|
+      CreateActivity.call(entity: permission, action: :update, owner: current_user, params: allowed_params.to_h)
+    end
     permissions.update_all(allowed_params.to_h)
     render json: permissions
   end

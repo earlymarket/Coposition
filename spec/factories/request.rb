@@ -1,5 +1,5 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :request do
-    developer { FactoryGirl.create :developer }
+    developer { create :developer }
   end
 end

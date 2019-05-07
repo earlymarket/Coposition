@@ -1,0 +1,33 @@
+#pending
+  h5 Pending Requests
+  - pending.each do |approvable|
+    - approval = current_user.approval_for(approvable)
+    .card-panel
+      .row.app-card-row
+        .col.s8.app-name-row.row.valign-wrapper
+          = avatar_for(approvable)
+          .valign
+            h5.ib
+              = approvals_approvable_name(approvable)
+            div
+              = approvable.try(:tagline)
+        .col.s4.permissions-column
+          - if current_user.devices.exists? && approval.approvable_type == "User"
+            a.permissions-trigger.btn-flat.right.permissions-button data-id=(approvable.id) href="#perm#{approvable.id}"
+              i.material-icons.right lock
+              | Permissions
+            .modal id="perm#{approvable.id}" 
+              .modal-content
+                div
+                  h4.inline-text
+                    | Permissions controls for #{approvals_approvable_name(approvable)}
+                  a.right.tooltipped data-tooltip=("Permissions help") href="/help#permissions" target="_blank" 
+                    i.material-icons help
+                ul.permissions.collection data-id=(approvable.id)
+                  li.collection-item.row.valign-wrapper.master-permissions
+                    .valign.col.s6
+                      h5.all-permissions Update all permissions
+                    = render partial: "users/permissions/controls", object: approvable, as: "control_object"
+        .col.s4.valign.right-align
+          = button_to "Approve", user_approval_path(current_user.url_id, approval.id), method: :put, remote: true, class: "waves-effect waves-orange btn-flat right"
+          = button_to "Reject", user_approval_path(current_user.url_id, approval.id), method: :delete, remote: true, class: "waves-effect waves-orange btn-flat right"

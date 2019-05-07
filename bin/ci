@@ -3,4 +3,5 @@
 set -e
 
 bin/rake spec
+bin/performance
 bin/quality

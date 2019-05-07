@@ -1,27 +1,25 @@
 class Device < ApplicationRecord
-  include SlackNotifiable, HumanizeMinutes, RemoveId
+  include SlackNotifiable, RemoveId, PublicActivity::Common
 
   belongs_to :user
   has_one :config, dependent: :destroy
-  has_one :configurer, through: :configs, source: :developer
-  has_many :checkins, dependent: :destroy
+  has_one :configurer, through: :config, source: :developer
+  has_many :checkins
   has_many :permissions, dependent: :destroy
-  has_many :developers, through: :permissions, source: :permissible, source_type: 'Developer'
-  has_many :permitted_users, through: :permissions, source: :permissible, source_type: 'User'
-  has_many :allowed_user_permissions, -> { where.not privilege: 0 }, class_name: 'Permission'
-  has_many :allowed_users, through: :allowed_user_permissions, source: :permissible, source_type: 'User'
+  has_many :developers, through: :permissions, source: :permissible, source_type: "Developer"
+  has_many :permitted_users, through: :permissions, source: :permissible, source_type: "User"
+  has_attachment :csv, accept: :raw
 
-  validates :name, uniqueness: { scope: :user_id }, if: :user_id
+  validates :name, uniqueness: { scope: :user_id }, if: :user_id, length: { in: 4..20 },
+                   format: { with: /\A[A-Za-z][A-Za-z0-9]*(?:_+[A-Za-z0-9]+)*\z/,
+                             message: "only allows alphanumeric and underscores" }
+
+  validates :icon, presence: true
+
+  scope :active_devices, -> { joins(:user).where(users: { is_active: true }) }
 
   before_create do |dev|
     dev.uuid = SecureRandom.uuid
-  end
-
-  def construct(current_user, device_name, icon_name)
-    if update(user: current_user, name: device_name, icon: icon_name)
-      developers << current_user.developers
-      permitted_users << current_user.friends
-    end
   end
 
   def safe_checkin_info_for(args)
@@ -30,7 +28,7 @@ class Device < ApplicationRecord
   end
 
   def filtered_checkins(args)
-    sanitized = args[:copo_app] ? checkins : permitted_history_for(args[:permissible])
+    sanitized = args[:copo_app] ? past_checkins : permitted_history_for(args[:permissible])
     sanitized.since_time(args[:time_amount], args[:time_unit])
              .near_to(args[:near])
              .on_date(args[:date])
@@ -39,25 +37,25 @@ class Device < ApplicationRecord
   end
 
   def sanitize_checkins(sanitized, args)
-    if args[:type] == 'address'
-      sanitized.map(&:reverse_geocode!) unless args[:action] == 'index' && args[:multiple_devices]
+    if args[:type] == "address"
+      sanitized.map(&:reverse_geocode!) unless args[:action] == "index" && args[:multiple_devices]
     end
     return sanitized if args[:copo_app]
-    replace_checkin_attributes(args[:permissible], sanitized)
+    replace_checkin_attributes(sanitized, args[:permissible])
   end
 
-  def replace_checkin_attributes(permissible, sanitized)
+  def replace_checkin_attributes(sanitized, permissible)
     if can_bypass_fogging?(permissible)
       sanitized.select(:id, :created_at, :updated_at, :device_id, :lat,
-                       :lng, :address, :city, :postal_code, :country_code)
+        :lng, :address, :city, :postal_code, :country_code, :speed, :altitude)
     elsif fogged
-      sanitized.select('id', 'created_at', 'updated_at', 'device_id', 'fogged_lat AS lat', 'fogged_lng AS lng',
-                       'fogged_city AS address', 'fogged_city AS city', 'fogged_country_code AS postal_code',
-                       'fogged_country_code AS country_code')
+      sanitized.select("id", "created_at", "updated_at", "device_id", "fogged_lat AS lat", "fogged_lng AS lng",
+        "fogged_city AS address", "fogged_city AS city", "fogged_country_code AS postal_code",
+        "fogged_country_code AS country_code", "null::text AS speed", "null::text AS altitude")
     else
-      sanitized.select('id', 'created_at', 'updated_at', 'device_id', 'output_lat AS lat', 'output_lng AS lng',
-                       'output_address AS address', 'output_city AS city', 'output_postal_code AS postal_code',
-                       'output_country_code AS country_code')
+      sanitized.select("id", "created_at", "updated_at", "device_id", "output_lat AS lat", "output_lng AS lng",
+        "output_address AS address", "output_city AS city", "output_postal_code AS postal_code",
+        "output_country_code AS country_code", "speed", "altitude")
     end
   end
 
@@ -67,9 +65,9 @@ class Device < ApplicationRecord
   end
 
   def resolve_privilege(unresolved_checkins, permissible)
-    return Checkin.none if privilege_for(permissible) == 'disallowed'
+    return Checkin.none if privilege_for(permissible) == "disallowed"
     return unresolved_checkins if unresolved_checkins.empty?
-    if privilege_for(permissible) == 'last_only'
+    if privilege_for(permissible) == "last_only"
       unresolved_checkins.where(id: unresolved_checkins.first.id)
     else
       unresolved_checkins
@@ -82,14 +80,30 @@ class Device < ApplicationRecord
 
   def delayed_checkins_for(permissible)
     if can_bypass_delay?(permissible)
-      checkins
+      past_checkins
     else
-      checkins.before(delayed.to_i.minutes.ago)
+      before_delay_checkins
     end
+  end
+
+  def before_delay_checkins
+    delayed ? checkins.where("checkins.created_at < ?", delayed.minutes.ago) : past_checkins
+  end
+
+  def past_checkins
+    checkins.where("checkins.created_at < ?", Time.current)
   end
 
   def permission_for(permissible)
     permissions.find_by(permissible_id: permissible.id, permissible_type: permissible.class.to_s)
+  end
+
+  def complete_permissions
+    if (approved_ids = user.approved_developers.pluck(:id)).present?
+      permissions.where.not(["permissible_type = ? AND permissible_id IN (?)", "Developer", approved_ids])
+    else
+      permissions
+    end
   end
 
   def can_bypass_fogging?(permissible)
@@ -104,35 +118,19 @@ class Device < ApplicationRecord
     "A new device was created, id: #{id}, name: #{name}, user_id: #{user_id}. There are now #{Device.count} devices"
   end
 
-  def update_delay(mins)
-    mins.to_i.zero? ? update(delayed: nil) : update(delayed: mins)
-  end
-
-  def switch_fog
-    update(fogged: !fogged)
-    fogged
-  end
-
-  def humanize_delay
-    if delayed.nil?
-      "#{name} is not delayed."
-    else
-      "#{name} delayed by #{humanize_minutes(delayed)}."
-    end
-  end
-
   def public_info
     # Clears out any potentially sensitive attributes, returns a normal ActiveRecord relation
     # Returns a normal ActiveRecord relation
-    Device.select([:id, :user_id, :name, :alias, :published]).find(id)
+    Device.select(%i(id user_id name alias published)).find(id)
   end
 
   def subscriptions(event)
-    Subscription.where(event: event).where(subscriber_id: user_id)
+    subs = Subscription.where(event: event).where(subscriber_id: user_id)
+    subs if subs.present?
   end
 
   def notify_subscribers(event, data)
-    return unless (user.zapier_enabled && subs = subscriptions(event))
+    return unless user.zapier_enabled && (subs = subscriptions(event))
     data = data.as_json
     data.merge!(remove_id.as_json)
     data.merge!(user.public_info.remove_id.as_json) if user
@@ -140,15 +138,15 @@ class Device < ApplicationRecord
   end
 
   def self.public_info
-    select([:id, :user_id, :name, :alias, :published])
+    select(%i(id user_id name alias published))
   end
 
   def self.last_checkins
-    all.map { |device| device.checkins.first if device.checkins.exists? }.compact.sort_by(&:created_at).reverse
+    all.map { |device| device.past_checkins.first if device.past_checkins.exists? }.compact.sort_by(&:created_at).reverse
   end
 
   def self.geocode_last_checkins
-    all.each { |device| device.checkins.first.reverse_geocode! if device.checkins.exists? }
+    all.each { |device| device.past_checkins.first.reverse_geocode! if device.past_checkins.exists? }
   end
 
   def self.ordered_by_checkins
@@ -156,5 +154,12 @@ class Device < ApplicationRecord
     ordered_devices = all.index_by(&:id).values_at(*device_ids)
     ordered_devices += all
     ordered_devices.uniq
+  end
+
+  def self.inactive(time_length)
+    last_checkins_ids = Device.last_checkins.map(&:id)
+    old_last_checkins = Checkin.where("id IN (?) AND created_at < ?", last_checkins_ids, time_length)
+    device_ids = old_last_checkins.map(&:device_id)
+    Device.where(id: device_ids)
   end
 end

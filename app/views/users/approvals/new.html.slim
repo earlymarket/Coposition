@@ -1,0 +1,11 @@
+#gonvariables
+  = Gon::Base.render_data
+br/
+= approvals_new_text(@approvals_presenter.approvable_type)
+br/
+= form_for @approval, url: @approvals_presenter.create_approval_url do |f|
+  .row
+    .col.s12.input-field.search
+      = f.text_field :approvable, @approvals_presenter.input_options
+  = f.hidden_field :approvable_type, value: @approvals_presenter.approvable_type
+  = f.button "Add", class: "waves-effect waves-light btn", type: "submit"

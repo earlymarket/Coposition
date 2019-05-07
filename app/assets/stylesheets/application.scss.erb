@@ -1,0 +1,61 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree ./libs
+ */
+
+// Import materialize gem's palette
+@import 'materialize-css/sass/components/color';
+// Set the scss color variables we want to override
+@import 'custom_color';
+// Import the rest of Materialize. It will ignore anything that is already set
+@import 'materialize-css/sass/materialize';
+// css selectors/classes needs to be overriden after
+@import 'custom_class';
+
+// Leave them in seperate statements. It makes it easier to debug/reorder'
+// Especially in merge conflicts
+@import 'fonts';
+@import 'navbar';
+@import 'layout';
+
+// Vendor
+@import 'twitter-typeahead';
+@import 'control.w3w';
+@import 'leaflet.markercluster/dist/MarkerCluster';
+@import 'leaflet.markercluster/dist/MarkerCluster.Default';
+@import 'leaflet-fullscreen/dist/leaflet.fullscreen';
+@import 'leaflet.locatecontrol/dist/L.Control.Locate.min';
+@import url(<%= asset_path("slick-carousel/slick/slick.scss") %>);
+@import url(<%= asset_path("slick-carousel/slick/slick-theme.scss") %>);
+// STILL more up to date version
+@import 'nouislider';
+@import 'datetimepicker-earlymarket/dist/DateTimePicker.min';
+
+
+// Page/feature specific
+@import 'welcome-index';
+@import 'user-dashboard';
+@import 'devices-new';
+@import 'devices-index';
+@import 'devices-show';
+@import 'devices-shared';
+@import 'friends-device-show';
+@import 'friends-device-index';
+@import 'approvals';
+@import 'permissions';
+@import 'welcome-help';
+@import 'welcome-setup';
+@import 'release-notes';
+@import 'checkins-index';
+@import 'sessions-new';
+@import 'registrations';

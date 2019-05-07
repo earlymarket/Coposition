@@ -1,43 +1,32 @@
 $(document).on('page:change', function() {
-  if ($(".c-devices.a-index").length === 1) {
+  if (window.COPO.utility.currentPage('devices', 'index')) {
     const U = window.COPO.utility;
     const M  = window.COPO.maps;
     const P = window.COPO.permissionsTrigger;
     M.initMap();
     M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
     U.gonFix();
-    P.initTrigger('devices');
+    U.setActivePage('devices')
     COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions)
     COPO.delaySlider.initSliders(gon.devices);
-    gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');
+    gon.checkins && gon.checkins.length ? COPO.maps.initMarkers(gon.checkins) : $('#map-overlay').removeClass('hide');
 
-    $('.fogButton').each((index, fogButton) => {
-      if(!$(fogButton).data('fogged')){
-        $(fogButton).removeData('confirm').removeAttr('data-confirm')
+    $('#find-checkin').on('click', checkinSearch)
+
+    function checkinSearch () {
+      let userId = gon.current_user_id
+      let checkinId = $('#checkin_id').val()
+      if (checkinId.length) {
+        window.location = `/users/${userId}/devices/nil/checkins/${checkinId}`
+      } else {
+        Materialize.toast('Please enter a check-in ID', 3000, 'red');
       }
-    })
-
-    $('.cloakedButton').each((index, cloakedButton) => {
-      if($(cloakedButton).data('cloaked')){
-        $(cloakedButton).removeData('confirm').removeAttr('data-confirm')
-      }
-    })
-
+    }
+    
     $('body').on('click', '.edit-button', function (e) {
       e.preventDefault();
       $(this).toggleClass('hide', true);
       makeEditable($(this).prev('span'), handleEdited);
-    });
-
-    $('.modal-trigger').leanModal();
-
-    $('.center-map').on('click', function() {
-      const device_id = this.dataset.device;
-      const checkin = gon.checkins.find((checkin) => checkin.device_id.toString() === device_id);
-      if(checkin) {
-        U.scrollTo('#top', 200);
-        setTimeout(() => M.centerMapOn(checkin.lat, checkin.lng), 200);
-      }
     });
 
     function makeEditable ($target, handler) {
@@ -60,36 +49,35 @@ $(document).on('page:change', function() {
     }
 
     function handleEdited (original, $target) {
-      var newName = $target.text()
-      if(original !== newName) {
-        // console.log('Name optimistically set to: ' + $target.text());
+      var newName = $target.text().replace(/ /g, '_')
+      if (original !== newName) {
         var url = $target.parents('a').attr('href');
-        var request = $.ajax({
+        $.ajax({
           dataType: 'json',
           url: url,
           type: 'PUT',
-          data: { name: newName }
-        });
-        request
+          data: { device: { name: newName } }
+        })
         .done(function (response) {
-          // console.log('Server processed the request');
         })
         .fail(function (error) {
           $target.text(original);
           Materialize.toast('Name: ' + JSON.parse(error.responseText).name, 3000, 'red');
         })
       }
-      $target.text($target.text());
-      $target.attr('contenteditable', false);
+      $target.text(newName);
       $target.next().toggleClass('hide', false);
       U.deselect();
       $target.off();
+      $target.attr('contenteditable', false);
     }
 
     window.initPage = function(){
+      P.initTrigger('devices');
+      $('.modal-trigger').modal();
       $('.clip_button').off();
       U.initClipboard();
-      $('.tooltipped').tooltip('remove');
+      $('.tooltipped').tooltip('destroy');
       $('.tooltipped').tooltip({delay: 50});
       $('.linkbox').off('touchstart click');
 
@@ -106,10 +94,31 @@ $(document).on('page:change', function() {
       $('.linkbox').each(function(i,linkbox){
         $(linkbox).attr('size', $(linkbox).val().length)
       })
+
+      $('.center-map').on('click', function() {
+        const device_id = this.dataset.device;
+        const checkin = gon.checkins.find((checkin) => checkin.device_id.toString() === device_id);
+        if(checkin) {
+          U.scrollTo('#quicklinks', 200);
+          setTimeout(() => M.centerMapOn(checkin.lat, checkin.lng), 200);
+        }
+      });
+
+      $('.fogButton').each((index, fogButton) => {
+        if(!$(fogButton).data('fogged')){
+          $(fogButton).removeData('confirm').removeAttr('data-confirm')
+        }
+      })
+
+      $('.cloakedButton').each((index, cloakedButton) => {
+        if($(cloakedButton).data('cloaked')){
+          $(cloakedButton).removeData('confirm').removeAttr('data-confirm')
+        }
+      })
     }
     initPage();
 
-    $(document).on('page:before-unload', function(){
+    $(document).one('turbolinks:before-render', function(){
       COPO.permissions.switchesOff();
       $(window).off("resize");
       $('body').off('click', '.edit-button');

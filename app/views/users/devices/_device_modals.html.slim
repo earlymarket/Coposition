@@ -1,0 +1,60 @@
+.modal.icon-modal id="icon#{device.id}" 
+  .modal-content
+    h4.center-align Choose your device type
+    .center-align.row id="icons#{device.id}" 
+      - %w(smartphone watch laptop tablet desktop_windows devices_other).each do |icon|
+        = devices_choose_icon(device, icon)
+
+.modal id="perm#{device.id}" 
+  .modal-content
+    div
+      h4.inline-text id="#{device.id}-status" 
+        = device.name
+        = attribute_icon(device.fogged, "cloud")
+        = attribute_icon(device.delayed, "timer")
+        = attribute_icon(device.cloaked, "visibility_off")
+        = attribute_icon(device.published, "public")
+      = devices_cloaked_info(device.cloaked)
+      a.right.tooltipped data-tooltip=("Permissions help") href="/help#permissions" target="_blank" 
+        i.material-icons help
+    ul.permissions.collection data-id=(device.id)
+      li.collection-item.row.valign-wrapper.master-permissions
+        .valign.col.s6
+          h5.all-permissions Update all permissions
+        = render partial: "users/permissions/controls", object: device, as: "control_object"
+
+.modal.download-modal id="download#{device.id}" 
+  .modal-content
+    button.right.modal-close X
+    h4.center-align Choose download format
+    .center-align
+      - if params[:from].present?
+        label Download check-ins within the selected date range. Choose the CSV format if you are downloading in order to back up your check-ins so you can re-upload them in the future.
+      - else
+        label Download all the check-ins on this device. Choose the CSV format if you are downloading in order to back up your checkins so you can re-upload them in the future.
+      br
+      br
+      a.btn.device-button-small href="#{user_device_path(current_user.url_id, device)}.csv?download=csv&from=#{params[:from]}&to=#{params[:to]}" csv
+      br
+      br
+      a.btn.device-button-small href="#{user_device_path(current_user.url_id, device)}.gpx?download=gpx&from=#{params[:from]}&to=#{params[:to]}" gpx (track)
+      br
+      br
+      a.btn.device-button-small href="#{user_device_path(current_user.url_id, device)}.geojson?download=geojson&from=#{params[:from]}&to=#{params[:to]}" geojson
+
+.modal.upload-modal id="upload#{device.id}" 
+  .modal-content
+    a.right.tooltipped data-tooltip=("Upload help") href="/help#download" target="_blank" 
+      i.material-icons help
+    h4.center-align Upload checkins
+    .center-align
+      label Upload previously downloaded check-ins in the CSV data format to restore data. Warning, this may overwrite existing check-ins.
+      = form_tag import_user_device_checkins_path(device_id: device.id), multipart: :true do
+        = file_field_tag :file, accept: "text/csv"
+        = submit_tag "Import CSV", class: "btn"
+
+.modal.delay-modal id="delay#{device.id}" 
+  .modal-content
+    h4 Delay Controls
+    label Set when new checkins will become visible to your data consumers
+    .delay-slider data-device=(device.id)
