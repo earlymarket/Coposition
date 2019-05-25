@@ -5,7 +5,7 @@
     "browserify": "^14.5.0",
     "browserify-incremental": "^3.1.1",
     "clipboard": "^1.7.1",
-    "datetimepicker-earlymarket": "^0.2.2",
+    "datetimepicker-earlymarket": "^0.2.5",
     "ion-rangeslider": "^2.3.0",
     "jquery-mustache-earlymarket": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
