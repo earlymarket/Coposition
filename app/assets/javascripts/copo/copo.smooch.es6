@@ -1,19 +1,37 @@
-var Smooch = require('smooch');
 window.COPO = window.COPO || {};
 window.COPO.smooch = {
   initSmooch: function() {
-    if ($('#sk-holder').length > 0 || typeof(Smooch) == "undefined") return
-    if (!Smooch.appId) {
-      var params = { appId: "5730bb0aac38494200fa8385" };
-      var user = COPO.smooch.checkForUserInformation();
+    var Smooch = require('smooch');
+    if ($('#web-messenger-container').length > 0 || typeof(Smooch) == "undefined") return
 
-      if (user && user.id && user.email && user.username) {
-        params.userId    = user.id.toString();
-        params.email     = user.email;
-        params.givenName = user.username;
-      }
-      Smooch.init(params);
+    var params = { appId: "5730bb0aac38494200fa8385" };
+    var user = COPO.smooch.checkForUserInformation();
+
+    if (user && user.id && user.email && user.username) {
+      params.jwt       = COPO.smooch.signJwt(user.id.toString());
+      params.userId    = user.id.toString();
+      params.email     = user.email;
+      params.givenName = user.username;
     }
+    Smooch.init(params);
+  },
+
+  signJwt: function(userId) {
+    var jwt = require('jsonwebtoken');
+    return jwt.sign(
+      {
+        scope: 'appUser',
+        userId: userId
+      },
+      "LMSubWZZMClKh1zjM9L_Oij5",
+      {
+        header: {
+          alg: 'HS256',
+          typ: 'JWT',
+          kid: "app_58946045f8359427001c7adb"
+        }
+      }
+    );
   },
 
   checkForUserInformation: function() {
@@ -27,11 +45,3 @@ window.COPO.smooch = {
     }
   }
 }
-
-$(document).on('page:before-unload', function () {
-  Smooch._container && $(Smooch._container).detach();
-});
-
-$(document).on('page:update', function () {
-  Smooch._container && $('body').append(Smooch._container);
-});
