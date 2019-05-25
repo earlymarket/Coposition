@@ -23,7 +23,9 @@ module Users
     end
 
     def last_countries
-      checkins.select("DISTINCT ON (checkins.created_at) checkins.*").where(last_countries_sql).first NUMBER_OF_COUNTRIES
+      c = checkins.select("DISTINCT ON (checkins.created_at) checkins.*").where(last_countries_sql).first NUMBER_OF_COUNTRIES
+      puts c
+      c
     end
 
     def last_countries_no_limits
