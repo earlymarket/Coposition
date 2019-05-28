@@ -1,10 +1,10 @@
 $(document).on('page:change', function() {
   if (window.COPO.utility.currentPage('devices', 'index')) {
     const U = window.COPO.utility;
-    const M  = window.COPO.maps;
+    const MAPS  = window.COPO.maps;
     const P = window.COPO.permissionsTrigger;
-    M.initMap();
-    M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
+    MAPS.initMap();
+    MAPS.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
     U.gonFix();
     U.setActivePage('devices')
     COPO.permissions.initSwitches('devices', gon.current_user_id, gon.permissions)
@@ -19,7 +19,7 @@ $(document).on('page:change', function() {
       if (checkinId.length) {
         window.location = `/users/${userId}/devices/nil/checkins/${checkinId}`
       } else {
-        Materialize.toast('Please enter a check-in ID', 3000, 'red');
+        M.toast({html: 'Please enter a check-in ID', displayLength: 3000, classes: 'red'});
       }
     }
     
@@ -62,7 +62,7 @@ $(document).on('page:change', function() {
         })
         .fail(function (error) {
           $target.text(original);
-          Materialize.toast('Name: ' + JSON.parse(error.responseText).name, 3000, 'red');
+          M.toast({html: 'Name: ' + JSON.parse(error.responseText).name, displayLength: 3000, classes: 'red'});
         })
       }
       $target.text(newName);
@@ -77,7 +77,6 @@ $(document).on('page:change', function() {
       $('.modal-trigger').modal();
       $('.clip_button').off();
       U.initClipboard();
-      $('.tooltipped').tooltip('destroy');
       $('.tooltipped').tooltip({delay: 50});
       $('.linkbox').off('touchstart click');
 
@@ -100,7 +99,7 @@ $(document).on('page:change', function() {
         const checkin = gon.checkins.find((checkin) => checkin.device_id.toString() === device_id);
         if(checkin) {
           U.scrollTo('#quicklinks', 200);
-          setTimeout(() => M.centerMapOn(checkin.lat, checkin.lng), 200);
+          setTimeout(() => MAPS.centerMapOn(checkin.lat, checkin.lng), 200);
         }
       });
 

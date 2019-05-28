@@ -40,19 +40,19 @@ $(document).on('ready page:change', function() {
   Waves.displayEffect();
 
   // materialize selectbox init
-  $('select').material_select();
+  $('select').formSelect();
 
   // materialize scrollfire
-  var options = [
-    // Landing-page fade in image
-    {selector: '#security',
-     offset: 100,
-     callback: 'Materialize.fadeInImage("#security .image-container")'},
-    {selector: '#api',
-     offset: 100,
-     callback: 'Materialize.fadeInImage("#api .image-container")'}
-  ];
-  Materialize.scrollFire(options);
+  // var options = [
+  //   // Landing-page fade in image
+  //   {selector: '#security',
+  //    offset: 100,
+  //    callback: 'Materialize.fadeInImage("#security .image-container")'},
+  //   {selector: '#api',
+  //    offset: 100,
+  //    callback: 'Materialize.fadeInImage("#api .image-container")'}
+  // ];
+  // Materialize.scrollFire(options);
 
   // allow materialize toast to be dismissed on click instead of just the default swipe
   $(document).on('click', '#toast-container .toast', function() {

@@ -24,6 +24,7 @@
 
 // -- Misc vendor libs --
 
+//= require velocity-animate/velocity.min
 //= require lodash/lodash.min
 //= require moment/min/moment.min
 //= require jquery-mustache-earlymarket/jquery.mustache
