@@ -17,20 +17,16 @@ $(document).on('ready page:change', function() {
   // We're calling this later now in the dodgy hack
   // // materialize accordion init
   $('.collapsible').collapsible({
-    onOpenEnd: function() {
-      var el = $('.body')
-      collapsible = el.find(".collapsible-header");
-
-      if (collapsible.data("onopen")) {
-        window[collapsible.data("onopen")]();
+    onOpenEnd: function(el) {
+      collapsible = el.firstChild;
+      if (collapsible.dataset.onopen) {
+        window[collapsible.dataset.onopen]();
       }
     },
-    onCloseEnd: function() {
-      var el = $('.body')
-      collapsible = el.find(".collapsible-header");
-
-      if (collapsible.data("onclose")) {
-        window[collapsible.data("onclose")]();
+    onCloseEnd: function(el) {
+      collapsible = el.firstChild;
+      if (collapsible.dataset.onclose) {
+        window[collapsible.dataset.onclose]();
       }
     }
   });
