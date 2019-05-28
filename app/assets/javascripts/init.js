@@ -17,14 +17,16 @@ $(document).on('ready page:change', function() {
   // We're calling this later now in the dodgy hack
   // // materialize accordion init
   $('.collapsible').collapsible({
-    onOpen: function(el) {
+    onOpenEnd: function() {
+      var el = $('.body')
       collapsible = el.find(".collapsible-header");
 
       if (collapsible.data("onopen")) {
         window[collapsible.data("onopen")]();
       }
     },
-    onClose: function(el) {
+    onCloseEnd: function() {
+      var el = $('.body')
       collapsible = el.find(".collapsible-header");
 
       if (collapsible.data("onclose")) {
@@ -34,7 +36,7 @@ $(document).on('ready page:change', function() {
   });
 
   // materialize parallax init
-  $('.parallax').parallax();
+  // $('.parallax').parallax();
 
   // materialize wave effect init
   Waves.displayEffect();
@@ -58,9 +60,6 @@ $(document).on('ready page:change', function() {
   $(document).on('click', '#toast-container .toast', function() {
     COPO.utility.fadeUp(this)
   });
-
-  // materialize tabs
-  $('ul.tabs').tabs();
 
   // Attachinary init
   $('.attachinary-input').attachinary();

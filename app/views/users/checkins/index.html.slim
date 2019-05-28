@@ -38,8 +38,10 @@
           = hidden_field_tag :checkins_view, false, class: "checkins_view"
           - @checkins_index_presenter.devices.each do |device|
             - checked = params[:user] ? params[:user][:device_ids].include?(device.id.to_s) : true
-            = f.check_box :device_ids, {multiple: true, checked: checked}, device.id, nil
             = label_tag "user[device_ids][#{device.id}]", device.name
+              = f.check_box :device_ids, {multiple: true, checked: checked}, device.id, nil
+              span
+                = device.name
             br
           br
           = f.submit "Filter", class: "form-control btn btn-default"
@@ -48,6 +50,7 @@
 
   javascript:
     dateRangeOpen = function() {
+      console.log('sup')
       $(".collapse-mark").text("expand_less");
     }
     dateRangeClose = function() {
@@ -55,12 +58,14 @@
     }
 
     devicesOpen = function() {
+      console.log('sup')
       $(".collapse-devices").text("expand_less");
     }
     devicesClose = function() {
       $(".collapse-devices").text("expand_more");
     }
     if (window.location.search.includes("device_ids")) {
+      $('.device-select').collapsible();
       $('.device-select').collapsible('open', 0);
     }
 
