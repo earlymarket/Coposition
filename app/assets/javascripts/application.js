@@ -16,6 +16,8 @@
 //= require jquery.validate.additional-methods
 //= require turbolinks
 //= require turbolinks-compatibility
+//= require core-js/es6
+
 
 // -- Libs from gems --
 
@@ -24,7 +26,6 @@
 
 // -- Misc vendor libs --
 
-//= require velocity-animate/velocity.min
 //= require lodash/lodash.min
 //= require moment/min/moment.min
 //= require jquery-mustache-earlymarket/jquery.mustache
@@ -36,6 +37,7 @@
 //= require sweetalert/dist/sweetalert.min
 //= require datetimepicker-earlymarket/dist/DateTimePicker
 //= require smooch/lib/index
+//= require velocity-animate/velocity.min
 
 // STILL more up to date version
 //= require nouislider.min
