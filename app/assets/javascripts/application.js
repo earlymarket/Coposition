@@ -16,7 +16,8 @@
 //= require jquery.validate.additional-methods
 //= require turbolinks
 //= require turbolinks-compatibility
-//= require core-js/es6
+//= require_tree ../../../node_modules/core-js/stable/set
+//= require_tree ../../../node_modules/core-js/stable/map
 
 
 // -- Libs from gems --
