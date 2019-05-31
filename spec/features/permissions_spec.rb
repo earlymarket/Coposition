@@ -90,15 +90,16 @@ RSpec.feature "Permissions", type: :feature do
 
   def when_i_check_bypass_fogging
     expect(page).to have_css("label#bypass-fogging-2")
-    find("label#bypass-fogging-2").click
+    find(:css, "label#bypass-fogging-2").trigger("click")
   end
 
   def when_i_check_bypass_delay
-    find("label#bypass-delay-2").click
+    expect(page).to have_css("label#bypass-delay-2")
+    find(:css, "label#bypass-delay-2").trigger("click")
   end
 
   def when_i_choose_disable
-    find("label#disallowed-2").click
+    find(:css, "label#disallowed-2").trigger("click")
   end
 
   def then_bypass_fogging_should_be_checked
