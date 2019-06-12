@@ -102,7 +102,7 @@ module Users
       " AND checkins.created_at <= current_timestamp" \
       " AND (checkins.altitude != 0 OR checkins.altitude IS NULL)" \
       " AND (checkins.altitude <= #{FLIGHT_ALTITUDE} OR checkins.altitude IS NULL)" \
-      " GROUP BY country_code)"
+      " GROUP BY upper(country_code))"
     end
   end
 end
