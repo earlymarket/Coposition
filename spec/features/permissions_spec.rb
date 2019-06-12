@@ -14,15 +14,12 @@ RSpec.feature "Permissions", type: :feature do
     when_i_click_on_permissions
     then_i_should_see_my_friends_permissions
     when_i_check_bypass_fogging
-    then_i_should_see_my_friends_permissions
     then_bypass_fogging_should_be_checked
-    then_i_should_see_my_friends_permissions
+    when_i_click_on_permissions
     when_i_check_bypass_delay
-    then_i_should_see_my_friends_permissions
     then_bypass_delay_should_be_checked
-    then_i_should_see_my_friends_permissions
+    when_i_click_on_permissions
     when_i_choose_disable
-    then_i_should_see_my_friends_permissions
     then_disabled_should_be_chosen
   end
 
