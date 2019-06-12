@@ -86,7 +86,7 @@ window.COPO.maps = {
 
     function loadCheckins(page) {
       let display = !($('.cached-icon').hasClass('cities-active'))
-      if (total > gon.checkins.length) {
+      if (gon.checkins && total > gon.checkins.length) {
         if (display) updateProgress(gon.checkins.length, total);
         getCheckinData(page).then(function(data) {
           display = !($('.cached-icon').hasClass('cities-active'))

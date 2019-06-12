@@ -15,8 +15,10 @@ RSpec.feature "Permissions", type: :feature do
     then_i_should_see_my_friends_permissions
     when_i_check_bypass_fogging
     then_bypass_fogging_should_be_checked
+    then_i_should_see_my_friends_permissions
     when_i_check_bypass_delay
     then_bypass_delay_should_be_checked
+    then_i_should_see_my_friends_permissions
     when_i_choose_disable
     then_disabled_should_be_chosen
   end
@@ -89,17 +91,17 @@ RSpec.feature "Permissions", type: :feature do
   end
 
   def when_i_check_bypass_fogging
-    expect(page).to have_css("label#bypass-fogging-2")
-    find(:css, "label#bypass-fogging-2").trigger("click")
+    expect(page).to have_css("span#bypass-fogging-2")
+    find(:css, "span#bypass-fogging-2").trigger("click")
   end
 
   def when_i_check_bypass_delay
-    expect(page).to have_css("label#bypass-delay-2")
-    find(:css, "label#bypass-delay-2").trigger("click")
+    expect(page).to have_css("span#bypass-delay-2")
+    find(:css, "span#bypass-delay-2").trigger("click")
   end
 
   def when_i_choose_disable
-    find(:css, "label#disallowed-2").trigger("click")
+    find(:css, "span#disallowed-2").trigger("click")
   end
 
   def then_bypass_fogging_should_be_checked
