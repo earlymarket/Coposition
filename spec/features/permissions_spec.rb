@@ -13,13 +13,17 @@ RSpec.feature "Permissions", type: :feature do
     and_i_am_on_the_devices_page
     when_i_click_on_permissions
     then_i_should_see_my_friends_permissions
+    when_i_click_on_permissions
     when_i_check_bypass_fogging
+    when_i_click_on_permissions
     then_bypass_fogging_should_be_checked
     when_i_click_on_permissions
     when_i_check_bypass_delay
+    when_i_click_on_permissions
     then_bypass_delay_should_be_checked
     when_i_click_on_permissions
     when_i_choose_disable
+    when_i_click_on_permissions
     then_disabled_should_be_chosen
   end
 
@@ -91,12 +95,10 @@ RSpec.feature "Permissions", type: :feature do
   end
 
   def when_i_check_bypass_fogging
-    expect(page).to have_css("span#bypass-fogging-2")
     find(:css, "span#bypass-fogging-2").trigger("click")
   end
 
   def when_i_check_bypass_delay
-    expect(page).to have_css("span#bypass-delay-2")
     find(:css, "span#bypass-delay-2").trigger("click")
   end
 
