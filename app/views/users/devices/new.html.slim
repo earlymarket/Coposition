@@ -15,9 +15,9 @@ h1
     "Enter existing coposition UUID #{link_to('(What is this?)', '/help#sharing')}".html_safe \
     end
   = f.text_field :uuid, class: "form-control input-lg fifth-width", placeholder: "(Optional) 15 digits, no spaces"
-  = check_box_tag :create_checkin, id: "create_checkin"
-  = f.label "create_checkin", for: "create_checkin", id: "create_checkin"
-  br/
+  label
+    = check_box_tag :create_checkin
+    span#create_checkin Create check-in
   br/
   = f.submit "Add", class: "form-control btn btn-default", id: "add_button"
   = link_to "Cancel", user_devices_path(current_user), class: "form-control btn btn-default red white-text", id: "cancel_button"

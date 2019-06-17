@@ -20,7 +20,7 @@
               | Connected since #{humanize_date(approval.approval_date) unless approval.nil?}
         .col.s4.permissions-column
           - if current_user.devices.exists?
-            a.permissions-trigger.btn-flat.right.permissions-button data-id=(approvable.id) href="#perm#{approvable.id}"
+            a.modal-trigger.permissions-trigger.btn-flat.right.permissions-button data-id=(approvable.id) href="#perm#{approvable.id}"
               i.material-icons.right lock
               | Permissions
             .modal id="perm#{approvable.id}" 

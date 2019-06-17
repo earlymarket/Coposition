@@ -27,10 +27,10 @@ module ApplicationHelper
 
   def render_flash
     output = ""
-    output << "Materialize.toast('#{j alert}', 3000, 'red');" if alert
-    output << "Materialize.toast('#{j notice}', 3000);" if notice
+    output << "M.toast({html: '#{j alert}', displayLength: 3000, classes: 'red'});" if alert
+    output << "M.toast({html: '#{j notice}', displayLength: 3000});" if notice && !flash[:errors]
     flash[:errors]&.each do |error|
-      output << "Materialize.toast('#{j error}', 5000, 'red');"
+      output << "M.toast({html: '#{j error}', displayLength: 5000, classes: 'red'});"
     end
     flash.keys.each { |flash_type| flash.send("discard", flash_type) }
     output

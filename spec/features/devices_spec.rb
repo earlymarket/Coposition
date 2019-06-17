@@ -10,15 +10,15 @@ RSpec.feature "Devices", type: :feature do
   scenario "User creates device and edits settings", js: true do
     when_i_create_a_new_device
     and_i_am_on_the_devices_page
-    when_i_click_the_icon "cloud"
-    then_i_should_see "Location fogging is off"
     when_i_click_the_icon "public"
-    then_i_should_see "Location sharing is on"
+    then_i_should_see_enabled_icon "public"
+    when_i_click_the_icon "cloud"
+    then_i_should_see_disabled_icon "cloud"
     when_i_click_the_icon "visibility_off"
-    then_i_should_see "Device cloaking is on"
+    then_i_should_see_enabled_icon "visibility_off"
     when_i_click_the_icon "timer"
     and_i_click_the_slider
-    then_i_should_see "delayed by"
+    then_i_should_see_enabled_icon "timer"
   end
 
   def given_i_am_signed_in
@@ -48,11 +48,15 @@ RSpec.feature "Devices", type: :feature do
     click_link(icon, match: :first)
   end
 
-  def then_i_should_see(text)
-    expect(page).to have_text(text)
+  def then_i_should_see_enabled_icon(text)
+    expect(page).to have_css("i.enabled-icon", :text => text)
+  end
+
+  def then_i_should_see_disabled_icon(text)
+    expect(page).to have_css("i.disabled-icon", :text => text)
   end
 
   def and_i_click_the_slider
-    find(".noUi-origin").click
+    find(:css, ".noUi-origin").trigger('click')
   end
 end

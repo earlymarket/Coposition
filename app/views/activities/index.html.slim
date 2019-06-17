@@ -6,17 +6,21 @@ h1
 = form_tag(activities_path, method: "get") do
   .input-field.search
     = text_field_tag(:owner_id, params["owner_id"], class: "validate users_typeahead", placeholder: "User email", required: false)
-  = check_box_tag(:Device, true, params["Device"] == "true")
-  = label_tag "Device", "Device activity"
+  label
+    = check_box_tag(:Device, true, params["Device"] == "true")
+    span Device activity
   br
-  = check_box_tag(:Approval, true, params["Approval"] == "true")
-  = label_tag "Approval", "Approval activity"
+  label
+    = check_box_tag(:Approval, true, params["Approval"] == "true")
+    span Approval activity
   br
-  = check_box_tag(:Permission, true, params["Permission"] == "true")
-  = label_tag "Permission", "Permission activity"
+  label
+    = check_box_tag(:Permission, true, params["Permission"] == "true")
+    span Permission activity
   br
-  = check_box_tag(:Config, true, params["Config"] == "true")
-  = label_tag "Config", "Config activity"
+  label
+    = check_box_tag(:Config, true, params["Config"] == "true")
+    span Config activity
   br
   = hidden_field_tag :search, true
   = button_tag "Filter", class: "waves-effect waves-light btn", type: "submit"
