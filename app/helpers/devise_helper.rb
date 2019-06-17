@@ -9,7 +9,7 @@ module DeviseHelper
     !resource.errors.empty?
   end
 
-  def registration_path(resource_name)
+  def sign_up_registration_path(resource_name)
     resource_name === :user ? new_user_registration_path : new_developer_registration_path
   end
 
