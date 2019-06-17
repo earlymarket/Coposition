@@ -28,7 +28,7 @@ module ApplicationHelper
   def render_flash
     output = ""
     output << "M.toast({html: '#{j alert}', displayLength: 3000, classes: 'red'});" if alert
-    output << "M.toast({html: '#{j notice}', displayLength: 3000});" if notice
+    output << "M.toast({html: '#{j notice}', displayLength: 3000});" if notice && !flash[:errors]
     flash[:errors]&.each do |error|
       output << "M.toast({html: '#{j error}', displayLength: 5000, classes: 'red'});"
     end
