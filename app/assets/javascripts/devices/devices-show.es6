@@ -32,6 +32,11 @@ $(document).on('page:change', function() {
       }
     }
 
+    $('.date-select').collapsible({
+        onOpen: U.dateRangeOpen,
+        onClose: U.dateRangeClose
+    });
+
     $("#deleteDevice").on("click", () => {
       swal({
         title: "Enter device name to delete this device and check-ins",

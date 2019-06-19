@@ -26,6 +26,7 @@ $(document).on('page:change', function() {
       M.initControls(['locate', 'w3w', 'fullscreen', 'layers']);
       M.addFriendMarkers(gon.friends)
     } else if (gon.friends) {
+      COPO.utility.setActivePage('friends')
       $('.friends-index').removeClass('hide');
       M.initMap();
       $('#map-overlay').removeClass('hide');
