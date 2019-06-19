@@ -30,7 +30,6 @@
 //= require mustache/mustache.min
 //= require materialize-css/dist/js/materialize.min
 //= require typeahead.js/dist/typeahead.bundle.min
-//= require ion-rangeslider/js/ion.rangeSlider.min
 //= require clipboard/dist/clipboard.min
 //= require slick-carousel/slick/slick.min
 //= require sweetalert/dist/sweetalert.min
