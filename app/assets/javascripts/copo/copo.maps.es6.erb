@@ -323,8 +323,9 @@ window.COPO.maps = {
     } else {
       let created_at = Date.parse(checkin.created_at)/1000;
       let coords = [checkin.lat, checkin.lng];
-      $.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${checkin.lat},${checkin.lng}&timestamp=${created_at}&key=AIzaSyCEjHZhLTdiy7jbRTDU3YADs8a1yXKTwqI`)
+      $.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${checkin.lat},${checkin.lng}&timestamp=${created_at}&key=AIzaSyDBKbRHa-pGrZkB41xt5DOvToYsjUQWloQ`)
       .done((data) => {
+        debugger
         if (data.status === 'OK') {
           let date = moment((created_at + data.rawOffset + data.dstOffset)*1000).format("ddd, Do MMM YYYY, HH:mm:ss");
           let offsetStr = COPO.maps.formatOffset(parseInt(data.rawOffset) + data.dstOffset);
