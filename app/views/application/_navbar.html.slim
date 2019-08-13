@@ -14,7 +14,7 @@ nav
           = link_to "users", root_path, class: "lg-items-left current"
           = link_to "devs", devs_path, class: "lg-items-left"
       span.lg-items-right
-        - if Rails.env == "test"  || user_signed_in?
+        - if user_signed_in?
           = link_to "Devices", user_devices_path(current_user.url_id), class: "lg-items-right", id: "devices-nav"
           = link_to navbar_indicator("Apps", current_user.developer_requests.count), user_apps_path(current_user.url_id), class: "lg-items-right", id: "apps-nav"
           = link_to navbar_indicator("Friends", current_user.friend_requests.count), user_friends_path(current_user.url_id), class: "lg-items-right", id: "friends-nav"
@@ -41,7 +41,7 @@ nav
           i.material-icons menu
         input#mobile-menu checked="checked" type="checkbox"
         ul.dropdown
-          - if Rails.env == "test" || user_signed_in?
+          - if user_signed_in?
             li
               = link_to "Devices", user_devices_path(current_user.url_id), class: "dropdown-item", id: "devices-nav"
             li

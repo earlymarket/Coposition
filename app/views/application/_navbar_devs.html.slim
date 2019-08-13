@@ -14,7 +14,7 @@ nav
           = link_to "users", root_path, class: "lg-items-left"
           = link_to "devs", devs_path, class: "lg-items-left current"
       span.lg-items-right
-        - if Rails.env == "test" || developer_signed_in?
+        - if developer_signed_in?
           = link_to "Users", developers_approvals_path, class: "lg-items-right", id: "users-nav"
           = link_to "Setup", devs_setup_path, class: "lg-items-right", id: "started-nav"
           = link_to "API", "https://earlymarket.github.io/copo-docs/", class: "lg-items-right"
@@ -39,7 +39,7 @@ nav
           i.material-icons menu
         input#mobile-menu checked="checked" type="checkbox"
         ul.dropdown
-          - if Rails.env == "test" || developer_signed_in?
+          - if developer_signed_in?
             li
               = link_to "Users", developers_approvals_path, class: "dropdown-item", id: "users-nav"
             li
