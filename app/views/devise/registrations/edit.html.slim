@@ -22,10 +22,11 @@
             = f.text_field :webhook_key, readonly: true
         .row
           .input-field.col.s12
-            = f.check_box :zapier_enabled
-            = f.label :zapier_enabled, "Zapier enabled?"
-            a.tooltipped.help-icon data-tooltip=("What is Zapier?") href="/help#zapier" target="_blank" 
-              i.material-icons help
+            label
+              = f.check_box :zapier_enabled
+              span Zapier enabled?
+              a.tooltipped.help-icon data-tooltip=("What is Zapier?") href="/help#zapier" target="_blank" 
+                i.material-icons help
         br/
         .row
           .input-field.col.s12
@@ -55,12 +56,14 @@
         legend.card-title Email subscription settings
         .row
           .input-field.col.s12
-            = f.check_box :device_inactivity
-            = f.label :device_inactivity, "Subscribe to device inactivity emails?"
+            label
+              = f.check_box :device_inactivity
+              span Subscribe to device inactivity emails?
         .row
           .input-field.col.s12
-            = f.check_box :friend_invite_sent
-            = f.label :friend_invite_sent, "Subscribe to emails sent when you invite a friend to join Coposition"
+            label
+              = f.check_box :friend_invite_sent
+              span Subscribe to emails sent when you invite a friend to join Copositio
         br
         = f.submit 'Update', class: "btn btn-success"
 

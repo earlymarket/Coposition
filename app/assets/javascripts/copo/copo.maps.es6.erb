@@ -86,7 +86,7 @@ window.COPO.maps = {
 
     function loadCheckins(page) {
       let display = !($('.cached-icon').hasClass('cities-active'))
-      if (total > gon.checkins.length) {
+      if (gon.checkins && total > gon.checkins.length) {
         if (display) updateProgress(gon.checkins.length, total);
         getCheckinData(page).then(function(data) {
           display = !($('.cached-icon').hasClass('cities-active'))
@@ -113,15 +113,15 @@ window.COPO.maps = {
     function toastMessages() {
       let citiesDisplayed = ($('.cached-icon').hasClass('cities-active'))
       if (gon.first_load && citiesDisplayed) {
-        Materialize.toast('Recent cities visited shown', 3000)
+        M.toast({html: 'Recent cities visited shown', displayLength: 3000})
       } else if (citiesDisplayed) {
-        Materialize.toast('Cities loaded', 3000)
+        M.toast({html: 'Cities loaded', displayLength: 3000})
       } else if (total >= gon.max) {
-        Materialize.toast('There were too many check-ins to load, cities are shown', 3000);
+        M.toast({html: 'There were too many check-ins to load, cities are shown', displayLength: 3000});
       } else if (gon.checkins && gon.total === gon.checkins.length) {
-        Materialize.toast('All check-ins loaded', 3000)
+        M.toast({html: 'All check-ins loaded', displayLength: 3000})
       } else {
-        Materialize.toast('Check-ins loaded', 3000)
+        M.toast({html: 'Check-ins loaded', displayLength: 3000})
       }
     }
 
@@ -254,7 +254,6 @@ window.COPO.maps = {
       COPO.maps.w3w.setCoordinates(e);
     });
     marker.on('popupopen', (popup) => {
-      $('.tooltipped').tooltip('destroy')
       $('.tooltipped').tooltip({delay: 50})
     })
   },
@@ -324,7 +323,7 @@ window.COPO.maps = {
     } else {
       let created_at = Date.parse(checkin.created_at)/1000;
       let coords = [checkin.lat, checkin.lng];
-      $.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${checkin.lat},${checkin.lng}&timestamp=${created_at}&key=AIzaSyCEjHZhLTdiy7jbRTDU3YADs8a1yXKTwqI`)
+      $.get(`https://maps.googleapis.com/maps/api/timezone/json?location=${checkin.lat},${checkin.lng}&timestamp=${created_at}&key=AIzaSyDBKbRHa-pGrZkB41xt5DOvToYsjUQWloQ`)
       .done((data) => {
         if (data.status === 'OK') {
           let date = moment((created_at + data.rawOffset + data.dstOffset)*1000).format("ddd, Do MMM YYYY, HH:mm:ss");
@@ -710,7 +709,7 @@ window.COPO.maps = {
         $('.cached-icon').removeClass('cities-active');
         COPO.maps.refreshMarkers(gon.checkins);
       } else if (gon.total - gon.checkins.length > 50000) {
-        Materialize.toast('Too many check-ins to load.', 3000)
+        M.toast({html: 'Too many check-ins to load.', displayLength: 3000})
       } else if (gon.total - gon.checkins.length > 20000) {
         sweetAlert(
           {
@@ -725,7 +724,7 @@ window.COPO.maps = {
           function(isConfirm) {
             if (isConfirm) {
               $('.checkins_view').val(true)
-              Materialize.toast('Loading check-ins.', 3000)
+              M.toast({html: 'Loading check-ins.', displayLength: 3000})
               $('.cached-icon').removeClass('cities-active');
               COPO.maps.refreshMarkers(gon.checkins);
             }
@@ -733,7 +732,7 @@ window.COPO.maps = {
         );
       } else {
         $('.checkins_view').val(true)
-        Materialize.toast('Loading check-ins.', 3000)
+        M.toast({html: 'Loading check-ins.', displayLength: 3000})
         $('.cached-icon').removeClass('cities-active');
         COPO.maps.refreshMarkers(gon.checkins);
       }

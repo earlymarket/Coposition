@@ -3,13 +3,13 @@ $(document).on('page:change', function() {
   if (U.currentPage('friends', 'show_device') || U.currentPage('devices', 'show') || U.currentPage('checkins', 'index')) {
     var fogged = false;
     var currentCoords;
-    var M = window.COPO.maps;
+    var MAPS = window.COPO.maps;
     U.gonFix();
-    M.initMap();
+    MAPS.initMap();
     initMarkers();
     var controls = ['geocoder', 'locate', 'w3w', 'fullscreen', 'path']
     U.currentPage('friends', 'show_device') ? controls.push('layers') : controls.push('cities', 'layers')
-    M.initControls(controls);
+    MAPS.initControls(controls);
     COPO.datePicker.init();
 
     map.on('locationfound', onLocationFound);
@@ -23,12 +23,12 @@ $(document).on('page:change', function() {
 
     if (U.currentPage('devices', 'show')) {
       $('.modal-trigger').modal();
-      M.createCheckinPopup();
-      M.rightClickListener();
-      M.checkinNowListeners(getLocation);
+      MAPS.createCheckinPopup();
+      MAPS.rightClickListener();
+      MAPS.checkinNowListeners(getLocation);
       window.COPO.editCheckin.init();
       if (!U.mobileCheck()) {
-        Materialize.toast('Right click map to check-in', 3000)
+        M.toast({html: 'Right click map to check-in', displayLength: 3000})
       }
     }
 
@@ -94,9 +94,9 @@ $(document).on('page:change', function() {
     function initMarkers() {
       if (gon.checkin || U.currentPage('friends', 'show_device') || gon.checkins_view) {
         $('.checkins_view').val(true)
-        M.initMarkers(gon.checkins, gon.total)
+        MAPS.initMarkers(gon.checkins, gon.total)
       } else {
-        M.initMarkers(gon.cities, gon.total, true);
+        MAPS.initMarkers(gon.cities, gon.total, true);
       }
     }
   }

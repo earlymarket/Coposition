@@ -182,7 +182,7 @@ COPO.utility = {
   },
 
   geoLocationError(err) {
-    Materialize.toast('Could not get location', 3000)
+    M.toast({html: 'Could not get location', displayLength: 3000})
   },
 
   pluralize(noun, count) {

@@ -8,7 +8,7 @@
     = link_to "Terms and conditions", terms_path
   /!
   .pure-u-5-12
-    - if Rails.env == "test" || params[:admin] || signed_in?
+    - if Rails.env == "test" || signed_in?
       = link_to "Release notes", release_notes_path, class: "copy-notice"
       |  
     a href="https://github.com/earlymarket/Coposition" 
