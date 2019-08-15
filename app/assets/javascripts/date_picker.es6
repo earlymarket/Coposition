@@ -2,12 +2,12 @@ window.COPO = window.COPO || {};
 window.COPO.datePicker = {
 
   init: function() {
-    $('.datepick').pickadate({
+    $('.datepick').datepicker({
       selectMonths: true,
       selectYears: 15,
       onSet: function(arg) {
-        var from_picker = $('#input_from').pickadate().pickadate('picker')
-        var to_picker = $('#input_to').pickadate().pickadate('picker')
+        var from_picker = $('#input_from').datepicker()
+        var to_picker = $('#input_to').datepicker()
         var selectedPicker = this.component.$node[0].name;
         if (selectedPicker === 'from') {
           COPO.datePicker.setLimits(arg, to_picker, from_picker, 'min')
@@ -19,8 +19,8 @@ window.COPO.datePicker = {
         }
       }
     });
-    let from_picker = $('#input_from').pickadate().pickadate('picker')
-    let to_picker = $('#input_to').pickadate().pickadate('picker')
+    let from_picker = $('#input_from').datepicker()
+    let to_picker = $('#input_to').datepicker()
     // Check if there’s a “from” or “to” date to start with.
     COPO.datePicker.checkPickers(to_picker, from_picker, 'min')
     COPO.datePicker.checkPickers(from_picker, to_picker, 'max')

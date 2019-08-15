@@ -13,11 +13,17 @@ RSpec.feature "Permissions", type: :feature do
     and_i_am_on_the_devices_page
     when_i_click_on_permissions
     then_i_should_see_my_friends_permissions
+    when_i_click_on_permissions
     when_i_check_bypass_fogging
+    when_i_click_on_permissions
     then_bypass_fogging_should_be_checked
+    when_i_click_on_permissions
     when_i_check_bypass_delay
+    when_i_click_on_permissions
     then_bypass_delay_should_be_checked
+    when_i_click_on_permissions
     when_i_choose_disable
+    when_i_click_on_permissions
     then_disabled_should_be_chosen
   end
 
@@ -89,30 +95,29 @@ RSpec.feature "Permissions", type: :feature do
   end
 
   def when_i_check_bypass_fogging
-    expect(page).to have_css("label#bypass-fogging-2")
-    find("label#bypass-fogging-2").click
+    find(:css, "span#bypass-fogging-2").trigger("click")
   end
 
   def when_i_check_bypass_delay
-    find("label#bypass-delay-2").click
+    find(:css, "span#bypass-delay-2").trigger("click")
   end
 
   def when_i_choose_disable
-    find("label#disallowed-2").click
+    find(:css, "span#disallowed-2").trigger("click")
   end
 
   def then_bypass_fogging_should_be_checked
-    bypass_fogging = find("input#bypass-fogging-2")
+    bypass_fogging = find(:css, "input#bypass-fogging-2")
     expect(bypass_fogging).to be_checked
   end
 
   def then_bypass_delay_should_be_checked
-    bypass_delay = find("input#bypass-delay-2")
+    bypass_delay = find(:css, "input#bypass-delay-2")
     expect(bypass_delay).to be_checked
   end
 
   def then_disabled_should_be_chosen
-    disallowed = find("input#disallowed-2")
+    disallowed = find(:css, "input#disallowed-2")
     expect(disallowed).to be_checked
   end
 end

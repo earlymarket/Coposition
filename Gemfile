@@ -51,7 +51,7 @@ gem "httparty"
 gem "dotenv-rails"
 gem "sendgrid-ruby"
 gem "countries"
-gem "nokogiri", ">= 1.10.3"
+gem "nokogiri", ">= 1.10.4"
 gem "browserify-rails"
 gem "recaptcha", require: "recaptcha/rails"
 

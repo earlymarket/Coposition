@@ -14,7 +14,7 @@ App.friend = App.cable.subscriptions.create("FriendChannel", {
         window.COPO.pushDestroyCheckin.push(data);
         break;
       case "request_checkin":
-        Materialize.toast(data.message, 3000)
+        M.toast({html: data.message, displayLength: 3000})
         break;
     }
   }

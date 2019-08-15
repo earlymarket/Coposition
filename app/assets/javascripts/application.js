@@ -16,6 +16,9 @@
 //= require jquery.validate.additional-methods
 //= require turbolinks
 //= require turbolinks-compatibility
+//= require_tree ../../../node_modules/core-js/stable/set
+//= require_tree ../../../node_modules/core-js/stable/map
+
 
 // -- Libs from gems --
 
@@ -35,6 +38,7 @@
 //= require sweetalert/dist/sweetalert.min
 //= require datetimepicker-earlymarket/dist/DateTimePicker
 //= require smooch/lib/index
+//= require velocity-animate/velocity.min
 
 // STILL more up to date version
 //= require nouislider.min

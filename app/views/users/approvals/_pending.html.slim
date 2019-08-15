@@ -13,7 +13,7 @@
               = approvable.try(:tagline)
         .col.s4.permissions-column
           - if current_user.devices.exists? && approval.approvable_type == "User"
-            a.permissions-trigger.btn-flat.right.permissions-button data-id=(approvable.id) href="#perm#{approvable.id}"
+            a.modal-trigger.permissions-trigger.btn-flat.right.permissions-button data-id=(approvable.id) href="#perm#{approvable.id}"
               i.material-icons.right lock
               | Permissions
             .modal id="perm#{approvable.id}" 

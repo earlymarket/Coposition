@@ -18,8 +18,9 @@
         = f.text_field :redirect_url
     .row
       .input-field.col.s12
-        = f.check_box :zapier_enabled
-        = f.label :zapier_enabled, "Zapier enabled?"
+        label
+          = f.check_box :zapier_enabled
+          span Zapier enabled?
     .row
       .input-field.col.s12
         = f.label :avatar, "Upload a new logo", class: "active"
