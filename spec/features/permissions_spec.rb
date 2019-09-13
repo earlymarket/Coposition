@@ -87,7 +87,9 @@ RSpec.feature "Permissions", type: :feature do
   end
 
   def when_i_click_on_permissions
-    click_link "lock"
+    within "div#device1" do
+      click_link "lock"
+    end
   end
 
   def then_i_should_see_my_friends_permissions
