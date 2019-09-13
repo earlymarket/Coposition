@@ -36,10 +36,10 @@ ActiveRecord::Migration.maintain_test_schema!
 
 Sidekiq::Testing.fake!
 
-Capybara.default_max_wait_time = 10
+Capybara.default_max_wait_time = 15
 Capybara.javascript_driver = :webkit
 Capybara.ignore_hidden_elements = false
-Capybara.automatic_reload = false
+Capybara.automatic_reload = true
 
 Capybara::Webkit.configure do |config|
   config.allow_unknown_urls
