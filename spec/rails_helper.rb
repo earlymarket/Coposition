@@ -39,6 +39,7 @@ Sidekiq::Testing.fake!
 Capybara.default_max_wait_time = 10
 Capybara.javascript_driver = :webkit
 Capybara.ignore_hidden_elements = false
+Capybara.automatic_reload = false
 
 Capybara::Webkit.configure do |config|
   config.allow_unknown_urls
