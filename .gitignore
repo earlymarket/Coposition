@@ -37,3 +37,4 @@ Procfile.local
 
 # Ignore foreman config
 .foreman
+.DS_Store

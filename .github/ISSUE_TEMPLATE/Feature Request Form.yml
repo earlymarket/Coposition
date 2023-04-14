@@ -1,0 +1,39 @@
+name: Feature Request
+description: Suggest a new feature or improvement
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: "## Feature Description"
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: "A clear and concise description of the feature you would like to see."
+      placeholder: "Describe the feature or improvement here."
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: "## Problem it solves"
+  - type: textarea
+    id: problem-solution
+    attributes:
+      label: "Explain the problem this feature would solve."
+      placeholder: "Describe the problem this feature would solve."
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: "## Alternatives considered"
+  - type: textarea
+    id: alternatives-considered
+    attributes:
+      label: "Describe any alternative solutions or features you've considered."
+      placeholder: "Describe any alternative solutions or features you've considered."
+  - type: markdown
+    attributes:
+      value: "## Additional context"
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: "Add any other context or screenshots about the feature request here."
