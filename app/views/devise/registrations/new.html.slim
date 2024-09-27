@@ -1,6 +1,6 @@
 .row
   section.section.col.s12.m6.offset-m3
-    = form_for resource, as: resource_name, url: registration_path(resource_name) do |f|
+    = form_for resource, as: resource_name, url: sign_up_registration_path(resource_name) do |f|
       /! #{devise_error_messages!}
       - flash[:notice] = resource.errors.full_messages.join(". ").concat(".") unless resource.errors.empty?
       fieldset.card

@@ -26,14 +26,18 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     registrations: "users/devise/registrations",
     sessions: "users/devise/sessions"
-  }
+  } 
   devise_scope :user do
     get "/account", to: "users/devise/registrations#edit"
+    post "/users/sign_up", to: "users/devise/registrations#create"
   end
   devise_for :developers, controllers: {
     registrations: "developers/devise/registrations",
     sessions: "developers/devise/sessions"
   }
+  devise_scope :developer do
+    post "/developers/sign_up", to: "developers/devise/registrations#create"
+  end
 
   # Attachinary
   mount Attachinary::Engine => "/attachinary"
