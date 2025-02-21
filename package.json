@@ -9,7 +9,7 @@
     "datetimepicker-earlymarket": "^0.2.5",
     "ion-rangeslider": "^2.3.0",
     "jquery-mustache-earlymarket": "^1.0.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "leaflet-fullscreen": "^1.0.2",
     "leaflet.locatecontrol": "^0.62.0",
     "leaflet.markercluster": "^1.2.0",
